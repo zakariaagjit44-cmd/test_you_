@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BILDER - TELC B2 Training</title>
+    <title>تمرين TELC B2 - التأنس كورس</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -47,30 +47,14 @@
             color: var(--light);
         }
 
-        /* Header Controls - التعديل هنا */
+        /* Header Controls */
         .header-controls {
             position: fixed;
             top: 20px;
-            left: 20px;
             right: 20px;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            gap: 15px;
             z-index: 1000;
-            gap: 15px;
-        }
-
-        .left-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-start;
-        }
-
-        .right-controls {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
         }
 
         .control-btn {
@@ -114,68 +98,12 @@
             box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
         }
 
-        /* شارة المشترك الذهبية - تم التعديل */
-        .premium-badge-header {
-            position: fixed;
-            top: 20px;
-            right: 90px; /* بجانب الأزرار */
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            padding: 0.5rem;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
-        }
-
-        .home-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .home-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .home-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
         /* Language Selector */
         .language-selector {
-            display: flex;
-            position: relative;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
         }
 
         .lang-btn {
@@ -267,28 +195,130 @@
             border-bottom: none;
         }
 
-        /* زر الاشتراك الجديد */
-        .subscribe-btn {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            border: none;
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        /* شارة المشترك الذهبية */
+        .premium-badge {
+            position: fixed;
+            top: 85px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            width: auto;
-            height: auto;
+            justify-content: center;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+            animation: rotate 4s linear infinite;
+            display: none;
         }
 
-        .subscribe-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* نافذة الدعم */
+        .support-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .support-modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .dark-mode .support-modal-content {
+            background: #1a237e;
+        }
+
+        .support-info {
+            margin: 1.5rem 0;
+        }
+
+        .support-item {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background: rgba(33, 150, 243, 0.1);
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .close-modal {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* نافذة الملاحظات */
+        .notes-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notes-modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .dark-mode .notes-modal-content {
+            background: #1a237e;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            height: 200px;
+            padding: 1rem;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            margin: 1rem 0;
+        }
+
+        .dark-mode .notes-textarea {
+            background: #1a237e;
+            color: var(--light);
+            border-color: var(--secondary);
         }
 
         /* المحتوى الرئيسي */
@@ -350,7 +380,7 @@
         /* أزرار التحكم */
         .answer-controls {
             position: sticky;
-            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
+            top: 0;
             background: rgba(255, 255, 255, 0.95);
             padding: 1.5rem;
             border-radius: var(--radius);
@@ -507,7 +537,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* التصحيح - تم التعديل للوضع الليلي */
+        /* التصحيح */
         .correct-answer {
             background: rgba(76, 175, 80, 0.2);
             color: #2E7D32;
@@ -667,50 +697,70 @@
             border-color: #81C784;
         }
 
-        /* كلمات الإجابات */
-        .answers-list {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: rgba(33, 150, 243, 0.1);
-            border-radius: 15px;
-            border: 2px solid var(--primary);
-        }
-
-        .answers-list h3 {
-            color: var(--primary-dark);
-            margin-bottom: 1rem;
-            font-size: 1.4rem;
-        }
-
-        .dark-mode .answers-list h3 {
-            color: #90CAF9;
-        }
-
-        .answer-item {
+        .blank-options {
             display: flex;
-            margin-bottom: 0.8rem;
-            padding: 0.8rem;
-            background: var(--white);
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 10px;
         }
 
-        .dark-mode .answer-item {
+        .blank-option {
+            padding: 0.5rem 1rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .blank-option {
             background: #1a237e;
             border-color: #37474F;
         }
 
-        .answer-number {
-            font-weight: bold;
-            margin-right: 1rem;
-            color: var(--primary);
+        .blank-option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.1);
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 15px;
+        }
+
+        .word-option {
+            padding: 0.6rem 1rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .word-option {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .word-option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.1);
+            transform: translateY(-2px);
         }
 
         .hidden {
             display: none;
         }
 
-        /* Floating Elements مثل الصفحة الرئيسية */
+        /* Floating Elements */
         .floating-elements {
             position: fixed;
             width: 100%;
@@ -745,22 +795,20 @@
         @media (max-width: 768px) {
             .header-controls {
                 top: 15px;
-                left: 15px;
                 right: 15px;
                 gap: 10px;
             }
 
-            .premium-badge-header {
+            .language-selector {
                 top: 15px;
-                right: 70px;
-                width: 45px;
-                height: 45px;
-                font-size: 1.1rem;
+                left: 15px;
             }
 
-            .home-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
+            .premium-badge {
+                top: 70px;
+                left: 15px;
+                width: 35px;
+                height: 35px;
             }
 
             .container {
@@ -781,39 +829,31 @@
                 grid-template-columns: 1fr;
             }
 
-            .right-controls {
-                gap: 10px;
-            }
-
             .answer-controls {
-                top: 70px;
+                top: 0;
             }
         }
 
         @media (max-width: 480px) {
             .header-controls {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
+                gap: 8px;
             }
 
-            .left-controls, .right-controls {
-                flex-direction: row;
-                justify-content: center;
+            .control-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
             }
 
-            .premium-badge-header {
-                position: relative;
-                top: auto;
-                right: auto;
-                transform: none;
-                margin-top: 10px;
+            .lang-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Floating Elements مثل الصفحة الرئيسية -->
+    <!-- Floating Elements -->
     <div class="floating-elements">
         <div class="floating-element floating-book">📚</div>
         <div class="floating-element floating-pen">✏️</div>
@@ -825,57 +865,57 @@
         <div class="floating-element floating-calculator">🧮</div>
     </div>
 
-    <!-- شارة المشترك الذهبية - تم التعديل -->
-    <div class="premium-badge-header" id="premiumBadge">
-        <i class="fas fa-crown"></i>
+    <!-- أزرار التحكم العلوية -->
+    <div class="header-controls">
+        <button class="control-btn theme-toggle" id="themeToggle">🌙</button>
+        <button class="control-btn support-btn" id="supportBtn">💬</button>
+        <button class="control-btn notes-btn" id="notesBtn">📝</button>
     </div>
 
-    <!-- Header Controls -->
-    <div class="header-controls">
-        <div class="left-controls">
-            <button class="home-btn" id="homeBtn">
-                <i class="fas fa-home"></i>
-                <span id="homeText">الرئيسية</span>
-            </button>
-            <div class="language-selector">
-                <button class="lang-btn" id="langBtn">
-                    <span id="langBtnText">العربية</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="lang-dropdown" id="langDropdown">
-                    <div class="lang-option" data-lang="ar">
-                        <span>🇸🇦</span>
-                        <span>العربية</span>
-                    </div>
-                    <div class="lang-option" data-lang="de">
-                        <span>🇩🇪</span>
-                        <span>Deutsch</span>
-                    </div>
-                    <div class="lang-option" data-lang="en">
-                        <span>🇬🇧</span>
-                        <span>English</span>
-                    </div>
-                </div>
-            </div>
+    <!-- محدد اللغة -->
+    <div class="language-selector">
+        <button class="lang-btn" id="langBtn">
+            <span>🇸🇦 العربية</span>
+        </button>
+        <div class="lang-dropdown" id="langDropdown">
+            <div class="lang-option" data-lang="ar">🇸🇦 العربية</div>
+            <div class="lang-option" data-lang="de">🇩🇪 Deutsch</div>
+            <div class="lang-option" data-lang="en">🇬🇧 English</div>
         </div>
-        
-        <div class="right-controls">
-            <button class="subscribe-btn" id="subscribeBtn">
-                <i class="fas fa-crown"></i>
-                <span id="subscribeText">اشترك الآن</span>
-            </button>
-            <button class="control-btn" id="themeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="control-btn" id="userBtn">
-                <i class="fas fa-user"></i>
-            </button>
+    </div>
+
+    <!-- شارة المشترك الذهبية -->
+    <div class="premium-badge" id="premiumBadge">
+        <i class="fas fa-crown" style="color: #fff; font-size: 1.2rem;"></i>
+    </div>
+
+    <!-- نافذة الدعم -->
+    <div class="support-modal" id="supportModal">
+        <div class="support-modal-content">
+            <h2 id="supportTitle">اتصال الدعم</h2>
+            <div class="support-info">
+                <div class="support-item">+212 649-661976</div>
+                <div class="support-item">zakariaap.6@gmail.com</div>
+            </div>
+            <button class="close-modal" id="closeSupportModal">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- نافذة الملاحظات -->
+    <div class="notes-modal" id="notesModal">
+        <div class="notes-modal-content">
+            <h2>ملاحظاتي</h2>
+            <textarea class="notes-textarea" id="notesTextarea" placeholder="اكتب ملاحظاتك هنا..."></textarea>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button class="close-modal" id="saveNotes">حفظ</button>
+                <button class="close-modal" id="closeNotesModal">إغلاق</button>
+            </div>
         </div>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">TANZKURZ - TELC B2 Training</h1>
+            <h1 id="pageTitle">تمرين TELC B2 - التأنس كورس</h1>
             <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
         </div>
 
@@ -897,11 +937,11 @@
             <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
             
             <div class="headings-grid" id="headingsList">
-                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+                <!-- سيتم إضافة العناوين بالجافاسكريبت -->
             </div>
 
             <div id="textsList">
-                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+                <!-- سيتم إضافة النصوص بالجافاسكريبت -->
             </div>
         </div>
 
@@ -909,11 +949,11 @@
         <div class="section">
             <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
             <div class="text-content" id="longText">
-                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+                <!-- سيتم إضافة النص الطويل بالجافاسكريبت -->
             </div>
 
             <div id="questionsList">
-                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+                <!-- سيتم إضافة الأسئلة بالجافاسكريبت -->
             </div>
         </div>
 
@@ -923,11 +963,11 @@
             <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
             
             <div class="situations-grid" id="situationsList">
-                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+                <!-- سيتم إضافة الوضعيات بالجافاسكريبت -->
             </div>
 
             <div class="ads-grid" id="adsList">
-                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+                <!-- سيتم إضافة الإعلانات بالجافاسكريبت -->
             </div>
         </div>
 
@@ -936,13 +976,10 @@
             <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
             <div class="fill-blanks">
                 <div class="blank-text" id="blankText1">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- سيتم إضافة النص بالفراغات بالجافاسكريبت -->
                 </div>
-            </div>
-            <div class="answers-list" id="sprach1Answers">
-                <h3>كلمات الإجابات - Sprachbausteine Teil 1</h3>
-                <div id="sprach1AnswersList">
-                    <!-- كلمات الإجابات سيتم إضافتها بالجافاسكريبت -->
+                <div id="blankOptions1">
+                    <!-- سيتم إضافة خيارات الفراغات بالجافاسكريبت -->
                 </div>
             </div>
         </div>
@@ -952,13 +989,10 @@
             <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
             <div class="fill-blanks">
                 <div class="blank-text" id="blankText2">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- سيتم إضافة النص بالفراغات بالجافاسكريبت -->
                 </div>
-            </div>
-            <div class="answers-list" id="sprach2Answers">
-                <h3>كلمات الإجابات - Sprachbausteine Teil 2</h3>
-                <div id="sprach2AnswersList">
-                    <!-- كلمات الإجابات سيتم إضافتها بالجافاسكريبت -->
+                <div class="word-bank" id="wordBank2">
+                    <!-- سيتم إضافة بنك الكلمات بالجافاسكريبت -->
                 </div>
             </div>
         </div>
@@ -972,8 +1006,7 @@
                 themeText: "الوضع الليلي",
                 langText: "العربية", 
                 userText: "زائر",
-                subscribeText: "اشترك الآن",
-                pageTitle: "TANZKURZ - TELC B2 Training",
+                pageTitle: "تمرين TELC B2 - التأنس كورس",
                 pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
                 showAnswersText: "إظهار التصحيح",
                 hideAnswersText: "إخفاء التصحيح",
@@ -983,33 +1016,33 @@
                 teil3Title: "Lesen Teil 3",
                 teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
                 sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
+                sprach2Title: "Sprachbausteine Teil 2",
+                supportTitle: "اتصال الدعم"
             },
             de: {
                 homeText: "Startseite",
-                themeText: "Nachtmodus", 
+                themeText: "Nachtmodus",
                 langText: "Deutsch",
                 userText: "Besucher",
-                subscribeText: "Jetzt abonnieren",
-                pageTitle: "TANZKURZ - TELC B2 Training",
+                pageTitle: "TELC B2 Übung - Tanzkurs",
                 pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
                 showAnswersText: "Korrektur anzeigen",
                 hideAnswersText: "Korrektur ausblenden",
                 teil1Title: "Lesen Teil 1",
                 teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
                 teil2Title: "Lesen Teil 2",
-                teil3Title: "Lesen Teil 3", 
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                teil3Title: "Lesen Teil 3",
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
                 sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
+                sprach2Title: "Sprachbausteine Teil 2",
+                supportTitle: "Support Kontakt"
             },
             en: {
                 homeText: "Home",
                 themeText: "Dark Mode",
                 langText: "English",
-                userText: "Visitor", 
-                subscribeText: "Subscribe Now",
-                pageTitle: "TANZKURZ - TELC B2 Training",
+                userText: "Visitor",
+                pageTitle: "TELC B2 Exercise - Dance Course",
                 pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
                 showAnswersText: "Show Correction",
                 hideAnswersText: "Hide Correction",
@@ -1018,509 +1051,613 @@
                 teil2Title: "Reading Part 2",
                 teil3Title: "Reading Part 3",
                 teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
-                sprach1Title: "Language Elements Part 1", 
-                sprach2Title: "Language Elements Part 2"
+                sprach1Title: "Language Elements Part 1",
+                sprach2Title: "Language Elements Part 2",
+                supportTitle: "Support Contact"
             }
         };
 
-        // بيانات الأسئلة والإجابات من ملف PDF
-        const examData = {
-            // Lesen Teil 1
+        // بيانات المحتوى من الـ PDF
+        const contentData = {
             headings: [
-                "Tanzen lernen in jedem Alter",
-                "Tanz als Therapie",
-                "Ein Leben für den Tanz",
-                "Tanzende Roboter",
-                "Tanzgeschichte zum Anschauen",
-                "Tanz und Musik",
-                "Tanzwettbewerb für Jugendliche",
-                "Tanz und Mode",
-                "Tanz als Beruf",
-                "Tanzen in der Natur"
+                "a) Freie Plätze im Tanzkurs",
+                "b) Neue Lerntechniken präsentiert",
+                "c) Stolze Eltern: vom Schüler zum Superstar",
+                "d) Verändertes Freizeitverhalten von Jugendlichen",
+                "e) Höher, schneller, weiter: Suche nach dem Nervenkitzel",
+                "f) Hilfen für überforderte Schüler",
+                "g) Keine Zeit für Langeweile",
+                "h) Neue Sportarten",
+                "i) Tanzlehrer fordern moderne Tänze bekannter machen",
+                "j) Befragung bestätigt alte Vorurteile"
             ],
-            
             texts: [
                 {
-                    content: `Die Ausstellung "Tanz durch die Jahrhunderte" im Stadtmuseum zeigt die Entwicklung des Tanzes von der Antike bis zur Gegenwart. Besucher können nicht nur historische Kostüme und Accessoires bewundern, sondern auch Videos mit originalen Choreografien ansehen. Besonders beeindruckend ist der Bereich zum Ballett im 19. Jahrhundert, wo originale Bühnenbilder und Requisiten ausgestellt sind. Die Ausstellung ist interaktiv gestaltet - an mehreren Stationen können Besucher selbst einfache Tanzschritte ausprobieren. Für Schulklassen gibt es spezielle Führungen und Workshops.`,
-                    correctAnswer: "Tanzgeschichte zum Anschauen"
+                    id: 1,
+                    content: "Musik, Sport, ehrenamtliches Engagement - die Teilnahme von Jugendlichen an diesen sogenannten bildungsorientierten Freizeitaktivitäten hat in den vergangenen zehn Jahren deutlich zugenommen. So lautet das Ergebnis einer Studie des Deutschen Instituts für Wirtschaftsforschung. Während vor 10 Jahren erst 48 Prozent aller 16- bis 17-Jährigen an bildungsorientierten Aktivitäten teilnehmen, waren es im vergangenen Jahr bereits 62 Prozent. Die Daten zeigen außerdem: Während vor 10 Jahren nur etwa 10 Prozent der 16- bis 17-Jährigen musizierten, waren es im letzten Jahr bereits 18 Prozent. Noch stärker hat im gleichen Zeitraum das ehrenamtliche Engagement der 16- bis 17-Jährigen zugenommen (von 11 auf 22 Prozent). Darüber hinaus ist auch der Anteil der Jugendlichen, die Sport treiben, tanzen oder Theater spielen, gestiegen. Gleichzeitig verzeichnen die Forscher einen Abwärtstrend der sogenannten informellen Freizeitbeschäftigungen. So ist der Anteil derer, die täglich mit der besten Freundin oder dem besten Freund unterwegs sind, im Untersuchungszeitraum von 40 auf 25 Prozent zurückgegangen. Auffallend ist, dass Jugendliche aus sozial schwächeren Haushalten bildungsorientierte Angebote viel seltener nutzen als junge Menschen aus gut situierten Familien.",
+                    correctHeading: "d"
                 },
                 {
-                    content: `Maria Schmidt begann mit fünf Jahren Ballett zu tanzen. Mit 16 wurde sie an der staatlichen Ballettschule aufgenommen und mit 20 hatte sie ihr erstes Engagement am Stadttheater. In ihrer 30-jährigen Karriere tanzte sie alle großen klassischen Rollen - von Schwanensee bis zu Romeo und Julia. Heute, mit 55 Jahren, gibt sie ihr Wissen als Ballettmeisterin weiter und choreografiert eigene Stücke. "Der Tanz ist mein Leben", sagt sie. "Auch wenn ich nicht mehr selbst auf der Bühne stehe, lebe ich für die Kunst."`,
-                    correctAnswer: "Ein Leben für den Tanz"
+                    id: 2,
+                    content: "Der Begriff Extremsport wird oft subjektiv verwendet. Man kann viele gängige Sportarten als Extremsport bezeichnen, wenn sie mit erhöhtem Risiko für das eigene Leben ausgeübt werden, z.B. Skilaufen auf ungesicherten Pisten oder Klettern ohne Sicherung. Extremsportlern geht es aber nicht darum, das höchste Risiko einzugehen, sondern ihre Grenzen zu erkennen. Extremsport kann man an vielen Orten betreiben: in der Wüste, unter Wasser, auf Klippen oder Bergen, in der Luft oder sogar auf seinem eigenen Hausdach. Es gibt viele Wettbewerbe in verschiedenen extremen Sportarten, zum Beispiel Bungee-Jumping, was früher ursprünglich ein Ritual für junge Männer in der Südsee war. Eine andere Art des Extremsports ist Freedimbing: Mann klettert ohne jegliche Sicherung an mehreren hundert Meter hohen Felswänden. Kein Berg ist zu hoch, keine Wand ist zu steil, keine Schlucht zu tief, um für den Adrenalinkick zu sorgen. Manchen Sportlern kann es nicht aufregend genug sein. Leider entwickeln nicht wenige Extremsportler dabei eine regelrechte 'Sportsucht', die krankhaft ist. Viele Extremsportler ignorieren die Gefahren, was zu schweren Unfällen führt und sie häufig genug das Leben kostet.",
+                    correctHeading: "e"
                 },
                 {
-                    content: `Beim "Young Dance Contest" können Jugendliche zwischen 14 und 19 Jahren ihr Talent zeigen. Ob Hip-Hop, Breakdance, Contemporary oder Standardtanz - alle Stile sind willkommen. Eine Fachjury bewertet Kreativität, Technik und Ausdruck. Die Gewinner erhalten nicht nur Preisgelder, sondern auch die Chance, an einem internationalen Tanzworkshop teilzunehmen. Anmeldeschluss ist der 15. Mai. Die Vorausscheidungen finden in verschiedenen Städten statt, das Finale wird im Fernsehen übertragen.`,
-                    correctAnswer: "Tanzwettbewerb für Jugendliche"
+                    id: 3,
+                    content: "In Firmen gibt es sie schon, jetzt wollen auch Schulen Entspannungskurse anbieten. Schüler sollen zwischen den Unterrichtsstunden mit Entspannungstechniken lernen, Stress abzubauen. Ein erster Probelauf des Projekts an einer Gesamtschule in Hamburg ist bei den Teilnehmenden gut angekommen. Die Schüler waren zu Beginn zwar skeptisch, dann aber vom Ergebnis überzeugt. 'Ich konnte mich in meiner nächsten Stunde nach der Entspannungsübung viel besser konzentrieren und habe viel mehr mitbekommen', berichtet Jens aus der 12. Klasse. Die Schule hat damit auf Kritik von Schülern und Lehrern reagiert: Nach der Umstrukturierung der Stundenpläne klagten die Schüler zunehmend über Stress und zu wenige Pausen. Gerade Entspannungspausen seien aber wichtig, erklären Pädagogen und auch Neurowissenschaftler. Nur wer ausreichend Pausen macht, kann sich Dinge auch langfristig merken. Nachdem das Projekt in Hamburg solch einen Erfolg hatte, wollen es jetzt auch andere Schulen anbieten.",
+                    correctHeading: "f"
                 },
                 {
-                    content: `Tanztherapie wird immer häufiger in der Behandlung von psychischen Erkrankungen eingesetzt. Durch Bewegung können Patienten Gefühle ausdrücken, die sie verbal nicht mitteilen können. "Tanz ermöglicht einen Zugang zum Unterbewusstsein", erklärt Therapeutin Dr. Weber. "Viele Patienten finden durch den Tanz zu mehr Selbstbewusstsein und lernen, ihren Körper besser anzunehmen." Die Therapie wird sowohl in Einzel- als auch in Gruppensitzungen angeboten und zeigt besonders bei Depressionen und Angststörungen gute Erfolge.`,
-                    correctAnswer: "Tanz als Therapie"
+                    id: 4,
+                    content: "Tanja Kleist ist von modernem Tanz absolut begeistert. Seit ihrem neunten Lebensjahr tanzt sie, früher auf Wettkampfniveau. Seit einigen Jahren engagiert sie sich beim TSV Neustadt. Die Freude, die sie beim Tanzen hat, möchte sie weitergeben und mehr Jugendliche motivieren, diesem einzigartigen Sport eine Chance zu geben. Und diese Chance ist nun für alle Interessierten besonders groß. Für ihre Hip-Hop-Tanzgruppe sucht Frau Kleist neue tanzbegeisterte Teilnehmerinnen und Teilnehmer, da im vergangenen Sommer viele nach dem Abitur die Gruppe verlassen haben. Das abwechslungsreiche Training vereint Kreatives mit 'Handwerklichem'. Im Mittelpunkt der Übungsstunden steht die Erarbeitung kleiner choreografierter Sequenzen auf Basis von Musikvideos bekannter Hip-Hopper, aber auch das Techniktraining und die Schulung von akrobatischen Grundelementen kommen nicht zu kurz. Es entstehen Choreografien, die die Gruppe bei öffentlichen Auftritten vorführt. Ein tolles Tanzangebot mit viel Spaß, das es ab sofort beim TSV Neustadt für Jugendliche ab 14 Jahren gibt!",
+                    correctHeading: "a"
                 },
                 {
-                    content: `Die Tanzschule "Move & Groove" bietet Kurse für alle Altersgruppen an - von Kindertanz ab 3 Jahren bis zu Seniorentanz für über 70-Jährige. "Es ist nie zu spät, mit dem Tanzen anzufangen", sagt Inhaber Thomas Berger. "Bei uns lernen Rentner genauso wie Teenager." Das Kursangebot reicht von Standardtänzen über lateinamerikanische Tänze bis zu modernen Tanzstilen. Besonders beliebt sind die "Tanzfitness"-Kurse, die Bewegung mit Musiktraining verbinden. Ein Probekurs ist kostenlos.`,
-                    correctAnswer: "Tanzen lernen in jedem Alter"
+                    id: 5,
+                    content: "Montags Tennis, dienstags Klavierunterricht, mittwochs Jazztanz in der Gruppe und donnerstags Treffen der Astronomie-Gruppe. Was klingt wie der Terminkalender eines vielbeschäftigten Erwachsenen, ist heute oft eine ganz normale Woche im Leben von Kindern und Jugendlichen. Nicht genug damit, dass sie sechs oder sieben Stunden Schule haben, dann vielleicht noch Hausaufgaben machen und natürlich auch etwas essen müssen - in ihrer Freizeit haben sie dann gleich weitere Termine. Dabei suchen sich das viele Kinder und Jugendliche gar nicht selbst aus, sondern die Eltern wollen, dass Ihr Nachwuchs möglichst viel unternimmt. Einige hoffen, aus ihrem Sohn könnte ein neuer Spitzensportler werden, andere denken an eine Karriere als Musikerin, meist aber glauben die Eltern 'nur', sie müssten ihre Kinder ständig beschäftigen. Sonst könnte es ihnen ja langweilig werden, und wer weiß, was sie dann machen. Viele Eltern haben Angst, dass ihre Kinder dann 'auf dumme Gedanken' kommen oder dass sie zuhause nur vor dem Fernseher oder Computer sitzen, wenn sie nicht ständig etwas unternehmen. Ob der Freizeitstress für alle Beteiligten wirklich gut ist?",
+                    correctHeading: "g"
                 }
             ],
-
-            // Lesen Teil 2 - النص الكامل
             longText: {
-                content: `Tanzen ist eine der ältesten und universellsten Formen menschlichen Ausdrucks. Schon in prähistorischen Zeiten tanzten Menschen bei Ritualen und Feiern. Heute ist Tanzen nicht nur eine Kunstform, sondern auch eine beliebte Freizeitaktivität mit vielen positiven Effekten auf Körper und Geist.
-
-Regelmäßiges Tanzen verbessert die körperliche Fitness erheblich. Es stärkt die Muskulatur, besonders in Beinen und Rumpf, und verbessert die Haltung. Die koordinierten Bewegungen schulen das Gleichgewicht und die Körperkontrolle. Zudem ist Tanzen ein effektives Herz-Kreislauf-Training, das die Ausdauer steigert und Kalorien verbrennt. Eine Stunde intensives Tanzen kann bis zu 400 Kalorien verbrauchen.
-
-Doch die Vorteile des Tanzens beschränken sich nicht auf den Körper. Tanzen hat auch bedeutende positive Auswirkungen auf die psychische Gesundheit. Beim Tanzen werden Endorphine freigesetzt, die das Wohlbefinden steigern und Stress reduzieren. Viele Menschen berichten, dass sie beim Tanzen Alltagssorgen vergessen und neue Energie tanken.
-
-Die sozialen Aspekte des Tanzens sollten nicht unterschätzt werden. In einer Tanzgruppe oder mit einem Tanzpartner lernt man, auf andere einzugehen und nonverbale Signale zu verstehen. Das stärkt das Einfühlungsvermögen und die sozialen Kompetenzen. Besonders für schüchterne Menschen kann Tanzen ein Weg sein, leichter Kontakte zu knüpfen.
-
-Für Kinder ist Tanzen besonders förderlich. Es unterstützt die motorische Entwicklung, schult das Rhythmusgefühl und fördert die Kreativität. In der Gruppe lernen Kinder zudem, Regeln einzuhalten und Rücksicht auf andere zu nehmen. Viele Pädagogen empfehlen Tanz als Ausgleich zum oft bewegungsarmen Schulalltag.
-
-Im Alter hilft Tanzen, die geistige und körperliche Beweglichkeit zu erhalten. Studien zeigen, dass regelmäßiges Tanzen das Demenzrisiko senken kann, da es sowohl kognitive als auch motorische Fähigkeiten fordert. Seniorentanzgruppen bieten zudem eine willkommene Gelegenheit zur Geselligkeit und beugen der Einsamkeit vor.
-
-Tanztherapie wird zunehmend als ergänzende Behandlungsmethode in der Medizin anerkannt. Sie kommt bei verschiedenen psychischen Erkrankungen zum Einsatz und hilft Patienten, einen besseren Zugang zu ihren Gefühlen zu finden. Auch in der Rehabilitation nach Unfällen oder Operationen kann Tanztherapie den Heilungsprozess unterstützen.
-
-Trotz aller Vorteile scheuen viele Erwachsene davor zurück, mit dem Tanzen anzufangen. Die häufigsten Gründe sind Scham, Angst vor Blamage oder die Überzeugung, nicht rhythmisch genug zu sein. Dabei sind die meisten Tanzschulen genau auf solche Bedenken eingestellt und bieten spezielle Kurse für absolute Anfänger an.
-
-Die Wahl des richtigen Tanzstils ist entscheidend für den langfristigen Spaß am Tanzen. Während einige Menschen die klaren Strukturen des Standardtanzes bevorzugen, lieben andere die Freiheit des Contemporary Dance oder die Energie des Hip-Hop. Probestunden in verschiedenen Stilen helfen bei der Entscheidung.
-
-Zusammenfassend lässt sich sagen: Tanzen ist mehr als nur Bewegung zur Musik. Es ist eine ganzheitliche Aktivität, die Körper, Geist und Seele gleichermaßen bereichert. Egal ob allein, zu zweit oder in der Gruppe - Tanzen kann in jedem Alter und auf jedem Niveau ausgeübt werden und bringt Freude, Gesundheit und Gemeinschaft.`,
+                content: "Wer kennt sie nicht: Kreditkarten, mit denen man in der heimischen Stadt oder während des Urlaubs einkaufen kann. Fast jeder hat eine, und alles scheint ganz einfach zu sein: Kein Wunder, dass auch immer mehr Kinder und Jugendliche eine eigene Kreditkarte haben wollen. Sie sehen, wie ihre Eltern damit bezahlen, um möchte auch das praktische 'Plastikgeld'. Aber Eltern sorgen sich: Ist das nicht zu gefährlich? Um das Risiko einer Überschuldung zu vermeiden, bieten Banken und alle Sparkassen Jugendlichen eine besondere Art von Kreditkarten an: die sogenannte Prepaid–Kreditkarte. Eine Prepaid–Kreditkarte ist mit einem Prepaid–Handy vergleichbar. Man kann sie nur einsetzen, wenn man zuvor Geld auf die Karte geladen hat. Ist das Guthaben verbraucht, kann man mit der Karte nicht mehr bezahlen und am Automaten kein Geld mehr abheben. Der Vorteil liegt auf der Hand: 'Man kann nicht mehr Geld ausgeben, als man hat', sagt Andreas Gernt, Finanzexperte der Verbraucherzentrale Niedersachsen in Hannover. Mit einer Prepaid–Kreditkarte kann daher niemand in die Schuldenfalle tappen. 'Für Kinder und Jugendliche auf Reisen ist die Prepaid–Kreditkarte eine überlegenswerte Option', sagt Gernt. Die daheimgebliebenen Eltern können Ihrem Kind von zu Hause aus Geld auf die Karte laden, wenn das Guthaben verbraucht ist. Zugleich können Sie die Kosten kontrollieren. 'Die Prepaid–Kreditkarte ist eine Ausgabenschranke für den Verbraucher', fasst Tanja Beller vom Bundesverband deutscher Banken in Berlin zusammen. So können Jugendliche den Umgang mit bargeldlosem Zahlungsverkehr lernen.<br><br>Zugleich eignen sich die Karten aber auch für erwachsene Reisende mit einem größeren Sicherheitsbedürfnis. 'Man ist mit einer Kreditkarte auf Reisen unabhängiger vom Bargeld', erklärt Gernt. Die Prepaid–Karte bitte zwei Vorteile: Zum einen ist mit ihr das Reisebudget von Anfang an limitiert. Es kann nur das für Souvenirs ausgegeben werden, was vorher geladen wurde. Zum anderen sind damit auch die Verluste überschaubar, wenn die Karte gestohlen wird. Denn auch ein Dieb kann nur das Geld nutzen, das als Guthaben auf der Karte ist.<br><br>Außerdem eignet sich die Prepaid Kreditkarte für Freiberufler und Selbständige – oder allgemeiner gefasst für Menschen mit einem unregelmäßigen oder geringen Einkommen, die dadurch keine gute Bonität haben. Denn die Prepaid–Kreditkarten sind im Gegensatz zur klassischen Kreditkarte nicht direkt an ein Gehaltskonto gebunden. Das ermöglicht auch Geringverdienern Einkäufe im Internet. Zugleich schützt die Guthabenkarte vor allzu großen Verlusten durch Missbrauch im Netz.<br><br>'Bevor man sich aber für eine Prepaid–Karte entscheidet, sollte man ihre Akzeptanz überprüfen', rät Beller. Denn gerade Prepaid–Karten sind nicht in jedem Land als Zahlungsmittel gern gesehen. Grundsätzlich sollte man auch bei Lock–Angeboten skeptisch sein, die als Werbung in den Briefkasten flattern. 'Vielleicht verbirgt sich da etwas im Kleingedruckten', warnt Gernt. Außerdem sollte man die Gebühren genau vergleichen und auf versteckte Kosten achten. Die Stiftung Warentest hat für ihre Zeitschrift 'Finanztest' die Bedingungen und Kosten von 24 Prepaid–Kreditkarten für Erwachsene und Jugendliche getestet. Die Tester stellten fest: Die Karten sind nicht teurer als klassische Kreditkarten, und auch die Nutzungsgebühren unterscheiden sich kaum.<br><br>Erwachsene bezahlen für Prepaid–Karten zwischen 29 und 39 Euro im Jahr. Karten für Jugendliche Kosten im Jahr höchstens 22 Euro. Bei vielen Banken sind sie bis zum 18. oder 21. Geburtstag kostenlos. Für das Geldabheben am Automaten berechnen die Banken meist einen Mindestbetrag zwischen 5,00 € und 7,50 Euro. Ansonsten fallen etwa zwei Prozent vom abgehobenen Betrag an. Zudem kostet das Abheben außerhalb des Euro–Raumes zwischen einem Prozent und 1,9 Prozent extra. Unter dem Strich kann die Prepaid Karte mit der klassischen Kreditkarte durchaus mithalten. Mit beiden Kartentypen kann man im Restaurant bezahlen, am Automaten Geld abheben oder im Internet shoppen.",
                 questions: [
                     {
-                        question: "Was ist einer der körperlichen Vorteile des Tanzens?",
+                        id: 6,
+                        text: "Eine Prepaid–Kreditkarte",
                         options: [
-                            "Es verbessert vor allem die Armmuskulatur.",
-                            "Es hilft beim Abnehmen und stärkt das Herz.", 
-                            "Es ersetzt jedes andere Fitnesstraining."
+                            "A gibt es für Jugendliche schon bei zahlreichen Geldinstituten.",
+                            "B können Jugendliche zusammen mit einer Handy–Prepaidkarte bekommen.",
+                            "C macht es möglich, mit dem Handy zu bezahlen."
                         ],
-                        correctAnswer: "Es hilft beim Abnehmen und stärkt das Herz."
+                        correctAnswer: 0
                     },
                     {
-                        question: "Warum ist Tanzen gut für die psychische Gesundheit?",
+                        id: 7,
+                        text: "Man hat Kontrolle über die Kosten,",
                         options: [
-                            "Weil es Endorphine freisetzt und Stress reduziert.",
-                            "Weil es teure Therapien überflüssig macht.",
-                            "Weil es nur in der Gruppe ausgeübt werden kann."
+                            "A da nur der Karteninhaber seine Karte aufladen darf.",
+                            "B denn die Eltern werden bei einer Auffadung benachrichtigt.",
+                            "C weil die Ausgaben durch das Guthaben begrenzt sind."
                         ],
-                        correctAnswer: "Weil es Endorphine freisetzt und Stress reduziert."
+                        correctAnswer: 2
                     },
                     {
-                        question: "Was lernen Kinder besonders beim Tanzen?", 
+                        id: 8,
+                        text: "Die Prepaid–Kreditkarte ist besonders geeignet für",
                         options: [
-                            "Wie man Musikinstrumente spielt.",
-                            "Rhythmusgefühl und Rücksichtnahme.",
-                            "Dass sie besser als andere sind."
+                            "A Angestellte mit einem guten Gehalt.",
+                            "B Jugendliche ohne festes Einkommen.",
+                            "C Menschen mit einem eigenen Bankkonto."
                         ],
-                        correctAnswer: "Rhythmusgefühl und Rücksichtnahme."
+                        correctAnswer: 1
                     },
                     {
-                        question: "Warum zögern viele Erwachsene, mit dem Tanzen anzufangen?",
+                        id: 9,
+                        text: "Prepaid–Karten",
                         options: [
-                            "Weil sie denken, sie sind zu alt dafür.",
-                            "Aus Scham und Angst vor Blamage.",
-                            "Weil es zu teuer und zeitaufwendig ist."
+                            "A kosten ähnlich viel wie klassische Kreditkarten.",
+                            "B verursachen keine unerwarteten Kosten.",
+                            "C werden als Zahlungsmittel ebenso akzeptiert wie klassische Kreditkarten."
                         ],
-                        correctAnswer: "Aus Scham und Angst vor Blamage."
+                        correctAnswer: 0
                     },
                     {
-                        question: "Was ist die Hauptaussage des Textes?",
+                        id: 10,
+                        text: "Bei Prepaid–Karten zahlen",
                         options: [
-                            "Tanzen ist nur für professionelle Tänzer geeignet.",
-                            "Tanzen hat viele Vorteile für Menschen aller Altersgruppen.", 
-                            "Tanzen sollte als Therapie verschrieben werden."
+                            "A Erwachsene ab 21 Jahren eine höhere Jahresgebühr als Jugendliche.",
+                            "B Jugendliche unter 18 Jahren nur die Nutzungsgebühr am Geldautomaten.",
+                            "C Kunden zwischen 18 und 21 Jahren noch nichts."
                         ],
-                        correctAnswer: "Tanzen hat viele Vorteile für Menschen aller Altersgruppen."
+                        correctAnswer: 0
                     }
                 ]
             },
-
-            // Lesen Teil 3
             situations: [
-                "Sie möchten mit Ihrem 8-jährigen Sohn tanzen lernen.",
-                "Sie suchen eine Therapieform bei Depressionen.",
-                "Sie interessieren sich für die Geschichte des Tanzes.",
-                "Sie sind 70 Jahre alt und möchten sich bewegen.",
-                "Sie wollen an einem Wettbewerb für junge Tänzer teilnehmen.",
-                "Sie möchten professionelle Tänzerin werden.", 
-                "Sie interessieren sich für die Verbindung von Tanz und Kleidung.",
-                "Sie möchten alleine zu Hause tanzen.",
-                "Sie suchen eine Aktivität, die Körper und Geist trainiert.",
-                "Sie wollen wissen, wie Tanz und Musik zusammenhängen."
-            ],
-
-            ads: [
                 {
-                    id: "a",
-                    title: "Tanzstudio Bewegungsfreude",
-                    content: "Wir bieten Kurse für alle Altersgruppen! Speziell für Kinder von 6-10 Jahren: Kreativer Kindertanz. Spielerisch lernen die Kleinen Rhythmusgefühl und Körperbewusstsein. Unsere erfahrenen Tanzpädagogen achten auf eine gesunde Haltung und machen jede Stunde zum Erlebnis. Probestunde kostenlos! Anmeldung unter www.tanzstudio-bewegungsfreude.de"
+                    id: 11,
+                    text: "Ein Bekannter spielt Gitarre und möchte ein weiteres Instrument lernen.",
+                    correctAd: "L"
                 },
                 {
-                    id: "b", 
-                    title: "Tanztherapie-Zentrum",
-                    content: "Tanztherapie bei Depressionen, Angststörungen und Trauma. In unserer Praxis arbeiten zertifizierte Tanztherapeuten mit einem ganzheitlichen Ansatz. Durch Bewegung und Tanz finden Sie Zugang zu Ihren Emotionen und lernen, Ihren Körper positiv zu erleben. Kostenübernahme durch viele Krankenkassen möglich. Infoabend jeden ersten Mittwoch im Monat."
+                    id: 12,
+                    text: "Ein Kollege möchte mit fünf Freunden eine mehrtägige Musikveranstaltung besuchen.",
+                    correctAd: "C"
                 },
                 {
-                    id: "c",
-                    title: "Museum für Tanzgeschichte", 
-                    content: "Erleben Sie 500 Jahre Tanzgeschichte! Von höfischen Tänzen der Renaissance bis zum modernen Hip-Hop. Sonderausstellung: 'Tanz im Wandel der Zeit' mit originalen Kostümen, Videos und interaktiven Stationen. Öffnungszeiten: Di-So 10-18 Uhr. Ermäßigter Eintritt für Studenten und Senioren."
+                    id: 13,
+                    text: "Ein Bekannter hat bei der Messe Frankfurt gearbeitet und sucht eine andere Stelle in diesem Bereich.",
+                    correctAd: "B"
                 },
                 {
-                    id: "d",
-                    title: "Seniorentanzkreis",
-                    content: "Tanzen hält jung! Unser Seniorentanzkreis trifft sich jeden Dienstag von 15-17 Uhr. Wir tanzen Walzer, Foxtrott, Tango und moderne Tänze - alles in gemütlichem Tempo. Keine Vorkenntnisse nötig. Auch für Menschen mit Gehhilfen geeignet. Ort: Gemeindehaus, Zimmer 3. Kosten: 5€ pro Termin."
+                    id: 14,
+                    text: "Sie möchten einer Freundin Eintrittskarten für eine Musikveranstaltung schenken.",
+                    correctAd: "E"
                 },
                 {
-                    id: "e",
-                    title: "Jugend tanzt - Wettbewerb 2024",
-                    content: "Du bist zwischen 14 und 21 Jahren und tanzt leidenschaftlich gern? Dann melde dich für unseren Wettbewerb an! Kategorien: Solo, Duo und Gruppe. Stilrichtungen: alle! Anmeldeschluss: 30. Juni. Vorausscheidungen im Juli, Finale im September mit tollen Preisen. Mehr Infos: www.jugend-tanzt-wettbewerb.de"
+                    id: 15,
+                    text: "Sie interessieren sich für Bücher und möchten eine Messe besuchen.",
+                    correctAd: "X"
                 },
                 {
-                    id: "f",
-                    title: "Berufsfachschule für Tanz",
-                    content: "Ausbildung zum professionellen Tänzer/Tanzpädagogen. 3-jährige Vollzeitausbildung mit staatlicher Anerkennung. Fächer: Ballett, Modern Dance, Jazz, Choreografie, Tanzpädagogik, Anatomie. Aufnahmeprüfung: 15. Juli. Bewerbungsunterlagen an: info@tanzfachschule-berlin.de"
+                    id: 16,
+                    text: "Die sechsjährige Tochter eines Nachbarn würde gerne mit andere Kindern Musik machen.",
+                    correctAd: "I"
                 },
                 {
-                    id: "g",
-                    title: "Tanz und Mode - Symposium",
-                    content: "Wie beeinflussen sich Tanz und Mode gegenseitig? Vorträge und Workshops zu historischen und modernen Tanzkostümen. Von Tutu bis Streetwear. Termin: 12.-14. November. Ort: Modeakademie München. Anmeldung erforderlich unter: www.tanz-mode-symposium.de"
+                    id: 17,
+                    text: "Ein Bekannter muss eine Jubiläumsfeier organisieren und sucht Unterstützung.",
+                    correctAd: "G"
                 },
                 {
-                    id: "h", 
-                    title: "Online-Tanzkurs",
-                    content: "Lernen Sie tanzen, wann und wo Sie wollen! Über 200 Video-Tutorials für alle Levels. Von Basic Steps bis zu komplexen Choreografien. Monatlich kündbar. Erste 14 Tage kostenlos testen! Alle gängigen Tanzstile verfügbar. Jetzt anmelden: www.dance-online-academy.com"
+                    id: 18,
+                    text: "Sie mögen Musik und möchten in dem Bereich einen Job.",
+                    correctAd: "D"
                 },
                 {
-                    id: "i",
-                    title: "Tanzmedizin und Gesundheit",
-                    content: "Vortragsreihe: 'Tanzen für Körper und Geist'. Experten referieren über die gesundheitlichen Vorteile des Tanzens. Themen: Tanz als Demenzprävention, Tanztherapie, Tanz für psychische Gesundheit. Eintritt frei. Termine: jeweils mittwochs 19 Uhr im Gesundheitszentrum."
+                    id: 19,
+                    text: "Ihre Nachbarin möchte ihre Violine verkaufen.",
+                    correctAd: "J"
                 },
                 {
-                    id: "j",
-                    title: "Rhythmus und Bewegung", 
-                    content: "Workshop: Die Verbindung von Musik und Tanz. Lernen Sie, wie verschiedene Musikstile die Tanzbewegungen beeinflussen. Von klassischer Musik über Jazz bis zu elektronischer Musik. Für Tänzer aller Levels. Termin: 25. August, 10-17 Uhr. Kosten: 60€. Anmeldung: musik-tanz-workshop@email.de"
-                },
-                {
-                    id: "k",
-                    title: "Tanzperformance 'Lebensfreude'",
-                    content: "Eine mitreißende Show über die Freude am Tanzen. Professionelle Tänzer zeigen verschiedene Stile von Ballett bis Breakdance. Termine: 5.-7. September, jeweils 20 Uhr. Kartenvorverkauf ab sofort. Ort: Stadttheater. Ermäßigungen für Gruppen ab 10 Personen."
-                },
-                {
-                    id: "l",
-                    title: "Tanzfestival der Kulturen",
-                    content: "Erleben Sie Tänze aus aller Welt! Von lateinamerikanischen Tänzen über afrikanische Rhythmen bis zu asiatischen Traditionen. Mit Workshops, Vorführungen und Mitmachaktionen für die ganze Familie. Eintritt frei! Termin: 15. September, 12-20 Uhr im Stadtpark."
+                    id: 20,
+                    text: "Eine Bekannte ist Musikerin und sucht Möglichkeiten, mit ihrer Gruppe aufzutreten.",
+                    correctAd: "K"
                 }
             ],
-
-            // الإجابات الصحيحة لـ Lesen Teil 3
-            teil3Answers: {
-                11: "Tanzstudio Bewegungsfreude",
-                12: "Tanztherapie-Zentrum", 
-                13: "Museum für Tanzgeschichte",
-                14: "Seniorentanzkreis",
-                15: "Jugend tanzt - Wettbewerb 2024",
-                16: "Berufsfachschule für Tanz",
-                17: "Tanz und Mode - Symposium",
-                18: "Online-Tanzkurs",
-                19: "Tanzmedizin und Gesundheit", 
-                20: "Rhythmus und Bewegung"
+            ads: [
+                {
+                    id: "A",
+                    title: "Sport, Theater & mehr...",
+                    content: "... bieten wir ihnen in unserem Online-Kartenshop. Wir sind spezialisiert auf Tickets für Sportveranstaltungen in Deutschland, Theaterkarten (auch im europäischen Ausland) und bieten Ihnen darüber hinaus auch Eintrittskarten zu bekannten Fernseh-Talkshows an. Sicher haben wir auch für Sie das passende Angebot. Wahlen Sie Ihre Wunschplätze einfach im Internet aus und nur zwei Tage später erhalten Sie Ihre Karten mit der Post. Bequem, sicher, schnell. Selbstverständlich bieten wir Ihnen aber auch eine persönliche Beratung unter einer kostenfreien Rufnummer an. Schauen Sie doch gleich online vorbei! www.ticketprofis.eu"
+                },
+                {
+                    id: "B",
+                    title: "Die Veranstaltungsprofis",
+                    content: "Seit mehr als zwanzig Jahren organisieren wir Messen (Buchmessen, Verbrauchermessen, Fahrradmessen, Automessen, Spielemessen) in ganz Europa. Wenn auch Sie sich für eine Tätigkeit im Bereich Messeorganisation und -durchführung interessieren, haben wir ein interessantes Angebot für Sie: Ab Herbst suchen wir für unser Junges motiviertes Team Verstärkung. Wenn Sie eine abgeschlossene Ausbildung im Veranstaltungs- oder Logistiksektor haben, neben Ihrer Muttersprache noch mindestens eine weitere Sprache fließend beherrschen und reisefreudig sind, melden Sie sich bei uns! Weitere Informationen finden Sie auch auf unserer Website oder sprechen Sie unsere zuständige Mitarbeiterin, Frau Klimke, direkt an. www.dic-veranstaltungsprofis.eu klimke@dic-veranstaltungsprofis.eu"
+                },
+                {
+                    id: "C",
+                    title: "Gemeinsam mehr erleben",
+                    content: "Gruppenreisen bieten wir Ihnen bereits ab fünf Personen an -Städtereisen, Wellnesswochenenden und neu im Angebot auch Reisen zu kulturellen Veranstaltungen. Fahren Sie mit uns zum Beispiel Ende August zum Jazzfestival in Brandenburg (25.-29.8.) oder im darauffolgenden Monat zur Klassikwoche nach Wien. Von Anreise und Hotel (verschiedene Kategorien) bis hin zur Eintrittskarte organisieren wir für Sie alles. Genießen Sie entspannte Tage mit Werner Reisen GmbH. Weitere Informationen und auch Buchungsformulare finden Sie unter www.wernerreisen.eu. Oder rufen Sie uns an: 0800/990100"
+                },
+                {
+                    id: "D",
+                    title: "Musikfestival Taubertal: 24. Juli bis 3. August",
+                    content: "Auch in diesem Jahr kommen wieder viele bekannte Bands und interessante neue Künstler. Das Festival ist schon längst ausverkauft, aber ihr könnt trotzdem noch hinkommen: Wir suchen noch Unterstützung für den Aufbau der Stände, die Betreuung der Musiker und auch für die Ticketkontrolle. Bewerbt euch einfach per E-Mail. Wichtig: Wenn ihr beim Festival arbeitet, könnt ihr zwar auch Musik hören, aber ihr habt keine Gelegenheit, euch die Auftritte in Ruhe anzusehen. Trotzdem macht die Arbeit viel Spaß, und ihr könnt die Musiker sogar hinter der Bühne sehen und kennenlernen. E-Mail: info@musikfestivaltaubertal.eu"
+                },
+                {
+                    id: "E",
+                    title: "Alle Veranstaltungen aus einer Hand",
+                    content: "Ob Jazz, Rock, Klassik, Musical: Bei uns finden Sie Veranstaltungen aus allen Musikbereichen! Reservieren Sie noch heute Karten für Ihre Lieblingsband, wählen Sie Ihren Platz online und drucken Sie Ihre Tickets sofort selbst aus. Oder kaufen Sie Geschenkgutscheine, die man ebenfalls bequem online einlösen kann: die ideale Möglichkeit für alle, die noch keine bestimmte Veranstaltung ausgesucht haben. Besuchen Sie gleich unseren Online-Shop. Bestellungen sind bei uns übrigens auch ohne Registrierung möglich! www.dic-veranstaltungsspezialisten.eu"
+                },
+                {
+                    id: "F",
+                    title: "Mailänder Scala, Deutsche Oper Berlin und vieles mehr",
+                    content: "Der etwas andere Zugang zur Musik: Wir organisieren Besichtigungen von bekannten Opernhäusern oder Konzertsälen. Schauen Sie sich die Technik und Räume vor Ort an, nehmen Sie an einer interessanten Führung teil und lernen Sie so die Geschichte der Häuser und auch der Orchester kennen. Gerne organisieren wir nach Möglichkeit auch Treffen mit Musikern oder Konzertdirektoren, mit denen Sie spannende Gespräche führen und mehr über deren Arbeit erfahren können. Bitte haben Sie Verständnis, dass wir diese Treffen erst ab zehn Teilnehmern organisieren können. Weitere Informationen: Musikreisen Gerhardt, Tel 0800/223 997 880"
+                },
+                {
+                    id: "G",
+                    title: "Feste feiern?",
+                    content: "Wir organisieren Veranstaltungen in verschiedenen Größenordnungen - von der kleinen Familienfeier mit zehn Personen bis hin zu großen Firmenveranstaltungen mit mehreren Hundert Teilnehmern. Lehnen Sie sich zurück und wir machen die Arbeit! Alternativ bieten wir Ihnen aber auch unsere kompetente Beratung an, damit Sie Ihre Veranstaltung selbst planen können. Unsere Mitarbeiter kommen dann gerne zu Ihnen oder stehen Ihnen telefonisch und per E-Mail zur Verfügung. Sprechen Sie uns an! TMC GmbH, info@tmegmbh.eu"
+                },
+                {
+                    id: "H",
+                    title: "Künstleragentur Lippmann",
+                    content: "Bei der Künstleragentur Lippmann sind über 100 Künstler registriert, die Sie für Veranstaltungen buchen können. Sie suchen einen Komiker? Kein Problem! Sie möchten auf Ihrer Veranstaltung Schauspieler auftreten lassen? Wir können sie vermitteln! Sie brauchen musikalische Untermalung? Bei uns sind einzelne Musiker ebenso registriert wie Bands. Melden Sie sich noch heute kostenlos und unverbindlich an und schauen Sie in Ruhe alle Angebote durch - einschließlich der Preise und freien Termine. Sicher finden Sie bei uns, что Sie suchen. www.agentur-lippmann.eu"
+                },
+                {
+                    id: "I",
+                    title: "Gitarre, Violinc & Co.",
+                    content: "Im Musikverein Wohlklang lernen schon die ganz Kleinen den spielerischen Umgang mit Instrumenten. Aber auch für die 'größeren Kleinen' bieten wir Musikförderung und auch individuellen Unterricht an. In verschiedenen Gruppen (Alter von zwei bis acht Jahren) können Ihre Kinder bei uns Instrumente lernen, singen oder tanzen, kurz: Spaß mit Musik haben und auch selbst das Musizieren lernen. Die ersten beiden Probestunden bieten wir Ihnen kostenlos an, damit Sie und Ihre Kinder uns in Ruhe kennenlernen können. Vereinbaren Sie doch gleich einen Termin unter der 0800/5615 6514. Wohlklang e.V., Neue Straße 218, 77933 Lahr"
+                },
+                {
+                    id: "J",
+                    title: "Instrumente, Noten, Musikbücher",
+                    content: "Das Musikhaus Hohenzollern hat jetzt wieder besondere Angebote für alle Interessierten. Wir haben die Preise von allen Instrumenten bis kommenden Samstag reduziert. Auch zahlreiche Bücher und Notenhefte finden Sie ab sofort in unserem neuen Online-Shop zu günstigen Preisen. Unser Einstiegsangebot: alle Bestellungen im Online-Shop ohne Versandkosten! Schauen Sie sich doch mal im Internet um oder kommen Sie direkt bei uns vorbei. Wir freuen uns auf ihren Besuch! Musikhaus Hohenzollern, Stecker Str. 789, 45276 Essen www.musikhaus-hohenzollern.eu"
+                },
+                {
+                    id: "K",
+                    title: "Rhein/Ruhr-Festival",
+                    content: "Im kommenden Herbst findet zum ersten Mal das neue Rhein/Ruhr-Festival statt - und wir benötigen noch Hilfe. Im Rahmen des Festivals werden auf fünf unterschiedlichen Bühnen Künstler auftreten. Wir möchten verschiedene Stilrichtungen präsentieren, Solokünstler ebenso wie größere Musikgruppen. Und noch sind Plätze frei! Die Chance also für alle, die sich gerne bei unserem Festival präsentieren möchten. Kurzbewerbungen können ab sofort per E-Mail an office@rheinruhrfestival.eu gesendet werden. Bitte schicken Sie keine größeren Dateianhänge! Vielen Dank."
+                },
+                {
+                    id: "L",
+                    title: "Musiker gesucht",
+                    content: "Seit einem Jahr vermitteln wir 'Musiktandems' - Musiker suchen Musiker und geben sich gegenseitig Unterricht. Ob Instrument, Gesang, Komposition - alles wird gesucht! Registrieren Sie sich kostenlos auf unserer Homepage www.musiktandems.eu und finden Sie heute noch das Angebot, das Sie schon lange suchen. Wichtig: Sie können sich nur für das Musiktandem anmelden, wenn Sie selbst auch Unterricht anbieten können, also zum Beispiel ein Instrument spielen. Auf unserer Website finden Sie auch weitere Informationen zum Ablauf und können den Service kontaktieren."
+                }
+            ],
+            sprachbausteine1: {
+                text: "Hallo Ferdinand,<br><br>nun habe ich mich schon so lange nicht bei dir gemeldet – das tut mir wirklich leid! Ich hatte in den vergangenen Monaten viel Stress, weil ich ja nun studiere und nebenbei noch arbeiten muss, ___(21)__ meine Miete und alles andere bezahlen zu können. Zum Glück macht mir mein Nebenjob wenigstens Spaß. Ich weiß nicht, ___(22)__ ich das sonst durchhalten würde. Vielleicht habe ich dir schon erzählt, dass ich abends und am Wochenende in einer Kneipe in der Küche helfe. Das ist zwar oft sehr anstrengend, ___(23)__ anderseits ist dauernd was los, es wird nicht langweilig, und meine Kollegen sind total nett. Erinnerst du dich noch an unsere Zeit in der Grundschule? Mit acht Jahren wollte ich ja ___(24)__ Kellnerin werden, weil man da Trinkgeld bekommt. Naja, jetzt bin ich in der Küche gelandet, knapp daneben ist auch vorbei ;)<br><br>Was macht denn deine Ausbildung? Wenn ich ___(25)__ nicht täusche, bist du ja in einem halben Jahr schon fertig, oder? Das ist ja nicht mehr lang!<br><br>Neulich habe ich übrigens Tina und Kevin hier in der Nähe der Uni getroffen – die waren ja schon ein Paar, ___(26)__ wir noch in der Schule gegangen sind, und jetzt will sie tatsächlich verheiratet!<br><br>Wie sehen denn deine Pläne für die ___(27)__ Wochenenden aus? Wir könnten uns ja vielleicht mal wieder treffen und in Ruhe quatschen – hättest du Lust ___(28)__?<br><br>In meiner Straße hat vor einem Monat ein nettes kleines Café aufgemacht, die haben nicht nur sehr leckere Kuchen, ___(29)__ auch einige kleine Gerichte zu wirklich günstigen Preisen. Wäre das was ___(30)__ dich? Mail wir doch einfach, wenn du magst, ich würde mich freuen.<br><br>Viele Grüße,<br>Nadine",
+                blanks: [
+                    { id: 21, options: ["anstatt", "ohne", "um"], correct: 2 },
+                    { id: 22, options: ["dass", "ob", "wann"], correct: 1 },
+                    { id: 23, options: ["aber", "denn", "und"], correct: 0 },
+                    { id: 24, options: ["bestimmt", "unbedingt", "völlig"], correct: 1 },
+                    { id: 25, options: ["dich", "mich", "sich"], correct: 1 },
+                    { id: 26, options: ["als", "wenn", "wie"], correct: 0 },
+                    { id: 27, options: ["baldigen", "kommenden", "vergangenen"], correct: 1 },
+                    { id: 28, options: ["danach", "darüber", "dazu"], correct: 2 },
+                    { id: 29, options: ["aber", "oder", "sondern"], correct: 2 },
+                    { id: 30, options: ["für", "gegen", "ohne"], correct: 0 }
+                ]
             },
-
-            // Sprachbausteine Teil 1
-            blankText1: {
-                content: `Liebe Tina,
-vielen Dank für deine Einladung __(21)__ deine Geburtstagsparty! Ich komme sehr gerne und freue mich schon darauf.
-Leider kann ich nicht so lange bleiben, __(22)__ ich am nächsten Tag früh arbeiten muss. Aber __(23)__ ein paar Stunden bin ich auf jeden Fall dabei.
-Ich habe gehört, ihr feiert in dem neuen Restaurant __(24)__ Ecke. Das ist ja super! Ich war da noch nie, __(25)__ alle sagen, das Essen sei ausgezeichnet.
-Weißt du schon, __(26)__ du dir zum Geburtstag wünschst? Oder soll ich dir einfach eine Überraschung mitbringen? __(27)__ du etwas Bestimmtes möchtest, sag mir bitte Bescheid.
-Ich überlege noch, __(28)__ ich anziehen soll. Vielleicht mein neues blaues Kleid? __(29)__ ich könnte auch die schwarze Hose mit der roten Bluse tragen. Was meinst du?
-Ach ja, eine Frage noch: Soll ich etwas zu trinken mitbringen? __(30)__ ich weiß, dass du gerne Saft magst, könnte ich einen frischen Orangensaft mitnehmen.
-Ich bin schon ganz gespannt __(31)__ den Abend! Bis Samstag also!
-
-Liebe Grüße
-Deine Anna`,
-                answers: ["zu", "weil", "für", "an der", "aber", "was", "Falls", "was", "Oder", "Weil", "auf"]
-            },
-
-            // Sprachbausteine Teil 2
-            blankText2: {
-                content: `Tanzen __(31)__ nicht nur eine Kunstform, sondern auch eine wunderbare Möglichkeit, sich fit zu halten. Viele Menschen tanzen, __(32)__ sie Musik hören, ohne darüber nachzudenken. 
-__(33)__ man regelmäßig tanzt, kann man seine Koordination und Ausdauer erheblich verbessern. __(34)__ dem Tanzen werden fast alle Muskeln des Körpers beansprucht, __(35)__ es zu einem ganzheitlichen Training macht.
-Ein großer Vorteil ist, __(36)__ Tanzen in jedem Alter möglich ist. __(37)__ Kinder ihre motorischen Fähigkeiten entwickeln, können Senioren __(38)__ Beweglichkeit erhalten. 
-Man sollte __(39)__ darauf achten, die richtige Tanzart für sein Fitnesslevel zu wählen. __(40)__ Anfänger mit einfachen Schritten beginnen, können Fortgeschrittene komplexe Choreografien lernen.
-Zusammenfassend lässt sich sagen, dass Tanzen eine der schönsten Arten ist, Sport zu treiben.`,
-                answers: ["ist", "wenn", "Wenn", "Beim", "was", "dass", "Während", "ihre", "allerdings", "Während"]
+            sprachbausteine2: {
+                text: "Jugend diskutiert – mach mit!<br><br>Den Wettbewerber 'Jugend diskutiert' gibt es bereits ___(31)__ Herbst 2002. Für das kommende Jahr werden nun wieder Schülerinnen und Schüler gesucht, die an dem Wettbewerb teilnehmen möchten. ___(32)__ immer bereiten sich die Teilnehmer dann im Unterricht auf 'Jugend diskutiert' vor.<br><br>Du fragst dich, ___(33)__ du teilnehmen solltest? Ganz einfach: 'Jugend diskutiert' bringt dich weiter! Sich einmischen, mitreden, überzeugen – bei der Vorbereitung im Unterricht trainierst du viele Fähigkeiten, die dir in der Schule und im Alltag helfen. Im Austausch mit den anderen entwickelst du deine Persönlichkeit weiter und profitierst langfristig. ___(34)__ bietet dir 'Jugend diskutiert' die Chance, im Wettstreit mit anderen weiterzukommen. Zuerst werden die besten einer Schule ermittelt, die dann ___(35)__ Regionalwettbewerben teilnehmen. Die Sieger der Regionalwettbewerbe treten im Bundesfinale an. ___(36)__ Preise kann man professionelle Trainings gewinnen.<br><br>__(37)__ 'Jugend diskutiert' kannst du viel lernen. Du hast bessere Chancen im Unterricht und bei Referaten, denn du trainierst, frei zu sprechen und Dinge anschaulich und verständlich zu beschreiben. Du gewinnst mehr Selbstbewusstsein, ___(38)__ du lernst, wie man das Wort ergreift und auf sich aufmerksam macht. Du kannst überzeugen, da du eigene Argumente finden und die Argumente anderer genau prüfen kannst. Die Sichtweisen der anderen zeigen dir darüber hinaus, ___(39)__ du vielleicht selbst noch nicht gesehen hast. Du überzeugst bei Auftritten, Prüfungen und Bewerbungen, da du sicher auftrittst.<br><br>__(40)__ das alles im Unterricht gelernt hat, kann gemeinsam mit anderen viel bewegen! Schließlich ist der Wettbewerb 'Jugend diskutiert' auch eine Chance, Jugendliche aus ganz Deutschland kennenzulernen und neue Freundschaften zu knüpfen.<br><br>Weitere Informationen zu Anmeldung und Teilnahme gibt es im Internet.",
+                wordBank: [
+                    { id: 31, word: "seit", correct: true },
+                    { id: 32, word: "wie", correct: true },
+                    { id: 33, word: "warum", correct: true },
+                    { id: 34, word: "außerdem", correct: true },
+                    { id: 35, word: "bei", correct: true },
+                    { id: 36, word: "als", correct: true },
+                    { id: 37, word: "durch", correct: true },
+                    { id: 38, word: "weil", correct: true },
+                    { id: 39, word: "was", correct: true },
+                    { id: 40, word: "wer", correct: true }
+                ]
             }
         };
 
-        // تهيئة الصفحة
+        // متغيرات التطبيق
+        let currentLanguage = 'ar';
+        let isDarkMode = false;
+        let answersVisible = false;
+
+        // تهيئة التطبيق
         document.addEventListener('DOMContentLoaded', function() {
-            initializePage();
+            initializeApp();
+            loadContent();
             setupEventListeners();
         });
 
-        let currentLang = 'ar';
-        let isDarkMode = false;
-
-        function initializePage() {
+        // تهيئة التطبيق
+        function initializeApp() {
             // تحميل الإعدادات المحفوظة
-            const savedLang = localStorage.getItem('language') || 'ar';
-            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-            const username = localStorage.getItem('username') || 'زائر';
-            const access = localStorage.getItem('access');
-            
-            changeLanguage(savedLang);
-            if (savedDarkMode) {
-                toggleDarkMode();
+            const savedLanguage = localStorage.getItem('language');
+            const savedDarkMode = localStorage.getItem('darkMode');
+            const savedNotes = localStorage.getItem('userNotes');
+
+            if (savedLanguage) {
+                currentLanguage = savedLanguage;
+                updateLanguage();
             }
-            
-            // التحقق من حالة المستخدم
-            if (access === 'paid' && username) {
-                document.getElementById('premiumBadge').style.display = 'flex';
+
+            if (savedDarkMode === 'true') {
+                isDarkMode = true;
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeToggle').textContent = '☀️';
             }
-            
-            // تهيئة الأجزاء
-            initializeTeil1();
-            initializeTeil2();  
-            initializeTeil3();
-            initializeSprachbausteine();
+
+            if (savedNotes) {
+                document.getElementById('notesTextarea').value = savedNotes;
+            }
         }
 
-        function initializeTeil1() {
+        // تحميل المحتوى
+        function loadContent() {
+            loadHeadings();
+            loadTexts();
+            loadLongText();
+            loadQuestions();
+            loadSituations();
+            loadAds();
+            loadSprachbausteine1();
+            loadSprachbausteine2();
+        }
+
+        // تحميل العناوين
+        function loadHeadings() {
             const headingsList = document.getElementById('headingsList');
-            const textsList = document.getElementById('textsList');
-
             headingsList.innerHTML = '';
-            textsList.innerHTML = '';
 
-            // إضافة العناوين
-            examData.headings.forEach((heading, index) => {
+            contentData.headings.forEach((heading, index) => {
                 const headingItem = document.createElement('div');
                 headingItem.className = 'heading-item';
-                headingItem.innerHTML = `
-                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
-                `;
-                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingItem.textContent = heading;
+                headingItem.dataset.id = String.fromCharCode(97 + index); // a, b, c, ...
                 headingsList.appendChild(headingItem);
-            });
-
-            // إضافة النصوص
-            examData.texts.forEach((text, index) => {
-                const textItem = document.createElement('div');
-                textItem.className = 'question';
-                textItem.innerHTML = `
-                    <h3>Text ${index + 1}</h3>
-                    <div class="text-content">${text.content}</div>
-                    <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
-                    </div>
-                `;
-                textsList.appendChild(textItem);
             });
         }
 
-        function initializeTeil2() {
-            const longText = document.getElementById('longText');
+        // تحميل النصوص
+        function loadTexts() {
+            const textsList = document.getElementById('textsList');
+            textsList.innerHTML = '';
+
+            contentData.texts.forEach(text => {
+                const textElement = document.createElement('div');
+                textElement.className = 'text-content';
+                textElement.innerHTML = `
+                    <h3>Text ${text.id}</h3>
+                    <p>${text.content}</p>
+                    <div class="answer hidden correct-answer" id="answer-text-${text.id}">
+                        Richtige Überschrift: ${text.correctHeading.toUpperCase()}
+                    </div>
+                `;
+                textsList.appendChild(textElement);
+            });
+        }
+
+        // تحميل النص الطويل
+        function loadLongText() {
+            const longTextElement = document.getElementById('longText');
+            longTextElement.innerHTML = `
+                <h3>Kreditkarten für Jugendliche</h3>
+                <p>${contentData.longText.content}</p>
+            `;
+        }
+
+        // تحميل الأسئلة
+        function loadQuestions() {
             const questionsList = document.getElementById('questionsList');
-
-            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
-
             questionsList.innerHTML = '';
-            examData.longText.questions.forEach((question, index) => {
-                const questionItem = document.createElement('div');
-                questionItem.className = 'question';
-                questionItem.innerHTML = `
-                    <h3>Frage ${index + 6}</h3>
-                    <p><strong>${question.question}</strong></p>
+
+            contentData.longText.questions.forEach(question => {
+                const questionElement = document.createElement('div');
+                questionElement.className = 'question';
+                questionElement.innerHTML = `
+                    <h4>Aufgabe ${question.id}</h4>
+                    <p>${question.text}</p>
                     <div class="options">
-                        ${question.options.map((option, optIndex) => `
-                            <div class="option" data-index="${optIndex}">
-                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                        ${question.options.map((option, index) => `
+                            <div class="option" data-question="${question.id}" data-option="${index}">
+                                ${option}
                             </div>
                         `).join('')}
                     </div>
-                    <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                    <div class="answer hidden correct-answer" id="answer-${question.id}">
+                        Richtige Antwort: ${question.options[question.correctAnswer]}
                     </div>
                 `;
-                questionsList.appendChild(questionItem);
+                questionsList.appendChild(questionElement);
             });
         }
 
-        function initializeTeil3() {
+        // تحميل الوضعيات
+        function loadSituations() {
             const situationsList = document.getElementById('situationsList');
-            const adsList = document.getElementById('adsList');
-
             situationsList.innerHTML = '';
-            examData.situations.forEach((situation, index) => {
-                const situationItem = document.createElement('div');
-                situationItem.className = 'situation-item';
-                situationItem.innerHTML = `
-                    <strong>${index + 11})</strong> ${situation}
-                    <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
+
+            contentData.situations.forEach(situation => {
+                const situationElement = document.createElement('div');
+                situationElement.className = 'situation-item';
+                situationElement.innerHTML = `
+                    <h4>Situation ${situation.id}</h4>
+                    <p>${situation.text}</p>
+                    <div class="answer hidden correct-answer" id="answer-situation-${situation.id}">
+                        Richtige Anzeige: ${situation.correctAd}
                     </div>
                 `;
-                situationsList.appendChild(situationItem);
+                situationsList.appendChild(situationElement);
             });
+        }
 
+        // تحميل الإعلانات
+        function loadAds() {
+            const adsList = document.getElementById('adsList');
             adsList.innerHTML = '';
-            examData.ads.forEach(ad => {
-                const adItem = document.createElement('div');
-                adItem.className = 'ad-item';
-                adItem.innerHTML = `
-                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
+
+            contentData.ads.forEach(ad => {
+                const adElement = document.createElement('div');
+                adElement.className = 'ad-item';
+                adElement.innerHTML = `
+                    <h4>${ad.id}: ${ad.title}</h4>
                     <p>${ad.content}</p>
                 `;
-                adsList.appendChild(adItem);
+                adsList.appendChild(adElement);
             });
         }
 
-        function initializeSprachbausteine() {
-            // Teil 1
+        // تحميل Sprachbausteine Teil 1
+        function loadSprachbausteine1() {
             const blankText1 = document.getElementById('blankText1');
-            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
-            });
-            blankText1.innerHTML = textWithBlanks1;
+            const blankOptions1 = document.getElementById('blankOptions1');
 
-            // إضافة كلمات الإجابات لـ Teil 1
-            const sprach1AnswersList = document.getElementById('sprach1AnswersList');
-            sprach1AnswersList.innerHTML = '';
-            examData.blankText1.answers.forEach((answer, index) => {
-                const answerItem = document.createElement('div');
-                answerItem.className = 'answer-item';
-                answerItem.innerHTML = `
-                    <span class="answer-number">${index + 21})</span>
-                    <span>${answer}</span>
+            // بناء النص مع الفراغات
+            let textWithBlanks = contentData.sprachbausteine1.text;
+            contentData.sprachbausteine1.blanks.forEach(blank => {
+                textWithBlanks = textWithBlanks.replace(`___(${blank.id})__`, 
+                    `<span class="blank" id="blank-${blank.id}">___(${blank.id})__</span>`);
+            });
+
+            blankText1.innerHTML = `<p>${textWithBlanks}</p>`;
+
+            // بناء خيارات الفراغات
+            blankOptions1.innerHTML = '';
+            contentData.sprachbausteine1.blanks.forEach(blank => {
+                const blankOptions = document.createElement('div');
+                blankOptions.className = 'blank-options';
+                blankOptions.innerHTML = `
+                    <h4>Lücke ${blank.id}:</h4>
+                    ${blank.options.map((option, index) => `
+                        <div class="blank-option" data-blank="${blank.id}" data-option="${index}">
+                            ${option}
+                        </div>
+                    `).join('')}
+                    <div class="answer hidden correct-answer" id="answer-blank-${blank.id}">
+                        Richtige Antwort: ${blank.options[blank.correct]}
+                    </div>
                 `;
-                sprach1AnswersList.appendChild(answerItem);
-            });
-
-            // Teil 2
-            const blankText2 = document.getElementById('blankText2');
-            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 31]}</span></span>`;
-            });
-            blankText2.innerHTML = textWithBlanks2;
-
-            // إضافة كلمات الإجابات لـ Teil 2
-            const sprach2AnswersList = document.getElementById('sprach2AnswersList');
-            sprach2AnswersList.innerHTML = '';
-            examData.blankText2.answers.forEach((answer, index) => {
-                const answerItem = document.createElement('div');
-                answerItem.className = 'answer-item';
-                answerItem.innerHTML = `
-                    <span class="answer-number">${index + 31})</span>
-                    <span>${answer}</span>
-                `;
-                sprach2AnswersList.appendChild(answerItem);
+                blankOptions1.appendChild(blankOptions);
             });
         }
 
+        // تحميل Sprachbausteine Teil 2
+        function loadSprachbausteine2() {
+            const blankText2 = document.getElementById('blankText2');
+            const wordBank2 = document.getElementById('wordBank2');
+
+            // بناء النص مع الفراغات
+            let textWithBlanks = contentData.sprachbausteine2.text;
+            contentData.sprachbausteine2.wordBank.forEach(word => {
+                textWithBlanks = textWithBlanks.replace(`___(${word.id})__`, 
+                    `<span class="blank" id="blank2-${word.id}">___(${word.id})__</span>`);
+            });
+
+            blankText2.innerHTML = `<p>${textWithBlanks}</p>`;
+
+            // بناء بنك الكلمات
+            wordBank2.innerHTML = '';
+            contentData.sprachbausteine2.wordBank.forEach(word => {
+                const wordOption = document.createElement('div');
+                wordOption.className = 'word-option';
+                wordOption.textContent = word.word;
+                wordOption.dataset.id = word.id;
+                wordBank2.appendChild(wordOption);
+            });
+
+            // إضافة التصحيح
+            const correctionDiv = document.createElement('div');
+            correctionDiv.className = 'answer hidden correct-answer';
+            correctionDiv.id = 'answer-sprach2';
+            correctionDiv.innerHTML = '<h4>Richtige Lösungen:</h4>' + 
+                contentData.sprachbausteine2.wordBank.map(word => 
+                    `Lücke ${word.id}: ${word.word}`).join('<br>');
+            wordBank2.parentNode.insertBefore(correctionDiv, wordBank2.nextSibling);
+        }
+
+        // إعداد مستمعي الأحداث
         function setupEventListeners() {
-            // أزرار التحكم
-            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
-            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
-            
-            // زر الرئيسية
-            document.getElementById('homeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html';
-            });
-            
-            // زر الاشتراك
-            document.getElementById('subscribeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#subscribe';
-            });
-            
-            // زر الوضع الليلي
+            // تبديل الوضع الليلي
             document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-            
-            // زر المستخدم
-            document.getElementById('userBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#profile';
-            });
-            
-            // زر اللغة
-            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
+
+            // محدد اللغة
+            document.getElementById('langBtn').addEventListener('click', toggleLanguageDropdown);
             document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const lang = option.getAttribute('data-lang');
-                    changeLanguage(lang);
-                    document.getElementById('langDropdown').classList.remove('show');
-                });
+                option.addEventListener('click', changeLanguage);
             });
-            
-            // إغلاق القوائم المنسدلة بالنقر خارجها
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.language-selector')) {
+
+            // أزرار التحكم بالإجابات
+            document.getElementById('showAnswers').addEventListener('click', showAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAnswers);
+
+            // نافذة الدعم
+            document.getElementById('supportBtn').addEventListener('click', showSupportModal);
+            document.getElementById('closeSupportModal').addEventListener('click', hideSupportModal);
+
+            // نافذة الملاحظات
+            document.getElementById('notesBtn').addEventListener('click', showNotesModal);
+            document.getElementById('closeNotesModal').addEventListener('click', hideNotesModal);
+            document.getElementById('saveNotes').addEventListener('click', saveNotes);
+
+            // النقر خارج القوائم المنسدلة لإغلاقها
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.language-selector')) {
                     document.getElementById('langDropdown').classList.remove('show');
                 }
             });
         }
 
-        function showAllAnswers() {
-            document.querySelectorAll('.answer').forEach(answer => {
-                answer.classList.remove('hidden');
-            });
-            document.querySelectorAll('.blank-answer').forEach(answer => {
-                answer.classList.remove('hidden');
-            });
-            document.querySelectorAll('.heading-item').forEach((heading, index) => {
-                const letter = heading.dataset.letter;
-                examData.texts.forEach(text => {
-                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
-                        heading.classList.add('matched');
-                    }
-                });
-            });
-        }
-
-        function hideAllAnswers() {
-            document.querySelectorAll('.answer').forEach(answer => {
-                answer.classList.add('hidden');
-            });
-            document.querySelectorAll('.blank-answer').forEach(answer => {
-                answer.classList.add('hidden');
-            });
-            document.querySelectorAll('.heading-item').forEach(heading => {
-                heading.classList.remove('matched');
-            });
-        }
-
+        // تبديل الوضع الليلي
         function toggleDarkMode() {
             isDarkMode = !isDarkMode;
-            document.body.classList.toggle('dark-mode', isDarkMode);
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('themeToggle').textContent = isDarkMode ? '☀️' : '🌙';
             localStorage.setItem('darkMode', isDarkMode);
-            
-            const themeIcon = document.querySelector('#themeToggle i');
-            if (isDarkMode) {
-                themeIcon.className = 'fas fa-sun';
-            } else {
-                themeIcon.className = 'fas fa-moon';
-            }
         }
 
-        function toggleLangDropdown() {
+        // تبديل قائمة اللغة
+        function toggleLanguageDropdown() {
             document.getElementById('langDropdown').classList.toggle('show');
         }
 
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
+        // تغيير اللغة
+        function changeLanguage(event) {
+            const selectedLang = event.target.dataset.lang;
+            if (selectedLang && translations[selectedLang]) {
+                currentLanguage = selectedLang;
+                updateLanguage();
+                document.getElementById('langDropdown').classList.remove('show');
+                localStorage.setItem('language', currentLanguage);
+            }
+        }
+
+        // تحديث اللغة
+        function updateLanguage() {
+            const t = translations[currentLanguage];
             
-            // تحديث جميع النصوص
-            Object.keys(t).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = t[key];
-                }
+            // تحديث النصوص
+            document.getElementById('pageTitle').textContent = t.pageTitle;
+            document.getElementById('pageSubtitle').textContent = t.pageSubtitle;
+            document.getElementById('showAnswersText').textContent = t.showAnswersText;
+            document.getElementById('hideAnswersText').textContent = t.hideAnswersText;
+            document.getElementById('teil1Title').textContent = t.teil1Title;
+            document.getElementById('teil1Description').textContent = t.teil1Description;
+            document.getElementById('teil2Title').textContent = t.teil2Title;
+            document.getElementById('teil3Title').textContent = t.teil3Title;
+            document.getElementById('teil3Description').textContent = t.teil3Description;
+            document.getElementById('sprach1Title').textContent = t.sprach1Title;
+            document.getElementById('sprach2Title').textContent = t.sprach2Title;
+            document.getElementById('supportTitle').textContent = t.supportTitle;
+            
+            // تحديث زر اللغة
+            document.getElementById('langBtn').innerHTML = `<span>${t.langText}</span>`;
+        }
+
+        // إظهار التصحيح
+        function showAnswers() {
+            answersVisible = true;
+            
+            // إظهار إجابات Teil 1
+            contentData.texts.forEach(text => {
+                document.getElementById(`answer-text-${text.id}`).classList.remove('hidden');
             });
             
-            localStorage.setItem('language', lang);
+            // إظهار إجابات Teil 2
+            contentData.longText.questions.forEach(question => {
+                document.getElementById(`answer-${question.id}`).classList.remove('hidden');
+            });
             
-            // إعادة تهيئة المحتوى لترجمة الإجابات
-            initializeTeil1();
-            initializeTeil2();
+            // إظهار إجابات Teil 3
+            contentData.situations.forEach(situation => {
+                document.getElementById(`answer-situation-${situation.id}`).classList.remove('hidden');
+            });
+            
+            // إظهار إجابات Sprachbausteine Teil 1
+            contentData.sprachbausteine1.blanks.forEach(blank => {
+                document.getElementById(`answer-blank-${blank.id}`).classList.remove('hidden');
+            });
+            
+            // إظهار إجابات Sprachbausteine Teil 2
+            document.getElementById('answer-sprach2').classList.remove('hidden');
+        }
+
+        // إخفاء التصحيح
+        function hideAnswers() {
+            answersVisible = false;
+            
+            // إخفاء جميع الإجابات
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+        }
+
+        // إظهار نافذة الدعم
+        function showSupportModal() {
+            document.getElementById('supportModal').style.display = 'flex';
+        }
+
+        // إخفاء نافذة الدعم
+        function hideSupportModal() {
+            document.getElementById('supportModal').style.display = 'none';
+        }
+
+        // إظهار نافذة الملاحظات
+        function showNotesModal() {
+            document.getElementById('notesModal').style.display = 'flex';
+        }
+
+        // إخفاء نافذة الملاحظات
+        function hideNotesModal() {
+            document.getElementById('notesModal').style.display = 'none';
+        }
+
+        // حفظ الملاحظات
+        function saveNotes() {
+            const notes = document.getElementById('notesTextarea').value;
+            localStorage.setItem('userNotes', notes);
+            alert('تم حفظ الملاحظات بنجاح!');
         }
     </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HACHARAT - TELC B2 Training</title>
+    <title>Tele leseverstehen - TELC B2 Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -47,30 +47,14 @@
             color: var(--light);
         }
 
-        /* Header Controls - التعديل هنا */
+        /* Header Controls */
         .header-controls {
             position: fixed;
             top: 20px;
-            left: 20px;
             right: 20px;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            gap: 15px;
             z-index: 1000;
-            gap: 15px;
-        }
-
-        .left-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-start;
-        }
-
-        .right-controls {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
         }
 
         .control-btn {
@@ -114,68 +98,12 @@
             box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
         }
 
-        /* شارة المشترك الذهبية - تم التعديل */
-        .premium-badge-header {
-            position: fixed;
-            top: 20px;
-            right: 90px; /* بجانب الأزرار */
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            padding: 0.5rem;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
-        }
-
-        .home-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .home-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .home-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
         /* Language Selector */
         .language-selector {
-            display: flex;
-            position: relative;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
         }
 
         .lang-btn {
@@ -267,31 +195,130 @@
             border-bottom: none;
         }
 
-        /* زر التهادا - تمت إضافته */
-        .tahada-btn {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            border: 2px solid #FFA500;
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.3);
-            backdrop-filter: blur(10px);
+        /* شارة المشترك الذهبية */
+        .premium-badge {
+            position: fixed;
+            top: 85px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
+            justify-content: center;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+            animation: rotate 4s linear infinite;
+            display: none;
         }
 
-        .tahada-btn:hover {
-            background: linear-gradient(135deg, #FFA500, #FF8C00);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 165, 0, 0.4);
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* نافذة الدعم */
+        .support-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .support-modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .dark-mode .support-modal-content {
+            background: #1a237e;
+        }
+
+        .support-info {
+            margin: 1.5rem 0;
+        }
+
+        .support-item {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background: rgba(33, 150, 243, 0.1);
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .close-modal {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* نافذة الملاحظات */
+        .notes-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notes-modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .dark-mode .notes-modal-content {
+            background: #1a237e;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            height: 200px;
+            padding: 1rem;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            margin: 1rem 0;
+        }
+
+        .dark-mode .notes-textarea {
+            background: #1a237e;
+            color: var(--light);
+            border-color: var(--secondary);
         }
 
         /* المحتوى الرئيسي */
@@ -353,7 +380,7 @@
         /* أزرار التحكم */
         .answer-controls {
             position: sticky;
-            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
+            top: 0;
             background: rgba(255, 255, 255, 0.95);
             padding: 1.5rem;
             border-radius: var(--radius);
@@ -510,7 +537,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* التصحيح - تم التعديل للوضع الليلي */
+        /* التصحيح */
         .correct-answer {
             background: rgba(76, 175, 80, 0.2);
             color: #2E7D32;
@@ -670,55 +697,70 @@
             border-color: #81C784;
         }
 
-        /* قسم كلمات الفراغات - تمت إضافته */
-        .words-section {
-            margin: 2rem 0;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(10px);
-        }
-
-        .dark-mode .words-section {
-            background: rgba(13, 71, 161, 0.9);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
-
-        .words-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        .blank-options {
+            display: flex;
+            flex-wrap: wrap;
             gap: 1rem;
-            margin-top: 1.5rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 10px;
         }
 
-        .word-item {
-            padding: 1rem;
+        .blank-option {
+            padding: 0.5rem 1rem;
             background: var(--white);
             border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            text-align: center;
-            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
             transition: var(--transition);
         }
 
-        .dark-mode .word-item {
+        .dark-mode .blank-option {
             background: #1a237e;
             border-color: #37474F;
         }
 
-        .word-item:hover {
+        .blank-option:hover {
             border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.1);
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
             background: rgba(33, 150, 243, 0.05);
-            transform: translateY(-3px);
+            border-radius: 15px;
+        }
+
+        .word-option {
+            padding: 0.6rem 1rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .word-option {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .word-option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.1);
+            transform: translateY(-2px);
         }
 
         .hidden {
             display: none;
         }
 
-        /* Floating Elements مثل الصفحة الرئيسية */
+        /* Floating Elements */
         .floating-elements {
             position: fixed;
             width: 100%;
@@ -753,22 +795,20 @@
         @media (max-width: 768px) {
             .header-controls {
                 top: 15px;
-                left: 15px;
                 right: 15px;
                 gap: 10px;
             }
 
-            .premium-badge-header {
+            .language-selector {
                 top: 15px;
-                right: 70px;
-                width: 45px;
-                height: 45px;
-                font-size: 1.1rem;
+                left: 15px;
             }
 
-            .home-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
+            .premium-badge {
+                top: 70px;
+                left: 15px;
+                width: 35px;
+                height: 35px;
             }
 
             .container {
@@ -789,39 +829,31 @@
                 grid-template-columns: 1fr;
             }
 
-            .right-controls {
-                gap: 10px;
-            }
-
             .answer-controls {
-                top: 70px;
+                top: 0;
             }
         }
 
         @media (max-width: 480px) {
             .header-controls {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
+                gap: 8px;
             }
 
-            .left-controls, .right-controls {
-                flex-direction: row;
-                justify-content: center;
+            .control-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
             }
 
-            .premium-badge-header {
-                position: relative;
-                top: auto;
-                right: auto;
-                transform: none;
-                margin-top: 10px;
+            .lang-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Floating Elements مثل الصفحة الرئيسية -->
+    <!-- Floating Elements -->
     <div class="floating-elements">
         <div class="floating-element floating-book">📚</div>
         <div class="floating-element floating-pen">✏️</div>
@@ -833,58 +865,57 @@
         <div class="floating-element floating-calculator">🧮</div>
     </div>
 
-    <!-- شارة المشترك الذهبية - تم التعديل -->
-    <div class="premium-badge-header" id="premiumBadge">
-        <i class="fas fa-crown"></i>
+    <!-- أزرار التحكم العلوية -->
+    <div class="header-controls">
+        <button class="control-btn theme-toggle" id="themeToggle">🌙</button>
+        <button class="control-btn support-btn" id="supportBtn">💬</button>
+        <button class="control-btn notes-btn" id="notesBtn">📝</button>
     </div>
 
-    <!-- Header Controls -->
-    <div class="header-controls">
-        <div class="left-controls">
-            <button class="home-btn" id="homeBtn">
-                <i class="fas fa-home"></i>
-                <span id="homeText">الرئيسية</span>
-            </button>
-            <div class="language-selector">
-                <button class="lang-btn" id="langBtn">
-                    <span id="langBtnText">العربية</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="lang-dropdown" id="langDropdown">
-                    <div class="lang-option" data-lang="ar">
-                        <span>🇸🇦</span>
-                        <span>العربية</span>
-                    </div>
-                    <div class="lang-option" data-lang="de">
-                        <span>🇩🇪</span>
-                        <span>Deutsch</span>
-                    </div>
-                    <div class="lang-option" data-lang="en">
-                        <span>🇬🇧</span>
-                        <span>English</span>
-                    </div>
-                </div>
-            </div>
+    <!-- محدد اللغة -->
+    <div class="language-selector">
+        <button class="lang-btn" id="langBtn">
+            <span>🇸🇦 العربية</span>
+        </button>
+        <div class="lang-dropdown" id="langDropdown">
+            <div class="lang-option" data-lang="ar">🇸🇦 العربية</div>
+            <div class="lang-option" data-lang="de">🇩🇪 Deutsch</div>
+            <div class="lang-option" data-lang="en">🇬🇧 English</div>
         </div>
-        
-        <div class="right-controls">
-            <!-- زر التهادا تم نقله هنا -->
-            <button class="tahada-btn" id="tahadaBtn">
-                <i class="fas fa-star"></i>
-                <span id="tahadaText">تهادا</span>
-            </button>
-            <button class="control-btn" id="themeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="control-btn" id="userBtn">
-                <i class="fas fa-user"></i>
-            </button>
+    </div>
+
+    <!-- شارة المشترك الذهبية -->
+    <div class="premium-badge" id="premiumBadge">
+        <i class="fas fa-crown" style="color: #fff; font-size: 1.2rem;"></i>
+    </div>
+
+    <!-- نافذة الدعم -->
+    <div class="support-modal" id="supportModal">
+        <div class="support-modal-content">
+            <h2 id="supportTitle">اتصال الدعم</h2>
+            <div class="support-info">
+                <div class="support-item">+212 649-661976</div>
+                <div class="support-item">zakariaap.6@gmail.com</div>
+            </div>
+            <button class="close-modal" id="closeSupportModal">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- نافذة الملاحظات -->
+    <div class="notes-modal" id="notesModal">
+        <div class="notes-modal-content">
+            <h2>ملاحظاتي</h2>
+            <textarea class="notes-textarea" id="notesTextarea" placeholder="اكتب ملاحظاتك هنا..."></textarea>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button class="close-modal" id="saveNotes">حفظ</button>
+                <button class="close-modal" id="closeNotesModal">إغلاق</button>
+            </div>
         </div>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">HACHARAT - TELC B2 Training</h1>
+            <h1 id="pageTitle">Tele leseverstehen - TELC B2 Training</h1>
             <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
         </div>
 
@@ -906,11 +937,11 @@
             <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
             
             <div class="headings-grid" id="headingsList">
-                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+                <!-- سيتم إضافة العناوين بالجافاسكريبت -->
             </div>
 
             <div id="textsList">
-                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+                <!-- سيتم إضافة النصوص بالجافاسكريبت -->
             </div>
         </div>
 
@@ -918,25 +949,25 @@
         <div class="section">
             <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
             <div class="text-content" id="longText">
-                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+                <!-- سيتم إضافة النص الطويل بالجافاسكريبت -->
             </div>
 
             <div id="questionsList">
-                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+                <!-- سيتم إضافة الأسئلة بالجافاسكريبت -->
             </div>
         </div>
 
         <!-- Lesen Teil 3 -->
         <div class="section">
             <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
-            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
             
             <div class="situations-grid" id="situationsList">
-                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+                <!-- سيتم إضافة الوضعيات بالجافاسكريبت -->
             </div>
 
             <div class="ads-grid" id="adsList">
-                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+                <!-- سيتم إضافة الإعلانات بالجافاسكريبت -->
             </div>
         </div>
 
@@ -945,16 +976,11 @@
             <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
             <div class="fill-blanks">
                 <div class="blank-text" id="blankText1">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- سيتم إضافة النص بالفراغات بالجافاسكريبت -->
                 </div>
-            </div>
-        </div>
-
-        <!-- قسم كلمات الفراغات لـ Sprachbausteine Teil 1 -->
-        <div class="words-section">
-            <h3 class="section-title">كلمات الفراغات - Sprachbausteine Teil 1</h3>
-            <div class="words-grid" id="wordsList1">
-                <!-- كلمات الفراغات سيتم إضافتها بالجافاسكريبت -->
+                <div id="blankOptions1">
+                    <!-- سيتم إضافة خيارات الفراغات بالجافاسكريبت -->
+                </div>
             </div>
         </div>
 
@@ -963,16 +989,11 @@
             <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
             <div class="fill-blanks">
                 <div class="blank-text" id="blankText2">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- سيتم إضافة النص بالفراغات بالجافاسكريبت -->
                 </div>
-            </div>
-        </div>
-
-        <!-- قسم كلمات الفراغات لـ Sprachbausteine Teil 2 -->
-        <div class="words-section">
-            <h3 class="section-title">كلمات الفراغات - Sprachbausteine Teil 2</h3>
-            <div class="words-grid" id="wordsList2">
-                <!-- كلمات الفراغات سيتم إضافتها بالجافاسكريبت -->
+                <div class="word-bank" id="wordBank2">
+                    <!-- سيتم إضافة بنك الكلمات بالجافاسكريبت -->
+                </div>
             </div>
         </div>
     </div>
@@ -981,12 +1002,7 @@
         // الترجمات
         const translations = {
             ar: {
-                homeText: "الرئيسية",
-                themeText: "الوضع الليلي",
-                langText: "العربية", 
-                userText: "زائر",
-                tahadaText: "تهادا",
-                pageTitle: "HACHARAT - TELC B2 Training",
+                pageTitle: "Tele leseverstehen - TELC B2 Training",
                 pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
                 showAnswersText: "إظهار التصحيح",
                 hideAnswersText: "إخفاء التصحيح",
@@ -994,35 +1010,29 @@
                 teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
                 teil2Title: "Lesen Teil 2", 
                 teil3Title: "Lesen Teil 3",
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
                 sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
+                sprach2Title: "Sprachbausteine Teil 2",
+                supportTitle: "اتصال الدعم",
+                langText: "العربية"
             },
             de: {
-                homeText: "Startseite",
-                themeText: "Nachtmodus", 
-                langText: "Deutsch",
-                userText: "Besucher",
-                tahadaText: "Tahada",
-                pageTitle: "HACHARAT - TELC B2 Training",
+                pageTitle: "Tele leseverstehen - TELC B2 Training",
                 pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
                 showAnswersText: "Korrektur anzeigen",
                 hideAnswersText: "Korrektur ausblenden",
                 teil1Title: "Lesen Teil 1",
                 teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
                 teil2Title: "Lesen Teil 2",
-                teil3Title: "Lesen Teil 3", 
+                teil3Title: "Lesen Teil 3",
                 teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
                 sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
+                sprach2Title: "Sprachbausteine Teil 2",
+                supportTitle: "Support Kontakt",
+                langText: "Deutsch"
             },
             en: {
-                homeText: "Home",
-                themeText: "Dark Mode",
-                langText: "English",
-                userText: "Visitor", 
-                tahadaText: "Tahada",
-                pageTitle: "HACHARAT - TELC B2 Training",
+                pageTitle: "Tele leseverstehen - TELC B2 Training",
                 pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
                 showAnswersText: "Show Correction",
                 hideAnswersText: "Hide Correction",
@@ -1031,517 +1041,594 @@
                 teil2Title: "Reading Part 2",
                 teil3Title: "Reading Part 3",
                 teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
-                sprach1Title: "Language Elements Part 1", 
-                sprach2Title: "Language Elements Part 2"
+                sprach1Title: "Language Elements Part 1",
+                sprach2Title: "Language Elements Part 2",
+                supportTitle: "Support Contact",
+                langText: "English"
             }
         };
 
-        // بيانات الأسئلة والإجابات من ملف PDF
-        const examData = {
-            // Lesen Teil 1
+        // بيانات المحتوى من الـ PDF
+        const contentData = {
             headings: [
-                "Ein Fotograf auf Reisen",
-                "Die bemerkenswerte Karriere eines Fotografen",
-                "Bilder einer bedeutenden Künstlerin", 
-                "Erde, Mond und Sterne - wie man sie noch nie gesehen hat",
-                "Das Ende der Dunkelheit",
-                "Gelungene Einführung in die moderne Fotografie",
-                "Entwicklungsgeschichte der Lampen",
-                "Mit Profis eine neue Foto-Technik erlernen",
-                "Familienfotos berühmter Persönlichkeiten",
-                "Eine Fotografin dreht einen Film"
+                "a) Neue Insektenart in Frankreich",
+                "b) Kleine Insekten können Krankheiten bringen",
+                "c) Bauern sind gezwungen Gift gegen schädliche Insekten einzusetzen",
+                "d) Neue Mittel gegen Mücken",
+                "e) Neue Studie: Nicht nur Affen und Delfine erkennen sich selbst",
+                "f) Probleme beim Versuchsaufbau: Studie gescheitert",
+                "g) Rhein nach Chemieunfall noch immer tot",
+                "h) Rückblick: Fischsterben im Rhein",
+                "i) Um die Zukunft der Nordsee ist es schlecht bestellt",
+                "j) WWF zieht positive Bilanz für die Nordsee"
             ],
-            
             texts: [
                 {
-                    content: `Fotos machen ist heute nicht schwer. Schnell nimmt man das Handy und macht einen Schnappschuss. Wer aber besondere und eindrucksvolle Bilder haben möchte, muss sich mit dem Thema Fotografie schon etwas intensiver befassen. Dietmar Spehrs neuer Fotografie-Ratgeber ist dabei ein gutes Hilfsmittel. Auf 424 Seiten erklärt der Autor und Journalist mit einfachen, aber kompetenten Worten, was zu beachten ist.
-Der Ratgeber versteht sich als Fotokurs für Ein- und Aufsteiger und richtet sich an die vielen Menschen, die gerne fotografieren, aber wenig Fachwissen haben. Diesen Hobbyfotografen vermittelt das Buch sehr verständlich Schritt für Schritt solides Basiswissen. Spehr setzt dabei auf Beispielbilder, Tabellen und Grafiken und schreibt so wenig wie möglich, aber so much wie nötig.
-Das sorgt dafür, dass der Ratgeber sehr unterhaltsam zu lesen ist und nicht wie ein langweiliges Lehrbuch daherkommt. Von der Auswahl des Motivs über die richtige Kameraeinstellung bis hin zur optimierenden Nachbearbeitung am Computer wird alles Wissenswerte vermittelt.`,
-                    correctAnswer: "Gelungene Einführung in die moderne Fotografie"
+                    id: 1,
+                    content: "Heute tagt in Göteborg die Internationale Nordseekonferenz (INK) an der Regierungsvertreter der acht Nordsee-Länder teilnehmen. Der World Wide Fund For Nature (WWF) kritisierte in diesem Zusammenhang, dass dies das letzte Treffen dieser Art sei. Künftig sollen Fragen der Nordsee auf europäischer Ebene behandelt werden. Der WWF befürchtet, dass die Berücksichtigung ökologischer Belange der Nordsee künftig im europäischen Rahmen vernachlässigt werde: 'Es sieht nicht gut aus für die Nordsee.' So fasste WWF-Meeresschützer Stephan Lutter diese Besorgnis in Worte. Der WWF ist der Ansicht, dass auf den Treffen der INK richtungsweisende Beschlüsse zum Nordseeschutz gefasst worden seien. Das Problem sei allerdings die Umsetzung dieser Beschlüsse in politisches Handeln in den Nordsee-Ländern. Zu diesen Beschlüssen gehörte beispielsweise das vor Jahren beschlossene Abkommen zum Verbot giftiger Schiffsfarben und das Abkommen, das die Verunreinigung der Nordsee durch von Schiffen abgelassenes Ballastwasser bekämpfen sollte. Diese Abkommen wurden erst zum Teil umgesetzt. Der WWF befürchtet nun, dass diese wichtigen INK-Initiativen unter den Tisch fallen könnten. Anlässlich des letzten Treffens der Regierungen der Nordsee-Länder erneuerte der WWF seine Kritik an der Fischereipolitik. Das Ziel einer nachhaltigen Fischereipolitik stehe zwar auf der Tagesordnung der Konferenz, die alltägliche Praxis in der EU sei jedoch durch die 'Plünderung der Fischbestände' gekennzeichnet.",
+                    correctHeading: "i"
                 },
                 {
-                    content: `Der Buchtitel erinnert an eine Horrogeschichte: "Die Nacht". Aber dem Autor Paul Bogart geht es nicht um Fantasiewelten, sondern um sehr reale Dinge. Das Thema des Autors ist die nächtliche Finsternis.
-Wer erlebt noch eine dunkle Nacht? Großstadtbewohner eher nicht, außer im abgedunkelten Schlafzimmer. Ein natürlicher Nachthimmel mit unzähligen Sternen ist die Ausnahme, deshalb sind wir überwältigt, wenn wir ihn doch einmal zu sehen bekommen. Das war früher anders, und zwar bis Gaslicht und Glühlampe erfunden wurden. Heute sieht man in Städten gerade noch den Mond und, wenn man Glück hat, eine Handvoll der hellsten Sterne.
-Paul Bogart erläutert, warum künstliches Licht so weit verbreitet ist, und betrachtet dies sehr kritisch. Der Autor fesselt seine Leser dabei mit beachtlichem Fachwissen. Außerdem ist er weit gereist. Überall, so berichtet er, gebe es Organisationen, die sich für eine Reduzierung des künstlichen Lichts einsetzen - auch in Deutschland. Paul Bogart fände es positiv, wenn die Organisationen sich durchsetzen könnten. Denn der autor - und das macht er sehr deutlich - hält nicht viel davon, dass es heute kaum noch völlig dunkel ist!`,
-                    correctAnswer: "Das Ende der Dunkelheit"
+                    id: 2,
+                    content: "Für immer wird eine der größten Umweltkatastrophen mit dem Namen des damals in Basel ansässigen Chemiekonzerns Sandoz verbunden bleiben, der jetzt zu Novartis gehört. 1986 führte ein Brand in einer Lagerhalle des Konzerns zu Verunreinigung des Rheins mit 20 Tonnen hochgiftiger Pestizide und Insektizide. Auf einer Länge von 400 Kilometern kam es zu einem gigantischen Fischsterben. Vor allem Aale waren betroffen. Trinkwasser konnte nicht mehr aus dem Fluss gewonnen werden. Der öffentliche Druck, der als Reaktion auf die Umweltkatastrophe entstanden war, führte zu großen Investitionen für den Gewässerschutz. Im Rahmen des 'Aktionsprogramms Rhein' wurden rund 60 Milliarden Euro in den Ausbau von Kläranlagen entlang des Rheinufers investiert. Viele Schwermetalle wie Kupfer, Cadmium, Blei und Quecksilber konnten reduziert und teilweise sogar ganz aus dem Rhein verbannt werden. Angesichts der getroffenen Maßnahmen spricht die Internationale Kommission zum Schutz des Rheins (IKSR) heute wieder von 'guter Wasserqualität' des Rheins, 63 Fischarten sind wieder im Rhein vertreten, darunter auch Lachse.",
+                    correctHeading: "h"
                 },
                 {
-                    content: `Bilder der Fotografin Annie Leibovitz sind ab kommendem Samstag im Kunsthaus Wien zu sehen. Die Ausstellung besticht durch ihre umfangreiche Bildauswahl. Zum einen kann man zahlreiche Portraits berühmter Schauspieler, Politiker oder Musiker bestaunen. Zum anderen sieht man Bilder aus dem privaten Fotoalbum der Künstlerin. Die zum Teil sehr persönlichen Aufnahmen dokumentieren ihr Leben und zeigen bisher unveröffentlichte Werke, die zum Teil sehr bedrückend sind. Bilder ihres Vaters berühren den Besucher und oftmals ist man von der Offenheit der Fotografin überrascht.
-Zwischen Aufnahmen der Fotografin selbst stehen zahlreiche Porträts ihrer Eltern und Urlaubsfotos der Familie. Die bunte Mischung von großformatigen und kleinformatigen Bildern sorgt für Abwechslung. Um die Fotografien besser kennenzulernen, können Besucher einen ca. 1,5 Stunden langen Film über die Karriere von Annie Leibovitz sehen.
-Eines ist nach der Ausstellung und dem Film klar: Anne Leibovitz zählt zu den bedeutendsten Fotografinnen des 20. und beginnenden 21. Jahrhunderts.`,
-                    correctAnswer: "Bilder einer bedeutenden Künstlerin"
+                    id: 3,
+                    content: "Der Klimawandel bringt es in Verbindung mit der Globalisierung mit sich, dass auch in Deutschland Tiere heimisch werden, die hier zuvor nicht beobachtet wurden. Zu diesen Neuankömmlingen gehören auch exotische Stechmücken, beispielsweise der japanische Bushmosquito. Mit den exotischen Stechmücken kommen auch neue Infektionserreger nach Deutschland, die möglicherweise auch bisher unbekannte Krankheiten beim Menschen auslösen können. Eine Forschergruppe identifizierte jetzt einige bisher nur in Afrika und Asien vorkommende Erreger. Anfang 2011 wurde ein interdisziplinäres Projekt ins Leben gerufen. Als ein erstes Ziel der Forschungsarbeit wird die Erstellung einer Mückenkarte für Deutschland angestrebt. 'Innerhalb weniger Jahre wollen wir einen Überblick über die Artenverteilung der Mücken haben und wissen was an Viren in ihnen steckt', so der Leiter des Bernhard-Nocht-Instituts Professor Dr. Sven Klimpel. Das Bernhard-Nocht-Institut ist eine international anerkannte Forschungseinrichtung, die eine langjährige Erfahrung in der Virendiagnostik in das Projekt einbringen kann. Es verfügt über Laboratorien der höchsten Sicherheitsstufe, die erforderlich sind, um neue Viren mit unbekanntem Gefährdungspotential zu untersuchen.",
+                    correctHeading: "b"
                 },
                 {
-                    content: `Die Abkürzung TWAN klingt nach einem neuen Computerprogramm, aber tatsächlich steht sie für eine neue fotografische Methode, die der Iraner Babak Amin Tafreshi entwickelt hat. Diese neue Methode führt zu atemberaubenden Ergebnissen: Noch nie hat man die Sterne so eindrucksvoll über den Landschaften der Erde gesehen wie auf den Bildern in diesem Buch - ein Genuss für die Augen.
-Was man auf den 160 Seiten des Buches sieht, ist meines Wissens ohne Beispiel. Viele der gezeigten Orte und Landschaften sind bekannte Motive, hier aber wirken sie doch vollkommen anders, als man sie kennt. Da sieht man Sterne über den Ruinen von Persepolis, den Mond über ungarischen Wäldern, die Milchstraße über dem kalifornischen Mammutbaum "General Grant".
-Die drei Herausgeber Stefan Seip, Gernot Meiser und Babak A. Tafreshi wurden unterstützt von einem weltweiten Team erfahrener Naturfotografen. Auf den letzten Seiten des Buchs erfährt man auch, dass "Fotografieren im TWAN-Stil heißt, bei fortgeschrittener Dämmerung oder Dunkelheit Aufnahmen zu machen, auch wenn man selbst nicht mehr viel sehen kann".
-Neben aller Technik kommt es aber auf den künstlerischen Blick des Fotografen an - und viel Geduld.`,
-                    correctAnswer: "Erde, Mond und Sterne - wie man sie noch nie gesehen hat"
+                    id: 4,
+                    content: "Forscher haben bei Versuchen im Bronx Zoo in New York eine neue Erkenntnis über Elefanten erlangt: Sie können sich selbst im Spiegel erkennen. Zumindest eines von drei Versuchstieren versuchte, einen auf seinem Kopf aufgemalten Fleck, der im Spiegelbild zu sehen war, zu entfernen. Bisher war unter anderem von Affen, Delfinen und Elstern ein ähnliches Verhalten bekannt. Und auch bei diesen reagierte nicht immer alle Versuchstiere auf einen Spiegel. Es gab auch schon in der Vergangenheit solche Tests mit Elefanten, die aber auf keine Selbsterkenntnis schließen ließen. Den Grund sieht ein Wissenschaftler im Versuchsaufbau: 'Das große Problem ist, einen Spiegel zu haben, der elefantenfest ist.' Frühere Versuche hätten zu kleine und zu schwer zugängliche Spiegeln verwendet. Die Elefanten aber wollten 'dagegen knallen, dahinter schauen, die Sache ausprobieren, bevor Sie verstehen, was vor sich geht'. Deshalb wurde diesmal ein 2,5 mal 2,5 Meter großer Spiegel in einem Elefantengehege mit drei weiblichen asiatischen Elefanten montiert, der stabil genug für ausgiebige Untersuchungen durch die Tiere war. Bei ähnlichen Tests mit Affen und Delfinen gibt es normalerweise vier Phasen der Erkenntnis im Spiegel: Zuerst der Versuch der Kommunikation mit dem vermeintlichen Artgenossen, dann eine physische Inspektion des Spiegels, ein Testen des Verhaltens des Spiegelbilds und schließlich die Selbsterkenntnis. Die Elefanten übersprangen die erste Phase und schauten in Phase zwei hinter den Spiegel und griffen auch mit dem Rüssel dahinter. In Phase drei führten sie verschiedene Bewegungen durch und verglichen sie mit denen des Spiegelbildes. Auch wenn sich dann nur eines der Tiere selbst erkannte, indem es den aufgemalten Fleck untersuchte und nach einiger Zeit dann auch das Interesse an dem Fleck verlor, sehen die Wissenschaftler das Ergebnis als eindeutigen Beweis für die Fähigkeit zur Selbsterkenntnis.",
+                    correctHeading: "e"
                 },
                 {
-                    content: `Er gehörte zu den ganz Großen seines Fachs: Andreas Feininger. Eine neue Biografie erzählt die Lebensgeschichte des weltberühmten Fotografen. Neben einem Text auf Deutsch und Englisch enthält sie auch eine kleine, aber gute Auswahl seiner Fotoarbeiten aus allen Schaffensphasen.
-Die Autoren zeigen den Weg des 1906 in Paris geborenen Fotografen von der Kindheit in Berlin über die Jahre in Weimar und Dessau bis hin zum Leben in Hamburg, Stockholm und schließlich New York, dessen Stadtansichten Feininger weltberühmt machen.
-Dabei hatte Feininger keineswegs das Ziel, Fotograf zu sein. Eigentlich war Andreas Feininger gelernter Architekt. Als Feininger mit seiner Frau 1933 nach Stockholm auswandert, findet er dort als Architekt keine Anstellung. So macht er aus der Not eine Tugend: Weil er die kleine Familie mit Sohn Thomas ernähren muss, macht er seine Leidenschaft, die Fotografie, zum Broterwerb. Den Durchbruch als weltweit anerkannter Fotograf schafft er schließlich in New York, wohin seine Familie 1939 auswandert.`,
-                    correctAnswer: "Die bemerkenswerte Karriere eines Fotografen"
+                    id: 5,
+                    content: "Die anhaltenden außergewöhnlich hohen Temperaturen haben im Süden Frankreichs eine Tierplage bisher unbekannten Ausmaßes ausgelöst. Bei den Plagegeistern handelt es sich um Unmengen von zwei bis dreieinhalb Zentimeter langen Heuschrecken, sogenannten Roten Schnarrschrecken. Die dunklen Insekten fressen Felder und Wiesen kahl und haben innerhalb von rund sechs Wochen die Landschaft in eine trostlose Steppe verwandelt. Die Landwirte der Region sind bereits verzweifelt, denn ihre gesamte Ernte hat sich buchstäblich in Luft aufgelöst. Wenn man über ein befallenes Feld geht, springt bei jedem Schritt ein Schnarrschreckenschwarm auf. Der Name dieser heimischen Tierart hat übrigens einen ganz einfachen Ursprung: Die Heuschrecken machen ein lautes Geräusch beim Springen - sie schnarren also - und man sieht an ihnen leuchtend rote Hinterflügel. Daher also 'Rote Schnarrschrecke'. Manche Experten vermuten, die Heuschreckenplage werde durch einen drastischen Klimawandel ausgelöst. Die damit verbundene Aufheizung mache Südeuropa immer 'afrikanischer'. Ein deutscher Wissenschaftsautor wies kürzlich im Internet mehrfach darauf hin, dass es im Laufe der Erdgeschichte ständig einen Wechsel von Warmzeiten und Kaltzeiten gegeben habe, der keineswegs abgeschlossen sei. Zeitweise habe das Gebiet von Europa nahe dem Äquator gelegen. Der Einsatz von Gift gegen die Heuschrecken ist sehr riskant. Denn dabei darf nur ein Mittel verwendet werden, das ausschließlich für die Heuschrecken tödlich ist, nicht aber für Bienen und andere Insekten. Auch das Vieh der Bauern darf nicht durch verseuchtes Futter gefährdet werden.",
+                    correctHeading: "c"
                 }
             ],
-
-            // Lesen Teil 2 - النص الكامل
             longText: {
-                content: `Für Kinder sind regelmäßige Mahlzeiten wichtig, um volle Konzentrations– und Leistungsfähigkeit zu gewährleisten. Um gut in den Tag zu kommen, sollte jedes Schulkind mit einem ausgewogenen Frühstück starten.
-Aber eine Umfrage kam zu erschreckenden Ergebnissen: Jedes siebte Kind isst morgens nichts, bevor es in die Schule geht. Die Gründe dafür sind vielfältig: Jeder vierte Befragte gab an, dass sein Kind morgens keinen Appetit habe. Und sogar jede dritte Mutter und jeder dritte Vater sagten, dass morgens keine Zeit für Frühstück sei. Für eine gesunde Morgenmahlzeit sollte man jedoch immer Zeit freischaufeln, rät Ernährungswissenschaftlerin Alexandra Krotz.
-Mit leerem Magen können Körper und Geist keine Leistung erbringen. Die Folge: Die Kinder sind reizbar, nervös und können sich nicht richtig konzentrieren. Und das ist schon auf dem Schulweg wichtig: Kinder bewegen sich sicherer, wenn sie rechtzeitig aufgestanden sind und entspannt gefrühstückt haben.
-Zu einem gesunden Frühstück eignen sich am besten Vollkornbrote mit fettarmer Wurst oder Käse, aber auch Müslis mit Milch oder Joghurt, Nüssen und frisches Obst. Wer morgens keinen Hunger hat, sollte wenigstens eine Kleinigkeit zu sich nehmen – etwa eine Banane essen und dazu einen Kakao trinken – und das ausgiebige Frühstück dann etwas später nachholen. In einigen Schulen wird gemeinsam gefrühstückt. Hier gilt es, je nach Vereinbarung mit Erziehern und Lehrern, ein leckeres Frühstück zusammenzustellen.
-Wer seinen Kinder ein zweites Frühstück einpackt, sollte auf Abwechslung und die geeignete Verpackung achten. Am besten eignet sich eine Brotdose – die spart Verpackungsmilli und vermeidet zermatschte Brote. Zudem lassen sich darin auch Obst und Gemüse sicher transportieren.
-Eine gute Ergänzung zu lecker belegten Vollkornbroten ist Rohkost. Dazu eignen sich besonders transportsichere feste Sorten wie Möhren, Kohlrabi, Cherrytomaten, Trauben oder Äpfel. Je nach Jahreszeit und Vorliebe der Kinder können Sie als Eltern hierbei für Abwechslung sorgen.
-Heutzutage wird Schulmilch leider nicht mehr in allen Schulen angeboten. Schade, denn Milch liefert wichtiges Calcium, Eiweiß und viele B-Vitamine. Wer als Kind die Möglichkeit hat, in der Schule Milch zu trinken, sollte darauf nicht verzichten. Und selbst Milchmuffel dürften zufrieden sein: Da Milch in vielen Varianten angeboten wird – von Erdbeermilch über Kakao zu Vanillemilch –, ist für jedes Kind das Richtige dabei.
-Generell ist der Wasserbedarf von Kindern im Verhältnis zum Körpergewicht höher als bei Erwachsenen. Trinken Kinder zu wenig, beeinträchtigt dies schneller die körperliche und geistige Leistungsfähigkeit. Kinder sollten deshalb je nach Alter mindestens 0,7 Liter bis 1,2 Liter trinken – Milch nicht mitgerechnet. Wenn das Kind viel Sport treibt oder tobt und bei besonders warmen Tagen brauchen die Kinder entsprechend mehr Flüssigkeit.
-Viele Kinder trinken zu wenig. Häufig vergessen sie ganz einfach zu trinken, wenn sie konzentriert spielen oder lernen. Ganz wichtig ist it daher, Kinder immer mal wieder zum Trinken aufzufordern und auch zwischen den Mahlzeiten den Durst zu löschen, auch während der Unterrichtsstunden. Am besten sind Wasser, Kräutertees und Saftschorlen geeignet.
-Übrigens: Fast ein Viertel aller Schüler in Deutschland trinkt vormittags nichts oder fast nichts. Das hat eine Untersuchung der Universität Paderborn zum Trinkverhalten vor und während der Unterrichtszeit ergeben. Die unzureichende Flüssigkeitsaufnahme führte dabei nachweislich zu Einschränkungen der geistigen und körperlichen Leistungsfähigkeit.
-Kinder mögen Süßes. Schokoriegel und Süßigkeiten sollten allerdings beim Pausenbrot nicht die Regel sein. Eine gute Alternative dazu sind Trockenfrüchte, Fruchtschnitten oder Studentenfutter. Sie liefern wichtige Vitamine und Mineralstoffe und sind als Energieschub zwischendurch geeignet. Aber Vorsicht: Sie enthalten auch viel Energie und sollten gerade von Kindern, die leichtes Übergewicht haben, nur in geringen Mengen gegessen werden.
-Viele Eltern nehmen sich morgens nicht die Zeit, mit ihren Kindern zu frühstücken, und geben Ihnen lieber Geld mit, damit sie sich auf dem Schulweg ein Frühstück kaufen können. Versuchen Sie, das zu vermeiden. Denn die meisten Kinder legen das Geld in Süßwaren oder Fast Food, Cola oder andere Süßgetränke an.
-Die Mittagsverpflegung in Schulen kann sehr unterschiedlich sein. Ein weiteres Pausenbrot wäre jedenfalls eine Zumutung für die Kinder. Deshalb gibt es verschiedene Systeme für die Versorgung am Mittag – Catering, kochende Eltern oder Profi–Küchen mit geschultem Personal. Klar ist: Für die Kinder sind Pausen und regelmäßige Mahlzeiten zur Aufrechterhaltung ihrer Leistungsfähigkeit wichtig. Daher sollte it im Interesse aller sein, den Kindern in der Schule eine geeignete Mittagsverpflegung zur Verfügung zu stellen.`,
+                content: "Wer kennt sie nicht: Kreditkarten, mit denen man in der heimischen Stadt oder während des Urlaubs einkaufen kann. Fast jeder hat eine, und alles scheint ganz einfach zu sein: Kein Wunder, dass auch immer mehr Kinder und Jugendliche eine eigene Kreditkarte haben wollen. Sie sehen, wie ihre Eltern damit bezahlen, und möchten auch das praktische 'Plastikgeld'. Aber Eltern sorgen sich: Ist das nicht zu gefährlich? Um das Risiko einer Überschuldung zu vermeiden, bieten Banken und alle Sparkassen Jugendlichen eine besondere Art von Kreditkarten an: die sogenannte Prepaid-Kreditkarte. Eine Prepaid-Kreditkarte ist mit einem Prepaid-Handy vergleichbar. Man kann sie nur einsetzen, wenn man zuvor Geld auf die Karte geladen hat. Ist das Guthaben verbraucht, kann man mit der Karte nicht mehr bezahlen und am Automaten kein Geld mehr abheben. Der Vorteil liegt auf der Hand: 'Man kann nicht mehr Geld ausgeben, als man hat', sagt Andreas Gernt, Finanzexperte der Verbraucherzentrale Niedersachsen in Hannover. Mit einer Prepaid-Kreditkarte kann daher niemand in die Schuldenfalle tappen. 'Für Kinder und Jugendliche auf Reisen ist die Prepaid-Kreditkarte eine überlegenswerte Option', sagt Gernt. Die daheimgebliebenen Eltern können Ihrem Kind von zu Hause aus Geld auf die Karte laden, wenn das Guthaben verbraucht ist. Zugleich können Sie die Kosten kontrollieren. 'Die Prepaid-Kreditkarte ist eine Ausgabenschranke für den Verbraucher', fasst Tanja Beller vom Bundesverband deutscher Banken in Berlin zusammen. So können Jugendliche den Umgang mit bargeldlosem Zahlungsverkehr lernen.<br><br><strong>Verluste bei Diebstahl überschaubar</strong><br>Zugleich eignen sich die Karten aber auch für erwachsene Reisende mit einem größeren Sicherheitsbedürfnis. 'Man ist mit einer Kreditkarte auf Reisen unabhängiger vom Bargeld', erklärt Gernt. Die Prepaid-Karte bietet zwei Vorteile: Zum einen ist mit ihr das Reisebudget von Anfang an limitiert. Es kann nur das für Souvenirs ausgegeben werden, was vorher geladen wurde. Zum anderen sind damit auch die Verluste überschaubar, wenn die Karte gestohlen wird. Denn auch ein Dieb kann nur das Geld nutzen, das als Guthaben auf der Karte ist.<br>Außerdem eignet sich die Prepaid-Kreditkarte für Freiberufler und Selbständige – oder allgemeiner gefasst für Menschen mit einem unregelmäßigen oder geringen Einkommen, die dadurch keine gute Bonität haben. Denn die Prepaid-Kreditkarten sind im Gegensatz zur klassischen Kreditkarte nicht direkt an ein Gehaltskonto gebunden. Das ermöglicht auch Geringverdienern Einkäufe im Internet. Zugleich schützt die Guthabenkarte vor allzu großen Verlusten durch Missbrauch im Netz.<br><br><strong>Die Angebote sollte man vergleichen</strong><br>'Bevor man sich aber für eine Prepaid-Karte entscheidet, sollte man ihre Akzeptanz überprüfen', rät Beller. Denn gerade Prepaid-Karten sind nicht in jedem Land als Zahlungsmittel gern gesehen. Grundsätzlich sollte man auch bei Lock-Angeboten skeptisch sein, die als Werbung in den Briefkasten flattern. 'Vielleicht verbirgt sich da etwas im Kleingedruckten', warnt Gernt. Außerdem sollte man die Gebühren genau vergleichen und auf versteckte Kosten achten. Die Stiftung Warentest hat für ihre Zeitschrift 'Finanztest' die Bedingungen und Kosten von 24 Prepaid-Kreditkarten für Erwachsene und Jugendliche getestet. Die Tester stellten fest: Die Karten sind nicht teurer als klassische Kreditkarten, und auch die Nutzungsgebühren unterscheiden sich kaum.<br><br><strong>Abheben ab fünf Euro</strong><br>Erwachsene bezahlen für Prepaid-Karten zwischen 29 und 39 Euro im Jahr. Karten für Jugendliche kosten im Jahr höchstens 22 Euro. Bei vielen Banken sind sie bis zum 18. oder 21. Geburtstag kostenlos. Für das Geldabheben am Automaten berechnen die Banken meist einen Mindestbetrag zwischen 5,00 € und 7,50 Euro. Ansonsten fallen etwa zwei Prozent vom abgehobenen Betrag an. Zudem kostet das Abheben außerhalb des Euro-Raumes zwischen einem Prozent und 1,9 Prozent extra. Unter dem Strich kann die Prepaid-Karte mit der klassischen Kreditkarte durchaus mithalten. Mit beiden Kartentypen kann man im Restaurant bezahlen, am Automaten Geld abheben oder im Internet shoppen.",
                 questions: [
                     {
-                        question: "Einige Eltern",
+                        id: 6,
+                        text: "Eine Prepaid-Kreditkarte",
                         options: [
-                            "haben selbst keinen Appetit auf ein Frühstück.",
-                            "lassen das Frühstück aus Zeitmangel ausfallen.", 
-                            "schaufeln das Frühstück einfach in sich hinein."
+                            "A gibt es für Jugendliche schon bei zahlreichen Geldinstituten.",
+                            "B können Jugendliche zusammen mit einer Handy-Prepaidkarte bekommen.",
+                            "C macht es möglich, mit dem Handy zu bezahlen."
                         ],
-                        correctAnswer: "lassen das Frühstück aus Zeitmangel ausfallen."
+                        correctAnswer: 0
                     },
                     {
-                        question: "Ein gesundes Frühstück",
+                        id: 7,
+                        text: "Man hat Kontrolle über die Kosten,",
                         options: [
-                            "erhöht auch die Sicherheit des Kindes auf dem Weg zur Schule.",
-                            "muss mindestens aus einem Glas Kakao oder Milch bestehen.",
-                            "sollte gemeinsam in der Schule angenommen werden."
+                            "A da nur der Karteninhaber seine Karte aufladen darf.",
+                            "B denn die Eltern werden bei einer Auffadung benachrichtigt.",
+                            "C weil die Ausgaben durch das Guthaben begrenzt sind."
                         ],
-                        correctAnswer: "erhöht auch die Sicherheit des Kindes auf dem Weg zur Schule."
+                        correctAnswer: 2
                     },
                     {
-                        question: "Milch", 
+                        id: 8,
+                        text: "Die Prepaid-Kreditkarte ist besonders geeignet für",
                         options: [
-                            "deckt den täglichen Flüssigkeitsbedarf.",
-                            "gehört zum Angebot der Schulkantinen.",
-                            "wird in verschiedenen Geschmacksrichtungen angeboten."
+                            "A Angestellte mit einem guten Gehalt.",
+                            "B Jugendliche ohne festes Einkommen.",
+                            "C Menschen mit einem eigenen Bankkonto."
                         ],
-                        correctAnswer: "wird in verschiedenen Geschmacksrichtungen angeboten."
+                        correctAnswer: 1
                     },
                     {
-                        question: "Kinder",
+                        id: 9,
+                        text: "Prepaid-Karten",
                         options: [
-                            "denken von alleine nicht immer daran, genug zu trinken.",
-                            "dürfen während des Unterrichts nichts trinken.",
-                            "können sich auch noch gut konzentrieren, wenn sie nicht genug getrunken haben."
+                            "A kosten ähnlich viel wie klassische Kreditkarten.",
+                            "B verursachen keine unerwarteten Kosten.",
+                            "C werden als Zahlungsmittel ebenso akzeptiert wie klassische Kreditkarten."
                         ],
-                        correctAnswer: "denken von alleine nicht immer daran, genug zu trinken."
+                        correctAnswer: 0
                     },
                     {
-                        question: "Mittagessen",
+                        id: 10,
+                        text: "Bei Prepaid-Karten zahlen",
                         options: [
-                            "sollte in der Schule angeboten werden.",
-                            "sollten die Kinder von zu Hause mitbringen.", 
-                            "sollten Kinder bei den Eltern zu Hause bekommen."
+                            "A Erwachsene ab 21 Jahren eine höhere Jahresgebühr als Jugendliche.",
+                            "B Jugendliche unter 18 Jahren nur die Nutzungsgebühr am Geldautomaten.",
+                            "C Kunden zwischen 18 und 21 Jahren noch nichts."
                         ],
-                        correctAnswer: "sollte in der Schule angeboten werden."
+                        correctAnswer: 0
                     }
                 ]
             },
-
-            // Lesen Teil 3
             situations: [
-                "Sie möchten einen Ganztagesausflug machen und sich dabei bewegen.",
-                "Sie möchten eine Fahrt durch den Hamburger Hafen buchen.",
-                "Eine Bekannte organisiert einen großen Kindergeburtstag und braucht Hilfe.",
-                "Sie interessieren sich für Technikgeschichte.",
-                "Ein Freund möchte gerne eine Schiffsreise machen.",
-                "Sie möchten helfen, Ihren Stadtteil zu gestalten.", 
-                "Sie wollen mit einer Bekannten essen gehen. Sie mag amerikanische Küche.",
-                "Sie sind neu in der Stadt und möchten Ihren Stadtteil kennenlernen.",
-                "Ein Freund möchte mehr über die Geschichte deutscher Städte erfahren.",
-                "Sie möchten etwas mit Ihrer 6-jährigen Nichte unternehmen, die gerne ins Museum geht."
-            ],
-
-            ads: [
                 {
-                    id: "a",
-                    title: "Neues Angebot der VHS",
-                    content: "Ab dem kommenden Monat bietet die Volkshochschule in Zusammenarbeit mit der Bürgerschaft in unserem Stadtteil Führungen an. Alle Interessierten können an fünf Wochenenden den Stadtteil erkunden. Die Führungen richten sich besonders an neue Bürger oder solche, die bald hierher ziehen wollen. Bei den etwa zweistündigen Spaziergängen lernen Sie alle wichtigen Einrichtungen von Behörden über das kulturelle, sportliche und auch das gastronomische Angebot kennen und können auch Kontakte zu anderen knüpfen. Die Teilnahme ist kostenfrei, es wird aber um vorherige Anmdbung über die Homepage der VHS gebeten."
+                    id: 11,
+                    text: "Sie suchen ein Au-pair Mädchen, das im Haushalt helfen und mit ihren Kindern Englisch sprechen soll.",
+                    correctAd: "X"
                 },
                 {
-                    id: "b", 
-                    title: "Essen erleben",
-                    content: "Gesunde Ernährung ist wichtig, auch schon für die Kleinen. Nur wer von Anfang an lernt, wie frisches Gemüse und Obst schmecken, wie man mit einfachen Mitteln und auch wenig Zeit leckere Gerichte zubereiten kann, wird sich dauerhaft gesund ernähren. Deshalb bietet die Kochschule 'Kochlöffel' ab sofort Kochkurse für Eltern und Kinder ab sechs Jahren an. Die Kurse werden zu unterschiedlichen Tageszeiten angeboten und finden auch schon bei wenigen Anmeldungen statt. Nutzen Sie die Gelegenheit, mit ihrem Kind gemeinsam zu kochen und dabei natürlich auch Spaß zu haben! Infos und Anmeldung: www.kochloeffel-kochschule.eu"
+                    id: 12,
+                    text: "Ihre 14-jährige Nichte möchte sich über einen Auslandsaufenthalt informieren.",
+                    correctAd: "C"
                 },
                 {
-                    id: "c",
-                    title: "Kurzreise nach München", 
-                    content: "Studienreisen Studios bietet Ihnen einen besonderen Ausflug an: Fahren Sie mit unserem modernen Reisebus am frühen Morgen von Köln nach München zum Deutschen Museum und nehmen Sie an einer exklusiven Führung teil, die sich auf die Geschichte der Technik konzentriert. Die Rückreise erfolgt am frühen Abend, so dass Sie in der Nacht wieder in Köln ankommen. Im Reisepreis sind der Eintritt sowie die Führung bereits enthalten. Ohne Übernachtung, daher besonders günstig! Begrenzte Plätze, buchen Sie schnell telefonisch unter 0221/809043 oder über unsere Homepage."
+                    id: 13,
+                    text: "Ihr Sohn möchte als Koch im Ausland arbeiten. Er sucht nach einer passenden Stelle.",
+                    correctAd: "X"
                 },
                 {
-                    id: "d",
-                    title: "Entspannung am Wasser",
-                    content: "Von März bis September (bei schönem Wetter auch länger) können Sie bei unserem Bootsverleih 'Wasserfall' das Gefährt Ihrer Wahl ausleihen, um einen unvergesslichen Tag am und auf dem Baldeneysee zu verbringen. Mit einem Ruderboot oder Tretboot können Sie ein wenig Sport treiben und gleichzeitig die Natur genießen. Wenn Ihnen das zu anstrengend ist, können Sie auch ein Motorboot ausleihen. Voraussetzung ist der entsprechende Führerschein. Ausleihfristen: zwischen zwei und zwölf Stunden. Wir bieten auch Rabatte für Gruppen oder regelmäßige Besucher an. Fragen Sie uns einfach! Telefon 0201/185790"
+                    id: 14,
+                    text: "Eine französische Bekannte ist Übersetzerin und möchte gelegentlich arbeiten.",
+                    correctAd: "G"
                 },
                 {
-                    id: "e",
-                    title: "Als echter Hamburger...",
-                    content: "kennt man natürlich den Hafen der Hansestadt und seine Wirtschaftskraft. Für alle Interessierten, die darüber erst noch etwas erfahren wollen, bietet das Bildungszentrum Buxtehuide am nächsten Freitag einen zweistündigen Vortrag an, in dem man Wissenswertes über die wirtschaftliche Bedeutung des Hamburger Hafens erfährt. Von der Gründung des Freihafens bis zu den heutigen modernen Anlagen wird die spannende Entwicklung des größten deutschen Hafens unter ökonomischen Aspekten dargelegt. Weitere Informationen und Anmdbung im Internet unter www.buxtehuide.eu."
+                    id: 15,
+                    text: "Ihre kinderlose Nachbarsfamilie möchte für einige Zeit einen jungen Menschen aufnehmen.",
+                    correctAd: "F"
                 },
                 {
-                    id: "f",
-                    title: "Schiffe versenken, Marmorkuchen und selbstgebastelte Papierhüte",
-                    content: "Das bietet Ihnen unser Service 'Kinderfeiern leicht gemacht'. Mit uns wird jeder Kindergeburtstag zum Erfolg, auch wenn Sie selbst nur wenig Zeit für die Vorbereitung haben. Wir übernehmen auf Wunsch die Dekoration, liefen Speisen und Getränke (beispielsweise Kuchen/Kekse, Salate, Frikadellen und vieles mehr), planen lustige Spiele und bringen auch alles mit, was für die Spiele gebraucht wird. Weitere Informationen unter 01805/7131192."
+                    id: 16,
+                    text: "Sie sollen die neue Webseite Ihrer Firma ins Englische übersetzen lassen.",
+                    correctAd: "D"
                 },
                 {
-                    id: "g",
-                    title: "Hamburger & Co.",
-                    content: "Sie mögen Fast Food? Sie glauben aber, dass Fast Food nicht gesund sein kann? Wir zeigen Ihnen das Gegenteil. Lernen Sie viele Gerichte aus den USA in unserem Kochkurs 'Hamburger & Co.' neu kennen. An drei Wochenenden zeigen wir Ihnen, dass man Hamburger auch so zubereitet kann, dass sie gar nicht so viele Kalorien haben. Und schmecken werden sie natürlich auch. Anmeldung bis nächsten Samstag telefonisch unter 0800/1398700."
+                    id: 17,
+                    text: "Sie kochen gerne und suchen nach Rezepten aus anderen Ländern.",
+                    correctAd: "H"
                 },
                 {
-                    id: "h", 
-                    title: "Nur auf Reisen lernt der Mensch",
-                    content: "Seit fast fünf Jahrzehnten bietet die überregionale Bildungsakademie 'Lernform e.V.' allen interessierten Bürgerinnen und Bürgern Ausflüge zu wichtigen Orten der deutschen Geschichte an. Anlässlich unseres Jubiläums veranstalten wir in den kommenden Monaten nun auch mehrtägige Fahrten in große deutsche Städte, um uns dort mit der Geschichte und Entwicklung der Stadt zu beschäftigen. Die Reisen führen beispielsweise nach Berlin, Köln oder München. Informieren Sie sich jetzt oder buchen Sie sofort unter www.ba-lernform.eu."
+                    id: 18,
+                    text: "Im Herbst beginnt Ihre Tochter ein Studium, Sie möchte ein Bankkonto eröffnen.",
+                    correctAd: "E"
                 },
                 {
-                    id: "i",
-                    title: "Die bewegte Geschichte eines Stadtteils",
-                    content: "Unser Stadtteil kann auf eine bewegte Geschichte zurückblicken. Die Mitarbeiter des Stadtteil-Archivs wollen deshalb ein Buch veröffentlichen, in dem die Geschichte lebendig und für Alt- und Neu-Bürger anschaulich wird. Noch bis Jahresende bittet das Archiv alle Bürger, persönliche Erinnerungen einzureichen, sei es in Form kurzer Geschichten oder in Form von Fotos. Auch historische Zeitungsartikel sind willkommen, da nicht alle Zeitungen im Archiv vorhanden sind. Melden Sie sich einfach persönlich im Archiv am Dreiringplatz."
+                    id: 19,
+                    text: "Sie wollen Geld nach Kanada überweisen, Sie möchten wissen, Wie viel Sie für die Überweisung bezahlen müssen.",
+                    correctAd: "A"
                 },
                 {
-                    id: "j",
-                    title: "Deutschland aus einer anderen Perspektive", 
-                    content: "Lernen Sie die schönsten deutschen Landschaften vom Fluss aus mit einer unserer Flusskreuzfahrten kennen. Auf geräumigen modernen Schiffen fahren Sie über Rhein, Mosel oder Donau, sehen die wunderschöne Natur längs der Flüsse und besichtigen auch die kleinen Ortschaften bei Ausflügen an Land. Wir haben Angebote für Reisende aller Altersklassen, für Individual- oder Gruppenreisende. Fordern Sie unser Informationsmaterial an unter der Rufnummer 0800/4455992."
-                },
-                {
-                    id: "k",
-                    title: "Unser Stadtteil ist lebendig",
-                    content: "Deshalb planen wir, im kommenden Jahr auf allen Plätzen des Stadtteils ein Fest durchzuführen. Noch stehen wir am Anfang unserer Planung, sammeln Ideen und suchen vor allem weitere Helfer. Wer möchte das Fest und unseren Stadtteil mitgestalten, Ideen entwickeln oder die konkrete Planung übernehmen? Noch ist alles möglich! Wir, die Einwohner unseres Stadtteils, wollen unsere Plätze noch schöner, bunter und lebendiger machen. Wir freuen uns über jeden Helfer, für das Fest und für die Umsetzung unserer Pläne. Wer mitmachen möchte, kann sich per E-Mail melden bei a.yildrim@online.eu."
-                },
-                {
-                    id: "l",
-                    title: "Technik - spannend und verständlich",
-                    content: "Sie kennen die typische Kinderfrage: 'Wie geht das?' Oder Sie haben selbst als Child einmal eine Uhr geöffnet, weil Sie wissen wollten, was darin war. Kinder sind neugierig, Kinder interessieren sich für Technik - und zwar nicht nur, wenn sie damit spielen können. Kinder wollen auch wissen, wie die Sachen funktionieren, aber leider können nicht alle Erwachsenen das gut erklären. Deshalb wurde jetzt in Oberhausen das erste Technik-Museum für Kinder eröffnet. Besucher zwischen 6 und 12 Jahren erfahren dort (natürlich in Begleitung eines Erwachsenen) spielerisch oder bei kindgerechten Führungen alles, was sie über Technik wissen wollen. Informationen: www.technik-museum-oberhausen.de."
+                    id: 20,
+                    text: "Ein Freund aus Salzburg will sich in Frankreich bewerben. Er möchte seine Zeugnisse übersetzen lassen.",
+                    correctAd: "B"
                 }
             ],
-
-            // الإجابات الصحيحة لـ Lesen Teil 3
-            teil3Answers: {
-                11: "d",
-                12: "e", 
-                13: "f",
-                14: "c",
-                15: "j",
-                16: "k",
-                17: "g",
-                18: "a",
-                19: "h", 
-                20: "l"
+            ads: [
+                {
+                    id: "A",
+                    title: "Infos zur Auslandsüberweisung",
+                    content: "Bitte verwenden Sie die Funktion Auslandsüberweisung für Zahlungen in Länder, die nicht zum SEPA-Zahlungsraum gehören. Zum SEPA-Zahlungsraum gehören die Mitgliedsstaaten der Europäischen Union sowie die Länder Island, Norwegen, Liechtenstein, die Schweiz und Monaco. In diesem Raum gilt die Inlandsüberweisung. Bürgerinnen und Bürger können damit günstiger überweisen. Für alle anderen Länder gilt die Auslandsüberweisung. Bitte beachten Sie, dass bei Auslandsüberweisungen in der Regel Spesen zu zahlen sind. Für nähere Auskünfte über deren Höhe wenden Sie sich bitte direkt an die Kundenbetreuung."
+                },
+                {
+                    id: "B",
+                    title: "Übersetzungen Deutsch-Französisch",
+                    content: "Französische Muttersprachler bieten Übersetzungen Deutsch-Französisch und Englisch-Französisch von Schulzeugnissen, Lebensläufen, Bewerbungen (Anschreiben & Motivationsschreiben), Arbeitszeugnissen usw., Arbeitsverträgen, Versicherungsverträgen. Auf Wunsch erstellen wir Ihre Jobanzeigen für den französischsprachigen Raum, angepasst an die jeweils landesüblichen Anzeigengestaltung. Einwandfreie Qualität; schnell, garantiert termingerecht und zu einem fairen Preis. Kostenvoranschlag innerhalb von zwei Tagen. Standort Wien. Lieferungen innerhalb der EU. Nutzen Sie zur Kontaktaufnahme bitte das Online-Formular am Ende dieser Seite."
+                },
+                {
+                    id: "C",
+                    title: "Austauschschüler/in werden",
+                    content: "Als Austauschschüler/in verbringst du einige Monate oder ein ganzes Jahr im Ausland. Du kannst ein Land in Europa wählen, aber auch Länder auf einem anderen Kontinent, wie zum Beispiel Amerika oder Australien. In dem Land deiner Wahl wohnst du bei einer Gastfamilie. Du besuchst die reguläre Schule, gemeinsam mit Schülerinnen und Schülern aus dem Gastland. So lernst du die Lebensweise und die Traditionen anderer Menschen kennen. Natürlich lernst du auch die Sprache deines Gastlandes. Wir bieten Informationsveranstaltungen in allen Bundesländern an. Dort beantworten wir alle deine Fragen. Schau doch einfach bei uns vorbei! Wir freuen uns auf dich!"
+                },
+                {
+                    id: "D",
+                    title: "Übersetzungen Deutsch-Englisch",
+                    content: "Als gebürtige Engländerin, mit einem Studienabschluss in Englisch, lebe ich seit vielen Jahren in Österreich. Ich biete Übersetzungen vom Deutschen ins Englische an: Lebensläufe, Ausbildungsunterlagen, Präsentationen, Websites, Produktbeschreibungen, Firmenflyer usw. Ich habe 20 Jahre Erfahrung mit Übersetzungen. Zu meinen zufriedenen Kunden zählen namhafte Unternehmen aus dem In- und Ausland. Auf Wunsch schicke ich Ihnen gerne eine Liste mit Referenzen zu. Wenn es einmal besonders schnell gehen muss, übernehme ich Expressarbeiten auch an Wochenenden. Effizient und zu einem angemessenen Preis. susan@language.at www.susanlanguage.at"
+                },
+                {
+                    id: "E",
+                    title: "Bankkonto für Studenten",
+                    content: "Mit einem Konto bei der RUFA profitieren Sie von attraktiven Angeboten und von persönlicher Beratung. Wir haben das passende Konto für Sie - vom Girokonto bis zum Gratiskonto für Jugendliche. Jetzt aktuell: GRATIS Studentenkonto. Ihnen steht ein persönlicher Berater zur Seite, wenn Sie Auskunft oder Hilfe brauchen. Zusätzlich bietet Ihnen das Konto einige Vorteile, z. B. eine gratis Unfallversicherung bis 24 Jahre. Mit Ihrer RUFA-Clubkarte bekommen Sie außerdem Ermäßigungen in ausgewählten Shops und bei bestimmten Veranstaltungen."
+                },
+                {
+                    id: "F",
+                    title: "Gastfamilie werden",
+                    content: "Wir laden Sie dazu ein, internationale Schülerinnen und Schüler bei Ihnen zu Hause aufzunehmen. Dabei bieten Sie einem jungen Menschen mehr als nur einen Platz zum Schlafen und etwas zu essen, Sie helfen ihm, sich in einer fremden Umgebung zurechtzufinden, andere Sitten und Gebräuche und eine fremde Sprache kennenzulernen. Eine Gastschülerin oder einen Gastschüler aufzunehmen ist eine wunderbare Möglichkeit, selbst eine andere Kultur kennenzulernen und gleichzeitig die eigene Kultur zu teilen. Im Alltag können Sie gemeinsam kulturelle Unterschiede entdecken und schätzen lernen. Egal ob Sie selbst Kinder haben, allein oder in einem klassischen Familienhaushalt leben: Wir freuen uns auf Ihre Bewerbung!"
+                },
+                {
+                    id: "G",
+                    title: "Freie Mitarbeiter für Übersetzungen gesucht",
+                    content: "Französisch ist Ihre Muttersprache? Wir suchen eine freie Mitarbeiterin oder einen Mitarbeiter für Übersetzungen vom Deutschen ins Französische. Sie arbeiten fallweise und von zu Hause aus (keine feste Anstellung). Ihr Aufgabenbereich: Übersetzung von einfachen kurzen Texten (Anfragen, Beantwortung von Anfragen, Reaktion auf Beschwerden usw.). Wenn nötig führen Sie auch kurze Telefonate mit französischen Kundinnen oder Kunden. Sie werden von uns eingearbeitet. Sie lernen unsere Produkte und das Fachvokabular anhand zweisprachiger Unterlagen kennen. Bei Fragen stehen Ihnen unsere Mitarbeiter gerne zur Verfügung. Interessiert? Wir hören uns auf Ihre Online-Bewerbung."
+                },
+                {
+                    id: "H",
+                    title: "Internationales Kochbuch online",
+                    content: "Ein Tag im Zeichen der guten Nachbarschaft. Im Rahmen des europäischen Nachbarschaftstages wurde auch heuer wieder in unserem Bezirk zu gemeinsamem Kochen und Genießen eingeladen. Solche Veranstaltungen dienen dazu, andere Menschen und Kulturen besser kennenzulernen. Wie auch in den vergangenen Jahren wurde das Fest wieder sehr gut aufgenommen. Die Veranstalter erhielten begeisterte Mails. Da viele Leute die zahlreichen Spezialitäten aus aller Welt nachkochen möchten, finden Sie hier unser Online-Kochbuch."
+                }
+            ],
+            sprachbausteine1: {
+                text: "Lieber Thomas, ich muss dir unbedingt etwas erzählen: Ich bin heute das erste Mal in meinem Leben Ski gefahren, (21) ich mir das bisher nie zugetraut hatte. Meine Freundin Lisa hat mich eingeladen, einige Tage mit ihr und ihren Eltern in den Bergen zu verbringen. Und bevor ich ankam, (22) sie schon einen individuellen Skikurs für mich gebucht! Du kannst dir vorstellen, wie mich das überrascht hat! Ich (23) es mir schon anders überlegen, aber Lisa wollte nichts (24) hören. Heute Morgen ging es dann los. (25) war ich ziemlich aufgeregt, (25) habe ich mich auch unheimlich gefreut. Mit der Skilehrerin habe ich mich gleich gut verstanden. Sie hat mich abgeholt und mir (26) geholfen, im Sportgeschäft Schuhe, Skier, Stöcke und einen Helm für mich (27). Dann hat mir die Skilehrerin einige (28) Dinge erklärt. Ich war anfangs sehr unsicher, mit der Zeit ließ das aber nach. Die Kinder im Zwergerlkurs scheinen im (29) Gegensatz zu mir überhaupt keine Angst zu haben. Das Schlimmste am ersten Tag war der Schlepplift. Erst habe ich den Lift einige Male verpasst, dann bin ich hingefallen. Irgendwie habe ich es dann doch noch geschafft. Und zum Schluss bin ich mit der Lehrerin sogar eine leichte Piste runtergefahren. Morgen habe ich wieder zwei Stunden. Ich habe jetzt schon Muskelkater und mir tut alles weh! Ich weiß gar nicht, (30) ich das schaffen soll. Ich werde dich über meine Fortschritte auf dem Laufenden halten :) Bis bald und liebe Grüße, Samira",
+                blanks: [
+                    { id: 21, options: ["obwohl", "trotz", "während"], correct: 0 },
+                    { id: 22, options: ["hat", "hatte", "hätte"], correct: 1 },
+                    { id: 23, options: ["konnte", "sollte", "wollte"], correct: 2 },
+                    { id: 24, options: ["dafür", "damit", "davon"], correct: 2 },
+                    { id: 25, options: ["Einerseits...andererseits", "weder...noch", "zwar...aber"], correct: 2 },
+                    { id: 26, options: ["dabei", "davon", "dazu"], correct: 0 },
+                    { id: 27, options: ["aussuchen", "ausgesucht", "auszusuchen"], correct: 2 },
+                    { id: 28, options: ["grundlegende", "grundlegenden", "grundlegender"], correct: 1 },
+                    { id: 29, options: ["am", "im", "zum"], correct: 1 },
+                    { id: 30, options: ["dass", "ob", "wie"], correct: 2 }
+                ]
             },
-
-            // Sprachbausteine Teil 1
-            blankText1: {
-                content: `Hallo Leon,
-vielen Dank für deine letzte Mail __(21)__ Peking! Du arbeitest ja jetzt schon seit einem halben Jahr in China – unglaublich, wie schnell die Zeit vergeht.
-Leider hatte ich in den letzten drei Wochen keine Zeit, dir zu antworten, __(22)__ ich viel zu tun hatte. Aber jetzt berichte ich dir, __(23)__ alles los war.
-Also, im Büro haben wir derzeit viel Stress, __(24)__ drei Kollegen im Urlaub sind und eine weitere Kollegin seit zwei Wochen krank ist. Jetzt müssen wir mit fünf Leuten die Arbeit erledigen, die sonst neun Leute machen. Ich weiß wirklich nicht, wer diese Urlaubsplanung gemacht hat. Hoffentlich __(25)__ das in Zukunft besser organisiert.
-Abends waren Carmen und ich dann ein paarmal aus. Wir waren zum Beispiel bei einem Konzert von "Belasco". Kennst du die Band? Eigentlich war ich an dem Abend ganz schön kaputt und __(26)__ am liebsten zuhause geblieben, aber ich hatte Carmen die Karten zum Geburtstag geschenkt. Da __(27)__ ich ja schlecht auf dem Sofa sitzen bleiben! Im Nachhinein muss ich sagen: Ein Glück, dass wir zu dem Konzert gegangen sind, __(28)__ es war einfach nur super!
-An den letzten beiden Wochenenden hatten wir dann auch noch Familienfeiern: Erst hatte meine ältere Schwester Geburtstag und hat groß gefeiert, dann hat ein Cousin geheiratet und uns eingeladen, __(29)__ war zwar schön, aber auch anstrengend. Ich bin froh, dass wir für die kommenden Wochenenden __(30)__ keine Pläne haben.
-Das war's erst mal von mir. Melde dich doch wieder, ich freue mich __(31)__ deine nächste E-Mail!
-
-Viele Grüße sendet dir
-Fabian`,
-                answers: ["aus", "weil", "was", "da", "wird", "wäre", "konnte", "denn", "Beides", "noch", "auf"]
-            },
-
-            // Sprachbausteine Teil 2
-            blankText2: {
-                content: `Es gibt inzwischen zahlreiche Online-Sprachkurse und __(32)__ mit Smartphones kann man Sprachen lernen. Eine weitere Lernmöglichkeit ist zum Beispiel eine Tandem-Partnerschaft __(33)__ einem Muttersprachler. Welche Vorteile und Nachteile haben die unterschiedlichen Methoden?
-Es gibt inzwischen zahlreiche Online-Lernportale, die leicht zu überblicken und zu bedienen sind. Der Vorteil: Man kann die Wörter nicht nur lesen, __(34)__ gleichzeitig auch hören. Außerdem kann man Wörter nachsprechen, __(35)__ dass ein ganzer Kurs zuhört.
-Auch Lerntipps bekommt man bei Online-Portalen, bespielsweise diesen: Vokabeln sollte man lieber mehrmals täglich in Fünf-Minuten-Blöcken wiederholen, __(36)__ sie in einer Stunde alle auf einmal zu lernen.
-Wer auch unterwegs lernen möchte, kann es mit einer Smartphone-App versuchen, einem kleinen Programm, das auf dem Handy läuft. Viele Programme gibt es kostenlos, andere kosten zwischen einem und mehreren Euro. Die kleinen Helfer sind __(37)__ gut zum Vokabellernen geeignet – mehr aber meist nicht. Das spielerische Vokabeltraining macht zwar Spaß, __(38)__ Satzbau oder andere Grammatikthemen werden allenfalls kurz angesprochen. Ein richtiges Gespräch kann man mit dieser Methode erst recht nicht üben. Dafür __(39)__ man besser in einen Kurs gehen oder einen Tandem-Partner suchen.
-Ein Tandem-Partner ist ein Muttersprachler, der die Grammatik erklärt, die Aussprache verbessert und seinerseits die Muttersprache des anderen lernen möchte.
-Der schnellste Weg, __(40)__ einen passenden Tandem-Partner zu finden, ist die Online-Suche: Muttersprache, Zielsprache und Wohnort eingeben, __(41)__ werden alle Treffer angezeigt. Man trifft sich beispielsweise in einem Restaurant, schickt sich Nachrichten oder E-Mails und erklärt sich gegenseitig die eigene Sprache.`,
-                answers: ["sogar", "mit", "sondern", "ohne", "anstatt", "besonders", "aber", "sollte", "um", "schon"]
+            sprachbausteine2: {
+                text: "Kinder sind oft mit dem Straßenverkehr überfordert, (31) ist es wichtig, dass sich Eltern und Bezugspersonen den besten Schulweg überlegen und mit ihren Kindern üben. (32) immer ist der kürzeste Weg auch der ungefährlichste. Zum Üben sollte man sich Zeit nehmen und sich voll auf das Kind (33). Eltern sollten im Verkehr immer auch an ihre Vorbildfunktion denken: Verkehrsregeln nicht nur erklären, sondern sich auch (34) daran halten. Wegen ihrer geringeren Körpergröße haben Kinder ein anderes Sichtfeld als Erwachsene. Dessen müssen sich die Erwachsenen bewusst sein. Manchmal ist es (35), wenn die Großen sich von ihren Kindern erzählen lassen, was diese sehen. Um das Kind langsam an den Schulweg zu gewöhnen, sollte es anfangs nur das letzte Stück allein gehen. Diese Strecke kann man dann Schritt (36) Schritt verlängern. Dasselbe gilt für den Nachhauseweg. Auch ist es sinnvoll, zu Schulbeginn nochmals kurz und klar die wichtigsten Regeln für das (37) im Straßenverkehr mit den Kindern zu wiederholen. Wenn der Schulweg kein Problem mehr darstellt, kann man noch mögliche (38) Situationen besprechen. Wie zum Beispiel 'Was machst du, wenn der Gehweg gesperrt ist?' oder 'Was tust du, wenn die Ampel ausgefallen ist?' oder 'Was machst du, wenn auf der anderen Straßenseite jemand nach dir ruft oder jemand bei Rot über die Kreuzung rennt?'. So lernt das Kind, sich (39) im Straßenverkehr zu verhalten und selbstständig (40) zu finden. Und die Erwachsenen können sicher sein, dass ihr Kind zumindest auf die Standardsituationen vorbereitet ist.",
+                wordBank: [
+                    { id: 31, word: "DESHALB", correct: true },
+                    { id: 32, word: "NICHT", correct: true },
+                    { id: 33, word: "KONZENTRIEREN", correct: true },
+                    { id: 34, word: "SELBST", correct: true },
+                    { id: 35, word: "HILFREICH", correct: true },
+                    { id: 36, word: "FÜR", correct: true },
+                    { id: 37, word: "VERHALTEN", correct: true },
+                    { id: 38, word: "KRITISCHE", correct: true },
+                    { id: 39, word: "SELBSTBEWUSST", correct: true },
+                    { id: 40, word: "LÖSUNGEN", correct: true }
+                ]
             }
         };
 
-        // تهيئة الصفحة
+        // متغيرات التطبيق
+        let currentLanguage = 'ar';
+        let isDarkMode = false;
+        let answersVisible = false;
+
+        // تهيئة التطبيق
         document.addEventListener('DOMContentLoaded', function() {
-            initializePage();
+            initializeApp();
+            loadContent();
             setupEventListeners();
         });
 
-        let currentLang = 'ar';
-        let isDarkMode = false;
-
-        function initializePage() {
+        // تهيئة التطبيق
+        function initializeApp() {
             // تحميل الإعدادات المحفوظة
-            const savedLang = localStorage.getItem('language') || 'ar';
-            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-            const username = localStorage.getItem('username') || 'زائر';
-            const access = localStorage.getItem('access');
-            
-            changeLanguage(savedLang);
-            if (savedDarkMode) {
-                toggleDarkMode();
+            const savedLanguage = localStorage.getItem('language');
+            const savedDarkMode = localStorage.getItem('darkMode');
+            const savedNotes = localStorage.getItem('userNotes');
+
+            if (savedLanguage) {
+                currentLanguage = savedLanguage;
+                updateLanguage();
             }
-            
-            // التحقق من حالة المستخدم
-            if (access === 'paid' && username) {
-                document.getElementById('premiumBadge').style.display = 'flex';
+
+            if (savedDarkMode === 'true') {
+                isDarkMode = true;
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeToggle').textContent = '☀️';
             }
-            
-            // تهيئة الأجزاء
-            initializeTeil1();
-            initializeTeil2();  
-            initializeTeil3();
-            initializeSprachbausteine();
-            initializeWordsSections();
+
+            if (savedNotes) {
+                document.getElementById('notesTextarea').value = savedNotes;
+            }
         }
 
-        function initializeTeil1() {
+        // تحميل المحتوى
+        function loadContent() {
+            loadHeadings();
+            loadTexts();
+            loadLongText();
+            loadQuestions();
+            loadSituations();
+            loadAds();
+            loadSprachbausteine1();
+            loadSprachbausteine2();
+        }
+
+        // تحميل العناوين
+        function loadHeadings() {
             const headingsList = document.getElementById('headingsList');
-            const textsList = document.getElementById('textsList');
-
             headingsList.innerHTML = '';
-            textsList.innerHTML = '';
 
-            // إضافة العناوين
-            examData.headings.forEach((heading, index) => {
+            contentData.headings.forEach((heading, index) => {
                 const headingItem = document.createElement('div');
                 headingItem.className = 'heading-item';
-                headingItem.innerHTML = `
-                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
-                `;
-                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingItem.textContent = heading;
+                headingItem.dataset.id = String.fromCharCode(97 + index); // a, b, c, ...
                 headingsList.appendChild(headingItem);
-            });
-
-            // إضافة النصوص
-            examData.texts.forEach((text, index) => {
-                const textItem = document.createElement('div');
-                textItem.className = 'question';
-                textItem.innerHTML = `
-                    <h3>Text ${index + 1}</h3>
-                    <div class="text-content">${text.content}</div>
-                    <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
-                    </div>
-                `;
-                textsList.appendChild(textItem);
             });
         }
 
-        function initializeTeil2() {
-            const longText = document.getElementById('longText');
+        // تحميل النصوص
+        function loadTexts() {
+            const textsList = document.getElementById('textsList');
+            textsList.innerHTML = '';
+
+            contentData.texts.forEach(text => {
+                const textElement = document.createElement('div');
+                textElement.className = 'text-content';
+                textElement.innerHTML = `
+                    <h3>Text ${text.id}</h3>
+                    <p>${text.content}</p>
+                    <div class="answer hidden correct-answer" id="answer-text-${text.id}">
+                        Richtige Überschrift: ${text.correctHeading.toUpperCase()}
+                    </div>
+                `;
+                textsList.appendChild(textElement);
+            });
+        }
+
+        // تحميل النص الطويل
+        function loadLongText() {
+            const longTextElement = document.getElementById('longText');
+            longTextElement.innerHTML = `
+                <h3>Eine Prepaid-Kreditkarte</h3>
+                <p>${contentData.longText.content}</p>
+            `;
+        }
+
+        // تحميل الأسئلة
+        function loadQuestions() {
             const questionsList = document.getElementById('questionsList');
-
-            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
-
             questionsList.innerHTML = '';
-            examData.longText.questions.forEach((question, index) => {
-                const questionItem = document.createElement('div');
-                questionItem.className = 'question';
-                questionItem.innerHTML = `
-                    <h3>Frage ${index + 6}</h3>
-                    <p><strong>${question.question}</strong></p>
+
+            contentData.longText.questions.forEach(question => {
+                const questionElement = document.createElement('div');
+                questionElement.className = 'question';
+                questionElement.innerHTML = `
+                    <h4>Aufgabe ${question.id}</h4>
+                    <p>${question.text}</p>
                     <div class="options">
-                        ${question.options.map((option, optIndex) => `
-                            <div class="option" data-index="${optIndex}">
-                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                        ${question.options.map((option, index) => `
+                            <div class="option" data-question="${question.id}" data-option="${index}">
+                                ${option}
                             </div>
                         `).join('')}
                     </div>
-                    <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                    <div class="answer hidden correct-answer" id="answer-${question.id}">
+                        Richtige Antwort: ${question.options[question.correctAnswer]}
                     </div>
                 `;
-                questionsList.appendChild(questionItem);
+                questionsList.appendChild(questionElement);
             });
         }
 
-        function initializeTeil3() {
+        // تحميل الوضعيات
+        function loadSituations() {
             const situationsList = document.getElementById('situationsList');
-            const adsList = document.getElementById('adsList');
-
             situationsList.innerHTML = '';
-            examData.situations.forEach((situation, index) => {
-                const situationItem = document.createElement('div');
-                situationItem.className = 'situation-item';
-                situationItem.innerHTML = `
-                    <strong>${index + 11})</strong> ${situation}
-                    <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
+
+            contentData.situations.forEach(situation => {
+                const situationElement = document.createElement('div');
+                situationElement.className = 'situation-item';
+                situationElement.innerHTML = `
+                    <h4>Situation ${situation.id}</h4>
+                    <p>${situation.text}</p>
+                    <div class="answer hidden correct-answer" id="answer-situation-${situation.id}">
+                        Richtige Anzeige: ${situation.correctAd}
                     </div>
                 `;
-                situationsList.appendChild(situationItem);
+                situationsList.appendChild(situationElement);
             });
+        }
 
+        // تحميل الإعلانات
+        function loadAds() {
+            const adsList = document.getElementById('adsList');
             adsList.innerHTML = '';
-            examData.ads.forEach(ad => {
-                const adItem = document.createElement('div');
-                adItem.className = 'ad-item';
-                adItem.innerHTML = `
-                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
+
+            contentData.ads.forEach(ad => {
+                const adElement = document.createElement('div');
+                adElement.className = 'ad-item';
+                adElement.innerHTML = `
+                    <h4>${ad.id}: ${ad.title}</h4>
                     <p>${ad.content}</p>
                 `;
-                adsList.appendChild(adItem);
+                adsList.appendChild(adElement);
             });
         }
 
-        function initializeSprachbausteine() {
-            // Teil 1
+        // تحميل Sprachbausteine Teil 1
+        function loadSprachbausteine1() {
             const blankText1 = document.getElementById('blankText1');
-            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
-            });
-            blankText1.innerHTML = textWithBlanks1;
+            const blankOptions1 = document.getElementById('blankOptions1');
 
-            // Teil 2
+            // بناء النص مع الفراغات
+            let textWithBlanks = contentData.sprachbausteine1.text;
+            contentData.sprachbausteine1.blanks.forEach(blank => {
+                textWithBlanks = textWithBlanks.replace(`(${blank.id})`, 
+                    `<span class="blank" id="blank-${blank.id}">(${blank.id})</span>`);
+            });
+
+            blankText1.innerHTML = `<p>${textWithBlanks}</p>`;
+
+            // بناء خيارات الفراغات
+            blankOptions1.innerHTML = '';
+            contentData.sprachbausteine1.blanks.forEach(blank => {
+                const blankOptions = document.createElement('div');
+                blankOptions.className = 'blank-options';
+                blankOptions.innerHTML = `
+                    <h4>Lücke ${blank.id}:</h4>
+                    ${blank.options.map((option, index) => `
+                        <div class="blank-option" data-blank="${blank.id}" data-option="${index}">
+                            ${option}
+                        </div>
+                    `).join('')}
+                    <div class="answer hidden correct-answer" id="answer-blank-${blank.id}">
+                        Richtige Antwort: ${blank.options[blank.correct]}
+                    </div>
+                `;
+                blankOptions1.appendChild(blankOptions);
+            });
+        }
+
+        // تحميل Sprachbausteine Teil 2
+        function loadSprachbausteine2() {
             const blankText2 = document.getElementById('blankText2');
-            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 32]}</span></span>`;
+            const wordBank2 = document.getElementById('wordBank2');
+
+            // بناء النص مع الفراغات
+            let textWithBlanks = contentData.sprachbausteine2.text;
+            contentData.sprachbausteine2.wordBank.forEach(word => {
+                textWithBlanks = textWithBlanks.replace(`(${word.id})`, 
+                    `<span class="blank" id="blank2-${word.id}">(${word.id})</span>`);
             });
-            blankText2.innerHTML = textWithBlanks2;
+
+            blankText2.innerHTML = `<p>${textWithBlanks}</p>`;
+
+            // بناء بنك الكلمات
+            wordBank2.innerHTML = '';
+            contentData.sprachbausteine2.wordBank.forEach(word => {
+                const wordOption = document.createElement('div');
+                wordOption.className = 'word-option';
+                wordOption.textContent = word.word;
+                wordOption.dataset.id = word.id;
+                wordBank2.appendChild(wordOption);
+            });
+
+            // إضافة التصحيح
+            const correctionDiv = document.createElement('div');
+            correctionDiv.className = 'answer hidden correct-answer';
+            correctionDiv.id = 'answer-sprach2';
+            correctionDiv.innerHTML = '<h4>Richtige Lösungen:</h4>' + 
+                contentData.sprachbausteine2.wordBank.map(word => 
+                    `Lücke ${word.id}: ${word.word}`).join('<br>');
+            wordBank2.parentNode.insertBefore(correctionDiv, wordBank2.nextSibling);
         }
 
-        function initializeWordsSections() {
-            // كلمات الفراغات لـ Teil 1
-            const wordsList1 = document.getElementById('wordsList1');
-            wordsList1.innerHTML = '';
-            
-            examData.blankText1.answers.forEach((word, index) => {
-                const wordItem = document.createElement('div');
-                wordItem.className = 'word-item';
-                wordItem.innerHTML = `
-                    <strong>(${index + 21})</strong> ${word}
-                `;
-                wordsList1.appendChild(wordItem);
-            });
-
-            // كلمات الفراغات لـ Teil 2
-            const wordsList2 = document.getElementById('wordsList2');
-            wordsList2.innerHTML = '';
-            
-            examData.blankText2.answers.forEach((word, index) => {
-                const wordItem = document.createElement('div');
-                wordItem.className = 'word-item';
-                wordItem.innerHTML = `
-                    <strong>(${index + 32})</strong> ${word}
-                `;
-                wordsList2.appendChild(wordItem);
-            });
-        }
-
+        // إعداد مستمعي الأحداث
         function setupEventListeners() {
-            // أزرار التحكم
-            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
-            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
-            
-            // زر الرئيسية
-            document.getElementById('homeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html';
-            });
-            
-            // زر التهادا
-            document.getElementById('tahadaBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#subscription';
-            });
-            
-            // زر الوضع الليلي
+            // تبديل الوضع الليلي
             document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-            
-            // زر المستخدم
-            document.getElementById('userBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#profile';
-            });
-            
-            // زر اللغة
-            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
+
+            // محدد اللغة
+            document.getElementById('langBtn').addEventListener('click', toggleLanguageDropdown);
             document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const lang = option.getAttribute('data-lang');
-                    changeLanguage(lang);
-                    document.getElementById('langDropdown').classList.remove('show');
-                });
+                option.addEventListener('click', changeLanguage);
             });
-            
-            // إغلاق القوائم المنسدلة بالنقر خارجها
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.language-selector')) {
+
+            // أزرار التحكم بالإجابات
+            document.getElementById('showAnswers').addEventListener('click', showAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAnswers);
+
+            // نافذة الدعم
+            document.getElementById('supportBtn').addEventListener('click', showSupportModal);
+            document.getElementById('closeSupportModal').addEventListener('click', hideSupportModal);
+
+            // نافذة الملاحظات
+            document.getElementById('notesBtn').addEventListener('click', showNotesModal);
+            document.getElementById('closeNotesModal').addEventListener('click', hideNotesModal);
+            document.getElementById('saveNotes').addEventListener('click', saveNotes);
+
+            // النقر خارج القوائم المنسدلة لإغلاقها
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.language-selector')) {
                     document.getElementById('langDropdown').classList.remove('show');
                 }
             });
         }
 
-        function showAllAnswers() {
-            document.querySelectorAll('.answer').forEach(answer => {
-                answer.classList.remove('hidden');
-            });
-            document.querySelectorAll('.blank-answer').forEach(answer => {
-                answer.classList.remove('hidden');
-            });
-            document.querySelectorAll('.heading-item').forEach((heading, index) => {
-                const letter = heading.dataset.letter;
-                examData.texts.forEach(text => {
-                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
-                        heading.classList.add('matched');
-                    }
-                });
-            });
-        }
-
-        function hideAllAnswers() {
-            document.querySelectorAll('.answer').forEach(answer => {
-                answer.classList.add('hidden');
-            });
-            document.querySelectorAll('.blank-answer').forEach(answer => {
-                answer.classList.add('hidden');
-            });
-            document.querySelectorAll('.heading-item').forEach(heading => {
-                heading.classList.remove('matched');
-            });
-        }
-
+        // تبديل الوضع الليلي
         function toggleDarkMode() {
             isDarkMode = !isDarkMode;
-            document.body.classList.toggle('dark-mode', isDarkMode);
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('themeToggle').textContent = isDarkMode ? '☀️' : '🌙';
             localStorage.setItem('darkMode', isDarkMode);
-            
-            const themeIcon = document.querySelector('#themeToggle i');
-            if (isDarkMode) {
-                themeIcon.className = 'fas fa-sun';
-            } else {
-                themeIcon.className = 'fas fa-moon';
-            }
         }
 
-        function toggleLangDropdown() {
+        // تبديل قائمة اللغة
+        function toggleLanguageDropdown() {
             document.getElementById('langDropdown').classList.toggle('show');
         }
 
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
+        // تغيير اللغة
+        function changeLanguage(event) {
+            const selectedLang = event.target.dataset.lang;
+            if (selectedLang && translations[selectedLang]) {
+                currentLanguage = selectedLang;
+                updateLanguage();
+                document.getElementById('langDropdown').classList.remove('show');
+                localStorage.setItem('language', currentLanguage);
+            }
+        }
+
+        // تحديث اللغة
+        function updateLanguage() {
+            const t = translations[currentLanguage];
             
-            // تحديث جميع النصوص
-            Object.keys(t).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = t[key];
-                }
+            // تحديث النصوص
+            document.getElementById('pageTitle').textContent = t.pageTitle;
+            document.getElementById('pageSubtitle').textContent = t.pageSubtitle;
+            document.getElementById('showAnswersText').textContent = t.showAnswersText;
+            document.getElementById('hideAnswersText').textContent = t.hideAnswersText;
+            document.getElementById('teil1Title').textContent = t.teil1Title;
+            document.getElementById('teil1Description').textContent = t.teil1Description;
+            document.getElementById('teil2Title').textContent = t.teil2Title;
+            document.getElementById('teil3Title').textContent = t.teil3Title;
+            document.getElementById('teil3Description').textContent = t.teil3Description;
+            document.getElementById('sprach1Title').textContent = t.sprach1Title;
+            document.getElementById('sprach2Title').textContent = t.sprach2Title;
+            document.getElementById('supportTitle').textContent = t.supportTitle;
+            
+            // تحديث زر اللغة
+            document.getElementById('langBtn').innerHTML = `<span>${t.langText}</span>`;
+        }
+
+        // إظهار التصحيح
+        function showAnswers() {
+            answersVisible = true;
+            
+            // إظهار إجابات Teil 1
+            contentData.texts.forEach(text => {
+                document.getElementById(`answer-text-${text.id}`).classList.remove('hidden');
             });
             
-            localStorage.setItem('language', lang);
+            // إظهار إجابات Teil 2
+            contentData.longText.questions.forEach(question => {
+                document.getElementById(`answer-${question.id}`).classList.remove('hidden');
+            });
             
-            // إعادة تهيئة المحتوى لترجمة الإجابات
-            initializeTeil1();
-            initializeTeil2();
+            // إظهار إجابات Teil 3
+            contentData.situations.forEach(situation => {
+                document.getElementById(`answer-situation-${situation.id}`).classList.remove('hidden');
+            });
+            
+            // إظهار إجابات Sprachbausteine Teil 1
+            contentData.sprachbausteine1.blanks.forEach(blank => {
+                document.getElementById(`answer-blank-${blank.id}`).classList.remove('hidden');
+            });
+            
+            // إظهار إجابات Sprachbausteine Teil 2
+            document.getElementById('answer-sprach2').classList.remove('hidden');
+        }
+
+        // إخفاء التصحيح
+        function hideAnswers() {
+            answersVisible = false;
+            
+            // إخفاء جميع الإجابات
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+        }
+
+        // إظهار نافذة الدعم
+        function showSupportModal() {
+            document.getElementById('supportModal').style.display = 'flex';
+        }
+
+        // إخفاء نافذة الدعم
+        function hideSupportModal() {
+            document.getElementById('supportModal').style.display = 'none';
+        }
+
+        // إظهار نافذة الملاحظات
+        function showNotesModal() {
+            document.getElementById('notesModal').style.display = 'flex';
+        }
+
+        // إخفاء نافذة الملاحظات
+        function hideNotesModal() {
+            document.getElementById('notesModal').style.display = 'none';
+        }
+
+        // حفظ الملاحظات
+        function saveNotes() {
+            const notes = document.getElementById('notesTextarea').value;
+            localStorage.setItem('userNotes', notes);
+            alert('تم حفظ الملاحظات بنجاح!');
         }
     </script>
 </body>

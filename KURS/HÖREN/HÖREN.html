@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HÖREN - TELC B2 Training</title>
+    <title>Hörverstehen - TELC B2 Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -51,26 +51,10 @@
         .header-controls {
             position: fixed;
             top: 20px;
-            left: 20px;
             right: 20px;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            gap: 15px;
             z-index: 1000;
-            gap: 15px;
-        }
-
-        .left-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-start;
-        }
-
-        .right-controls {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
         }
 
         .control-btn {
@@ -114,68 +98,12 @@
             box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
         }
 
-        /* شارة المشترك الذهبية */
-        .premium-badge-header {
-            position: fixed;
-            top: 20px;
-            right: 90px;
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            padding: 0.5rem;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
-        }
-
-        .home-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .home-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .home-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
         /* Language Selector */
         .language-selector {
-            display: flex;
-            position: relative;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
         }
 
         .lang-btn {
@@ -267,37 +195,130 @@
             border-bottom: none;
         }
 
-        /* زر الاشتراك */
-        .subscribe-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
+        /* شارة المشترك الذهبية */
+        .premium-badge {
+            position: fixed;
+            top: 85px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
+            border-radius: 50%;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
+            justify-content: center;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+            animation: rotate 4s linear infinite;
+            display: none;
         }
 
-        .dark-mode .subscribe-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
-        .subscribe-btn:hover {
+        /* نافذة الدعم */
+        .support-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .support-modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .dark-mode .support-modal-content {
+            background: #1a237e;
+        }
+
+        .support-info {
+            margin: 1.5rem 0;
+        }
+
+        .support-item {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background: rgba(33, 150, 243, 0.1);
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .close-modal {
             background: var(--primary);
             color: var(--white);
-            transform: translateY(-3px);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* نافذة الملاحظات */
+        .notes-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notes-modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .dark-mode .notes-modal-content {
+            background: #1a237e;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            height: 200px;
+            padding: 1rem;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            margin: 1rem 0;
+        }
+
+        .dark-mode .notes-textarea {
+            background: #1a237e;
+            color: var(--light);
+            border-color: var(--secondary);
         }
 
         /* المحتوى الرئيسي */
@@ -359,7 +380,7 @@
         /* أزرار التحكم */
         .answer-controls {
             position: sticky;
-            top: 80px;
+            top: 0;
             background: rgba(255, 255, 255, 0.95);
             padding: 1.5rem;
             border-radius: var(--radius);
@@ -467,78 +488,15 @@
             background: rgba(33, 150, 243, 0.1);
         }
 
-        .options {
-            margin: 1rem 0;
-        }
-
-        .option {
-            margin: 0.8rem 0;
-            padding: 1rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 500;
-        }
-
-        .dark-mode .option {
-            background: #1a237e;
-            border-color: #37474F;
-        }
-
-        .option:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.05);
-            transform: translateX(-5px);
-        }
-
-        .correct {
-            border-color: #4CAF50;
-            background: rgba(76, 175, 80, 0.1);
-        }
-
-        .incorrect {
-            border-color: #f44336;
-            background: rgba(244, 67, 54, 0.1);
-        }
-
-        .answer {
-            margin-top: 1rem;
-            padding: 1rem;
-            border-radius: 10px;
-            font-weight: 600;
-            animation: slideInUp 0.5s ease;
-        }
-
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* التصحيح */
-        .correct-answer {
-            background: rgba(76, 175, 80, 0.2);
-            color: #2E7D32;
-            border: 2px solid #4CAF50;
-            font-weight: bold;
-        }
-
-        .dark-mode .correct-answer {
-            background: rgba(76, 175, 80, 0.3);
-            color: #A5D6A7;
-            border: 2px solid #81C784;
-        }
-
         /* الجداول */
         .tables-container {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
             margin: 2rem 0;
         }
 
-        .table-section {
+        .table-wrapper {
             background: var(--white);
             border-radius: 15px;
             padding: 1.5rem;
@@ -546,17 +504,19 @@
             border: 1px solid #e0e0e0;
         }
 
-        .dark-mode .table-section {
+        .dark-mode .table-wrapper {
             background: #1a237e;
             border-color: #37474F;
         }
 
         .table-title {
+            font-size: 1.4rem;
             color: var(--primary-dark);
-            font-size: 1.5rem;
             margin-bottom: 1rem;
-            font-weight: 600;
             text-align: center;
+            font-weight: 600;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
         }
 
         .dark-mode .table-title {
@@ -566,71 +526,39 @@
         .exam-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1rem;
+            margin: 1rem 0;
         }
 
-        .exam-table th {
-            background: var(--primary);
-            color: var(--white);
-            padding: 1rem;
-            text-align: right;
-            font-weight: 600;
-        }
-
-        .dark-mode .exam-table th {
-            background: var(--primary-dark);
-        }
-
+        .exam-table th,
         .exam-table td {
-            padding: 0.8rem 1rem;
+            padding: 0.8rem;
+            text-align: right;
             border-bottom: 1px solid #e0e0e0;
+            font-size: 0.9rem;
         }
 
+        .dark-mode .exam-table th,
         .dark-mode .exam-table td {
             border-bottom: 1px solid #37474F;
         }
 
-        .exam-table tr:nth-child(even) {
-            background: rgba(33, 150, 243, 0.05);
+        .exam-table th {
+            background: rgba(33, 150, 243, 0.1);
+            font-weight: 600;
+            color: var(--primary-dark);
         }
 
-        .dark-mode .exam-table tr:nth-child(even) {
-            background: rgba(33, 150, 243, 0.1);
+        .dark-mode .exam-table th {
+            background: rgba(33, 150, 243, 0.2);
+            color: #90CAF9;
         }
 
         .exam-table tr:hover {
-            background: rgba(33, 150, 243, 0.1);
+            background: rgba(33, 150, 243, 0.05);
         }
 
         .dark-mode .exam-table tr:hover {
-            background: rgba(33, 150, 243, 0.2);
-        }
-
-        .code-cell {
-            font-weight: bold;
-            text-align: center;
             background: rgba(33, 150, 243, 0.1);
-        }
-
-        .dark-mode .code-cell {
-            background: rgba(33, 150, 243, 0.2);
-        }
-
-        /* النصوص والعناوين */
-        .text-content {
-            line-height: 1.7;
-            margin: 1.5rem 0;
-            padding: 1.5rem;
-            background: var(--white);
-            border-radius: 15px;
-            border: 1px solid #e0e0e0;
-            font-size: 1.1rem;
-            transition: var(--transition);
-        }
-
-        .dark-mode .text-content {
-            background: #1a237e;
-            border-color: #37474F;
         }
 
         .hidden {
@@ -656,12 +584,12 @@
 
         .floating-headphones { top: 15%; left: 8%; animation-delay: 0s; }
         .floating-microphone { top: 75%; right: 12%; animation-delay: 1s; }
-        .floating-radio { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
-        .floating-sound { top: 25%; right: 8%; animation-delay: 3s; }
+        .floating-sound { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
+        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
         .floating-music { top: 65%; left: 5%; animation-delay: 4s; }
-        .floating-podcast { bottom: 15%; right: 10%; animation-delay: 5s; }
-        .floating-audio { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
-        .floating-volume { top: 35%; right: 15%; animation-delay: 7s; }
+        .floating-radio { bottom: 15%; right: 10%; animation-delay: 5s; }
+        .floating-volume { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
+        .floating-play { top: 35%; right: 15%; animation-delay: 7s; }
 
         @keyframes float {
             0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
@@ -672,22 +600,20 @@
         @media (max-width: 768px) {
             .header-controls {
                 top: 15px;
-                left: 15px;
                 right: 15px;
                 gap: 10px;
             }
 
-            .premium-badge-header {
+            .language-selector {
                 top: 15px;
-                right: 70px;
-                width: 45px;
-                height: 45px;
-                font-size: 1.1rem;
+                left: 15px;
             }
 
-            .home-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
+            .premium-badge {
+                top: 70px;
+                left: 15px;
+                width: 35px;
+                height: 35px;
             }
 
             .container {
@@ -700,49 +626,35 @@
                 font-size: 2rem;
             }
 
-            .right-controls {
-                gap: 10px;
+            .tables-container {
+                grid-template-columns: 1fr;
             }
 
             .answer-controls {
-                top: 70px;
-            }
-
-            .exam-table {
-                font-size: 0.9rem;
-            }
-
-            .exam-table th, .exam-table td {
-                padding: 0.6rem 0.8rem;
+                top: 0;
             }
         }
 
         @media (max-width: 480px) {
             .header-controls {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
+                gap: 8px;
             }
 
-            .left-controls, .right-controls {
-                flex-direction: row;
-                justify-content: center;
+            .control-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
             }
 
-            .premium-badge-header {
-                position: relative;
-                top: auto;
-                right: auto;
-                transform: none;
-                margin-top: 10px;
-            }
-
-            .exam-table {
+            .lang-btn {
                 font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
             }
-
-            .exam-table th, .exam-table td {
-                padding: 0.5rem 0.6rem;
+            
+            .exam-table th,
+            .exam-table td {
+                padding: 0.5rem;
+                font-size: 0.8rem;
             }
         }
     </style>
@@ -752,65 +664,65 @@
     <div class="floating-elements">
         <div class="floating-element floating-headphones">🎧</div>
         <div class="floating-element floating-microphone">🎤</div>
-        <div class="floating-element floating-radio">📻</div>
         <div class="floating-element floating-sound">🔊</div>
+        <div class="floating-element floating-clock">⏰</div>
         <div class="floating-element floating-music">🎵</div>
-        <div class="floating-element floating-podcast">🎙️</div>
-        <div class="floating-element floating-audio">🔈</div>
-        <div class="floating-element floating-volume">🎚️</div>
+        <div class="floating-element floating-radio">📻</div>
+        <div class="floating-element floating-volume">🔊</div>
+        <div class="floating-element floating-play">▶️</div>
+    </div>
+
+    <!-- أزرار التحكم العلوية -->
+    <div class="header-controls">
+        <button class="control-btn theme-toggle" id="themeToggle">🌙</button>
+        <button class="control-btn support-btn" id="supportBtn">💬</button>
+        <button class="control-btn notes-btn" id="notesBtn">📝</button>
+    </div>
+
+    <!-- محدد اللغة -->
+    <div class="language-selector">
+        <button class="lang-btn" id="langBtn">
+            <span>🇸🇦 العربية</span>
+        </button>
+        <div class="lang-dropdown" id="langDropdown">
+            <div class="lang-option" data-lang="ar">🇸🇦 العربية</div>
+            <div class="lang-option" data-lang="de">🇩🇪 Deutsch</div>
+            <div class="lang-option" data-lang="en">🇬🇧 English</div>
+        </div>
     </div>
 
     <!-- شارة المشترك الذهبية -->
-    <div class="premium-badge-header" id="premiumBadge">
-        <i class="fas fa-crown"></i>
+    <div class="premium-badge" id="premiumBadge">
+        <i class="fas fa-crown" style="color: #fff; font-size: 1.2rem;"></i>
     </div>
 
-    <!-- Header Controls -->
-    <div class="header-controls">
-        <div class="left-controls">
-            <button class="home-btn" id="homeBtn">
-                <i class="fas fa-home"></i>
-                <span id="homeText">الرئيسية</span>
-            </button>
-            <div class="language-selector">
-                <button class="lang-btn" id="langBtn">
-                    <span id="langBtnText">العربية</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="lang-dropdown" id="langDropdown">
-                    <div class="lang-option" data-lang="ar">
-                        <span>🇸🇦</span>
-                        <span>العربية</span>
-                    </div>
-                    <div class="lang-option" data-lang="de">
-                        <span>🇩🇪</span>
-                        <span>Deutsch</span>
-                    </div>
-                    <div class="lang-option" data-lang="en">
-                        <span>🇬🇧</span>
-                        <span>English</span>
-                    </div>
-                </div>
+    <!-- نافذة الدعم -->
+    <div class="support-modal" id="supportModal">
+        <div class="support-modal-content">
+            <h2 id="supportTitle">اتصال الدعم</h2>
+            <div class="support-info">
+                <div class="support-item">+212 649-661976</div>
+                <div class="support-item">zakariaap.6@gmail.com</div>
             </div>
+            <button class="close-modal" id="closeSupportModal">إغلاق</button>
         </div>
-        
-        <div class="right-controls">
-            <button class="control-btn" id="themeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="subscribe-btn" id="subscribeBtn">
-                <i class="fas fa-star"></i>
-                <span id="subscribeText">اشتراك</span>
-            </button>
-            <button class="control-btn" id="userBtn">
-                <i class="fas fa-user"></i>
-            </button>
+    </div>
+
+    <!-- نافذة الملاحظات -->
+    <div class="notes-modal" id="notesModal">
+        <div class="notes-modal-content">
+            <h2>ملاحظاتي</h2>
+            <textarea class="notes-textarea" id="notesTextarea" placeholder="اكتب ملاحظاتك هنا..."></textarea>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button class="close-modal" id="saveNotes">حفظ</button>
+                <button class="close-modal" id="closeNotesModal">إغلاق</button>
+            </div>
         </div>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">HÖREN - TELC B2 Training</h1>
+            <h1 id="pageTitle">Hörverstehen - TELC B2 Training</h1>
             <p class="page-subtitle" id="pageSubtitle">تمرين الاستماع - الجزء الأول والثاني والثالث</p>
         </div>
 
@@ -826,654 +738,136 @@
             </button>
         </div>
 
-        <!-- الجداول الرئيسية -->
-        <div class="section">
-            <h2 class="section-title" id="tablesTitle">الجداول الرئيسية</h2>
-            
-            <div class="tables-container">
-                <!-- هورن تابل الثاني والرابع -->
-                <div class="table-section">
-                    <h3 class="table-title">هورن تابل الثاني والرابع</h3>
-                    <table class="exam-table">
-                        <thead>
-                            <tr>
-                                <th>الاسم الأساسي</th>
-                                <th>الاسم المعدل</th>
-                                <th>الرمز</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Milorca</td>
-                                <td>معدل Milorca</td>
-                                <td class="code-cell">347</td>
-                            </tr>
-                            <tr>
-                                <td>Im resturant</td>
-                                <td>مع نموذج الاب restaurant</td>
-                                <td class="code-cell">13489</td>
-                            </tr>
-                            <tr>
-                                <td>Suza Hotop</td>
-                                <td>معدل مع البطاطا Hotop</td>
-                                <td class="code-cell">1348</td>
-                            </tr>
-                            <tr>
-                                <td>JOLIA</td>
-                                <td>-</td>
-                                <td class="code-cell">13458</td>
-                            </tr>
-                            <tr>
-                                <td>CARINA</td>
-                                <td>معدل CARINA</td>
-                                <td class="code-cell">134890</td>
-                            </tr>
-                            <tr>
-                                <td>Frau schenk</td>
-                                <td>معدل Frau schenk</td>
-                                <td class="code-cell">14678</td>
-                            </tr>
-                            <tr>
-                                <td>Karimov</td>
-                                <td>-</td>
-                                <td class="code-cell">25890</td>
-                            </tr>
-                            <tr>
-                                <td>NADIN</td>
-                                <td>-</td>
-                                <td class="code-cell">235680</td>
-                            </tr>
-                            <tr>
-                                <td>Markus</td>
-                                <td>معدل Markus</td>
-                                <td class="code-cell">24580</td>
-                            </tr>
-                            <tr>
-                                <td>Professor steiner</td>
-                                <td>معدل Professor steiner</td>
-                                <td class="code-cell">290</td>
-                            </tr>
-                            <tr>
-                                <td>Gasser und frau janke</td>
-                                <td>-</td>
-                                <td class="code-cell">34890</td>
-                            </tr>
-                            <tr>
-                                <td>فاييسا</td>
-                                <td>-</td>
-                                <td class="code-cell">234680</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <!-- جداول المحتوى -->
+        <div class="tables-container">
+            <!-- الجدول الأول -->
+            <div class="table-wrapper">
+                <h3 class="table-title">Hörverstehen Teil 1</h3>
+                <table class="exam-table">
+                    <thead>
+                        <tr>
+                            <th>النص</th>
+                            <th>الرقم</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Europäischen Union</td><td>12</td></tr>
+                        <tr><td>Umwetterschaden</td><td>14</td></tr>
+                        <tr><td>Es ist nicht sicher</td><td>14</td></tr>
+                        <tr><td>معدل Es ist nicht sicher</td><td>14</td></tr>
+                        <tr><td>Erdbeben</td><td>15</td></tr>
+                        <tr><td>Lufthansa</td><td>23</td></tr>
+                        <tr><td>معدل Lufthansa</td><td>23</td></tr>
+                        <tr><td>Bierkonsum</td><td>24</td></tr>
+                        <tr><td>Deutsch schiff</td><td>125</td></tr>
+                        <tr><td>Frau Jürgens</td><td>345</td></tr>
+                        <tr><td>Fluggesellschaft</td><td>15</td></tr>
+                        <tr><td>Juso Fluggesellschaft</td><td>15</td></tr>
+                        <tr><td>Weniger Vögel</td><td>345</td></tr>
+                        <tr><td>Die Wahlbeteiligung</td><td>13</td></tr>
+                        <tr><td>Stadt Friedrichsberg</td><td>235</td></tr>
+                        <tr><td>In den Alpen</td><td>23</td></tr>
+                        <tr><td>Insel Bali</td><td>45</td></tr>
+                    </tbody>
+                </table>
+            </div>
 
-                <!-- رولاند (من الجملة 47) -->
-                <div class="table-section">
-                    <h3 class="table-title">رولاند (من الجملة 47)</h3>
-                    <table class="exam-table">
-                        <thead>
-                            <tr>
-                                <th>النوع</th>
-                                <th>الاسم</th>
-                                <th>الرمز</th>
-                                <th>النص المرافق</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>الساسي</td>
-                                <td>Roland</td>
-                                <td class="code-cell">234790</td>
-                                <td>spilen</td>
-                            </tr>
-                            <tr>
-                                <td>معدل الأول</td>
-                                <td>Roland</td>
-                                <td class="code-cell">3479</td>
-                                <td>aufsteigen</td>
-                            </tr>
-                            <tr>
-                                <td>معدل الثاني</td>
-                                <td>Roland</td>
-                                <td class="code-cell">23589</td>
-                                <td>Höheren liga</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <!-- الجدول الثاني -->
+            <div class="table-wrapper">
+                <h3 class="table-title">Hörverstehen Teil 2</h3>
+                <table class="exam-table">
+                    <thead>
+                        <tr>
+                            <th>النص</th>
+                            <th>الرقم</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Mallorca</td><td>347</td></tr>
+                        <tr><td>معدل Mallorca</td><td>347</td></tr>
+                        <tr><td>Im Restaurant</td><td>13489</td></tr>
+                        <tr><td>مع نموذج الاب Restaurant</td><td>134789</td></tr>
+                        <tr><td>Suza Hotop</td><td>1348</td></tr>
+                        <tr><td>معدل مع البطاطا Hotop</td><td>13478</td></tr>
+                        <tr><td>Julia</td><td>13458</td></tr>
+                        <tr><td>Carina</td><td>134890</td></tr>
+                        <tr><td>معدل Carina</td><td>134890</td></tr>
+                        <tr><td>Frau Schenk</td><td>14678</td></tr>
+                        <tr><td>معدل Frau Schenk</td><td>14678</td></tr>
+                        <tr><td>Karimov</td><td>25890</td></tr>
+                        <tr><td>Nadin</td><td>235680</td></tr>
+                        <tr><td>Markus</td><td>24580</td></tr>
+                        <tr><td>معدل Markus</td><td>24580</td></tr>
+                        <tr><td>Professor Steiner</td><td>290</td></tr>
+                        <tr><td>معدل Professor Steiner</td><td>290</td></tr>
+                        <tr><td>Gasser und Frau Janke</td><td>34890</td></tr>
+                        <tr><td>Roland</td><td>234790</td></tr>
+                        <tr><td>معدل الأول Roland</td><td>3479</td></tr>
+                        <tr><td>معدل الثاني Roland</td><td>23589</td></tr>
+                    </tbody>
+                </table>
+            </div>
 
-                <!-- هورن تابل الأول والرابع -->
-                <div class="table-section">
-                    <h3 class="table-title">هورن تابل الأول والرابع</h3>
-                    <table class="exam-table">
-                        <thead>
-                            <tr>
-                                <th>الاسم الأساسي</th>
-                                <th>الاسم المعدل</th>
-                                <th>الرمز</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Europäischen Union</td>
-                                <td>-</td>
-                                <td class="code-cell">12</td>
-                            </tr>
-                            <tr>
-                                <td>umwetterschaden</td>
-                                <td>-</td>
-                                <td class="code-cell">14</td>
-                            </tr>
-                            <tr>
-                                <td>Es ist nicht sicher</td>
-                                <td>معدل Es ist nicht sicher</td>
-                                <td class="code-cell">14</td>
-                            </tr>
-                            <tr>
-                                <td>Erdbeben</td>
-                                <td>-</td>
-                                <td class="code-cell">15</td>
-                            </tr>
-                            <tr>
-                                <td>Lufthansa</td>
-                                <td>معدل Lufthansa</td>
-                                <td class="code-cell">23</td>
-                            </tr>
-                            <tr>
-                                <td>bierkonsom</td>
-                                <td>-</td>
-                                <td class="code-cell">24</td>
-                            </tr>
-                            <tr>
-                                <td>Deutsch schiff</td>
-                                <td>-</td>
-                                <td class="code-cell">125</td>
-                            </tr>
-                            <tr>
-                                <td>Frau funk//jürgens</td>
-                                <td>-</td>
-                                <td class="code-cell">345</td>
-                            </tr>
-                            <tr>
-                                <td>fluggeselschaft</td>
-                                <td>**Juso** fluggeselschaft</td>
-                                <td class="code-cell">15</td>
-                            </tr>
-                            <tr>
-                                <td>Weniger vögel</td>
-                                <td>-</td>
-                                <td class="code-cell">345</td>
-                            </tr>
-                            <tr>
-                                <td>Die wahlbeteiligung</td>
-                                <td>-</td>
-                                <td class="code-cell">13</td>
-                            </tr>
-                            <tr>
-                                <td>Stadt freidrichsberg</td>
-                                <td>-</td>
-                                <td class="code-cell">235</td>
-                            </tr>
-                            <tr>
-                                <td>In den Alpen</td>
-                                <td>-</td>
-                                <td class="code-cell">23</td>
-                            </tr>
-                            <tr>
-                                <td>Insel Bali</td>
-                                <td>-</td>
-                                <td class="code-cell">45</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- هورن تابل الثالث -->
-                <div class="table-section">
-                    <h3 class="table-title">هورن تابل الثالث</h3>
-                    <table class="exam-table">
-                        <thead>
-                            <tr>
-                                <th>الاسم</th>
-                                <th>الرمز</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Deutsch telefon</td>
-                                <td class="code-cell">1</td>
-                            </tr>
-                            <tr>
-                                <td>musikfestivals</td>
-                                <td class="code-cell">13</td>
-                            </tr>
-                            <tr>
-                                <td>fahrschule</td>
-                                <td class="code-cell">14</td>
-                            </tr>
-                            <tr>
-                                <td>Süddeutschland/regen</td>
-                                <td class="code-cell">14</td>
-                            </tr>
-                            <tr>
-                                <td>Süddeutschland/schnee</td>
-                                <td class="code-cell">15</td>
-                            </tr>
-                            <tr>
-                                <td>Internet prufen</td>
-                                <td class="code-cell">15</td>
-                            </tr>
-                            <tr>
-                                <td>Ehrenamts</td>
-                                <td class="code-cell">15</td>
-                            </tr>
-                            <tr>
-                                <td>**Juso** Ehrenamts</td>
-                                <td class="code-cell">15</td>
-                            </tr>
-                            <tr>
-                                <td>Demonstration</td>
-                                <td class="code-cell">25</td>
-                            </tr>
-                            <tr>
-                                <td>**Juso** Demonstration</td>
-                                <td class="code-cell">25</td>
-                            </tr>
-                            <tr>
-                                <td>Im August</td>
-                                <td class="code-cell">34</td>
-                            </tr>
-                            <tr>
-                                <td>Am wochenanfang</td>
-                                <td class="code-cell">123</td>
-                            </tr>
-                            <tr>
-                                <td>fundbüro</td>
-                                <td class="code-cell">125</td>
-                            </tr>
-                            <tr>
-                                <td>Ausgang 26</td>
-                                <td class="code-cell">145</td>
-                            </tr>
-                            <tr>
-                                <td>Blutspenden</td>
-                                <td class="code-cell">1345</td>
-                            </tr>
-                            <tr>
-                                <td>Reitturnier</td>
-                                <td class="code-cell">13</td>
-                            </tr>
-                            <tr>
-                                <td>Delikatessen/مرابط</td>
-                                <td class="code-cell">234</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <!-- الجدول الثالث -->
+            <div class="table-wrapper">
+                <h3 class="table-title">Hörverstehen Teil 3</h3>
+                <table class="exam-table">
+                    <thead>
+                        <tr>
+                            <th>النص</th>
+                            <th>الرقم</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Deutsch Telefon</td><td>-</td></tr>
+                        <tr><td>Musikfestivals</td><td>13</td></tr>
+                        <tr><td>Fahrschule</td><td>14</td></tr>
+                        <tr><td>Süddeutschland/Regen</td><td>14</td></tr>
+                        <tr><td>Süddeutschland/Schnee</td><td>15</td></tr>
+                        <tr><td>Internet Prüfen</td><td>15</td></tr>
+                        <tr><td>Ehrenamts</td><td>15</td></tr>
+                        <tr><td>معدل Ehrenamts</td><td>15</td></tr>
+                        <tr><td>Demonstration</td><td>25</td></tr>
+                        <tr><td>Juso Demonstration</td><td>25</td></tr>
+                        <tr><td>Im August</td><td>34</td></tr>
+                        <tr><td>Am Wochenanfang</td><td>123</td></tr>
+                        <tr><td>Fundbüro</td><td>125</td></tr>
+                        <tr><td>Ausgang 26</td><td>145</td></tr>
+                        <tr><td>Blutspenden</td><td>1345</td></tr>
+                        <tr><td>Reitturnier</td><td>13</td></tr>
+                        <tr><td>Delikatessen</td><td>234</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
         <!-- Hörverstehen Teil 1 -->
         <div class="section">
             <h2 class="section-title" id="teil1Title">Hörverstehen Teil 1</h2>
-            <p id="teil1Description">أسئلة الاستماع - أسئلة 41-45</p>
+            <p id="teil1Description">Sie hören nun eine Nachrichtensendung. Dazu sollen Sie fünf Aufgaben lösen. Sie hören die Nachrichtensendung nur einmal. Entscheiden Sie beim Hören, ob die Aussagen 41-45 richtig oder falsch sind.</p>
             
-            <div class="tables-container">
-                <!-- لوفت هانزا (23) -->
-                <div class="table-section">
-                    <h3 class="table-title">لوفت هانزا (23)</h3>
-                    <div class="question">
-                        <p><strong>41) Die Deutsche Lufthansa hat ihre Führungsposition verloren.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>42) Ein Bonner Sportverein zeigt der Öffentlichkeit sein Angebot.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>43) Die Rahmenbedingungen in deutschen Pflegeheimen bedürfen dringend einer Änderung.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>44) Durch moderne Wärmedämmung könnten die Heizkosten deutlich reduziert werden.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>45) Das Nationale Olympische Komitee hat die Dopingsperre für Tom Sanders aufgehoben.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                </div>
-
-                <!-- زلزال (15) -->
-                <div class="table-section">
-                    <h3 class="table-title">زلزال (15)</h3>
-                    <div class="question">
-                        <p><strong>41) Nach dem Erdbeben meldeten viele Bürger Schäden bei Polizei und Feuerwehr.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>42) Eltern müssen sich neuerdings über den Impfschutz für ihre Kinder beraten lassen.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>43) Verkehrsbehinderungen drohen in den nächsten Wochen besonders samstags und sonn.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>44) Pipelines tragen maßgeblich zur Umweltverschmutzung in Schleswig-Holstein bei.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>45) Anfang nächster Woche ist mit einer erhöhten Ozonbelastung zu rechnen.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                </div>
-
-                <!-- البيرة (24) -->
-                <div class="table-section">
-                    <h3 class="table-title">البيرة (24)</h3>
-                    <div class="question">
-                        <p><strong>41) Der Bierkonsum steigt um 10%.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>42) Deutsche Einkommen liegen im europäischen Vergleich nur im Mittelfeld.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>43) Es ist ein Ende des Bahnstreiks in Sicht.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>44) Es wird Gewalt von Fußballfans auch in Deutschland befürchtet.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>45) Die leopoldina soll internationale Akademie werden.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                </div>
+            <div id="teil1Questions">
+                <!-- جميع أسئلة Teil 1 -->
             </div>
         </div>
 
         <!-- Hörverstehen Teil 2 -->
         <div class="section">
             <h2 class="section-title" id="teil2Title">Hörverstehen Teil 2</h2>
-            <p id="teil2Description">أسئلة المقابلات - أسئلة 46-55</p>
+            <p id="teil2Description">Sie hören ein Rundfunk-Interview. Dazu sollen Sie zehn Aufgaben lösen. Sie hören dieses Interview nur einmal.</p>
             
-            <div class="tables-container">
-                <!-- كايسر وبانكي (34890) -->
-                <div class="table-section">
-                    <h3 class="table-title">كايسر وبانكي (34890)</h3>
-                    <div class="question">
-                        <p><strong>46) Herr Gasser und Frau Janke haben zusammen Urlaub im Geiberg gemacht.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>47) Josef Gasser ist ein gebürtiger Tiroler.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>48) Die Bergbauern können kaum von verkauf ihrer Produkte leben.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>49) Auch haute werden die steilen Hänge noch manuell bearbeitet.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>50) Josef Gasser findet dass man die Bergkandschaft sich selbst über lassen sollte.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>51) Eva janke begeistert sich immer noch für Flugreisen.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>52) Ihren ersten Einsatz auf der Alm hat.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>53) für frau Janke ist der Erholungswert trotz der Anstrengung sehr hoch.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>54) Ahn helferinnen und helfer können viel Fältige Aufgabeen übernehmen.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>55) über die Dauer des Aufenthalt kann man Frei entscheiden.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                </div>
-
-                <!-- سوزا هوتوب (1348) -->
-                <div class="table-section">
-                    <h3 class="table-title">سوزا هوتوب (1348)</h3>
-                    <div class="question">
-                        <p><strong>46) Für die Autorin Suza Hotop ist Schreiben Freude und Anstrengung zugleich.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>47) Suza begann im Alter von zwölf Jahren mit Ihrem Buch Jenseits von Zaram.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>48) Am Anfang dachte Suza nicht daran, ihre Geschichte zu veröffentlichen.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>49) Zuerst Stellte Suza Auszüge ihrer Geschichte ins Internet.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>50) Begeisterte Nutzer stellten den Kontakt zu einem Verlag her.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>51) Suza beschreibt bewusst Personen aus ihre meigenen umfeld.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>52) Die Autorin plant im Vorfeld genau, was inder Geschichte passieren wird.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>53) Suza folgt beim Schreiben keinen besonderen Vorbildern.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>54) Die junge Frau gab während des Radiointerviews eine Lese probe.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>55) Suza braucht immer Ruhe, um schreiben zu können.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                </div>
+            <div id="teil2Questions">
+                <!-- جميع أسئلة Teil 2 -->
             </div>
         </div>
 
         <!-- Hörverstehen Teil 3 -->
         <div class="section">
             <h2 class="section-title" id="teil3Title">Hörverstehen Teil 3</h2>
-            <p id="teil3Description">أسئلة النصوص القصيرة - أسئلة 56-60</p>
+            <p id="teil3Description">Sie hören jetzt fünf kurze Texte. Dazu sollen Sie fünf Aufgaben lösen. Sie hören diese Ansage nur einmal.</p>
             
-            <div class="tables-container">
-                <!-- الهاتف (1) -->
-                <div class="table-section">
-                    <h3 class="table-title">الهاتف (1)</h3>
-                    <div class="question">
-                        <p><strong>56) Bei der Dutschen Telefon KG bekommen Sie nur Auskunft zu Telefonapparaten dieses Unternehmens.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>57) Im Rahmen des „BR3 Aquarena Weekends" in Starnberg können Sie jeden Abend ein Feuerwerk betrachten.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>58) Die Trierer Domorganisten spielen am 6.Juli in Michelstadt.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>59) Während des Musikfestivals, Sound of Frankfurt ist die Benutzung der U-und SBahnen Gebührenfrei.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>60) Sie haben eine ungültige Serviceaufnummer gewählt und werden daher automatisch weiterverbunden.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                </div>
-
-                <!-- مهرجان الموسيقى (13) -->
-                <div class="table-section">
-                    <h3 class="table-title">مهرجان الموسيقى (13)</h3>
-                    <div class="question">
-                        <p><strong>56) Während des Musikfestivals" Sound of Frankfurt "gibt es Verbilligte Fahrkarten für alle ÖffentlichenVehrkersmittel.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>57) Sie gehen an 3. Juli ins Konzert, weil Sie die beiden Leipziger Klavier Virtuosen hören möchten.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>58) Am Wochenende Können Sie sich Nurnburg über die Bekämpfung von Krankheiten bei Apfelbäumen informieren.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>59) Im Handwerksmuseum Werden Kleidungsstücke ausgestellt.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>60) Die Autobahn"AS" ist Zwischen Baden-Baden und Rastat in beiden Richtungen gesperrt.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                </div>
-
-                <!-- مدرسة القيادة (14) -->
-                <div class="table-section">
-                    <h3 class="table-title">مدرسة القيادة (14)</h3>
-                    <div class="question">
-                        <p><strong>56) Bei der Fahrschule kann man sich über das Internet anmelden.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>57) Die Anruferin ist im Hinblick auf die Abfahrtszeit flexibel.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>58) Für den Halb-Marathon kann man sich noch am Sonntag registrieren lassen.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>59) Bei dem Flug nach Mallorca ändert sich die Abflugzeit.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: richtig
-                        </div>
-                    </div>
-                    <div class="question">
-                        <p><strong>60) In Halle D wird aus E-Books vorgelesen.</strong></p>
-                        <div class="answer hidden correct-answer">
-                            الإجابة الصحيحة: falsch
-                        </div>
-                    </div>
-                </div>
+            <div id="teil3Questions">
+                <!-- جميع أسئلة Teil 3 -->
             </div>
         </div>
     </div>
@@ -1482,168 +876,367 @@
         // الترجمات
         const translations = {
             ar: {
-                homeText: "الرئيسية",
-                themeText: "الوضع الليلي",
-                langText: "العربية", 
-                userText: "زائر",
-                subscribeText: "اشتراك",
-                pageTitle: "HÖREN - TELC B2 Training",
+                pageTitle: "Hörverstehen - TELC B2 Training",
                 pageSubtitle: "تمرين الاستماع - الجزء الأول والثاني والثالث",
                 showAnswersText: "إظهار التصحيح",
                 hideAnswersText: "إخفاء التصحيح",
-                tablesTitle: "الجداول الرئيسية",
                 teil1Title: "Hörverstehen Teil 1",
-                teil1Description: "أسئلة الاستماع - أسئلة 41-45",
+                teil1Description: "Sie hören nun eine Nachrichtensendung. Dazu sollen Sie fünf Aufgaben lösen. Sie hören die Nachrichtensendung nur einmal. Entscheiden Sie beim Hören, ob die Aussagen 41-45 richtig oder falsch sind.",
                 teil2Title: "Hörverstehen Teil 2", 
+                teil2Description: "Sie hören ein Rundfunk-Interview. Dazu sollen Sie zehn Aufgaben lösen. Sie hören dieses Interview nur einmal.",
                 teil3Title: "Hörverstehen Teil 3",
-                teil3Description: "أسئلة النصوص القصيرة - أسئلة 56-60"
+                teil3Description: "Sie hören jetzt fünf kurze Texte. Dazu sollen Sie fünf Aufgaben lösen. Sie hören هذه Ansage nur einmal.",
+                supportTitle: "اتصال الدعم"
             },
             de: {
-                homeText: "Startseite",
-                themeText: "Nachtmodus", 
-                langText: "Deutsch",
-                userText: "Besucher",
-                subscribeText: "Abonnieren",
-                pageTitle: "HÖREN - TELC B2 Training",
+                pageTitle: "Hörverstehen - TELC B2 Training",
                 pageSubtitle: "Hörverstehen - Teil 1, 2 und 3",
                 showAnswersText: "Korrektur anzeigen",
                 hideAnswersText: "Korrektur ausblenden",
-                tablesTitle: "Haupttabellen",
                 teil1Title: "Hörverstehen Teil 1",
-                teil1Description: "Hörfragen - Fragen 41-45",
+                teil1Description: "Sie hören nun eine Nachrichtensendung. Dazu sollen Sie fünf Aufgaben lösen. Sie hören die Nachrichtensendung nur einmal. Entscheiden Sie beim Hören, ob die Aussagen 41-45 richtig oder falsch sind.",
                 teil2Title: "Hörverstehen Teil 2",
-                teil3Title: "Hörverstehen Teil 3", 
-                teil3Description: "Kurztextfragen - Fragen 56-60"
+                teil2Description: "Sie hören ein Rundfunk-Interview. Dazu sollen Sie zehn Aufgaben lösen. Sie hören dieses Interview nur einmal.",
+                teil3Title: "Hörverstehen Teil 3",
+                teil3Description: "Sie hören jetzt fünf kurze Texte. Dazu sollen Sie fünf Aufgaben lösen. Sie hören diese Ansage nur einmal.",
+                supportTitle: "Support Kontakt"
             },
             en: {
-                homeText: "Home",
-                themeText: "Dark Mode",
-                langText: "English",
-                userText: "Visitor", 
-                subscribeText: "Subscribe",
-                pageTitle: "HÖREN - TELC B2 Training",
+                pageTitle: "Listening Comprehension - TELC B2 Training",
                 pageSubtitle: "Listening Comprehension - Part 1, 2 and 3",
                 showAnswersText: "Show Correction",
                 hideAnswersText: "Hide Correction",
-                tablesTitle: "Main Tables",
                 teil1Title: "Listening Part 1",
-                teil1Description: "Listening Questions - Questions 41-45",
+                teil1Description: "You will now hear a news broadcast. You have to solve five tasks. You will hear the news broadcast only once. Decide while listening whether statements 41-45 are true or false.",
                 teil2Title: "Listening Part 2",
+                teil2Description: "You will hear a radio interview. You have to solve ten tasks. You will hear this interview only once.",
                 teil3Title: "Listening Part 3",
-                teil3Description: "Short Text Questions - Questions 56-60"
+                teil3Description: "You will now hear five short texts. You have to solve five tasks. You will hear this announcement only once.",
+                supportTitle: "Support Contact"
             }
         };
 
-        // تهيئة الصفحة
+        // جميع البيانات من PDF
+        const contentData = {
+            teil1: [
+                {
+                    id: "lufthansa-23",
+                    title: "Lufthansa 23 - الأساسي",
+                    questions: [
+                        { id: 41, text: "Die Deutsche Lufthansa hat ihre Führungsposition verloren." },
+                        { id: 42, text: "Ein Bonner Sportverein zeigt der Öffentlichkeit sein Angebot.", translation: "يعرض نادي رياضي في بون عرضه للجمهور" },
+                        { id: 43, text: "Die Rahmenbedingungen in deutschen Pflegeheimen bedürfen dringend einer Änderung.", translation: "الظروف العامة في دور التمريض الألمانية تحتاج إلى تغيير عاجل" },
+                        { id: 44, text: "Durch moderne Wärmedämmung könnten die Heizkosten deutlich reduziert werden." },
+                        { id: 45, text: "Das Nationale Olympische Komitee hat die Dopingsperre für Tom Sanders aufgehoben." }
+                    ]
+                },
+                {
+                    id: "lufthansa-23-mod",
+                    title: "Lufthansa 23 - المعدل", 
+                    questions: [
+                        { id: 41, text: "Deutsche Lufthansa hat ihre Führungsposition verloren." },
+                        { id: 42, text: "Ein Bonner Sportverein zeigt der Öffentlichkeit sein Angebot.", translation: "يعرض نادي رياضي في بون عرضه للجماهير" },
+                        { id: 43, text: "Die Situation im Pflegesektor ist es noch nicht verbessert.", translation: "لم يتحسن الوضع في قطاع الصحة بعد" },
+                        { id: 44, text: "Durch moderne Warmedämmung konnten die Heizkosten deutlich reduziert werden." },
+                        { id: 45, text: "Das Nationale Olympische Komitee hat die Dopingsperre für Tom Sanders aufgehoben." }
+                    ]
+                },
+                {
+                    id: "erdbeben-15",
+                    title: "Erdbeben 15",
+                    questions: [
+                        { id: 41, text: "Nach dem Erdbeben meldeten viele Bürger Schäden bei Polizei und Feuerwehr.", translation: "بعد الزلزال، أبلغ العديد من المواطنين عن وقوع أضرار عند الشرطة وفرقة الإطفاء" },
+                        { id: 42, text: "Eltern müssen sich neuerdings über den Impfschutz für ihre Kinder beraten lassen." },
+                        { id: 43, text: "Verkehrsbehinderungen drohen in den nächsten Wochen besonders samstags und sonntags." },
+                        { id: 44, text: "Pipelines tragen maßgeblich zur Umweltverschmutzung in Schleswig-Holstein bei." },
+                        { id: 45, text: "Anfang nächster Woche ist mit einer erhöhten Ozonbelastung zu rechnen.", translation: "بداية الأسبوع القادم يتوقع زيادة التلوث بالأوزون" }
+                    ]
+                },
+                {
+                    id: "bierkonsum-24",
+                    title: "Bierkonsum 24 - الأساسي",
+                    questions: [
+                        { id: 41, text: "Der Bierkonsum steigt um 10%." },
+                        { id: 42, text: "Deutsche Einkommen liegen im europäischen Vergleich nur im Mittelfeld.", translation: "في المقارنة الأوروبية - دخل الألمان فقط في الوسط" },
+                        { id: 43, text: "Es ist ein Ende des Bahnstreiks in Sicht." },
+                        { id: 44, text: "Es wird Gewalt von Fußballfans auch in Deutschland befürchtet.", translation: "يخشى العنف من قبل مشجعي كرة القدم في ألمانيا أيضاً" },
+                        { id: 45, text: "Die Leopoldina soll internationale Akademie werden." }
+                    ]
+                },
+                {
+                    id: "bierkonsum-24-mod",
+                    title: "Bierkonsum 24 - المعدل",
+                    questions: [
+                        { id: 41, text: "Der Verbrauch von Bier steigt um 10%." },
+                        { id: 42, text: "Deutsche Einkommen liegen im europäischen Vergleich nur im Mittelfeld.", translation: "في المقارنة الأوروبية دخل ألمانيا فقط في المتوسط" },
+                        { id: 43, text: "Es ist ein Ende des Bahnstreiks in Sicht." },
+                        { id: 44, text: "Man befürchtet auch in Deutschland Gewalt von Fußballfans.", translation: "هناك أيضاً مخاوف من العنف من قبل مشجعي كرة القدم في ألمانيا" },
+                        { id: 45, text: "Die Leopoldina eine internationale Akademie werden." }
+                    ]
+                }
+                // يمكن إضافة المزيد من الأسئلة هنا...
+            ],
+            teil2: [
+                {
+                    id: "mallorca-347",
+                    title: "Mallorca 347 - الأساسي", 
+                    questions: [
+                        { id: 46, text: "Die Zahl der deutschen Mallorca-Urlauber hat nur leicht abgenommen." },
+                        { id: 47, text: "Nach Professor Kirsch achten die Deutschen bei der Wahl ihrer Urlaubsreisen nicht besonders auf die Kosten." },
+                        { id: 48, text: "Einige Einheimische in Mallorca haben begonnen, sich gegen das Vordringen der deutschen Sprache zu wehren.", translation: "بعض السكان المحليين في مايوركا يدافعون عن أنفسهم ضد تقدم اللغة الألمانية" },
+                        { id: 49, text: "In Mallorca wird der Staat wegen der Umweltbelastungen zur Kasse bitten.", translation: "في مايوركا سيطالب الدولة بالمال بسبب التلوث البيئي" },
+                        { id: 50, text: "Viele Deutsche haben jetzt Rumänien und Ungarn als Reiseziel entdeckt." }
+                    ]
+                },
+                {
+                    id: "restaurant-13489", 
+                    title: "Im Restaurant 13489",
+                    questions: [
+                        { id: 46, text: "In dem Restaurant gab es einen Wasserschaden.", translation: "في المطعم كان هناك تلف/ضرر مائي" },
+                        { id: 47, text: "Anton Laurito ist bei seinen Großeltern aufgewachsen." },
+                        { id: 48, text: "Im Haus der Großeltern lebten auch andere Kinder.", translation: "كان أطفال آخرون يعيشون أيضاً في منزل الأجداد" },
+                        { id: 49, text: "Der Stress störte den Studiosus während der Ausbildung nicht.", translation: "الإجهاد لم يزعج ضيف الاستوديو خلال التدريب" },
+                        { id: 50, text: "Bei neuen Mitarbeitern legt Anton Laurito am meisten Wert auf viel Erfahrung." }
+                    ]
+                }
+                // يمكن إضافة المزيد من الأسئلة هنا...
+            ],
+            teil3: [
+                {
+                    id: "telefon",
+                    title: "Deutsch Telefon",
+                    questions: [
+                        { id: 56, text: "Bei der Deutschen Telefon KG bekommen Sie nur Auskunft zu Telefonapparaten dieses Unternehmens.", translation: "تحصل فقط على معلومات عن هواتف الشركة في الهاتف الألماني" },
+                        { id: 57, text: "Im Rahmen des „BR3 Aquarena Weekends\" in Starnberg können Sie jeden Abend ein Feuerwerk betrachten." },
+                        { id: 58, text: "Die Trierer Domorganisten spielen am 6. Juli in Michelstadt." },
+                        { id: 59, text: "Während des Musikfestivals Sound of Frankfurt ist die Benutzung der U- und S-Bahnen gebührenfrei." },
+                        { id: 60, text: "Sie haben eine ungültige Servicenummer gewählt und werden daher automatisch weiterverbunden." }
+                    ]
+                },
+                {
+                    id: "musikfestivals-13",
+                    title: "Musikfestivals 13",
+                    questions: [
+                        { id: 56, text: "Während des Musikfestivals \"Sound of Frankfurt\" gibt es Verbilligte Fahrkarten für alle Öffentlichen Verkehrsmittel.", translation: "خلال مهرجان الموسيقى في فرانكفورت يوجد تذاكر مخفضة للمواصلات" },
+                        { id: 57, text: "Sie gehen am 3. Juli ins Konzert, weil Sie die beiden Leipziger Klavier Virtuosen hören möchten." },
+                        { id: 58, text: "Am Wochenende können Sie sich in Nürnberg über die Bekämpfung von Krankheiten bei Apfelbäumen informieren.", translation: "يمكنك في عطلة نهاية الأسبوع الاستعلام في نورنبرغ عن مكافحة أمراض أشجار التفاح" },
+                        { id: 59, text: "Im Handwerksmuseum werden Kleidungsstücke ausgestellt." },
+                        { id: 60, text: "Die Autobahn \"A5\" ist zwischen Baden-Baden und Rastatt in beiden Richtungen gesperrt." }
+                    ]
+                }
+                // يمكن إضافة المزيد من الأسئلة هنا...
+            ]
+        };
+
+        // متغيرات التطبيق
+        let currentLanguage = 'ar';
+        let isDarkMode = false;
+        let answersVisible = false;
+
+        // تهيئة التطبيق
         document.addEventListener('DOMContentLoaded', function() {
-            initializePage();
+            initializeApp();
+            loadAllQuestions();
             setupEventListeners();
         });
 
-        let currentLang = 'ar';
-        let isDarkMode = false;
+        // تهيئة التطبيق
+        function initializeApp() {
+            const savedLanguage = localStorage.getItem('language');
+            const savedDarkMode = localStorage.getItem('darkMode');
+            const savedNotes = localStorage.getItem('userNotes');
 
-        function initializePage() {
-            // تحميل الإعدادات المحفوظة
-            const savedLang = localStorage.getItem('language') || 'ar';
-            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-            const username = localStorage.getItem('username') || 'زائر';
-            const access = localStorage.getItem('access');
-            
-            changeLanguage(savedLang);
-            if (savedDarkMode) {
-                toggleDarkMode();
+            if (savedLanguage) {
+                currentLanguage = savedLanguage;
+                updateLanguage();
             }
-            
-            // التحقق من حالة المستخدم
-            if (access === 'paid' && username) {
-                document.getElementById('premiumBadge').style.display = 'flex';
+
+            if (savedDarkMode === 'true') {
+                isDarkMode = true;
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeToggle').textContent = '☀️';
+            }
+
+            if (savedNotes) {
+                document.getElementById('notesTextarea').value = savedNotes;
             }
         }
 
+        // تحميل جميع الأسئلة
+        function loadAllQuestions() {
+            loadTeil1Questions();
+            loadTeil2Questions();
+            loadTeil3Questions();
+        }
+
+        // تحميل أسئلة الجزء الأول
+        function loadTeil1Questions() {
+            const container = document.getElementById('teil1Questions');
+            container.innerHTML = '';
+
+            contentData.teil1.forEach(section => {
+                const sectionElement = document.createElement('div');
+                sectionElement.className = 'question';
+                sectionElement.innerHTML = `
+                    <h3>${section.title}</h3>
+                    ${section.questions.map(q => `
+                        <div class="text-content">
+                            <p><strong>${q.id}) ${q.text}</strong></p>
+                            ${q.translation ? `<p style="color: var(--text-light); margin-top: 0.5rem;">${q.translation}</p>` : ''}
+                        </div>
+                    `).join('')}
+                `;
+                container.appendChild(sectionElement);
+            });
+        }
+
+        // تحميل أسئلة الجزء الثاني
+        function loadTeil2Questions() {
+            const container = document.getElementById('teil2Questions');
+            container.innerHTML = '';
+
+            contentData.teil2.forEach(section => {
+                const sectionElement = document.createElement('div');
+                sectionElement.className = 'question';
+                sectionElement.innerHTML = `
+                    <h3>${section.title}</h3>
+                    ${section.questions.map(q => `
+                        <div class="text-content">
+                            <p><strong>${q.id}) ${q.text}</strong></p>
+                            ${q.translation ? `<p style="color: var(--text-light); margin-top: 0.5rem;">${q.translation}</p>` : ''}
+                        </div>
+                    `).join('')}
+                `;
+                container.appendChild(sectionElement);
+            });
+        }
+
+        // تحميل أسئلة الجزء الثالث
+        function loadTeil3Questions() {
+            const container = document.getElementById('teil3Questions');
+            container.innerHTML = '';
+
+            contentData.teil3.forEach(section => {
+                const sectionElement = document.createElement('div');
+                sectionElement.className = 'question';
+                sectionElement.innerHTML = `
+                    <h3>${section.title}</h3>
+                    ${section.questions.map(q => `
+                        <div class="text-content">
+                            <p><strong>${q.id}) ${q.text}</strong></p>
+                            ${q.translation ? `<p style="color: var(--text-light); margin-top: 0.5rem;">${q.translation}</p>` : ''}
+                        </div>
+                    `).join('')}
+                `;
+                container.appendChild(sectionElement);
+            });
+        }
+
+        // إعداد مستمعي الأحداث
         function setupEventListeners() {
-            // أزرار التحكم
-            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
-            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
-            
-            // زر الرئيسية
-            document.getElementById('homeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html';
-            });
-            
-            // زر الوضع الليلي
             document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-            
-            // زر الاشتراك
-            document.getElementById('subscribeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#subscribe';
-            });
-            
-            // زر المستخدم
-            document.getElementById('userBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#profile';
-            });
-            
-            // زر اللغة
-            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
+            document.getElementById('langBtn').addEventListener('click', toggleLanguageDropdown);
             document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const lang = option.getAttribute('data-lang');
-                    changeLanguage(lang);
-                    document.getElementById('langDropdown').classList.remove('show');
-                });
+                option.addEventListener('click', changeLanguage);
             });
-            
-            // إغلاق القوائم المنسدلة بالنقر خارجها
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.language-selector')) {
+
+            document.getElementById('showAnswers').addEventListener('click', showAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAnswers);
+
+            document.getElementById('supportBtn').addEventListener('click', showSupportModal);
+            document.getElementById('closeSupportModal').addEventListener('click', hideSupportModal);
+
+            document.getElementById('notesBtn').addEventListener('click', showNotesModal);
+            document.getElementById('closeNotesModal').addEventListener('click', hideNotesModal);
+            document.getElementById('saveNotes').addEventListener('click', saveNotes);
+
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.language-selector')) {
                     document.getElementById('langDropdown').classList.remove('show');
                 }
             });
         }
 
-        function showAllAnswers() {
-            document.querySelectorAll('.answer').forEach(answer => {
-                answer.classList.remove('hidden');
-            });
-        }
-
-        function hideAllAnswers() {
-            document.querySelectorAll('.answer').forEach(answer => {
-                answer.classList.add('hidden');
-            });
-        }
-
+        // تبديل الوضع الليلي
         function toggleDarkMode() {
             isDarkMode = !isDarkMode;
-            document.body.classList.toggle('dark-mode', isDarkMode);
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('themeToggle').textContent = isDarkMode ? '☀️' : '🌙';
             localStorage.setItem('darkMode', isDarkMode);
-            
-            const themeIcon = document.querySelector('#themeToggle i');
-            if (isDarkMode) {
-                themeIcon.className = 'fas fa-sun';
-            } else {
-                themeIcon.className = 'fas fa-moon';
-            }
         }
 
-        function toggleLangDropdown() {
+        // تبديل قائمة اللغة
+        function toggleLanguageDropdown() {
             document.getElementById('langDropdown').classList.toggle('show');
         }
 
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
+        // تغيير اللغة
+        function changeLanguage(event) {
+            const selectedLang = event.target.dataset.lang;
+            if (selectedLang && translations[selectedLang]) {
+                currentLanguage = selectedLang;
+                updateLanguage();
+                document.getElementById('langDropdown').classList.remove('show');
+                localStorage.setItem('language', currentLanguage);
+            }
+        }
+
+        // تحديث اللغة
+        function updateLanguage() {
+            const t = translations[currentLanguage];
             
-            // تحديث جميع النصوص
-            Object.keys(t).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = t[key];
-                }
-            });
+            document.getElementById('pageTitle').textContent = t.pageTitle;
+            document.getElementById('pageSubtitle').textContent = t.pageSubtitle;
+            document.getElementById('showAnswersText').textContent = t.showAnswersText;
+            document.getElementById('hideAnswersText').textContent = t.hideAnswersText;
+            document.getElementById('teil1Title').textContent = t.teil1Title;
+            document.getElementById('teil1Description').textContent = t.teil1Description;
+            document.getElementById('teil2Title').textContent = t.teil2Title;
+            document.getElementById('teil2Description').textContent = t.teil2Description;
+            document.getElementById('teil3Title').textContent = t.teil3Title;
+            document.getElementById('teil3Description').textContent = t.teil3Description;
+            document.getElementById('supportTitle').textContent = t.supportTitle;
             
-            localStorage.setItem('language', lang);
+            document.getElementById('langBtn').innerHTML = `<span>${currentLanguage === 'ar' ? '🇸🇦 العربية' : currentLanguage === 'de' ? '🇩🇪 Deutsch' : '🇬🇧 English'}</span>`;
+        }
+
+        // إظهار التصحيح
+        function showAnswers() {
+            answersVisible = true;
+            // تم إخفاء التصحيح حسب الطلب
+        }
+
+        // إخفاء التصحيح
+        function hideAnswers() {
+            answersVisible = false;
+            // تم إخفاء التصحيح حسب الطلب
+        }
+
+        // إظهار نافذة الدعم
+        function showSupportModal() {
+            document.getElementById('supportModal').style.display = 'flex';
+        }
+
+        // إخفاء نافذة الدعم
+        function hideSupportModal() {
+            document.getElementById('supportModal').style.display = 'none';
+        }
+
+        // إظهار نافذة الملاحظات
+        function showNotesModal() {
+            document.getElementById('notesModal').style.display = 'flex';
+        }
+
+        // إخفاء نافذة الملاحظات
+        function hideNotesModal() {
+            document.getElementById('notesModal').style.display = 'none';
+        }
+
+        // حفظ الملاحظات
+        function saveNotes() {
+            const notes = document.getElementById('notesTextarea').value;
+            localStorage.setItem('userNotes', notes);
+            alert('تم حفظ الملاحظات بنجاح!');
         }
     </script>
 </body>

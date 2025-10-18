@@ -274,6 +274,53 @@
             transform: translateY(-2px);
         }
 
+        /* نافذة الملاحظات - تمت إضافتها */
+        .notes-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notes-modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .dark-mode .notes-modal-content {
+            background: #1a237e;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            height: 200px;
+            padding: 1rem;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            margin: 1rem 0;
+        }
+
+        .dark-mode .notes-textarea {
+            background: #1a237e;
+            color: var(--light);
+            border-color: var(--secondary);
+        }
+
         /* زر الرئيسية - تم إزالته واستبداله بأزرار التحكم */
 
         /* المحتوى الرئيسي */
@@ -652,6 +699,65 @@
             border-color: #81C784;
         }
 
+        .blank-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 10px;
+        }
+
+        .blank-option {
+            padding: 0.5rem 1rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .blank-option {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .blank-option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.1);
+        }
+
+        .word-bank {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 15px;
+        }
+
+        .word-option {
+            padding: 0.6rem 1rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .word-option {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .word-option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.1);
+            transform: translateY(-2px);
+        }
+
         .hidden {
             display: none;
         }
@@ -765,7 +871,7 @@
     <div class="header-controls">
         <button class="control-btn theme-toggle" id="themeToggle">🌙</button>
         <button class="control-btn support-btn" id="supportBtn">💬</button>
-        <button class="control-btn profile-btn" id="profileBtn">👤</button>
+        <!-- تم حذف زر الحساب حسب الطلب -->
         <button class="control-btn notes-btn" id="notesBtn">📝</button>
     </div>
 
@@ -795,6 +901,18 @@
                 <div class="support-item">zakariaap.6@gmail.com</div>
             </div>
             <button class="close-modal" id="closeSupportModal">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- نافذة الملاحظات - تمت إضافتها -->
+    <div class="notes-modal" id="notesModal">
+        <div class="notes-modal-content">
+            <h2>ملاحظاتي</h2>
+            <textarea class="notes-textarea" id="notesTextarea" placeholder="اكتب ملاحظاتك هنا..."></textarea>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button class="close-modal" id="saveNotes">حفظ</button>
+                <button class="close-modal" id="closeNotesModal">إغلاق</button>
+            </div>
         </div>
     </div>
 
@@ -845,7 +963,7 @@
         <!-- Lesen Teil 3 -->
         <div class="section">
             <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
-            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
             
             <div class="situations-grid" id="situationsList">
                 <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
@@ -863,6 +981,9 @@
                 <div class="blank-text" id="blankText1">
                     <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
                 </div>
+                <div id="blankOptions1">
+                    <!-- خيارات الفراغات ستتم إضافتها بالجافاسكريبت -->
+                </div>
             </div>
         </div>
 
@@ -872,6 +993,9 @@
             <div class="fill-blanks">
                 <div class="blank-text" id="blankText2">
                     <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                </div>
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات سيتم إضافته بالجافاسكريبت -->
                 </div>
             </div>
         </div>
@@ -893,14 +1017,14 @@
                 teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
                 teil2Title: "Lesen Teil 2", 
                 teil3Title: "Lesen Teil 3",
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
                 sprach1Title: "Sprachbausteine Teil 1",
                 sprach2Title: "Sprachbausteine Teil 2",
                 supportTitle: "اتصال الدعم"
             },
             de: {
                 homeText: "Startseite",
-                themeText: "Nachtmodus", 
+                themeText: "Nachtmodus",
                 langText: "Deutsch",
                 userText: "Besucher",
                 pageTitle: "Umweltschutz - TELC B2 Training",
@@ -910,7 +1034,7 @@
                 teil1Title: "Lesen Teil 1",
                 teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
                 teil2Title: "Lesen Teil 2",
-                teil3Title: "Lesen Teil 3", 
+                teil3Title: "Lesen Teil 3",
                 teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
                 sprach1Title: "Sprachbausteine Teil 1",
                 sprach2Title: "Sprachbausteine Teil 2",
@@ -920,7 +1044,7 @@
                 homeText: "Home",
                 themeText: "Dark Mode",
                 langText: "English",
-                userText: "Visitor", 
+                userText: "Visitor",
                 pageTitle: "Umweltschutz - TELC B2 Training",
                 pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
                 showAnswersText: "Show Correction",
@@ -930,460 +1054,594 @@
                 teil2Title: "Reading Part 2",
                 teil3Title: "Reading Part 3",
                 teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
-                sprach1Title: "Language Elements Part 1", 
+                sprach1Title: "Language Elements Part 1",
                 sprach2Title: "Language Elements Part 2",
                 supportTitle: "Support Contact"
             }
         };
 
-        // بيانات الأسئلة والإجابات من ملف PDF
-        const examData = {
-            // Lesen Teil 1
+        // بيانات المحتوى
+        const contentData = {
             headings: [
-                "Gemeinsam kaputte Geräte retten",
-                "Kaufsucht überwinden diese Möglichkeiten gibt es",
-                "Neue Besitzer für nicht gebrauchte Gegenstände",
-                "Reparatur alter Haushaltsgeräte lohnt oft nicht",
-                "Rücksendungen verderben Online-Händlern das Geschäft",
-                "Rücksendungen verringern: Händler hoffen auf Lösungen",
-                "Studie: So wirkt sich Kleidung auf die Wahrnehmung aus",
-                "Tipps für einen nachhaltigen Kleiderschrank",
-                "Umfrage: So viel Kleidung besitzen die Deutschen",
-                "Weniger Kleidung kaufen: So kann es gelingen"
+                "a) Alte spiele stärken das Miteinander",
+                "b) Dinge zum Anfassen bleiben beliebt",
+                "c) Je mehr Spielsachen, desto größer die Kreativität",
+                "d) Kleine Züge mit langer Geschichte",
+                "e) Massenfertigung von Kuscheltieren",
+                "f) Naturgetreue Handarbeit für das Kinderzimmer",
+                "g) Technik Spielzeug von früher wieder im Handel",
+                "h) Überfluss im Kinderzimmer",
+                "i) Viele Computerspiele kommen schnell aus der Mode",
+                "j) Warum sich Leser von Büchern abwenden"
             ],
             texts: [
                 {
-                    content: "Viele Menschen haben zu Hause Dinge, die sie nicht mehr brauchen. Statt sie wegzuwerfen, kann man sie auch verschenken oder verkaufen. Das schont die Umwelt und spart Ressourcen. Im Internet gibt es verschiedene Plattformen, auf denen man solche Gegenstände anbieten kann. Manchmal findet man auch selbst etwas, das man gut gebrauchen kann.",
-                    correctHeading: 2
+                    id: 1,
+                    content: "Die erste Kösener Puppenfabrik wurde 1912 von Käthe Kruse gegründet. 80 Jahre später übernahm der Unternehmer Helmut Schache die traditionsreiche Spielzeugmanufaktur in Sachsen-Anhalt, seit dem wird sie von seiner Familie geführt. Dort werden noch wie früher Plüschtiere einzeln angefertigt, rund 80.000 jährlich, von der kleinen Maus bis zum 1,65 Meter großen Bären. Wir machen keine niedlichen Plüschtiere. Wir versuchen die Tiere so zu gestalten, wie sie in ihrer Umwelt sind\", erklärt Helmut Schache. Die Plüschtiere entstehen nicht in Fließbandproduktion, sondern werden einzeln zusammengenäht, manche aus über 100 Teilen. Nur so gelingt es, die charakteristischen Merkmale der Tiere authentisch abzubilden. Jedem Entwurf gehen ausführliche anatomische Beobachtungen und Studien in der Natur und im Zoo voraus. Dann erst folgen Skizzen und erste Modelle aus Ton. 15 bis 20 neue Tiere bringt die Kösener Spielzeugmanufaktur jedes Jahr auf den Markt. Verkauft werden sie in 25 Ländern.",
+                    correctHeading: "f"
                 },
                 {
-                    content: "Wenn ein Haushaltsgerät kaputt geht, überlegt man oft, ob man es reparieren lassen soll. Doch viele Reparaturen sind teurer als ein neues Gerät. Zudem sind Ersatzteile oft schwer zu finden. Deshalb entscheiden sich viele Menschen für einen Neukauf, auch wenn das nicht umweltfreundlich ist.",
-                    correctHeading: 3
+                    id: 2,
+                    content: "Die Modelleisenbahn hat auch im Computerzeitalter ihre Anziehungskraft nicht verloren. Bis heute bringt sie die Augen von großen und kleinen Eisenbahnfans zum Leuchten. Doch ihre ersten Erfolge feierte sie schon vor langer Zeit: 1891 rollte die erste Uhrwerkeisenbahn zum Aufziehen über die Gleise, und mit ihr begann der Aufstieg der Firma Märklin zum führenden Hersteller von Spielzeugeisenbahnen. Damals brachte die beginnende Industrialisierung mit ihren neuen Technologien auch für die Spielzeugherstellung neue Impulse. Dampfmaschinen im Kleinformat und funktionierende Kinder-Kochherde hielten Einzug in die Kinderstuben. 1895 brachte Märklin die erste dampfbetriebene Spielzeugeisenbahn auf den Markt. Einige Jahre später entwickelte man daraus die elektrische Modelleisenbahn, wie sie noch immer zu kaufen ist. Diese faszinierte Generationen technikbegeisterter Fans und wurde zum Sammelobjekt. Gewiss werden die Miniatureisenbahnen noch lange durch Kinderzimmer und Hobbykeller rattern.",
+                    correctHeading: "d"
                 },
                 {
-                    content: "In vielen Städten gibt es mittlerweile Repair-Cafés. Dort treffen sich Menschen, um gemeinsam kaputte Dinge zu reparieren. Ehrenamtliche Helfer unterstützen sie dabei. So kann man nicht nur Geld sparen, sondern auch neue Leute kennenlernen und etwas für die Umwelt tun.",
-                    correctHeading: 0
+                    id: 3,
+                    content: "Gedruckten Büchern wurde vor einigen Jahren von Experten ein schnelles Ende vorausgesagt. Das papierlose Lesen sei die Zukunft, hieß es. Höchstens als Nischenprodukt könnten Bücher noch existieren. Doch schon wenig später stiegen deren Verkaufszahlen überraschend an. Vieles deutet darauf hin, dass sich Sachen, die man selbst in die Hand nehmen kann, doch nicht so leicht von digitalen Inhalten verdrängen lassen. Zum Beispiel sind Papierkalender nicht aus den Geschäften verschwunden und die Schallplatte findet trotz der Verbreitung von Streaming-Angeboten viele Käufer. Zukunftsforscher erkennen darin sogar einen Trend, nämlich eine Gegenbewegung zur Digitalisierung. Dafür gibt es natürlich Gründe. Wer will schon nur Passwörter, PINs, Speicherplatz und Kontaktdaten besitzen? Alte Bücher, Hörspielkassetten oder Fotoalben wecken dagegen Gefühle\", erklärt der Konsumforscher Peter Riefenberg. Nimmt man das Taschenbuch in die Hand, das man am Strand gelesen hat, fühlt man sich gleich wieder in den Sommerurlaub zurückversetzt. Gegenstände wecken also Erinnerungen - das werden sie digitalen Produkten immer voraushaben.",
+                    correctHeading: "b"
                 },
                 {
-                    content: "Die Deutschen besitzen durchschnittlich 95 Kleidungsstücke. Das hat eine aktuelle Umfrage ergeben. Frauen haben dabei mehr Kleidung als Männer. Besonders viele Teile finden sich in den Kleiderschränken junger Menschen. Viele davon werden selten oder nie getragen.",
-                    correctHeading: 8
+                    id: 4,
+                    content: "Immer neue Spielekonsolen, Spielformate und Apps drängen auf den elektronischen Spielemarkt und dennoch haben Brettspiele nie an Bedeutung verloren. Die Hersteller vermelden sogar Jahr für Jahr steigende Umsätze. Was aber macht den Zauber des klassischen analogen Brettspiels aus? Wer selbst sein Glück am Würfelbecher versucht, kommt dem Geheimnis schnell auf die Spur: Beim gemeinsamen Spiel genießen die Mitspieler besondere Momente der Zusammengehörigkeit. Bei solchen Spielen steht das gemeinsame Erlebnis im Vordergrund: Familie und Freunde kommen an einem Tisch zusammen\", erklärt Stefan Wiese, Geschäftsführer des Naumburger Spieleverlags. Das gute Brettspiel von früher wird auch in Zukunft Anhänger haben. Nach einer gemeinsamen Spielrunde stehen meist alle mit einem Lächeln vom Tisch auf, ergänzt er. Das Spielen in analogen statt digitalen Welten steigert also Zufriedenheit und Gemeinschaftsgefühl.",
+                    correctHeading: "a"
                 },
                 {
-                    content: "Kleidung beeinflusst, wie andere Menschen uns wahrnehmen. Eine Studie zeigt, dass bestimmte Farben und Schnelle mit bestimmten Eigenschaften in Verbindung gebracht werden. So wirken Menschen in dunkler Business-Kleidung beispielsweise kompetenter als in Freizeitkleidung.",
-                    correctHeading: 6
+                    id: 5,
+                    content: "Jahr für Jahr wächst der Umsatz der Spielzeughersteller. Und das ist auch kein Wunder: Denn kaum etwas erfreut Eltern mehr als die leuchtenden Augen der Kinder, wenn sie ein neues Spielzeug bekommen. Und so sind die Schränke und Spielzeugkisten der lieben Kleinen voll mit Puppen, Kuscheltieren und Autos. Doch das hat auch unerwünschte Folgen. Wenn ein Kind zu viel Spielzeug hat, wird sich seine Phantasie nicht weiterentwickeln\", warnt Spielforscher Jens Junge. Deshalb verzichten manche Kindergärten auf überflüssiges Spielzeug. Im Berliner Musikkindergarten zum Beispiel quillt kaum ein Regal über - und trotzdem wird den Kindern hier nie langweilig! Es gibt Musikinstrumente, Bastelmaterialien und auch Spielzeug - aber nie zu viel, sodass die Kinder nicht überfordert sind. Es komme für die Kinder gar nicht so sehr darauf an, womit sie spielen, sondern vor allem mit wem\", betont Mitarbeiterin Lara Schwarz. Das gemeinsame Spiel mit Freunden sei für Kinder sowieso am wichtigsten.",
+                    correctHeading: "h"
                 }
             ],
-            
-            // Lesen Teil 2
             longText: {
-                title: "Nachhaltiger Umgang mit Kleidung",
-                content: "Die Textilindustrie gehört zu den umweltschädlichsten Branchen weltweit. Bei der Herstellung von Kleidung werden enorme Mengen an Wasser verbraucht und Chemikalien eingesetzt. Gleichzeitig landen viele Kleidungsstücke nach kurzer Tragezeit im Müll. Dabei gibt es viele Möglichkeiten, nachhaltiger mit Kleidung umzugehen.",
-                paragraphs: [
-                    "Zunächst sollte man sich vor jedem Kauf fragen, ob man das Kleidungsstück wirklich braucht. Oft kaufen wir Dinge, die wir später kaum tragen. Eine gute Möglichkeit ist es, eine Kleiderpause einzulegen und für eine bestimmte Zeit keine neuen Teile zu kaufen.",
-                    "Second-Hand-Kleidung ist eine umweltfreundliche Alternative. In vielen Städten gibt es inzwischen gut sortierte Second-Hand-Läden, in denen man qualitativ hochwertige Kleidung findet. Auch online kann man gebrauchte Kleidung kaufen und verkaufen.",
-                    "Die Pflege der Kleidung spielt ebenfalls eine wichtige Rolle. Wäsche bei niedrigeren Temperaturen waschen und auf den Trockner verzichten spart Energie. Kleidungsstücke sollten außerdem repariert statt weggeworfen werden.",
-                    "Beim Neukauf sollte man auf nachhaltige Materialien und faire Produktionsbedingungen achten. Zertifikate wie GOTS oder Fairtrade geben hier Orientierung. Qualität geht vor Quantität - lieber weniger Teile, die dafür länger halten."
+                content: "Österreich schwimmt. Und das nicht nur in Seen, Teichen oder Freibädern. Ein Blick über die Gartenzäune des Landes macht deutlich: Die Österreicher schwimmen zunehmend gerne zu Hause. Die Poolbranche schätzt die Anzahl der Poolbesitzer in Österreich auf etwa 90.000 bis 150.000. Im Vergleich zu Deutschland ist Österreich wesentlich dichter mit Pools besiedelt. Warum Swimmingpools so beliebt sind, darüber herrscht Uneinigkeit. Manche Vertreter der Branche sehen darin eine Reaktion auf wirtschaftlich unsichere Zeiten. Da investierten die Leute gerne in die eigenen vier Wände und in den Garten inklusive Pools, meinen sie. Andere sehen darin einen Ausdruck des allgemeinen Wellness- und Gesundheitstrends. Auch die Sehnsucht nach dem Meer wird bisweilen als Argument für den ausgeprägten Wunsch nach einem Pool vorgebracht. Das allein kann es aber wohl nicht sein, denn als stärkster Poolmarkt in Europa gilt nach wie vor Frankreich. Branchenkenner führen den Boom aber auch auf finanzielle Gründe zurück. Dass der Umsatz in den vergangenen Jahren stetig angestiegen ist, sehen viele im Angebot an preisgünstigen Pools begründet. Vor 20 Jahren sei ein eigenes Schwimmbad noch ein absolutes Luxusgut gewesen. Jetzt gebe es immer mehr Alternativen, die einen Pool erschwinglich machen. Welche Gründe auch ausschlaggebend sein mögen: Die Branche besitzt durchaus noch Potenzial, da sind sich alle einig. Laut einer kürzlich durchgeführten Studie träumt nämlich beinahe jeder zweite Österreicher von einem Pool. An erster Stelle der Wohnungswünsche steht er zwar nicht: So hat für 97 Prozent der befragten Österreicher die Traumimmobilie einen Balkon, eine Loggia oder eine Terrasse, und 92 Prozent wünschen sich eine Garage. 82 Prozent sehnen sich nach einem Garten, und 46 Prozent nach einem Swimmingpool - und zehn Prozent besitzen auch einen solchen. Dabei gibt es regionale Unterschiede. In absoluten Zahlen gibt es die meisten Pools in Wien und Niederösterreich. Pro Kopf gerechnet gibt es aber in Vorarlberg die meisten privaten Schwimmbäder. Einen nagelneuen Pool hat auch die 37-jährige Rija in ihrem neuen Zuhause. Die Wienerin ist mit ihrem Lebensgefährten vor kurzem nach Niederösterreich gezogen. Es war immer mein Traum einen Pool zu haben\", sagt sie. Nun kann sie den Sommer im eigenen Pool genießen. Neben der Entspannung und Abkühlung hat der Pool für sie noch einen weiteren Wert: Der Pool hat Leben in den Garten gebracht. Es haben sich schon alle möglichen Bekannten zum Schwimmen angemeldet\", sagt sie. Denen drück ich aber vorher einen Spaten in die Hand - ein Teil vom Garten ist ja noch Baustelle.\" Tatsächlich schweißt so ein Pool nicht nur die Nachbarschaft zusammen. Es ist auch die beste Werbung für weitere Becken. Kaum hat einer in einer Siedlung einen Pool, hat der Nachbar spätestens nach zwei Jahren auch einen\", meint ein Branchenvertreter. Besonders deutlich wird das in Kleingartensiedlungen, bei denen ein kleines Schwimmbecken schon beinahe zur Grundausstattung gehört. Doch manche Menschen bevorzugen naturnahe Schwimmteiche. Nach Schätzungen macht der Anteil der Schwimmteiche am Schwimmanlagenmarkt rund 15 Prozent aus. In den vergangenen Jahren ist die Nachfrage nach Schwimmteichen stark gestiegen. Das hat auch zur Entwicklung von Naturpools geführt. Optisch ein klassischer Swimmingpool, kommt der Naturpool gänzlich ohne Chemikalien aus. Hier wird das Wasser durch Pumpen und Filtersysteme sauber gehalten. Bei der natürlichen Variante geht es übrigens bei 35.000 Euro los. Dafür spart man sich das jährliche Befüllen und Putzen. Das jährliche Befüllen von Pools aus den Wasserleitungen kann in manchen Regionen gelegentlich zu Wasserknappheit führen. Das betrifft aber meist nur jene Gemeinden, die von sehr kleinen Wassergenossenschaften versorgt werden. In Wien fällt die Befüllung der Pools kaum auf. Was den Leiter des Wiener Rohmetzes eher stört, ist der Wasserdiebstahl über Hydranten, also über die Zapfstellen in den Straßen für Feuerwehr und Straßenreinigung. Denn wer es besonders eilig hat, kann seinen Pool auch über die Hydranten befüllen. Das geht schneller, muss aber angemeldet werden und kostet Geld. Generell gebe es aber keine Wasserknappheit. Es sei genug Wasser für alle da, so die Wasserversorger. Fürs Auffüllen von Pools, aber auch fürs Blumengießen, zum Duschen und auch zum Trinken. Wir verwenden in Österreich nur ein Prozent der vorhandenen Wasserressourcen.",
+                questions: [
+                    {
+                        id: 6,
+                        text: "Einige Vertreter der Poolbranche denken, dass",
+                        options: [
+                            "A es in Österreich bald mehr Pools gibt als in Frankreich",
+                            "B in unsicheren Zeiten weniger investiert wird",
+                            "C mehr Leute einen Pool bauen, weil Pools billiger geworden sind"
+                        ],
+                        correctAnswer: 2
+                    },
+                    {
+                        id: 7,
+                        text: "Laut einer Studie",
+                        options: [
+                            "A möchten die meisten Befragten ein Heim mit Garage",
+                            "B steht ein Pool nicht an erster Stelle auf der Wunschliste",
+                            "C wünschen sich 10 Prozent der Österreicher einen Pool"
+                        ],
+                        correctAnswer: 1
+                    },
+                    {
+                        id: 8,
+                        text: "Rija ist der Meinung, dass",
+                        options: [
+                            "A ein Pool die Nachbarn neidisch macht",
+                            "B ihr Pool ein Anziehungspunkt für Freunde geworden ist",
+                            "C ihre Freunde beim Poolbau helfen sollen"
+                        ],
+                        correctAnswer: 1
+                    },
+                    {
+                        id: 9,
+                        text: "Naturpools",
+                        options: [
+                            "A brauchen keine chemischen Reinigungsmittel",
+                            "B müssen häufig geputzt werden",
+                            "C sehen genauso aus wie Schwimmteiche"
+                        ],
+                        correctAnswer: 0
+                    },
+                    {
+                        id: 10,
+                        text: "In Wien",
+                        options: [
+                            "A darf man einen Pool nur mit Wasser aus der Leitung füllen",
+                            "B führt das Befüllen von Pools regelmäßig zu Wasserknappheit",
+                            "C wird manchmal Wasser zum Befüllen von Pools gestohlen"
+                        ],
+                        correctAnswer: 2
+                    }
                 ]
             },
-            questions: [
-                {
-                    question: "Warum ist die Textilindustrie problematisch für die Umwelt?",
-                    options: [
-                        "Weil Kleidung zu billig ist",
-                        "Weil zu viel Wasser und Chemikalien verwendet werden", 
-                        "Weil zu wenig Kleidung produziert wird",
-                        "Weil Kleidung zu lange getragen wird"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Was ist eine Kleiderpause?",
-                    options: [
-                        "Kleidung in der Pause tragen",
-                        "Für eine Zeit keine neue Kleidung kaufen",
-                        "Alte Kleidung wegwerfen",
-                        "Nur Second-Hand-Kleidung kaufen"
-                    ],
-                    correct: 1
-                },
-                {
-                    question: "Wo kann man Second-Hand-Kleidung finden?",
-                    options: [
-                        "Nur online",
-                        "Nur in großen Städten", 
-                        "In Second-Hand-Läden und online",
-                        "Nur auf Flohmärkten"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "Wie kann man Energie bei der Kleiderpflege sparen?",
-                    options: [
-                        "Immer bei hohen Temperaturen waschen",
-                        "Immer den Trockner benutzen",
-                        "Bei niedrigeren Temperaturen waschen und auf Trockner verzichten",
-                        "Kleidung nie waschen"
-                    ],
-                    correct: 2
-                },
-                {
-                    question: "Worauf sollte man beim Neukauf achten?",
-                    options: [
-                        "Nur auf den Preis",
-                        "Auf nachhaltige Materialien und faire Produktion",
-                        "Auf die neuesten Trends",
-                        "Auf möglichst viele Teile"
-                    ],
-                    correct: 1
-                }
-            ],
-            
-            // Lesen Teil 3
             situations: [
-                "Sie haben einen kaputten Toaster und möchten ihn reparieren lassen, ohne viel Geld auszugeben.",
-                "Sie besitzen viele Kleidungsstücke, die Sie nicht mehr tragen, und möchten sie loswerden.",
-                "Sie möchten weniger Kleidung kaufen, wissen aber nicht, wie Sie anfangen sollen.",
-                "Sie interessieren sich für die psychologische Wirkung von Kleidung.",
-                "Sie möchten wissen, wie viel Kleidung Deutsche durchschnittlich besitzen.",
-                "Sie überlegen, ob Sie Ihren kaputten Mixer reparieren oder neu kaufen sollen.",
-                "Sie möchten Ihre Kleidung umweltfreundlicher pflegen.",
-                "Sie suchen nach Möglichkeiten, Ihre Kaufsucht in den Griff zu bekommen.",
-                "Sie möchten Kleidung nachhaltig kaufen und suchen entsprechende Zertifikate.",
-                "Sie handeln online und möchten wissen, wie sich Rücksendungen auf Händler auswirken."
+                {
+                    id: 11,
+                    text: "Ein Bekannter möchte mit seiner zehnjährigen Tochter eine Ausstellung besuchen, es sollte auch Angebot für Kinder geben.",
+                    correctAd: "K"
+                },
+                {
+                    id: 12,
+                    text: "Ein Freund würde gerne als Stadtführer arbeiten, hat aber noch keine Berufserfahrung.",
+                    correctAd: "D"
+                },
+                {
+                    id: 13,
+                    text: "Eine Freundin kocht gerne und sucht neue Anregungen.",
+                    correctAd: "E"
+                },
+                {
+                    id: 14,
+                    text: "Ihr Bruder möchte einen Vortrag zu einem historischen Thema hören.",
+                    correctAd: "C"
+                },
+                {
+                    id: 15,
+                    text: "Ihr Nachbar plant eine Reise nach Berlin und sucht einen Stadtführer.",
+                    correctAd: "X"
+                },
+                {
+                    id: 16,
+                    text: "Ihre Schwester möchte bald ihr Bad renovieren lassen. Sie sucht Bilder von modernen Badezimmern.",
+                    correctAd: "F"
+                },
+                {
+                    id: 17,
+                    text: "Ihre Tante möchte eine Vortrag über die Sehenswürdigkeiten Roms besuchen.",
+                    correctAd: "X"
+                },
+                {
+                    id: 18,
+                    text: "Sie möchten im Urlaub an einer besonderen Stadtführung teilnehmen.",
+                    correctAd: "H"
+                },
+                {
+                    id: 19,
+                    text: "Sie möchten wissen, wie Pflegeprodukte hergestellt werden.",
+                    correctAd: "F"
+                },
+                {
+                    id: 20,
+                    text: "Sie mögen leichte Unterhaltung und würden gerne mal wieder richtig lachen.",
+                    correctAd: "L"
+                }
             ],
             ads: [
                 {
-                    content: "Repair-Café in Ihrer Stadt: Jeden Samstag von 14-18 Uhr. Ehrenamtliche Helfer unterstützen Sie bei Reparaturen. Kostenlos, Spenden willkommen.",
-                    matches: [0]
+                    id: "K",
+                    title: "Baden wie vor 2000 Jahren",
+                    content: "Das Museum der Badekultur lädt große und kleine Besucher zu einer informativen und kurzweiligen Reise durch 2000 Jahre Badekultur ein. Die Besucher können römische Baderäume besichtigen. Sie erfahren auch, wie im Mittelalter auf Burgen und in Städten Körperpflege betrieben und wie in Schlössern der Neuzeit gebadet wurde. Für Kinder ab 8 Jahren gibt es viel zu entdecken: Sie können die Ausstellung mithilfe eines Comics oder einer Museumsrallye erkunden. Multimediastationen führen spielerisch an die Geschichte des Badens heran."
                 },
                 {
-                    content: "Kleidertauschparty: Bringen Sie gut erhaltene Kleidung mit und tauschen Sie sie gegen neue Lieblingsteile. Nächster Termin: 15. Mai, Stadtzentrum.",
-                    matches: [1]
+                    id: "D",
+                    title: "Stadtführer gesucht",
+                    content: "Sie kennen Berlin wie Ihre Westentasche? Dann bewerben Sie sich bei uns. Wir suchen ab sofort Stadtführer (m/w). Bei uns erwarten Sie eine familiäre, angenehme Arbeitsatmosphäre und eine gute Bezahlung. Voraussetzungen: Sie haben eine Prüfung als Stadtführer abgelegt und mindestens ein Jahr lang Touren geleitet. Sie können gut mit Menschen umgehen. Sie verfügen über gute Deutschkenntnisse, ein gepflegtes Erscheinungsbild und viel Humor."
                 },
                 {
-                    content: "Online-Kurs 'Weniger konsumieren': Lernen Sie in 4 Wochen Strategien gegen Impulskäufe. Start jeden Monat. Kosten: 49€.",
-                    matches: [2, 7]
+                    id: "E",
+                    title: "Echt sizilianisch! Genießen wie auf Italiens sonnigster Insel",
+                    content: "Authentischer geht es nicht: 80 leckere Familienrezepte hat Stella Cascone aus der großen Sammlung ihrer Mutter Maria ausgewählt und in diesem außergewöhnlichen Kochbuch zusammengestellt. Vom Auberginenauflauf Parmigiana Catanese über die weltberühmte Torte Cassata bis zu den typischen Menüs für Familienfeiern und jahreszeitliche Feste hat Cascone - mit tatkräftiger Hilfe ihrer großen Familie - das Beste zusammengetragen, was die sizilianische Küche zu bieten hat. Viele Farbfotos machen das Buch zu einem wahren Augenschmaus."
                 },
                 {
-                    content: "Buchtipp: 'Die Psychologie der Kleidung' - Wie unser Outfit unsere Wirkung beeinflusst. Jetzt im Buchhandel erhältlich.",
-                    matches: [3]
+                    id: "C",
+                    title: "Die Geschichte des Essens: Dessert",
+                    content: "Jede Epoche hatte ihre eigenen Rezepte, Zubereitungstechniken und Tafelsitten. Der Historiker und Ernährungswissenschaftler Dr. Lukas Rombelsheim stellt einige von ihnen in unserer Veranstaltungsreihe 'Die Geschichte des Essens' vor. Die Reihe berichtet Wissenswertes, Skurriles und Amüsantes aus den Küchen der Vergangenheit. Diesmal spricht er über Nachspeisen. Wir lernen unter anderem eines der ältesten erhaltenen Kuchenrezepte der Welt kennen, das um etwa 1400 vor Christus von den Sumerern in Keilschrift niedergeschrieben wurde."
                 },
                 {
-                    content: "Studie: 'Kleiderkonsum in Deutschland' - Aktuelle Zahlen und Trends. Kostenloser Download auf unserer Website.",
-                    matches: [4]
+                    id: "X",
+                    title: "Rom auf eigene Faust erkunden",
+                    content: "Wenn Sie alle Seiten der Tibermetropole selbstständig entdecken wollen, ist dieser Stadtführer Ihr idealer Begleiter. Sie finden: Informationen über die wichtigsten Sehenswürdigkeiten und Museen der Stadt, vier abwechslungsreiche Stadtspaziergänge, Shoppingtipps vom traditionellen Markt bis zu den schönsten Antiquitätengeschäften, die besten Lokale der Stadt und allerlei Wissenswertes über die römische Küche."
                 },
                 {
-                    content: "Reparatur vs. Neukauf: Unser Online-Rechner hilft bei der Entscheidung. Einfach Gerätetyp und Defekt eingeben.",
-                    matches: [5]
+                    id: "F",
+                    title: "Ein Bad fürs Leben",
+                    content: "Sie planen ein neues Bad? In Ulrike Fergens Buch 'Ein Bad fürs Leben' finden Sie eine Fülle von Anregungen. Lösungen für die unterschiedlichsten Raumgrößen und Lebenssituationen werden präsentiert. Zahlreiche Bäder werden anhand von Grundrissen und Fotos anschaulich und detailliert vorgestellt. Außerdem ausführliche praktische Informationen zu: Planung und Ausführung, barrierefreien Bädern, Licht, Farben, Materialien und Oberflächen, Ausstattungselementen, Installationen."
                 },
                 {
-                    content: "Öko-Waschmittel und Trockenständer: Unsere nachhaltigen Pflegeprodukte schonen Umwelt und Kleidung. Im Bio-Markt erhältlich.",
-                    matches: [6]
+                    id: "H",
+                    title: "Rom bei Nacht",
+                    content: "Erleben Sie die Ewige Stadt nach Einbruch der Dunkelheit bei einer Besichtigungstour in einer kleinen Gruppe. Beginnen Sie Ihren Abend mit einer Pizza in einem klassischen römischen Restaurant und betrachten Sie die antiken Stätten und Monumente bei nächtlicher Beleuchtung. Besichtigen Sie das Kolosseum und spazieren Sie anschließend über die Piazza Navona. Vierstündige Tour zu den wichtigsten Sehenswürdigkeiten Roms. Sehen Sie eine andere Seite der Stadt - genießen Sie einen Rundgang in den kühleren Abendstunden!"
                 },
                 {
-                    content: "Selbsthilfegruppe Kaufsucht: Regelmäßige Treffen, anonym, kostenfrei. Erster Schritt zur Veränderung.",
-                    matches: [7]
-                },
-                {
-                    content: "Nachhaltige Mode-Labels mit GOTS-Zertifikat: Übersicht und Bezugsquellen in unserem Einkaufsführer.",
-                    matches: [8]
-                },
-                {
-                    content: "Händler-Umfrage: Wie Online-Shops mit Retouren umgehen. Spannende Einblicke in den E-Commerce.",
-                    matches: [9]
+                    id: "L",
+                    title: "Zwei Meister am Herd",
+                    content: "In der Filmkomödie 'Zwei Meister am Herd' dreht sich alles um Gourmets, Sterne und feinste Zutaten. Spitzenkoch Clément hat keine Freude mehr am Kochen - und zu seinem Unglück haben sich gerade Restaurant-Kritiker angekündigt. Da trifft es sich gut, dass er zufällig die Bekanntschaft von Oskar macht. Der ist Koch aus Leidenschaft, hält sich aber eher schlecht als recht mit Gelegenheitsjobs in Kneipen und Schnellimbissen über Wasser. Werden die beiden zusammen die Kritiker überzeugen? Ein Feuerwerk aus Witz und Humor!"
                 }
             ],
-            
-            // Sprachbausteine Teil 1
-            blankText1: {
-                text: "Die Textilindustrie ___ zu den umweltschädlichsten Branchen weltweit. Bei der Herstellung von Kleidung ___ enorme Mengen an Wasser verbraucht und Chemikalien eingesetzt. Gleichzeitig ___ viele Kleidungsstücke nach kurzer Tragezeit im Müll. Dabei ___ es viele Möglichkeiten, nachhaltiger mit Kleidung umzugehen.",
+            sprachbausteine1: {
+                text: "Lieber Thomas, ich muss dir unbedingt etwas erzählen: Ich bin heute das erste Mal in meinem Leben Ski gefahren, (21) ich mir das bisher nie zugetraut hatte. Meine Freundin Lisa hat mich eingeladen, einige Tage mit ihr und ihren Eltern in den Bergen zu verbringen. Und bevor ich ankam, (22) sie schon einen individuellen Skikurs für mich gebucht! Du kannst dir vorstellen, wie mich das überrascht hat! Ich (23) es mir schon anders überlegen, aber Lisa wollte nichts (24) hören. Heute Morgen ging es dann los. (25) war ich ziemlich aufgeregt, (25) habe ich mich auch unheimlich gefreut. Mit der Skilehrerin habe ich mich gleich gut verstanden. Sie hat mich abgeholt und mir (26) geholfen, im Sportgeschäft Schuhe, Skier, Stöcke und einen Helm für mich (27). Dann hat mir die Skilehrerin einige (28) Dinge erklärt. Ich war anfangs sehr unsicher, mit der Zeit ließ das aber nach. Die Kinder im Zwergerlkurs scheinen im (29) Gegensatz zu mir überhaupt keine Angst zu haben. Das Schlimmste am ersten Tag war der Schlepplift. Erst habe ich den Lift einige Male verpasst, dann bin ich hingefallen. Irgendwie habe ich es dann doch noch geschafft. Und zum Schluss bin ich mit der Lehrerin sogar eine leichte Piste runtergefahren. Morgen habe ich wieder zwei Stunden. Ich habe jetzt schon Muskelkater und mir tut alles weh! Ich weiß gar nicht, (30) ich das schaffen soll. Ich werde dich über meine Fortschritte auf dem Laufenden halten :) Bis bald und liebe Grüße, Samira",
                 blanks: [
-                    { options: ["gehört", "gehören", "gehörende", "gehörtet"], correct: 0 },
-                    { options: ["werden", "wird", "worden", "würde"], correct: 0 },
-                    { options: ["landen", "landet", "gelandet", "landend"], correct: 0 },
-                    { options: ["gibt", "geben", "gegeben", "gäbe"], correct: 0 }
+                    { id: 21, options: ["obwohl", "trotz", "während"], correct: 0 },
+                    { id: 22, options: ["hat", "hatte", "hätte"], correct: 1 },
+                    { id: 23, options: ["konnte", "sollte", "wollte"], correct: 2 },
+                    { id: 24, options: ["dafür", "damit", "davon"], correct: 2 },
+                    { id: 25, options: ["Einerseits...andererseits", "weder...noch", "zwar...aber"], correct: 2 },
+                    { id: 26, options: ["dabei", "davon", "dazu"], correct: 0 },
+                    { id: 27, options: ["aussuchen", "ausgesucht", "auszusuchen"], correct: 2 },
+                    { id: 28, options: ["grundlegende", "grundlegenden", "grundlegender"], correct: 1 },
+                    { id: 29, options: ["am", "im", "zum"], correct: 1 },
+                    { id: 30, options: ["dass", "ob", "wie"], correct: 2 }
                 ]
             },
-            
-            // Sprachbausteine Teil 2
-            blankText2: {
-                text: "Second-Hand-Kleidung ___ eine umweltfreundliche Alternative. In vielen Städten ___ es inzwischen gut sortierte Second-Hand-Läden, in ___ man qualitativ hochwertige Kleidung findet. Auch online ___ man gebrauchte Kleidung kaufen und verkaufen.",
-                blanks: [
-                    { options: ["ist", "sind", "war", "wäre"], correct: 0 },
-                    { options: ["gibt", "geben", "gegeben", "gäbe"], correct: 0 },
-                    { options: ["denen", "der", "die", "das"], correct: 0 },
-                    { options: ["kann", "können", "konnte", "könnte"], correct: 0 }
+            sprachbausteine2: {
+                text: "Wie Handschrift wieder cool wird. Mit dem sogenannten SMS-Daumen erbringen Kinder heutzutage Höchstleistungen. Das Handgelenk hingegen schmerzt schnell, (31) Schreiben mit der Hand ungewohnt ist. Kinder haben damit in der Schule (32) mehr Probleme. Dennoch gibt es einen neuen Trend, der mit Handschrift zu (33) hat: Unter dem Hashtag Lettering finden sich auf Instagram über zwölf Millionen Beiträge. Beim Lettering werden Buchstaben auf kunstvolle Weise gezeichnet und danach dekoriert. Vom klassischen Schönschreiben, wie es früher unterrichtet und von einigen auch gefürchtet (34), ist das alles weit entfernt. Die Verbindung (35) Schrift und Bild lässt sich auch im Alltag anwenden. Erfahrungen (36) hat auch die Wiener Designerin Nina Holler gemacht, die Schrift-Workshops für Kinder und Erwachsene anbietet. Auf (37) Weise vermittelt die Künstlerin das Thema Schrift aus unterschiedlichen Zeitepochen bis hin zum handgezeichneten modernen Alphabet. So will sie dem persönlichen sprachlichen Ausdruck wieder mehr Tiefe verleihen. Der Künstlerin ist es ein Anliegen, (38) Kinder die Freude am Schreiben wieder entdecken. Die Schülerinnen und Schüler lernen durch Lettering nebenbei auch, coole Einladungen und Logos zu (39). Der Rhythmus mache den individuellen Ausdruck beim Schreiben mit der Hand aus. Es nütze wenig, an einzelnen Elementen von Buchstaben zu schreiben, bis sie ihnen flüssig von der Hand (40). So wird die Feinmotorik wieder gestärkt, die vielen Kindern abhanden gekommen ist. Gerade Jugendlichen im Alter zwischen 13 und 15 Jahren biete die Auseinandersetzung mit Schrift eine Möglichkeit, die eigene Handschrift zu beurteilen und zu entwickeln. So sollen sie neue Wege finden, um sich auszudrücken.",
+                wordBank: [
+                    { id: 31, word: "weil", correct: true },
+                    { id: 32, word: "immer", correct: true },
+                    { id: 33, word: "tun", correct: true },
+                    { id: 34, word: "wurde", correct: true },
+                    { id: 35, word: "von", correct: true },
+                    { id: 36, word: "damit", correct: true },
+                    { id: 37, word: "spielerische", correct: true },
+                    { id: 38, word: "dass", correct: true },
+                    { id: 39, word: "gestalten", correct: true },
+                    { id: 40, word: "geht", correct: true }
                 ]
             }
         };
 
+        // متغيرات التطبيق
+        let currentLanguage = 'ar';
+        let isDarkMode = false;
+        let answersVisible = false;
+
+        // تهيئة التطبيق
         document.addEventListener('DOMContentLoaded', function() {
-            // العناصر
-            const themeToggle = document.getElementById('themeToggle');
-            const supportBtn = document.getElementById('supportBtn');
-            const profileBtn = document.getElementById('profileBtn');
-            const notesBtn = document.getElementById('notesBtn');
-            const langBtn = document.getElementById('langBtn');
-            const langDropdown = document.getElementById('langDropdown');
-            const supportModal = document.getElementById('supportModal');
-            const closeSupportModal = document.getElementById('closeSupportModal');
-            const premiumBadge = document.getElementById('premiumBadge');
-            const showAnswersBtn = document.getElementById('showAnswers');
-            const hideAnswersBtn = document.getElementById('hideAnswers');
+            initializeApp();
+            loadContent();
+            setupEventListeners();
+        });
 
-            // تحميل الإعدادات
-            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-            const savedLanguage = localStorage.getItem('language') || 'ar';
+        // تهيئة التطبيق
+        function initializeApp() {
+            // تحميل الإعدادات المحفوظة
+            const savedLanguage = localStorage.getItem('language');
+            const savedDarkMode = localStorage.getItem('darkMode');
+            const savedNotes = localStorage.getItem('userNotes');
 
-            // تطبيق الإعدادات
-            if (savedDarkMode) {
+            if (savedLanguage) {
+                currentLanguage = savedLanguage;
+                updateLanguage();
+            }
+
+            if (savedDarkMode === 'true') {
+                isDarkMode = true;
                 document.body.classList.add('dark-mode');
-                themeToggle.textContent = '☀️';
+                document.getElementById('themeToggle').textContent = '☀️';
             }
 
-            // تغيير اللغة
-            function changeLanguage(lang) {
-                localStorage.setItem('language', lang);
-                const langTexts = {
-                    ar: '🇸🇦 العربية',
-                    de: '🇩🇪 Deutsch', 
-                    en: '🇬🇧 English'
-                };
-                langBtn.innerHTML = `<span>${langTexts[lang]}</span>`;
-                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-                document.documentElement.lang = lang;
-                
-                // تحديث النصوص
-                Object.keys(translations[lang]).forEach(key => {
-                    const element = document.getElementById(key);
-                    if (element) {
-                        element.textContent = translations[lang][key];
-                    }
-                });
+            if (savedNotes) {
+                document.getElementById('notesTextarea').value = savedNotes;
             }
+        }
 
-            // تطبيق اللغة المحفوظة
-            changeLanguage(savedLanguage);
+        // تحميل المحتوى
+        function loadContent() {
+            loadHeadings();
+            loadTexts();
+            loadLongText();
+            loadQuestions();
+            loadSituations();
+            loadAds();
+            loadSprachbausteine1();
+            loadSprachbausteine2();
+        }
 
-            // مستمعي الأحداث للأزرار العلوية
-            themeToggle.addEventListener('click', function() {
-                document.body.classList.toggle('dark-mode');
-                themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
-                localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        // تحميل العناوين
+        function loadHeadings() {
+            const headingsList = document.getElementById('headingsList');
+            headingsList.innerHTML = '';
+
+            contentData.headings.forEach((heading, index) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.textContent = heading;
+                headingItem.dataset.id = String.fromCharCode(97 + index); // a, b, c, ...
+                headingsList.appendChild(headingItem);
+            });
+        }
+
+        // تحميل النصوص
+        function loadTexts() {
+            const textsList = document.getElementById('textsList');
+            textsList.innerHTML = '';
+
+            contentData.texts.forEach(text => {
+                const textElement = document.createElement('div');
+                textElement.className = 'text-content';
+                textElement.innerHTML = `
+                    <h3>Text ${text.id}</h3>
+                    <p>${text.content}</p>
+                    <div class="answer hidden correct-answer" id="answer-text-${text.id}">
+                        Richtige Überschrift: ${text.correctHeading}
+                    </div>
+                `;
+                textsList.appendChild(textElement);
+            });
+        }
+
+        // تحميل النص الطويل
+        function loadLongText() {
+            const longTextElement = document.getElementById('longText');
+            longTextElement.innerHTML = `
+                <h3>Lesen Sie den Text und die Aufgaben 6–10.</h3>
+                <p>${contentData.longText.content}</p>
+            `;
+        }
+
+        // تحميل الأسئلة
+        function loadQuestions() {
+            const questionsList = document.getElementById('questionsList');
+            questionsList.innerHTML = '';
+
+            contentData.longText.questions.forEach(question => {
+                const questionElement = document.createElement('div');
+                questionElement.className = 'question';
+                questionElement.innerHTML = `
+                    <h4>Aufgabe ${question.id}</h4>
+                    <p>${question.text}</p>
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option" data-question="${question.id}" data-option="${index}">
+                                ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="answer hidden correct-answer" id="answer-${question.id}">
+                        Richtige Antwort: ${question.options[question.correctAnswer]}
+                    </div>
+                `;
+                questionsList.appendChild(questionElement);
+            });
+        }
+
+        // تحميل الوضعيات
+        function loadSituations() {
+            const situationsList = document.getElementById('situationsList');
+            situationsList.innerHTML = '';
+
+            contentData.situations.forEach(situation => {
+                const situationElement = document.createElement('div');
+                situationElement.className = 'situation-item';
+                situationElement.innerHTML = `
+                    <h4>Situation ${situation.id}</h4>
+                    <p>${situation.text}</p>
+                    <div class="answer hidden correct-answer" id="answer-situation-${situation.id}">
+                        Richtige Anzeige: ${situation.correctAd}
+                    </div>
+                `;
+                situationsList.appendChild(situationElement);
+            });
+        }
+
+        // تحميل الإعلانات
+        function loadAds() {
+            const adsList = document.getElementById('adsList');
+            adsList.innerHTML = '';
+
+            contentData.ads.forEach(ad => {
+                const adElement = document.createElement('div');
+                adElement.className = 'ad-item';
+                adElement.innerHTML = `
+                    <h4>${ad.id}: ${ad.title}</h4>
+                    <p>${ad.content}</p>
+                `;
+                adsList.appendChild(adElement);
+            });
+        }
+
+        // تحميل Sprachbausteine Teil 1
+        function loadSprachbausteine1() {
+            const blankText1 = document.getElementById('blankText1');
+            const blankOptions1 = document.getElementById('blankOptions1');
+
+            // بناء النص مع الفراغات
+            let textWithBlanks = contentData.sprachbausteine1.text;
+            contentData.sprachbausteine1.blanks.forEach(blank => {
+                textWithBlanks = textWithBlanks.replace(`(${blank.id})`, 
+                    `<span class="blank" id="blank-${blank.id}">(${blank.id})</span>`);
             });
 
-            supportBtn.addEventListener('click', function() {
-                supportModal.style.display = 'flex';
+            blankText1.innerHTML = `<p>${textWithBlanks}</p>`;
+
+            // بناء خيارات الفراغات
+            blankOptions1.innerHTML = '';
+            contentData.sprachbausteine1.blanks.forEach(blank => {
+                const blankOptions = document.createElement('div');
+                blankOptions.className = 'blank-options';
+                blankOptions.innerHTML = `
+                    <h4>Lücke ${blank.id}:</h4>
+                    ${blank.options.map((option, index) => `
+                        <div class="blank-option" data-blank="${blank.id}" data-option="${index}">
+                            ${option}
+                        </div>
+                    `).join('')}
+                    <div class="answer hidden correct-answer" id="answer-blank-${blank.id}">
+                        Richtige Antwort: ${blank.options[blank.correct]}
+                    </div>
+                `;
+                blankOptions1.appendChild(blankOptions);
+            });
+        }
+
+        // تحميل Sprachbausteine Teil 2
+        function loadSprachbausteine2() {
+            const blankText2 = document.getElementById('blankText2');
+            const wordBank2 = document.getElementById('wordBank2');
+
+            // بناء النص مع الفراغات
+            let textWithBlanks = contentData.sprachbausteine2.text;
+            contentData.sprachbausteine2.wordBank.forEach(word => {
+                textWithBlanks = textWithBlanks.replace(`(${word.id})`, 
+                    `<span class="blank" id="blank2-${word.id}">(${word.id})</span>`);
             });
 
-            profileBtn.addEventListener('click', function() {
-                window.location.href = 'index.html#profile';
+            blankText2.innerHTML = `<p>${textWithBlanks}</p>`;
+
+            // بناء بنك الكلمات
+            wordBank2.innerHTML = '';
+            contentData.sprachbausteine2.wordBank.forEach(word => {
+                const wordOption = document.createElement('div');
+                wordOption.className = 'word-option';
+                wordOption.textContent = word.word;
+                wordOption.dataset.id = word.id;
+                wordBank2.appendChild(wordOption);
             });
 
-            notesBtn.addEventListener('click', function() {
-                window.location.href = 'index.html#notes';
-            });
+            // إضافة التصحيح
+            const correctionDiv = document.createElement('div');
+            correctionDiv.className = 'answer hidden correct-answer';
+            correctionDiv.id = 'answer-sprach2';
+            correctionDiv.innerHTML = '<h4>Richtige Lösungen:</h4>' + 
+                contentData.sprachbausteine2.wordBank.map(word => 
+                    `Lücke ${word.id}: ${word.word}`).join('<br>');
+            wordBank2.parentNode.insertBefore(correctionDiv, wordBank2.nextSibling);
+        }
 
-            closeSupportModal.addEventListener('click', function() {
-                supportModal.style.display = 'none';
-            });
-
-            supportModal.addEventListener('click', function(e) {
-                if (e.target === supportModal) {
-                    supportModal.style.display = 'none';
-                }
-            });
+        // إعداد مستمعي الأحداث
+        function setupEventListeners() {
+            // تبديل الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
 
             // محدد اللغة
-            langBtn.addEventListener('click', function() {
-                langDropdown.classList.toggle('show');
-            });
-
+            document.getElementById('langBtn').addEventListener('click', toggleLanguageDropdown);
             document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', function() {
-                    const lang = this.getAttribute('data-lang');
-                    changeLanguage(lang);
-                    langDropdown.classList.remove('show');
-                });
+                option.addEventListener('click', changeLanguage);
             });
 
-            // إغلاق القوائم المنسدلة بالنقر خارجها
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.language-selector')) {
-                    langDropdown.classList.remove('show');
+            // أزرار التحكم بالإجابات
+            document.getElementById('showAnswers').addEventListener('click', showAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAnswers);
+
+            // نافذة الدعم
+            document.getElementById('supportBtn').addEventListener('click', showSupportModal);
+            document.getElementById('closeSupportModal').addEventListener('click', hideSupportModal);
+
+            // نافذة الملاحظات
+            document.getElementById('notesBtn').addEventListener('click', showNotesModal);
+            document.getElementById('closeNotesModal').addEventListener('click', hideNotesModal);
+            document.getElementById('saveNotes').addEventListener('click', saveNotes);
+
+            // النقر خارج القوائم المنسدلة لإغلاقها
+            document.addEventListener('click', function(event) {
+                if (!event.target.closest('.language-selector')) {
+                    document.getElementById('langDropdown').classList.remove('show');
                 }
             });
+        }
 
-            // زر البريميوم
-            premiumBadge.addEventListener('click', function() {
-                alert('أنت مشترك! شكراً على دعمك 💎');
+        // تبديل الوضع الليلي
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('themeToggle').textContent = isDarkMode ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', isDarkMode);
+        }
+
+        // تبديل قائمة اللغة
+        function toggleLanguageDropdown() {
+            document.getElementById('langDropdown').classList.toggle('show');
+        }
+
+        // تغيير اللغة
+        function changeLanguage(event) {
+            const selectedLang = event.target.dataset.lang;
+            if (selectedLang && translations[selectedLang]) {
+                currentLanguage = selectedLang;
+                updateLanguage();
+                document.getElementById('langDropdown').classList.remove('show');
+                localStorage.setItem('language', currentLanguage);
+            }
+        }
+
+        // تحديث اللغة
+        function updateLanguage() {
+            const t = translations[currentLanguage];
+            
+            // تحديث النصوص
+            document.getElementById('pageTitle').textContent = t.pageTitle;
+            document.getElementById('pageSubtitle').textContent = t.pageSubtitle;
+            document.getElementById('showAnswersText').textContent = t.showAnswersText;
+            document.getElementById('hideAnswersText').textContent = t.hideAnswersText;
+            document.getElementById('teil1Title').textContent = t.teil1Title;
+            document.getElementById('teil1Description').textContent = t.teil1Description;
+            document.getElementById('teil2Title').textContent = t.teil2Title;
+            document.getElementById('teil3Title').textContent = t.teil3Title;
+            document.getElementById('teil3Description').textContent = t.teil3Description;
+            document.getElementById('sprach1Title').textContent = t.sprach1Title;
+            document.getElementById('sprach2Title').textContent = t.sprach2Title;
+            document.getElementById('supportTitle').textContent = t.supportTitle;
+            
+            // تحديث زر اللغة
+            document.getElementById('langBtn').innerHTML = `<span>${t.langText}</span>`;
+        }
+
+        // إظهار التصحيح
+        function showAnswers() {
+            answersVisible = true;
+            
+            // إظهار إجابات Teil 1
+            contentData.texts.forEach(text => {
+                document.getElementById(`answer-text-${text.id}`).classList.remove('hidden');
             });
-
-            // عرض/إخفاء الإجابات
-            let answersVisible = false;
-
-            showAnswersBtn.addEventListener('click', function() {
-                showAllAnswers();
-                answersVisible = true;
+            
+            // إظهار إجابات Teil 2
+            contentData.longText.questions.forEach(question => {
+                document.getElementById(`answer-${question.id}`).classList.remove('hidden');
             });
-
-            hideAnswersBtn.addEventListener('click', function() {
-                hideAllAnswers();
-                answersVisible = false;
+            
+            // إظهار إجابات Teil 3
+            contentData.situations.forEach(situation => {
+                document.getElementById(`answer-situation-${situation.id}`).classList.remove('hidden');
             });
+            
+            // إظهار إجابات Sprachbausteine Teil 1
+            contentData.sprachbausteine1.blanks.forEach(blank => {
+                document.getElementById(`answer-blank-${blank.id}`).classList.remove('hidden');
+            });
+            
+            // إظهار إجابات Sprachbausteine Teil 2
+            document.getElementById('answer-sprach2').classList.remove('hidden');
+        }
 
-            // تهيئة المحتوى
-            initializeContent();
+        // إخفاء التصحيح
+        function hideAnswers() {
+            answersVisible = false;
+            
+            // إخفاء جميع الإجابات
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+        }
 
-            function initializeContent() {
-                // Lesen Teil 1
-                const headingsList = document.getElementById('headingsList');
-                const textsList = document.getElementById('textsList');
-                
-                // إضافة العناوين
-                examData.headings.forEach((heading, index) => {
-                    const headingElement = document.createElement('div');
-                    headingElement.className = 'heading-item';
-                    headingElement.textContent = `${String.fromCharCode(97 + index)}) ${heading}`;
-                    headingElement.dataset.index = index;
-                    headingsList.appendChild(headingElement);
-                });
+        // إظهار نافذة الدعم
+        function showSupportModal() {
+            document.getElementById('supportModal').style.display = 'flex';
+        }
 
-                // إضافة النصوص
-                examData.texts.forEach((text, index) => {
-                    const textElement = document.createElement('div');
-                    textElement.className = 'question';
-                    textElement.innerHTML = `
-                        <h3>Text ${index + 1}</h3>
-                        <p>${text.content}</p>
-                        <div class="answer correct-answer hidden" id="answerTeil1Text${index + 1}">
-                            Richtige Überschrift: ${String.fromCharCode(97 + text.correctHeading)}) ${examData.headings[text.correctHeading]}
-                        </div>
-                    `;
-                    textsList.appendChild(textElement);
-                });
+        // إخفاء نافذة الدعم
+        function hideSupportModal() {
+            document.getElementById('supportModal').style.display = 'none';
+        }
 
-                // Lesen Teil 2
-                const longTextElement = document.getElementById('longText');
-                longTextElement.innerHTML = `
-                    <h3>${examData.longText.title}</h3>
-                    <p>${examData.longText.content}</p>
-                    ${examData.longText.paragraphs.map(p => `<p>${p}</p>`).join('')}
-                `;
+        // إظهار نافذة الملاحظات
+        function showNotesModal() {
+            document.getElementById('notesModal').style.display = 'flex';
+        }
 
-                const questionsList = document.getElementById('questionsList');
-                examData.questions.forEach((q, index) => {
-                    const questionElement = document.createElement('div');
-                    questionElement.className = 'question';
-                    questionElement.innerHTML = `
-                        <h3>Frage ${index + 1}</h3>
-                        <p>${q.question}</p>
-                        <div class="options">
-                            ${q.options.map((option, optIndex) => `
-                                <div class="option" data-question="${index}" data-option="${optIndex}">
-                                    ${String.fromCharCode(97 + optIndex)}) ${option}
-                                </div>
-                            `).join('')}
-                        </div>
-                        <div class="answer correct-answer hidden" id="answerTeil2Question${index + 1}">
-                            Richtige Antwort: ${String.fromCharCode(97 + q.correct)}) ${q.options[q.correct]}
-                        </div>
-                    `;
-                    questionsList.appendChild(questionElement);
-                });
+        // إخفاء نافذة الملاحظات
+        function hideNotesModal() {
+            document.getElementById('notesModal').style.display = 'none';
+        }
 
-                // Lesen Teil 3
-                const situationsList = document.getElementById('situationsList');
-                const adsList = document.getElementById('adsList');
-
-                examData.situations.forEach((situation, index) => {
-                    const situationElement = document.createElement('div');
-                    situationElement.className = 'situation-item';
-                    situationElement.innerHTML = `
-                        <strong>Situation ${index + 11}:</strong> ${situation}
-                        <div class="answer correct-answer hidden" id="answerTeil3Situation${index + 11}">
-                            ${getCorrectAdsForSituation(index)}
-                        </div>
-                    `;
-                    situationsList.appendChild(situationElement);
-                });
-
-                examData.ads.forEach((ad, index) => {
-                    const adElement = document.createElement('div');
-                    adElement.className = 'ad-item';
-                    adElement.innerHTML = `
-                        <strong>Text ${String.fromCharCode(97 + index)}:</strong> ${ad.content}
-                    `;
-                    adsList.appendChild(adElement);
-                });
-
-                // Sprachbausteine Teil 1
-                const blankText1Element = document.getElementById('blankText1');
-                blankText1Element.innerHTML = generateBlankText(examData.blankText1, 'sprach1');
-
-                // Sprachbausteine Teil 2
-                const blankText2Element = document.getElementById('blankText2');
-                blankText2Element.innerHTML = generateBlankText(examData.blankText2, 'sprach2');
-            }
-
-            function generateBlankText(blankData, prefix) {
-                const parts = blankData.text.split(/(___)/);
-                let blankIndex = 0;
-                
-                return parts.map(part => {
-                    if (part === '___') {
-                        const blank = blankData.blanks[blankIndex];
-                        blankIndex++;
-                        return `
-                            <span class="blank" id="${prefix}Blank${blankIndex}">
-                                ${blank.options[blank.correct]}
-                            </span>
-                        `;
-                    }
-                    return part;
-                }).join('');
-            }
-
-            function getCorrectAdsForSituation(situationIndex) {
-                const matchingAds = examData.ads.filter(ad => ad.matches.includes(situationIndex));
-                return matchingAds.map(ad => {
-                    const adIndex = examData.ads.indexOf(ad);
-                    return `Text ${String.fromCharCode(97 + adIndex)}`;
-                }).join(', ');
-            }
-
-            function showAllAnswers() {
-                // إظهار جميع الإجابات
-                document.querySelectorAll('.answer').forEach(answer => {
-                    answer.classList.remove('hidden');
-                });
-
-                // تلوين الإجابات الصحيحة في الأسئلة
-                document.querySelectorAll('.option').forEach(option => {
-                    const questionIndex = parseInt(option.dataset.question);
-                    const optionIndex = parseInt(option.dataset.option);
-                    const question = examData.questions[questionIndex];
-                    
-                    if (optionIndex === question.correct) {
-                        option.classList.add('correct');
-                    } else {
-                        option.classList.add('incorrect');
-                    }
-                });
-            }
-
-            function hideAllAnswers() {
-                // إخفاء جميع الإجابات
-                document.querySelectorAll('.answer').forEach(answer => {
-                    answer.classList.add('hidden');
-                });
-
-                // إزالة التلوين
-                document.querySelectorAll('.option').forEach(option => {
-                    option.classList.remove('correct', 'incorrect');
-                });
-            }
-        });
+        // حفظ الملاحظات
+        function saveNotes() {
+            const notes = document.getElementById('notesTextarea').value;
+            localStorage.setItem('userNotes', notes);
+            alert('تم حفظ الملاحظات بنجاح!');
+        }
     </script>
 </body>
 </html>
