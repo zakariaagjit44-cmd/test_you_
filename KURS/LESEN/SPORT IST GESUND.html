@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPORT IST GESUND - TELC B2 Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* جميع الأنماط تبقى كما هي بدون تغيير */
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --secondary-dark: #1E88E5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #FFC107;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --text-light: #546E7A;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
+            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
+            --radius: 25px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #BBDEFB 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+
+        /* Header Controls - تم تعديل موضع زر الاشتراك */
+        .header-controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            z-index: 1000;
+            gap: 15px;
+        }
+
+        .left-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .right-controls {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .control-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .control-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
+        }
+
+        /* شارة المشترك الذهبية - تم التعديل للانتقال إلى اليسار */
+        .premium-badge-header {
+            position: fixed;
+            top: 20px;
+            left: 90px; /* تغيير من right إلى left */
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
+        }
+
+        .home-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .home-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .home-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* Language Selector */
+        .language-selector {
+            display: flex;
+            position: relative;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .lang-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .lang-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .lang-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 0.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            overflow: hidden;
+            min-width: 120px;
+            animation: dropdownSlide 0.3s ease;
+            z-index: 1001;
+        }
+
+        .dark-mode .lang-dropdown {
+            background: #1a237e;
+            color: var(--light);
+        }
+
+        @keyframes dropdownSlide {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lang-dropdown.show {
+            display: block;
+        }
+
+        .lang-option {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            color: var(--text);
+        }
+
+        .dark-mode .lang-option {
+            color: var(--light);
+            border-bottom: 1px solid #37474F;
+        }
+
+        .lang-option:hover {
+            background: #f5f5f5;
+            transform: translateX(5px);
+        }
+
+        .dark-mode .lang-option:hover {
+            background: #283593;
+        }
+
+        .lang-option:last-child {
+            border-bottom: none;
+        }
+
+        /* زر الاشتراك الجديد */
+        .subscribe-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .subscribe-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .subscribe-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(15px);
+            margin-top: 6rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: contentSlideUp 0.8s ease;
+        }
+
+        @keyframes contentSlideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* أزرار التحكم */
+        .answer-controls {
+            position: sticky;
+            top: 80px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .answer-controls {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .answer-btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .answer-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: right 0.6s;
+        }
+
+        .answer-btn:hover::before {
+            right: 100%;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .show-answers {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .dark-mode .section {
+            background: rgba(13, 71, 161, 0.9);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+        }
+
+        .dark-mode .section-title {
+            color: #90CAF9;
+        }
+
+        .question {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 15px;
+            border-right: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .dark-mode .question {
+            background: rgba(33, 150, 243, 0.1);
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            margin: 0.8rem 0;
+            padding: 1rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .dark-mode .option {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+            transform: translateX(-5px);
+        }
+
+        .correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            animation: slideInUp 0.5s ease;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* التصحيح - تم التعديل للوضع الليلي */
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2E7D32;
+            border: 2px solid #4CAF50;
+            font-weight: bold;
+        }
+
+        .dark-mode .correct-answer {
+            background: rgba(76, 175, 80, 0.3);
+            color: #A5D6A7;
+            border: 2px solid #81C784;
+        }
+
+        /* النصوص والعناوين */
+        .text-content {
+            line-height: 1.7;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .text-content {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .headings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .heading-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .dark-mode .heading-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .matched {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+            transform: scale(1.02);
+        }
+
+        /* الإعلانات والوضعيات */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .ad-item {
+            padding: 1.5rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            min-height: 150px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .ad-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .ad-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .situations-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+        }
+
+        .situation-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .situation-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .situation-item:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        /* Sprachbausteine */
+        .fill-blanks {
+            margin: 1.5rem 0;
+        }
+
+        .blank-text {
+            line-height: 2;
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-text {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            margin: 0 8px;
+            padding: 0.5rem 1rem;
+            border-bottom: 3px solid var(--primary);
+            text-align: center;
+            font-weight: 600;
+            background: var(--white);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .blank {
+            background: #1a237e;
+        }
+
+        .blank-answer {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2E7D32;
+            border-color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .dark-mode .blank-answer {
+            background: rgba(76, 175, 80, 0.3);
+            color: #A5D6A7;
+            border-color: #81C784;
+        }
+
+        /* قسم الكلمات لـ Sprachbausteine */
+        .word-bank {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(33, 150, 243, 0.1);
+            border-radius: 15px;
+            border: 2px dashed var(--primary);
+        }
+
+        .word-bank-title {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .dark-mode .word-bank-title {
+            color: #90CAF9;
+        }
+
+        .word-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .word-item {
+            padding: 0.8rem 1.2rem;
+            background: var(--white);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            transition: var(--transition);
+        }
+
+        .dark-mode .word-item {
+            background: #1a237e;
+            color: #90CAF9;
+        }
+
+        .word-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            font-size: 3.5rem;
+            opacity: 0.15;
+            animation: float 8s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        .floating-book { top: 15%; left: 8%; animation-delay: 0s; }
+        .floating-pen { top: 75%; right: 12%; animation-delay: 1s; }
+        .floating-globe { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
+        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
+        .floating-graduate { top: 65%; left: 5%; animation-delay: 4s; }
+        .floating-notebook { bottom: 15%; right: 10%; animation-delay: 5s; }
+        .floating-pencil { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
+        .floating-calculator { top: 35%; right: 15%; animation-delay: 7s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
+            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
+        }
+
+        @media (max-width: 768px) {
+            .header-controls {
+                top: 15px;
+                left: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .premium-badge-header {
+                top: 15px;
+                left: 70px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+
+            .home-btn, .subscribe-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .container {
+                padding: 2rem;
+                margin: 1rem;
+                margin-top: 5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .headings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .right-controls {
+                gap: 10px;
+            }
+
+            .answer-controls {
+                top: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-controls {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .left-controls, .right-controls {
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            .premium-badge-header {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Elements -->
+    <div class="floating-elements">
+        <div class="floating-element floating-book">📚</div>
+        <div class="floating-element floating-pen">✏️</div>
+        <div class="floating-element floating-globe">🌍</div>
+        <div class="floating-element floating-clock">⏰</div>
+        <div class="floating-element floating-graduate">🎓</div>
+        <div class="floating-element floating-notebook">📓</div>
+        <div class="floating-element floating-pencil">✏️</div>
+        <div class="floating-element floating-calculator">🧮</div>
+    </div>
+
+    <!-- شارة المشترك الذهبية - تم نقلها إلى اليسار -->
+    <div class="premium-badge-header" id="premiumBadge">
+        <i class="fas fa-crown"></i>
+    </div>
+
+    <!-- Header Controls -->
+    <div class="header-controls">
+        <div class="left-controls">
+            <button class="home-btn" id="homeBtn">
+                <i class="fas fa-home"></i>
+                <span id="homeText">الرئيسية</span>
+            </button>
+            <div class="language-selector">
+                <button class="lang-btn" id="langBtn">
+                    <span id="langBtnText">العربية</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option" data-lang="ar">
+                        <span>🇸🇦</span>
+                        <span>العربية</span>
+                    </div>
+                    <div class="lang-option" data-lang="de">
+                        <span>🇩🇪</span>
+                        <span>Deutsch</span>
+                    </div>
+                    <div class="lang-option" data-lang="en">
+                        <span>🇬🇧</span>
+                        <span>English</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-controls">
+            <button class="control-btn" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="subscribe-btn" id="subscribeBtn">
+                <i class="fas fa-star"></i>
+                <span id="subscribeText">اشتراك</span>
+            </button>
+            <button class="control-btn" id="userBtn">
+                <i class="fas fa-user"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="pageTitle">SPORT IST GESUND - TELC B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
+        </div>
+
+        <!-- أزرار التحكم -->
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">إظهار التصحيح</span>
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">إخفاء التصحيح</span>
+            </button>
+        </div>
+
+        <!-- Lesen Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="teil1Title">Lesen Teil 1</h2>
+            <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
+            
+            <div class="headings-grid" id="headingsList">
+                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div id="textsList">
+                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
+            <div class="text-content" id="longText">
+                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+            </div>
+
+            <div id="questionsList">
+                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 3 -->
+        <div class="section">
+            <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
+            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            
+            <div class="situations-grid" id="situationsList">
+                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div class="ads-grid" id="adsList">
+                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            
+            <!-- قسم الكلمات لـ Sprachbausteine Teil 1 -->
+            <div class="word-bank" id="wordBank1">
+                <h3 class="word-bank-title" id="wordBankTitle1">الكلمات المتاحة لـ Sprachbausteine Teil 1</h3>
+                <div class="word-list" id="wordList1">
+                    <!-- الكلمات سيتم إضافتها بالجافاسكريبت -->
+                </div>
+            </div>
+            
+            <div class="fill-blanks">
+                <div class="blank-text" id="blankText1">
+                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            
+            <!-- قسم الكلمات لـ Sprachbausteine Teil 2 -->
+            <div class="word-bank" id="wordBank2">
+                <h3 class="word-bank-title" id="wordBankTitle2">الكلمات المتاحة لـ Sprachbausteine Teil 2</h3>
+                <div class="word-list" id="wordList2">
+                    <!-- الكلمات سيتم إضافتها بالجافاسكريبت -->
+                </div>
+            </div>
+            
+            <div class="fill-blanks">
+                <div class="blank-text" id="blankText2">
+                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // الترجمات
+        const translations = {
+            ar: {
+                homeText: "الرئيسية",
+                subscribeText: "اشتراك",
+                themeText: "الوضع الليلي",
+                langText: "العربية", 
+                userText: "زائر",
+                pageTitle: "SPORT IST GESUND - TELC B2 Training",
+                pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
+                showAnswersText: "إظهار التصحيح",
+                hideAnswersText: "إخفاء التصحيح",
+                teil1Title: "Lesen Teil 1",
+                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
+                teil2Title: "Lesen Teil 2", 
+                teil3Title: "Lesen Teil 3",
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                sprach1Title: "Sprachbausteine Teil 1",
+                sprach2Title: "Sprachbausteine Teil 2",
+                wordBankTitle1: "الكلمات المتاحة لـ Sprachbausteine Teil 1",
+                wordBankTitle2: "الكلمات المتاحة لـ Sprachbausteine Teil 2"
+            },
+            de: {
+                homeText: "Startseite",
+                subscribeText: "Abonnieren",
+                themeText: "Nachtmodus", 
+                langText: "Deutsch",
+                userText: "Besucher",
+                pageTitle: "SPORT IST GESUND - TELC B2 Training",
+                pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
+                showAnswersText: "Korrektur anzeigen",
+                hideAnswersText: "Korrektur ausblenden",
+                teil1Title: "Lesen Teil 1",
+                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
+                teil2Title: "Lesen Teil 2",
+                teil3Title: "Lesen Teil 3", 
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                sprach1Title: "Sprachbausteine Teil 1",
+                sprach2Title: "Sprachbausteine Teil 2",
+                wordBankTitle1: "Verfügbare Wörter für Sprachbausteine Teil 1",
+                wordBankTitle2: "Verfügbare Wörter für Sprachbausteine Teil 2"
+            },
+            en: {
+                homeText: "Home",
+                subscribeText: "Subscribe",
+                themeText: "Dark Mode",
+                langText: "English",
+                userText: "Visitor", 
+                pageTitle: "SPORT IST GESUND - TELC B2 Training",
+                pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
+                showAnswersText: "Show Correction",
+                hideAnswersText: "Hide Correction",
+                teil1Title: "Reading Part 1",
+                teil1Description: "First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).",
+                teil2Title: "Reading Part 2",
+                teil3Title: "Reading Part 3",
+                teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
+                sprach1Title: "Language Elements Part 1", 
+                sprach2Title: "Language Elements Part 2",
+                wordBankTitle1: "Available Words for Language Elements Part 1",
+                wordBankTitle2: "Available Words for Language Elements Part 2"
+            }
+        };
+
+        // بيانات الأسئلة والإجابات من ملف PDF
+        const examData = {
+            // Lesen Teil 1
+            headings: [
+                "Achtung, Wildtiere!",
+                "Ein neues Buch über Sport und Ernährung",
+                "Ein neues Fitnessgerät für zu Hause",
+                "Ein neues Sportzentrum wird eröffnet",
+                "Erfolgreiche Sportler geben Tipps",
+                "Fußballspiele live im Internet",
+                "Gesundheitsprobleme durch zu viel Sport",
+                "Mehr Bewegung im Alltag",
+                "Neue Sportart für Kinder",
+                "Sport für Berufstätige"
+            ],
+            
+            texts: [
+                {
+                    content: `Viele Menschen möchten Sport treiben, haben aber nicht genug Zeit dafür. Sie arbeiten den ganzen Tag und sind abends zu müde, um noch ins Fitnessstudio zu gehen. Für diese Menschen gibt es jetzt eine Lösung: das Mini-Trampolin. Es ist klein, leicht und passt in jede Wohnung. Man kann es jederzeit benutzen, zum Beispiel während der Werbepause im Fernsehen. Zehn Minuten Springen pro Tag reichen schon aus, um fit zu bleiben. Das Trampolin trainiert nicht nur die Muskeln, sondern auch den Gleichgewichtssinn.`,
+                    correctAnswer: "Ein neues Fitnessgerät für zu Hause"
+                },
+                {
+                    content: `Am kommenden Samstag wird das neue Sportzentrum "Aktiv" eröffnet. Es bietet auf 2000 Quadratmetern alles, was das Sportlerherz begehrt: eine große Fitnessfläche, einen Schwimmbereich mit Sauna und verschiedene Kurse wie Yoga und Pilates. Besonders stolz ist man auf die neue Kletterwand, die zu den höchsten in der Region gehört. Am Eröffnungswochenende können Interessierte das Zentrum kostenlos besuchen und alle Angebote testen. Für die ersten 100 Mitglieder gibt es zudem einen besonderen Rabatt.`,
+                    correctAnswer: "Ein neues Sportzentrum wird eröffnet"
+                },
+                {
+                    content: `Immer mehr Kinder bewegen sich zu wenig. Sie sitzen den ganzen Tag in der Schule und danach vor dem Computer oder Fernseher. Eine neue Sportart soll das ändern: "Parkour". Dabei läuft man durch die Stadt und überwindet Hindernisse wie Mauern und Treppen. Parkour macht nicht nur Spaß, sondern trainiert auch den ganzen Körper. In vielen Städten gibt es bereits Kurse für Kinder und Jugendliche. Die Trainer achten darauf, dass die Übungen altersgerecht und sicher sind.`,
+                    correctAnswer: "Neue Sportart für Kinder"
+                },
+                {
+                    content: `Wer regelmäßig Sport treibt, lebt gesünder. Das ist bekannt. Doch man muss nicht gleich Marathon laufen oder stundenlang im Fitnessstudio trainieren. Schon kleine Veränderungen im Alltag können viel bewirken. Nehmen Sie zum Beispiel die Treppe statt den Aufzug. Steigen Sie eine Bushaltestelle früher aus und gehen Sie den Rest zu Fuß. Oder machen Sie in der Mittagspause einen Spaziergang. Jede Bewegung zählt und hilft, fit zu bleiben.`,
+                    correctAnswer: "Mehr Bewegung im Alltag"
+                },
+                {
+                    content: `Im Herbst und Winter ist besondere Vorsicht im Straßenverkehr geboten. Vor allem in der Dämmerung und nachts kreuzen häufig Wildtiere wie Rehe und Wildschweine die Straßen. Autofahrer sollten in Waldgebieten und auf Landstraßen besonders aufmerksam fahren und die Geschwindigkeit reduzieren. Wenn ein Tier am Straßenrand auftaucht, sollte man sofort abbremsen und hupen. Ein Wildunfall kann nicht nur dem Tier, sondern auch den Insassen des Fahrzeugs gefährlich werden.`,
+                    correctAnswer: "Achtung, Wildtiere!"
+                }
+            ],
+
+            // Lesen Teil 2 - النص الكامل
+            longText: {
+                content: `Sport ist gesund – das weiß jeder. Doch warum ist das eigentlich so? Und wie viel Sport ist optimal? Diese Fragen beschäftigen nicht nur Hobbysportler, sondern auch Wissenschaftler.
+Regelmäßige Bewegung stärkt das Herz-Kreislauf-System. Der Herzmuskel wird kräftiger und kann pro Schlag mehr Blut pumpen. Dadurch sinkt der Ruhepuls. Auch die Blutgefäße bleiben elastisch, was Bluthochdruck vorbeugt. Zudem verbessert Sport die Cholesterinwerte: Das "gute" HDL-Cholesterin steigt, das "schlechte" LDL-Cholesterin sinkt.
+Sport hat auch positive Auswirkungen auf das Immunsystem. Moderate Bewegung an der frischen Luft aktiviert die Abwehrkräfte. Menschen, die regelmäßig Sport treiben, erkranken seltener an Infekten. Allerdings: Wer übertreibt und sich überlastet, schwächt sein Immunsystem vorübergehend.
+Nicht zu unterschätzen sind die psychischen Effekte von Sport. Bei körperlicher Anstrengung werden Endorphine ausgeschüttet – Glückshormone, die Stress abbauen und die Stimmung heben. Viele Menschen berichten, dass sie nach dem Sport entspannter sind und besser schlafen können. Sport kann sogar bei leichten Depressionen helfen.
+Doch wie viel Sport ist empfehlenswert? Die Weltgesundheitsorganisation WHO rät Erwachsenen zu mindestens 150 Minuten moderater Bewegung pro Woche. Das entspricht einer halben Stunde an fünf Tagen. Alternativ sind 75 Minuten intensive Bewegung möglich. Dabei sollte man leicht ins Schwitzen kommen, aber sich noch unterhalten können.
+Für Kinder und Jugendliche gelten andere Empfehlungen: Sie sollten sich täglich mindestens 60 Minuten bewegen. Im Idealfall sind das Aktivitäten, die Ausdauer, Kraft und Koordination trainieren.
+Wichtig ist, dass der Sport Spaß macht. Nur wer Freude an der Bewegung hat, bleibt langfristig dabei. Es muss nicht immer Joggen oder Fitnessstudio sein. Auch Tanzen, Schwimmen, Radfahren oder Wandern sind excellent. Hauptsache, man bewegt sich regelmäßig.
+Vor dem Sport sollte man sich aufwärmen, um Verletzungen vorzubeugen. Nach dem Training helfen Dehnübungen, die Muskeln geschmeidig zu halten. Auch die richtige Ausrüstung ist wichtig – vor allem passende Schuhe.
+Wer lange keinen Sport getrieben hat oder gesundheitliche Probleme hat, sollte vor Trainingsbeginn einen Arzt konsultieren. Das gilt besonders für Menschen über 35 Jahre.
+Neben Sport ist auch die Ernährung wichtig für die Gesundheit. Eine ausgewogene Ernährung liefert die nötige Energie fürs Training und unterstützt die Regeneration. Besonders wichtig sind Kohlenhydrate als Energielieferanten und Proteine für den Muskelaufbau.
+Zusammenfassend lässt sich sagen: Sport ist eine der besten Investitionen in die eigene Gesundheit. Schon moderate, aber regelmäßige Bewegung kann das Leben verlängern und die Lebensqualität steigern.`,
+                questions: [
+                    {
+                        question: "Was bewirkt Sport im Herz-Kreislauf-System?",
+                        options: [
+                            "Der Ruhepuls steigt an.",
+                            "Der Herzmuskel wird schwächer.",
+                            "Die Blutgefäße bleiben elastisch."
+                        ],
+                        correctAnswer: "Die Blutgefäße bleiben elastisch."
+                    },
+                    {
+                        question: "Welche Auswirkung hat Sport auf das Immunsystem?",
+                        options: [
+                            "Moderate Bewegung schwächt die Abwehrkräfte.",
+                            "Überlastung kann das Immunsystem vorübergehend schwächen.",
+                            "Sport hat keine Auswirkungen auf Infekte."
+                        ],
+                        correctAnswer: "Überlastung kann das Immunsystem vorübergehend schwächen."
+                    },
+                    {
+                        question: "Was wird bei körperlicher Anstrengung ausgeschüttet?", 
+                        options: [
+                            "Stresshormone",
+                            "Glückshormone",
+                            "Schlafhormone"
+                        ],
+                        correctAnswer: "Glückshormone"
+                    },
+                    {
+                        question: "Wie viel Bewegung empfiehlt die WHO für Erwachsene pro Woche?",
+                        options: [
+                            "Mindestens 300 Minuten moderate Bewegung",
+                            "Mindestens 150 Minuten moderate Bewegung",
+                            "Mindestens 75 Minuten leichte Bewegung"
+                        ],
+                        correctAnswer: "Mindestens 150 Minuten moderate Bewegung"
+                    },
+                    {
+                        question: "Was ist neben Sport wichtig für die Gesundheit?",
+                        options: [
+                            "Ausreichend Schlaf",
+                            "Eine ausgewogene Ernährung",
+                            "Viel Fernsehen"
+                        ],
+                        correctAnswer: "Eine ausgewogene Ernährung"
+                    }
+                ]
+            },
+
+            // Lesen Teil 3
+            situations: [
+                "Sie möchten wissen, wie Sie Ihr Immunsystem stärken können.",
+                "Sie interessieren sich für die psychischen Vorteile von Sport.",
+                "Sie wollen mit dem Joggen beginnen und suchen Tipps.",
+                "Sie möchten mehr über die Wirkung von Sport auf das Herz erfahren.",
+                "Sie suchen eine Sportart, die Sie mit Ihrer Familie ausüben können.",
+                "Sie wollen wissen, wie viel Sport für Kinder empfohlen wird.", 
+                "Sie möchten Ihre Ernährung optimieren, um mehr Energie für den Sport zu haben.",
+                "Sie haben Rückenschmerzen und suchen eine geeignete Sportart.",
+                "Sie wollen wissen, wie Sie Sport in Ihren Arbeitsalltag integrieren können.",
+                "Sie interessieren sich für die wissenschaftlichen Grundlagen von Sport und Gesundheit."
+            ],
+
+            ads: [
+                {
+                    id: "a",
+                    title: "Immunsystem stärken",
+                    content: "Unser Immunsystem ist unser natürlicher Schutz gegen Krankheiten. Durch regelmäßige moderate Bewegung an der frischen Luft können Sie Ihre Abwehrkräfte aktivieren. Besonders geeignet sind Ausdauersportarten wie Walking, Joggen oder Radfahren. Wichtig ist, nicht zu übertreiben – übermäßige Belastung kann das Immunsystem vorübergehend schwächen. In unserem Kurs lernen Sie, wie Sie Ihr Training optimal gestalten, um Ihr Immunsystem zu stärken."
+                },
+                {
+                    id: "b", 
+                    title: "Psychische Gesundheit durch Sport",
+                    content: "Sport macht nicht nur körperlich fit, sondern auch psychisch stark. Bei körperlicher Aktivität werden Endorphine freigesetzt, die Stress abbauen und die Stimmung verbessern. In unserer Sportgruppe für psychische Gesundheit lernen Sie, wie Sie durch Bewegung Entspannung finden und Ihr Wohlbefinden steigern können. Die Kurse werden von erfahrenen Trainern geleitet und sind für jedes Fitnesslevel geeignet."
+                },
+                {
+                    id: "c",
+                    title: "Laufanfänger gesucht!", 
+                    content: "Sie möchten mit dem Joggen beginnen, wissen aber nicht wie? Unser Laufkurs für Anfänger ist genau das Richtige für Sie! Wir beginnen langsam mit Walking und steigern uns schrittweise. Sie lernen die richtige Lauftechnik, Atmung und wie Sie sich vor Verletzungen schützen. Der Kurs findet zweimal wöchentlich im Stadtpark statt und ist für alle Altersgruppen geeignet. Laufschuhe und Motivation sind alles, was Sie brauchen!"
+                },
+                {
+                    id: "d",
+                    title: "Herzgesundheit",
+                    content: "Unser Herz ist der Motor unseres Körpers. Durch regelmäßigen Sport können Sie Ihr Herz-Kreislauf-System stärken und Erkrankungen vorbeugen. In unserem Seminar erfahren Sie, welche Sportarten besonders herzfreundlich sind und wie Sie Ihr Training optimal gestalten. Wir messen Ihren Ruhepuls und geben Ihnen individuelle Empfehlungen für Ihr Herz-Kreislauf-Training."
+                },
+                {
+                    id: "e",
+                    title: "Familiensport",
+                    content: "Gemeinsam Sport machen stärkt nicht nur die Gesundheit, sondern auch den Familienzusammenhalt. Wir bieten verschiedene Aktivitäten für die ganze Familie an: Von Familienschwimmen über Eltern-Kind-Turnen bis zu gemeinsamen Wanderungen. Unsere Kurse sind so gestaltet, dass sowohl Kinder als auch Erwachsene Spaß haben und gefordert werden. Machen Sie Sport zu einem gemeinsamen Erlebnis!"
+                },
+                {
+                    id: "f",
+                    title: "Kinder in Bewegung",
+                    content: "Kinder brauchen Bewegung für ihre gesunde Entwicklung. Laut Empfehlungen sollten sich Kinder täglich mindestens 60 Minuten bewegen. Wir bieten ein breites Angebot an Sportkursen für Kinder aller Altersstufen: Von Babyschwimmen über Kinderturnen bis zu Ballsportarten. Unsere erfahrenen Trainer achten darauf, dass die Kinder spielerisch an den Sport herangeführt werden und vor allem eins: Spaß haben!"
+                },
+                {
+                    id: "g",
+                    title: "Sport und Ernährung",
+                    content: "Die richtige Ernährung ist die Basis für erfolgreiches Training. In unserem Workshop lernen Sie, wie Sie Ihre Ernährung optimal auf Ihr Sportprogramm abstimmen. Wir erklären, welche Nährstoffe wann wichtig sind, wie Sie Ihren Energiebedarf berechnen und welche Lebensmittel die Regeneration unterstützen. Mit praktischen Tipps für den Alltag und leckeren Rezepten für Sportler."
+                },
+                {
+                    id: "h", 
+                    title: "Rückenfitness",
+                    content: "Rückenschmerzen sind eine Volkskrankheit. Die beste Vorbeugung: regelmäßige Bewegung! Unser Rückenfit-Kurs stärkt gezielt die Muskulatur, die für eine gesunde Haltung wichtig ist. Sie lernen Übungen zur Kräftigung der Rumpfmuskulatur und zur Verbesserung der Beweglichkeit. Der Kurs ist besonders geeignet für Menschen, die viel sitzen, und kann auch bei bereits bestehenden Rückenschmerzen helfen."
+                },
+                {
+                    id: "i",
+                    title: "Büro-Sport",
+                    content: "Keine Zeit für Sport? Mit unseren Mini-Übungen für den Arbeitsalltag integrieren Sie Bewegung ganz einfach in Ihren Büroalltag. Wir zeigen Ihnen einfache Übungen, die Sie am Schreibtisch machen können, wie Sie mehr Bewegung in Ihren Arbeitsweg bringen und warum regelmäßige Pausen wichtig sind. Schon kleine Veränderungen können große Wirkung haben!"
+                },
+                {
+                    id: "j",
+                    title: "Wissenschaft des Sports", 
+                    content: "Warum ist Sport eigentlich gesund? In unserer Vortragsreihe erfahren Sie mehr über die wissenschaftlichen Grundlagen von Sport und Gesundheit. Experten erklären die physiologischen und psychologischen Wirkmechanismen von Bewegung. Von der Biochemie der Muskeln bis zur Psychologie der Motivation – tauchen Sie ein in die faszinierende Welt der Sportwissenschaft!"
+                },
+                {
+                    id: "k",
+                    title: "Schwimmen für alle",
+                    content: "Schwimmen ist eine der gesündesten Sportarten: Es trainiert den ganzen Körper, schont die Gelenke und ist für jedes Alter geeignet. Wir bieten Schwimmkurse für Anfänger und Fortgeschrittene, Aquafitness und Wassergymnastik. Besonders empfehlenswert ist Schwimmen für Menschen mit Gelenkproblemen oder Übergewicht. Kommen Sie vorbei und entdecken Sie die Freude am Wasser!"
+                },
+                {
+                    id: "l",
+                    title: "Outdoor-Aktivitäten",
+                    content: "Frische Luft und Bewegung – die perfekte Kombination für Ihre Gesundheit! Wir organisieren regelmäßig Outdoor-Aktivitäten wie Wandertouren, Radausflüge und Nordic-Walking-Gruppen. Egal ob Sie Anfänger oder erfahrener Outdoor-Sportler sind – bei uns finden Sie die passende Gruppe. Gemeinsam macht Sport mehr Spaß und die Natur bietet die perfekte Umgebung für Ihr Training."
+                }
+            ],
+
+            // الإجابات الصحيحة لـ Lesen Teil 3
+            teil3Answers: {
+                11: "Immunsystem stärken",
+                12: "Psychische Gesundheit durch Sport", 
+                13: "Laufanfänger gesucht!",
+                14: "Herzgesundheit",
+                15: "Familiensport",
+                16: "Kinder in Bewegung",
+                17: "Sport und Ernährung",
+                18: "Rückenfitness",
+                19: "Büro-Sport", 
+                20: "Wissenschaft des Sports"
+            },
+
+            // Sprachbausteine Teil 1
+            blankText1: {
+                content: `Hallo Maria,
+vielen Dank für deine E-Mail __(21)__ letzter Woche! Es tut mir leid, dass ich erst jetzt antworte, __(22)__ ich viel Stress hatte. Aber jetzt habe ich endlich Zeit, dir __(23)__ erzählen, was hier los ist.
+Also, in der Arbeit ist momentan viel los, __(24)__ wir ein großes Projekt haben. Drei Kollegen sind im Urlaub und eine Kollegin ist krank. Deshalb müssen wir __(25)__ viel Arbeit in wenig Zeit erledigen. Ich hoffe, dass es nächste Woche __(26)__ wird.
+Am Wochenende war ich mit Peter im Kino. Wir haben den neuen Film von meinem Lieblingsregisseur gesehen. Eigentlich __(27)__ ich zu müde, aber Peter hatte schon die Karten gekauft. Im Nachhinein war ich froh, dass wir gegangen sind, __(28)__ der Film wirklich gut war.
+Nächste Woche habe ich Geburtstag und werde feiern. Ich __(29)__ mich schon darauf! Kommst du auch? Es __(30)__ mich sehr freuen!
+Schreib mir bald wieder!
+
+Liebe Grüße
+Anna`,
+                answers: ["von", "weil", "zu", "weil", "viel", "besser", "war", "denn", "freue", "würde"]
+            },
+
+            // Sprachbausteine Teil 2
+            blankText2: {
+                content: `Sport ist wichtig für die Gesundheit. __(31)__ wer regelmäßig Sport treibt, bleibt fit und gesund. Es gibt viele verschiedene Sportarten, __(32)__ man ausüben kann. Manche Menschen bevorzugen Teamsportarten __(33)__ Fußball oder Basketball. Andere mögen lieber Individualsportarten __(34)__ Joggen oder Schwimmen.
+Wichtig ist, __(35)__ man eine Sportart findet, die Spaß macht. __(36)__ macht man nicht lange mit. Bevor man mit einer neuen Sportart beginnt, __(37)__ man sich gut informieren. Man __(38)__ auch einen Arzt konsultieren, wenn man gesundheitliche Probleme hat.
+Nach dem Sport __(39)__ man sich ausreichend erholen. Die Regeneration ist genauso wichtig __(40)__ das Training selbst.`,
+                answers: ["Denn", "die", "wie", "wie", "dass", "Sonst", "sollte", "sollte", "sollte", "wie"]
+            }
+        };
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        let currentLang = 'ar';
+        let isDarkMode = false;
+
+        function initializePage() {
+            // تحميل الإعدادات المحفوظة
+            const savedLang = localStorage.getItem('language') || 'ar';
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            const username = localStorage.getItem('username') || 'زائر';
+            const access = localStorage.getItem('access');
+            
+            changeLanguage(savedLang);
+            if (savedDarkMode) {
+                toggleDarkMode();
+            }
+            
+            // التحقق من حالة المستخدم
+            if (access === 'paid' && username) {
+                document.getElementById('premiumBadge').style.display = 'flex';
+            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
+        }
+
+        function initializeTeil1() {
+            const headingsList = document.getElementById('headingsList');
+            const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
+            textsList.innerHTML = '';
+
+            // إضافة العناوين
+            examData.headings.forEach((heading, index) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                `;
+                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${index + 1}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
+                    </div>
+                `;
+                textsList.appendChild(textItem);
+            });
+        }
+
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
+            const questionsList = document.getElementById('questionsList');
+
+            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Frage ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
+                    <div class="options">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                    </div>
+                `;
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        function initializeTeil3() {
+            const situationsList = document.getElementById('situationsList');
+            const adsList = document.getElementById('adsList');
+
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation, index) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <strong>${index + 11})</strong> ${situation}
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
+                    </div>
+                `;
+                situationsList.appendChild(situationItem);
+            });
+
+            adsList.innerHTML = '';
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
+                    <p>${ad.content}</p>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+
+        function initializeSprachbausteine() {
+            // Teil 1
+            const blankText1 = document.getElementById('blankText1');
+            const wordList1 = document.getElementById('wordList1');
+            
+            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
+            });
+            blankText1.innerHTML = textWithBlanks1;
+            
+            // إضافة الكلمات لـ Teil 1
+            wordList1.innerHTML = '';
+            examData.blankText1.answers.forEach((word, index) => {
+                const wordItem = document.createElement('div');
+                wordItem.className = 'word-item';
+                wordItem.textContent = word;
+                wordList1.appendChild(wordItem);
+            });
+
+            // Teil 2
+            const blankText2 = document.getElementById('blankText2');
+            const wordList2 = document.getElementById('wordList2');
+            
+            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 31]}</span></span>`;
+            });
+            blankText2.innerHTML = textWithBlanks2;
+            
+            // إضافة الكلمات لـ Teil 2
+            wordList2.innerHTML = '';
+            examData.blankText2.answers.forEach((word, index) => {
+                const wordItem = document.createElement('div');
+                wordItem.className = 'word-item';
+                wordItem.textContent = word;
+                wordList2.appendChild(wordItem);
+            });
+        }
+
+        function setupEventListeners() {
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الرئيسية
+            document.getElementById('homeBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html';
+            });
+            
+            // زر الاشتراك
+            document.getElementById('subscribeBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html#subscribe';
+            });
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+            
+            // زر المستخدم
+            document.getElementById('userBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html#profile';
+            });
+            
+            // زر اللغة
+            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const lang = option.getAttribute('data-lang');
+                    changeLanguage(lang);
+                    document.getElementById('langDropdown').classList.remove('show');
+                });
+            });
+            
+            // إغلاق القوائم المنسدلة بالنقر خارجها
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.language-selector')) {
+                    document.getElementById('langDropdown').classList.remove('show');
+                }
+            });
+        }
+
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                        heading.classList.add('matched');
+                    }
+                });
+            });
+        }
+
+        function hideAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+
+        function toggleLangDropdown() {
+            document.getElementById('langDropdown').classList.toggle('show');
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // تحديث جميع النصوص
+            Object.keys(t).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = t[key];
+                }
+            });
+            
+            localStorage.setItem('language', lang);
+            
+            // إعادة تهيئة المحتوى لترجمة الإجابات
+            initializeTeil1();
+            initializeTeil2();
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BATATA - TELC B2 Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --secondary-dark: #1E88E5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #FFC107;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --text-light: #546E7A;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
+            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
+            --radius: 25px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #BBDEFB 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+
+        /* Header Controls - التعديل هنا */
+        .header-controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            z-index: 1000;
+            gap: 15px;
+        }
+
+        .left-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .right-controls {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .control-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .control-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
+        }
+
+        /* شارة المشترك الذهبية - تم التعديل */
+        .premium-badge-header {
+            position: fixed;
+            top: 20px;
+            right: 90px; /* بجانب الأزرار */
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
+        }
+
+        .home-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .home-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .home-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* Language Selector */
+        .language-selector {
+            display: flex;
+            position: relative;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .lang-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .lang-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .lang-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 0.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            overflow: hidden;
+            min-width: 120px;
+            animation: dropdownSlide 0.3s ease;
+            z-index: 1001;
+        }
+
+        .dark-mode .lang-dropdown {
+            background: #1a237e;
+            color: var(--light);
+        }
+
+        @keyframes dropdownSlide {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lang-dropdown.show {
+            display: block;
+        }
+
+        .lang-option {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            color: var(--text);
+        }
+
+        .dark-mode .lang-option {
+            color: var(--light);
+            border-bottom: 1px solid #37474F;
+        }
+
+        .lang-option:hover {
+            background: #f5f5f5;
+            transform: translateX(5px);
+        }
+
+        .dark-mode .lang-option:hover {
+            background: #283593;
+        }
+
+        .lang-option:last-child {
+            border-bottom: none;
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(15px);
+            margin-top: 6rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: contentSlideUp 0.8s ease;
+        }
+
+        @keyframes contentSlideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* أزرار التحكم */
+        .answer-controls {
+            position: sticky;
+            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .answer-controls {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .answer-btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .answer-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: right 0.6s;
+        }
+
+        .answer-btn:hover::before {
+            right: 100%;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .show-answers {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .dark-mode .section {
+            background: rgba(13, 71, 161, 0.9);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+        }
+
+        .dark-mode .section-title {
+            color: #90CAF9;
+        }
+
+        .question {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 15px;
+            border-right: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .dark-mode .question {
+            background: rgba(33, 150, 243, 0.1);
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            margin: 0.8rem 0;
+            padding: 1rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .dark-mode .option {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+            transform: translateX(-5px);
+        }
+
+        .correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            animation: slideInUp 0.5s ease;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* التصحيح - تم التعديل للوضع الليلي */
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2E7D32;
+            border: 2px solid #4CAF50;
+            font-weight: bold;
+        }
+
+        .dark-mode .correct-answer {
+            background: rgba(76, 175, 80, 0.3);
+            color: #A5D6A7;
+            border: 2px solid #81C784;
+        }
+
+        /* النصوص والعناوين */
+        .text-content {
+            line-height: 1.7;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .text-content {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .headings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .heading-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .dark-mode .heading-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .matched {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+            transform: scale(1.02);
+        }
+
+        /* الإعلانات والوضعيات */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .ad-item {
+            padding: 1.5rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            min-height: 150px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .ad-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .ad-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .situations-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+        }
+
+        .situation-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .situation-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .situation-item:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        /* Sprachbausteine */
+        .fill-blanks {
+            margin: 1.5rem 0;
+        }
+
+        .blank-text {
+            line-height: 2;
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-text {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            margin: 0 8px;
+            padding: 0.5rem 1rem;
+            border-bottom: 3px solid var(--primary);
+            text-align: center;
+            font-weight: 600;
+            background: var(--white);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .blank {
+            background: #1a237e;
+        }
+
+        .blank-answer {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2E7D32;
+            border-color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .dark-mode .blank-answer {
+            background: rgba(76, 175, 80, 0.3);
+            color: #A5D6A7;
+            border-color: #81C784;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Floating Elements مثل الصفحة الرئيسية */
+        .floating-elements {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            font-size: 3.5rem;
+            opacity: 0.15;
+            animation: float 8s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        .floating-book { top: 15%; left: 8%; animation-delay: 0s; }
+        .floating-pen { top: 75%; right: 12%; animation-delay: 1s; }
+        .floating-globe { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
+        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
+        .floating-graduate { top: 65%; left: 5%; animation-delay: 4s; }
+        .floating-notebook { bottom: 15%; right: 10%; animation-delay: 5s; }
+        .floating-pencil { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
+        .floating-calculator { top: 35%; right: 15%; animation-delay: 7s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
+            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
+        }
+
+        @media (max-width: 768px) {
+            .header-controls {
+                top: 15px;
+                left: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .premium-badge-header {
+                top: 15px;
+                right: 70px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+
+            .home-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .container {
+                padding: 2rem;
+                margin: 1rem;
+                margin-top: 5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .headings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .right-controls {
+                gap: 10px;
+            }
+
+            .answer-controls {
+                top: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-controls {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .left-controls, .right-controls {
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            .premium-badge-header {
+                position: relative;
+                top: auto;
+                right: auto;
+                transform: none;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Elements مثل الصفحة الرئيسية -->
+    <div class="floating-elements">
+        <div class="floating-element floating-book">📚</div>
+        <div class="floating-element floating-pen">✏️</div>
+        <div class="floating-element floating-globe">🌍</div>
+        <div class="floating-element floating-clock">⏰</div>
+        <div class="floating-element floating-graduate">🎓</div>
+        <div class="floating-element floating-notebook">📓</div>
+        <div class="floating-element floating-pencil">✏️</div>
+        <div class="floating-element floating-calculator">🧮</div>
+    </div>
+
+    <!-- شارة المشترك الذهبية - تم التعديل -->
+    <div class="premium-badge-header" id="premiumBadge">
+        <i class="fas fa-crown"></i>
+    </div>
+
+    <!-- Header Controls -->
+    <div class="header-controls">
+        <div class="left-controls">
+            <button class="home-btn" id="homeBtn">
+                <i class="fas fa-home"></i>
+                <span id="homeText">الرئيسية</span>
+            </button>
+            <div class="language-selector">
+                <button class="lang-btn" id="langBtn">
+                    <span id="langBtnText">العربية</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option" data-lang="ar">
+                        <span>🇸🇦</span>
+                        <span>العربية</span>
+                    </div>
+                    <div class="lang-option" data-lang="de">
+                        <span>🇩🇪</span>
+                        <span>Deutsch</span>
+                    </div>
+                    <div class="lang-option" data-lang="en">
+                        <span>🇬🇧</span>
+                        <span>English</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-controls">
+            <button class="control-btn" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="control-btn" id="userBtn">
+                <i class="fas fa-user"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="pageTitle">BATATA - TELC B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
+        </div>
+
+        <!-- أزرار التحكم -->
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">إظهار التصحيح</span>
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">إخفاء التصحيح</span>
+            </button>
+        </div>
+
+        <!-- Lesen Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="teil1Title">Lesen Teil 1</h2>
+            <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
+            
+            <div class="headings-grid" id="headingsList">
+                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div id="textsList">
+                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
+            <div class="text-content" id="longText">
+                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+            </div>
+
+            <div id="questionsList">
+                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 3 -->
+        <div class="section">
+            <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
+            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            
+            <div class="situations-grid" id="situationsList">
+                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div class="ads-grid" id="adsList">
+                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            <div class="fill-blanks">
+                <div class="blank-text" id="blankText1">
+                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            <div class="fill-blanks">
+                <div class="blank-text" id="blankText2">
+                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // الترجمات
+        const translations = {
+            ar: {
+                homeText: "الرئيسية",
+                themeText: "الوضع الليلي",
+                langText: "العربية", 
+                userText: "زائر",
+                pageTitle: "BATATA - TELC B2 Training",
+                pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
+                showAnswersText: "إظهار التصحيح",
+                hideAnswersText: "إخفاء التصحيح",
+                teil1Title: "Lesen Teil 1",
+                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
+                teil2Title: "Lesen Teil 2", 
+                teil3Title: "Lesen Teil 3",
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                sprach1Title: "Sprachbausteine Teil 1",
+                sprach2Title: "Sprachbausteine Teil 2"
+            },
+            de: {
+                homeText: "Startseite",
+                themeText: "Nachtmodus", 
+                langText: "Deutsch",
+                userText: "Besucher",
+                pageTitle: "BATATA - TELC B2 Training",
+                pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
+                showAnswersText: "Korrektur anzeigen",
+                hideAnswersText: "Korrektur ausblenden",
+                teil1Title: "Lesen Teil 1",
+                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
+                teil2Title: "Lesen Teil 2",
+                teil3Title: "Lesen Teil 3", 
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                sprach1Title: "Sprachbausteine Teil 1",
+                sprach2Title: "Sprachbausteine Teil 2"
+            },
+            en: {
+                homeText: "Home",
+                themeText: "Dark Mode",
+                langText: "English",
+                userText: "Visitor", 
+                pageTitle: "BATATA - TELC B2 Training",
+                pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
+                showAnswersText: "Show Correction",
+                hideAnswersText: "Hide Correction",
+                teil1Title: "Reading Part 1",
+                teil1Description: "First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).",
+                teil2Title: "Reading Part 2",
+                teil3Title: "Reading Part 3",
+                teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
+                sprach1Title: "Language Elements Part 1", 
+                sprach2Title: "Language Elements Part 2"
+            }
+        };
+
+        // بيانات الأسئلة والإجابات من ملف PDF
+        const examData = {
+            // Lesen Teil 1
+            headings: [
+                "Das ideale Gemüse für schwer Arbeitende",
+                "Ein schlankes Gemüse für schlanke Leute", 
+                "Gesunde Ernährung mit Aloe Vera",
+                "Gesundes Leben schützt vor Zivilisationskrankheiten",
+                "Gesundheitsrisiken durch fettreiche Ernährung",
+                "Kartoffelrezepte als Zeitungsbeilage",
+                "Pflanzliche Kosmetik für gesunde Haut",
+                "Tolle Figur durch ausgewogene Ernährung",
+                "Von der Wildpflanze zum international geschätzten Nahrungsmittel",
+                "WHO untersucht Zusammenhang von Krebs und Herzinfarkt"
+            ],
+            
+            texts: [
+                {
+                    content: `Über zehntausend wissenschaftliche Studien wurden in den vergangenen Jahren im Auftrag der Weltgesundheitsorganisation WHO durchgeführt, um herauszubekommen, warum manche Menschen erheblich seltener an lebensgefährlichen Krankheiten wie Krebs oder Herzinfarkt erkranken als andere. Die Zahl dieser Erkrankungen hat nämlich in den Industriestaaten inzwischen einen traurigen Höhepunkt erreicht. Die Forscher fanden heraus, dass mit wenigen Tricks viele Menschen gesünder leben und damit ihr Leben verlängern könnten. Das Risiko eines Herzinfarkts kann man zum Beispiel durch den täglichen Verzehr eines Apfels und tägliches zwanzigminütiges Radfahren erheblich reduzieren. Die Entstehung von Krebs herumt zum Beispiel der tägliche Genuss eines Löffels reinen Olivenöls oder eine große Tasse grünen Tees. Gegen Stress hilft Vitamin-C-reiche Ernährung und regelmäßiges Schwimmen.`,
+                    correctAnswer: "Gesundes Leben schützt vor Zivilisationskrankheiten"
+                },
+                {
+                    content: `Am Mittelmeer und in Mexico wächst die Aloe-Vera-Pflanze, der in der heutigen Naturmedizin eine wachsende Rolle zukommt. Durch die dickfleischigen Blätter dieser Pflanze ist für Schädlinge kein Hindurchkommen, deshalb kann sie in Plantagen ohne chemische Schutzmittel angebaut werden. Unter der dicken Haut der Pflanze befindet sich eine gelartige Flüssigkeit, deren Aufgabe darin besteht, Wasser möglichst lange zu speichern - schließlich ist die Pflanze in extrem trockenen Landschaften beheimatet. Dieses Gel ist sehr vitamin- und mineralstoffreich. In der Wundheilung ist Aloegel sehr effektiv. Kosmetisch wird es für Cremes benutzt, die Haterkrankungen und leichte Verbrennungen wie zum Beispiel Sonnenbrand lindern, Feuchtigkeit spenden und die Haut straffen.`,
+                    correctAnswer: "Pflanzliche Kosmetik für gesunde Haut"
+                },
+                {
+                    content: `Eine der ältesten bekannten Gemüsesorten ist der Spargel. Schon vor 5000 Jahren war er bei den Chinesen bekannt. Geschätzt wurde er vor allem in der Medizin als Herzschutzmittel und zur Stärkung der körpereigenen Abwehrkräfte: Spargel hält gesund. Heute schätzen wir am Spargel besonders, dass er nicht dick macht. Die körperlich hart arbeitende Bevölkerung früherer Zeiten schätzte ihn deshalb nicht sehr, weil er kaum Energie lieferte. Im Südwesten Deutschlands wächst der Spargel von Mitte April bis zum Johannistag, dem 24. Juni. Besonders rund um Mainz, Darmstadt, Heidelberg, Bruchsal und in der Pfalz erntet man das stangenförmige Gemüse. In Deutschland ist allerdings der weiße Spargel, der unter der Erde wächst, populärer als sein oberirdisch wachsender Bruder, der grüne Spargel.`,
+                    correctAnswer: "Ein schlankes Gemüse für schlanke Leute"
+                },
+                {
+                    content: `Schlank sein ist "in". Deshalb versuchen Millionen Menschen nicht nur in Deutschland immer wieder ihre Pfunde loszuwerden. Und so purzeln sie von einer Diät zur nächsten, immer mit dem gleichen Erfolg: Nach dem Abnehmen nehmen sie genauso schnell wieder zu. Und bei vielen kommt mit dem Gewichtsverlust die Krankheit, denn die meisten Diäten sind sehr einseitig und entziehen dem Körper viele für sein Wohlbefinden wichtige Nährstoffe. Hier setzt eine neue Theorie an: Sie unterscheidet Nahrungsmittel in Fetthorter, die Fett im Körper speichern, und Fettburner, die dem Körper helfen, zu viel Fett und damit Kilos zu verwerten. Frisches Gemüse, Obst, Fisch und Geflügel versorgen den Körper mit Energie und helfen ihm dabei, die Nahrungsstoffe optimal zu verwerten. Iss dich schlank, lautet das Motto der Fatburnertheorie. Aber ist es nur eine neue Theorie oder hilft sie uns wirklich schlank zu werden?`,
+                    correctAnswer: "Tolle Figur durch ausgewogene Ernährung"
+                },
+                {
+                    content: `Als typisch deutsch gilt sie, doch rund um den Globus ist sie eines der Basislebensmittel schlechthin. In Österreich nennt man sie Erdapfel, an der Mosel heißt sie Grumbeere. Gemeint ist die überaus populäre Kartoffel. Hunderte verschiedener Sorten gibt es auf der Welt, doch ihr Ursprung liegt in Südamerika. Präkolumbianische Kulturen begannen damit, die bis dahin wild wachsende Urform der Kartoffel systematisch anzubauen. Die englischen Seehelden Sir Francis Drake und Sir Walter Raleigh sollen sie im 16. Jahrhundert nach Europa mitgebracht haben. Etwa zur gleichen Zeit wurde sie in Spanien und Portugal bekannt. Dennoch ist das Klischee von der "deutschen" Kartoffel nicht ganz falsch, denn zu vielen traditionellen Gerichten wird die Knolle gekocht oder in der Form von Bratkartoffeln, Kartoffelknödeln oder Pommes frites als Beilage gereicht.`,
+                    correctAnswer: "Von der Wildpflanze zum international geschätzten Nahrungsmittel"
+                }
+            ],
+
+            // Lesen Teil 2 - النص الكامل
+            longText: {
+                content: `Ein Leben für den Kaffee
+Bremer Kaffeerösterei Münchhausen eine der letzten traditionellen Röstereien
+
+Vor 50 Jahren gab es in der Hansestadt Bremen ungefähr 300 traditionelle Kaffeeröstereien. Diese importierten die Kaffeebohnen selbst, stellten den Kaffee tagefrisch her und verkauften ihn im eigenen Geschäft. Heute, da der Kaffee zumeist von internationalen Kaffeegesellschaften produziert und in Supermärkten verkauft wird, sind in Deutschland nur noch eine Handvoll Kleinröstereien übrig geblieben. Eine davon ist die Kaffeeröstereie Münchhausen.
+
+Münchhausen importiert seinen Kaffee direkt von Kleinbauern in Lateinamerika. Dabei wird streng auf fairen Handel geachtet, das heißt, die Kaffeebauern werden für ihre anstrengende Arbeit angemessen entlohnt. Damit unterstützt der Importeur zugleich den Kaffeeanbau nach ökologischen Gesichtspunkten. Kaffee aus Großplantagen, oft mit Pestiziden und Insektiziden belastet, ist zwar billiger, aber Qualität und Reinheit des Kaffees werden bei der Kaffeerösterei Münchhausen ganz großgeschrieben.
+
+Der Kaffee wird nach alter Familientradition hergestellt. Die Rezeptur ist die gleiche wir vor einem halben Jahrhundert: Täglich werden die Kaffeebohnen in kleinen Mengen frisch geröstet, gerade so viele, wie an einem Tag verkauft werden. Denn nur so behalten sie ihr Aroma und der Kaffee verliert nicht an Geschmack.
+
+Zuerst werden die Kaffeebohnen in der in den 50er Jahren angeschafften Rösttrommel ungefähr zehn Minuten lang bei Temperaturen von über 200 Grad Celsius geröstet. Dabei verlieren die Kaffeebohnen zwar ein Sechsteil ihres Gewichts, ihr Volumen vergrößert sich aber gleichzeitig um etwa ein Drittel. Sind die Bohnen dunkel genug – sie dürfen genauso wenig zu dunkel sein –, werden sie auf den Verlesetisch geschüttet, wo von Hand die guten von den schlechten Kaffeebohnen getrennt werden.
+
+Danach erst werden aus den gerösteten Kaffeebohnen verschiedene Mischungen hergestellt, die dann im Kontor, dem Geschäftsraum der Rösterei, fast ausschließlich an langjährige Stammkunden verkauft werden. Aber auch über das Internet vertreibt die Kaffeerösterei Münchhausen ihr Kaffeeangebot deutschlandweit.
+
+Bis zu seinem Tod kurz vor seinem dreiundneunzigsten Geburtstag führte August Münchhausen seinen Familienbetrieb, dann übernahm seine Tochter die Firma, inzwischen ist auch die Enkelin beteiligt. Die Frauen planen, aus der Kaffeerösterei ein Museum zu machen, um der Nachwelt die традиции Kunst des Kaffeeröstens zeigen zu können.
+
+Dann hätte diese Institution eine reelle Chance, in Zukunft fortzubestehen und zukünftigen Generationen den Charme und die Technik der traditionellen Kaffeeherstellung zu erhalten. Selbstverständlich wird es auch in Zukunft möglich sein, im Museums-Bistro den Kaffee zu genießen oder für den häuslichen Bedarf zu erwerben.`,
+                questions: [
+                    {
+                        question: "In Deutschland",
+                        options: [
+                            "existiert eine Vielzahl von Kaffeeröstereien.",
+                            "gibt es nur noch wenige traditionelle Kaffeeröstereien.", 
+                            "handeln nur noch internationale Gesellschaften mit Kaffee."
+                        ],
+                        correctAnswer: "gibt es nur noch wenige traditionelle Kaffeeröstereien."
+                    },
+                    {
+                        question: "Für die Kaffeerösterei Münchhausen",
+                        options: [
+                            "ist es nicht von Bedeutung, ob der Kaffee von Kleinbauern oder Großplantagen kommt.",
+                            "spielt der günstige Einkaufspreis eine wichtige Rolle.",
+                            "steht eher die Qualität des Kaffees als der Preis im Vordergrund."
+                        ],
+                        correctAnswer: "steht eher die Qualität des Kaffees als der Preis im Vordergrund."
+                    },
+                    {
+                        question: "Kaffeebohnen", 
+                        options: [
+                            "dürfen nach dem Rösten zwar zu dunklen sein, aber nicht zu hell.",
+                            "können nach der Röstung ohne Geschmacksverlust lange Zeit gelagert werden.",
+                            "müssen nach dem Rösten handverlesen werden, um eine gleichbleibend hohe Qualität zu gewährleisten."
+                        ],
+                        correctAnswer: "müssen nach dem Rösten handverlesen werden, um eine gleichbleibend hohe Qualität zu gewährleisten."
+                    },
+                    {
+                        question: "Die gerösteten Kaffeebohnen werden",
+                        options: [
+                            "im Kontor nur an Stammkunden angegeben.",
+                            "in Handarbeit gemischt.",
+                            "zusätzlich online vermarktet."
+                        ],
+                        correctAnswer: "zusätzlich online vermarktet."
+                    },
+                    {
+                        question: "In Zukunft wollen die Besitzer",
+                        options: [
+                            "die Kaffeerösterei in ein Museum umwandeln.",
+                            "ein Museum über den Kaffeeanbau eröffnen.", 
+                            "keinen Röstkaffee mehr verkaufen."
+                        ],
+                        correctAnswer: "die Kaffeerösterei in ein Museum umwandeln."
+                    }
+                ]
+            },
+
+            // Lesen Teil 3
+            situations: [
+                "Ein Bekannter möchte miterleben, wie spektakuläre Filmszenen gedreht werden.",
+                "Eine Bekannte interessiert sich für CDs mit klassischer Musik.",
+                "Eine Bekannte möchte eine mehrtägige Fußwanderung machen und dabei etwas über die kulturelle Vergangenheit der Region erfahren.",
+                "Eine Bekannte möchte sich in einem Kurort von der Hektik des Alltags erholen.",
+                "Ein Bekannter möchte im Urlaub auf einem See Boot fahren.",
+                "Eine Familie möchte mit ihren Kindern einen aktiven und lustigen Tag verbringen.",
+                "Ein Bekannter hat ein neues Kniegelenk bekommen und sucht eine geeignete Kur.",
+                "Eine Bekannte ist Hobbyzoologin und interessiert sich für den Lebensraum 'Küste'.",
+                "Ein Bekannter liebt die Bergwelt, kann aber keine steilen und anstrengenden Wege mehr gehen.",
+                "Eine Bekannte möchte Geschichten über Ritter und Burgen lesen."
+            ],
+
+            ads: [
+                {
+                    id: "a",
+                    title: "Urlaubsregion Allgäuer Alpen",
+                    content: "Die Urlaubsregion Allgäuer Alpen ist mit eine der schönsten Deutschlands. Mit Bussen und Bahnen gelangt man zu Burgen, Schlössern, Kirchen und Klöstern. Das kulinarische Angebot bietet für jeden Geschmack genügend Auswahl. Bergwanderer schätzen - vor allem im Spätsommer - Hüttenwanderungen auf den gut ausgebauten Höhenwegen. Bergbahnen und Sessellilfe nehmen viel von der Mühe des Aufstiegs ab. Auch für die Wassersportler ist ausreichend gesorgt."
+                },
+                {
+                    id: "b", 
+                    title: "Ritter und Burgfräulein für ein Wochenende",
+                    content: "Seit vielen Jahrhunderten gibt es in Deutschland Burgen. Hoch über mittelalterlichen Städten und oft in romantischer Landschaft ragen sie als touristische Attraktionen empor. Für Geschichtsinteressierte inszeniert man im alten Gemäuer bunte Feste, die das Mittelalter originaltreu zum Leben erwecken. Hier erleben Sie Ritterturniere, Minnesang und zünftige Gelage. Beliebt sind auch Bauernmärkte mit traditionsreicher Handwerkskunst, Maskentreiben und Volkstheater, deren Stücke an die Sagen und Märchen anknüpfen, die sich um jede Burg ranken. Anmeldung unter info@mittelalter.com"
+                },
+                {
+                    id: "c",
+                    title: "Entspannung am Wasser", 
+                    content: "Von März bis September (bei schönem Wetter auch länger) können Sie bei unserem Bootsverleih 'Wasserfall' das Gefährt Ihrer Wahl ausleihen, um einen unvergesslichen Tag am und auf dem Baldeneysee zu verbringen. Mit einem Ruderboot oder Tretboot können Sie ein wenig Sport treiben und gleichzeitig die Natur genießen. Wenn Ihnen das zu anstrengend ist, können Sie auch ein Motorboot ausleihen. Voraussetzung ist der entsprechende Führerschein. Ausleihfristen: zwischen zwei und zwölf Stunden. Wir bieten auch Rabatte für Gruppen oder regelmäßige Besucher an. Fragen Sie uns einfach! Telefon 0201/185790"
+                },
+                {
+                    id: "d",
+                    title: "Wanderung durch die Jahrhunderte",
+                    content: "Erleben Sie Geschichte hautnah! Auf unserer viertägigen Wanderung durch das Moseltal folgen Sie den Spuren der Römer, Kelten und mittelalterlichen Handelsleute. Unterwegs übernachten Sie in gemütlichen Gasthöfen und lernen die regionale Küche kennen. Unsere erfahrenen Reiseleiter erzählen spannende Geschichten über die kulturelle Entwicklung dieser einzigartigen Region. Die Wanderstrecken sind moderat und für Normalwanderer gut zu bewältigen. Informationen und Buchung: www.wanderzeit.de"
+                },
+                {
+                    id: "e",
+                    title: "Wellness für Körper und Seele",
+                    content: "Unser Kurhotel 'Seeblick' bietet Ihnen die perfekte Auszeit vom stressigen Alltag. Genießen Sie entspannende Massagen, erfrischende Saunagänge und heilsame Thermalbäder. In unserem hauseigenen Restaurant servieren wir Ihnen gesunde, ausgewogene Mahlzeiten mit regionalen Zutaten. Nutzen Sie auch unsere Yoga- und Meditationskurse, um zur inneren Balance zu finden. Spezielle Arrangements für Alleinreisende und Paare. Jetzt Termin vereinbaren unter 06541/789012."
+                },
+                {
+                    id: "f",
+                    title: "Lebensraum Küste",
+                    content: "Die Nordseeküste ist ein einzigartiges Ökosystem mit einer faszinierenden Tier- und Pflanzenwelt. In unserem zweitägigen Seminar für Hobbyzoologen erkunden wir Watt, Dünen und Salzwiesen. Sie lernen die typischen Vogelarten kennen, beobachten Seehunde in ihrem natürlichen Lebensraum und erfahren mehr über die Anpassungsstrategien der Küstenbewohner. Das Seminar wird von erfahrenen Biologen geleitet und ist auch für Einsteiger geeignet. Anmeldung: Institut für Küstenforschung, Tel. 04731/456789."
+                },
+                {
+                    id: "g",
+                    title: "Filmset live erleben",
+                    content: "Haben Sie sich schon immer gefragt, wie actionreiche Filmszenen entstehen? Bei unseren exklusiven Studio-Touren erhalten Sie Einblick hinter die Kulissen einer großen Filmproduktion. Erleben Sie Spezialeffekte live, sehen Sie original Filmsets und treffen Sie Mitglieder des Stunt-Teams. An ausgewählten Terminen können Sie sogar als Statist bei einer echten Produktion mitwirken. Buchung nur über unsere Website: www.filmset-experience.de"
+                },
+                {
+                    id: "h", 
+                    title: "Klassik für Genießer",
+                    content: "Tauchen Sie ein in die Welt der klassischen Musik! Unsere neu produzierte CD-Serie 'Meisterwerke der Klassik' präsentiert die schönsten Kompositionen von Bach, Beethoven und Mozart in erstklassiger Klangqualität. Jede CD enthält ausführliche Booklets mit Hintergrundinformationen zu den Werken und Komponisten. Perfekt für entspannte Stunden zu Hause oder als Geschenk für Musikliebhaber. Erhältlich in allen gut sortierten Musikgeschäften oder direkt bei uns: www.klassik-genuss.de"
+                },
+                {
+                    id: "i",
+                    title: "Abenteuertag für die ganze Familie",
+                    content: "Action, Spaß und Spannung erwarten Sie in unserem Freizeitpark 'Abenteuerland'! Über 40 Attraktionen für Groß und Klein, darunter eine Wildwasserbahn, Achterbahnen und ein riesiger Indoor-Spielplatz. Besonders beliebt ist unsere neue interaktive Schatzsuche, bei der die ganze Familie gemeinsam Rätsel lösen muss. Täglich Shows und Mitmach-Aktionen. Gruppenermäßigungen und Jahreskarten erhältlich. Öffnungszeiten: Mo-So 9-18 Uhr. Weitere Infos: www.abenteuerland-park.de"
+                },
+                {
+                    id: "j",
+                    title: "Reha nach Knie-OP", 
+                    content: "Unsere spezielle Rehabilitation für Patienten nach Kniegelenksoperationen kombiniert modernste Therapiemethoden mit erfahrener Betreuung. Unter ärztlicher Aufsicht entwickeln wir Ihr persönliches Trainingsprogramm zur Wiederherstellung der Beweglichkeit und Stärkung der Muskulatur. Wassergymnastik, Gangtraining und physikalische Therapie unterstützen Ihren Heilungsprozess. Wir beraten Sie auch zu Hilfsmitteln für den Alltag. Kostenübernahme durch alle Krankenkassen möglich. Kontakt: Reha-Zentrum Bewegungsfreude, Tel. 089/12345678."
+                },
+                {
+                    id: "k",
+                    title: "Berggenuss ohne Anstrengung",
+                    content: "Die Schönheit der Bergwelt muss nicht mühsam erklommen werden! Unsere geführten Bergtouren mit dem E-Bike oder per Bergbahn bringen Sie bequem zu den schönsten Aussichtspunkten der Alpen. Genießen Sie atemberaubende Panoramen ohne schweißtreibende Aufstiege. Unsere erfahrenen Guides zeigen Ihnen versteckte Juwelen abseits der Touristenströme. Auch für Senioren und Menschen mit eingeschränkter Mobilität geeignet. Touren von Mai bis Oktober buchbar: www.berg-genuss.com"
+                },
+                {
+                    id: "l",
+                    title: "Rittersagen und Burglegenden",
+                    content: "Dieses reich bebilderte Buch entführt Sie in die Welt der Ritter, Burgen und mittelalterlichen Abenteuer. Spannend erzählte Geschichten über tapfere Ritter, edle Burgfräulein und geheimnisvolle Burgen werden durch historische Hintergrundinformationen ergänzt. Perfekt für alle, die sich für das Mittelalter begeistern. Mit Übersichtskarte der schönsten Burgen Deutschlands. Erhältlich im Buchhandel oder direkt beim Verlag unter ISBN 978-3-865-12345-6."
+                }
+            ],
+
+            // الإجابات الصحيحة لـ Lesen Teil 3
+            teil3Answers: {
+                11: "Filmset live erleben",
+                12: "Klassik für Genießer", 
+                13: "Wanderung durch die Jahrhunderte",
+                14: "Wellness für Körper und Seele",
+                15: "Entspannung am Wasser",
+                16: "Abenteuertag für die ganze Familie",
+                17: "Reha nach Knie-OP",
+                18: "Lebensraum Küste",
+                19: "Berggenuss ohne Anstrengung", 
+                20: "Rittersagen und Burglegenden"
+            },
+
+            // Sprachbausteine Teil 1
+            blankText1: {
+                content: `Liebe Corinna,
+es tut mir wirklich Leid, __(21)__ ich dir seit Ewigkeiten nicht mehr geschrieben habe. Aber du weißt ja: Ich habe seit drei Monaten eine neue Arbeit. Und da hatte ich gar keine Zeit, mich mit etwas Anderem zu __(22)__ als mit der neuen Arbeit.
+
+Es hat mich wirklich überrascht, wie schnell ich nach dem Abschluss meiner Ausbildung etwas gefunden habe. Dabei haben alle immer nur gesagt: "Gärtner? Die gibt es __(23)__ wie Sand am Meer, wie willst du da so schnell einen Job finden?".
+
+Ich arbeite jetzt in einer Baumschule. Wir kultivieren und verkaufen Obstbäume, __(24)__ an die Obstbauern der näheren Umgebung. Die Arbeit macht mir großen Spaß, es ist andererseits aber ein bisschen anstrengend, acht Stunden am Tag körperlich – __(25)__ im Freien – zu arbeiten. Und leider __(26)__ ich fast eine dreiviertel Stunde mit dem Zug fahren, um an meinen Arbeitsplatz zu kommen.
+
+Wenn ich dann am Abend nach Hause komme, bin ich so müde, dass ich eigentlich nur noch fernsehen oder Musik hören kann. Ich habe im Moment nur __(27)__ Lust, etwas zu unternehmen, aber ich bin mir sicher: Sie __(28)__ wieder.
+
+Wie geht es dir denn? Du müsstest doch jetzt auch bald mit deiner Ausbildung fertig sein, oder? Hast du schon damit angefangen, dich bei verschiedenen Arbeitgebern zu bewerben? Oder __(29)__ du dir noch ein bisschen Zeit damit? Ich würde dir in jedem Fall raten: Fang so früh wie __(30)__ mit den Bewerbungen an, je früher, desto besser. Du weißt ja, was unser Klassenlehrer in der Realschule immer gesagt hat: Gut Ding will Weile haben.
+
+So, jetzt muss ich aufhören und ins Bett gehen, damit ich morgen wieder fit bin. Mach's gut, bis bald,
+
+dein Richard`,
+                answers: ["dass", "beschäftigen", "doch", "insbesondere", "überwiegend", "muss", "wenig", "kommt", "lässt", "möglich"]
+            },
+
+            // Sprachbausteine Teil 2
+            blankText2: {
+                content: `Schwarzarbeit kann teuer werden
+
+Schnäppchen machen, um Rabatte feilschen: Wer billig einkauft, gilt als clever. Vorsicht ist jedoch bei Aufträgen an Schwarzarbeiter geboten. Denn schnell zahlt der Kunde drauf, __(31)__ – wie durch das illegale Arbeitsverhältnis erhofft – Geld zu sparen.
+
+Rund ums Haus ist nicht __(32)__. Gelegenheit so günstig, wie sie anfangs scheint: Schwarzarbeit etwa ist nicht nur verboten, sondern es gibt auch ein finanzielles Argument __(33)__ illegale Arbeiter: Oftmals rechnet sich der Dienst gegen Barzahlung gar nicht. "Abgesehen __(34)__, dass es strafbar ist, Schwarzarbeiter zu beschäftigen, nimmt der Auftraggeber handfeste steuerliche Nachteile in Kauf", warnt Dirk Witte, Steuerberater aus Wildeshausen in Niedersachsen. Wer eine Putzhilfe beschäftigt, kann die Steuerlast auch auf legalem Weg spürbar senken.
+
+Auch für die Modernisierung, Renovierung und Sanierung der Wohnung gibt es einen Steuernachlass, allerdings nur für legale Arbeiten. "Das Finanzamt __(35)__ eine ordentliche Rechnung und einen Überweisungsbeleg sehen". Barzahler können daher nichts von der Steuer absetzen. Noch schwerer fällt ins Gewicht, dass ein Kunde seine Haftungsansprüche aufs Spiel setzt, wenn er vordergründig ein paar Euro sparen möchte. Denn mängelfreie Bauten __(36)__ eher die Ausnahme.
+
+Und ob ein Kunde die Beseitigung von Mängeln gerichtlich gegen einen Schwarzarbeiter durchsetzen kann, ist von Fall zu Fall zu prüfen. Im Prinzip muss man aber damit rechnen, die Ansprüche zu verlieren. Ebenso dürften Verbraucher leer __(37)__, wenn beim Bauen etwas zu Bruch geht. Ein ordentlicher Handwerker hat für __(38)__ Fälle eine Haftpflichtversicherung.
+
+Richtig teuer werden können auch Unfälle, bei denen sich der illegale Helfer verletzt. Dann zahlen weder Krankenversicherung noch Unfallkasse. Fällt etwa ein Arbeiter vom Gerüst und ist danach dauerhaft querschnittsgelähmt, dann wird der Kunde dafür sein Leben lang zahlen.
+
+Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Fliegt die illegale Beschäftigung auf, dann __(39)__ es gleich mehrere Behörden mit. Post gibt es dann vom Finanzamt, der Staatsanwaltschaft und den Sozialversicherungsträgern. Dann braucht der Auftraggeber __(40)__ einen Anwalt. Und der kostet natürlich auch wieder Geld.`,
+                answers: ["anstatt", "jede", "gegen", "davon", "will", "bilden", "ausgehen", "solche", "bekommt", "meistens"]
+            }
+        };
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        let currentLang = 'ar';
+        let isDarkMode = false;
+
+        function initializePage() {
+            // تحميل الإعدادات المحفوظة
+            const savedLang = localStorage.getItem('language') || 'ar';
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            const username = localStorage.getItem('username') || 'زائر';
+            const access = localStorage.getItem('access');
+            
+            changeLanguage(savedLang);
+            if (savedDarkMode) {
+                toggleDarkMode();
+            }
+            
+            // التحقق من حالة المستخدم
+            if (access === 'paid' && username) {
+                document.getElementById('premiumBadge').style.display = 'flex';
+            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
+        }
+
+        function initializeTeil1() {
+            const headingsList = document.getElementById('headingsList');
+            const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
+            textsList.innerHTML = '';
+
+            // إضافة العناوين
+            examData.headings.forEach((heading, index) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                `;
+                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${index + 1}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
+                    </div>
+                `;
+                textsList.appendChild(textItem);
+            });
+        }
+
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
+            const questionsList = document.getElementById('questionsList');
+
+            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Frage ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
+                    <div class="options">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                    </div>
+                `;
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        function initializeTeil3() {
+            const situationsList = document.getElementById('situationsList');
+            const adsList = document.getElementById('adsList');
+
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation, index) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <strong>${index + 11})</strong> ${situation}
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
+                    </div>
+                `;
+                situationsList.appendChild(situationItem);
+            });
+
+            adsList.innerHTML = '';
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
+                    <p>${ad.content}</p>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+
+        function initializeSprachbausteine() {
+            // Teil 1
+            const blankText1 = document.getElementById('blankText1');
+            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
+            });
+            blankText1.innerHTML = textWithBlanks1;
+
+            // Teil 2
+            const blankText2 = document.getElementById('blankText2');
+            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 31]}</span></span>`;
+            });
+            blankText2.innerHTML = textWithBlanks2;
+        }
+
+        function setupEventListeners() {
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الرئيسية
+            document.getElementById('homeBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html';
+            });
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+            
+            // زر المستخدم
+            document.getElementById('userBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html#profile';
+            });
+            
+            // زر اللغة
+            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const lang = option.getAttribute('data-lang');
+                    changeLanguage(lang);
+                    document.getElementById('langDropdown').classList.remove('show');
+                });
+            });
+            
+            // إغلاق القوائم المنسدلة بالنقر خارجها
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.language-selector')) {
+                    document.getElementById('langDropdown').classList.remove('show');
+                }
+            });
+        }
+
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                        heading.classList.add('matched');
+                    }
+                });
+            });
+        }
+
+        function hideAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+
+        function toggleLangDropdown() {
+            document.getElementById('langDropdown').classList.toggle('show');
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // تحديث جميع النصوص
+            Object.keys(t).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = t[key];
+                }
+            });
+            
+            localStorage.setItem('language', lang);
+            
+            // إعادة تهيئة المحتوى لترجمة الإجابات
+            initializeTeil1();
+            initializeTeil2();
+        }
+    </script>
+</body>
+</html>

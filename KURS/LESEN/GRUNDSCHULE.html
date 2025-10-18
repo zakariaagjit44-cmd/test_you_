@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRUNDSCHULE - TELC B2 Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --secondary-dark: #1E88E5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #FFC107;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --text-light: #546E7A;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
+            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
+            --radius: 25px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #BBDEFB 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+
+        /* Header Controls - التعديل هنا */
+        .header-controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            z-index: 1000;
+            gap: 15px;
+        }
+
+        .left-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .right-controls {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .control-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .control-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
+        }
+
+        /* شارة المشترك الذهبية - تم التعديل */
+        .premium-badge-header {
+            position: fixed;
+            top: 20px;
+            right: 90px; /* بجانب الأزرار */
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
+        }
+
+        .home-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .home-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .home-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* Language Selector */
+        .language-selector {
+            display: flex;
+            position: relative;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .lang-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .lang-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .lang-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 0.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            overflow: hidden;
+            min-width: 120px;
+            animation: dropdownSlide 0.3s ease;
+            z-index: 1001;
+        }
+
+        .dark-mode .lang-dropdown {
+            background: #1a237e;
+            color: var(--light);
+        }
+
+        @keyframes dropdownSlide {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lang-dropdown.show {
+            display: block;
+        }
+
+        .lang-option {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            color: var(--text);
+        }
+
+        .dark-mode .lang-option {
+            color: var(--light);
+            border-bottom: 1px solid #37474F;
+        }
+
+        .lang-option:hover {
+            background: #f5f5f5;
+            transform: translateX(5px);
+        }
+
+        .dark-mode .lang-option:hover {
+            background: #283593;
+        }
+
+        .lang-option:last-child {
+            border-bottom: none;
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(15px);
+            margin-top: 6rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: contentSlideUp 0.8s ease;
+        }
+
+        @keyframes contentSlideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* أزرار التحكم */
+        .answer-controls {
+            position: sticky;
+            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .answer-controls {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .answer-btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .answer-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: right 0.6s;
+        }
+
+        .answer-btn:hover::before {
+            right: 100%;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .show-answers {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .dark-mode .section {
+            background: rgba(13, 71, 161, 0.9);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+        }
+
+        .dark-mode .section-title {
+            color: #90CAF9;
+        }
+
+        .question {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 15px;
+            border-right: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .dark-mode .question {
+            background: rgba(33, 150, 243, 0.1);
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            margin: 0.8rem 0;
+            padding: 1rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .dark-mode .option {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+            transform: translateX(-5px);
+        }
+
+        .correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            animation: slideInUp 0.5s ease;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* التصحيح - تم التعديل للوضع الليلي */
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2E7D32;
+            border: 2px solid #4CAF50;
+            font-weight: bold;
+        }
+
+        .dark-mode .correct-answer {
+            background: rgba(76, 175, 80, 0.3);
+            color: #A5D6A7;
+            border: 2px solid #81C784;
+        }
+
+        /* النصوص والعناوين */
+        .text-content {
+            line-height: 1.7;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .text-content {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .headings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .heading-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .dark-mode .heading-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .matched {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+            transform: scale(1.02);
+        }
+
+        /* الإعلانات والوضعيات */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .ad-item {
+            padding: 1.5rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            min-height: 150px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .ad-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .ad-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .situations-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+        }
+
+        .situation-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .situation-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .situation-item:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        /* Sprachbausteine */
+        .fill-blanks {
+            margin: 1.5rem 0;
+        }
+
+        .blank-text {
+            line-height: 2;
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-text {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            margin: 0 8px;
+            padding: 0.5rem 1rem;
+            border-bottom: 3px solid var(--primary);
+            text-align: center;
+            font-weight: 600;
+            background: var(--white);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .blank {
+            background: #1a237e;
+        }
+
+        .blank-answer {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2E7D32;
+            border-color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .dark-mode .blank-answer {
+            background: rgba(76, 175, 80, 0.3);
+            color: #A5D6A7;
+            border-color: #81C784;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Floating Elements مثل الصفحة الرئيسية */
+        .floating-elements {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            font-size: 3.5rem;
+            opacity: 0.15;
+            animation: float 8s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        .floating-book { top: 15%; left: 8%; animation-delay: 0s; }
+        .floating-pen { top: 75%; right: 12%; animation-delay: 1s; }
+        .floating-globe { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
+        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
+        .floating-graduate { top: 65%; left: 5%; animation-delay: 4s; }
+        .floating-notebook { bottom: 15%; right: 10%; animation-delay: 5s; }
+        .floating-pencil { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
+        .floating-calculator { top: 35%; right: 15%; animation-delay: 7s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
+            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
+        }
+
+        @media (max-width: 768px) {
+            .header-controls {
+                top: 15px;
+                left: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .premium-badge-header {
+                top: 15px;
+                right: 70px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+
+            .home-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .container {
+                padding: 2rem;
+                margin: 1rem;
+                margin-top: 5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .headings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .right-controls {
+                gap: 10px;
+            }
+
+            .answer-controls {
+                top: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-controls {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .left-controls, .right-controls {
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            .premium-badge-header {
+                position: relative;
+                top: auto;
+                right: auto;
+                transform: none;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Elements مثل الصفحة الرئيسية -->
+    <div class="floating-elements">
+        <div class="floating-element floating-book">📚</div>
+        <div class="floating-element floating-pen">✏️</div>
+        <div class="floating-element floating-globe">🌍</div>
+        <div class="floating-element floating-clock">⏰</div>
+        <div class="floating-element floating-graduate">🎓</div>
+        <div class="floating-element floating-notebook">📓</div>
+        <div class="floating-element floating-pencil">✏️</div>
+        <div class="floating-element floating-calculator">🧮</div>
+    </div>
+
+    <!-- شارة المشترك الذهبية - تم التعديل -->
+    <div class="premium-badge-header" id="premiumBadge">
+        <i class="fas fa-crown"></i>
+    </div>
+
+    <!-- Header Controls -->
+    <div class="header-controls">
+        <div class="left-controls">
+            <button class="home-btn" id="homeBtn">
+                <i class="fas fa-home"></i>
+                <span id="homeText">الرئيسية</span>
+            </button>
+            <div class="language-selector">
+                <button class="lang-btn" id="langBtn">
+                    <span id="langBtnText">العربية</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option" data-lang="ar">
+                        <span>🇸🇦</span>
+                        <span>العربية</span>
+                    </div>
+                    <div class="lang-option" data-lang="de">
+                        <span>🇩🇪</span>
+                        <span>Deutsch</span>
+                    </div>
+                    <div class="lang-option" data-lang="en">
+                        <span>🇬🇧</span>
+                        <span>English</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-controls">
+            <button class="control-btn" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="control-btn" id="userBtn">
+                <i class="fas fa-user"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="pageTitle">GRUNDSCHULE - TELC B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
+        </div>
+
+        <!-- أزرار التحكم -->
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">إظهار التصحيح</span>
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">إخفاء التصحيح</span>
+            </button>
+        </div>
+
+        <!-- Lesen Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="teil1Title">Lesen Teil 1</h2>
+            <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
+            
+            <div class="headings-grid" id="headingsList">
+                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div id="textsList">
+                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
+            <div class="text-content" id="longText">
+                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+            </div>
+
+            <div id="questionsList">
+                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 3 -->
+        <div class="section">
+            <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
+            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            
+            <div class="situations-grid" id="situationsList">
+                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div class="ads-grid" id="adsList">
+                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            <div class="fill-blanks">
+                <div class="blank-text" id="blankText1">
+                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            <div class="fill-blanks">
+                <div class="blank-text" id="blankText2">
+                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // الترجمات
+        const translations = {
+            ar: {
+                homeText: "الرئيسية",
+                themeText: "الوضع الليلي",
+                langText: "العربية", 
+                userText: "زائر",
+                pageTitle: "GRUNDSCHULE - TELC B2 Training",
+                pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
+                showAnswersText: "إظهار التصحيح",
+                hideAnswersText: "إخفاء التصحيح",
+                teil1Title: "Lesen Teil 1",
+                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
+                teil2Title: "Lesen Teil 2", 
+                teil3Title: "Lesen Teil 3",
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                sprach1Title: "Sprachbausteine Teil 1",
+                sprach2Title: "Sprachbausteine Teil 2"
+            },
+            de: {
+                homeText: "Startseite",
+                themeText: "Nachtmodus", 
+                langText: "Deutsch",
+                userText: "Besucher",
+                pageTitle: "GRUNDSCHULE - TELC B2 Training",
+                pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
+                showAnswersText: "Korrektur anzeigen",
+                hideAnswersText: "Korrektur ausblenden",
+                teil1Title: "Lesen Teil 1",
+                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
+                teil2Title: "Lesen Teil 2",
+                teil3Title: "Lesen Teil 3", 
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                sprach1Title: "Sprachbausteine Teil 1",
+                sprach2Title: "Sprachbausteine Teil 2"
+            },
+            en: {
+                homeText: "Home",
+                themeText: "Dark Mode",
+                langText: "English",
+                userText: "Visitor", 
+                pageTitle: "GRUNDSCHULE - TELC B2 Training",
+                pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
+                showAnswersText: "Show Correction",
+                hideAnswersText: "Hide Correction",
+                teil1Title: "Reading Part 1",
+                teil1Description: "First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).",
+                teil2Title: "Reading Part 2",
+                teil3Title: "Reading Part 3",
+                teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
+                sprach1Title: "Language Elements Part 1", 
+                sprach2Title: "Language Elements Part 2"
+            }
+        };
+
+        // بيانات الأسئلة والإجابات من ملف PDF
+        const examData = {
+            // Lesen Teil 1
+            headings: [
+                "An deutschen Grundschulen sind männliche Lehrkräfte selten",
+                "Bildungsexperten warnen: Deutsche Lehrer sind schlecht ausgebildet",
+                "Bildungsforscher: Lehrermangel wird in Deutschland nicht eintreten", 
+                "Die Zahl der männlichen Lehrkräfte an Grundschulen nimmt zu",
+                "Experten befürchten zunehmenden Lehrermangel in Deutschland",
+                "Gewerkschaft erwartet Lehrermangel in Berlin",
+                "GEW befürchtet Abwanderung von gut ausgebildeten Lehrkräften aus Berlin",
+                "Immer mehr Berliner wandern aus",
+                "Immer weniger Frauen machen ein Grundschullehrer-Studium",
+                "Vorausschauende Politiker verhindern Lehrermangel in Berlin"
+            ],
+            
+            texts: [
+                {
+                    content: `Berlin wird in 10 Jahren rund 5.000 Lehrkräfte weniger brauchen als derzeit. Für den Unterricht an den Schulen werden dann, wie die Gewerkschaft Erziehung und Wissenschaft (GEW) errechnet hat, noch etwa 25.500 von heute 30.000 Pädagogen benötigt.
+Die Gewerkschaft befürchtet zugleich, dass bis zu diesem Zeitpunkt zu wenig Nachwuchskräfte ausgebildet werden. Die GEW geht davon aus, dass in den nächsten Jahren nur 1.000 junge Lehrer pro Jahr ihr Referendariat in Berlin beenden. Die Gewerkschaft fordert deshalb, dass die Politik sofort handelt und mehr Studienplätze für Lehramtsstudenten schafft.`,
+                    correctAnswer: "Gewerkschaft erwartet Lehrermangel in Berlin"
+                },
+                {
+                    content: `Die Zahl der männlichen Lehrkräfte an Grundschulen ist in den vergangenen Jahren weiter zurückgegangen. Das geht aus einer Studie des Bildungsforschers Professor Rolf Dubs hervor, die in der Zeitschrift „Erziehung und Wissenschaft“ veröffentlicht wurde.
+Demnach waren im Jahr 2005 nur noch 8,5 Prozent der Grundschullehrer männlich. 1995 lag der Anteil noch bei 11,5 Prozent. Dubs führt den Rückgang auf das schlechte Image des Grundschullehrer-Berufs zurück. Außerdem sei die Bezahlung im Vergleich zu anderen Lehrämtern schlechter.`,
+                    correctAnswer: "An deutschen Grundschulen sind männliche Lehrkräfte selten"
+                },
+                {
+                    content: `Bildungsforscher widersprechen der Gewerkschaft Erziehung und Wissenschaft (GEW) in der Frage des Lehrermangels. Sie halten die Prognosen der GEW für übertrieben.
+Professor Rainer Lehmann von der Humboldt-Universität sagte, die Gewerkschaft habe die Entwicklung der Schülerzahlen nicht berücksichtigt. „Die Zahl der Schüler wird in den nächsten Jahren deutlich sinken“, so Lehmann. Deshalb werde es auch weniger Lehrer benötigt. Die Politik habe die Entwicklung frühzeitig erkannt und die Zahl der Studienplätze für das Lehramt bereits reduziert.`,
+                    correctAnswer: "Bildungsforscher: Lehrermangel wird in Deutschland nicht eintreten"
+                },
+                {
+                    content: `In Deutschland wird es in den nächsten Jahren zu einem erheblichen Lehrermangel kommen. Das befürchten zumindest die Bildungsexperten des Max-Planck-Instituts.
+Sie haben errechnet, dass bis zum Jahr 2020 rund 25.000 Lehrer fehlen werden. Besonders betroffen sein werden Grundschulen und Hauptschulen. Die Experten fordern die Politik auf, mehr Studienplätze für das Lehramt an Grund- und Hauptschulen zu schaffen. Außerdem müsse die Bezahlung der Lehrer verbessert werden, um mehr Abiturienten für den Beruf zu interessieren.`,
+                    correctAnswer: "Experten befürchten zunehmenden Lehrermangel in Deutschland"
+                },
+                {
+                    content: `Die Gewerkschaft Erziehung und Wissenschaft (GEW) befürchtet, dass gut ausgebildete Lehrkräfte in großer Zahl Berlin verlassen werden. Grund sei die schlechte Bezahlung der Berliner Lehrer im Vergleich zu anderen Bundesländern.
+„Wir haben festgestellt, dass viele junge Lehrer nach dem Referendariat in andere Bundesländer gehen, wo sie besser bezahlt werden“, sagte die GEW-Landesvorsitzende Rose-Marie Seggelke. Sie forderte die Berliner Politik auf, die Gehälter der Lehrer anzuheben, um die Abwanderung zu stoppen.`,
+                    correctAnswer: "GEW befürchtet Abwanderung von gut ausgebildeten Lehrkräften aus Berlin"
+                }
+            ],
+
+            // Lesen Teil 2 - النص الكامل
+            longText: {
+                content: `Für Kinder sind regelmäßige Mahlzeiten wichtig, um volle Konzentrations– und Leistungsfähigkeit zu gewährleisten. Um gut in den Tag zu kommen, sollte jedes Schulkind mit einem ausgewogenen Frühstück starten.
+Aber eine Umfrage kam zu erschreckenden Ergebnissen: Jedes siebte Kind isst morgens nichts, bevor es in die Schule geht. Die Gründe dafür sind vielfältig: Jeder vierte Befragte gab an, dass sein Kind morgens keinen Appetit habe. Und sogar jede dritte Mutter und jeder dritte Vater sagten, dass morgens keine Zeit für Frühstück sei. Für eine gesunde Morgenmahlzeit sollte man jedoch immer Zeit freischaufeln, rät Ernährungswissenschaftlerin Alexandra Krotz.
+Mit leerem Magen können Körper und Geist keine Leistung erbringen. Die Folge: Die Kinder sind reizbar, nervös und können sich nicht richtig konzentrieren. Und das ist schon auf dem Schulweg wichtig: Kinder bewegen sich sicherer, wenn sie rechtzeitig aufgestanden sind und entspannt gefrühstückt haben.
+Zu einem gesunden Frühstück eignen sich am besten Vollkornbrote mit fettarmer Wurst oder Käse, aber auch Müslis mit Milch oder Joghurt, Nüssen und frisches Obst. Wer morgens keinen Hunger hat, sollte wenigstens eine Kleinigkeit zu sich nehmen – etwa eine Banane essen und dazu einen Kakao trinken – und das ausgiebige Frühstück dann etwas später nachholen. In einigen Schulen wird gemeinsam gefrühstückt. Hier gilt es, je nach Vereinbarung mit Erziehern und Lehrern, ein leckeres Frühstück zusammenzustellen.
+Wer seinen Kinder ein zweites Frühstück einpackt, sollte auf Abwechslung und die geeignete Verpackung achten. Am besten eignet sich eine Brotdose – die spart Verpackungsmilli und vermeidet zermatschte Brote. Zudem lassen sich darin auch Obst und Gemüse sicher transportieren.
+Eine gute Ergänzung zu lecker belegten Vollkornbroten ist Rohkost. Dazu eignen sich besonders transportsichere feste Sorten wie Möhren, Kohlrabi, Cherrytomaten, Trauben oder Äpfel. Je nach Jahreszeit und Vorliebe der Kinder können Sie als Eltern hierbei für Abwechslung sorgen.
+Heutzutage wird Schulmilch leider nicht mehr in allen Schulen angeboten. Schade, denn Milch liefert wichtiges Calcium, Eiweiß und viele B-Vitamine. Wer als Kind die Möglichkeit hat, in der Schule Milch zu trinken, sollte darauf nicht verzichten. Und selbst Milchmuffel dürften zufrieden sein: Da Milch in vielen Varianten angeboten wird – von Erdbeermilch über Kakao zu Vanillemilch –, ist für jedes Kind das Richtige dabei.
+Generell ist der Wasserbedarf von Kindern im Verhältnis zum Körpergewicht höher als bei Erwachsenen. Trinken Kinder zu wenig, beeinträchtigt dies schneller die körperliche und geistige Leistungsfähigkeit. Kinder sollten deshalb je nach Alter mindestens 0,7 Liter bis 1,2 Liter trinken – Milch nicht mitgerechnet. Wenn das Kind viel Sport treibt oder tobt und bei besonders warmen Tagen brauchen die Kinder entsprechend mehr Flüssigkeit.
+Viele Kinder trinken zu wenig. Häufig vergessen sie ganz einfach zu trinken, wenn sie konzentriert spielen oder lernen. Ganz wichtig ist it daher, Kinder immer mal wieder zum Trinken aufzufordern und auch zwischen den Mahlzeiten den Durst zu löschen, auch während der Unterrichtsstunden. Am besten sind Wasser, Kräutertees und Saftschorlen geeignet.
+Übrigens: Fast ein Viertel aller Schüler in Deutschland trinkt vormittags nichts oder fast nichts. Das hat eine Untersuchung der Universität Paderborn zum Trinkverhalten vor und während der Unterrichtszeit ergeben. Die unzureichende Flüssigkeitsaufnahme führte dabei nachweislich zu Einschränkungen der geistigen und körperlichen Leistungsfähigkeit.
+Kinder mögen Süßes. Schokoriegel und Süßigkeiten sollten allerdings beim Pausenbrot nicht die Regel sein. Eine gute Alternative dazu sind Trockenfrüchte, Fruchtschnitten oder Studentenfutter. Sie liefern wichtige Vitamine und Mineralstoffe und sind als Energieschub zwischendurch geeignet. Aber Vorsicht: Sie enthalten auch viel Energie und sollten gerade von Kindern, die leichtes Übergewicht haben, nur in geringen Mengen gegessen werden.
+Viele Eltern nehmen sich morgens nicht die Zeit, mit ihren Kindern zu frühstücken, und geben Ihnen lieber Geld mit, damit sie sich auf dem Schulweg ein Frühstück kaufen können. Versuchen Sie, das zu vermeiden. Denn die meisten Kinder legen das Geld in Süßwaren oder Fast Food, Cola oder andere Süßgetränke an.
+Die Mittagsverpflegung in Schulen kann sehr unterschiedlich sein. Ein weiteres Pausenbrot wäre jedenfalls eine Zumutung für die Kinder. Deshalb gibt es verschiedene Systeme für die Versorgung am Mittag – Catering, kochende Eltern oder Profi–Küchen mit geschultem Personal. Klar ist: Für die Kinder sind Pausen und regelmäßige Mahlzeiten zur Aufrechterhaltung ihrer Leistungsfähigkeit wichtig. Daher sollte it im Interesse aller sein, den Kindern in der Schule eine geeignete Mittagsverpflegung zur Verfügung zu stellen.`,
+                questions: [
+                    {
+                        question: "Einige Eltern",
+                        options: [
+                            "haben selbst keinen Appetit auf ein Frühstück.",
+                            "lassen das Frühstück aus Zeitmangel ausfallen.", 
+                            "schaufeln das Frühstück einfach in sich hinein."
+                        ],
+                        correctAnswer: "lassen das Frühstück aus Zeitmangel ausfallen."
+                    },
+                    {
+                        question: "Ein gesundes Frühstück",
+                        options: [
+                            "erhöht auch die Sicherheit des Kindes auf dem Weg zur Schule.",
+                            "muss mindestens aus einem Glas Kakao oder Milch bestehen.",
+                            "sollte gemeinsam in der Schule angenommen werden."
+                        ],
+                        correctAnswer: "erhöht auch die Sicherheit des Kindes auf dem Weg zur Schule."
+                    },
+                    {
+                        question: "Milch", 
+                        options: [
+                            "deckt den täglichen Flüssigkeitsbedarf.",
+                            "gehört zum Angebot der Schulkantinen.",
+                            "wird in verschiedenen Geschmacksrichtungen angeboten."
+                        ],
+                        correctAnswer: "wird in verschiedenen Geschmacksrichtungen angeboten."
+                    },
+                    {
+                        question: "Kinder",
+                        options: [
+                            "denken von alleine nicht immer daran, genug zu trinken.",
+                            "dürfen während des Unterrichts nichts trinken.",
+                            "können sich auch noch gut konzentrieren, wenn sie nicht genug getrunken haben."
+                        ],
+                        correctAnswer: "denken von alleine nicht immer daran, genug zu trinken."
+                    },
+                    {
+                        question: "Mittagessen",
+                        options: [
+                            "sollte in der Schule angeboten werden.",
+                            "sollten die Kinder von zu Hause mitbringen.", 
+                            "sollten Kinder bei den Eltern zu Hause bekommen."
+                        ],
+                        correctAnswer: "sollte in der Schule angeboten werden."
+                    }
+                ]
+            },
+
+            // Lesen Teil 3
+            situations: [
+                "Sie möchten einen Ganztagesausflug machen und sich dabei bewegen.",
+                "Sie möchten eine Fahrt durch den Hamburger Hafen buchen.",
+                "Eine Bekannte organisiert einen großen Kindergeburtstag und braucht Hilfe.",
+                "Sie interessieren sich für Technikgeschichte.",
+                "Ein Freund möchte gerne eine Schiffsreise machen.",
+                "Sie möchten helfen, Ihren Stadtteil zu gestalten.", 
+                "Sie wollen mit einer Bekannten essen gehen. Sie mag amerikanische Küche.",
+                "Sie sind neu in der Stadt und möchten Ihren Stadtteil kennenlernen.",
+                "Ein Freund möchte mehr über die Geschichte deutscher Städte erfahren.",
+                "Sie möchten etwas mit Ihrer 6-jährigen Nichte unternehmen, die gerne ins Museum geht."
+            ],
+
+            ads: [
+                {
+                    id: "a",
+                    title: "Neues Angebot der VHS",
+                    content: "Ab dem kommenden Monat bietet die Volkshochschule in Zusammenarbeit mit der Bürgerschaft in unserem Stadtteil Führungen an. Alle Interessierten können an fünf Wochenenden den Stadtteil erkunden. Die Führungen richten sich besonders an neue Bürger oder solche, die bald hierher ziehen wollen. Bei den etwa zweistündigen Spaziergängen lernen Sie alle wichtigen Einrichtungen von Behörden über das kulturelle, sportliche und auch das gastronomische Angebot kennen und können auch Kontakte zu anderen knüpfen. Die Teilnahme ist kostenfrei, es wird aber um vorherige Anmdbung über die Homepage der VHS gebeten."
+                },
+                {
+                    id: "b", 
+                    title: "Essen erleben",
+                    content: "Gesunde Ernährung ist wichtig, auch schon für die Kleinen. Nur wer von Anfang an lernt, wie frisches Gemüse und Obst schmecken, wie man mit einfachen Mitteln und auch wenig Zeit leckere Gerichte zubereiten kann, wird sich dauerhaft gesund ernähren. Deshalb bietet die Kochschule 'Kochlöffel' ab sofort Kochkurse für Eltern und Kinder ab sechs Jahren an. Die Kurse werden zu unterschiedlichen Tageszeiten angeboten und finden auch schon bei wenigen Anmeldungen statt. Nutzen Sie die Gelegenheit, mit ihrem Kind gemeinsam zu kochen und dabei natürlich auch Spaß zu haben! Infos und Anmeldung: www.kochloeffel-kochschule.eu"
+                },
+                {
+                    id: "c",
+                    title: "Kurzreise nach München", 
+                    content: "Studienreisen Studios bietet Ihnen einen besonderen Ausflug an: Fahren Sie mit unserem modernen Reisebus am frühen Morgen von Köln nach München zum Deutschen Museum und nehmen Sie an einer exklusiven Führung teil, die sich auf die Geschichte der Technik konzentriert. Die Rückreise erfolgt am frühen Abend, so dass Sie in der Nacht wieder in Köln ankommen. Im Reisepreis sind der Eintritt sowie die Führung bereits enthalten. Ohne Übernachtung, daher besonders günstig! Begrenzte Plätze, buchen Sie schnell telefonisch unter 0221/809043 oder über unsere Homepage."
+                },
+                {
+                    id: "d",
+                    title: "Entspannung am Wasser",
+                    content: "Von März bis September (bei schönem Wetter auch länger) können Sie bei unserem Bootsverleih 'Wasserfall' das Gefährt Ihrer Wahl ausleihen, um einen unvergesslichen Tag am und auf dem Baldeneysee zu verbringen. Mit einem Ruderboot oder Tretboot können Sie ein wenig Sport treiben und gleichzeitig die Natur genießen. Wenn Ihnen das zu anstrengend ist, können Sie auch ein Motorboot ausleihen. Voraussetzung ist der entsprechende Führerschein. Ausleihfristen: zwischen zwei und zwölf Stunden. Wir bieten auch Rabatte für Gruppen oder regelmäßige Besucher an. Fragen Sie uns einfach! Telefon 0201/185790"
+                },
+                {
+                    id: "e",
+                    title: "Als echter Hamburger...",
+                    content: "kennt man natürlich den Hafen der Hansestadt und seine Wirtschaftskraft. Für alle Interessierten, die darüber erst noch etwas erfahren wollen, bietet das Bildungszentrum Buxtehuide am nächsten Freitag einen zweistündigen Vortrag an, in dem man Wissenswertes über die wirtschaftliche Bedeutung des Hamburger Hafens erfährt. Von der Gründung des Freihafens bis zu den heutigen modernen Anlagen wird die spannende Entwicklung des größten deutschen Hafens unter ökonomischen Aspekten dargelegt. Weitere Informationen und Anmdbung im Internet unter www.buxtehuide.eu."
+                },
+                {
+                    id: "f",
+                    title: "Schiffe versenken, Marmorkuchen und selbstgebastelte Papierhüte",
+                    content: "Das bietet Ihnen unser Service 'Kinderfeiern leicht gemacht'. Mit uns wird jeder Kindergeburtstag zum Erfolg, auch wenn Sie selbst nur wenig Zeit für die Vorbereitung haben. Wir übernehmen auf Wunsch die Dekoration, liefen Speisen und Getränke (beispielsweise Kuchen/Kekse, Salate, Frikadellen und vieles mehr), planen lustige Spiele und bringen auch alles mit, was für die Spiele gebraucht wird. Weitere Informationen unter 01805/7131192."
+                },
+                {
+                    id: "g",
+                    title: "Hamburger & Co.",
+                    content: "Sie mögen Fast Food? Sie glauben aber, dass Fast Food nicht gesund sein kann? Wir zeigen Ihnen das Gegenteil. Lernen Sie viele Gerichte aus den USA in unserem Kochkurs 'Hamburger & Co.' neu kennen. An drei Wochenenden zeigen wir Ihnen, dass man Hamburger auch so zubereitet kann, dass sie gar nicht so viele Kalorien haben. Und schmecken werden sie natürlich auch. Anmeldung bis nächsten Samstag telefonisch unter 0800/1398700."
+                },
+                {
+                    id: "h", 
+                    title: "Nur auf Reisen lernt der Mensch",
+                    content: "Seit fast fünf Jahrzehnten bietet die überregionale Bildungsakademie 'Lernform e.V.' allen interessierten Bürgerinnen und Bürgern Ausflüge zu wichtigen Orten der deutschen Geschichte an. Anlässlich unseres Jubiläums veranstalten wir in den kommenden Monaten nun auch mehrtägige Fahrten in große deutsche Städte, um uns dort mit der Geschichte und Entwicklung der Stadt zu beschäftigen. Die Reisen führen beispielsweise nach Berlin, Köln oder München. Informieren Sie sich jetzt oder buchen Sie sofort unter www.ba-lernform.eu."
+                },
+                {
+                    id: "i",
+                    title: "Die bewegte Geschichte eines Stadtteils",
+                    content: "Unser Stadtteil kann auf eine bewegte Geschichte zurückblicken. Die Mitarbeiter des Stadtteil-Archivs wollen deshalb ein Buch veröffentlichen, in dem die Geschichte lebendig und für Alt- und Neu-Bürger anschaulich wird. Noch bis Jahresende bittet das Archiv alle Bürger, persönliche Erinnerungen einzureichen, sei es in Form kurzer Geschichten oder in Form von Fotos. Auch historische Zeitungsartikel sind willkommen, da nicht alle Zeitungen im Archiv vorhanden sind. Melden Sie sich einfach persönlich im Archiv am Dreiringplatz."
+                },
+                {
+                    id: "j",
+                    title: "Deutschland aus einer anderen Perspektive", 
+                    content: "Lernen Sie die schönsten deutschen Landschaften vom Fluss aus mit einer unserer Flusskreuzfahrten kennen. Auf geräumigen modernen Schiffen fahren Sie über Rhein, Mosel oder Donau, sehen die wunderschöne Natur längs der Flüsse und besichtigen auch die kleinen Ortschaften bei Ausflügen an Land. Wir haben Angebote für Reisende aller Altersklassen, für Individual- oder Gruppenreisende. Fordern Sie unser Informationsmaterial an unter der Rufnummer 0800/4455992."
+                },
+                {
+                    id: "k",
+                    title: "Unser Stadtteil ist lebendig",
+                    content: "Deshalb planen wir, im kommenden Jahr auf allen Plätzen des Stadtteils ein Fest durchzuführen. Noch stehen wir am Anfang unserer Planung, sammeln Ideen und suchen vor allem weitere Helfer. Wer möchte das Fest und unseren Stadtteil mitgestalten, Ideen entwickeln oder die konkrete Planung übernehmen? Noch ist alles möglich! Wir, die Einwohner unseres Stadtteils, wollen unsere Plätze noch schöner, bunter und lebendiger machen. Wir freuen uns über jeden Helfer, für das Fest und für die Umsetzung unserer Pläne. Wer mitmachen möchte, kann sich per E-Mail melden bei a.yildrim@online.eu."
+                },
+                {
+                    id: "l",
+                    title: "Technik - spannend und verständlich",
+                    content: "Sie kennen die typische Kinderfrage: 'Wie geht das?' Oder Sie haben selbst als Child einmal eine Uhr geöffnet, weil Sie wissen wollten, was darin war. Kinder sind neugierig, Kinder interessieren sich für Technik - und zwar nicht nur, wenn sie damit spielen können. Kinder wollen auch wissen, wie die Sachen funktionieren, aber leider können nicht alle Erwachsenen das gut erklären. Deshalb wurde jetzt in Oberhausen das erste Technik-Museum für Kinder eröffnet. Besucher zwischen 6 und 12 Jahren erfahren dort (natürlich in Begleitung eines Erwachsenen) spielerisch oder bei kindgerechten Führungen alles, was sie über Technik wissen wollen. Informationen: www.technik-museum-oberhausen.de."
+                }
+            ],
+
+            // الإجابات الصحيحة لـ Lesen Teil 3
+            teil3Answers: {
+                11: "d",
+                12: "e", 
+                13: "f",
+                14: "c",
+                15: "j",
+                16: "k",
+                17: "g",
+                18: "a",
+                19: "h", 
+                20: "l"
+            },
+
+            // Sprachbausteine Teil 1
+            blankText1: {
+                content: `Hallo Leon,
+vielen Dank für deine letzte Mail __(21)__ Peking! Du arbeitest ja jetzt schon seit einem halben Jahr in China – unglaublich, wie schnell die Zeit vergeht.
+Leider hatte ich in den letzten drei Wochen keine Zeit, dir zu antworten, __(22)__ ich viel zu tun hatte. Aber jetzt berichte ich dir, __(23)__ alles los war.
+Also, im Büro haben wir derzeit viel Stress, __(24)__ drei Kollegen im Urlaub sind und eine weitere Kollegin seit zwei Wochen krank ist. Jetzt müssen wir mit fünf Leuten die Arbeit erledigen, die sonst neun Leute machen. Ich weiß wirklich nicht, wer diese Urlaubsplanung gemacht hat. Hoffentlich __(25)__ das in Zukunft besser organisiert.
+Abends waren Carmen und ich dann ein paarmal aus. Wir waren zum Beispiel bei einem Konzert von "Belasco". Kennst du die Band? Eigentlich war ich an dem Abend ganz schön kaputt und __(26)__ am liebsten zuhause geblieben, aber ich hatte Carmen die Karten zum Geburtstag geschenkt. Da __(27)__ ich ja schlecht auf dem Sofa sitzen bleiben! Im Nachhinein muss ich sagen: Ein Glück, dass wir zu dem Konzert gegangen sind, __(28)__ es war einfach nur super!
+An den letzten beiden Wochenenden hatten wir dann auch noch Familienfeiern: Erst hatte meine ältere Schwester Geburtstag und hat groß gefeiert, dann hat ein Cousin geheiratet und uns eingeladen, __(29)__ war zwar schön, aber auch anstrengend. Ich bin froh, dass wir für die kommenden Wochenenden __(30)__ keine Pläne haben.
+Das war's erst mal von mir. Melde dich doch wieder, ich freue mich __(31)__ deine nächste E-Mail!
+
+Viele Grüße sendet dir
+Fabian`,
+                answers: ["aus", "weil", "was", "da", "wird", "wäre", "konnte", "denn", "Beides", "noch", "auf"]
+            },
+
+            // Sprachbausteine Teil 2
+            blankText2: {
+                content: `Es gibt inzwischen zahlreiche Online-Sprachkurse und __(32)__ mit Smartphones kann man Sprachen lernen. Eine weitere Lernmöglichkeit ist zum Beispiel eine Tandem-Partnerschaft __(33)__ einem Muttersprachler. Welche Vorteile und Nachteile haben die unterschiedlichen Methoden?
+Es gibt inzwischen zahlreiche Online-Lernportale, die leicht zu überblicken und zu bedienen sind. Der Vorteil: Man kann die Wörter nicht nur lesen, __(34)__ gleichzeitig auch hören. Außerdem kann man Wörter nachsprechen, __(35)__ dass ein ganzer Kurs zuhört.
+Auch Lerntipps bekommt man bei Online-Portalen, bespielsweise diesen: Vokabeln sollte man lieber mehrmals täglich in Fünf-Minuten-Blöcken wiederholen, __(36)__ sie in einer Stunde alle auf einmal zu lernen.
+Wer auch unterwegs lernen möchte, kann es mit einer Smartphone-App versuchen, einem kleinen Programm, das auf dem Handy läuft. Viele Programme gibt es kostenlos, andere kosten zwischen einem und mehreren Euro. Die kleinen Helfer sind __(37)__ gut zum Vokabellernen geeignet – mehr aber meist nicht. Das spielerische Vokabeltraining macht zwar Spaß, __(38)__ Satzbau oder andere Grammatikthemen werden allenfalls kurz angesprochen. Ein richtiges Gespräch kann man mit dieser Methode erst recht nicht üben. Dafür __(39)__ man besser in einen Kurs gehen oder einen Tandem-Partner suchen.
+Ein Tandem-Partner ist ein Muttersprachler, der die Grammatik erklärt, die Aussprache verbessert und seinerseits die Muttersprache des anderen lernen möchte.
+Der schnellste Weg, __(40)__ einen passenden Tandem-Partner zu finden, ist die Online-Suche: Muttersprache, Zielsprache und Wohnort eingeben, __(41)__ werden alle Treffer angezeigt. Man trifft sich beispielsweise in einem Restaurant, schickt sich Nachrichten oder E-Mails und erklärt sich gegenseitig die eigene Sprache.`,
+                answers: ["sogar", "mit", "sondern", "ohne", "anstatt", "besonders", "aber", "sollte", "um", "schon"]
+            }
+        };
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        let currentLang = 'ar';
+        let isDarkMode = false;
+
+        function initializePage() {
+            // تحميل الإعدادات المحفوظة
+            const savedLang = localStorage.getItem('language') || 'ar';
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            const username = localStorage.getItem('username') || 'زائر';
+            const access = localStorage.getItem('access');
+            
+            changeLanguage(savedLang);
+            if (savedDarkMode) {
+                toggleDarkMode();
+            }
+            
+            // التحقق من حالة المستخدم
+            if (access === 'paid' && username) {
+                document.getElementById('premiumBadge').style.display = 'flex';
+            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
+        }
+
+        function initializeTeil1() {
+            const headingsList = document.getElementById('headingsList');
+            const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
+            textsList.innerHTML = '';
+
+            // إضافة العناوين
+            examData.headings.forEach((heading, index) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                `;
+                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${index + 1}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
+                    </div>
+                `;
+                textsList.appendChild(textItem);
+            });
+        }
+
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
+            const questionsList = document.getElementById('questionsList');
+
+            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Frage ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
+                    <div class="options">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                    </div>
+                `;
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        function initializeTeil3() {
+            const situationsList = document.getElementById('situationsList');
+            const adsList = document.getElementById('adsList');
+
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation, index) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <strong>${index + 11})</strong> ${situation}
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
+                    </div>
+                `;
+                situationsList.appendChild(situationItem);
+            });
+
+            adsList.innerHTML = '';
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
+                    <p>${ad.content}</p>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+
+        function initializeSprachbausteine() {
+            // Teil 1
+            const blankText1 = document.getElementById('blankText1');
+            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
+            });
+            blankText1.innerHTML = textWithBlanks1;
+
+            // Teil 2
+            const blankText2 = document.getElementById('blankText2');
+            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 32]}</span></span>`;
+            });
+            blankText2.innerHTML = textWithBlanks2;
+        }
+
+        function setupEventListeners() {
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الرئيسية
+            document.getElementById('homeBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html';
+            });
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+            
+            // زر المستخدم
+            document.getElementById('userBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html#profile';
+            });
+            
+            // زر اللغة
+            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const lang = option.getAttribute('data-lang');
+                    changeLanguage(lang);
+                    document.getElementById('langDropdown').classList.remove('show');
+                });
+            });
+            
+            // إغلاق القوائم المنسدلة بالنقر خارجها
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.language-selector')) {
+                    document.getElementById('langDropdown').classList.remove('show');
+                }
+            });
+        }
+
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                        heading.classList.add('matched');
+                    }
+                });
+            });
+        }
+
+        function hideAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+
+        function toggleLangDropdown() {
+            document.getElementById('langDropdown').classList.toggle('show');
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // تحديث جميع النصوص
+            Object.keys(t).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = t[key];
+                }
+            });
+            
+            localStorage.setItem('language', lang);
+            
+            // إعادة تهيئة المحتوى لترجمة الإجابات
+            initializeTeil1();
+            initializeTeil2();
+        }
+    </script>
+</body>
+</html>

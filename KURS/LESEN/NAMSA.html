@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAMSA KAML - TELC B2 Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --secondary-dark: #1E88E5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #FFC107;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --text-light: #546E7A;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
+            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
+            --radius: 25px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #BBDEFB 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+
+        /* Header Controls - التعديل هنا */
+        .header-controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            z-index: 1000;
+            gap: 15px;
+        }
+
+        .left-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .right-controls {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .control-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .control-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
+        }
+
+        /* شارة المشترك الذهبية - تم التعديل */
+        .premium-badge-header {
+            position: fixed;
+            top: 20px;
+            right: 90px; /* بجانب الأزرار */
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
+        }
+
+        .home-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .home-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .home-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* Language Selector */
+        .language-selector {
+            display: flex;
+            position: relative;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .lang-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .lang-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .lang-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 0.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            overflow: hidden;
+            min-width: 120px;
+            animation: dropdownSlide 0.3s ease;
+            z-index: 1001;
+        }
+
+        .dark-mode .lang-dropdown {
+            background: #1a237e;
+            color: var(--light);
+        }
+
+        @keyframes dropdownSlide {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lang-dropdown.show {
+            display: block;
+        }
+
+        .lang-option {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            color: var(--text);
+        }
+
+        .dark-mode .lang-option {
+            color: var(--light);
+            border-bottom: 1px solid #37474F;
+        }
+
+        .lang-option:hover {
+            background: #f5f5f5;
+            transform: translateX(5px);
+        }
+
+        .dark-mode .lang-option:hover {
+            background: #283593;
+        }
+
+        .lang-option:last-child {
+            border-bottom: none;
+        }
+
+        /* زر الاشتراك - تمت إضافته */
+        .subscribe-btn {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border: 2px solid #FFC107;
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #000;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .subscribe-btn:hover {
+            background: linear-gradient(135deg, #FFA500, #FF8C00);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(15px);
+            margin-top: 6rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: contentSlideUp 0.8s ease;
+        }
+
+        @keyframes contentSlideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* أزرار التحكم */
+        .answer-controls {
+            position: sticky;
+            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .answer-controls {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .answer-btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .answer-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: right 0.6s;
+        }
+
+        .answer-btn:hover::before {
+            right: 100%;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .show-answers {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .dark-mode .section {
+            background: rgba(13, 71, 161, 0.9);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+        }
+
+        .dark-mode .section-title {
+            color: #90CAF9;
+        }
+
+        .question {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 15px;
+            border-right: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .dark-mode .question {
+            background: rgba(33, 150, 243, 0.1);
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            margin: 0.8rem 0;
+            padding: 1rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .dark-mode .option {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+            transform: translateX(-5px);
+        }
+
+        .correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            animation: slideInUp 0.5s ease;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* التصحيح - تم التعديل للوضع الليلي */
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2E7D32;
+            border: 2px solid #4CAF50;
+            font-weight: bold;
+        }
+
+        .dark-mode .correct-answer {
+            background: rgba(76, 175, 80, 0.3);
+            color: #A5D6A7;
+            border: 2px solid #81C784;
+        }
+
+        /* النصوص والعناوين */
+        .text-content {
+            line-height: 1.7;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .text-content {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .headings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .heading-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .dark-mode .heading-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .matched {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+            transform: scale(1.02);
+        }
+
+        /* الإعلانات والوضعيات */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .ad-item {
+            padding: 1.5rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            min-height: 150px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .ad-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .ad-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .situations-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+        }
+
+        .situation-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .situation-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .situation-item:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        /* Sprachbausteine */
+        .fill-blanks {
+            margin: 1.5rem 0;
+        }
+
+        .blank-text {
+            line-height: 2;
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-text {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            margin: 0 8px;
+            padding: 0.5rem 1rem;
+            border-bottom: 3px solid var(--primary);
+            text-align: center;
+            font-weight: 600;
+            background: var(--white);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .blank {
+            background: #1a237e;
+        }
+
+        .blank-answer {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2E7D32;
+            border-color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .dark-mode .blank-answer {
+            background: rgba(76, 175, 80, 0.3);
+            color: #A5D6A7;
+            border-color: #81C784;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Floating Elements مثل الصفحة الرئيسية */
+        .floating-elements {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            font-size: 3.5rem;
+            opacity: 0.15;
+            animation: float 8s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        .floating-book { top: 15%; left: 8%; animation-delay: 0s; }
+        .floating-pen { top: 75%; right: 12%; animation-delay: 1s; }
+        .floating-globe { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
+        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
+        .floating-graduate { top: 65%; left: 5%; animation-delay: 4s; }
+        .floating-notebook { bottom: 15%; right: 10%; animation-delay: 5s; }
+        .floating-pencil { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
+        .floating-calculator { top: 35%; right: 15%; animation-delay: 7s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
+            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
+        }
+
+        @media (max-width: 768px) {
+            .header-controls {
+                top: 15px;
+                left: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .premium-badge-header {
+                top: 15px;
+                right: 70px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+
+            .home-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .container {
+                padding: 2rem;
+                margin: 1rem;
+                margin-top: 5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .headings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .right-controls {
+                gap: 10px;
+            }
+
+            .answer-controls {
+                top: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-controls {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .left-controls, .right-controls {
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            .premium-badge-header {
+                position: relative;
+                top: auto;
+                right: auto;
+                transform: none;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Elements مثل الصفحة الرئيسية -->
+    <div class="floating-elements">
+        <div class="floating-element floating-book">📚</div>
+        <div class="floating-element floating-pen">✏️</div>
+        <div class="floating-element floating-globe">🌍</div>
+        <div class="floating-element floating-clock">⏰</div>
+        <div class="floating-element floating-graduate">🎓</div>
+        <div class="floating-element floating-notebook">📓</div>
+        <div class="floating-element floating-pencil">✏️</div>
+        <div class="floating-element floating-calculator">🧮</div>
+    </div>
+
+    <!-- شارة المشترك الذهبية - تم التعديل -->
+    <div class="premium-badge-header" id="premiumBadge">
+        <i class="fas fa-crown"></i>
+    </div>
+
+    <!-- Header Controls -->
+    <div class="header-controls">
+        <div class="left-controls">
+            <button class="home-btn" id="homeBtn">
+                <i class="fas fa-home"></i>
+                <span id="homeText">الرئيسية</span>
+            </button>
+            <div class="language-selector">
+                <button class="lang-btn" id="langBtn">
+                    <span id="langBtnText">العربية</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option" data-lang="ar">
+                        <span>🇸🇦</span>
+                        <span>العربية</span>
+                    </div>
+                    <div class="lang-option" data-lang="de">
+                        <span>🇩🇪</span>
+                        <span>Deutsch</span>
+                    </div>
+                    <div class="lang-option" data-lang="en">
+                        <span>🇬🇧</span>
+                        <span>English</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-controls">
+            <!-- زر الاشتراك - تمت إضافته هنا -->
+            <button class="subscribe-btn" id="subscribeBtn">
+                <i class="fas fa-crown"></i>
+                <span id="subscribeText">اشتراك</span>
+            </button>
+            <button class="control-btn" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="control-btn" id="userBtn">
+                <i class="fas fa-user"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="pageTitle">NAMSA KAML - TELC B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
+        </div>
+
+        <!-- أزرار التحكم -->
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">إظهار التصحيح</span>
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">إخفاء التصحيح</span>
+            </button>
+        </div>
+
+        <!-- Lesen Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="teil1Title">Lesen Teil 1</h2>
+            <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
+            
+            <div class="headings-grid" id="headingsList">
+                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div id="textsList">
+                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
+            <div class="text-content" id="longText">
+                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+            </div>
+
+            <div id="questionsList">
+                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 3 -->
+        <div class="section">
+            <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
+            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            
+            <div class="situations-grid" id="situationsList">
+                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div class="ads-grid" id="adsList">
+                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            <div class="fill-blanks">
+                <div class="blank-text" id="blankText1">
+                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            <div class="fill-blanks">
+                <div class="blank-text" id="blankText2">
+                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // الترجمات
+        const translations = {
+            ar: {
+                homeText: "الرئيسية",
+                themeText: "الوضع الليلي",
+                langText: "العربية", 
+                userText: "زائر",
+                subscribeText: "اشتراك",
+                pageTitle: "NAMSA KAML - TELC B2 Training",
+                pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
+                showAnswersText: "إظهار التصحيح",
+                hideAnswersText: "إخفاء التصحيح",
+                teil1Title: "Lesen Teil 1",
+                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
+                teil2Title: "Lesen Teil 2", 
+                teil3Title: "Lesen Teil 3",
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                sprach1Title: "Sprachbausteine Teil 1",
+                sprach2Title: "Sprachbausteine Teil 2"
+            },
+            de: {
+                homeText: "Startseite",
+                themeText: "Nachtmodus", 
+                langText: "Deutsch",
+                userText: "Besucher",
+                subscribeText: "Abonnieren",
+                pageTitle: "NAMSA KAML - TELC B2 Training",
+                pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
+                showAnswersText: "Korrektur anzeigen",
+                hideAnswersText: "Korrektur ausblenden",
+                teil1Title: "Lesen Teil 1",
+                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
+                teil2Title: "Lesen Teil 2",
+                teil3Title: "Lesen Teil 3", 
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                sprach1Title: "Sprachbausteine Teil 1",
+                sprach2Title: "Sprachbausteine Teil 2"
+            },
+            en: {
+                homeText: "Home",
+                themeText: "Dark Mode",
+                langText: "English",
+                userText: "Visitor",
+                subscribeText: "Subscribe", 
+                pageTitle: "NAMSA KAML - TELC B2 Training",
+                pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
+                showAnswersText: "Show Correction",
+                hideAnswersText: "Hide Correction",
+                teil1Title: "Reading Part 1",
+                teil1Description: "First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).",
+                teil2Title: "Reading Part 2",
+                teil3Title: "Reading Part 3",
+                teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
+                sprach1Title: "Language Elements Part 1", 
+                sprach2Title: "Language Elements Part 2"
+            }
+        };
+
+        // بيانات الأسئلة والإجابات من ملف PDF
+        const examData = {
+            // Lesen Teil 1 - العناوين والنصوص من PDF
+            headings: [
+                "Erneuerungskur für einen alten Markt",
+                "Junge Influencer werben für Bioprodukte",
+                "Neue Studie: So wirkt sich die Pandemie auf die Psyche aus",
+                "Kunstprojekt verwandelt graue Wände in bunte Bilder",
+                "Digitalisierung: Wie Unternehmen ihre Prozesse optimieren",
+                "Nachhaltigkeit im Alltag - Tipps für ein umweltbewusstes Leben",
+                "Reisetrends 2023: Das sind die beliebtesten Urlaubsziele",
+                "Gesunde Ernährung - Worauf kommt es wirklich an?",
+                "Bildung 4.0: Wie Technologie das Lernen verändert",
+                "Arbeitswelt im Wandel: Homeoffice und flexible Arbeitszeiten"
+            ],
+            
+            texts: [
+                {
+                    content: `Die Corona-Pandemie hat tiefe Spuren hinterlassen - nicht nur wirtschaftlich, sondern auch psychisch. Eine aktuelle Studie der Universität Berlin zeigt, dass besonders junge Menschen unter den Folgen leiden. Die Untersuchung befragte über 5.000 Personen zwischen 18 und 35 Jahren. Das Ergebnis: Jeder Dritte gibt an, unter depressiven Verstimmungen zu leiden. Die Wissenschaftler fordern mehr psychologische Unterstützungsangebote.`,
+                    correctAnswer: "Neue Studie: So wirkt sich die Pandemie auf die Psyche aus"
+                },
+                {
+                    content: `Graue Betonwände müssen nicht trist bleiben. Das beweist das Projekt "Urban Colors", das seit 2020 Fassaden in deutschen Städten verschönert. Künstler aus aller Welt gestalten dabei Hauswände mit bunten Motiven. Die Bewohner sind begeistert: "Es fühlt sich an, als würde man in einer Galerie wohnen", sagt Anwohnerin Maria Schmidt. Die Stadtverwaltung unterstützt das Projekt und stellt weitere Flächen zur Verfügung.`,
+                    correctAnswer: "Kunstprojekt verwandelt graue Wände in bunte Bilder"
+                },
+                {
+                    content: `Immer mehr Unternehmen setzen auf digitale Lösungen, um ihre Abläufe zu optimieren. Cloud-Computing, künstliche Intelligenz und automatisierte Prozesse stehen dabei im Fokus. "Die Digitalisierung ist kein Trend mehr, sondern Überlebensnotwendigkeit", betont Digitalisierungsexperte Dr. Thomas Weber. Kleine und mittlere Unternehmen holen dabei langsam auf, wie eine aktuelle Umfrage des Digitalverbands Bitkom zeigt.`,
+                    correctAnswer: "Digitalisierung: Wie Unternehmen ihre Prozesse optimieren"
+                },
+                {
+                    content: `Der historische Marktplatz in der Altstadt erstrahlt in neuem Glanz. Nach monatelangen Renovierungsarbeiten wurde er heute feierlich wiedereröffnet. Die Stadt investierte zwei Millionen Euro in die Neugestaltung. Neue Pflastersteine, moderne Beleuchtung und mehr Grünflächen sollen Besucher anlocken. Händler freuen sich über die Aufwertung: "Der Markt war schon immer das Herz unserer Stadt", so Marktleiterin Sabine Bauer.`,
+                    correctAnswer: "Erneuerungskur für einen alten Markt"
+                },
+                {
+                    content: `Junge Social-Media-Stars machen jetzt Werbung für Bioprodukte. Unternehmen setzen gezielt auf Influencer, um die junge Zielgruppe zu erreichen. "Authentizität ist dabei entscheidend", erklärt Marketingexpertin Lisa Müller. Die Kampagnen zeigen etwa, wie einfach nachhaltige Ernährung im Alltag umsetzbar ist. Der Erfolg gibt ihnen recht: Die Verkaufszahlen von Bioprodukten steigen kontinuierlich.`,
+                    correctAnswer: "Junge Influencer werben für Bioprodukte"
+                }
+            ],
+
+            // Lesen Teil 2 - النص الكامل من PDF
+            longText: {
+                content: `Die Digitalisierung hat in den letzten Jahren nahezu alle Lebensbereiche erfasst und grundlegend verändert. Besonders deutlich wird dies im Bereich der Bildung. Schulen und Universitäten stehen vor der Herausforderung, traditionelle Lehr- und Lernmethoden mit modernen Technologien zu verbinden.
+
+An vielen Schulen gehören digitale Whiteboards, Tablets und Lernplattformen bereits zum Alltag. Doch die technische Ausstattung allein reicht nicht aus. Entscheidend ist, wie diese Werkzeuge im Unterricht eingesetzt werden. Lehrkräfte müssen entsprechend geschult werden, um das volle Potenzial digitaler Medien auszuschöpfen.
+
+Eine Studie des Bildungsministeriums zeigt, dass Schüler durch den Einsatz digitaler Lernmittel motivierter sind und bessere Lernerfolge erzielen. Interaktive Lernspiele, virtuelle Labore und Online-Kollaborationstools ermöglichen ein tieferes Verständnis komplexer Sachverhalte. Gleichzeitig lernen Schüler den kritischen Umgang mit digitalen Quellen - eine Fähigkeit, die in der heutigen Informationsgesellschaft unverzichtbar ist.
+
+Doch es gibt auch Herausforderungen. Die sogenannte "digitale Spaltung" zwischen Schulen in wohlhabenden und weniger wohlhabenden Regionen bleibt ein Problem. Während einige Schulen über modernste Technik verfügen, kämpfen andere mit veralteter Ausstattung und langsamen Internetverbindungen. Hier ist die Politik gefordert, für mehr Chancengleichheit zu sorgen.
+
+Eltern stehen der Digitalisierung oft ambivalent gegenüber. Einerseits erkennen sie die Vorteile, andererseits sorgen sie sich um die Bildschirmzeit ihrer Kinder und mögliche Ablenkungen. Experten betonen, dass es auf die Qualität der Nutzung ankomme. Wichtig sei eine ausgewogene Mischung aus digitalen und analogen Lernmethoden.
+
+Die Corona-Pandemie hat die Digitalisierung des Bildungswesens beschleunigt. Plötzlich mussten Schulen innerhalb kürzester Zeit auf Fernunterricht umstellen. Diese Erfahrung hat gezeigt, wie wichtig eine gut funktionierende digitale Infrastruktur ist. Viele der damals eingeführten Lösungen werden heute weiter genutzt.
+
+Die Zukunft der Bildung liegt in der intelligenten Verknüpfung von analogem und digitalem Lernen. Künstliche Intelligenz kann dabei helfen, individualisierte Lernpfade zu erstellen und Schüler entsprechend ihrer Fähigkeiten zu fördern. Doch die menschliche Komponente - die Beziehung zwischen Lehrern und Schülern - bleibt unersetzlich.
+
+Insgesamt bietet die Digitalisierung große Chancen für das Bildungswesen. Sie kann dazu beitragen, Unterricht interessanter zu gestalten, individuelles Lernen zu ermöglichen und Schüler besser auf die Anforderungen der Arbeitswelt vorzubereiten. Entscheidend ist jedoch, dass die Technologie dem Lernen dient und nicht umgekehrt.`,
+                questions: [
+                    {
+                        question: "Was ist laut dem Text entscheidend für den erfolgreichen Einsatz digitaler Medien im Unterricht?",
+                        options: [
+                            "Die neueste Technologie",
+                            "Die entsprechende Schulung der Lehrkräfte",
+                            "Die Unterstützung durch die Eltern"
+                        ],
+                        correctAnswer: "Die entsprechende Schulung der Lehrkräfte"
+                    },
+                    {
+                        question: "Welches Problem wird im Text im Zusammenhang mit der Digitalisierung genannt?",
+                        options: [
+                            "Zu hohe Kosten für die Technik",
+                            "Die digitale Spaltung zwischen verschiedenen Schulen",
+                            "Widerstand der Schüler gegen neue Technologien"
+                        ],
+                        correctAnswer: "Die digitale Spaltung zwischen verschiedenen Schulen"
+                    },
+                    {
+                        question: "Wie stehen Eltern laut dem Text zur Digitalisierung in der Bildung?", 
+                        options: [
+                            "Sie lehnen sie vollständig ab",
+                            "Sie sind uneingeschränkt begeistert",
+                            "Sie sehen sowohl Vorteile als auch Nachteile"
+                        ],
+                        correctAnswer: "Sie sehen sowohl Vorteile als auch Nachteile"
+                    },
+                    {
+                        question: "Welche Auswirkung hatte die Corona-Pandemie auf die Digitalisierung der Bildung?",
+                        options: [
+                            "Sie hat sie verzögert",
+                            "Sie hat sie beschleunigt",
+                            "Sie hat sie komplett gestoppt"
+                        ],
+                        correctAnswer: "Sie hat sie beschleunigt"
+                    },
+                    {
+                        question: "Was bleibt laut dem Text trotz aller Digitalisierung unersetzlich?",
+                        options: [
+                            "Die menschliche Komponente im Unterricht",
+                            "Traditionelle Schulbücher",
+                            "Klassische Prüfungsformen"
+                        ],
+                        correctAnswer: "Die menschliche Komponente im Unterricht"
+                    }
+                ]
+            },
+
+            // Lesen Teil 3 - من PDF
+            situations: [
+                "Sie möchten sich über nachhaltige Ernährung informieren.",
+                "Sie planen einen Städtetrip und suchen Inspiration.",
+                "Sie interessieren sich für die neuesten Entwicklungen in der Arbeitswelt.",
+                "Sie wollen wissen, wie Sie im Alltag umweltfreundlicher leben können.",
+                "Sie suchen Tipps für gesunde Mahlzeiten.",
+                "Sie möchten mehr über den Einfluss von Technologie auf das Lernen erfahren.",
+                "Sie überlegen, ob Homeoffice für Sie infrage kommt.",
+                "Sie wollen verstehen, wie soziale Medien das Kaufverhalten beeinflussen.",
+                "Sie interessieren sich für Stadtentwicklung und -verschönerung.",
+                "Sie möchten wissen, wie sich die Pandemie auf die Gesellschaft auswirkt."
+            ],
+
+            ads: [
+                {
+                    id: "a",
+                    title: "Nachhaltig leben - so geht's!",
+                    content: "Unser neues Magazin zeigt Ihnen, wie Sie Ihren Alltag umweltfreundlicher gestalten können. Von Zero Waste über plastikfreie Alternativen bis hin zu nachhaltiger Mobilität - wir liefern praktische Tipps für jeden Lebensbereich. Jetzt im Handel oder als E-Paper erhältlich."
+                },
+                {
+                    id: "b", 
+                    title: "Städtetrips 2023",
+                    content: "Entdecken Sie die schönsten Städte Europas! Unser Reiseführer präsentiert die angesagtesten Reiseziele des Jahres. Mit detaillierten Stadtplänen, Restaurantempfehlungen und Insidertipps. Perfekt für Wochenendausflüge und längere Städtereisen."
+                },
+                {
+                    id: "c",
+                    title: "Homeoffice Guide", 
+                    content: "Erfahren Sie alles über die neue Arbeitswelt! Unser Ratgeber hilft Ihnen bei der Einrichtung eines produktiven Homeoffice-Arbeitsplatzes. Von der richtigen Technik über Zeitmanagement bis hin zur Work-Life-Balance. Inklusive Checklisten und praktischen Übungen."
+                },
+                {
+                    id: "d",
+                    title: "Gesund kochen - einfach und schnell",
+                    content: "Unsere Kochschule bietet Online-Kurse für gesunde Ernährung. Lernen Sie, wie Sie in 30 Minuten leckere und nährstoffreiche Mahlzeiten zubereiten. Mit Ernährungsberatung und individuellen Plänen für verschiedene Bedürfnisse."
+                },
+                {
+                    id: "e",
+                    title: "Digitales Lernen verstehen",
+                    content: "Unser Seminar erklärt die neuesten Bildungstechnologien. Für Lehrer, Eltern und alle, die sich für die Zukunft des Lernens interessieren. Wir zeigen Vor- und Nachteile verschiedener digitaler Lernwerkzeuge und geben Empfehlungen für den praktischen Einsatz."
+                },
+                {
+                    id: "f",
+                    title: "Influencer Marketing",
+                    content: "Wie funktioniert Werbung in sozialen Medien? Unser Workshop erklärt die Mechanismen des Influencer Marketings. Für Unternehmen, die junge Zielgruppen erreichen wollen, und für Verbraucher, die Werbung besser erkennen möchten."
+                },
+                {
+                    id: "g",
+                    title: "Urban Gardening Projekt",
+                    content: "Machen Sie Ihre Stadt grüner! Unser Verein sucht Mitstreiter für Urban Gardening Projekte. Wir verwandeln Brachflächen in Gemeinschaftsgärten und bieten Workshops zu nachhaltigem Gärtnern in der Stadt. Jeder kann mitmachen!"
+                },
+                {
+                    id: "h", 
+                    title: "Psychologische Beratung",
+                    content: "Die Pandemie hat viele Menschen belastet. Unsere psychologische Beratungsstelle bietet kostenlose Gespräche für alle, die mit den Folgen kämpfen. Professionelle Therapeuten helfen bei Ängsten, Stress und depressiven Verstimmungen. Termine auch online verfügbar."
+                },
+                {
+                    id: "i",
+                    title: "Bioprodukte direkt vom Erzeuger",
+                    content: "Unser Hofladen bietet frische Bioprodukte aus regionalem Anbau. Ohne lange Transportwege und Verpackungsmüll. Kommen Sie vorbei und überzeugen Sie sich selbst von der Qualität unserer Produkte. Auch Lieferung möglich."
+                },
+                {
+                    id: "j",
+                    title: "Kunst im öffentlichen Raum", 
+                    content: "Unser Verein fördert Kunstprojekte in der Stadt. Wir organisieren Ausstellungen, Künstlertreffen und Workshops. Helfen Sie mit, Ihr Wohnumfeld zu verschönern! Neue Mitglieder sind jederzeit willkommen."
+                },
+                {
+                    id: "k",
+                    title: "Digitale Transformation für Unternehmen",
+                    content: "Unser Consulting-Team unterstützt kleine und mittlere Unternehmen bei der Digitalisierung. Von der Prozessoptimierung bis zur Einführung neuer Technologien. Kostenlose Erstberatung inklusive."
+                },
+                {
+                    id: "l",
+                    title: "Bildung 4.0 - Die Zukunft des Lernens",
+                    content: "Unsere Konferenz bringt Bildungsexperten aus ganz Deutschland zusammen. Diskutieren Sie mit über die neuesten Trends in der Bildungsdigitalisierung. Keynotes, Workshops und Networking. Jetzt anmelden!"
+                }
+            ],
+
+            // الإجابات الصحيحة لـ Lesen Teil 3
+            teil3Answers: {
+                11: "Bioprodukte direkt vom Erzeuger",
+                12: "Städtetrips 2023", 
+                13: "Homeoffice Guide",
+                14: "Nachhaltig leben - so geht's!",
+                15: "Gesund kochen - einfach und schnell",
+                16: "Digitales Lernen verstehen",
+                17: "Homeoffice Guide",
+                18: "Influencer Marketing",
+                19: "Kunst im öffentlichen Raum", 
+                20: "Psychologische Beratung"
+            },
+
+            // Sprachbausteine Teil 1 - من PDF
+            blankText1: {
+                content: `Sehr geehrte Damen und Herren,
+
+hiermit möchte ich mich __(21)__ die Stelle als Marketing Manager bewerben, die Sie in der Frankfurter Allgemeinen Zeitung __(22)__ haben.
+
+Ich habe mein Studium der Betriebswirtschaftslehre an der Universität Mannheim __(23)__ und anschließend fünf Jahre Berufserfahrung in verschiedenen Marketing-Abteilungen __(24)__. In meiner aktuellen Position bei der ABC GmbH bin ich __(25)__ die Planung und Durchführung von Marketingkampagnen verantwortlich.
+
+Besonders __(26)__ mich an Ihrer Stellenausschreibung die internationale Ausrichtung Ihres Unternehmens. Ich habe während meines Studiums ein Auslandssemester in London __(27)__ und spreche fließend Englisch.
+
+Über eine Einladung __(28)__ ein Vorstellungsgespräch würde ich mich sehr freuen. Für weitere Informationen stehe ich Ihnen jederzeit gerne __(29)__ Verfügung.
+
+Mit freundlichen Grüßen
+Anna Weber`,
+                answers: ["um", "ausgeschrieben", "abgeschlossen", "gesammelt", "für", "interessiert", "absolviert", "zu", "zur"]
+            },
+
+            // Sprachbausteine Teil 2 - من PDF
+            blankText2: {
+                content: `Das Internet __(30)__ in den letzten Jahren unser Leben grundlegend verändert. Früher musste man für Informationen in die Bibliothek gehen, __(31)__ heute findet man alles online.
+
+__(32)__ der Kommunikation hat sich besonders viel getan. E-Mails haben traditionelle Briefe fast vollständig __(33)__. Soziale Medien ermöglichen es uns, mit Menschen auf der ganzen Welt in Kontakt __(34)__ bleiben.
+
+Auch beim Einkaufen hat sich einiges gewandelt. Immer mehr Menschen kaufen online ein, __(35)__ in Geschäften zu gehen. Das ist oft bequemer und man hat eine größere Auswahl.
+
+__(36)__ gibt es auch Nachteile. Viele Menschen fühlen sich von der Informationsflut überfordert. __(37)__ muss man lernen, zwischen seriösen und unseriösen Quellen zu unterscheiden.
+
+Insgesamt __(38)__ das Internet jedoch viele Vorteile. Es hat unseren Alltag einfacher und vielfältiger gemacht. Die Entwicklung wird sicherlich __(39)__ weitergehen.
+
+Wir sollten __(40)__ bemühen, die neuen Technologien sinnvoll zu nutzen.`,
+                answers: ["hat", "aber", "Im Bereich", "ersetzt", "zu", "anstatt", "Allerdings", "Außerdem", "bietet", "in Zukunft", "uns"]
+            }
+        };
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        let currentLang = 'ar';
+        let isDarkMode = false;
+
+        function initializePage() {
+            // تحميل الإعدادات المحفوظة
+            const savedLang = localStorage.getItem('language') || 'ar';
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            const username = localStorage.getItem('username') || 'زائر';
+            const access = localStorage.getItem('access');
+            
+            changeLanguage(savedLang);
+            if (savedDarkMode) {
+                toggleDarkMode();
+            }
+            
+            // التحقق من حالة المستخدم
+            if (access === 'paid' && username) {
+                document.getElementById('premiumBadge').style.display = 'flex';
+            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
+        }
+
+        function initializeTeil1() {
+            const headingsList = document.getElementById('headingsList');
+            const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
+            textsList.innerHTML = '';
+
+            // إضافة العناوين
+            examData.headings.forEach((heading, index) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                `;
+                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${index + 1}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
+                    </div>
+                `;
+                textsList.appendChild(textItem);
+            });
+        }
+
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
+            const questionsList = document.getElementById('questionsList');
+
+            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Frage ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
+                    <div class="options">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                    </div>
+                `;
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        function initializeTeil3() {
+            const situationsList = document.getElementById('situationsList');
+            const adsList = document.getElementById('adsList');
+
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation, index) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <strong>${index + 11})</strong> ${situation}
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
+                    </div>
+                `;
+                situationsList.appendChild(situationItem);
+            });
+
+            adsList.innerHTML = '';
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
+                    <p>${ad.content}</p>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+
+        function initializeSprachbausteine() {
+            // Teil 1
+            const blankText1 = document.getElementById('blankText1');
+            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
+            });
+            blankText1.innerHTML = textWithBlanks1;
+
+            // Teil 2
+            const blankText2 = document.getElementById('blankText2');
+            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 30]}</span></span>`;
+            });
+            blankText2.innerHTML = textWithBlanks2;
+        }
+
+        function setupEventListeners() {
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الرئيسية
+            document.getElementById('homeBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html';
+            });
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+            
+            // زر المستخدم
+            document.getElementById('userBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html#profile';
+            });
+            
+            // زر الاشتراك
+            document.getElementById('subscribeBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html#subscribe';
+            });
+            
+            // زر اللغة
+            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const lang = option.getAttribute('data-lang');
+                    changeLanguage(lang);
+                    document.getElementById('langDropdown').classList.remove('show');
+                });
+            });
+            
+            // إغلاق القوائم المنسدلة بالنقر خارجها
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.language-selector')) {
+                    document.getElementById('langDropdown').classList.remove('show');
+                }
+            });
+        }
+
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                        heading.classList.add('matched');
+                    }
+                });
+            });
+        }
+
+        function hideAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+
+        function toggleLangDropdown() {
+            document.getElementById('langDropdown').classList.toggle('show');
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // تحديث جميع النصوص
+            Object.keys(t).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = t[key];
+                }
+            });
+            
+            localStorage.setItem('language', lang);
+            
+            // إعادة تهيئة المحتوى لترجمة الإجابات
+            initializeTeil1();
+            initializeTeil2();
+        }
+    </script>
+</body>
+</html>

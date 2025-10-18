@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umweltschutz - TELC B2 Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --secondary-dark: #1E88E5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #FFC107;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --text-light: #546E7A;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
+            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
+            --radius: 25px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #BBDEFB 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+
+        /* Header Controls - تم التعديل لمطابقة الصفحة الرئيسية تماماً */
+        .header-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .control-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .control-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
+        }
+
+        /* Language Selector - تم التعديل لمطابقة الصفحة الرئيسية */
+        .language-selector {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .lang-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .lang-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .lang-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 0.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            overflow: hidden;
+            min-width: 120px;
+            animation: dropdownSlide 0.3s ease;
+            z-index: 1001;
+        }
+
+        .dark-mode .lang-dropdown {
+            background: #1a237e;
+            color: var(--light);
+        }
+
+        @keyframes dropdownSlide {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lang-dropdown.show {
+            display: block;
+        }
+
+        .lang-option {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            color: var(--text);
+        }
+
+        .dark-mode .lang-option {
+            color: var(--light);
+            border-bottom: 1px solid #37474F;
+        }
+
+        .lang-option:hover {
+            background: #f5f5f5;
+            transform: translateX(5px);
+        }
+
+        .dark-mode .lang-option:hover {
+            background: #283593;
+        }
+
+        .lang-option:last-child {
+            border-bottom: none;
+        }
+
+        /* شارة المشترك الذهبية - تم التعديل لمطابقة الصفحة الرئيسية */
+        .premium-badge {
+            position: fixed;
+            top: 85px;
+            left: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+            animation: rotate 4s linear infinite;
+            display: none;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* نافذة الدعم - تمت إضافتها لمطابقة الصفحة الرئيسية */
+        .support-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .support-modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .dark-mode .support-modal-content {
+            background: #1a237e;
+        }
+
+        .support-info {
+            margin: 1.5rem 0;
+        }
+
+        .support-item {
+            padding: 0.8rem;
+            margin: 0.5rem 0;
+            background: rgba(33, 150, 243, 0.1);
+            border-radius: 10px;
+            font-weight: 500;
+        }
+
+        .close-modal {
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .close-modal:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* زر الرئيسية - تم إزالته واستبداله بأزرار التحكم */
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(15px);
+            margin-top: 6rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: contentSlideUp 0.8s ease;
+        }
+
+        @keyframes contentSlideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* أزرار التحكم - تم التعديل لجعلها ثابتة في الأعلى */
+        .answer-controls {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .answer-controls {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .answer-btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .answer-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: right 0.6s;
+        }
+
+        .answer-btn:hover::before {
+            right: 100%;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .show-answers {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .dark-mode .section {
+            background: rgba(13, 71, 161, 0.9);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+        }
+
+        .dark-mode .section-title {
+            color: #90CAF9;
+        }
+
+        .question {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 15px;
+            border-right: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .dark-mode .question {
+            background: rgba(33, 150, 243, 0.1);
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            margin: 0.8rem 0;
+            padding: 1rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .dark-mode .option {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+            transform: translateX(-5px);
+        }
+
+        .correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            animation: slideInUp 0.5s ease;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* التصحيح - تم التعديل للوضع الليلي */
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2E7D32;
+            border: 2px solid #4CAF50;
+            font-weight: bold;
+        }
+
+        .dark-mode .correct-answer {
+            background: rgba(76, 175, 80, 0.3);
+            color: #A5D6A7;
+            border: 2px solid #81C784;
+        }
+
+        /* النصوص والعناوين */
+        .text-content {
+            line-height: 1.7;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .text-content {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .headings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .heading-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .dark-mode .heading-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .matched {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+            transform: scale(1.02);
+        }
+
+        /* الإعلانات والوضعيات */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .ad-item {
+            padding: 1.5rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            min-height: 150px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .ad-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .ad-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .situations-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+        }
+
+        .situation-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .situation-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .situation-item:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        /* Sprachbausteine */
+        .fill-blanks {
+            margin: 1.5rem 0;
+        }
+
+        .blank-text {
+            line-height: 2;
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-text {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            margin: 0 8px;
+            padding: 0.5rem 1rem;
+            border-bottom: 3px solid var(--primary);
+            text-align: center;
+            font-weight: 600;
+            background: var(--white);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .blank {
+            background: #1a237e;
+        }
+
+        .blank-answer {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2E7D32;
+            border-color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .dark-mode .blank-answer {
+            background: rgba(76, 175, 80, 0.3);
+            color: #A5D6A7;
+            border-color: #81C784;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Floating Elements مثل الصفحة الرئيسية */
+        .floating-elements {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            font-size: 3.5rem;
+            opacity: 0.15;
+            animation: float 8s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        .floating-book { top: 15%; left: 8%; animation-delay: 0s; }
+        .floating-pen { top: 75%; right: 12%; animation-delay: 1s; }
+        .floating-globe { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
+        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
+        .floating-graduate { top: 65%; left: 5%; animation-delay: 4s; }
+        .floating-notebook { bottom: 15%; right: 10%; animation-delay: 5s; }
+        .floating-pencil { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
+        .floating-calculator { top: 35%; right: 15%; animation-delay: 7s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
+            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
+        }
+
+        @media (max-width: 768px) {
+            .header-controls {
+                top: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .language-selector {
+                top: 15px;
+                left: 15px;
+            }
+
+            .premium-badge {
+                top: 70px;
+                left: 15px;
+                width: 35px;
+                height: 35px;
+            }
+
+            .container {
+                padding: 2rem;
+                margin: 1rem;
+                margin-top: 5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .headings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .answer-controls {
+                top: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-controls {
+                gap: 8px;
+            }
+
+            .control-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+
+            .lang-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Elements مثل الصفحة الرئيسية -->
+    <div class="floating-elements">
+        <div class="floating-element floating-book">📚</div>
+        <div class="floating-element floating-pen">✏️</div>
+        <div class="floating-element floating-globe">🌍</div>
+        <div class="floating-element floating-clock">⏰</div>
+        <div class="floating-element floating-graduate">🎓</div>
+        <div class="floating-element floating-notebook">📓</div>
+        <div class="floating-element floating-pencil">✏️</div>
+        <div class="floating-element floating-calculator">🧮</div>
+    </div>
+
+    <!-- أزرار التحكم العلوية - تم التعديل لمطابقة الصفحة الرئيسية -->
+    <div class="header-controls">
+        <button class="control-btn theme-toggle" id="themeToggle">🌙</button>
+        <button class="control-btn support-btn" id="supportBtn">💬</button>
+        <button class="control-btn profile-btn" id="profileBtn">👤</button>
+        <button class="control-btn notes-btn" id="notesBtn">📝</button>
+    </div>
+
+    <!-- محدد اللغة - تم التعديل لمطابقة الصفحة الرئيسية -->
+    <div class="language-selector">
+        <button class="lang-btn" id="langBtn">
+            <span>🇸🇦 العربية</span>
+        </button>
+        <div class="lang-dropdown" id="langDropdown">
+            <div class="lang-option" data-lang="ar">🇸🇦 العربية</div>
+            <div class="lang-option" data-lang="de">🇩🇪 Deutsch</div>
+            <div class="lang-option" data-lang="en">🇬🇧 English</div>
+        </div>
+    </div>
+
+    <!-- شارة المشترك الذهبية - تم التعديل لمطابقة الصفحة الرئيسية -->
+    <div class="premium-badge" id="premiumBadge">
+        <i class="fas fa-crown" style="color: #fff; font-size: 1.2rem;"></i>
+    </div>
+
+    <!-- نافذة الدعم - تمت إضافتها لمطابقة الصفحة الرئيسية -->
+    <div class="support-modal" id="supportModal">
+        <div class="support-modal-content">
+            <h2 id="supportTitle">اتصال الدعم</h2>
+            <div class="support-info">
+                <div class="support-item">+212 649-661976</div>
+                <div class="support-item">zakariaap.6@gmail.com</div>
+            </div>
+            <button class="close-modal" id="closeSupportModal">إغلاق</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="pageTitle">Umweltschutz - TELC B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
+        </div>
+
+        <!-- أزرار التحكم - تم التعديل لجعلها ثابتة في الأعلى -->
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">إظهار التصحيح</span>
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">إخفاء التصحيح</span>
+            </button>
+        </div>
+
+        <!-- Lesen Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="teil1Title">Lesen Teil 1</h2>
+            <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
+            
+            <div class="headings-grid" id="headingsList">
+                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div id="textsList">
+                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
+            <div class="text-content" id="longText">
+                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+            </div>
+
+            <div id="questionsList">
+                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 3 -->
+        <div class="section">
+            <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
+            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            
+            <div class="situations-grid" id="situationsList">
+                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div class="ads-grid" id="adsList">
+                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            <div class="fill-blanks">
+                <div class="blank-text" id="blankText1">
+                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            <div class="fill-blanks">
+                <div class="blank-text" id="blankText2">
+                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // الترجمات
+        const translations = {
+            ar: {
+                homeText: "الرئيسية",
+                themeText: "الوضع الليلي",
+                langText: "العربية", 
+                userText: "زائر",
+                pageTitle: "Umweltschutz - TELC B2 Training",
+                pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
+                showAnswersText: "إظهار التصحيح",
+                hideAnswersText: "إخفاء التصحيح",
+                teil1Title: "Lesen Teil 1",
+                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
+                teil2Title: "Lesen Teil 2", 
+                teil3Title: "Lesen Teil 3",
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                sprach1Title: "Sprachbausteine Teil 1",
+                sprach2Title: "Sprachbausteine Teil 2",
+                supportTitle: "اتصال الدعم"
+            },
+            de: {
+                homeText: "Startseite",
+                themeText: "Nachtmodus", 
+                langText: "Deutsch",
+                userText: "Besucher",
+                pageTitle: "Umweltschutz - TELC B2 Training",
+                pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
+                showAnswersText: "Korrektur anzeigen",
+                hideAnswersText: "Korrektur ausblenden",
+                teil1Title: "Lesen Teil 1",
+                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
+                teil2Title: "Lesen Teil 2",
+                teil3Title: "Lesen Teil 3", 
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                sprach1Title: "Sprachbausteine Teil 1",
+                sprach2Title: "Sprachbausteine Teil 2",
+                supportTitle: "Support Kontakt"
+            },
+            en: {
+                homeText: "Home",
+                themeText: "Dark Mode",
+                langText: "English",
+                userText: "Visitor", 
+                pageTitle: "Umweltschutz - TELC B2 Training",
+                pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
+                showAnswersText: "Show Correction",
+                hideAnswersText: "Hide Correction",
+                teil1Title: "Reading Part 1",
+                teil1Description: "First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).",
+                teil2Title: "Reading Part 2",
+                teil3Title: "Reading Part 3",
+                teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
+                sprach1Title: "Language Elements Part 1", 
+                sprach2Title: "Language Elements Part 2",
+                supportTitle: "Support Contact"
+            }
+        };
+
+        // بيانات الأسئلة والإجابات من ملف PDF
+        const examData = {
+            // Lesen Teil 1
+            headings: [
+                "Gemeinsam kaputte Geräte retten",
+                "Kaufsucht überwinden diese Möglichkeiten gibt es",
+                "Neue Besitzer für nicht gebrauchte Gegenstände",
+                "Reparatur alter Haushaltsgeräte lohnt oft nicht",
+                "Rücksendungen verderben Online-Händlern das Geschäft",
+                "Rücksendungen verringern: Händler hoffen auf Lösungen",
+                "Studie: So wirkt sich Kleidung auf die Wahrnehmung aus",
+                "Tipps für einen nachhaltigen Kleiderschrank",
+                "Umfrage: So viel Kleidung besitzen die Deutschen",
+                "Weniger Kleidung kaufen: So kann es gelingen"
+            ],
+            texts: [
+                {
+                    content: "Viele Menschen haben zu Hause Dinge, die sie nicht mehr brauchen. Statt sie wegzuwerfen, kann man sie auch verschenken oder verkaufen. Das schont die Umwelt und spart Ressourcen. Im Internet gibt es verschiedene Plattformen, auf denen man solche Gegenstände anbieten kann. Manchmal findet man auch selbst etwas, das man gut gebrauchen kann.",
+                    correctHeading: 2
+                },
+                {
+                    content: "Wenn ein Haushaltsgerät kaputt geht, überlegt man oft, ob man es reparieren lassen soll. Doch viele Reparaturen sind teurer als ein neues Gerät. Zudem sind Ersatzteile oft schwer zu finden. Deshalb entscheiden sich viele Menschen für einen Neukauf, auch wenn das nicht umweltfreundlich ist.",
+                    correctHeading: 3
+                },
+                {
+                    content: "In vielen Städten gibt es mittlerweile Repair-Cafés. Dort treffen sich Menschen, um gemeinsam kaputte Dinge zu reparieren. Ehrenamtliche Helfer unterstützen sie dabei. So kann man nicht nur Geld sparen, sondern auch neue Leute kennenlernen und etwas für die Umwelt tun.",
+                    correctHeading: 0
+                },
+                {
+                    content: "Die Deutschen besitzen durchschnittlich 95 Kleidungsstücke. Das hat eine aktuelle Umfrage ergeben. Frauen haben dabei mehr Kleidung als Männer. Besonders viele Teile finden sich in den Kleiderschränken junger Menschen. Viele davon werden selten oder nie getragen.",
+                    correctHeading: 8
+                },
+                {
+                    content: "Kleidung beeinflusst, wie andere Menschen uns wahrnehmen. Eine Studie zeigt, dass bestimmte Farben und Schnelle mit bestimmten Eigenschaften in Verbindung gebracht werden. So wirken Menschen in dunkler Business-Kleidung beispielsweise kompetenter als in Freizeitkleidung.",
+                    correctHeading: 6
+                }
+            ],
+            
+            // Lesen Teil 2
+            longText: {
+                title: "Nachhaltiger Umgang mit Kleidung",
+                content: "Die Textilindustrie gehört zu den umweltschädlichsten Branchen weltweit. Bei der Herstellung von Kleidung werden enorme Mengen an Wasser verbraucht und Chemikalien eingesetzt. Gleichzeitig landen viele Kleidungsstücke nach kurzer Tragezeit im Müll. Dabei gibt es viele Möglichkeiten, nachhaltiger mit Kleidung umzugehen.",
+                paragraphs: [
+                    "Zunächst sollte man sich vor jedem Kauf fragen, ob man das Kleidungsstück wirklich braucht. Oft kaufen wir Dinge, die wir später kaum tragen. Eine gute Möglichkeit ist es, eine Kleiderpause einzulegen und für eine bestimmte Zeit keine neuen Teile zu kaufen.",
+                    "Second-Hand-Kleidung ist eine umweltfreundliche Alternative. In vielen Städten gibt es inzwischen gut sortierte Second-Hand-Läden, in denen man qualitativ hochwertige Kleidung findet. Auch online kann man gebrauchte Kleidung kaufen und verkaufen.",
+                    "Die Pflege der Kleidung spielt ebenfalls eine wichtige Rolle. Wäsche bei niedrigeren Temperaturen waschen und auf den Trockner verzichten spart Energie. Kleidungsstücke sollten außerdem repariert statt weggeworfen werden.",
+                    "Beim Neukauf sollte man auf nachhaltige Materialien und faire Produktionsbedingungen achten. Zertifikate wie GOTS oder Fairtrade geben hier Orientierung. Qualität geht vor Quantität - lieber weniger Teile, die dafür länger halten."
+                ]
+            },
+            questions: [
+                {
+                    question: "Warum ist die Textilindustrie problematisch für die Umwelt?",
+                    options: [
+                        "Weil Kleidung zu billig ist",
+                        "Weil zu viel Wasser und Chemikalien verwendet werden", 
+                        "Weil zu wenig Kleidung produziert wird",
+                        "Weil Kleidung zu lange getragen wird"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "Was ist eine Kleiderpause?",
+                    options: [
+                        "Kleidung in der Pause tragen",
+                        "Für eine Zeit keine neue Kleidung kaufen",
+                        "Alte Kleidung wegwerfen",
+                        "Nur Second-Hand-Kleidung kaufen"
+                    ],
+                    correct: 1
+                },
+                {
+                    question: "Wo kann man Second-Hand-Kleidung finden?",
+                    options: [
+                        "Nur online",
+                        "Nur in großen Städten", 
+                        "In Second-Hand-Läden und online",
+                        "Nur auf Flohmärkten"
+                    ],
+                    correct: 2
+                },
+                {
+                    question: "Wie kann man Energie bei der Kleiderpflege sparen?",
+                    options: [
+                        "Immer bei hohen Temperaturen waschen",
+                        "Immer den Trockner benutzen",
+                        "Bei niedrigeren Temperaturen waschen und auf Trockner verzichten",
+                        "Kleidung nie waschen"
+                    ],
+                    correct: 2
+                },
+                {
+                    question: "Worauf sollte man beim Neukauf achten?",
+                    options: [
+                        "Nur auf den Preis",
+                        "Auf nachhaltige Materialien und faire Produktion",
+                        "Auf die neuesten Trends",
+                        "Auf möglichst viele Teile"
+                    ],
+                    correct: 1
+                }
+            ],
+            
+            // Lesen Teil 3
+            situations: [
+                "Sie haben einen kaputten Toaster und möchten ihn reparieren lassen, ohne viel Geld auszugeben.",
+                "Sie besitzen viele Kleidungsstücke, die Sie nicht mehr tragen, und möchten sie loswerden.",
+                "Sie möchten weniger Kleidung kaufen, wissen aber nicht, wie Sie anfangen sollen.",
+                "Sie interessieren sich für die psychologische Wirkung von Kleidung.",
+                "Sie möchten wissen, wie viel Kleidung Deutsche durchschnittlich besitzen.",
+                "Sie überlegen, ob Sie Ihren kaputten Mixer reparieren oder neu kaufen sollen.",
+                "Sie möchten Ihre Kleidung umweltfreundlicher pflegen.",
+                "Sie suchen nach Möglichkeiten, Ihre Kaufsucht in den Griff zu bekommen.",
+                "Sie möchten Kleidung nachhaltig kaufen und suchen entsprechende Zertifikate.",
+                "Sie handeln online und möchten wissen, wie sich Rücksendungen auf Händler auswirken."
+            ],
+            ads: [
+                {
+                    content: "Repair-Café in Ihrer Stadt: Jeden Samstag von 14-18 Uhr. Ehrenamtliche Helfer unterstützen Sie bei Reparaturen. Kostenlos, Spenden willkommen.",
+                    matches: [0]
+                },
+                {
+                    content: "Kleidertauschparty: Bringen Sie gut erhaltene Kleidung mit und tauschen Sie sie gegen neue Lieblingsteile. Nächster Termin: 15. Mai, Stadtzentrum.",
+                    matches: [1]
+                },
+                {
+                    content: "Online-Kurs 'Weniger konsumieren': Lernen Sie in 4 Wochen Strategien gegen Impulskäufe. Start jeden Monat. Kosten: 49€.",
+                    matches: [2, 7]
+                },
+                {
+                    content: "Buchtipp: 'Die Psychologie der Kleidung' - Wie unser Outfit unsere Wirkung beeinflusst. Jetzt im Buchhandel erhältlich.",
+                    matches: [3]
+                },
+                {
+                    content: "Studie: 'Kleiderkonsum in Deutschland' - Aktuelle Zahlen und Trends. Kostenloser Download auf unserer Website.",
+                    matches: [4]
+                },
+                {
+                    content: "Reparatur vs. Neukauf: Unser Online-Rechner hilft bei der Entscheidung. Einfach Gerätetyp und Defekt eingeben.",
+                    matches: [5]
+                },
+                {
+                    content: "Öko-Waschmittel und Trockenständer: Unsere nachhaltigen Pflegeprodukte schonen Umwelt und Kleidung. Im Bio-Markt erhältlich.",
+                    matches: [6]
+                },
+                {
+                    content: "Selbsthilfegruppe Kaufsucht: Regelmäßige Treffen, anonym, kostenfrei. Erster Schritt zur Veränderung.",
+                    matches: [7]
+                },
+                {
+                    content: "Nachhaltige Mode-Labels mit GOTS-Zertifikat: Übersicht und Bezugsquellen in unserem Einkaufsführer.",
+                    matches: [8]
+                },
+                {
+                    content: "Händler-Umfrage: Wie Online-Shops mit Retouren umgehen. Spannende Einblicke in den E-Commerce.",
+                    matches: [9]
+                }
+            ],
+            
+            // Sprachbausteine Teil 1
+            blankText1: {
+                text: "Die Textilindustrie ___ zu den umweltschädlichsten Branchen weltweit. Bei der Herstellung von Kleidung ___ enorme Mengen an Wasser verbraucht und Chemikalien eingesetzt. Gleichzeitig ___ viele Kleidungsstücke nach kurzer Tragezeit im Müll. Dabei ___ es viele Möglichkeiten, nachhaltiger mit Kleidung umzugehen.",
+                blanks: [
+                    { options: ["gehört", "gehören", "gehörende", "gehörtet"], correct: 0 },
+                    { options: ["werden", "wird", "worden", "würde"], correct: 0 },
+                    { options: ["landen", "landet", "gelandet", "landend"], correct: 0 },
+                    { options: ["gibt", "geben", "gegeben", "gäbe"], correct: 0 }
+                ]
+            },
+            
+            // Sprachbausteine Teil 2
+            blankText2: {
+                text: "Second-Hand-Kleidung ___ eine umweltfreundliche Alternative. In vielen Städten ___ es inzwischen gut sortierte Second-Hand-Läden, in ___ man qualitativ hochwertige Kleidung findet. Auch online ___ man gebrauchte Kleidung kaufen und verkaufen.",
+                blanks: [
+                    { options: ["ist", "sind", "war", "wäre"], correct: 0 },
+                    { options: ["gibt", "geben", "gegeben", "gäbe"], correct: 0 },
+                    { options: ["denen", "der", "die", "das"], correct: 0 },
+                    { options: ["kann", "können", "konnte", "könnte"], correct: 0 }
+                ]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // العناصر
+            const themeToggle = document.getElementById('themeToggle');
+            const supportBtn = document.getElementById('supportBtn');
+            const profileBtn = document.getElementById('profileBtn');
+            const notesBtn = document.getElementById('notesBtn');
+            const langBtn = document.getElementById('langBtn');
+            const langDropdown = document.getElementById('langDropdown');
+            const supportModal = document.getElementById('supportModal');
+            const closeSupportModal = document.getElementById('closeSupportModal');
+            const premiumBadge = document.getElementById('premiumBadge');
+            const showAnswersBtn = document.getElementById('showAnswers');
+            const hideAnswersBtn = document.getElementById('hideAnswers');
+
+            // تحميل الإعدادات
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            const savedLanguage = localStorage.getItem('language') || 'ar';
+
+            // تطبيق الإعدادات
+            if (savedDarkMode) {
+                document.body.classList.add('dark-mode');
+                themeToggle.textContent = '☀️';
+            }
+
+            // تغيير اللغة
+            function changeLanguage(lang) {
+                localStorage.setItem('language', lang);
+                const langTexts = {
+                    ar: '🇸🇦 العربية',
+                    de: '🇩🇪 Deutsch', 
+                    en: '🇬🇧 English'
+                };
+                langBtn.innerHTML = `<span>${langTexts[lang]}</span>`;
+                document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+                document.documentElement.lang = lang;
+                
+                // تحديث النصوص
+                Object.keys(translations[lang]).forEach(key => {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        element.textContent = translations[lang][key];
+                    }
+                });
+            }
+
+            // تطبيق اللغة المحفوظة
+            changeLanguage(savedLanguage);
+
+            // مستمعي الأحداث للأزرار العلوية
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+                localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            });
+
+            supportBtn.addEventListener('click', function() {
+                supportModal.style.display = 'flex';
+            });
+
+            profileBtn.addEventListener('click', function() {
+                window.location.href = 'index.html#profile';
+            });
+
+            notesBtn.addEventListener('click', function() {
+                window.location.href = 'index.html#notes';
+            });
+
+            closeSupportModal.addEventListener('click', function() {
+                supportModal.style.display = 'none';
+            });
+
+            supportModal.addEventListener('click', function(e) {
+                if (e.target === supportModal) {
+                    supportModal.style.display = 'none';
+                }
+            });
+
+            // محدد اللغة
+            langBtn.addEventListener('click', function() {
+                langDropdown.classList.toggle('show');
+            });
+
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const lang = this.getAttribute('data-lang');
+                    changeLanguage(lang);
+                    langDropdown.classList.remove('show');
+                });
+            });
+
+            // إغلاق القوائم المنسدلة بالنقر خارجها
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.language-selector')) {
+                    langDropdown.classList.remove('show');
+                }
+            });
+
+            // زر البريميوم
+            premiumBadge.addEventListener('click', function() {
+                alert('أنت مشترك! شكراً على دعمك 💎');
+            });
+
+            // عرض/إخفاء الإجابات
+            let answersVisible = false;
+
+            showAnswersBtn.addEventListener('click', function() {
+                showAllAnswers();
+                answersVisible = true;
+            });
+
+            hideAnswersBtn.addEventListener('click', function() {
+                hideAllAnswers();
+                answersVisible = false;
+            });
+
+            // تهيئة المحتوى
+            initializeContent();
+
+            function initializeContent() {
+                // Lesen Teil 1
+                const headingsList = document.getElementById('headingsList');
+                const textsList = document.getElementById('textsList');
+                
+                // إضافة العناوين
+                examData.headings.forEach((heading, index) => {
+                    const headingElement = document.createElement('div');
+                    headingElement.className = 'heading-item';
+                    headingElement.textContent = `${String.fromCharCode(97 + index)}) ${heading}`;
+                    headingElement.dataset.index = index;
+                    headingsList.appendChild(headingElement);
+                });
+
+                // إضافة النصوص
+                examData.texts.forEach((text, index) => {
+                    const textElement = document.createElement('div');
+                    textElement.className = 'question';
+                    textElement.innerHTML = `
+                        <h3>Text ${index + 1}</h3>
+                        <p>${text.content}</p>
+                        <div class="answer correct-answer hidden" id="answerTeil1Text${index + 1}">
+                            Richtige Überschrift: ${String.fromCharCode(97 + text.correctHeading)}) ${examData.headings[text.correctHeading]}
+                        </div>
+                    `;
+                    textsList.appendChild(textElement);
+                });
+
+                // Lesen Teil 2
+                const longTextElement = document.getElementById('longText');
+                longTextElement.innerHTML = `
+                    <h3>${examData.longText.title}</h3>
+                    <p>${examData.longText.content}</p>
+                    ${examData.longText.paragraphs.map(p => `<p>${p}</p>`).join('')}
+                `;
+
+                const questionsList = document.getElementById('questionsList');
+                examData.questions.forEach((q, index) => {
+                    const questionElement = document.createElement('div');
+                    questionElement.className = 'question';
+                    questionElement.innerHTML = `
+                        <h3>Frage ${index + 1}</h3>
+                        <p>${q.question}</p>
+                        <div class="options">
+                            ${q.options.map((option, optIndex) => `
+                                <div class="option" data-question="${index}" data-option="${optIndex}">
+                                    ${String.fromCharCode(97 + optIndex)}) ${option}
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="answer correct-answer hidden" id="answerTeil2Question${index + 1}">
+                            Richtige Antwort: ${String.fromCharCode(97 + q.correct)}) ${q.options[q.correct]}
+                        </div>
+                    `;
+                    questionsList.appendChild(questionElement);
+                });
+
+                // Lesen Teil 3
+                const situationsList = document.getElementById('situationsList');
+                const adsList = document.getElementById('adsList');
+
+                examData.situations.forEach((situation, index) => {
+                    const situationElement = document.createElement('div');
+                    situationElement.className = 'situation-item';
+                    situationElement.innerHTML = `
+                        <strong>Situation ${index + 11}:</strong> ${situation}
+                        <div class="answer correct-answer hidden" id="answerTeil3Situation${index + 11}">
+                            ${getCorrectAdsForSituation(index)}
+                        </div>
+                    `;
+                    situationsList.appendChild(situationElement);
+                });
+
+                examData.ads.forEach((ad, index) => {
+                    const adElement = document.createElement('div');
+                    adElement.className = 'ad-item';
+                    adElement.innerHTML = `
+                        <strong>Text ${String.fromCharCode(97 + index)}:</strong> ${ad.content}
+                    `;
+                    adsList.appendChild(adElement);
+                });
+
+                // Sprachbausteine Teil 1
+                const blankText1Element = document.getElementById('blankText1');
+                blankText1Element.innerHTML = generateBlankText(examData.blankText1, 'sprach1');
+
+                // Sprachbausteine Teil 2
+                const blankText2Element = document.getElementById('blankText2');
+                blankText2Element.innerHTML = generateBlankText(examData.blankText2, 'sprach2');
+            }
+
+            function generateBlankText(blankData, prefix) {
+                const parts = blankData.text.split(/(___)/);
+                let blankIndex = 0;
+                
+                return parts.map(part => {
+                    if (part === '___') {
+                        const blank = blankData.blanks[blankIndex];
+                        blankIndex++;
+                        return `
+                            <span class="blank" id="${prefix}Blank${blankIndex}">
+                                ${blank.options[blank.correct]}
+                            </span>
+                        `;
+                    }
+                    return part;
+                }).join('');
+            }
+
+            function getCorrectAdsForSituation(situationIndex) {
+                const matchingAds = examData.ads.filter(ad => ad.matches.includes(situationIndex));
+                return matchingAds.map(ad => {
+                    const adIndex = examData.ads.indexOf(ad);
+                    return `Text ${String.fromCharCode(97 + adIndex)}`;
+                }).join(', ');
+            }
+
+            function showAllAnswers() {
+                // إظهار جميع الإجابات
+                document.querySelectorAll('.answer').forEach(answer => {
+                    answer.classList.remove('hidden');
+                });
+
+                // تلوين الإجابات الصحيحة في الأسئلة
+                document.querySelectorAll('.option').forEach(option => {
+                    const questionIndex = parseInt(option.dataset.question);
+                    const optionIndex = parseInt(option.dataset.option);
+                    const question = examData.questions[questionIndex];
+                    
+                    if (optionIndex === question.correct) {
+                        option.classList.add('correct');
+                    } else {
+                        option.classList.add('incorrect');
+                    }
+                });
+            }
+
+            function hideAllAnswers() {
+                // إخفاء جميع الإجابات
+                document.querySelectorAll('.answer').forEach(answer => {
+                    answer.classList.add('hidden');
+                });
+
+                // إزالة التلوين
+                document.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('correct', 'incorrect');
+                });
+            }
+        });
+    </script>
+</body>
+</html>

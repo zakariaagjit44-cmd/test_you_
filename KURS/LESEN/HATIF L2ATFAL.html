@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HATIF L2ATFAL - TELC B2 Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2196F3;
+            --primary-dark: #1976D2;
+            --secondary: #42A5F5;
+            --secondary-dark: #1E88E5;
+            --success: #4CAF50;
+            --danger: #f44336;
+            --warning: #FFC107;
+            --light: #E3F2FD;
+            --dark: #0D47A1;
+            --text: #333;
+            --text-light: #546E7A;
+            --white: #ffffff;
+            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
+            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
+            --radius: 25px;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #BBDEFB 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+
+        /* Header Controls - التعديل هنا */
+        .header-controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            z-index: 1000;
+            gap: 15px;
+        }
+
+        .left-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .right-controls {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .control-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .control-btn:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .control-btn:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
+        }
+
+        /* شارة المشترك الذهبية - تم التعديل */
+        .premium-badge-header {
+            position: fixed;
+            top: 20px;
+            right: 90px; /* بجانب الأزرار */
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
+        }
+
+        .home-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .home-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .home-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* Language Selector */
+        .language-selector {
+            display: flex;
+            position: relative;
+        }
+
+        .lang-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .lang-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .lang-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .lang-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 0.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: none;
+            overflow: hidden;
+            min-width: 120px;
+            animation: dropdownSlide 0.3s ease;
+            z-index: 1001;
+        }
+
+        .dark-mode .lang-dropdown {
+            background: #1a237e;
+            color: var(--light);
+        }
+
+        @keyframes dropdownSlide {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .lang-dropdown.show {
+            display: block;
+        }
+
+        .lang-option {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            color: var(--text);
+        }
+
+        .dark-mode .lang-option {
+            color: var(--light);
+            border-bottom: 1px solid #37474F;
+        }
+
+        .lang-option:hover {
+            background: #f5f5f5;
+            transform: translateX(5px);
+        }
+
+        .dark-mode .lang-option:hover {
+            background: #283593;
+        }
+
+        .lang-option:last-child {
+            border-bottom: none;
+        }
+
+        /* زر الاشتراك */
+        .subscribe-btn {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            width: auto;
+            height: auto;
+        }
+
+        .subscribe-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+        }
+
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius);
+            padding: 3rem;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(15px);
+            margin-top: 6rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: contentSlideUp 0.8s ease;
+        }
+
+        @keyframes contentSlideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* أزرار التحكم */
+        .answer-controls {
+            position: sticky;
+            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .answer-controls {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .answer-btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .answer-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: right 0.6s;
+        }
+
+        .answer-btn:hover::before {
+            right: 100%;
+        }
+
+        .answer-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .show-answers {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: var(--white);
+        }
+
+        .hide-answers {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            color: var(--white);
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(10px);
+            transition: var(--transition);
+        }
+
+        .dark-mode .section {
+            background: rgba(13, 71, 161, 0.9);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .section-title {
+            color: var(--primary-dark);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+        }
+
+        .dark-mode .section-title {
+            color: #90CAF9;
+        }
+
+        .question {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 15px;
+            border-right: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .dark-mode .question {
+            background: rgba(33, 150, 243, 0.1);
+        }
+
+        .options {
+            margin: 1rem 0;
+        }
+
+        .option {
+            margin: 0.8rem 0;
+            padding: 1rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .dark-mode .option {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .option:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+            transform: translateX(-5px);
+        }
+
+        .correct {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .incorrect {
+            border-color: #f44336;
+            background: rgba(244, 67, 54, 0.1);
+        }
+
+        .answer {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            font-weight: 600;
+            animation: slideInUp 0.5s ease;
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* التصحيح - تم التعديل للوضع الليلي */
+        .correct-answer {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2E7D32;
+            border: 2px solid #4CAF50;
+            font-weight: bold;
+        }
+
+        .dark-mode .correct-answer {
+            background: rgba(76, 175, 80, 0.3);
+            color: #A5D6A7;
+            border: 2px solid #81C784;
+        }
+
+        /* النصوص والعناوين */
+        .text-content {
+            line-height: 1.7;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .dark-mode .text-content {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .headings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .heading-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .dark-mode .heading-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .matched {
+            border-color: #4CAF50;
+            background: rgba(76, 175, 80, 0.1);
+            transform: scale(1.02);
+        }
+
+        /* الإعلانات والوضعيات */
+        .ads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .ad-item {
+            padding: 1.5rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            min-height: 150px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .ad-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .ad-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .situations-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.2rem;
+        }
+
+        .situation-item {
+            padding: 1.2rem;
+            background: var(--white);
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .situation-item {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .situation-item:hover {
+            border-color: var(--primary);
+            background: rgba(33, 150, 243, 0.05);
+        }
+
+        /* Sprachbausteine */
+        .fill-blanks {
+            margin: 1.5rem 0;
+        }
+
+        .blank-text {
+            line-height: 2;
+            margin: 1.5rem 0;
+            font-size: 1.2rem;
+            padding: 1.5rem;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-text {
+            background: #1a237e;
+            border-color: #37474F;
+        }
+
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            margin: 0 8px;
+            padding: 0.5rem 1rem;
+            border-bottom: 3px solid var(--primary);
+            text-align: center;
+            font-weight: 600;
+            background: var(--white);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .dark-mode .blank {
+            background: #1a237e;
+        }
+
+        .blank-answer {
+            background: rgba(76, 175, 80, 0.2);
+            color: #2E7D32;
+            border-color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .dark-mode .blank-answer {
+            background: rgba(76, 175, 80, 0.3);
+            color: #A5D6A7;
+            border-color: #81C784;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Floating Elements مثل الصفحة الرئيسية */
+        .floating-elements {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            font-size: 3.5rem;
+            opacity: 0.15;
+            animation: float 8s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+
+        .floating-book { top: 15%; left: 8%; animation-delay: 0s; }
+        .floating-pen { top: 75%; right: 12%; animation-delay: 1s; }
+        .floating-globe { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
+        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
+        .floating-graduate { top: 65%; left: 5%; animation-delay: 4s; }
+        .floating-notebook { bottom: 15%; right: 10%; animation-delay: 5s; }
+        .floating-pencil { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
+        .floating-calculator { top: 35%; right: 15%; animation-delay: 7s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
+            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
+        }
+
+        /* منطقة الكلمات للـ Sprachbausteine */
+        .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 2px dashed var(--primary);
+        }
+
+        .word-bank h3 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .dark-mode .word-bank h3 {
+            color: #90CAF9;
+        }
+
+        .word-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .word-item {
+            background: var(--white);
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            border: 2px solid var(--primary);
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .dark-mode .word-item {
+            background: #1a237e;
+        }
+
+        @media (max-width: 768px) {
+            .header-controls {
+                top: 15px;
+                left: 15px;
+                right: 15px;
+                gap: 10px;
+            }
+
+            .premium-badge-header {
+                top: 15px;
+                right: 70px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
+            }
+
+            .home-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .container {
+                padding: 2rem;
+                margin: 1rem;
+                margin-top: 5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .headings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ads-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .right-controls {
+                gap: 10px;
+            }
+
+            .answer-controls {
+                top: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-controls {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .left-controls, .right-controls {
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            .premium-badge-header {
+                position: relative;
+                top: auto;
+                right: auto;
+                transform: none;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Elements مثل الصفحة الرئيسية -->
+    <div class="floating-elements">
+        <div class="floating-element floating-book">📚</div>
+        <div class="floating-element floating-pen">✏️</div>
+        <div class="floating-element floating-globe">🌍</div>
+        <div class="floating-element floating-clock">⏰</div>
+        <div class="floating-element floating-graduate">🎓</div>
+        <div class="floating-element floating-notebook">📓</div>
+        <div class="floating-element floating-pencil">✏️</div>
+        <div class="floating-element floating-calculator">🧮</div>
+    </div>
+
+    <!-- شارة المشترك الذهبية - تم التعديل -->
+    <div class="premium-badge-header" id="premiumBadge">
+        <i class="fas fa-crown"></i>
+    </div>
+
+    <!-- Header Controls -->
+    <div class="header-controls">
+        <div class="left-controls">
+            <button class="home-btn" id="homeBtn">
+                <i class="fas fa-home"></i>
+                <span id="homeText">الرئيسية</span>
+            </button>
+            <div class="language-selector">
+                <button class="lang-btn" id="langBtn">
+                    <span id="langBtnText">العربية</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option" data-lang="ar">
+                        <span>🇸🇦</span>
+                        <span>العربية</span>
+                    </div>
+                    <div class="lang-option" data-lang="de">
+                        <span>🇩🇪</span>
+                        <span>Deutsch</span>
+                    </div>
+                    <div class="lang-option" data-lang="en">
+                        <span>🇬🇧</span>
+                        <span>English</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-controls">
+            <button class="subscribe-btn" id="subscribeBtn">
+                <i class="fas fa-crown"></i>
+                <span id="subscribeText">اشتراك</span>
+            </button>
+            <button class="control-btn" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="control-btn" id="userBtn">
+                <i class="fas fa-user"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1 id="pageTitle">نموذج هاتف الأطفال الجديد</h1>
+            <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
+        </div>
+
+        <!-- أزرار التحكم -->
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">إظهار التصحيح</span>
+            </button>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">إخفاء التصحيح</span>
+            </button>
+        </div>
+
+        <!-- Lesen Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="teil1Title">Lesen Teil 1</h2>
+            <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
+            
+            <div class="headings-grid" id="headingsList">
+                <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div id="textsList">
+                <!-- النصوص سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
+            <div class="text-content" id="longText">
+                <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
+            </div>
+
+            <div id="questionsList">
+                <!-- الأسئلة سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Lesen Teil 3 -->
+        <div class="section">
+            <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
+            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            
+            <div class="situations-grid" id="situationsList">
+                <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+
+            <div class="ads-grid" id="adsList">
+                <!-- الإعلانات سيتم إضافتها بالجافاسكريبت -->
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 1 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            <div class="word-bank">
+                <h3>الكلمات المتاحة:</h3>
+                <div class="word-list" id="wordBank1">
+                    <!-- الكلمات سيتم إضافتها بالجافاسكريبت -->
+                </div>
+            </div>
+            <div class="fill-blanks">
+                <div class="blank-text" id="blankText1">
+                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Sprachbausteine Teil 2 -->
+        <div class="section">
+            <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            <div class="word-bank">
+                <h3>الكلمات المتاحة:</h3>
+                <div class="word-list" id="wordBank2">
+                    <!-- الكلمات سيتم إضافتها بالجافاسكريبت -->
+                </div>
+            </div>
+            <div class="fill-blanks">
+                <div class="blank-text" id="blankText2">
+                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // الترجمات
+        const translations = {
+            ar: {
+                homeText: "الرئيسية",
+                themeText: "الوضع الليلي",
+                langText: "العربية", 
+                userText: "زائر",
+                subscribeText: "اشتراك",
+                pageTitle: "نموذج هاتف الأطفال الجديد",
+                pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
+                showAnswersText: "إظهار التصحيح",
+                hideAnswersText: "إخفاء التصحيح",
+                teil1Title: "Lesen Teil 1",
+                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
+                teil2Title: "Lesen Teil 2", 
+                teil3Title: "Lesen Teil 3",
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                sprach1Title: "Sprachbausteine Teil 1",
+                sprach2Title: "Sprachbausteine Teil 2"
+            },
+            de: {
+                homeText: "Startseite",
+                themeText: "Nachtmodus", 
+                langText: "Deutsch",
+                userText: "Besucher",
+                subscribeText: "Abonnieren",
+                pageTitle: "Neues Kinderhandy-Modell",
+                pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
+                showAnswersText: "Korrektur anzeigen",
+                hideAnswersText: "Korrektur ausblenden",
+                teil1Title: "Lesen Teil 1",
+                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
+                teil2Title: "Lesen Teil 2",
+                teil3Title: "Lesen Teil 3", 
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                sprach1Title: "Sprachbausteine Teil 1",
+                sprach2Title: "Sprachbausteine Teil 2"
+            },
+            en: {
+                homeText: "Home",
+                themeText: "Dark Mode",
+                langText: "English",
+                userText: "Visitor", 
+                subscribeText: "Subscribe",
+                pageTitle: "New Children's Phone Model",
+                pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
+                showAnswersText: "Show Correction",
+                hideAnswersText: "Hide Correction",
+                teil1Title: "Reading Part 1",
+                teil1Description: "First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).",
+                teil2Title: "Reading Part 2",
+                teil3Title: "Reading Part 3",
+                teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
+                sprach1Title: "Language Elements Part 1", 
+                sprach2Title: "Language Elements Part 2"
+            }
+        };
+
+        // بيانات الأسئلة والإجابات من ملف PDF
+        const examData = {
+            // Lesen Teil 1
+            headings: [
+                "Ein neues Handy-Modell für Kinder",
+                "Sicherheit geht vor",
+                "Kinder vor Gefahren im Internet schützen",
+                "Handy-Nutzung mit klaren Regeln",
+                "Ein Handy für die Kleinsten",
+                "Vorsicht vor versteckten Kosten",
+                "Ein Handy als Weihnachtsgeschenk",
+                "Kinder und Mobilfunkverträge",
+                "Die richtige Altersgruppe für ein Handy",
+                "Handys in der Schule"
+            ],
+            
+            texts: [
+                {
+                    content: `Viele Eltern fragen sich, ab wann ihr Kind ein Handy haben sollte. Experten empfehlen, dass Kinder frühestens mit neun Jahren ein eigenes Mobiltelefon bekommen sollten. In diesem Alter können sie bereits verantwortungsbewusst mit dem Gerät umgehen und verstehen auch die damit verbundenen Kosten. Für jüngere Kinder ist ein Handy meistens noch nicht sinnvoll, da sie die Technologie noch nicht vollständig begreifen können und die Gefahren des Internets nicht einschätzen können.`,
+                    correctAnswer: "Die richtige Altersgruppe für ein Handy"
+                },
+                {
+                    content: `Das neue "KidsPhone" wurde speziell für Kinder zwischen sechs und zwölf Jahren entwickelt. Es verfügt über eine einfache Bedienoberfläche mit großen Symbolen und nur den wichtigsten Funktionen: Telefonieren, SMS schreiben und einen Notruf-Knopf. Auf aufwendige Spiele und Internetzugang wurde bewusst verzichtet, um Ablenkungen zu vermeiden. Das Gerät ist robust gebaut und wasserresistent, ideal für den Einsatz im Alltag von Kindern.`,
+                    correctAnswer: "Ein Handy für die Kleinsten"
+                },
+                {
+                    content: `Beim Kauf eines Handys für Kinder sollten Eltern besonders auf die Sicherheitsfeatures achten. Wichtig sind eine kindersichere Internet-Sperre, eine Ortungsfunktion für Notfälle und die Möglichkeit, unerwünschte Nummern zu blockieren. Viele moderne Kinderhandys bieten auch eine Zeitbegrenzung, mit der Eltern festlegen können, wie lange das Kind das Gerät täglich nutzen darf. So wird verhindert, dass Kinder zu viel Zeit mit dem Handy verbringen.`,
+                    correctAnswer: "Sicherheit geht vor"
+                },
+                {
+                    content: `Die Weihnachtszeit steht vor der Tür und viele Kinder wünschen sich ein eigenes Handy. Bevor Eltern diesem Wunsch nachgeben, sollten sie einige wichtige Punkte beachten. Ein Prepaid-Vertrag ist für Kinder besser geeignet als ein Abonnement, da so die Kosten kontrolliert werden können. Zusätzlich sollten klare Regeln zur Nutzung aufgestellt werden, beispielsweise wann und wo das Handy verwendet werden darf. Ein Gespräch über verantwortungsvolle Nutzung ist unerlässlich.`,
+                    correctAnswer: "Ein Handy als Weihnachtsgeschenk"
+                },
+                {
+                    content: `Immer mehr Schulen erlauben die Nutzung von Handys auf dem Schulgelände, allerdings mit strengen Regeln. Während des Unterrichts müssen die Geräte ausgeschaltet sein, in den Pausen dürfen sie nur für Notfälle verwendet werden. Einige Schulen bieten spezielle Schließfächer an, in denen die Handys während des Unterrichts sicher verwahrt werden können. Diese Regelungen helfen, Konzentrationsstörungen zu vermeiden und sicherzustellen, dass der Unterricht nicht gestört wird.`,
+                    correctAnswer: "Handys in der Schule"
+                }
+            ],
+
+            // Lesen Teil 2 - النص الكامل
+            longText: {
+                content: `Das neue Kinderhandy "SafeKid" wurde speziell für die Bedürfnisse von Kindern und deren Eltern entwickelt. Es kombiniert einfache Bedienbarkeit mit umfassenden Sicherheitsfeatures, die Eltern beruhigen und Kindern trotzdem ein Gefühl von Unabhängigkeit geben.
+
+Das Hauptmerkmal des "SafeKid" ist der große, rote Notrufknopf auf der Rückseite des Geräts. Wenn das Kind diesen Knopf drückt, werden automatisch bis zu fünf zuvor festgelegte Notfallkontakte angerufen. Gleichzeitig wird der Standort des Kindes per GPS an die Eltern gesendet. Diese Funktion gibt sowohl Kindern als auch Eltern ein sicheres Gefühl, besonders auf dem Schulweg oder bei Ausflügen mit Freunden.
+
+Die Bedienoberfläche des "SafeKid" wurde kindgerecht gestaltet. Große, bunte Symbole erleichtern die Navigation, und die Menüführung ist auf das Nötigste reduziert. Kinder können damit telefonieren, SMS schreiben und Fotos machen. Auf Internetzugang und soziale Medien wurde bewusst verzichtet, um die Kinder vor unangemessenen Inhalten zu schützen und Ablenkungen zu minimieren.
+
+Ein weiteres wichtiges Feature ist die Zeitkontrollfunktion. Eltern können über eine begleitende Smartphone-App festlegen, zu welchen Zeiten das Handy genutzt werden darf. Während der Schulzeit oder nachts kann das Gerät automatisch gesperrt werden. So wird sichergestellt, dass das Kind nicht zu viel Zeit mit dem Handy verbringt und ausreichend Schlaf bekommt.
+
+Das "SafeKid" verfügt außerdem über eine robuste Bauweise. Es ist stoßfest, wasserresistent und hat einen langlebigen Akku, der bis zu drei Tage ohne Aufladen durchhält. Das Gehäuse besteht aus ungiftigen Materialien und ist in verschiedenen kindgerechten Farben erhältlich.
+
+Für Eltern, die Wert auf kostengünstige Nutzung legen, bietet das "SafeKid" Prepaid-Optionen ohne vertragliche Bindung. So können die Ausgaben für Telefonie und SMS leicht kontrolliert werden. Zusätzliche Kosten durch In-App-Käufe oder teure Sonderrufnummern sind ausgeschlossen, da diese Funktionen im Gerät deaktiviert sind.
+
+Insgesamt stellt das "SafeKid" eine ausgewogene Lösung dar, die die Sicherheit von Kindern in den Vordergrund stellt, ohne ihnen die Freude an moderner Technologie zu nehmen. Es ist der ideale Begleiter für Kinder im Grundschulalter, die ihre ersten Schritte in die Welt der Mobilkommunikation wagen.`,
+                questions: [
+                    {
+                        question: "Was ist das Hauptmerkmal des SafeKid-Handys?",
+                        options: [
+                            "Die bunte Bedienoberfläche mit vielen Symbolen",
+                            "Der große, rote Notrufknopf auf der Rückseite", 
+                            "Die Möglichkeit, soziale Medien zu nutzen"
+                        ],
+                        correctAnswer: "Der große, rote Notrufknopf auf der Rückseite"
+                    },
+                    {
+                        question: "Warum wurde auf Internetzugang verzichtet?",
+                        options: [
+                            "Weil Internet zu teuer für Kinder ist",
+                            "Um Kinder vor unangemessenen Inhalten zu schützen",
+                            "Weil die Technologie noch nicht ausgereift ist"
+                        ],
+                        correctAnswer: "Um Kinder vor unangemessenen Inhalten zu schützen"
+                    },
+                    {
+                        question: "Wie können Eltern die Nutzungszeiten kontrollieren?", 
+                        options: [
+                            "Durch ein Passwort, das sie dem Kind nicht verraten",
+                            "Über eine begleitende Smartphone-App",
+                            "Indem sie das Handy zu bestimmten Zeiten einsammeln"
+                        ],
+                        correctAnswer: "Über eine begleitende Smartphone-App"
+                    },
+                    {
+                        question: "Welchen Vorteil bietet die Prepaid-Option?",
+                        options: [
+                            "Kostenlose Nutzung aller Funktionen",
+                            "Einfache Kontrolle der Ausgaben",
+                            "Unbegrenztes Telefonieren und SMS schreiben"
+                        ],
+                        correctAnswer: "Einfache Kontrolle der Ausgaben"
+                    },
+                    {
+                        question: "Für welche Altersgruppe ist das SafeKid besonders geeignet?",
+                        options: [
+                            "Für Jugendliche ab 14 Jahren",
+                            "Für Kinder im Grundschulalter", 
+                            "Für Kleinkinder unter 6 Jahren"
+                        ],
+                        correctAnswer: "Für Kinder im Grundschulalter"
+                    }
+                ]
+            },
+
+            // Lesen Teil 3
+            situations: [
+                "Sie möchten ein Handy für Ihr 8-jähriges Kind kaufen, das einfach zu bedienen ist.",
+                "Ihr Kind verbringt zu viel Zeit mit dem Handy und Sie möchten die Nutzung einschränken.",
+                "Sie suchen ein robustes Handy, das Stürze und Wasserspritzer aushält.",
+                "Sie wollen die Handykosten für Ihr Kind kontrollieren können.",
+                "Ihnen ist die Sicherheit Ihres Kindes auf dem Schulweg besonders wichtig.",
+                "Die Schule Ihres Kindes erlaubt Handys nur mit strengen Nutzungsregeln.", 
+                "Sie möchten verhindern, dass Ihr Kind unangemessene Internetinhalte sieht.",
+                "Ihr Kind ist erst 7 Jahre alt und Sie fragen sich, ob es schon ein Handy braucht.",
+                "Sie suchen ein Weihnachtsgeschenk für Ihr 10-jähriges Kind.",
+                "Ihr Kind soll mit Freunden kommunizieren können, aber nicht abgelenkt werden."
+            ],
+
+            ads: [
+                {
+                    id: "a",
+                    title: "Einfach und sicher",
+                    content: "Unser Kinderhandy 'MiniTel' wurde speziell für junge Nutzer entwickelt. Mit nur vier großen Tasten für Mama, Papa, Oma und den Notruf ist es perfekt für Kinder ab 5 Jahren. Kein kompliziertes Menü, kein Internet - nur das Wesentliche. In knalligen Farben erhältlich und mit stoßfestem Gehäuse. Ideal für den ersten Kontakt mit Mobilfunktechnologie."
+                },
+                {
+                    id: "b", 
+                    title: "Zeitkontrolle per App",
+                    content: "Das 'TimeControl Junior' Handy ermöglicht Eltern volle Kontrolle über die Nutzungszeiten. Über unsere kostenlose App legen Sie fest, wann das Handy funktioniert und wann es gesperrt ist. Perfekt für Hausaufgabenzeit, Mahlzeiten und Nachtruhe. Das Handy informiert das Kind freundlich, wenn die Zeit abläuft. So lernen Kinder einen verantwortungsvollen Umgang mit Technologie."
+                },
+                {
+                    id: "c",
+                    title: "Robust und wasserfest", 
+                    content: "Unser 'OutdoorKid' Handy hält so einiges aus! Speziell für aktive Kinder entwickelt, übersteht es Stürze aus 1,5 Meter Höhe und ist gegen Spritzwasser geschützt. Das Gummi-Gehäuse liegt gut in der Hand und rutscht nicht. Mit langlebigem Akku für bis zu 5 Tage Standby-Betrieb. Perfekt für Abenteuer auf dem Spielplatz oder im Schwimmbad."
+                },
+                {
+                    id: "d",
+                    title: "Prepaid ohne Überraschungen",
+                    content: "Mit unseren Prepaid-Karten behalten Sie die Kosten im Griff. Kein Vertrag, keine versteckten Gebühren. Sie laden Guthaben auf und können jederzeit nachsehen, wie viel noch übrig ist. Besonders praktisch: Unser Familientarif ermöglicht günstiges Telefonieren zwischen Familienmitgliedern. So lernt Ihr Kind den Wert von Geld und Kommunikation."
+                },
+                {
+                    id: "e",
+                    title: "Sicherheit an erster Stelle",
+                    content: "Das 'Guardian Angel' Handy mit GPS-Ortung gibt Eltern Sicherheit. Sie sehen jederzeit, wo sich Ihr Kind befindet. Der Notrufknopf alarmiert sofort bis zu 5 Kontakte. Die 'Sicherheitszone' Funktion warnt Sie, wenn Ihr Kind einen vorher festgelegten Bereich verlässt. Perfekt für den Schulweg oder den ersten Ausflug mit Freunden."
+                },
+                {
+                    id: "f",
+                    title: "Schulmodus aktiviert",
+                    content: "Unser 'EduPhone' unterstützt die Schulregeln: Während der Unterrichtszeit schaltet es automatisch in den Schulmodus - nur der Notruf bleibt aktiv. In den Pausen können Kinder kurz telefonieren oder eine SMS schreiben. Lehrer bestätigen: Weniger Ablenkung, bessere Konzentration! Besonders geeignet für Schulen mit Handy-Regelungen."
+                },
+                {
+                    id: "g",
+                    title: "Geschützter Surfraum",
+                    content: "Das 'SafeSurf Junior' bietet eingeschränkten Internetzugang mit kindgerechten Inhalten. Nur von Pädagogen geprüfte Websites sind erreichbar. Soziale Medien und Suchmaschinen sind blockiert. Eltern können zusätzliche Seiten freischalten. So können Kinder das Internet entdecken - sicher und kontrolliert."
+                },
+                {
+                    id: "h", 
+                    title: "Ab welchem Alter?",
+                    content: "Experten empfehlen: Frühestens ab 9 Jahren! Unser Beratungsteam hilft Ihnen, den richtigen Zeitpunkt für das erste Handy zu finden. Wir erklären, worauf Sie achten sollten und welche Modelle für welche Altersgruppe geeignet sind. Kostenlose Informationsbroschüre 'Kinder und Handys - was Eltern wissen müssen' in unserem Shop erhältlich."
+                },
+                {
+                    id: "i",
+                    title: "Das perfekte Geschenk",
+                    content: "Zu Weihnachten, zum Geburtstag oder zur Einschulung - ein Kinderhandy ist ein Geschenk, das Sicherheit und Verantwortung vermittelt. In unserer Weihnachtsaktion erhalten Sie eine kostenlose Schutzhülle und eine Prepaid-Karte mit 10€ Startguthaben dazu. Besuchen Sie uns und lassen Sie sich beraten!"
+                },
+                {
+                    id: "j",
+                    title: "Fokus auf Kommunikation", 
+                    content: "Das 'TalkOnly' Handy konzentriert sich auf das Wesentliche: Telefonieren und SMS. Keine Spiele, keine Kamera, kein Internet. So bleibt Ihr Kind erreichbar, ohne von Spielen oder Social Media abgelenkt zu werden. Einfache Bedienung, klare Funktionen - perfekt für Kinder, die lernen sollen, verantwortungsvoll mit Technik umzugehen."
+                },
+                {
+                    id: "k",
+                    title: "Eltern-Kind-Vertrag",
+                    content: "Bevor das Handy genutzt wird, empfehlen wir einen schriftlichen Vertrag zwischen Eltern und Kind. Unser Mustervertrag regelt Nutzungszeiten, Kostenverantwortung und Verhaltensregeln. So wird von Anfang an klar, was erlaubt ist und was nicht. Kostenloser Download auf unserer Website - printen, besprechen, unterschreiben!"
+                },
+                {
+                    id: "l",
+                    title: "Workshop: Handynutzung für Familien",
+                    content: "In unserem kostenlosen Workshop lernen Eltern und Kinder gemeinsam den sicheren Umgang mit dem Handy. Themen: Datenschutz, Kostenkontrolle, Cyber-Mobbing-Prävention. Termine samstags in unseren Filialen. Anmeldung erforderlich. Gemeinsam für eine sichere Handynutzung in der Familie!"
+                }
+            ],
+
+            // الإجابات الصحيحة لـ Lesen Teil 3
+            teil3Answers: {
+                11: "Einfach und sicher",
+                12: "Zeitkontrolle per App", 
+                13: "Robust und wasserfest",
+                14: "Prepaid ohne Überraschungen",
+                15: "Sicherheit an erster Stelle",
+                16: "Schulmodus aktiviert",
+                17: "Geschützter Surfraum",
+                18: "Ab welchem Alter?",
+                19: "Das perfekte Geschenk", 
+                20: "Fokus auf Kommunikation"
+            },
+
+            // Sprachbausteine Teil 1
+            blankText1: {
+                content: `Hallo Leon,
+vielen Dank für deine letzte Mail __(21)__ Peking! Du arbeitest ja jetzt schon seit einem halben Jahr in China – unglaublich, wie schnell die Zeit vergeht.
+Leider hatte ich in den letzten drei Wochen keine Zeit, dir zu antworten, __(22)__ ich viel zu tun hatte. Aber jetzt berichte ich dir, __(23)__ alles los war.
+Also, im Büro haben wir derzeit viel Stress, __(24)__ drei Kollegen im Urlaub sind und eine weitere Kollegin seit zwei Wochen krank ist. Jetzt müssen wir mit fünf Leuten die Arbeit erledigen, die sonst neun Leute machen. Ich weiß wirklich nicht, wer diese Urlaubsplanung gemacht hat. Hoffentlich __(25)__ das in Zukunft besser organisiert.
+Abends waren Carmen und ich dann ein paarmal aus. Wir waren zum Beispiel bei einem Konzert von "Belasco". Kennst du die Band? Eigentlich war ich an dem Abend ganz schön kaputt und __(26)__ am liebsten zuhause geblieben, aber ich hatte Carmen die Karten zum Geburtstag geschenkt. Da __(27)__ ich ja schlecht auf dem Sofa sitzen bleiben! Im Nachhinein muss ich sagen: Ein Glück, dass wir zu dem Konzert gegangen sind, __(28)__ es war einfach nur super!
+An den letzten beiden Wochenenden hatten wir dann auch noch Familienfeiern: Erst hatte meine ältere Schwester Geburtstag und hat groß gefeiert, dann hat ein Cousin geheiratet und uns eingeladen, __(29)__ war zwar schön, aber auch anstrengend. Ich bin froh, dass wir für die kommenden Wochenenden __(30)__ keine Pläne haben.
+Das war's erst mal von mir. Melde dich doch wieder, ich freue mich __(31)__ deine nächste E-Mail!
+
+Viele Grüße sendet dir
+Fabian`,
+                answers: ["aus", "weil", "was", "da", "wird", "wäre", "konnte", "denn", "Beides", "noch", "auf"]
+            },
+
+            // Sprachbausteine Teil 2
+            blankText2: {
+                content: `Es gibt inzwischen zahlreiche Online-Sprachkurse und __(32)__ mit Smartphones kann man Sprachen lernen. Eine weitere Lernmöglichkeit ist zum Beispiel eine Tandem-Partnerschaft __(33)__ einem Muttersprachler. Welche Vorteile und Nachteile haben die unterschiedlichen Methoden?
+Es gibt inzwischen zahlreiche Online-Lernportale, die leicht zu überblicken und zu bedienen sind. Der Vorteil: Man kann die Wörter nicht nur lesen, __(34)__ gleichzeitig auch hören. Außerdem kann man Wörter nachsprechen, __(35)__ dass ein ganzer Kurs zuhört.
+Auch Lerntipps bekommt man bei Online-Portalen, bespielsweise diesen: Vokabeln sollte man lieber mehrmals täglich in Fünf-Minuten-Blöcken wiederholen, __(36)__ sie in einer Stunde alle auf einmal zu lernen.
+Wer auch unterwegs lernen möchte, kann es mit einer Smartphone-App versuchen, einem kleinen Programm, das auf dem Handy läuft. Viele Programme gibt es kostenlos, andere kosten zwischen einem und mehreren Euro. Die kleinen Helfer sind __(37)__ gut zum Vokabellernen geeignet – mehr aber meist nicht. Das spielerische Vokabeltraining macht zwar Spaß, __(38)__ Satzbau oder andere Grammatikthemen werden allenfalls kurz angesprochen. Ein richtiges Gespräch kann man mit dieser Methode erst recht nicht üben. Dafür __(39)__ man besser in einen Kurs gehen oder einen Tandem-Partner suchen.
+Ein Tandem-Partner ist ein Muttersprachler, der die Grammatik erklärt, die Aussprache verbessert und seinerseits die Muttersprache des anderen lernen möchte.
+Der schnellste Weg, __(40)__ einen passenden Tandem-Partner zu finden, ist die Online-Suche: Muttersprache, Zielsprache und Wohnort eingeben, __(41)__ werden alle Treffer angezeigt. Man trifft sich beispielsweise in einem Restaurant, schickt sich Nachrichten oder E-Mails und erklärt sich gegenseitig die eigene Sprache.`,
+                answers: ["sogar", "mit", "sondern", "ohne", "anstatt", "besonders", "aber", "sollte", "um", "schon"]
+            }
+        };
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            initializePage();
+            setupEventListeners();
+        });
+
+        let currentLang = 'ar';
+        let isDarkMode = false;
+
+        function initializePage() {
+            // تحميل الإعدادات المحفوظة
+            const savedLang = localStorage.getItem('language') || 'ar';
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            const username = localStorage.getItem('username') || 'زائر';
+            const access = localStorage.getItem('access');
+            
+            changeLanguage(savedLang);
+            if (savedDarkMode) {
+                toggleDarkMode();
+            }
+            
+            // التحقق من حالة المستخدم
+            if (access === 'paid' && username) {
+                document.getElementById('premiumBadge').style.display = 'flex';
+            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
+        }
+
+        function initializeTeil1() {
+            const headingsList = document.getElementById('headingsList');
+            const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
+            textsList.innerHTML = '';
+
+            // إضافة العناوين
+            examData.headings.forEach((heading, index) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                `;
+                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${index + 1}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
+                    </div>
+                `;
+                textsList.appendChild(textItem);
+            });
+        }
+
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
+            const questionsList = document.getElementById('questionsList');
+
+            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Frage ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
+                    <div class="options">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                    </div>
+                `;
+                questionsList.appendChild(questionItem);
+            });
+        }
+
+        function initializeTeil3() {
+            const situationsList = document.getElementById('situationsList');
+            const adsList = document.getElementById('adsList');
+
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation, index) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <strong>${index + 11})</strong> ${situation}
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
+                    </div>
+                `;
+                situationsList.appendChild(situationItem);
+            });
+
+            adsList.innerHTML = '';
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
+                    <p>${ad.content}</p>
+                `;
+                adsList.appendChild(adItem);
+            });
+        }
+
+        function initializeSprachbausteine() {
+            // Teil 1
+            const blankText1 = document.getElementById('blankText1');
+            const wordBank1 = document.getElementById('wordBank1');
+            
+            // إضافة الكلمات إلى منطقة الكلمات
+            wordBank1.innerHTML = '';
+            examData.blankText1.answers.forEach((word, index) => {
+                const wordItem = document.createElement('div');
+                wordItem.className = 'word-item';
+                wordItem.textContent = word;
+                wordBank1.appendChild(wordItem);
+            });
+            
+            // إضافة النص مع الفراغات
+            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
+            });
+            blankText1.innerHTML = textWithBlanks1;
+
+            // Teil 2
+            const blankText2 = document.getElementById('blankText2');
+            const wordBank2 = document.getElementById('wordBank2');
+            
+            // إضافة الكلمات إلى منطقة الكلمات
+            wordBank2.innerHTML = '';
+            examData.blankText2.answers.forEach((word, index) => {
+                const wordItem = document.createElement('div');
+                wordItem.className = 'word-item';
+                wordItem.textContent = word;
+                wordBank2.appendChild(wordItem);
+            });
+            
+            // إضافة النص مع الفراغات
+            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 32]}</span></span>`;
+            });
+            blankText2.innerHTML = textWithBlanks2;
+        }
+
+        function setupEventListeners() {
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الرئيسية
+            document.getElementById('homeBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html';
+            });
+            
+            // زر الاشتراك
+            document.getElementById('subscribeBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html#subscribe';
+            });
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+            
+            // زر المستخدم
+            document.getElementById('userBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html#profile';
+            });
+            
+            // زر اللغة
+            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const lang = option.getAttribute('data-lang');
+                    changeLanguage(lang);
+                    document.getElementById('langDropdown').classList.remove('show');
+                });
+            });
+            
+            // إغلاق القوائم المنسدلة بالنقر خارجها
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.language-selector')) {
+                    document.getElementById('langDropdown').classList.remove('show');
+                }
+            });
+        }
+
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                        heading.classList.add('matched');
+                    }
+                });
+            });
+        }
+
+        function hideAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
+        }
+
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+        }
+
+        function toggleLangDropdown() {
+            document.getElementById('langDropdown').classList.toggle('show');
+        }
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // تحديث جميع النصوص
+            Object.keys(t).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = t[key];
+                }
+            });
+            
+            localStorage.setItem('language', lang);
+            
+            // إعادة تهيئة المحتوى لترجمة الإجابات
+            initializeTeil1();
+            initializeTeil2();
+        }
+    </script>
+</body>
+</html>
