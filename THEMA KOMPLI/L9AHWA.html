@@ -1392,14 +1392,12 @@
   <script>
     // ===== PAGE NAVIGATION =====
     function showPage(pageId) {
-      // Hide all pages
       document.getElementById('start-page').style.display = 'none';
       document.getElementById('lesen-page').style.display = 'none';
       document.getElementById('hoeren-page').style.display = 'none';
       document.getElementById('schreiben-page').style.display = 'none';
       document.getElementById('ergebnisse-page').style.display = 'none';
       
-      // Change body class based on page
       document.getElementById('body').className = '';
       if (pageId === 'ergebnisse-page') {
         document.getElementById('body').className = 'results-body';
@@ -1407,10 +1405,8 @@
         document.getElementById('body').className = 'exam-body';
       }
       
-      // Show selected page
       document.getElementById(pageId).style.display = 'block';
       
-      // Initialize the page if needed
       if (pageId === 'lesen-page' && typeof initLesenPage === 'function') {
         initLesenPage();
       } else if (pageId === 'hoeren-page' && typeof initHoerenPage === 'function') {
@@ -1436,12 +1432,10 @@
     const cancelBtn = document.getElementById("cancelBtn");
 
     function startCountdown() {
-      // prevent double-starts or starting after exam already began
       if (countdownRunning || examStarted) return;
       countdownRunning = true;
-      // disable start button while counting
       try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
-      // reset counter & UI
+      
       counter = initialCounter;
       timerEl.textContent = counter;
       timeDisplayEl.textContent = counter;
@@ -1459,12 +1453,10 @@
           countdownInterval = null;
           countdownRunning = false;
           progressEl.style.transform = "scaleX(1)";
-          // ensure exam starts only once
           if (!examStarted) {
             examStarted = true;
             startExam();
           }
-          // safety: re-enable start button (page usually navigates away)
           try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
         }
       }, 1000);
@@ -1488,7 +1480,6 @@
     }
 
     function startExam() {
-      // guard to ensure startExam is triggered once
       if (!examStarted) examStarted = true;
       const selectedSection = selectEl.value;
       if (selectedSection === 'lesen') {
@@ -1500,7 +1491,6 @@
       }
     }
 
-    // wire buttons: start will now start the countdown (not the exam directly)
     startBtn.addEventListener('click', startCountdown);
 
     cancelBtn.addEventListener('click', () => {
@@ -1509,11 +1499,8 @@
       timerEl.style.color = "#e53e3e";
     });
 
-    // NOTE: removed automatic startCountdown() on page load to prevent the timer starting twice
-
     // ===== LESEN PAGE FUNCTIONALITY =====
     function initLesenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-b2-pdf",
         durationSec: 90 * 60,
@@ -1574,13 +1561,13 @@
 
 Doch nicht jeder Sprachimpuls in der Kindheit ist positiv. Die gebürtige Schweizerin Hilt hat ihre eigenen Kinder dreisprachig erzogen. Sie ist sich sicher: "Die mehrsprachige Erziehung funktioniert nur dann, wenn das Kind eine emotionale Bindung zur jeweiligen Sprache aufbauen kann". Sie rät daher Eltern, sich ehrlich zu fragen, welche Sprache ihnen selbst am ehesten liegt. Denn wer sich in der Fremdsprache nicht wohlfühle, könne sie auch nicht authentisch vermitteln.
 
-Die Expertin Hilt ist daher skeptisch, wenn Eltern ihre Kinder aus rein intellektuellen Gründen mehrsprachig erziehen möchten. "Schulische Erfolge sollte nicht der Hauptbeweggrund für die Multilingualität sein. Es ist viel wichtiger, dass die Sprache für das Kind emotional und sozial relevant ist". So könnten zum Beispiel die Herkunft der Eltern, eine Tante in Frankreich oder eine fremdsprachige Erzieherin eine Basis bilden, durch die Kinder auch kulturell den Bezug zu einer weiteren Sprache finden.
+Die Expertin Hilt ist daher skeptisch, wenn Eltern ihre Kinder aus rein intellektuellen Gründen mehrsprachig erziehen möchten. "Schulische Erfolge sollte nicht der Hauptbeweggrund für die Multilingualität sein. Es ist viel wichtiger, dass die Sprache für das Child emotional und sozial relevant ist". So könnten zum Beispiel die Herkunft der Eltern, eine Tante in Frankreich oder eine fremdsprachige Erzieherin eine Basis bilden, durch die Kinder auch kulturell den Bezug zu einer weiteren Sprache finden.
 
 Der Kontakt mit einer zweiten oder dritten Sprache muss nach Auffassung von Hilt nicht unbedingt schon im Babyalter erfolgen. Man kann mit der mehrsprachigen Erziehung auch erst im Kindergartenalter beginnen. "Das Zeitfenster, in dem ein Child eine Sprache noch durch zweisprachige Erziehung erlernen kann, ist nicht genau festlegbar. Aber ungefähr bis zum zehnten Lebensjahr sind die Chancen sehr gut", sagt die Psychologin.
 
 Auch Sabine Filligrabe–Amling, Leiterin einer deutsch–englischen Kindertagesstätte in Hamburg, sieht den Einstieg in die Multilingualität entspannt. In Hamburg gibt es in jeder Gruppe einen deutschen und einen englischen Muttersprachler unter den Erziehern, jeder wendet seine Sprache ganz selbstverständlich im Umgang mit den Kindern an. "Die meisten unserer Kinder nehmen die neue Sprache sehr gut an, weil sie eine starke emotionale Bindung zu den Erziehern haben", sagt Filligrabe–Amling. Sie rät Eltern, die mehrsprachige Erziehung ihrer Kinder ebenfalls wie selbstverständlich in den Alltag zu integrieren. "Es bringt nichts, wenn man zu Kindern sagt 'Wiederhol das mal' oder 'Schau, Stuhl heißt auf Englisch chaii'. Auch der Erwerb der Muttersprache funktioniert ja nicht auf diese Art", sagt Filligrabe–Amling. Die neue Sprache sollte ganz locker immer wieder auftauchen, so dass das Child sie langsam annehmen kann. "Am besten ist es, wenn eine bestimmte Bezugsperson sich immer nur in der anderen Sprache mit dem Kind unterhält", sagt Filligrabe–Amling.
 
-Susanne Hilt hält auch andere Methoden für sinnvoll. "Jeder muss da sein eigenes System entwickeln", sagt die Psychologin. Es sei auch denkbar, dass beispielsweise die kroatische Mutter mit ihrem Child zu Hause immer nur Kroatisch spreche, unterwegs aber Deutsch. "Wichtig ist, dass eine Regelmäßigkeit für das Kind und für die Eltern erkennbar ist", sagt Hilt.
+Susanne Hilt hält auch andere Methoden für sinnvoll. "Jeder muss da sein eigenes System entwickeln", sagt die Psychologin. It sei auch denkbar, dass beispielsweise die kroatische Mutter mit ihrem Child zu Hause immer nur Kroatisch spreche, unterwegs aber Deutsch. "Wichtig ist, dass eine Regelmäßigkeit für das Kind und für die Eltern erkennbar ist", sagt Hilt.
 
 Eine Sprachverwirrung durch die Multilingualität oder gar eine Verzögerung in der Entwicklung des Kindes müssen Eltern nicht befürchten, meint Hilt. "Auch wenn der Kontakt mit der anderen Sprache nur alle paar Tage stattfindet, wird das Kind keinen Schaden nehmen. Auch diese kleinen Impulse können zumindest das Interesse für weitere Sprachen fördern".`,
             questions: [
@@ -1740,7 +1727,7 @@ jetzt ist es schon bald ein halbes Jahr ________, dass ich dir das letzte Mal ge
 
 Stell dir vor, ausgerechnet jetzt, nur zwei Wochen vor der Prüfung, ist unsere Lehrerin, Frau Reuter, ________. Sie liegt sogar im Krankenhaus und kommt erst wieder zurück, ________ unsere Prüfung schon längst vorbei ist. Ihre Vertretung, Frau Eichhorn, ist ________ sehr nett, ________ sie hat gerade erst mit dem Unterrichten angefangen und noch keine Erfahrung. Das macht uns alle ein bisschen unsicher. Aber in zwei Wochen ist hoffentlich alles geschafft. Und dann ________ ich alle Bücher und Hefte in die Ecke legen und erst einmal ein paar Tage gar nichts tun. ________ freue ich mich schon riesig. Wenn du Zeit und Lust hast, kannst du mich doch besuchen kommen und wir können zusammen etwas unternehmen. Wir wollten doch schon lange Bad Homburg besuchen und im Taunus wandern. Was hältst du ________?
 
-Was macht deine Au-pair-Familie? Musst du immer noch so viel Hausarbeit machen? Hören "deine" Kinder auf dich oder tanzen sie ________ noch immer auf der Nase herum, wie du in deinem letzten Brief geschrieben hast? Es ist bestimmt nicht so leicht, einen zweijährigen Jungen und ein vierjähriges Mädchen den ganzen Tag ________. Aber ich kenne dich: Du hast gute Ideen und bestimmt hast du schon einen Weg gefunden, ________ du mit den Kindern zurechtkommst.
+Was macht deine Au-pair-Familie? Musst du immer noch so viel Hausarbeit machen? Hören "deine" Kinder auf dich oder tanzen sie ________ noch immer auf der Nase herum, wie du in deinem letzten Brief geschrieben hast? It ist bestimmt nicht so leicht, einen zweijährigen Jungen und ein vierjähriges Mädchen den ganzen Tag ________. Aber ich kenne dich: Du hast gute Ideen und bestimmt hast du schon einen Weg gefunden, ________ du mit den Kindern zurechtkommst.
 
 So, jetzt muss ich mich wieder an meine Prüfungsvorbereitung machen, sonst wird mir die Zeit zu knapp. Ich grüße dich ganz herzlich und wünsche dir alles Gute.
 
@@ -1821,7 +1808,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         ]
       };
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         questionIndex: 0, 
@@ -1845,7 +1831,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
-      /* ===== Timer Functions ===== */
       function startTimer(){
         if(state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -1879,7 +1864,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Reset Section Function ===== */
       function resetCurrentSection() {
         const currentSection = exam.sections[state.sectionIndex];
         
@@ -1910,7 +1894,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       }
 
-      /* ===== Render ===== */
       function renderTopTiles(){ 
         topTiles.innerHTML=''; 
         exam.sections.forEach((sec,idx)=>{ 
@@ -2281,17 +2264,14 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
 
       function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
-        // Build text but replace blanks with unique placeholders first (prevents ambiguous replacements)
         let textWithPlaceholders = section.fillText2;
         const placeholders = [];
         section.fillBlanks2.forEach(blank => {
           const ph = `BLANK_${blank.id}`;
           placeholders.push({id: blank.id, ph});
-          // replace first occurrence of the visual underline with placeholder
           textWithPlaceholders = textWithPlaceholders.replace('________', ph);
         });
 
-        // Now replace placeholders with actual span elements showing current answer (or underscore)
         placeholders.forEach(item => {
           const userAnswer = state.answers[item.id];
           const displayText = userAnswer ? userAnswer : '________';
@@ -2304,18 +2284,14 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
-        // attach click handlers to slots
         document.querySelectorAll('.blank-slot').forEach(slot => {
           slot.addEventListener('click', (e) => {
-            // use the element itself to open popup
             showSprachbausteine2Options(slot);
           });
         });
 
-        // Build word bank on the right
         let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
         const usedWords = Object.values(state.answers);
-        // Use section.wordBank if present, otherwise derive from fillBlanks2 options
         const bank = section.wordBank && section.wordBank.length ? section.wordBank : (section.fillBlanks2[0] ? section.fillBlanks2[0].options : []);
         bank.forEach(word => {
           const isUsed = usedWords.includes(word);
@@ -2336,11 +2312,9 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         setupSprachbausteine2DragAndDrop();
       }
 
-      // --- Added functions to handle drag/drop and clicks for Sprachbausteine Teil 2 ---
       let lastClickedSprachSlot = null;
 
       function setupSprachbausteine2DragAndDrop(){
-        // bank words: make draggable if not used, attach dragstart
         const bankWords = Array.from(document.querySelectorAll('.bank-word-vertical'));
         bankWords.forEach(el => {
           const word = el.dataset.word;
@@ -2349,16 +2323,13 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           } else {
             el.setAttribute('draggable','false');
           }
-          // ensure single attached listener
           el.removeEventListener('dragstart', el._dstart);
           el._dstart = (e) => {
             e.dataTransfer.setData('text/plain', word);
-            // also set an indicator
             e.dataTransfer.setData('source', 'bank');
           };
           el.addEventListener('dragstart', el._dstart);
 
-          // keep onclick behavior (select into clicked slot)
           el.removeEventListener('click', el._onclick);
           el._onclick = () => {
             if(el.classList.contains('used')) return;
@@ -2367,7 +2338,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           el.addEventListener('click', el._onclick);
         });
 
-        // blank slots: allow drop
         const slots = Array.from(document.querySelectorAll('.blank-slot'));
         slots.forEach(slot => {
           slot.addEventListener('dragover', (e) => {
@@ -2382,16 +2352,13 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             slot.classList.remove('drag-over');
             const word = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/html');
             if(!word) return;
-            // Determine blank id
             const blankId = slot.dataset.blankId;
             if(!blankId) return;
-            // If this word is already used in another slot, free it
             Object.keys(state.answers).forEach(k => {
               if(state.answers[k] === word){
                 delete state.answers[k];
               }
             });
-            // If slot had a previous answer, free that bank word
             const prev = state.answers[blankId];
             if(prev){
               const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
@@ -2401,15 +2368,12 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
                 prevEl.addEventListener('click', prevEl._onclick);
               }
             }
-            // mark bank word used
             const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
             if(bankEl){
               bankEl.classList.add('used');
               bankEl.setAttribute('draggable','false');
-              // remove click to prevent double-placing
               bankEl.removeEventListener('click', bankEl._onclick);
             }
-            // assign to state and re-render
             state.answers[blankId] = word;
             renderAll();
           });
@@ -2417,14 +2381,12 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       }
 
       function showSprachbausteine2Options(slot){
-        // highlight selected slot so click from bank knows target
         document.querySelectorAll('.blank-slot').forEach(s => s.classList.remove('selected-sprach'));
         slot.classList.add('selected-sprach');
         lastClickedSprachSlot = slot;
       }
 
       function selectSprachbausteine2FromBank(word){
-        // choose target slot: prefer lastClicked, otherwise first empty
         let slot = lastClickedSprachSlot;
         if(!slot){
           slot = Array.from(document.querySelectorAll('.blank-slot')).find(s => {
@@ -2433,17 +2395,14 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           });
         }
         if(!slot) {
-          // if none available, do nothing
           return;
         }
         const blankId = slot.dataset.blankId;
-        // free previous occurrence of word
         Object.keys(state.answers).forEach(k => {
           if(state.answers[k] === word){
             delete state.answers[k];
           }
         });
-        // free previous word in target slot
         const prev = state.answers[blankId];
         if(prev){
           const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
@@ -2453,14 +2412,12 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             if(prevEl._onclick) prevEl.addEventListener('click', prevEl._onclick);
           }
         }
-        // mark selected bank word as used
         const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
         if(bankEl){
           bankEl.classList.add('used');
           bankEl.setAttribute('draggable','false');
           if(bankEl._onclick) try{ bankEl.removeEventListener('click', bankEl._onclick); }catch(e){}
         }
-        // assign value
         state.answers[blankId] = word;
         try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
@@ -2491,7 +2448,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Text ${text.id}: ${userAnswer || 'Nicht beantwortet'} 
+                <div>Text ${text.id}: ${userAnswer || '-'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -2504,7 +2461,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>${question.text}: ${userAnswer || 'Nicht beantwortet'} 
+                <div>${question.text}: ${userAnswer || '-'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -2518,7 +2475,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Situation ${situation.id}: ${userAnswer || 'Nicht beantwortet'} 
+                <div>Situation ${situation.id}: ${userAnswer || '-'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -2531,7 +2488,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer || 'Nicht beantwortet'} 
+                <div>Lücke ${blank.id}: ${userAnswer || '-'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -2544,7 +2501,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer || 'Nicht beantwortet'} 
+                <div>Lücke ${blank.id}: ${userAnswer || '-'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -2563,7 +2520,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         questionTitleEl.textContent = '';
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex > 0){
           state.sectionIndex--;
@@ -2613,12 +2569,10 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         showPage('hoeren-page');
       });
 
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
       window._lesenState = state;
       window.lesenApp = {
         selectOption,
@@ -2630,10 +2584,9 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
 
     // ===== HÖREN PAGE FUNCTIONALITY =====
     function initHoerenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-hörverstehen",
-        durationSec: 17 * 60, // 17 minutes in seconds
+        durationSec: 17 * 60,
         sections: [
           { 
             id: "hörverstehen1", 
@@ -2742,7 +2695,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         ]
       };
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
@@ -2757,7 +2709,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       const timerEl = document.getElementById('timer-hoeren');
       const statusText = document.getElementById('statusText-hoeren');
 
-      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -2791,7 +2742,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -2806,11 +2756,8 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       function isSectionDone(section) {
         const answers = state.answers[section.id];
         if (!answers) return false;
-        
-        // تحقق إذا تمت الإجابة على جميع الأسئلة في هذا القسم
         const answeredQuestions = Object.keys(answers).length;
         const totalQuestions = section.questions.length;
-        
         return answeredQuestions === totalQuestions;
       }
 
@@ -2898,8 +2845,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         state.answers[sectionId][questionId] = answer;
         try{ localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
-        
-        // إعادة عرض البلاطات لتحديث حالة "تم"
         renderTopTiles();
       }
 
@@ -2962,7 +2907,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         contentContainer.innerHTML = resultsHTML;
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-hoeren').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3009,12 +2953,10 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         showPage('schreiben-page');
       });
 
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
         window._hoerenState = state;
         window.hoerenApp = {
         updateListeningAnswer
@@ -3023,10 +2965,9 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
 
     // ===== SCHREIBEN PAGE FUNCTIONALITY =====
     function initSchreibenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-002",
-        durationSec: 30 * 60, // 30 minutes in seconds
+        durationSec: 30 * 60,
         sections: [
           { 
             id: "s1", 
@@ -3040,13 +2981,13 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
 Es ist in aller Munde: Wir bewegen uns zu wenig. Das schadet unserer Gesundheit! 
 Was können wir also tun? Wir haben die Lösung!
 
-Jeden Abend und am Wochenende auch tagsüber bieten wir „Radeln mit Spaß“ an. 
+Jeden Abend und am Wochenende auch tagsüber bieten wir „Radeln mit Spaß" an. 
 Freundliche junge Trainer begleiten Sie bei den Radtouren und gehen dabei gern auf 
 Ihre Fragen rund um Sport und Gesundheit ein. 
 
 Ein großes Angebot an modernen Rädern steht bereit – falls Sie kein eigenes Fahrrad haben. 
 
-Wir treffen uns jeden Abend ab 18 Uhr, am Samstag und am Sonntag ab 10 Uhr, auf unserem 
+Wir treffen uns jeden Abend ab 18 Uhr, am Samstag und am Sonstag ab 10 Uhr, auf unserem 
 Vereinsgelände auf der Heidewiese. Einstündige Touren mit Trainer kosten 5 Euro, 
 oder Sie werden gleich Mitglied für 25 Euro pro Monat – dann entfallen weitere Kosten.
 
@@ -3069,7 +3010,6 @@ info@radeldichmunter.de`,
         ]
       };
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
@@ -3086,7 +3026,6 @@ info@radeldichmunter.de`,
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
 
-      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3120,7 +3059,6 @@ info@radeldichmunter.de`,
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -3152,7 +3090,6 @@ info@radeldichmunter.de`,
       function renderWritingSection() {
         const section = exam.sections[state.sectionIndex];
         
-        // Render the prompt in left panel
         passageContentEl.innerHTML = `
           <div class="writing-task">
             <div class="writing-prompt">${section.writingTask.prompt}</div>
@@ -3170,7 +3107,6 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
           </div>
         `;
         
-        // Render writing area in right panel
         const currentAnswer = state.answers[section.id] || '';
         const wordCount = countWords(currentAnswer);
         
@@ -3212,7 +3148,7 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
           resultsHTML += `
             <div class="writing-requirements">
               <h4>Ihre Antwort (${wordCount} Wörter):</h4>
-              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${userAnswer || 'Keine Antwort'}</div>
+              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${userAnswer || '-'}</div>
             </div>
           `;
           
@@ -3223,7 +3159,6 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
         writingContainer.innerHTML = '';
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-schreiben').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3270,12 +3205,10 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
         showPage('ergebnisse-page');
       });
 
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
         window._schreibenState = state;
         window.schreibenApp = {
         updateWritingAnswer
@@ -3284,6 +3217,89 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
 
     // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
     function initErgebnissePage() {
+      // الإجابات الصحيحة المركزية
+      const CORRECT_ANSWERS = {
+        lesen: {
+          // الجزء الأول: Überschriften zuordnen
+          "text1": "j",
+          "text2": "b", 
+          "text3": "h",
+          "text4": "a",
+          "text5": "f",
+          
+          // الجزء الثاني: Fragen zum Text
+          "s2q1": "s2q1o1",
+          "s2q2": "s2q2o1",
+          "s2q3": "s2q3o3",
+          "s2q4": "s2q4o1",
+          "s2q5": "s2q5o3",
+          
+          // الجزء الثالث: Texte zuordnen
+          "11": "X",
+          "12": "D",
+          "13": "L",
+          "14": "C",
+          "15": "E",
+          "16": "X",
+          "17": "G",
+          "18": "K",
+          "19": "A",
+          "20": "I",
+          
+          // Sprachbausteine Teil 1
+          "21": "her",
+          "22": "erkrankt",
+          "23": "wenn",
+          "24": "zwar... aber",
+          "25": "werde",
+          "26": "Darauf",
+          "27": "davon",
+          "28": "dir",
+          "29": "zu beschäftigen",
+          "30": "wie",
+          
+          // Sprachbausteine Teil 2
+          "31": "KAUM",
+          "32": "AUF",
+          "33": "VORBEI",
+          "34": "STATT",
+          "35": "INNERHALB",
+          "36": "MÜSSEN",
+          "37": "AN",
+          "38": "SOLLEN",
+          "39": "DANN",
+          "40": "DENN"
+        },
+        
+        hoeren: {
+          // Hören Teil 1
+          "41": "falsch",
+          "42": "richtig",
+          "43": "richtig",
+          "44": "falsch",
+          "45": "richtig",
+          
+          // Hören Teil 2
+          "46": "richtig",
+          "47": "falsch",
+          "48": "richtig",
+          "49": "richtig",
+          "50": "richtig",
+          "51": "falsch",
+          "52": "falsch",
+          "53": "richtig",
+          "54": "falsch",
+          "55": "falsch",
+          
+          // Hören Teil 3
+          "56": "richtig",
+          "57": "falsch",
+          "58": "falsch",
+          "59": "falsch",
+          "60": "richtig"
+        }
+      };
+
       const CONFIG = {
         totals: { 
           lesen: 105, 
@@ -3295,20 +3311,74 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
           lesen: 40, 
           hoeren: 20 
         },
-        hoerenCorrect: {
-          "41": "falsch", "42": "richtig", "43": "richtig", "44": "falsch", "45": "richtig",
-          "46": "richtig", "47": "falsch", "48": "richtig", "49": "richtig", "50": "richtig",
-          "51": "falsch", "52": "falsch", "53": "richtig", "54": "falsch", "55": "falsch",
-          "56": "richtig", "57": "falsch", "58": "falsch", "59": "falsch", "60": "richtig"
-        },
-        lesenCorrect: Object.assign({},
-          {"text1": "j", "text2": "b", "text3": "h", "text4": "a", "text5": "f"},
-          {"s2q1": "s2q1o1", "s2q2": "s2q2o1", "s2q3": "s2q3o2", "s2q4": "s2q4o1", "s2q5": "s2q5o3"},
-          {"11": "x", "12": "D", "13": "L", "14": "C", "15": "E", "16": "X", "17": "G", "18": "K", "19": "A", "20": "I"},
-          {"21": "her", "22": "erkrankt", "23": "wenn", "24": "zwar... aber", "25": "werde", "26": "Darauf", "27": "davon", "28": "dir", "29": "zu beschäftigen", "30": "wie"},
-          {"31": "KAUM", "32": "AUF", "33": "VORBEI", "34": "STATT", "35": "INNERHALB", "36": "MÜSSEN", "37": "AN", "38": "SOLLEN", "39": "DANN", "40": "DENN"}
-        )
+        hoerenCorrect: CORRECT_ANSWERS.hoeren,
+        lesenCorrect: CORRECT_ANSWERS.lesen
       };
+
+      // الدوال المساعدة
+      function getHeadingText(headingId) {
+        if (!headingId || headingId === '-') return '-';
+        const headings = {
+          "a": "Altes Handwerk und alte Technik anschaulich präsentiert",
+          "b": "Attraktive Kleinstadt - touristischer Geheimtipp",
+          "c": "Ein Altes Kloster als Feuerwache",
+          "d": "Eine Universität mit langer Geschichte",
+          "e": "Eliteschule für Schriftsteller",
+          "f": "Entdeckung und Verbreitung des Kaffees",
+          "g": "Kaffee macht die Leute süß",
+          "h": "Klösterliche Strenge für berühmte Schüler",
+          "i": "Mehr Ziegenmilch dank Energy-Drink",
+          "j": "Ohne Kaffee geht hier nichts"
+        };
+        return headings[headingId] || headingId;
+      }
+
+      function getOptionText(questionId, optionId) {
+        if (!optionId || optionId === '-') return '-';
+        const options = {
+          "s2q1o1": "kommunikativer",
+          "s2q1o2": "ideenreicher",
+          "s2q1o3": "sensibler",
+          "s2q2o1": "das Kind einen emotionalen Bezug zur Sprache hat",
+          "s2q2o2": "die Eltern aus dem Zielsprachenland kommen",
+          "s2q2o3": "die Eltern die Bildungsziele konsequent verfolgen",
+          "s2q3o1": "muss die Sprachvermittlung so früh wie möglich anfangen",
+          "s2q3o2": "reicht es, im Grundschulalter mit der Zweitsprache zu beginnen",
+          "s2q3o3": "sollte im Kindergarten mit der Sprachvermittlung begonnen werden",
+          "s2q4o1": "bei systematischer Vermittlung der Sprache",
+          "s2q4o2": "sofern es versteht, wann die Sprachen gewechselt werden",
+          "s2q4o3": "wahrscheinlich nicht",
+          "s2q5o1": "ist eine Entwicklungsverzögerung möglich",
+          "s2q5o2": "kann das Interesse an anderen Sprachen verloren gehen",
+          "s2q5o3": "schadet dies der Entwicklung der Zweitsprache nicht"
+        };
+        return options[optionId] || optionId;
+      }
+
+      function getSituationText(id) {
+        const situations = {
+          "11": "Eine Bekannte ist schwanger und sucht Informationen, welche Sportarten erlaubt sind.",
+          "12": "Ein Bekannter fliegt im Urlaub ans Meer. Sie möchten ihn über mögliche Risiken der Sonnenstrahlung informieren.",
+          "13": "Ein Bekannter möchte sich modische Schuhe kaufen. Er weiß aber nicht, ob er sich das leisten kann.",
+          "14": "Sie möchten durch pflanzliche Ernährung Ihren Körper vor schweren Krankheiten schützen.",
+          "15": "Eine Bekannte, die ein Kind erwartet, sucht Ernährungstipps.",
+          "16": "Ein älteres Ehepaar sucht Informationen über einen ruhigen Urlaub am Meer.",
+          "17": "Ihre Freundin denkt darüber nach, alle hochhackigen Schuhe wegzuwerfen, weil sie negative Auswirkungen auf ihre Gelenke befürchtet.",
+          "18": "Eine Freundin hat viel Stress und möchte einen Ausgleich finden, der auch mit sportlichen Aktivitäten verbunden ist.",
+          "19": "Eine Freundin bekommt ein Baby. Sie hat oft Schmerzen. Welche Möglichkeit gibt es, ihr zu helfen?",
+          "20": "Ein Bekannter hat oft Kopfschmerzen. Er möchte jedoch keine Tabletten nehmen."
+        };
+        return situations[id] || id;
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
 
       function normalizeAnswer(a) {
         if (a === null || a === undefined) return '';
@@ -3320,8 +3390,242 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
         return s;
       }
 
-      function keyZeroToTen(k) {
-        return k === '0' ? '10' : k;
+      function buildTable(title, dets, total, max) {
+        let html = `<div class="result-item">
+                      <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
+                      <div class="section-table">
+                        <table class="true-false-table">
+                          <thead>
+                            <tr>
+                              <th style="width: 10%">Frage</th>
+                              <th style="width: 40%">Ihre Antwort</th>
+                              <th style="width: 40%">Richtige Antwort</th>
+                              <th style="width: 10%">Ergebnis</th>
+                            </tr>
+                          </thead>
+                          <tbody>`;
+        
+        dets.forEach(x => {
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
+          const userAnswer = x.user === '-' ? '-' : escapeHtml(x.user);
+          const correctAnswer = x.correct === '-' ? '-' : escapeHtml(x.correct);
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${x.frage}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody>
+                </table>
+                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                  <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
+                </div>
+              </div></div>`;
+        return html;
+      }
+
+      function renderLesenDetails(answers) {
+        let html = `<div class="result-item">
+                    <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
+        
+        // 1. Überschriften zuordnen
+        html += `<h4>Teil 1: Überschriften zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Text</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 1; i <= 5; i++) {
+          const id = `text${i}`;
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          const userText = userAnswer === '-' ? '-' : getHeadingText(userAnswer);
+          const correctText = correctAnswer === '-' ? '-' : getHeadingText(correctAnswer);
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>Text ${String.fromCharCode(64 + i)}</strong></td>
+                    <td>${escapeHtml(userText)}</td>
+                    <td>${escapeHtml(correctText)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // 2. Fragen zum Text
+        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Frage</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 1; i <= 5; i++) {
+          const id = `s2q${i}`;
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          const userText = getOptionText(id, userAnswer);
+          const correctText = getOptionText(id, correctAnswer);
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${i}</strong></td>
+                    <td>${escapeHtml(userText)}</td>
+                    <td>${escapeHtml(correctText)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // 3. Texte zuordnen
+        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Situation</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 11; i <= 20; i++) {
+          const id = i.toString();
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          const situationText = getSituationText(id);
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong><br><small>${situationText}</small></td>
+                    <td>${userAnswer === 'X' ? 'X - Kein passender Text' : userAnswer}</td>
+                    <td>${correctAnswer === 'X' ? 'X - Kein passender Text' : (correctAnswer || '-')}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // 4. Sprachbausteine Teil 1
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Lücke</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 21; i <= 30; i++) {
+          const id = i.toString();
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${escapeHtml(userAnswer)}</td>
+                    <td>${escapeHtml(correctAnswer)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // 5. Sprachbausteine Teil 2
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Lücke</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 31; i <= 40; i++) {
+          const id = i.toString();
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${escapeHtml(userAnswer)}</td>
+                    <td>${escapeHtml(correctAnswer)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table></div>`;
+        
+        return html;
+      }
+
+      function buildHoerenDetails(answers) {
+        let html = `<table class="true-false-table">
+                      <thead>
+                        <tr>
+                          <th>Frage</th>
+                          <th>Ihre Antwort</th>
+                          <th>Richtige Antwort</th>
+                          <th>Ergebnis</th>
+                        </tr>
+                      </thead>
+                      <tbody>`;
+        
+        for (let i = 41; i <= 60; i++) {
+          const id = i.toString();
+          const userAnswer = normalizeAnswer(answers[id] || '-');
+          const correctAnswer = CORRECT_ANSWERS.hoeren[id] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        return html;
       }
 
       function readExamResults() {
@@ -3330,7 +3634,6 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
           const hoeren = {};
           const schreiben = { content: '', wordCount: 0 };
 
-          // 1) Try to read from in-memory states exposed by pages
           try {
             if (window._lesenState && window._lesenState.answers) {
               Object.keys(window._lesenState.answers).forEach(k => {
@@ -3359,11 +3662,10 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
                 const keys = Object.keys(answers);
                 if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
               }
-              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0;
+              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0;
             }
           } catch (e) {}
 
-          // 2) Fallback to localStorage if any part is still empty
           try {
             if (Object.keys(lesen).length === 0) {
               const storedL = localStorage.getItem('lesenAnswers');
@@ -3384,12 +3686,11 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
               if (storedS) {
                 const obj = JSON.parse(storedS);
                 schreiben.content = obj.content || '';
-                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0);
+                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0);
               }
             }
           } catch (e) {}
 
-          // final safe return
           return { hoeren, lesen, schreiben };
         } catch (e) {
           return { hoeren: {}, lesen: {}, schreiben: {} };
@@ -3397,15 +3698,15 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
       }
 
       function gradeHoeren(u) {
-        const c = CONFIG.hoerenCorrect;
+        const c = CORRECT_ANSWERS.hoeren;
         let okCount = 0;
         const d = [];
         
         for (let q = 41; q <= 60; q++) {
           const k = String(q);
-          const uA = normalizeAnswer(u[k] || '');
-          const exp = normalizeAnswer(c[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
+          const uA = normalizeAnswer(u[k] || '-');
+          const exp = normalizeAnswer(c[k] || '-');
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
           if (ok) okCount++;
           const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
           d.push({
@@ -3422,14 +3723,14 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
       }
 
       function gradeLesen(u) {
-        const c = CONFIG.lesenCorrect;
+        const c = CORRECT_ANSWERS.lesen;
         let okCount = 0;
         const d = [];
         
         Object.keys(c).forEach(k => {
           const exp = normalizeAnswer(c[k]);
-          const uA = normalizeAnswer(u[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
+          const uA = normalizeAnswer(u[k] || '-');
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
           if (ok) okCount++;
           const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
           d.push({
@@ -3445,45 +3746,6 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
         return { okCount, total, details: d };
       }
 
-      function escapeHtml(s) {
-        return String(s)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      }
-
-      function buildTable(title, dets, total, max) {
-        let h = `<h2>${title}</h2>
-                <table class="section-table">
-                  <thead>
-                    <tr>
-                      <th>Frage</th>
-                      <th>Ihre Antwort</th>
-                      <th>Richtige Antwort</th>
-                      <th>Ergebnis</th>
-                      <th>Punkte</th>
-                    </tr>
-                  </thead>
-                  <tbody>`;
-        
-        dets.forEach(x => {
-          h += `<tr>
-                  <td>${x.frage}</td>
-                  <td>${escapeHtml(x.user)}</td>
-                  <td>${escapeHtml(x.correct)}</td>
-                  <td>${x.richtig ? '✔️' : '✖️'}</td>
-                  <td>${x.punkte}</td>
-                </tr>`;
-        });
-        
-        h += `</tbody>
-              </table>
-              <div class="small-muted">Teilpunkte: ${total.toFixed(2)} / ${max}</div>`;
-        return h;
-      }
-
       function renderResults() {
         const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
         const h = gradeHoeren(st.hoeren || {});
@@ -3491,7 +3753,7 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
         const details = document.getElementById('details-ergebnisse');
         const tiles = document.getElementById('topTiles-ergebnisse');
         const sScoreRaw = localStorage.getItem('schreibenScore');
-        const sScore = sScoreRaw ? Number(sScoreRaw) : 0; // Default score is now 0
+        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
 
         details.innerHTML = '';
         tiles.innerHTML = '';
@@ -3516,11 +3778,20 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
                   
         tiles.innerHTML = tL + tH + tS;
 
-        details.innerHTML += buildTable('Hören — Detail', h.details, h.total, CONFIG.totals.hoeren);
-        details.innerHTML += buildTable('Lesen — Detail', l.details, l.total, CONFIG.totals.lesen);
-
-        let sHtml = '<h2>Schreiben — Ergebnis (manuell)</h2>';
-        const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
+        details.innerHTML += `<h2>📊 Detaillierte Ergebnisse</h2>
+                            <div class="instructions">Hier sehen Sie Ihre Antworten im Vergleich mit den richtigen Lösungen. 
+                            Grüne Zeilen zeigen richtige Antworten, rote Zeilen falsche Antworten.</div>`;
+        
+        details.innerHTML += renderLesenDetails(st.lesen);
+        
+        details.innerHTML += `
+          <div class="result-item">
+            <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+            ${buildHoerenDetails(st.hoeren)}
+          </div>`;
+        
+        let sHtml = '<div class="result-item"><h3>✍️ Schreiben - Ihre Antwort</h3>';
+        const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">-</span>';
         const wc = st.schreiben.wordCount || '-';
         
         sHtml += `<div class="small-muted">Wörter: ${wc}</div>
@@ -3529,7 +3800,7 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
                   Punkte (0–45): 
                   <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
                   <button id="saveS" class="results-btn">Speichern</button>
-                </div>`;
+                </div></div>`;
                 
         details.innerHTML += sHtml;
 
@@ -3570,7 +3841,6 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
         showPage('start-page');
       };
       
-      // Initialize results on page load
       renderResults();
     }
   </script>

@@ -1392,14 +1392,12 @@
   <script>
     // ===== PAGE NAVIGATION =====
     function showPage(pageId) {
-      // Hide all pages
       document.getElementById('start-page').style.display = 'none';
       document.getElementById('lesen-page').style.display = 'none';
       document.getElementById('hoeren-page').style.display = 'none';
       document.getElementById('schreiben-page').style.display = 'none';
       document.getElementById('ergebnisse-page').style.display = 'none';
       
-      // Change body class based on page
       document.getElementById('body').className = '';
       if (pageId === 'ergebnisse-page') {
         document.getElementById('body').className = 'results-body';
@@ -1407,10 +1405,8 @@
         document.getElementById('body').className = 'exam-body';
       }
       
-      // Show selected page
       document.getElementById(pageId).style.display = 'block';
       
-      // Initialize the page if needed
       if (pageId === 'lesen-page' && typeof initLesenPage === 'function') {
         initLesenPage();
       } else if (pageId === 'hoeren-page' && typeof initHoerenPage === 'function') {
@@ -1436,12 +1432,9 @@
     const cancelBtn = document.getElementById("cancelBtn");
 
     function startCountdown() {
-      // prevent double-starts or starting after exam already began
       if (countdownRunning || examStarted) return;
       countdownRunning = true;
-      // disable start button while counting
       try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
-      // reset counter & UI
       counter = initialCounter;
       timerEl.textContent = counter;
       timeDisplayEl.textContent = counter;
@@ -1459,12 +1452,10 @@
           countdownInterval = null;
           countdownRunning = false;
           progressEl.style.transform = "scaleX(1)";
-          // ensure exam starts only once
           if (!examStarted) {
             examStarted = true;
             startExam();
           }
-          // safety: re-enable start button (page usually navigates away)
           try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
         }
       }, 1000);
@@ -1488,7 +1479,6 @@
     }
 
     function startExam() {
-      // guard to ensure startExam is triggered once
       if (!examStarted) examStarted = true;
       const selectedSection = selectEl.value;
       if (selectedSection === 'lesen') {
@@ -1500,19 +1490,15 @@
       }
     }
 
-    // wire buttons: start will now start the countdown (not the exam directly)
     startBtn.addEventListener('click', startCountdown);
-
     cancelBtn.addEventListener('click', () => {
       stopCountdown(true);
       timerEl.textContent = "Abgebrochen";
       timerEl.style.color = "#e53e3e";
     });
 
-    // NOTE: removed automatic startCountdown() on page load to prevent the timer starting twice
-// ===== LESEN PAGE FUNCTIONALITY =====
+    // ===== LESEN PAGE FUNCTIONALITY =====
     function initLesenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-001",
         durationSec: 90 * 60,
@@ -1547,7 +1533,7 @@
               },
               {
                 id: "text5",
-                content: "Mobbing ist kein neues Phänomen. Es ist auch in Schulen weiterbreitet. Da spricht zum Beispiel eine Lehrerin vor der Klasse negativ über eine Schülerin, weil sie etwas nicht versteht oder immer wieder krank ist. Oder die Mitschüler lachen oder lassen beleidigende Bemerkungen fallen, wenn ein bestimmter Schüler sich zu Wort meldet. Da lauern Jungen einer 4. Klasse einem schüchternen Mitschüler auf dem Schulweg auf und erpressen von ihm Geld oder Kleidung. Häufig sind die Erwachsenen ratlos oder schauen weg, während die Opfer die Schuld bei sich selbst suchen und zunehmend in eine soziale Isolation geraten. Lehrkräfte sind meist überrascht, wenn man sie auf Mobbing in einer Klasse anspricht. Denn die Schikanen geschehen oft zu subtil und meist außerhalb des Unterrichts, während der Pausen oder auf dem Schulweg.",
+                content: "Mobbing ist kein neues Phänomen. Es ist auch in Schulen weiterbreitet. Da spricht zum Beispiel eine Lehrerin vor der Klasse negativ über eine Schülerin, weil sie etwas nicht versteht oder immer wieder krank ist. Oder die Mitschüler lachen oder lassen beleidigende Bemerkungen fallen, wenn ein bestimmter Schüler sich zu Wort meldet. Da lauern Jungen einer 4. Klasse einem schüchternen Mitschüler auf dem Schulweg auf und erpressen von ihm Geld oder Kleidung. Häufig sind die Erwachsenen ratlos oder schauen weg, während die Opfer die Schuld bei sich selbst suchen und zunehmend in eine soziale Isolation geraten. Lehrkräfte sind meist überrascht, wenn man sie auf Mobbing in einer Klasse anspricht. Denn die Schikanen geschehen often zu subtil und meist außerhalb des Unterrichts, während der Pausen oder auf dem Schulweg.",
                 correctAnswer: "e"
               }
             ],
@@ -1657,17 +1643,17 @@
             texts: [
               {id: "A", text: "Nicht nur Urlaub......kann man in anderen Ländern machen, sondern auch etwas lernen. Die Agentur für Arbeit vermittelt Schülerinnen und Schülern, aber auch Studierenden Praktikumsplätze im Ausland! Nutzt die Gelegenheit, möglichst früh Euren Wunschberuf kennenzulernen, auch wenn Ihr für das Praktikum nicht bezahlt werdet. Meldet euch gleich in der nächsten Filiale oder besucht unsere Homepage, auch dort gibt's weitere Informationen. www,agenturfuerarbeit.de", correctAnswer: "11"},
               {id: "B", text: "Ihr habt Euch für ein Praktikum entschieden? Dann solltet Ihr Euch jetzt um eine Unterkunft kümmern. Wir vermitteln Euch günstige Zimmer in Studentenwohnheimen oder in Wohngemeinschaften. Wir haben auch Kontakte zu Gastfamilien, bei denen Ihr wohnen könnt. Das ist besonders für jüngere Praktikanten eine gute Möglichkeit, die Sprache und die Kultur des Landes besser kennenzulernen.", correctAnswer: "12"},
-              {id: "B", text: "Neues Ziel, neues Glück! Du bist gerade “auf dem Sprung”, willst umziehen und suchst noch eine passende Bleibe? Dann haben wir das Richtige für dich: In unserem Internetportal findest du günstige Wohnungen oder WG-Zimmer in zahlreichen Städten Deutschlands - und sogar über die Grenzen Deutschlands hinaus. Unsere Suchfunktion erlaubt es dir, Details einzugeben wie ”maximale Miete”, “zentrale Lage” usw. Schau einfach mal vorbei, die Suche ist natürlich kostenlos! Und noch etwas: Du kannst auch gerne ein Wohnungsangebot bei uns einstellen, wenn du einen Nachmieter oder einen Mitbewohner suchst - für nur 0,49 Euro. Du findest uns unter www.ueberallwohnen.eu", correctAnswer: "13"},
-              {id: "C", text: "Superlearning Sie möchten in kurzer Zeit ihre Sprachkenntnisse besonders schnell verbessern und suchen hierfür die beste Methode? Sie möchten sich während des Aufenthaltes gleichzeitig entspannen und etwas für Ihre Gesundheit tun? Dann dürfte dieses Programm für Sie genau das Richtige sein! Nach der Methode des berühmten bulgarischen Arztes Lozanov lernen Sie in entspannter Umgebung und dennoch hoch konzentriert mit Untermalung durch klassische Musik und praxisnahen kommunikativen Übungen. Durch unser ganzheitliches System können Sie Ihre Lernleistung erheblich steigern, so dass sich der vergleichsweise hohe Preis schnell bezahlt macht. Wir informieren Sie gerne über unser Angebot an Superintensivkursen. info@superlearning.der habt Euch für ein Praktikum im Ausland entschieden? Dann solltet Ihr Euch über die Einreisebestimmungen des Landes informieren. Für einige Länder benötigt Ihr ein Visum. Das kann einige Zeit in Anspruch nehmen. Informiert Euch deshalb frühzeitig bei der Botschaft oder dem Konsulat des Landes, in das Ihr reisen wollt.", correctAnswer: "13"},
+              {id: "B", text: "Neues Ziel, neues Glück! Du bist gerade 'auf dem Sprung', willst umziehen und suchst noch eine passende Bleibe? Dann haben wir das Richtige für dich: In unserem Internetportal findest du günstige Wohnungen oder WG-Zimmer in zahlreichen Städten Deutschlands - und sogar über die Grenzen Deutschlands hinaus. Unsere Suchfunktion erlaubt es dir, Details einzugeben wie 'maximale Miete', 'zentrale Lage' usw. Schau einfach mal vorbei, die Suche ist natürlich kostenlos! Und noch etwas: Du kannst auch gerne ein Wohnungsangebot bei uns einstellen, wenn du einen Nachmieter oder einen Mitbewohner suchst - für nur 0,49 Euro. Du findest uns unter www.ueberallwohnen.eu", correctAnswer: "13"},
+              {id: "C", text: "Superlearning Sie möchten in kurzer Zeit ihre Sprachkenntnisse besonders schnell verbessern und suchen hierfür die beste Methode? Sie möchten sich während des Aufenthaltes gleichzeitig entspannen und etwas für Ihre Gesundheit tun? Dann dürfte dieses Programm für Sie genau das Richtige sein! Nach der Methode des berühmten bulgarischen Arztes Lozanov lernen Sie in entspannter Umgebung und dennoch hoch konzentriert mit Untermalung durch klassische Musik und praxisnahen kommunikativen Übungen. Durch unser ganzheitliches System können Sie Ihre Lernleistung erheblich steigern, so dass sich der vergleichsweise hohe Preis schnell bezahlt macht. Wir informieren Sie gerne über unser Angebot an Superintensivkursen. info@superlearning.de ", correctAnswer: "13"},
               {id: "D", text: "Andere Länder, ... andere Sprachen. Und wo lernt man eine Sprache am besten? Genau - in dem Land, in dem sie gesprochen wird. Wir bieten Ihnen die Möglichkeit, Sprachen auf der ganzen Welt zu lernen. Vom Einzelunterricht bis hin zu einem Kurs für eine ganze Gruppe, von A wie Arabisch bis Z wie Zulu. Entdecken Sie die Welt und die Welt der Sprachen. Wir gehen flexibel auf Ihre Wünsche ein. Sprechen Sie uns an. Egal welche Sprache Sie lernen möchten, wir haben bestimmt auch für Sie das passende Angebot! Weitere Informationen unter: info@sprachenderwelt.eu ", correctAnswer: "14"},
-              {id: "E", text: "Was bedeutet “Tandemlernen”?  Zwei Menschen mit verschiedenen Muttersprachen treffen sich und helfen sich gegenseitig beim Lernen der jeweiligen Fremdsprache. Tandemlernen hat keine festgelegten Strukturen, sondern kann ganz nach Lust und Laune ablaufen. Was, wann, wo und wie du lernst, hängt von dir und deinem Tandempartner ab. Außerdem hast du die Chance, durch Tandemlernen einen interessanten Einblick in eine andere Kultur zu bekomme. Und das Beste: es kostet nichts. Schau nach unter www.tandemboerse.de ", correctAnswer: "15"},
-              {id: "F", text: "Interesse an einer Ausbildung? Auf unserem Azubi-Portal finden Sie Informationen zu allen Ausbildungsberufen, die es derzeit in Deutschland gibt. Sie erfahren, welche Voraussetzungen Sie für eine Ausbildung benötigen, was genau Sie in der Ausbildung lernen, wie Ihr späteres Berufsleben aussieht - und natürlich erfahren Sie auch alles rund um das Thema Lohn. Auch wertvolle Bewerbungstipps finden Sie bei uns. Schauen Sie doch mal vorbei: www.azubiportal.eu ", correctAnswer: "16"},
+              {id: "E", text: "Was bedeutet 'Tandemlernen'?  Zwei Menschen mit verschiedenen Muttersprachen treffen sich und helfen sich gegenseitig beim Lernen der jeweiligen Fremdsprache. Tandemlernen hat keine festgelegten Strukturen, sondern kann ganz nach Lust und Laune ablaufen. Was, wann, wo und wie du lernst, hängt von dir und deinem Tandempartner ab. Außerdem hast du die Chance, durch Tandemlernen einen interessanten Einblick in eine andere Kultur zu bekomme. Und das Beste: es kostet nichts. Schau nach unter www.tandemboerse.de ", correctAnswer: "15"},
+              {id: "F", text: "Interesse an einer Ausbildung? Auf unserem Azubi-Portal finden Sie Informationen zu allen Ausbildungsberufen, die es derzeit in Deutschland gibt. Sie erfahren, welche Voraussetzungen Sie für eine Ausbildung benötigen, was genau Sie in der Ausbildung lernen, wie Ihr späteres Berufsleben aussieht - und natürlich erfahren Sie auch alles rund um das Thema Lohn. Auch wertvolle Bewerbungstips finden Sie bei uns. Schauen Sie doch mal vorbei: www.azubiportal.eu ", correctAnswer: "16"},
               {id: "G", text: "Umzug mal anders Wer kennt das nicht: Wenn man umziehen will oder muss, gibt es viel zu erledigen. Man muss den Umzug organisieren, sich um Papiere kümmern, die neue Adresse bekanntgeben und vieles mehr. Dabei hat man auch gar keine Zeit, denn arbeiten oder studieren muss man ja auch noch. Deshalb bieten wir einen kompletten Umzugs-Service an. Sie müssen nur noch von einer Stadt in die nächste fahren - und den Rest erledigen wir.  Das alles zu einem fairen Preis. Sprechen Sie uns an! E-Mail: info@umzugmalanders.eu ", correctAnswer: "17"},
-              {id: "H", text: "Alle Informationen auf einer Seite Die neue Internetseite www.studium.de bietet Ihnen alles rund um das Thema”Studium”. So finden Sie neben Informationen zu allen deutschen Hochschulen auch genaue Beschreibungen aller Studiengänge und -fächer auf auf unserer Webseite. Ob sie etwas Naturwissenschaftliches studieren möchten, etwas Wirtschaftswissenschaftliches, ein Fach mit Bezug zu Kultur oder eine Sprache - bei uns finden Sie alles und erfahren natürlich auch, wo Sie was studieren können. Und als besonderen Service bieten wir Ihnen auch einen BAföG-Rechner an: Ermitteln sie gleich, ob Ihnen Unterstützung während des Studiums zusteht.", correctAnswer: "18"},
-              {id: "I", text: "Hilfe gesucht?  Studierende und Auszubildende müssen oft umziehen, ohne dass sie viel Geld dafür hätten. Deshalb haben wir unser Netzwerk “Studis und Azubis ziehen um” gegründet. Bei uns sind viele fleißige Helfer registriert, die gerne beim Umzug helfen: Kisten packen, Möbel abbauen, die Sachen zu neuen Wohnung bringen und so weiter.  Und das Beste daran: Es kostet keinen Cent! Wie das funktioniert? Ganz einfach. Registriert euch bei uns - natürlich ebenfalls kostenfrei -, und wenn jemand anders Hilfe braucht, tragt ihr eben auch mal Kartons und baut Möbel auf. Wir helfen uns gegenseitig! Weitere Infos unter: www.umzugshelferlein.eu ", correctAnswer: "19"},
-              {id: "J", text: "Neu in der Stadt? Ihr seid umgezogen und habt eine Ausbildung oder ein Studium hier in der Stadt begonnen? Ihr sucht neue Kontakte, Leute, mit denen ihr die Freizeit verbringen könnt? Der Verein “Triff dich!” organisiert einmal pro Woche eine Stammtisch für alle, die neue Leute treffen wollen. Kommt einfach vorbei - und wenn es euch nicht gefällt, könnt ihr jederzeit wieder gehen! Weitere Informationen sowie den Ort und das genaue Datum für unser nächstes Treffen erhaltet ihr unter: info@triffdich.eu ", correctAnswer: null},
-              {id: "K", text: "Wie es Ihnen gefällt Unser neues Lernprogramm “Sprachenfix” bietet Ihnen die Möglichkeit, eine Sprache zu lernen, wann und wo Sie möchten, ob allein zu Hause oder unterwegs. Das Programm bietet alles, was Sie brauchen: von Erklärungen und Wortschatz über Lesetexte und Hörbeispiele bis hin zu Videos mit kleinen authentischen Szenen aus dem Alltag. Unser Online-Service bietet darüber hinaus Zusatzmaterialien. Auf Wunsch können Sie auch in einem durch Passwort geschützten Bereich Ihre eigenen Texte durch unsere Lehrkräfte korrigieren und kommentieren lassen. Das Programm ist für zahl-reiche Sprachen verfügbar, sprechen Sie uns an. Sprachfix GmbH, Eiderstädt, Tel, 01800/81890132 ", correctAnswer: "20"},
-              {id: "L", text: "Aller Anfang ist schwer. Einige Fächer sind schon in der Schule nicht beliebt, und das ändert sich auch später in der Berufsschule oder an der Universität nicht. Für viele sind Naturwissenschaften oder Mathematik echte “Problemfächer”. Bei uns wird das anders. Unsere Lehrkräfte sind nicht nur fachlich gut ausgebildet, sondern sie haben auch eine spezielle pädagogische Ausbildung. Probieren Sie es einfach aus! Egal, ob in der Schule, in der Ausbildung, im Studium oder “einfach nur so” - bei uns finden Sie, was Sie brauchen. Bei uns lernen Sie in Lerngruppen von drei bis fünf Teilnehmenden, so können Sie sich auch gegenseitig unterstützen. Weitere Informationen unter info@lernenmachtspass.eu ", correctAnswer: null}
+              {id: "H", text: "Alle Informationen auf einer Seite Die neue Internetseite www.studium.de bietet Ihnen alles rund um das Thema'Studium'. So finden Sie neben Informationen zu allen deutschen Hochschulen auch genaue Beschreibungen aller Studiengänge und -fächer auf auf unserer Webseite. Ob sie etwas Naturwissenschaftliches studieren möchten, etwas Wirtschaftswissenschaftliches, ein Fach mit Bezug zu Kultur oder eine Sprache - bei uns finden Sie alles und erfahren natürlich auch, wo Sie was studieren können. Und als besonderen Service bieten wir Ihnen auch einen BAföG-Rechner an: Ermitteln sie gleich, ob Ihnen Unterstützung während des Studiums zusteht.", correctAnswer: "18"},
+              {id: "I", text: "Hilfe gesucht?  Studierende und Auszubildende müssen oft umziehen, ohne dass sie viel Geld dafür hätten. Deshalb haben wir unser Netzwerk 'Studis und Azubis ziehen um' gegründet. Bei uns sind viele fleißige Helfer registriert, die gerne beim Umzug helfen: Kisten packen, Möbel abbauen, die Sachen zu neuen Wohnung bringen und so weiter.  Und das Beste daran: Es kostet keinen Cent! Wie das funktioniert? Ganz einfach. Registriert euch bei uns - natürlich ebenfalls kostenfrei -, und wenn jemand anders Hilfe braucht, tragt ihr eben auch mal Kartons und baut Möbel auf. Wir helfen uns gegenseitig! Weitere Infos unter: www.umzugshelferlein.eu ", correctAnswer: "19"},
+              {id: "J", text: "Neu in der Stadt? Ihr seid umgezogen und habt eine Ausbildung oder ein Studium hier in der Stadt begonnen? Ihr sucht neue Kontakte, Leute, mit denen ihr die Freizeit verbringen könnt? Der Verein 'Triff dich!' organisiert einmal pro Woche eine Stammtisch für alle, die neue Leute treffen wollen. Kommt einfach vorbei - und wenn es euch nicht gefällt, könnt ihr jederzeit wieder gehen! Weitere Informationen sowie den Ort und das genaue Datum für unser nächstes Treffen erhaltet ihr unter: info@triffdich.eu ", correctAnswer: null},
+              {id: "K", text: "Wie es Ihnen gefällt Unser neues Lernprogramm 'Sprachenfix' bietet Ihnen die Möglichkeit, eine Sprache zu lernen, wann und wo Sie möchten, ob allein zu Hause oder unterwegs. Das Programm bietet alles, что Sie brauchen: von Erklärungen und Wortschatz über Lesetexte und Hörbeispiele bis hin zu Videos mit kleinen authentischen Szenen aus dem Alltag. Unser Online-Service bietet darüber hinaus Zusatzmaterialien. Auf Wunsch können Sie auch in einem durch Passwort geschützten Bereich Ihre eigenen Texte durch unsere Lehrkräfte korrigieren und kommentieren lassen. Das Programm ist für zahl-reiche Sprachen verfügbar, sprechen Sie uns an. Sprachfix GmbH, Eiderstädt, Tel, 01800/81890132 ", correctAnswer: "20"},
+              {id: "L", text: "Aller Anfang ist schwer. Einige Fächer sind schon in der Schule nicht beliebt, und das ändert sich auch später in der Berufsschule oder an der Universität nicht. Für viele sind Naturwissenschaften oder Mathematik echte 'Problemfächer'. Bei uns wird das anders. Unsere Lehrkräfte sind nicht nur fachlich gut ausgebildet, sondern sie haben auch eine spezielle pädagogische Ausbildung. Probieren Sie es einfach aus! Egal, ob in der Schule, in der Ausbildung, im Studium oder 'einfach nur so' - bei uns finden Sie, was Sie brauchen. Bei uns lernen Sie in Lerngruppen von drei bis fünf Teilnehmenden, so können Sie sich auch gegenseitig unterstützen. Weitere Informationen unter info@lernenmachtspass.eu ", correctAnswer: null}
             ],
             situations: [
               {id: "11", text: "Sie brauchen Unterstützung in Mathematik und möchten in einer kleinen Gruppe lernen."},
@@ -1826,7 +1812,6 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
         ]
       };
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         questionIndex: 0, 
@@ -1850,7 +1835,6 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
-      /* ===== Timer Functions ===== */
       function startTimer(){
         if(state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -1884,7 +1868,6 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Reset Section Function ===== */
       function resetCurrentSection() {
         const currentSection = exam.sections[state.sectionIndex];
         
@@ -1915,7 +1898,6 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
         }
       }
 
-      /* ===== Render ===== */
       function renderTopTiles(){ 
         topTiles.innerHTML=''; 
         exam.sections.forEach((sec,idx)=>{ 
@@ -2286,17 +2268,14 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
 
       function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
-        // Build text but replace blanks with unique placeholders first (prevents ambiguous replacements)
         let textWithPlaceholders = section.fillText2;
         const placeholders = [];
         section.fillBlanks2.forEach(blank => {
           const ph = `BLANK_${blank.id}`;
           placeholders.push({id: blank.id, ph});
-          // replace first occurrence of the visual underline with placeholder
           textWithPlaceholders = textWithPlaceholders.replace('________', ph);
         });
 
-        // Now replace placeholders with actual span elements showing current answer (or underscore)
         placeholders.forEach(item => {
           const userAnswer = state.answers[item.id];
           const displayText = userAnswer ? userAnswer : '________';
@@ -2309,18 +2288,14 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
-        // attach click handlers to slots
         document.querySelectorAll('.blank-slot').forEach(slot => {
           slot.addEventListener('click', (e) => {
-            // use the element itself to open popup
             showSprachbausteine2Options(slot);
           });
         });
 
-        // Build word bank on the right
         let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
         const usedWords = Object.values(state.answers);
-        // Use section.wordBank if present, otherwise derive from fillBlanks2 options
         const bank = section.wordBank && section.wordBank.length ? section.wordBank : (section.fillBlanks2[0] ? section.fillBlanks2[0].options : []);
         bank.forEach(word => {
           const isUsed = usedWords.includes(word);
@@ -2341,11 +2316,9 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
         setupSprachbausteine2DragAndDrop();
       }
 
-      // --- Added functions to handle drag/drop and clicks for Sprachbausteine Teil 2 ---
       let lastClickedSprachSlot = null;
 
       function setupSprachbausteine2DragAndDrop(){
-        // bank words: make draggable if not used, attach dragstart
         const bankWords = Array.from(document.querySelectorAll('.bank-word-vertical'));
         bankWords.forEach(el => {
           const word = el.dataset.word;
@@ -2354,16 +2327,13 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
           } else {
             el.setAttribute('draggable','false');
           }
-          // ensure single attached listener
           el.removeEventListener('dragstart', el._dstart);
           el._dstart = (e) => {
             e.dataTransfer.setData('text/plain', word);
-            // also set an indicator
             e.dataTransfer.setData('source', 'bank');
           };
           el.addEventListener('dragstart', el._dstart);
 
-          // keep onclick behavior (select into clicked slot)
           el.removeEventListener('click', el._onclick);
           el._onclick = () => {
             if(el.classList.contains('used')) return;
@@ -2372,7 +2342,6 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
           el.addEventListener('click', el._onclick);
         });
 
-        // blank slots: allow drop
         const slots = Array.from(document.querySelectorAll('.blank-slot'));
         slots.forEach(slot => {
           slot.addEventListener('dragover', (e) => {
@@ -2387,16 +2356,13 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
             slot.classList.remove('drag-over');
             const word = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/html');
             if(!word) return;
-            // Determine blank id
             const blankId = slot.dataset.blankId;
             if(!blankId) return;
-            // If this word is already used in another slot, free it
             Object.keys(state.answers).forEach(k => {
               if(state.answers[k] === word){
                 delete state.answers[k];
               }
             });
-            // If slot had a previous answer, free that bank word
             const prev = state.answers[blankId];
             if(prev){
               const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
@@ -2406,15 +2372,12 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
                 prevEl.addEventListener('click', prevEl._onclick);
               }
             }
-            // mark bank word used
             const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
             if(bankEl){
               bankEl.classList.add('used');
               bankEl.setAttribute('draggable','false');
-              // remove click to prevent double-placing
               bankEl.removeEventListener('click', bankEl._onclick);
             }
-            // assign to state and re-render
             state.answers[blankId] = word;
             renderAll();
           });
@@ -2422,14 +2385,12 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
       }
 
       function showSprachbausteine2Options(slot){
-        // highlight selected slot so click from bank knows target
         document.querySelectorAll('.blank-slot').forEach(s => s.classList.remove('selected-sprach'));
         slot.classList.add('selected-sprach');
         lastClickedSprachSlot = slot;
       }
 
       function selectSprachbausteine2FromBank(word){
-        // choose target slot: prefer lastClicked, otherwise first empty
         let slot = lastClickedSprachSlot;
         if(!slot){
           slot = Array.from(document.querySelectorAll('.blank-slot')).find(s => {
@@ -2438,17 +2399,14 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
           });
         }
         if(!slot) {
-          // if none available, do nothing
           return;
         }
         const blankId = slot.dataset.blankId;
-        // free previous occurrence of word
         Object.keys(state.answers).forEach(k => {
           if(state.answers[k] === word){
             delete state.answers[k];
           }
         });
-        // free previous word in target slot
         const prev = state.answers[blankId];
         if(prev){
           const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
@@ -2458,14 +2416,12 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
             if(prevEl._onclick) prevEl.addEventListener('click', prevEl._onclick);
           }
         }
-        // mark selected bank word as used
         const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
         if(bankEl){
           bankEl.classList.add('used');
           bankEl.setAttribute('draggable','false');
           if(bankEl._onclick) try{ bankEl.removeEventListener('click', bankEl._onclick); }catch(e){}
         }
-        // assign value
         state.answers[blankId] = word;
         try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
@@ -2568,7 +2524,6 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
         questionTitleEl.textContent = '';
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex > 0){
           state.sectionIndex--;
@@ -2618,12 +2573,10 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
         showPage('hoeren-page');
       });
 
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
       window._lesenState = state;
       window.lesenApp = {
         selectOption,
@@ -2635,10 +2588,9 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
 
     // ===== HÖREN PAGE FUNCTIONALITY =====
     function initHoerenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-hörverstehen",
-        durationSec: 17 * 60, // 17 minutes in seconds
+        durationSec: 17 * 60,
         sections: [
           { 
             id: "hörverstehen1", 
@@ -2747,7 +2699,6 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
         ]
       };
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
@@ -2762,7 +2713,6 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
       const timerEl = document.getElementById('timer-hoeren');
       const statusText = document.getElementById('statusText-hoeren');
 
-      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -2796,7 +2746,6 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -2811,11 +2760,8 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
       function isSectionDone(section) {
         const answers = state.answers[section.id];
         if (!answers) return false;
-        
-        // تحقق إذا تمت الإجابة على جميع الأسئلة في هذا القسم
         const answeredQuestions = Object.keys(answers).length;
         const totalQuestions = section.questions.length;
-        
         return answeredQuestions === totalQuestions;
       }
 
@@ -2902,9 +2848,6 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
         }
         state.answers[sectionId][questionId] = answer;
         try{ localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); }catch(e){}
-        
-        
-        // إعادة عرض البلاطات لتحديث حالة "تم"
         renderTopTiles();
       }
 
@@ -2932,7 +2875,7 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
           `;
           
           section.questions.forEach((question) => {
-            const userAnswer = userAnswers[question.id] || '-';
+            const userAnswer = userAnswers[question.id] || '';
             const correctAnswer = section.correctAnswers[question.id];
             const gotCorrect = userAnswer === correctAnswer;
             const points = gotCorrect ? "1" : "0";
@@ -2967,7 +2910,6 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
         contentContainer.innerHTML = resultsHTML;
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-hoeren').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3014,24 +2956,21 @@ Doch egal, ________ welcher Kategorie ein Mann gehört - eines haben alle gemein
         showPage('schreiben-page');
       });
 
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
-        window._hoerenState = state;
-        window.hoerenApp = {
+      window._hoerenState = state;
+      window.hoerenApp = {
         updateListeningAnswer
       };
     }
 
     // ===== SCHREIBEN PAGE FUNCTIONALITY =====
     function initSchreibenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-002",
-        durationSec: 30 * 60, // 30 minutes in seconds
+        durationSec: 30 * 60,
         sections: [
           { 
             id: "s1", 
@@ -3070,7 +3009,6 @@ E-Mail: baumeister-betten@info.de`,
         ]
       };
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
@@ -3087,7 +3025,6 @@ E-Mail: baumeister-betten@info.de`,
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
 
-      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3121,7 +3058,6 @@ E-Mail: baumeister-betten@info.de`,
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -3153,7 +3089,6 @@ E-Mail: baumeister-betten@info.de`,
       function renderWritingSection() {
         const section = exam.sections[state.sectionIndex];
         
-        // Render the prompt in left panel
         passageContentEl.innerHTML = `
           <div class="writing-task">
             <div class="writing-prompt">${section.writingTask.prompt}</div>
@@ -3172,7 +3107,6 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
           </div>
         `;
         
-        // Render writing area in right panel
         const currentAnswer = state.answers[section.id] || '';
         const wordCount = countWords(currentAnswer);
         
@@ -3225,7 +3159,6 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
         writingContainer.innerHTML = '';
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-schreiben').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3272,20 +3205,101 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
         showPage('ergebnisse-page');
       });
 
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
-        window._schreibenState = state;
-        window.schreibenApp = {
+      window._schreibenState = state;
+      window.schreibenApp = {
         updateWritingAnswer
       };
     }
 
     // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
     function initErgebnissePage() {
+      // كائن الإجابات الصحيحة من الامتحان الحالي
+      const CORRECT_ANSWERS = {
+        lesen: {
+          // الجزء الأول: Überschriften zuordnen (النصوص 1-5)
+          "text1": "j",
+          "text2": "h", 
+          "text3": "b",
+          "text4": "a",
+          "text5": "e",
+          
+          // الجزء الثاني: Fragen zum Text (الأسئلة s2q1-s2q5)
+          "s2q1": "s2q1o3",
+          "s2q2": "s2q2o3",
+          "s2q3": "s2q3o3",
+          "s2q4": "s2q4o1",
+          "s2q5": "s2q5o3",
+          
+          // الجزء الثالث: Texte zuordnen (المواقف 11-20)
+          "11": "L",
+          "12": "H",
+          "13": "D",
+          "14": "B",
+          "15": "I",
+          "16": "J",
+          "17": "X",
+          "18": "E",
+          "19": "G",
+          "20": "X",
+          
+          // Sprachbausteine Teil 1 (الفراغات 21-30)
+          "21": "was",
+          "22": "denn",
+          "23": "noch",
+          "24": "annehmen",
+          "25": "um",
+          "26": "sobald",
+          "27": "auch wenn",
+          "28": "für",
+          "29": "neulich",
+          "30": "wollen",
+          
+          // Sprachbausteine Teil 2 (الفراغات 31-40)
+          "31": "ANHAND",
+          "32": "VON",
+          "33": "SOWIE",
+          "34": "AUS",
+          "35": "AUF",
+          "36": "ANSTRENGEND",
+          "37": "FOLGLICH",
+          "38": "EHER",
+          "39": "ZU",
+          "40": "WOHL"
+        },
+        
+        hoeren: {
+          // Hören Teil 1 (الأسئلة 41-45)
+          "41": "falsch",
+          "42": "falsch",
+          "43": "falsch",
+          "44": "richtig",
+          "45": "richtig",
+          
+          // Hören Teil 2 (الأسئلة 46-55)
+          "46": "falsch",
+          "47": "falsch",
+          "48": "richtig",
+          "49": "richtig",
+          "50": "falsch",
+          "51": "falsch",
+          "52": "richtig",
+          "53": "falsch",
+          "54": "falsch",
+          "55": "falsch",
+          
+          // Hören Teil 3 (الأسئلة 56-60)
+          "56": "richtig",
+          "57": "falsch",
+          "58": "falsch",
+          "59": "falsch",
+          "60": "richtig"
+        }
+      };
+
       const CONFIG = {
         totals: { 
           lesen: 105, 
@@ -3296,43 +3310,37 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
         counts: { 
           lesen: 40, 
           hoeren: 20 
-        },
-        hoerenCorrect: {
-          "41": "falsch", "42": "falsch", "43": "falsch", "44": "richtig", "45": "richtig",
-          "46": "falsch", "47": "falsch", "48": "richtig", "49": "richtig", "50": "falsch",
-          "51": "falsch", "52": "richtig", "53": "falsch", "54": "falsch", "55": "falsch",
-          "56": "richtig", "57": "falsch", "58": "falsch", "59": "falsch", "60": "richtig"
-        },
-        lesenCorrect: Object.assign({},
-          {"text1": "j", "text2": "h", "text3": "b", "text4": "a", "text5": "e"},
-          {"s2q1": "s2q1o3", "s2q2": "s2q2o3", "s2q3": "s2q3o3", "s2q4": "s2q4o1", "s2q5": "s2q5o3"},
-          {"11": "L", "12": "H", "13": "D", "14": "B", "15": "H", "16": "D", "17": "X", "18": "E", "19": "G", "20": "X"},
-          {"21": "was", "22": "denn", "23": "noch", "24": "annehmen", "25": "um", "26": "sobald", "27": "auch wenn", "28": "für", "29": "neulich", "30": "wollen"},
-          {"31": "ANHAND", "32": "VON", "33": "SOWIE", "34": "AUS", "35": "AUF", "36": "ANSTRENGEND", "37": "FOLGLICH", "38": "EHER", "39": "ZU", "40": "WOHL"}
-        )
+        }
       };
 
+      // ===== دوال مساعدة =====
       function normalizeAnswer(a) {
         if (a === null || a === undefined) return '';
         let s = String(a).trim();
-        if (s === '') return '';
+        if (s === '') return '-'; // إذا لم يجب، نعرض "-"
         const low = s.toLowerCase();
         if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
         if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
         return s;
       }
 
-      function keyZeroToTen(k) {
-        return k === '0' ? '10' : k;
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
       }
 
+      // ===== قراءة النتائج =====
       function readExamResults() {
         try {
           const lesen = {};
           const hoeren = {};
           const schreiben = { content: '', wordCount: 0 };
 
-          // 1) Try to read from in-memory states exposed by pages
+          // قراءة من الذاكرة
           try {
             if (window._lesenState && window._lesenState.answers) {
               Object.keys(window._lesenState.answers).forEach(k => {
@@ -3361,11 +3369,11 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
                 const keys = Object.keys(answers);
                 if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
               }
-              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0;
+              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0;
             }
           } catch (e) {}
 
-          // 2) Fallback to localStorage if any part is still empty
+          // إذا كانت النتائج فارغة، نقرأ من localStorage
           try {
             if (Object.keys(lesen).length === 0) {
               const storedL = localStorage.getItem('lesenAnswers');
@@ -3386,57 +3394,32 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
               if (storedS) {
                 const obj = JSON.parse(storedS);
                 schreiben.content = obj.content || '';
-                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0);
+                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0);
               }
             }
           } catch (e) {}
 
-          // final safe return
           return { hoeren, lesen, schreiben };
         } catch (e) {
           return { hoeren: {}, lesen: {}, schreiben: {} };
         }
       }
 
-      function gradeHoeren(u) {
-        const c = CONFIG.hoerenCorrect;
-        let okCount = 0;
-        const d = [];
-        
-        for (let q = 41; q <= 60; q++) {
-          const k = String(q);
-          const uA = normalizeAnswer(u[k] || '');
-          const exp = normalizeAnswer(c[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
-          if (ok) okCount++;
-          const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
-          d.push({
-            frage: k,
-            user: uA || '-',
-            correct: exp || '-',
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
-          });
-        }
-        
-        const total = Number((okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2));
-        return { okCount, total, details: d };
-      }
-
+      // ===== تصحيح القراءة =====
       function gradeLesen(u) {
-        const c = CONFIG.lesenCorrect;
+        const c = CORRECT_ANSWERS.lesen;
         let okCount = 0;
         const d = [];
         
         Object.keys(c).forEach(k => {
           const exp = normalizeAnswer(c[k]);
           const uA = normalizeAnswer(u[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
           if (ok) okCount++;
           const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
           d.push({
             frage: k,
-            user: uA || '-',
+            user: uA,
             correct: exp || '-',
             richtig: ok,
             punkte: ok ? ptsPer.toFixed(2) : '0'
@@ -3447,57 +3430,261 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
         return { okCount, total, details: d };
       }
 
-      function escapeHtml(s) {
-        return String(s)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
+      // ===== تصحيح الاستماع =====
+      function gradeHoeren(u) {
+        const c = CORRECT_ANSWERS.hoeren;
+        let okCount = 0;
+        const d = [];
+        
+        for (let q = 41; q <= 60; q++) {
+          const k = String(q);
+          const uA = normalizeAnswer(u[k] || '');
+          const exp = normalizeAnswer(c[k] || '');
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
+          if (ok) okCount++;
+          const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
+          d.push({
+            frage: k,
+            user: uA,
+            correct: exp || '-',
+            richtig: ok,
+            punkte: ok ? ptsPer.toFixed(2) : '0'
+          });
+        }
+        
+        const total = Number((okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2));
+        return { okCount, total, details: d };
       }
 
+      // ===== دالة بناء الجداول =====
       function buildTable(title, dets, total, max) {
-        let h = `<h2>${title}</h2>
-                <table class="section-table">
+        let html = `<div class="result-item">
+                      <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
+                      <table class="true-false-table" style="margin: 15px 0;">
+                        <thead>
+                          <tr>
+                            <th style="width: 10%">Frage</th>
+                            <th style="width: 35%">Ihre Antwort</th>
+                            <th style="width: 35%">Richtige Antwort</th>
+                            <th style="width: 20%">Ergebnis</th>
+                          </tr>
+                        </thead>
+                        <tbody>`;
+        
+        dets.forEach(x => {
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${x.frage}</strong></td>
+                    <td>${escapeHtml(x.user)}</td>
+                    <td>${escapeHtml(x.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody>
+                </table>
+                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                  <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
+                </div>
+              </div>`;
+        return html;
+      }
+
+      // ===== دالة تفاصيل القراءة =====
+      function renderLesenDetails(answers) {
+        const l = gradeLesen(answers || {});
+        let html = `<div class="result-item">
+                    <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>
+                    <div style="margin-bottom: 20px; padding: 10px; background: #f0f8ff; border-radius: 6px;">
+                      <strong>Gesamtpunkte: ${l.total.toFixed(2)}/${CONFIG.totals.lesen} (${((l.total/CONFIG.totals.lesen)*100).toFixed(1)}%)</strong>
+                    </div>`;
+        
+        // قسم Überschriften zuordnen
+        const headingQuestions = l.details.filter(d => d.frage.startsWith('text'));
+        html += `<h4 style="margin-top: 20px; color: #1e3a5f;">Teil 1: Überschriften zuordnen</h4>
+                <table class="true-false-table" style="margin: 10px 0;">
+                  <thead>
+                    <tr>
+                      <th>Text</th>
+                      <th>Ihre Antwort</th>
+                      <th>Richtige Antwort</th>
+                      <th>Ergebnis</th>
+                    </tr>
+                  </thead>
+                  <tbody>`;
+        
+        headingQuestions.forEach(q => {
+          const isCorrect = q.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${q.frage}</strong></td>
+                    <td>${escapeHtml(q.user)}</td>
+                    <td>${escapeHtml(q.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody></table>`;
+        
+        // قسم Fragen zum Text
+        const s2Questions = l.details.filter(d => d.frage.startsWith('s2q'));
+        html += `<h4 style="margin-top: 20px; color: #1e3a5f;">Teil 2: Fragen zum Text</h4>
+                <table class="true-false-table" style="margin: 10px 0;">
                   <thead>
                     <tr>
                       <th>Frage</th>
                       <th>Ihre Antwort</th>
                       <th>Richtige Antwort</th>
                       <th>Ergebnis</th>
-                      <th>Punkte</th>
                     </tr>
                   </thead>
                   <tbody>`;
         
-        dets.forEach(x => {
-          h += `<tr>
-                  <td>${x.frage}</td>
-                  <td>${escapeHtml(x.user)}</td>
-                  <td>${escapeHtml(x.correct)}</td>
-                  <td>${x.richtig ? '✔️' : '✖️'}</td>
-                  <td>${x.punkte}</td>
-                </tr>`;
+        s2Questions.forEach(q => {
+          const isCorrect = q.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${q.frage}</strong></td>
+                    <td>${escapeHtml(q.user)}</td>
+                    <td>${escapeHtml(q.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
         });
         
-        h += `</tbody>
-              </table>
-              <div class="small-muted">Teilpunkte: ${total.toFixed(2)} / ${max}</div>`;
-        return h;
+        html += `</tbody></table>`;
+        
+        // قسم Texte zuordnen
+        const s3Questions = l.details.filter(d => ['11','12','13','14','15','16','17','18','19','20'].includes(d.frage));
+        html += `<h4 style="margin-top: 20px; color: #1e3a5f;">Teil 3: Texte zuordnen</h4>
+                <table class="true-false-table" style="margin: 10px 0;">
+                  <thead>
+                    <tr>
+                      <th>Situation</th>
+                      <th>Ihre Antwort</th>
+                      <th>Richtige Antwort</th>
+                      <th>Ergebnis</th>
+                    </tr>
+                  </thead>
+                  <tbody>`;
+        
+        s3Questions.forEach(q => {
+          const isCorrect = q.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${q.frage}</strong></td>
+                    <td>${escapeHtml(q.user)}</td>
+                    <td>${escapeHtml(q.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody></table>`;
+        
+        // قسم Sprachbausteine
+        const sprachQuestions = l.details.filter(d => 
+          ['21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40'].includes(d.frage)
+        );
+        html += `<h4 style="margin-top: 20px; color: #1e3a5f;">Teil 4 & 5: Sprachbausteine</h4>
+                <table class="true-false-table" style="margin: 10px 0;">
+                  <thead>
+                    <tr>
+                      <th>Lücke</th>
+                      <th>Ihre Antwort</th>
+                      <th>Richtige Antwort</th>
+                      <th>Ergebnis</th>
+                    </tr>
+                  </thead>
+                  <tbody>`;
+        
+        sprachQuestions.forEach(q => {
+          const isCorrect = q.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${q.frage}</strong></td>
+                    <td>${escapeHtml(q.user)}</td>
+                    <td>${escapeHtml(q.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody></table>
+                </div>`;
+        return html;
       }
 
+      // ===== دالة تفاصيل الاستماع =====
+      function renderHoerenDetails(answers) {
+        const h = gradeHoeren(answers || {});
+        let html = `<div class="result-item">
+                    <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+                    <div style="margin-bottom: 20px; padding: 10px; background: #f0f8ff; border-radius: 6px;">
+                      <strong>Gesamtpunkte: ${h.total.toFixed(2)}/${CONFIG.totals.hoeren} (${((h.total/CONFIG.totals.hoeren)*100).toFixed(1)}%)</strong>
+                    </div>
+                    <table class="true-false-table" style="margin: 10px 0;">
+                      <thead>
+                        <tr>
+                          <th style="width: 10%">Frage</th>
+                          <th style="width: 40%">Aussage</th>
+                          <th style="width: 15%">Ihre Antwort</th>
+                          <th style="width: 15%">Richtige Antwort</th>
+                          <th style="width: 20%">Ergebnis</th>
+                        </tr>
+                      </thead>
+                      <tbody>`;
+        
+        for (let q = 41; q <= 60; q++) {
+          const id = q.toString();
+          const userAnswer = normalizeAnswer(answers[id] || '');
+          const correctAnswer = CORRECT_ANSWERS.hoeren[id];
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          let questionText = '';
+          if (q >= 41 && q <= 45) questionText = "Hörverstehen Teil 1";
+          else if (q >= 46 && q <= 55) questionText = "Hörverstehen Teil 2";
+          else if (q >= 56 && q <= 60) questionText = "Hörverstehen Teil 3";
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${questionText}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody>
+                </table>
+                </div>`;
+        return html;
+      }
+
+      // ===== الدالة الرئيسية =====
       function renderResults() {
-        const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
+        const st = readExamResults();
         const h = gradeHoeren(st.hoeren || {});
         const l = gradeLesen(st.lesen || {});
         const details = document.getElementById('details-ergebnisse');
         const tiles = document.getElementById('topTiles-ergebnisse');
         const sScoreRaw = localStorage.getItem('schreibenScore');
-        const sScore = sScoreRaw ? Number(sScoreRaw) : 0; // Default score is now 0
+        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
 
         details.innerHTML = '';
         tiles.innerHTML = '';
 
+        // عرض البلاطات العلوية
         const tL = `<div class="results-tile">
                     <h3>Lesen</h3>
                     <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
@@ -3518,23 +3705,35 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
                   
         tiles.innerHTML = tL + tH + tS;
 
-        details.innerHTML += buildTable('Hören — Detail', h.details, h.total, CONFIG.totals.hoeren);
-        details.innerHTML += buildTable('Lesen — Detail', l.details, l.total, CONFIG.totals.lesen);
+        // عرض التفاصيل
+        details.innerHTML = `
+          <h2>📊 Detaillierte Ergebnisse</h2>
+          <div class="instructions" style="margin-bottom: 20px;">
+            Hier sehen Sie eine detaillierte Aufstellung Ihrer Ergebnisse. Die korrekten Antworten sind mit ✅ markiert, falsche mit ❌.
+            Wenn Sie keine Antwort gegeben haben, wird "-" angezeigt.
+          </div>`;
+        
+        details.innerHTML += renderLesenDetails(st.lesen);
+        details.innerHTML += renderHoerenDetails(st.hoeren);
 
-        let sHtml = '<h2>Schreiben — Ergebnis (manuell)</h2>';
+        // قسم الكتابة
+        let sHtml = '<div class="result-item">';
+        sHtml += '<h3>✍️ Schreiben - Ihre Antwort</h3>';
         const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
         const wc = st.schreiben.wordCount || '-';
         
-        sHtml += `<div class="small-muted">Wörter: ${wc}</div>
+        sHtml += `<div class="small-muted" style="margin-bottom: 10px;">Wörter: ${wc}</div>
                 <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px">${txt}</div>
-                <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
+                <div style="margin-top:20px;display:flex;gap:10px;align-items:center">
                   Punkte (0–45): 
-                  <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
-                  <button id="saveS" class="results-btn">Speichern</button>
+                  <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}" style="width: 100px;"> 
+                  <button id="saveS" class="results-btn">💾 Speichern</button>
+                </div>
                 </div>`;
                 
         details.innerHTML += sHtml;
 
+        // عرض الإجمالي
         const total = (l.total + h.total + sScore).toFixed(2);
         const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);
         
@@ -3547,6 +3746,7 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
             Prozentsatz: <strong>${percent} %</strong>
           </div>`;
 
+        // حدث حفظ نقاط الكتابة
         document.getElementById('saveS').onclick = () => {
           const v = Number(document.getElementById('sInput').value) || 0;
           localStorage.setItem('schreibenScore', v);
@@ -3566,13 +3766,14 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
         };
       }
 
+      // أحداث الأزرار
       document.getElementById('calcBtn-ergebnisse').onclick = () => renderResults();
       document.getElementById('backBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
         showPage('start-page');
       };
       
-      // Initialize results on page load
+      // تهيئة النتائج عند تحميل الصفحة
       renderResults();
     }
   </script>

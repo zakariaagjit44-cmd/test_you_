@@ -1512,6 +1512,201 @@
     // Start countdown automatically when page loads
     window.addEventListener('load', startCountdown);
 
+    // ===== CORRECT ANSWERS OBJECT =====
+    const CORRECT_ANSWERS = {
+      lesen: {
+        // Leseverstehen, Teil 1
+        "1": "f",
+        "2": "g",
+        "3": "e",
+        "4": "c",
+        "5": "a",
+        
+        // Leseverstehen, Teil 2
+        "s2q1": "s2q1o2",
+        "s2q2": "s2q2o2",
+        "s2q3": "s2q3o2",
+        "s2q4": "s2q4o1",
+        "s2q5": "s2q5o1",
+        
+        // Leseverstehen, Teil 3
+        "11": "A",
+        "12": "B",
+        "13": "C",
+        "14": "G",
+        "15": "D",
+        "16": "H",
+        "17": "I",
+        "18": "J",
+        "19": "X",
+        "20": "X",
+        
+        // Sprachbausteine, Teil 1
+        "21": "zu",
+        "22": "kommenden",
+        "23": "nach",
+        "24": "bieten",
+        "25": "so dass",
+        "26": "Gemeinsam mit",
+        "27": "der Besuch",
+        "28": "is geplant",
+        "29": "besprochen",
+        "30": "haben",
+        
+        // Sprachbausteine, Teil 2
+        "31": "MIT",
+        "32": "BEI",
+        "33": "DAS",
+        "34": "DAFÜR",
+        "35": "SONDERN",
+        "36": "OBWOHL",
+        "37": "WEIL",
+        "38": "DASS",
+        "39": "AUF",
+        "40": "VON"
+      },
+      
+      hoeren: {
+        // Hörverstehen, Teil 1
+        "41": "richtig",
+        "42": "richtig",
+        "43": "falsch",
+        "44": "falsch",
+        "45": "richtig",
+        
+        // Hörverstehen, Teil 2
+        "46": "richtig",
+        "47": "falsch",
+        "48": "richtig",
+        "49": "richtig",
+        "50": "richtig",
+        "51": "falsch",
+        "52": "falsch",
+        "53": "richtig",
+        "54": "falsch",
+        "55": "falsch",
+        
+        // Hörverstehen, Teil 3
+        "56": "richtig",
+        "57": "falsch",
+        "58": "falsch",
+        "59": "richtig",
+        "60": "falsch"
+      }
+    };
+
+    // ===== HELPER FUNCTIONS =====
+    function normalizeAnswer(a) {
+      if (a === null || a === undefined || a === '') return '-';
+      let s = String(a).trim();
+      if (s === '') return '-';
+      const low = s.toLowerCase();
+      if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
+      if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
+      return s;
+    }
+
+    function getHeadingText(headingId) {
+      if (!headingId || headingId === '-') return '-';
+      const headings = {
+        "a": "An deutschen Grundschulen sind männliche Lehrkräfte selten",
+        "b": "Bildungsexperten warnen: Deutsche Lehrer sind schlecht ausgebildet",
+        "c": "Bildungsforscher: Lehrermangel wird in Deutschland nicht eintreten",
+        "d": "Die Zahl der männlichen Lehrkräfte an Grundschulen nimmt zu",
+        "e": "Experten befürchten zunehmenden Lehrermangel in Deutschland",
+        "f": "Gewerkschaft erwartet Lehrermangel in Berlin",
+        "g": "GEW befürchtet Abwanderung von gut ausgebildeten Lehrkräften aus Berlin",
+        "h": "Immer mehr Berliner wandern aus",
+        "i": "Immer weniger Frauen machen ein Grundschullehrer-Studium",
+        "j": "Vorausschauende Politiker verhindern Lehrermangel in Berlin"
+      };
+      return headings[headingId] || headingId;
+    }
+
+    function getOptionText(questionId, optionId) {
+      if (!optionId || optionId === '-') return '-';
+      const options = {
+        "s2q1o1": "damit sie die Jahre bis zur Arbeit in der Fabrik überbrücken konnten.",
+        "s2q1o2": "damit sie lernten, einen Haushalt zu führen.",
+        "s2q1o3": "damit sie besser beaufsichtigt waren als zu Hause.",
+        "s2q2o1": "durch Vermittler, die ins Dorf kamen.",
+        "s2q2o2": "alleine.",
+        "s2q2o3": "mit Hilfe ihrer Eltern.",
+        "s2q3o1": "fast nur bei reicheren Leuten.",
+        "s2q3o2": "auch bei den weniger reichen Leuten.",
+        "s2q3o3": "in jedem Haus in der Stadt.",
+        "s2q4o1": "mussten länger arbeiten als Fabrikarbeiter.",
+        "s2q4o2": "hatten feste Arbeitszeiten.",
+        "s2q4o3": "hatten keine geregelten Arbeitszeiten.",
+        "s2q5o1": "blieben bis zu ihrer Rente in diesem Beruf.",
+        "s2q5o2": "heirateten und wurden Hausfrauen.",
+        "s2q5o3": "wechselten später in eine Fabrik."
+      };
+      return options[optionId] || optionId;
+    }
+
+    function getSituationText(id) {
+      const situations = {
+        "11": "Sie möchten Ihren Eltern zur Silberhochzeit eine besondere Schiffsreise auf dem Meer schenken.",
+        "12": "Ihre Freundin möchte mit ihrem Mann Silvester und Neujahr im Urlaub feiern, aber nicht schon wieder im Gebirge.",
+        "13": "Ein Bekannter möchte im Winter ein besinnliches Wochenende in den Bergen verbringen, denn er mag es, durch die verschneite Natur zu laufen.",
+        "14": "Eine Bekannte aus dem Rhein-Main-Gebiet sucht Vorschläge für Ein-Tages-Ausflüge, denn sie übernachtet nicht gern in fremden Betten.",
+        "15": "Sie wollen wie jedes Jahr in der zweiten Jahreshälfte eine zirka einwöchige organisierte Urlaubsreise in Europa machen und sich dabei viel mit dem Fahrrad fortbewegen.",
+        "16": "Sie möchten einen netten Abend mit Freunden bei gutem Essen und außergewöhnlichem Unterhaltungsprogramm verleben.",
+        "17": "Sie suchen für eine prunkvolle Hochzeitsfeier geeignete festliche Räumlichkeiten in einer stimmungsvollen klösterlichen Umgebung für zirka 50 Personen.",
+        "18": "Sie sind neu in Frankfurt a. M. und suchen deshalb nach nützlichen Informationen und praktischen Tipps, um sich schnell in der neuen Umgebung einzuleben.",
+        "19": "Sie interessieren sich für Bücher über Architektur und Gartenarchitektur deutscher Klosteranlagen.",
+        "20": "Sie suchen gute Kriminalromane, deren Handlung im Rhein-Main-Gebiet und besonders in Frankfurt spielt."
+      };
+      return situations[id] || id;
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function buildTable(title, dets, total, max) {
+      let html = `<div class="result-item">
+                    <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
+                    <div class="section-table">
+                      <table class="true-false-table">
+                        <thead>
+                          <tr>
+                            <th style="width: 10%">Frage</th>
+                            <th style="width: 40%">Ihre Antwort</th>
+                            <th style="width: 40%">Richtige Antwort</th>
+                            <th style="width: 10%">Ergebnis</th>
+                          </tr>
+                        </thead>
+                        <tbody>`;
+      
+      dets.forEach(x => {
+        const isCorrect = x.richtig;
+        const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+        const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
+        
+        html += `<tr class="${rowClass}">
+                  <td><strong>${x.frage}</strong></td>
+                  <td>${escapeHtml(x.user)}</td>
+                  <td>${escapeHtml(x.correct)}</td>
+                  <td><strong>${resultIcon}</strong></td>
+                </tr>`;
+      });
+      
+      html += `</tbody>
+              </table>
+              <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
+              </div>
+            </div></div>`;
+      return html;
+    }
+
     // ===== LESEN PAGE FUNCTIONALITY =====
     function initLesenPage() {
       /* ===== Self-contained exam (embedded) ===== */
@@ -1534,7 +1729,7 @@
               },
               {
                 id: "2", 
-                content: "Wer sich in Berlin um eine Stelle als Lehrer bewirbt, muss hart im Nehmen sein. 'Während man in Hamburg respektvoll behandelt wird, rechnen Vertreter der Berliner Schulverwaltung den Bewerbern vor, wie teuer Lehrer sind. Da fühlt man sich nicht richtig gewollt', sagt Maria Schütz. Die 27-jährige gehört zu den rund 500 Referendaren, die in zwei Wochen mit ihrem Studium fertig werden. Maria Schütz, die ihr Exam mit der Note 1,5 bestanden hat und unbedingt in Berlin unterrichten wollte, hat mit ihrer Bewerbung leidvolle Erfahrungen hinter Sich. 'Während man in Hamburg sofort eine feste Stelle im Beamtenverhältnis angeboten hat, konnte mir in Berlin keiner zusagen, dass ich im nächsten Schuljahr gebraucht werde.' Die junge Frau hat das gute Angebot aus Hamburg einer unsicheren Zukunft in Berlin vorgezogen. Für Anna Richter, Vorsitzende der Lehrergewerkschaft GEW, ist Marias Geschichte nur eine von vielen. Ihre Organisation ist besorgt darüber, dass Berlin auf diese Weise viele gut qualifizierte Lehrer an andere Bundesländer verlieren könnte.",
+                content: "Wer sich in Berlin um eine Stelle als Lehrer bewirbt, muss hart im Nehmen sein. 'Während man in Hamburg respektvoll behandelt wird, rechnen Vertreter der Berliner Schulverwaltung den Bewerbern vor, wie teuer Lehrer sind. Da fühlt man sich nicht richtig gewollt', sagt Maria Schütz. Die 27-jährige gehört zu den rund 500 Referendaren, die in zwei Wochen mit ihrem Studium fertig werden. Maria Schütz, die ihr Exam mit der Note 1,5 bestanden hat und unbefingt in Berlin unterrichten wollte, hat mit ihrer Bewerbung leidvolle Erfahrungen hinter Sich. 'Während man in Hamburg sofort eine feste Stelle im Beamtenverhältnis angeboten hat, konnte mir in Berlin keiner zusagen, dass ich im nächsten Schuljahr gebraucht werde.' Die junge Frau hat das gute Angebot aus Hamburg einer unsicheren Zukunft in Berlin vorgezogen. Für Anna Richter, Vorsitzende der Lehrergewerkschaft GEW, ist Marias Geschichte nur eine von vielen. Ihre Organisation ist besorgt darüber, dass Berlin auf diese Weise viele gut qualifizierte Lehrer an andere Bundesländer verlieren könnte.",
                 correctAnswer: "g"
               },
               {
@@ -1654,10 +1849,10 @@ Der Lohn bestand im Wesentlichen aus Kost und Unterkunft. Etwas zurücklegen fü
               {id: "D", text: "Fluss- und Radreise durch Belgien 8 Tage Fluss- und Radreise durch Belgien. Abseits der Hauptstraßen fahren Sie mit Schiff und Rad durch die flache Polderlandschaft Belgiens, die dafür ideal geeignet ist. Die Städte Brügge und Brüssel bilden den Anfangs- und Endpunkt der Reise. Im Reisepreis enthalten: Bahnreise in der 2. Klasse ab Frankfurt, Transfers vom Bahnhof zum Schiff und zurück. 7 Nächte in Außenkabinen an Board der Quo Vadis, Frühstück, Mittagessen oder Lunchpaket für Fahrradtouren, Abendessen. Tägliche Tourenbesprechungen, Landkarten, alle Hafen-, Schleusen- und Brückengebühren, Leihgebühr für ein 7-Gang-Unisex-Rad, qualifizierte, ortskundige Reiseleitung. Die Radstrecke beträgt ca. 296 km. Termin: 19. bis 26. September. Preis: 1199 € p. P. in Zweibettkabine.", correctAnswer: "13"},
               {id: "E", text: "Radwandern durch das Veneto 8 Tage Radwandern durch das Veneto. Sogar Goethe war sprachlos - so schön ist Norditalien. Ruhige, flache Wege geleiten Sie vom Gardasee über Verona nach Vicenza. Durchs Etschtal und über die Lagunen kommen Sie nach Venedig. Im Reisepreis enthalten: Bahnreise 2. Klasse von Frankfurt nach Verona und zurück von Venedig inklusive Schafwagen. Tranfer von und zum Bahnhof in Verona und Venedig. 6 Übernachtungen in ausgewählten Hotels inkl. Frühstück, 6 Abendessen, Picknickservice, Leih-Tourenrad mit 8-Gang-Schaltung, sämtliche Eintritte laut Programm, qualifizierte, ortskundige Reiseleitung, Kleinbus als Begleitfahrzeug, Gepäcktransport. Termin: 5. bis 12. April. Preis: 1399 € p. P. im DZ.", correctAnswer: "14"},
               {id: "F", text: "Übernachten Im Namen der Rose Berühmt wurde Kloster Eberbach 1988 als Schauplatz für die Innenaufnahmen zum Film Der Name der Rose. Zwar gibt es heute kein klösterliches Leben mehr, aber das in seinen Baukörpern erhaltene Kloster gilt als das bedeutendste mittelalterliche Gesamtkunstwerk Hessens. Die jahrhundertealte Weinbautradition hat sich bis heute fortgesetzt. Wer völlig unbeschwert die Weinverkostungen erleben möchte, kann das Herbst-Winter-Wochenend-Spezial nutzen, das die Gastronomiebetriebe im Kloster Eberbach zusammengestellt haben. Das Angebot umfasst auch eine Übernachtung im Doppelzimmer von Samstag auf Sonntag. Es beinhaltet zudem ein reichhaltiges Früstücksbuffet und ein Vier-Gänge-Überraschungsmenü am Abend. Der Preis pro Person beträgt 97,- €. Weitere Informationen gibt es bei den Gastronomiebetrieben im Kloster Eberbach, Eltville, unter Telefon 06723/993-0. ", correctAnswer: "15"},
-              {id: "G", text: "Tagestouren in Rheinhessen und im Rheingau Mit der Zahnstangenbahn auf den Wiesbadener Neroberg fahren, in Geisenheim mediterran kochen lernen, wandern mit Lamas und Alpakas als Begleiter, in Siefersheim mit Kräuterfrauen nach vergessenen Pflanzen suchen oder eine Führung durch Kloster Eberrbach mit anschließender Weinprobe — 111 Tipps für Tagestouren in Rheinhessen und im Rheingau stellt der neue Band “Ein schöner Tag” vor. Darunter sind auch echte Geheimtipps. Zum Beispiel, wie Besucher im Mainzer Dom ins Innere der Orgel steigen können oder wo die “Nacht der Verführung” stattfindet.", correctAnswer: "16"},
-              {id: "H", text: "Die Digitalisierung verändert die Arbeitswelt grundlegend. Immer mehr Tätigkeiten werden automatisiert, neue Berufe entstehen, andere verschwinden. Arbeitnehmer müssen sich kontinuierlich weiterbilden, um mit den Veränderungen Schritt halten zu können. Flexible Arbeitszeiten, Homeoffice und virtuelle Teams werden immer häufiger. Diese Entwicklung bietet neue Chancen, stellt aber auch neue Anforderungen an die BAbend im Palladio Wenn die Tage kürzer und die Nächte kälter werden, ist es Zeit für Artistik, Comedy und Gaumenfreuden. Magier, Jongleure, Akrobaten und ein Vier-Gang-Gourmet-Menü im Schein hunderter Kerzen: Ein Abend im Palladio verspricht unterhaltsame Stunden mit perfektem Genuss im stilvollen Ambiente des traumhaft schönen, nostalgischen Spiegelpalastes. Das Gourmet-Theater Palladio serviert Ihnen seine charmante Mixtur aus hochkarätigem Entertainmente und exquisiter Kochkunst. Freuen Sie sich auf köstliche Menükreationen und erleben Sie dreieinhalb Stunden voller Humor und Lebensfreude. Lassen Sie sich verwöhnen und verzaubern! Dienstags bis sonntags sind wir für Sie da: Beginn ist jeweils um 20.00 Uhr. Foyer und Bar sind bereits 90 Minuten vor Showbeginn geöffnet.eschäftigten. Lebenslanges Lernen wird zur Notwendigkeit.", correctAnswer: null},
+              {id: "G", text: "Tagestouren in Rheinhessen und im Rheingau Mit der Zahnstangenbahn auf den Wiesbadener Neroberg fahren, in Geisenheim mediterran kochen lernen, wandern mit Lamas und Alpakas als Begleiter, in Siefersheim mit Kräuterfrauen nach vergessenen Pflanzen suchen oder eine Führung durch Kloster Eberrbach mit anschließender Weinprobe — 111 Tipps für Tagestouren in Rheinhessen und im Rheingau stellt der neue Band \"Ein schöner Tag\" vor. Darunter sind auch echte Geheimtipps. Zum Beispiel, wie Besucher im Mainzer Dom ins Innere der Orgel steigen können oder wo die \"Nacht der Verführung\" stattfindet.", correctAnswer: "16"},
+              {id: "H", text: "Abend im Palladio Wenn die Tage kürzer und die Nächte kälter werden, ist es Zeit für Artistik, Comedy und Gaumenfreuden. Magier, Jongleure, Akrobaten und ein Vier-Gang-Gourmet-Menü im Schein hunderter Kerzen: Ein Abend im Palladio verspricht unterhaltsame Stunden mit perfektem Genuss im stilvollen Ambiente des traumhaft schönen, nostalgischen Spiegelpalastes. Das Gourmet-Theater Palladio serviert Ihnen seine charmante Mixtur aus hochkarätigem Entertainmente und exquisiter Kochkunst. Freuen Sie sich auf köstliche Menükreationen und erleben Sie dreieinhalb Stunden voller Humor und Lebensfreude. Lassen Sie sich verwöhnen und verzaubern! Dienstags bis sonntags sind wir für Sie da: Beginn ist jeweils um 20.00 Uhr. Foyer und Bar sind bereits 90 Minuten vor Showbeginn geöffnet.", correctAnswer: null},
               {id: "I", text: "Kloster Eberbach Kloster Eberbach mit seinen eindrucksvollen mittelalterlichen und barocken Bauten bietet seinen Gästen einzigartige Voraussetzungen für eine stilvolle Veranstaltung in altehrwürdigen Klostermauern. Sie können viele unserer repräsentativen Säle und prachtvollen Räume für Veranstaltungen anmieten. Ob Sie einen festlichen Empfang oder ein nobles Bankett planen oder ob Ihnen eine stilvolle Produktpräsentation vorschwebt: Hier lässt sich all dies hervorragend inszenieren. Die breite Palette unserer Räumlichkeiten und Gärten gibt Raum für Gesellschaften von 20 bis 1.000 Personen und lässt im Zusammenspiel mit dem Ambiente der Klosteranlage jede Veranstaltung zu einem ganz besonderen Ereignis werden. Hier finden Sie den richtigen Rahmen für Ihre Familienfeier, Ihr Seminar, Ihren Betriebsausflug, ein festliches Bankett oder eine Vortragsveranstaltung. Einige Räume sind zudem für Hochzeiten, Konzerte und Lesungen geeignet.", correctAnswer: "17"},
-              {id: "J", text: "R1 Abend im Palladio Wenn die Tage kürzer und die Nächte kälter werden, ist es Zeit für Artistik, Comedy und Gaumenfreuden. Magier, Jongleure, Akrobaten und ein Vier-Gang-Gourmet-Menü im Schein hunderter Kerzen: Ein Abend im Palladio verspricht unterhaltsame Stunden mit perfektem Genuss im stilvollen Ambiente des traumhaft schönen, nostalgischen Spiegelpalastes. Das Gourmet-Theater Palladio serviert Ihnen seine charmante Mixtur aus hochkarätigem Entertainmente und exquisiter Kochkunst. Freuen Sie sich auf köstliche Menükreationen und erleben Sie dreieinhalb Stunden voller Humor und Lebensfreude. Lassen Sie sich verwöhnen und verzaubern! Dienstags bis sonntags sind wir für Sie da: Beginn ist jeweils um 20.00 Uhr. Foyer und Bar sind bereits 90 Minuten vor Showbeginn geöffnet. Stadt-Führer Frankfurt am Main. Kultur & mehr Viel Lob von der Lokalpresse für einen neuen Stadt-Führer über die Mainmetropole: Anne Schütz: Frankfurt am Main. Kultur & mehr. Paul Müller Verlag, 15,95 €. Dieser umfangreiche Reise-Führer wartet mit einer ganz besonderen Mischung auf: Rundgänge zur Stadtgeschichte stehen neben einer geballten Ladung an praktischen Informationen. Besonders gelungen ist es, wie die Autorin historische Details mit Spaziergängen verzahnt. Sie rennt keinen Trends hinterher, sondern führt als kenntnisreiche Begleiterin durch ihre Stadt. Ein praktischer Stadtkulturführer für Einheimische und Besucher mit Hunderten von Tipps, Adressen, Öffnungszeiten und Preisen von Parks und Bädern über schöne Lokale bis zu Museen, Theatern und Veranstaltungsorten..", correctAnswer: "18"},
+              {id: "J", text: "Stadt-Führer Frankfurt am Main. Kultur & mehr Viel Lob von der Lokalpresse für einen neuen Stadt-Führer über die Mainmetropole: Anne Schütz: Frankfurt am Main. Kultur & mehr. Paul Müller Verlag, 15,95 €. Dieser umfangreiche Reise-Führer wartet mit einer ganz besonderen Mischung auf: Rundgänge zur Stadtgeschichte stehen neben einer geballten Ladung an praktischen Informationen. Besonders gelungen ist es, wie die Autorin historische Details mit Spaziergängen verzahnt. Sie rennt keinen Trends hinterher, sondern führt als kenntnisreiche Begleiterin durch ihre Stadt. Ein praktischer Stadtkulturführer für Einheimische und Besucher mit Hunderten von Tipps, Adressen, Öffnungszeiten und Preisen von Parks und Bädern über schöne Lokale bis zu Museen, Theatern und Veranstaltungsorten..", correctAnswer: "18"},
               {id: "K", text: "Tour zu Schauplätzen der berühmtesten Kriminalfälle Frankfurts Der Historiker und Stadtfüher Peter Glock begleitet Sie auf einer interessanten zweistündigen Tour durch die Innenstadt zu Schauplätzen der berühmtesten Kriminalfälle in der Geschichte Frankfurts. Sie erfahren alles über spektakuläre Verbrechen, wie z. B. den Mord an Rosemarie Nitribitt, die Hinrichtung von Vinzenz Fettmilch im Jahre 1616 oder die Ermordung des Klavierhändlers Lichtenstein im Jahre 1904, als erstmals ein Mordfall durch die Abnahme von Fingerabdrücken aufgeklärt wurde. Die Führung findet jeden Sonntag ab 14.00 Uhr statt. Treffpunkt: ", correctAnswer: "19"},
               {id: "L", text: "Statistisches Jahrbuch der Stadt Frankfurt An einem durchschnittlichen Tag in Frankfurt werden 19 Babya geboren, sieben Brautpaare heiraten, aber fünf Ehepaare lassen sich scheiden. 136 Frankfurter ziehen im Stadtgebiet um, sechs neue Wohnungen werden fertiggestellt und acht Ausländer eingebürgert. Im Statistischen Jahrbuch der Stadt Frankfurt werden alle wichtigen Zahlen zum Leben, Arbeiten und Wohnen in der Stadt erfasst. Das Bürgeramt, Zeil 3, gibt den Bericht alljährlich heraus. Interessierte können das Statistische Jahrbuch im Internet herunterladen (www.frankfurt.de). Der Download ist kostenfrei.", correctAnswer: "20"}
             ],
@@ -1741,7 +1936,7 @@ Die Unterkunft bei deutschen Gastfamilien ist prinzipiell möglich. Die Familien
 
 Zweimal pro Woche ist die Teilnahme am Schulunterricht Ihrer Partnerschule in Frankfurt, der Heinrich-Böll-Schule, in den Fächern Geografie, Kunst und Deutsch vorgesehen. Die Unterrichtssprache ist Deutsch. ________ Schülerinnen und Schülern der Partnerschule wird das Freizeit- und Kulturprogramm durchgeführt.
 
-Dazu gehört z. B. ________ der Gemäldegalerie "Städel", des Museums für Kunsthandwerk und des Deutschen Postmuseums. Auch ein Besuch beim Hessischen Rundfunk ________ Jeweils dienstags und freitags werden Kulturabende veranstaltet, an denen die verschiedenen Aspekte und Unterschiede der deutschen und der italienischen Kultur ________ werden sollen. Weitere Informationen finden Sie in der beiliegenden Broschüre. Wir hoffen, dass Sie und Ihre Klasse einen erlebnisreichen und unvergesslichen Aufenthalt in Frankfurt ________ werden. Bei weiteren Fragen setzen Sie sich bitte mit uns in Verbindung.
+Dazu gehört z. B. ________ der Gemäldegalerie "Städel", des Museums für Kunsthandwerk und des Deutschen Postmuseums. Auch ein Besuch beim Hessischen Rundfunk ________ Jeweils dienstags und freitags werden Kulturabende veranstaltet, an denen die verschiedenen Aspekte und Unterschiede der deutschen und der italienischen Kultur ________ werden sollen. Weitere Informationen finden Sie in der beiliegende Broschüre. Wir hoffen, dass Sie und Ihre Klasse einen erlebnisreichen und unvergesslichen Aufenthalt in Frankfurt ________ werden. Bei weiteren Fragen setzen Sie sich bitte mit uns in Verbindung.
 
 Mit freundlichen Grüßen
 
@@ -1971,7 +2166,7 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
               <div class="text-title">Text ${letter.toUpperCase()}</div>
               <div class="text-content">${text.content}</div>
               <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}">
-                ${selectedHeading ? getHeadingTextById(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
+                ${selectedHeading ? getHeadingText(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
               </div>
             </div>
           `;
@@ -1998,12 +2193,6 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
         
         questionBodyEl.innerHTML = '';
         questionTitleEl.textContent = '';
-      }
-
-      function getHeadingTextById(id){
-        const section = exam.sections[state.sectionIndex];
-        const heading = section.headings.find(h => h.id === id);
-        return heading ? `${heading.id}) ${heading.text}` : '';
       }
 
       function setupDragAndDrop(){
@@ -2281,17 +2470,14 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
 
       function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
-        // Build text but replace blanks with unique placeholders first (prevents ambiguous replacements)
         let textWithPlaceholders = section.fillText2;
         const placeholders = [];
         section.fillBlanks2.forEach(blank => {
           const ph = `BLANK_${blank.id}`;
           placeholders.push({id: blank.id, ph});
-          // replace first occurrence of the visual underline with placeholder
           textWithPlaceholders = textWithPlaceholders.replace('________', ph);
         });
 
-        // Now replace placeholders with actual span elements showing current answer (or underscore)
         placeholders.forEach(item => {
           const userAnswer = state.answers[item.id];
           const displayText = userAnswer ? userAnswer : '________';
@@ -2304,18 +2490,14 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
-        // attach click handlers to slots
         document.querySelectorAll('.blank-slot').forEach(slot => {
           slot.addEventListener('click', (e) => {
-            // use the element itself to open popup
             showSprachbausteine2Options(slot);
           });
         });
 
-        // Build word bank on the right
         let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
         const usedWords = Object.values(state.answers);
-        // Use section.wordBank if present, otherwise derive from fillBlanks2 options
         const bank = section.fillBlanks2[0] ? section.fillBlanks2[0].options : [];
         bank.forEach(word => {
           const isUsed = usedWords.includes(word);
@@ -2336,11 +2518,9 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
         setupSprachbausteine2DragAndDrop();
       }
 
-      // --- Added functions to handle drag/drop and clicks for Sprachbausteine Teil 2 ---
       let lastClickedSprachSlot = null;
 
       function setupSprachbausteine2DragAndDrop(){
-        // bank words: make draggable if not used, attach dragstart
         const bankWords = Array.from(document.querySelectorAll('.bank-word-vertical'));
         bankWords.forEach(el => {
           const word = el.dataset.word;
@@ -2349,16 +2529,13 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
           } else {
             el.setAttribute('draggable','false');
           }
-          // ensure single attached listener
           el.removeEventListener('dragstart', el._dstart);
           el._dstart = (e) => {
             e.dataTransfer.setData('text/plain', word);
-            // also set an indicator
             e.dataTransfer.setData('source', 'bank');
           };
           el.addEventListener('dragstart', el._dstart);
 
-          // keep onclick behavior (select into clicked slot)
           el.removeEventListener('click', el._onclick);
           el._onclick = () => {
             if(el.classList.contains('used')) return;
@@ -2367,7 +2544,6 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
           el.addEventListener('click', el._onclick);
         });
 
-        // blank slots: allow drop
         const slots = Array.from(document.querySelectorAll('.blank-slot'));
         slots.forEach(slot => {
           slot.addEventListener('dragover', (e) => {
@@ -2382,16 +2558,13 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
             slot.classList.remove('drag-over');
             const word = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/html');
             if(!word) return;
-            // Determine blank id
             const blankId = slot.dataset.blankId;
             if(!blankId) return;
-            // If this word is already used in another slot, free it
             Object.keys(state.answers).forEach(k => {
               if(state.answers[k] === word){
                 delete state.answers[k];
               }
             });
-            // If slot had a previous answer, free that bank word
             const prev = state.answers[blankId];
             if(prev){
               const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
@@ -2401,15 +2574,12 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
                 prevEl.addEventListener('click', prevEl._onclick);
               }
             }
-            // mark bank word used
             const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
             if(bankEl){
               bankEl.classList.add('used');
               bankEl.setAttribute('draggable','false');
-              // remove click to prevent double-placing
               bankEl.removeEventListener('click', bankEl._onclick);
             }
-            // assign to state and re-render
             state.answers[blankId] = word;
             renderAll();
           });
@@ -2417,14 +2587,12 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
       }
 
       function showSprachbausteine2Options(slot){
-        // highlight selected slot so click from bank knows target
         document.querySelectorAll('.blank-slot').forEach(s => s.classList.remove('selected-sprach'));
         slot.classList.add('selected-sprach');
         lastClickedSprachSlot = slot;
       }
 
       function selectSprachbausteine2FromBank(word){
-        // choose target slot: prefer lastClicked, otherwise first empty
         let slot = lastClickedSprachSlot;
         if(!slot){
           slot = Array.from(document.querySelectorAll('.blank-slot')).find(s => {
@@ -2433,17 +2601,14 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
           });
         }
         if(!slot) {
-          // if none available, do nothing
           return;
         }
         const blankId = slot.dataset.blankId;
-        // free previous occurrence of word
         Object.keys(state.answers).forEach(k => {
           if(state.answers[k] === word){
             delete state.answers[k];
           }
         });
-        // free previous word in target slot
         const prev = state.answers[blankId];
         if(prev){
           const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
@@ -2453,14 +2618,12 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
             if(prevEl._onclick) prevEl.addEventListener('click', prevEl._onclick);
           }
         }
-        // mark selected bank word as used
         const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
         if(bankEl){
           bankEl.classList.add('used');
           bankEl.setAttribute('draggable','false');
           if(bankEl._onclick) try{ bankEl.removeEventListener('click', bankEl._onclick); }catch(e){}
         }
-        // assign value
         state.answers[blankId] = word;
         try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
@@ -2618,7 +2781,6 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
       window._lesenState = state;
       window.lesenApp = {
         selectOption,
@@ -2633,13 +2795,12 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
       /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-hörverstehen",
-        durationSec: 17 * 60, // 17 minutes in seconds
+        durationSec: 17 * 60,
         sections: [
           { 
             id: "hörverstehen1", 
             title: "Hörverstehen, Teil 1", 
             points: 25,
-            correctAnswers: { "41": "richtig", "42": "richtig", "43": "falsch", "44": "falsch", "45": "richtig" },
             questions: [
               {
                 id: "41",
@@ -2667,7 +2828,6 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
             id: "hörverstehen2", 
             title: "Hörverstehen, Teil 2", 
             points: 25,
-            correctAnswers: { "46": "richtig", "47": "falsch", "48": "richtig", "49": "richtig", "50": "richtig", "51": "falsch", "52": "falsch", "53": "richtig", "54": "falsch", "55": "falsch" },
             questions: [
               {
                 id: "46",
@@ -2715,7 +2875,6 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
             id: "hörverstehen3", 
             title: "Hörverstehen, Teil 3", 
             points: 25,
-            correctAnswers: { "56": "richtig", "57": "falsch", "58": "falsch", "59": "richtig", "60": "falsch" },
             questions: [
               {
                 id: "56",
@@ -2742,7 +2901,6 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
         ]
       };
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
@@ -2757,7 +2915,6 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
       const timerEl = document.getElementById('timer-hoeren');
       const statusText = document.getElementById('statusText-hoeren');
 
-      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -2791,7 +2948,6 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -2806,11 +2962,8 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
       function isSectionDone(section) {
         const answers = state.answers[section.id];
         if (!answers) return false;
-        
-        // تحقق إذا تمت الإجابة على جميع الأسئلة في هذا القسم
         const answeredQuestions = Object.keys(answers).length;
         const totalQuestions = section.questions.length;
-        
         return answeredQuestions === totalQuestions;
       }
 
@@ -2897,9 +3050,6 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
         }
         state.answers[sectionId][questionId] = answer;
         try{ localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); }catch(e){}
-        
-        
-        // إعادة عرض البلاطات لتحديث حالة "تم"
         renderTopTiles();
       }
 
@@ -2927,8 +3077,8 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
           `;
           
           section.questions.forEach((question) => {
-            const userAnswer = userAnswers[question.id] || '-';
-            const correctAnswer = section.correctAnswers[question.id];
+            const userAnswer = normalizeAnswer(userAnswers[question.id] || '');
+            const correctAnswer = CORRECT_ANSWERS.hoeren[question.id];
             const gotCorrect = userAnswer === correctAnswer;
             const points = gotCorrect ? "1" : "0";
             
@@ -2962,7 +3112,6 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
         contentContainer.innerHTML = resultsHTML;
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-hoeren').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3009,24 +3158,21 @@ Eltern, die mit der deutschen Bahn mit ihren Kindern verreisen möchten, haben s
         showPage('schreiben-page');
       });
 
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
-        window._hoerenState = state;
-        window.hoerenApp = {
+      window._hoerenState = state;
+      window.hoerenApp = {
         updateListeningAnswer
       };
     }
 
     // ===== SCHREIBEN PAGE FUNCTIONALITY =====
     function initSchreibenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-002",
-        durationSec: 30 * 60, // 30 minutes in seconds
+        durationSec: 30 * 60,
         sections: [
           { 
             id: "s1", 
@@ -3065,7 +3211,6 @@ E-Mail: baumeister-betten@info.de`,
         ]
       };
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
@@ -3082,7 +3227,6 @@ E-Mail: baumeister-betten@info.de`,
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
 
-      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3116,7 +3260,6 @@ E-Mail: baumeister-betten@info.de`,
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -3148,7 +3291,6 @@ E-Mail: baumeister-betten@info.de`,
       function renderWritingSection() {
         const section = exam.sections[state.sectionIndex];
         
-        // Render the prompt in left panel
         passageContentEl.innerHTML = `
           <div class="writing-task">
             <div class="writing-prompt">${section.writingTask.prompt}</div>
@@ -3167,7 +3309,6 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
           </div>
         `;
         
-        // Render writing area in right panel
         const currentAnswer = state.answers[section.id] || '';
         const wordCount = countWords(currentAnswer);
         
@@ -3220,7 +3361,6 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
         writingContainer.innerHTML = '';
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-schreiben').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3243,7 +3383,7 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
       });
 
       document.getElementById('resetBtn-schreiben').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöschت.')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3267,14 +3407,12 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
         showPage('ergebnisse-page');
       });
 
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
-        window._schreibenState = state;
-        window.schreibenApp = {
+      window._schreibenState = state;
+      window.schreibenApp = {
         updateWritingAnswer
       };
     }
@@ -3291,35 +3429,8 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
         counts: { 
           lesen: 40, 
           hoeren: 20 
-        },
-        hoerenCorrect: {
-          "41": "richtig", "42": "richtig", "43": "falsch", "44": "falsch", "45": "richtig",
-          "46": "richtig", "47": "falsch", "48": "richtig", "49": "richtig", "50": "richtig",
-          "51": "falsch", "52": "falsch", "53": "richtig", "54": "falsch", "55": "falsch",
-          "56": "richtig", "57": "falsch", "58": "falsch", "59": "richtig", "60": "falsch"
-        },
-        lesenCorrect: Object.assign({},
-          {"1": "f", "2": "g", "3": "e", "4": "c", "5": "a"},
-          {"s2q1": "s2q1o2", "s2q2": "s2q2o2", "s2q3": "s2q3o2", "s2q4": "s2q4o1", "s2q5": "s2q5o1"},
-          {"11": "A", "12": "B", "13": "C", "14": "G", "15": "D", "16": "H", "17": "I", "18": "J", "19": "X", "20": "X"},
-          {"21": "zu", "22": "kommenden", "23": "nach", "24": "bieten", "25": "so dass", "26": "Gemeinsam mit", "27": "der Besuch", "28": "is geplant", "29": "besprochen", "30": "haben"},
-          {"31": "MIT", "32": "BEI", "33": "DAS", "34": "DAFÜR", "35": "SONDERN", "36": "OBWOHL", "37": "WEIL", "38": "DASS", "39": "AUF", "40": "VON"}
-        )
+        }
       };
-
-      function normalizeAnswer(a) {
-        if (a === null || a === undefined) return '';
-        let s = String(a).trim();
-        if (s === '') return '';
-        const low = s.toLowerCase();
-        if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
-        if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
-        return s;
-      }
-
-      function keyZeroToTen(k) {
-        return k === '0' ? '10' : k;
-      }
 
       function readExamResults() {
         try {
@@ -3327,7 +3438,6 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
           const hoeren = {};
           const schreiben = { content: '', wordCount: 0 };
 
-          // 1) Try to read from in-memory states exposed by pages
           try {
             if (window._lesenState && window._lesenState.answers) {
               Object.keys(window._lesenState.answers).forEach(k => {
@@ -3356,11 +3466,10 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
                 const keys = Object.keys(answers);
                 if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
               }
-              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0;
+              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0;
             }
           } catch (e) {}
 
-          // 2) Fallback to localStorage if any part is still empty
           try {
             if (Object.keys(lesen).length === 0) {
               const storedL = localStorage.getItem('lesenAnswers');
@@ -3381,12 +3490,11 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
               if (storedS) {
                 const obj = JSON.parse(storedS);
                 schreiben.content = obj.content || '';
-                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0);
+                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0);
               }
             }
           } catch (e) {}
 
-          // final safe return
           return { hoeren, lesen, schreiben };
         } catch (e) {
           return { hoeren: {}, lesen: {}, schreiben: {} };
@@ -3394,7 +3502,7 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
       }
 
       function gradeHoeren(u) {
-        const c = CONFIG.hoerenCorrect;
+        const c = CORRECT_ANSWERS.hoeren;
         let okCount = 0;
         const d = [];
         
@@ -3402,12 +3510,12 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
           const k = String(q);
           const uA = normalizeAnswer(u[k] || '');
           const exp = normalizeAnswer(c[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
           if (ok) okCount++;
           const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
           d.push({
             frage: k,
-            user: uA || '-',
+            user: uA,
             correct: exp || '-',
             richtig: ok,
             punkte: ok ? ptsPer.toFixed(2) : '0'
@@ -3419,19 +3527,19 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
       }
 
       function gradeLesen(u) {
-        const c = CONFIG.lesenCorrect;
+        const c = CORRECT_ANSWERS.lesen;
         let okCount = 0;
         const d = [];
         
         Object.keys(c).forEach(k => {
           const exp = normalizeAnswer(c[k]);
           const uA = normalizeAnswer(u[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
           if (ok) okCount++;
           const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
           d.push({
             frage: k,
-            user: uA || '-',
+            user: uA,
             correct: exp || '-',
             richtig: ok,
             punkte: ok ? ptsPer.toFixed(2) : '0'
@@ -3442,43 +3550,196 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
         return { okCount, total, details: d };
       }
 
-      function escapeHtml(s) {
-        return String(s)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
+      function renderLesenDetails(answers) {
+        const c = CORRECT_ANSWERS.lesen;
+        let html = `<div class="result-item">
+                      <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
+        
+        html += `<h4>Teil 1: Überschriften zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Text</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 1; i <= 5; i++) {
+          const k = String(i);
+          const uA = answers[k] || '-';
+          const exp = c[k] || '-';
+          const expText = getHeadingText(exp);
+          const ok = uA === exp;
+          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = ok ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                     <td><strong>Text ${k}</strong></td>
+                     <td>${getHeadingText(uA)}</td>
+                     <td>${expText}</td>
+                     <td><strong>${resultIcon}</strong></td>
+                   </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Frage</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 1; i <= 5; i++) {
+          const k = `s2q${i}`;
+          const uA = answers[k] || '-';
+          const exp = c[k] || '-';
+          const ok = uA === exp;
+          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = ok ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                     <td><strong>${i}</strong></td>
+                     <td>${getOptionText(k, uA)}</td>
+                     <td>${getOptionText(k, exp)}</td>
+                     <td><strong>${resultIcon}</strong></td>
+                   </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Situation</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 11; i <= 20; i++) {
+          const k = String(i);
+          const uA = answers[k] || '-';
+          const exp = c[k] || '-';
+          const ok = uA === exp;
+          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = ok ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                     <td><strong>${k}</strong></td>
+                     <td>${uA === 'X' ? 'X - Kein passender Text' : uA}</td>
+                     <td>${exp === null ? 'X - Kein passender Text' : exp}</td>
+                     <td><strong>${resultIcon}</strong></td>
+                   </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Lücke</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 21; i <= 30; i++) {
+          const k = String(i);
+          const uA = answers[k] || '-';
+          const exp = c[k] || '-';
+          const ok = uA === exp;
+          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = ok ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                     <td><strong>${k}</strong></td>
+                     <td>${uA}</td>
+                     <td>${exp}</td>
+                     <td><strong>${resultIcon}</strong></td>
+                   </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Lücke</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 31; i <= 40; i++) {
+          const k = String(i);
+          const uA = answers[k] || '-';
+          const exp = c[k] || '-';
+          const ok = uA === exp;
+          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = ok ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                     <td><strong>${k}</strong></td>
+                     <td>${uA}</td>
+                     <td>${exp}</td>
+                     <td><strong>${resultIcon}</strong></td>
+                   </tr>`;
+        }
+        
+        html += `</tbody></table></div>`;
+        
+        return html;
       }
 
-      function buildTable(title, dets, total, max) {
-        let h = `<h2>${title}</h2>
-                <table class="section-table">
-                  <thead>
-                    <tr>
-                      <th>Frage</th>
-                      <th>Ihre Antwort</th>
-                      <th>Richtige Antwort</th>
-                      <th>Ergebnis</th>
-                      <th>Punkte</th>
-                    </tr>
-                  </thead>
-                  <tbody>`;
+      function buildHoerenDetails(answers) {
+        const c = CORRECT_ANSWERS.hoeren;
+        let html = `<table class="true-false-table">
+                      <thead>
+                        <tr>
+                          <th>Frage</th>
+                          <th>Ihre Antwort</th>
+                          <th>Richtige Antwort</th>
+                          <th>Ergebnis</th>
+                        </tr>
+                      </thead>
+                      <tbody>`;
         
-        dets.forEach(x => {
-          h += `<tr>
-                  <td>${x.frage}</td>
-                  <td>${escapeHtml(x.user)}</td>
-                  <td>${escapeHtml(x.correct)}</td>
-                  <td>${x.richtig ? '✔️' : '✖️'}</td>
-                  <td>${x.punkte}</td>
-                </tr>`;
-        });
+        for (let i = 41; i <= 60; i++) {
+          const id = i.toString();
+          const userAnswer = normalizeAnswer(answers[id] || '');
+          const correctAnswer = c[id];
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
         
-        h += `</tbody>
-              </table>
-              <div class="small-muted">Teilpunkte: ${total.toFixed(2)} / ${max}</div>`;
-        return h;
+        html += `</tbody></table>`;
+        return html;
       }
 
       function renderResults() {
@@ -3488,7 +3749,7 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
         const details = document.getElementById('details-ergebnisse');
         const tiles = document.getElementById('topTiles-ergebnisse');
         const sScoreRaw = localStorage.getItem('schreibenScore');
-        const sScore = sScoreRaw ? Number(sScoreRaw) : 0; // Default score is now 0
+        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
 
         details.innerHTML = '';
         tiles.innerHTML = '';
@@ -3513,20 +3774,30 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
                   
         tiles.innerHTML = tL + tH + tS;
 
+        details.innerHTML += `<div class="result-item">
+                                <h2>📊 Detaillierte Ergebnisse</h2>
+                                <div class="instructions">Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Lösungen.</div>
+                              </div>`;
+        
         details.innerHTML += buildTable('Hören — Detail', h.details, h.total, CONFIG.totals.hoeren);
-        details.innerHTML += buildTable('Lesen — Detail', l.details, l.total, CONFIG.totals.lesen);
+        details.innerHTML += renderLesenDetails(st.lesen || {});
 
-        let sHtml = '<h2>Schreiben — Ergebnis (manuell)</h2>';
+        details.innerHTML += `<div class="result-item">
+                                <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+                                ${buildHoerenDetails(st.hoeren || {})}
+                              </div>`;
+
+        let sHtml = '<div class="result-item"><h3>✍️ Schreiben - Ihre Antwort</h3>';
         const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
         const wc = st.schreiben.wordCount || '-';
         
         sHtml += `<div class="small-muted">Wörter: ${wc}</div>
-                <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px">${txt}</div>
+                <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px; white-space: pre-wrap;">${txt}</div>
                 <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
                   Punkte (0–45): 
                   <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
                   <button id="saveS" class="results-btn">Speichern</button>
-                </div>`;
+                </div></div>`;
                 
         details.innerHTML += sHtml;
 
@@ -3567,7 +3838,6 @@ Schreiben Sie eine Beschwerde an die Firma.</div>
         showPage('start-page');
       };
       
-      // Initialize results on page load
       renderResults();
     }
   </script>

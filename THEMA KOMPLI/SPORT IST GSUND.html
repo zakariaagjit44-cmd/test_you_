@@ -1236,7 +1236,7 @@
         <div class="logo">test</div>
         <div class="meta">
           <div class="main-title">Deutsch - B2 (Übung)</div>
-          <div class="sub-title">Lesen — Testbeispiel</div>
+          <div class="sub-title">Lesen — Sport ist gesund</div>
         </div>
       </div>
 
@@ -1329,7 +1329,7 @@
         <div class="logo">test</div>
         <div class="meta">
           <div class="main-title">Deutsch - B2 (Übung)</div>
-          <div class="sub-title">Schreiben — Testbeispiel</div>
+          <div class="sub-title">Schreiben — Octavian-Therme</div>
         </div>
       </div>
 
@@ -1392,12 +1392,14 @@
   <script>
     // ===== PAGE NAVIGATION =====
     function showPage(pageId) {
+      // Hide all pages
       document.getElementById('start-page').style.display = 'none';
       document.getElementById('lesen-page').style.display = 'none';
       document.getElementById('hoeren-page').style.display = 'none';
       document.getElementById('schreiben-page').style.display = 'none';
       document.getElementById('ergebnisse-page').style.display = 'none';
       
+      // Change body class based on page
       document.getElementById('body').className = '';
       if (pageId === 'ergebnisse-page') {
         document.getElementById('body').className = 'results-body';
@@ -1405,8 +1407,10 @@
         document.getElementById('body').className = 'exam-body';
       }
       
+      // Show selected page
       document.getElementById(pageId).style.display = 'block';
       
+      // Initialize the page if needed
       if (pageId === 'lesen-page' && typeof initLesenPage === 'function') {
         initLesenPage();
       } else if (pageId === 'hoeren-page' && typeof initHoerenPage === 'function') {
@@ -1432,9 +1436,12 @@
     const cancelBtn = document.getElementById("cancelBtn");
 
     function startCountdown() {
+      // prevent double-starts or starting after exam already began
       if (countdownRunning || examStarted) return;
       countdownRunning = true;
+      // disable start button while counting
       try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
+      // reset counter & UI
       counter = initialCounter;
       timerEl.textContent = counter;
       timeDisplayEl.textContent = counter;
@@ -1452,10 +1459,12 @@
           countdownInterval = null;
           countdownRunning = false;
           progressEl.style.transform = "scaleX(1)";
+          // ensure exam starts only once
           if (!examStarted) {
             examStarted = true;
             startExam();
           }
+          // safety: re-enable start button (page usually navigates away)
           try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
         }
       }, 1000);
@@ -1479,6 +1488,7 @@
     }
 
     function startExam() {
+      // guard to ensure startExam is triggered once
       if (!examStarted) examStarted = true;
       const selectedSection = selectEl.value;
       if (selectedSection === 'lesen') {
@@ -1490,6 +1500,7 @@
       }
     }
 
+    // wire buttons: start will now start the countdown (not the exam directly)
     startBtn.addEventListener('click', startCountdown);
 
     cancelBtn.addEventListener('click', () => {
@@ -1500,322 +1511,310 @@
 
     // ===== LESEN PAGE FUNCTIONALITY =====
     function initLesenPage() {
+      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-001",
         durationSec: 90 * 60,
         sections: [
           { 
-            id: "s1", 
-            title: "Leseverstehen, Teil 1", 
-            points: 25,
-            passageTitle: "Aufgabe: Ziehen Sie die passenden Überschriften auf die Texte.",
+            id:"s1", 
+            title:"Leseverstehen, Teil 1", 
+            points:25,
+            passageTitle:"Aufgabe: Ziehen Sie die passenden Überschriften auf die Texte.",
             passage: "",
-            questions: [],
+            questions:[],
             texts: [
               {
                 id: "text1",
-                content: "Möchten Sie Kraft, Jugend und Gesundheit aus der Flasche? Dann suchen Sie bei Ihren nächsten Einkauf im Supermarkt nach Sauerstoff-Mineralwasser. Für den etwa doppelten Preis eines normalen Mineralwassers erhalten Sie dann ein Getränk, von dem die Hersteller versprechen, dass es Ihnen natürlich nur, wenn Sie es regelmäßig trinken magische Kräfte verleiht. In einer Umfrage wurden Schülerinnen und Schüler in Bayern nach ihren Erfahrungen mit den Sauerstoffkraftdrink befragt. Die meisten fanden, dass es nicht anders schmeckt als andere Mineralwässer auch. Das Deutsche Institut für Ernährungsforschung in Potsdam hält es für Unsinn, Wasser mit Sauerstoff anzureichern. Der menschliche Körper nimmt Sauerstoff hauptsächlich über die Atemluft auf, höchsten 0,3 % können auch über den Magen-Darm-Trakt aufgenommen werden. Möchten Sie innere Kraft, Jugend und Gesundheit? Dann gehen Sie doch einfach mehr an die frische Luft. Und die ist kostenlos.",
-                correctAnswer: "e"
-              },
-              {
-                id: "text2", 
-                content: "Wenn es regnet, dann fließt das Regenwasser in den Erdboden, der es wie ein Schwamm aufsaugt. Langsam sickert das Wasser dann in immer tiefere Erdschichten, in denen es gefiltert und gereinigt wird. Aus dem Regenwasser ist Trinkwasser geworden. Schließlich sammelt es sich in einer Schicht aus Sandstein, wo es sich mit älterem Wasser vermischt. Mehrere tausend Jahre lang kann das Trinkwasser so in den Tiefen der Erde ruhen. Durch Brunnen, die bis in die tiefen Sandsteinschichten reichen, kann dann Mineralwasser gewonnen werden. 10,6 Milliarden Liter Mineralwasser sind im letzten Jahr in Deutschland verkauft und getrunken worden. Gesteinsschichten wie Ton oder Kalk schützen es seit Jahrtausenden vor Verunreinigungen. Jedoch gelangt in den letzten Jahrzehnten Nitrat durch übermäßige Düngung in der Landwirtschaft vermehrt in das Trinkwasser und stellt langfristig eine Gesundheitsbedrohung für die Menschen dar.",
-                correctAnswer: "j"
-              },
-              {
-                id: "text3",
-                content: "Nach den Unwettern der letzten Sommer sprechen Meteorologen in ganz Europa davon, dass sich das Klima weltweit dramatisch verändert. Stabile Sommer mit Sonnenschein pur von Juni bis August sollen selbst am Mittelmeer in Zukunft passé sein. Die durch Treibhausgase aufgeheizte Atmosphäre hat sich erwärmt, mehr Wasser verdunstet durch die höheren Temperaturen aus den Ozeanen und prasselt in extrem starken Unwettern mit Donner, Blitz und Hagel auf die Erde. Dort kann die Erde nicht mehr solche Mengen Wassers aufnehmen wie in kürzester Zeit fallen. Die Folge davon sind Überschwemmungen. Kurze Sonnenscheinperioden werden sich mit Unwetterfronten abwechseln und vielen Menschen den Badespaß an den Stränden nicht nur des Mittelmeeres gründlich verderben. Doch auch den Landwirten bereiten die stärkeren Unwetter Sorgen. Denn die starken Niederschläge mit Hagel zerstören nicht selten einen großen Teil der Ernte und bescheren so manchen landwirtschaftlichen Betrieben große finanzielle Probleme.",
-                correctAnswer: "g"
-              },
-              {
-                id: "text4",
-                content: "Wozu noch Kästen mit Mineralwasserflaschen nach Hause schleppen, wenn es sich doch bequem zu Hause zubereiten lässt. Tatsächlich ist das Leitungswasser, das aus den Wasserhähnen in deutschen Wohnungen fließt, von guter bis sehr guter Qualität. Einzig das Prickeln auf der Zunge, das durch das Hinzufügen von Kohlensäure in viele Mineralwässer entsteht, fehlt bei dem Leitungswasser. Doch auch hier gibt es bereits eine preiswerte Möglichkeit, dies selbst zu tun: mit einer Sodamaschine. Damit lassen sich Sprudel und Limonaden selbst herstellen, ganz nach dem individuellen Geschmack des Nutzers: mal mit mehr, mal mit weniger Prickeln, mal süßer, mal fruchtiger. Und das Wasser kommt wie von selbst ins Haus, das Tragen und Stapeln von Getränkekästen ist für den cleveren Selbsthersteller Vergangenheit.",
+                content: "An der Ostküste Attikas in Griechenland lag in der Antike der Orte Marathon. Dort siegte der griechische König Milthiades im Jahr 490 vor Christus über das Heer der Perser. Der Sage nach soll ein Soldat die 42.2 km lange Strecke nach Athen gerannt sein, um die Nachricht dieses für Griechenland wichtigen Sieges zu überbringen. Bei seiner Ankunft in Athen brach er, noch während er die Nachricht verkündete, vor Erschöpfung tot zusammen. Auf diese Legende geht eine sportliche Disziplin zurück: der Marathonlauf! Bereits seit 1896 ist er olympische Disziplin, seit 1984 auch für Frauen. Die Streckenlänge von 42195 m. wurde 1924 festgelegt. Der Marathonlauf gilt als einziger Leistungssport, der bis ins hohe Alter ausgeübt werden kann. Wissenschaftler erklären das mit der menschlichen Evolution. Der Mensch jagte in der Frühzeit seine Beute so lange vor sich her, bis diese vor Erschöpfung nicht mehr weiter konnte. Die Fähigkeit, ausdauernd über lange Strecken zu rennen, ist also in den menschlichen Genen verankert.",
                 correctAnswer: "h"
               },
               {
+                id: "text2", 
+                content: "Warum soll sich der Mensch nun auf Straßen und Wegen fortbewegen? Sich in Feld und Wald, über Stock und Stein fortzubewegen, ist mindestens ebenso interessant. Daher erfand die Autoindustrie den Geländewagen und die Fahrradindustrie das Mountainbike. Da fehlte eigentlich nur noch eine Neuentwicklung eines Gefährts, dessen Mobilitätsmöglichkeiten bisher relativ begrenzt waren: der Kinderwagen. Doch das ist jetzt auch vorbei: Im Trend liegt jetzt der Jogging-Stroller, ein Kinderwagen mit nur noch drei bereiften Rädern. Diese neuen Transportmittel für Babys können sportbegeisterte und von grenzenloser Mobilität träumende Eltern jetzt samt Kind beim Joggen oder beim Inlineskaten vor sich herschieben. Die Babys sollen begeistert sein von der Geschwindigkeit, die mit solchen Geräten erreichbar ist. Doch der die Gerätesicherheit prüfende TÜV, bei Fahrzeugbesitzern in Deutschland schon seit langem als Spielverderber bekannt, warnte vor den Jogging-Strollern: Sie haben einen ungünstigen Schwerpunkt auf der Hinterachse, d.h. sie kippen leicht nach hinten um, und sie können sich leicht selbständig machen - jedenfalls solange, bis die Babys das Bremsen gelernt haben.",
+                correctAnswer: "f"
+              },
+              {
+                id: "text3",
+                content: "Schweizer Forscher haben herausgefunden, dass nur 6 Minuten Hochleistungstraining pro Woche - also weniger als eine Minute pro Day - ausreichen, um den Körper fit zu halten. In einem Versuch mit mehreren Probanden nahm eine Gruppe an einem traditionellen Ausdauertraining teil, mit je ein bis zwei Trainingsstunden täglich. Die zweite Gruppe führte täglich 60 Sekunden dauernde Radsprints durch, wobei die Teilnehmer quasi aus dem Stand Höchstgeschwindigkeit erzielen mussten. Das Resultat war überraschend: Beide Gruppen zeigten die gleichen gesundheitlichen Verbesserungen. Die Muskel nahmen gleich viel Sauerstoff auf, und auch die Werte des für die Sauerstoffaufnahme verantwortlichen Zitratenzyms waren gleich. Sehr kurze und hochintensive sportliche Übungen verbessern die Fitness genauso wie das zeitraubende traditionelle Ausdauertraining.",
+                correctAnswer: "c"
+              },
+              {
+                id: "text4",
+                content: "Mehr Bewegung als Ausgleich für zu langes Sitzen im Büro und in der Freizeit ist zurzeit angesagt, um Übergewicht, Bluthochdruck und Herz-Kreislauf-Erkrankungen vorzubeugen und um fit zu bleiben. Gerade für Einsteiger gibt es jedoch bei den die Ausdauer trainierenden Sportarten wie dem Joggen einige Grundregeln, die beachtet werden müssen, will man gesundheitliche Schäden vermeiden. Die ersten Trainingseinheiten sollen nicht länger als 20 bis 30 Minuten dauern und zweimal pro Woche durchgeführt werden. Der Puls sollte nie den Wert 200 minus Lebensalter überschreiten, bei einem 20-Jährigen kann er also bei 180, bei einem 60-Jährigen hingegen nur bei 140 liegen. Außerdem gilt für alle, die beim Sport abnehmen möchten: Je höher der Pulsschlag, desto weniger Fett wird verbrannt. Hoher Pulsschlag lässt Sporttreibenden langsamer abnehmen.",
+                correctAnswer: "a"
+              },
+              {
                 id: "text5",
-                content: "\"Wasser ist zum Waschen da\" lautete ein deutscher Schlager Mitte der 1950er, in dem es weiter hieß: \"Auch zum Zähneputzen kann man es benutzen.\" Wasser zu trinken schien damals manchen Leuten nicht in die neue Wohlstandswelt zu passen. Süße Limonaden galten als besser als einfach nur Wasser. Dabei raten heute die meisten Ärzte zum Wassertrinken: \"Trinken Sie täglich mindestens 2,5 Liter davon\", steht auch in nahezu allen medizinischen Ratgebern von heute. Mineralwasser hat, wie man heute wieder weiß, durch seine mineralischen Inhaltsstoffe Natrium, Kalium, Magnesium, Calzium und Spurenelemente für den menschlichen Körper viele Vorteile: Es gleicht den Mineral- und Flüssigkeitenverlust beim Schwitzen aus, es fördert die Verdauung und das alles ohne den Körper belastenden Zucker und ohne Kalorien. Ob aus der Heimat oder - wie in den jetzt modischen Wasserbars - von der Insel Hawaii oder vom Südpol: Wasser ist wieder zum Trinken da.",
-                correctAnswer: "i"
+                content: "Viele frischgebackene Eltern stehen einem riesigen Angebot an Kinderwagen gegenüber, das in Kinderläden und Großmärkten fellgeboten wird. Doch welcher ist der richtige? Experten raten, beim Kauf dieses für die ersten Jahre mit dem Kleinkind wichtigen Gefährts auf ein paar Dinge zu achten. Erstens sollte die Matratze nicht zu weich sein, damit das Kind nicht einsinkt, wodurch die Atmung behindert werden kann. Zweitens sollten die Räder gefedert sein, um Erschütterungen auf unebenen Wegen auszugleichen. Ein hoher Wagen schützt die Babys vor dem Auspuff der Autos an Straßenkreuzungen. Zusammenklappbare Wagen passen in jeden Kofferraum und lassen sich fast überallhin mitnehmen. Der Wagen sollte vor allem kippsicher sein und keine scharfen Kanten haben, an denen sich die Kinder verletzen können. Vom TÜV geprüfte Kinderwagen erhalten ein Prüfzeichen. Damit haben die Eltern eine gewisse Sicherheit, dass der Kinderwagen auch nach Dauergebrauch nicht zu einem Sicherheitsrisiko für ihr Kind werden kann.",
+                correctAnswer: "d"
               }
             ],
             headings: [
-              {id: "a", text: "Limonade aus dem Wasserhahn"},
-              {id: "b", text: "Limonade ist moderner als Wasser"},
-              {id: "c", text: "Sommer bedeutet in Zukunft nicht unbedingt Sonne"},
-              {id: "d", text: "Mehr Sauerstoff im Wasser macht müde Menschen fit"},
-              {id: "e", text: "Viel Wasser trinken - Gesundheit tanken"},
-              {id: "f", text: "Frische Luft macht stark"},
-              {id: "g", text: "Die Sonne macht Landwirten Probleme"},
-              {id: "h", text: "Sprudel hausgemacht – Zeit des Flaschen-Tragens ist vorbei"},
-              {id: "i", text: "Alarm: Nitrat im Regenwasser bedroht die Gesundheit"},
-              {id: "j", text: "Vom Regen zum Mineralwasser"}
+              {id: "a", text: "Sport ist gesund - wenn man einige wichtige Regeln beachtet"},
+              {id: "b", text: "Griechische Sportler so erfolgreich wie nie zuvor"},
+              {id: "c", text: "Fitness auch mit wenig Zeitaufwand erreichbar"},
+              {id: "d", text: "Geprüfte Qualität für Babys"},
+              {id: "e", text: "Bluthochdruck beschleunigt das flönehmen"},
+              {id: "f", text: "Sportbegeisterte Eltern - und auch die Babys sind beim Joggen dabei"},
+              {id: "g", text: "Täglich kurzes Sprints besser als langes Ausdeuertraining"},
+              {id: "h", text: "Eine Disziplin, die für alle Altersgruppen geeignet ist"},
+              {id: "i", text: "Unüberschaubares Angebot an Kinderwagen überfordert junge Eltern"},
+              {id: "j", text: "Autotndustrie: In Zukunft Mobilität ohne Grenzen"}
             ]
           },
           { 
-            id: "s2", 
-            title: "Leseverstehen, Teil 2", 
-            points: 25,
-            passageTitle: "Krista, der tierische Star",
-            passage: `Krista ist die schönste Kuh Deutschlands. Und jetzt auch noch ein Kinostar. Am letzten Donnerstag kam ein Film über die schwarz-weiß gefleckte Kuh und ihre Besitzer in einige norddeutsche Kinos. Wovon der Film handelt? Von Kristas Leben auf dem Hof der Familie Seeger in Bissel, einem kleinen Dorf in Norddeutschland.
+            id:"s2", 
+            title:"Leseverstehen, Teil 2", 
+            points:25,
+            passageTitle: "Der Ein-Personen-Karneval von Unna",
+            passage: `Als Helmut Scherer vor genau 50 Jahren zum ersten Mal mit seinem Bollerwagen durch die westfälische Kleinstadt Unna zog, wurde er von den Leuten ausgelacht. Heute aber ist eher eine städtische Berühmtheit und sogar weit über die Grenzen seiner Heimatstadt hinaus bekannt.
 
-Antje Schneider und Carsten Waldbauer sind Filmemacher. Vor einigen Jahren hatten sie die Idee, eine Dokumentation über Kühe zu machen, genauer gesagt über Holstein-Rinder. Die Holstein-Rinder sind eine der wichtigsten Rinderrassen weltweit, kommen aber trotz des deutschen Namens aus Nordamerika. Diese Kühe werden überwiegend als Milchvieh gehalten. Die Holstein-Rinder sind so verbreitet, dass sie inzwischen andere Rassen fast vollständig verdrängt haben.
+Der 71-Jährige ist der einzige Teilnehmer des weltweit kleinsten Karnevalsumzug. An Weiberfastnacht, dem letzten Donnerstag der Karnevalsperiode eines Jahres, zieht er mit seinem Handwagen los: Er selbst ist dann – dieses Jahr als blondes Schulmädchen – verkleidet und auf seinem Bollerwagen hat er aus Pappe und Gips Figuren aufgebaut, die humoristisch ein aktuelles gesellschaftliches Thema – diesmal die Schulreform – aufgreifen. So macht er sich nach alter karnevalistischer Tradition über Missstände lustig. Helmut Scherer legt natürlich Wert darauf, dass er von Karnevalsmusik begleitet wird, die jedoch nicht von einer Musikgruppe, sondern von einem Radiorekorder gespielt wird.
 
-Das gilt vor allem für die vielen Bauernhöfe in Deutschland, die ausschließlich Milch produzieren. Auf einem dieser Höfe wollten Antje Schneider und Carsten Waldbauer Aufnahmen für ihre Dokumentation machen, und die Wahl fiel auf den Hof der Familie Seeger. Doch als die beiden Filmemacher mit den Dreharbeiten beginnen wollten, sahen sie plötzlich – Krista. Krista änderte alles. Die Schönheit vom Lande beeindruckte Schneider und Waldbauer so sehr, dass sie den Plan für ihre Dokumentation gegen den Willen ihres Senders komplett änderten. Im Mittelpunkt sollte nun Krista stehen, die schönste Holstein-Kuh Deutschlands.
+Vor 50 Jahren kam Helmut Scherer aus dem katholisch geprägten Paderborn, wo er seine Kindheit und Jugend verbracht hatte, nach Unna, dessen überwiegend evangelische Bevölkerung sich recht kühl und nüchtern gibt und deshalb anfangs auch wenig Verständnis für den katholischen Karnevalsbrauch zeigte. "Die Leute haben mir einen Vogel gezeigt und den Kopf geschüttelt", beschreibt der "Narr aus Überzeugung" die Anfänge. Auch bei der Stadtverwaltung, wo Scherer für Weiberfastnacht seinen Umzug ordnungsgemäß anmeldete, stieß er zunächst auf Unverständnis. Aber da sein Karnevalszug niemanden behinderte und auch nicht zu befürchten war, dass Unnas öffentliche Ordnung gestört würde, bekam er die Erlaubnis, mit seinem humoristischen Handwagen loszumarschieren.
 
-Krista gehört zur Weltelite. Auf Veranstaltungen wird sie immer wieder ausgezeichnet. Bei einer Tierschau in Italien erhielt sie zwar nicht den ersten Preis, aber trotzdem war sie unter den schönsten Kühen Europas. Kristas Besitzer Jörg Seeger ist begeistert von seinem Star im Stall.
+Über 10 Jahre lang zog Scherer einsam, belächelt und verspottet durch Unna, weder eisige Kälte noch Schnee konnten ihn davon abhalten. Doch der Karneval blieb für lange Zeit sein Privatvergnügen. Als dann die lokale Presse anfing, ihn zu unterstützen, wandelte sich die Meinung der Öffentlichkeit. Der einst verspottete Karnevalist stieg langsam zum närrischen Wahrzeichen einer Stadt ohne Karneval auf. Für die Stadtoberen ist heute die "Ein–Mann–Show" die beste Werbung für Unna. Scherers Beharrlichkeit hat sich also ausgezahlt: Anlässlich seines fünfzigsten Karnevalsjubiläums wurde er sogar offiziell im Rathaus empfangen, um ihm – so wie es auch in den Karnevalshochburgen Köln, Düsseldorf und Mainz üblich ist – den goldenen Schlüssel des Rathauses zu übergeben.
 
-Jörg und Janine Seeger erlauben dem Kinozuschauer interessante Einblicke in ihren Alltag auf dem Bauernhof. Die Kamera verfolgt zwar immer den Weg von Kuh Krista, aber zu sehen ist dabei natürlich auch die Arbeit der gesamten Familie auf dem Hof. Manchmal ist das auch ein romantisches Leben, es ist aber vor allem immer sehr arbeitsintensiv.
-
-"Für mich sind Kühe nicht nur Nutztiere", sagt die Bäuerin Janine Seeger. Schon als Kind hätten ihr die Tiere Geborgenheit, manchmal Trost gespendet. Aber sie weiß, dass die Kühe Geld bringen müssen, entweder durch möglichst viel Milch oder durch viel Nachwuchs. Die kleinen Kälber lassen sich zu recht guten Preisen verkaufen, das lohnt sich für die Seegers.
-
-Krista kann zunächst aus gesundheitlichen Gründen keine Kälber bekommen. Auch diese Problematik wird im Film gezeigt. Der Zuschauer merkt, dass Jörg Seeger enttäuscht ist: Seine beste Kuh kann kein Kalb bekommen. Aber es geht gut aus, denn Krista wird operiert und nach Ende der Dreharbeiten klappt es dann doch mit dem Nachwuchs für die Kuh.
-
-Während der jahrelangen Dreharbeiten hat sich auch die Familie entwickelt. Mittlerweile haben die Seegers zwei Kinder. "Deshalb verändert sich im Film mein Gewicht etwas", erzählt Janine Seeger und lacht. Und wie ist es so, vor der Kamera zu stehen? "Erst ungewohnt, dann irgendwie vertraut", sagt die 32-Jährige. Zu den Filmemachern habe sich ein freundschaftliches Verhältnis entwickelt. "Wie schön, Carsten und Antje sind wieder da", habe es dann nur noch geheißen, wenn das Team anrückte.
-
-Der Film zeigt aber auch, wie sich im Laufe der Jahre das Leben auf dem Hof der Seegers verändert hat und wie schwierig it auch hier geworden ist, mit Milchkühen Geld zu verdienen. Der Markt ist hart umkämpft und die Preise sinken immer weiter, denn die Verbraucher im Supermarkt greifen gerne zum günstigsten Produkt. Für viele ist es da nicht wichtig, wie die Milch produziert wurde. Auch das zeigt der Film, wenngleich eher nebenbei.
-
-Familie Seeger ist stolz drauf, dass ein Film über ihren Hof und über die schöne Kuh Krista gedreht wurde. So heißt nun übrigens auch der Film: "Die schöne Krista". Am vergangenen Wochenende haben die Seegers den Film bei einem Hoffest gezeigt. Familie und Freunde sowie Nachbarn waren zu Gast, und alle haben sich über den Film gefreut.
-
-"Die schöne Krista" ist auch in die Auswahl für den Deutschen Filmpreis gekommen, als einer der fünfzehn besten Dokumentarfilme. Die 500 Filmkritiker, die diese 15 Filme ausgewählt haben, waren begeistert. Schwieriger sei es, so die Produktionsfirma, die Kinobetreiber vom Film zu überzeugen. "Was sollen wir mit einer Kuh?", sei eine häufige Reaktion. Vielleicht würden sie ihre Meinung ändern, wenn Sie Krista einmal auf dem Hof gesehen hätten.`,
+Obwohl er keinem Karnevalsverein angehört, wurde ihm die Ehre zuteil, als Karnevalsprinz in den Bund Deutscher Karneval aufgenommen zu werden; somit wurde es ihm möglich, auch bei den Rosenmontagszügen in den närrischen Hochburgen im Rheinland mitzuwirken. Weit über hundert Fans des standhaften Narren haben sich zu einem Fan–Club zusammengeschlossen, und etliche stehen beim jährlichen Umzug in Unna am Straßenrand und rufen statt "Spinner" den rheinischen Karnevalsgruß "Helau". Bei allem Fortschrittlichkeit soll aber eines so bleiben, wie es immer war – einen weiteren Teilnehmer am Zug duldet der Karnevalsprinz nicht: "Die Tradition soll aufrechterhalten bleiben", sagt er schmunzelnd. "Aber nur solange mich die Füße tragen!"`,
             questions: [
               {
                 id: "s2q1",
                 type: "single",
-                text: "Holstein-Rinder",
+                text: "Helmut Scherer",
                 options: [
-                  {id: "s2q1o1", text: "dominieren als Rinderrasse die Milchviehwirtschaft."},
-                  {id: "s2q1o2", text: "sind für die Milchproduktion wenig geeignet."},
-                  {id: "s2q1o3", text: "wurden ursprünglich in Norddeutschland gezüchtet."}
+                  {id: "s2q1o1", text: "führt in Unna einen kleinen Karnevalsumzug durch."},
+                  {id: "s2q1o2", text: "ist in Unna seit 50 Jahren eine gefeierte Persönlichkeit."},
+                  {id: "s2q1o3", text: "veranstaltet den einzigen Karnevalsumzug der Welt."}
                 ],
                 correctAnswer: "s2q1o1"
               },
               {
                 id: "s2q2",
                 type: "single", 
-                text: "Die Kuh Krista",
+                text: "Auf seinem Handwagen",
                 options: [
-                  {id: "s2q2o1", text: "hat bereits einige Preise gewonnen."},
-                  {id: "s2q2o2", text: "war Siegerin bei einer Veranstaltung in Italien."},
-                  {id: "s2q2o3", text: "wurde zur schönsten Kuh Europas gewählt."}
+                  {id: "s2q2o1", text: "fährt traditionell ein blondes Schulmädchen mit."},
+                  {id: "s2q2o2", text: "präsentiert er kleine Szenen, die auf den Alltag Bezug nehmen."},
+                  {id: "s2q2o3", text: "stellt er sozialkritische Themen auf witzige Art und Weise dar."}
                 ],
-                correctAnswer: "s2q2o1"
+                correctAnswer: "s2q2o3"
               },
               {
                 id: "s2q3",
                 type: "single",
-                text: "Während der Filmaufnahmen",
+                text: "Die Bevölkerung von Unna",
                 options: [
-                  {id: "s2q3o1", text: "bekam Krista ein Nachwuchs."},
-                  {id: "s2q3o2", text: "wäre Krista fast gestorben."},
-                  {id: "s2q3o3", text: "wurde Krista ärztlich behandelt."}
+                  {id: "s2q3o1", text: "hatte zunächst wenig Verständnis für Helmut Scherer."},
+                  {id: "s2q3o2", text: "hielt anfangs Helmut Scherer für kühl und nüchtern."},
+                  {id: "s2q3o3", text: "verhinderte Helmut Scherer ersten Karnevalsumzug."}
                 ],
-                correctAnswer: "s2q3o3"
+                correctAnswer: "s2q3o1"
               },
               {
                 id: "s2q4",
                 type: "single",
-                text: "Die wirtschaftlichen Probleme von Milchbetrieben",
+                text: "Der kleinste Karnevalsumzug der Welt",
                 options: [
-                  {id: "s2q4o1", text: "betreffen die Familie Seeger nicht."},
-                  {id: "s2q4o2", text: "sind eine Folge des Verbraucherverhaltens."},
-                  {id: "s2q4o3", text: "werden im Film ausführlich behandelt."}
+                  {id: "s2q4o1", text: "hat Helmut Scherer sogar Geld eingebracht."},
+                  {id: "s2q4o2", text: "ist heute eine gute Reklame für die Stadt Unna."},
+                  {id: "s2q4o3", text: "wird in Zukunft von einer ganzen Gruppe von Leuten durchgeführt."}
                 ],
                 correctAnswer: "s2q4o2"
               },
               {
                 id: "s2q5", 
                 type: "single",
-                text: "\"Die schöne Krista\"",
+                text: "Helmut Scherer",
                 options: [
-                  {id: "s2q5o1", text: "begeistert Kinobetreiber bislang nicht."},
-                  {id: "s2q5o2", text: "könnte die Kritiker nicht überzeugen."},
-                  {id: "s2q5o3", text: "wurde für den Deutschen Filmpreis nominiert."}
+                  {id: "s2q5o1", text: "hat an Karnevalsumzügen in mehreren Städten teilgenommen."},
+                  {id: "s2q5o2", text: "hat inzwischen in ganz Deutschland Fan–Clubs."},
+                  {id: "s2q5o3", text: "sucht einen Nachfolger."}
                 ],
                 correctAnswer: "s2q5o1"
               }
             ]
           },
           { 
-            id: "s3", 
-            title: "Leseverstehen, Teil 3", 
-            points: 25,
+            id:"s3", 
+            title:"Leseverstehen, Teil 3", 
+            points:25,
             passageTitle:"Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchmal passt kein Text. Wählen Sie dann 'x'.",
             passage: "",
             questions:[],
             texts: [
-              {id: "A", text: "Sport, Theater & mehr...bieten wir Ihnen in unserem Online-Kartenshop. Wir sind spezialisiert auf Tickets für Sportveranstaltungen in Deutschland, Theaterkarten (auch im europäischen Ausland) und bieten Ihnen darüber hinaus auch Eintrittskarten zu bekannten Fernseh-Talkshows an. Sicher haben wir auch für Sie das passende Angebot. Wählen Sie Ihre Wunschplätze einfach im Internet aus und nur zwei Tage später erhalten Sie Ihre Karten mit der Post. Bequem, sicher, schnell. Selbstverständlich bieten wir Ihnen aber auch eine persönliche Beratung unter einer kostenfreien Rufnummer an. Schauen Sie doch gleich online vorbei! www.ticketprofis.eu", correctAnswer: "14"},
-              {id: "B", text: "Die Veranstaltungsprofis Seit mehr als zwanzig Jahren organisieren wir Messen (Buchmessen, Verbrauchermessen, Fahrradmessen, Automessen, Spielemessen) in ganz Europa. Wenn auch Sie sich für eine Tätigkeit im Bereich Messeorganisation und -durchführung interessieren, haben wir ein interessantes Angebot für Sie: Ab Herbst suchen wir für unser junges motiviertes Team Verstärkung. Wenn Sie eine abgeschlossene Ausbildung im Veranstaltungs- oder Logistiksektor haben, neben Ihrer Muttersprache noch mindestens eine weitere Sprache fließend beherrschen und reisefreudig sind, melden Sie sich bei uns! Weitere Informationen finden Sie auch auf unserer Website oder sprechen Sie unsere zuständige Mitarbeiterin, Frau Klimke, direkt an. www.die-veranstaltungsprofis.eu klimke@die-veranstaltungsprofis.eu", correctAnswer: "15"},
-              {id: "C", text: "Gemeinsam mehr erleben Gruppenreisen bieten wir Ihnen bereits ab fünf Personen an - Städtereisen, Wellnesswochenenden und neu im Angebot auch Reisen zu kulturellen Veranstaltungen. Fahren Sie mit uns zum Beispiel Ende August zum Jazzfestival in Brandenburg (25.-29.8.) oder im darauffolgenden Monat zur Klassikwoche nach Wien. Von Anreise und Hotel (verschiedene Kategorien) bis hin zur Eintrittskarte organisieren wir für Sie alles. Genießen Sie entspannte Tage mit Werner Reisen GmbH. Weitere Informationen und auch Buchungsformulare finden Sie unter www.wernerreisen.eu. Oder rufen Sie uns an: 0800/9900100", correctAnswer: null},
-              {id: "D", text: "Musikfestival Taubertal: 24. Juli bis 3. August Auch in diesem Jahr kommen wieder viele bekannte Bands und interessante neue Künstler. Das Festival ist schon längst ausverkauft, aber ihr könnt trotzdem noch hinkommen: Wir suchen noch Unterstützung für den Aufbau der Stände, die Betreuung der Musiker und auch für die Ticketkontrolle. Bewerbt euch einfach per E-Mail. Wichtig: Wenn ihr beim Festival arbeitet, könnt ihr zwar auch Musik hören, aber ihr habt keine Gelegenheit, euch die Auftritte in Ruhe anzusehen. Trotzdem macht die Arbeit viel Spaß, und ihr könnt die Musiker sogar hinter der Bühne sehen und kennenlernen. E-Mail: info@musikfestivaltaubertal.eu", correctAnswer: "16"},
-              {id: "E", text: "Alle Veranstaltungen aus einer Hand Ob Jazz, Rock, Klassik, Musical: Bei uns finden Sie Veranstaltungen aus allen Musikbereichen! Reservieren Sie noch heute Karten für Ihre Lieblingsband, wählen Sie Ihren Platz online und drucken Sie Ihre Tickets sofort selbst aus. Oder kaufen Sie Geschenkgutscheine, die man ebenfalls bequem online einlösen kann: die ideale Möglichkeit für alle, die noch keine bestimmte Veranstaltung ausgesucht haben. Besuchen Sie gleich unseren Online-Shop. Bestellungen sind bei uns übrigens auch ohne Registrierung möglich! www.die-veranstaltungsspecialisten.eu", correctAnswer: "17"},
-              {id: "F", text: "Mailänder Scala, Deutsche Oper Berlin und vieles mehr Der etwas andere Zugang zur Musik: Wir organisieren Besichtigungen von bekannten Opernhäusern oder Konzertsälen. Schauen Sie sich die Technik und Räume vor Ort an, nehmen Sie an einer interessanten Führung teil und lernen Sie so die Geschichte der Häuser und auch der Orchester kennen. Gerne organisieren wir nach Möglichkeit auch Treffen mit Musikern oder Konzertdirektoren, mit denen Sie spannende Gespräche führen und mehr über deren Arbeit erfahren können. Bitte haben Sie Verständnis, dass wir diese Treffen erst ab zehn Teilnehmern organisieren können. Weitere Informationen: Musikreisen Gerhardt, Tel 0800/223 997 880", correctAnswer: "18"},
-              {id: "G", text: "Feste feiern? Wir organisieren Veranstaltungen in verschiedenen Größenordnungen - von der kleinen Familienfeier mit zehn Personen bis hin zu großen Firmenveranstaltungen mit mehreren Hundert Teilnehmern. Lehnen Sie sich zurück und wir machen die Arbeit! Alternativ bieten wir Ihnen aber auch unsere kompetente Beratung an, damit Sie Ihre Veranstaltung selbst planen können. Unsere Mitarbeiter kommen dann gerne zu Ihnen oder stehen Ihnen telefonisch und per E-Mail zur Verfügung. Sprechen Sie uns an! TMC GmbH, info@tmcgmbh.eu", correctAnswer: "19"},
-              {id: "H", text: "Künstleragentur Lippmann Bei der Künstleragentur Lippmann sind über 100 Künstler registriert, die Sie für Veranstaltungen buchen können. Sie suchen einen Komiker? Kein Problem! Sie möchten auf Ihrer Veranstaltung Schauspieler auftreten lassen? Wir können sie vermitteln! Sie brauchen musikalische Untermalung? Bei uns sind einzelne Musiker ebenso registriert wie Bands. Melden Sie sich noch heute kostenlos und unverbindlich an und schauen Sie in Ruhe alle Angebote durch - einschließlich der Preise und freien Termine. Sicher finden Sie bei uns, was Sie suchen. www.agentur-lippmann.eu", correctAnswer: null},
-              {id: "I", text: "Gitarre, Violine & Co. Im Musikverein Wohlklang lernen schon die ganz Kleinen den spielerischen Umgang mit Instrumenten. Aber auch für die „größeren Kleinen“ bieten wir Musikförderung und auch individuellen Unterricht an. In verschiedenen Gruppen (Alter von zwei bis acht Jahren) können Ihre Kinder bei uns Instrumente lernen, singen oder tanzen, kurz: Spaß mit Musik haben und auch selbst das Musizieren lernen. Die ersten beiden Probestunden bieten wir Ihnen kostenlos an, damit Sie und Ihre Kinder uns in Ruhe kennenlernen können. Vereinbaren Sie doch gleich einen Termin unter der 0800/5615 6514. Wohlklang e.V., Neue Straße 218, 77933 Lahr", correctAnswer: "20"},
-              {id: "J", text: "Instrumente, Noten, Musikbücher Das Musikhaus Hohenzollern hat jetzt wieder besondere Angebote für alle Interessierten. Wir haben die Preise von allen Instrumenten bis kommenden Samstag reduziert. Auch zahlreiche Bücher und Notenhefte finden Sie ab sofort in unserem neuen Online-Shop zu günstigen Preisen. Unser Einstiegsangebot: alle Bestellungen im Online-Shop ohne Versandkosten! Schauen Sie sich doch mal im Internet um oder kommen Sie direkt bei uns vorbei. Wir freuen uns auf Ihren Besuch! Musikhaus Hohenzollern, Steeler Str. 789, 45276 Essen www.musikhaus-hohenzollern.eu", correctAnswer: "11"},
-              {id: "K", text: "Rhein/Ruhr-Festival Im kommenden Herbst findet zum ersten Mal das neue Rhein/Ruhr-Festival statt - und wir benötigen noch Hilfe. Im Rahmen des Festivals werden auf fünf unterschiedlichen Bühnen Künstler auftreten. Wir möchten verschiedene Stilrichtungen präsentieren, Solokünstler ebenso wie größere Musikgruppen. Und noch sind Plätze frei! Die Chance also für alle, die sich gerne bei unserem Festival präsentieren möchten. Kurzbewerbungen können ab sofort per E-Mail an office@rheinruhrfestival.eu gesendet werden. Bitte schicken Sie keine größeren Dateianhänge! Vielen Dank.", correctAnswer: "12"},
-              {id: "L", text: "Musiker gesucht Seit einem Jahr vermitteln wir „Musiktandems“ - Musiker suchen Musiker und geben sich gegenseitig Unterricht. Ob Instrument, Gesang, Komposition - alles wird gesucht! Registrieren Sie sich kostenlos auf unserer Homepage www.musiktandems.eu und finden Sie heute noch das Angebot, das Sie schon lange suchen. Wichtig: Sie können sich nur für das Musiktandem anmelden, wenn Sie selbst auch Unterricht anbieten können, also zum Beispiel ein Instrument spielen. Auf unserer Website finden Sie auch weitere Informationen zum Ablauf und können den Service kontaktieren.", correctAnswer: "13"}
+              {id: "A", text: "Die Nachfrage nach individueller Farb- und Stilberatung ist groß. Denn wer heute im Geschäfts- wie auch im Privatleben erfolgreich sein möchte, muss sich in Outfit und Benehmen vorteilhaft präsentieren können. Der Leitfaden zeigt Ihnen, wie Sie sich selbst am besten in Szene setzen. Von der passenden und farblich stimmigen Garderobe über Make-up und Accessoires bis zu modernen Umgangsformen. Nutzen Sie also diesen 'Kurs' als Eintrittskarte in diese reizvolle Welt der Selbstdarstellung. Sie werden garantiert mit einem überzeugenden und gewinnenden persönlichen Auftritt davon profitieren.", correctAnswer: "16"},
+              {id: "B", text: "Die meisten Menschen kennen keine Strategien, wie sie ihr Lernverhalten und die Fähigkeit, sich Informationen zu merken, gezielt trainieren können. Dieses Buch gibt zunächst einen Überblick, wie das menschliche Gedächtnis funktioniert, und bietet dann eine Fülle von Techniken an, mit denen auch Ungeübte sich das Lernen und Arbeiten leichter machen können.", correctAnswer: "14"},
+              {id: "C", text: "Dieses erstmals 1788 erschienene Buch handelt von dem Umgang der Menschen miteinander und gibt Ratschläge, wie man sich im Umgang mit Menschen verschiedenster Alters- und Rangstufen richtig verhält. Es definiert, was Gutes und was schlechtes Verhalten ist, und galt so lange Zeit als ein Leitfaden für 'richtiges' Benehmen.", correctAnswer: "18"},
+              {id: "D", text: "Tim Gallwey entwickelte die Theorie vom Tennis-Spiel, das sich im Kopf abspielt. Er zeigt, wie jeder sein Leben frei von Angst und mit Eleganz spielen kann, ohne in Selbstzweifel oder Unkonzentriertheit zu verfallen. Das Gallwey sche Tennisspiel setzt ungeahnte Energien frei und zeigt das grenzenlose Potential des menschlichen Körpers und Geistes, wenn es darum geht, seine Lebensziele zu verfolgen und zu erreichen.", correctAnswer: "11"},
+              {id: "E", text: "Jeder Mensch kann seine kommunikativen Möglichkeiten entdecken und damit sein Leben bereichern. Die Themen des Buches sind: Die Grundlagen der Kommunikation, Rede und Vortrag, Despräche erfolgreich führen, Sicherheit gewinnen und Redeängste überwinden, Zeitmanagement für Redner und Konferenzleiter und vieles mehr. Ein ausführlicher Praxisteil mit zahlreichen Übungen ermöglicht es dem Leser, seine rhetorischen Fähigkeiten zu trainieren.", correctAnswer: "20"},
+              {id: "F", text: "Gute Umgangsformen sind wieder 'in'. Aber gilt das auch in der Schule? Auf humorvolle Weise erzählt die Autorin aus ihrem Alltag als Lehrerin an einer Realschule. Von gutem Benehmen kann da nicht immer die Rede sein – übrigens auch nicht bei den Eltern.", correctAnswer: null},
+              {id: "G", text: "Frieder Schulze 'Reden wir miteinander oder aneinander vorbei?' Manche Missverständnisse entstehen, wenn Menschen miteinander reden, besonders im privaten Bereich erleben wir das oft. Wenn Kommunikation erfolgreich sein soll, ist die Fähigkeit erforderlich, den anderen zu durchschauen und seelische Vorgänge und menschliche Probleme zu erkennen. Viele Beispiele zeigen, wie psychologische Aspekte menschliche Kommunikation verkomplizieren können und wie man damit am besten klar kommen kann.", correctAnswer: null},
+              {id: "H", text: "Ken Best 'Dein Körper lugt nicht' Der Körper lugt nicht, Gesten und Gebärden decken die Ebene des Unbewusstsein auf: Wer einen erhobenen Zeigefinger oder eine gerümpfte Nase sieht, versteht sofort, was der Gesprächspartner meint, auch wenn der mit Worten etwas anderes sagt. Dieses Buch gibt einen anschaulichen Überblick über die Signale, die wir ständig mit unserem Körper senden, und hilft uns zu verstehen, was jemand in Wahrheit gerade denkt und meint.", correctAnswer: "15"},
+              {id: "I", text: "Rolph Barth 'Basiswissen: Bewerbungstraining' Die Konkurrenz auf dem Arbeitsmarkt um immer knapper werdende freie Stellen ist groß. Umso wichtiger ist es zu wissen, wie man sich richtig bewirbt. Dieses Buch gibt Arbeitsuchenden umfassende Informationen zur erfolgreichen Bewerbung und bereitet optimal auf das Vorstellungsgespräch vor. Im Übungsteil werden gute Formulierungen für das Anschreiben und das sichere Auftreten des Bewerbers im Gespräch trainiert.", correctAnswer: "17"},
+              {id: "J", text: "Brigitte Hübner 'Richtig präsentieren' Dieses Buch ist ein Leitfaden für alle, die Teamsitzungen, Besprechungen, Workshops und Konferenzen durchführen. Anhand vieler praktischer Beispiele erhält der Leser Anregungen zum gekonnten visualisieren, zur gut geplanten und sicher durchgeführten Präsentation und zur effektiv gestalteten Besprechung. Es zeigt, wie durch den Einsatz von Bildern und Grafiken Präsentationen aufgelockert und Informationen besser verstanden werden können.", correctAnswer: null},
+              {id: "K", text: "Helga Sinn-Krummacher 'Delfin oder Delphin? So schreibt man das jetzt richtig' Dieses Trainingsbuch ist für den Arbeitsplatz und für zu Hause gedacht. Auf humorvolle Art werden die neuen Rechtschreibregeln der deutschen Sprache vorgestellt und eingedibt. Es enthält außerdem die neue amtliche Wortliste zur Rechtschreibung und die neuen Zeichensetzungsregeln.", correctAnswer: null},
+              {id: "L", text: "Erika Tack 'Zeitmanagement' Viele Menschen wissen nicht mehr, wo Ihnen der Kopf steht. Zu viele Termine und Aufgaben stellen Sie unter ständigen Zeitdruck. Mit Zeitmanagement lernen Sie, wie Sie Ihre Zeit so einteilen können, dass Sie wieder Zeit zum Leben haben. Sie erkennen Ihre persönlichen Zeitdiebe, Sie lernen, Prioritäten und erreichbare Ziele zu setzen. Durch das Führen eines Zeitplanbuchs lernen Sie wieder (und dauerhaft), aus der Zeitfalle herauszukommen.", correctAnswer: "12"}
             ],
             situations: [
-              {id: "11", text: "Ein Bekannter spielt Gitarre und möchte ein weiteres Instrument lernen."},
-              {id: "12", text: "Ein Kollege möchte mit fünf Freunden eine mehrtägige Musikveranstaltung besuchen."},
-              {id: "13", text: "Ein Bekannter hat bei der Messe Frankfurt gearbeitet und sucht eine andere Stelle in diesem Bereich."},
-              {id: "14", text: "Sie möchten einer Freundin Eintrittskarten für eine Musikveranstaltung schenken."},
-              {id: "15", text: "Sie interessieren sich für Bücher und möchten eine Messe besuchen."},
-              {id: "16", text: "Die sechsjährige Tochter eines Nachbarn würde gerne mit anderen Kindern Musik machen."},
-              {id: "17", text: "Ein Bekannter muss eine Jubiläumsfeier organisieren und sucht Unterstützung."},
-              {id: "18", text: "Sie mögen Musik und möchten in dem Bereich einen Job."},
-              {id: "19", text: "Ihre Nachbarin möchte ihre Violine verkaufen."},
-              {id: "20", text: "Eine Bekannte ist Musikerin und sucht Möglichkeiten, mit ihrer Gruppe aufzutreten."}
+              {id: "11", text: "Eine Bekannte interessiert sich für Bücher über den Tennissport."},
+              {id: "12", text: "Ein befreundetes Ehepaar steht andauernd unter Stress und möchte wieder mehr Zeit für sich und andere haben."},
+              {id: "13", text: "Eine Bekannte möchte bei ihren Partys eine perfekte Gastgeberin sein."},
+              {id: "14", text: "Eine Studentin sucht Informationen, wie sie besser und systematischer lernen kann."},
+              {id: "15", text: "Ein Bekannter möchte wissen, welche Botschaften durch Gestik und Mimik transportiert werden."},
+              {id: "16", text: "Eine Bekannte möchte ihr äußeres Erscheinungsbild optimieren."},
+              {id: "17", text: "Ein Bekannter ist sich noch unsicher, wie er sich bei einem Vorstellungsgespräch am besten präsentiert."},
+              {id: "18", text: "Ein Bekannter schreibt an einer Hausarbeit über gesellschaftliche Normen und Verhaltensregeln verschiedener Jahrhunderte."},
+              {id: "19", text: "Ein Bekannter möchte Kalligraphie (Schmuckschriften) lernen."},
+              {id: "20", text: "Eine Bekannte ist sehr verunsichert, weil sie auf Konferenzen immer wieder Angst hat, frei zu sprechen."}
             ]
           },
           { 
-            id: "s4", 
-            title: "Sprachbausteine, Teil 1", 
-            points: 15,
+            id:"s4", 
+            title:"Sprachbausteine, Teil 1", 
+            points:15,
             passageTitle:"Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.",
             passage: "",
             questions:[],
             fillBlanks: [
               {
                 id: "21",
-                options: ["allergrößtes", "allergrößtem", "allergrößten"],
-                correctAnswer: "allergrößtem"
+                options: ["an den", "auf dem", "über den"],
+                correctAnswer: "über den"
               },
               {
                 id: "22",
-                options: ["dass", "ob", "wenn"],
-                correctAnswer: "dass"
+                options: ["nichts mehr", "noch nicht", "keines"],
+                correctAnswer: "nichts mehr"
               },
               {
                 id: "23",
-                options: ["aber", "denn", "und"],
-                correctAnswer: "und"
+                options: ["doch", "eben", "überhaupt"],
+                correctAnswer: "doch"
               },
               {
                 id: "24",
-                options: ["kann", "können", "könnte"],
-                correctAnswer: "könnte"
+                options: ["Wann", "Was", "Wie"],
+                correctAnswer: "Wie"
               },
               {
                 id: "25",
-                options: ["begann", "beging", "belieb"],
-                correctAnswer: "begann"
+                options: ["der", "die", "von"],
+                correctAnswer: "der"
               },
               {
                 id: "26",
-                options: ["durch ein Jahr", "ein jahr lang", "seit einem Jahr"],
-                correctAnswer: "ein jahr lang"
+                options: ["gelaufen", "getan", "geworden"],
+                correctAnswer: "getan"
               },
               {
                 id: "27",
-                options: ["entdeckte", "erfand", "merkte"],
-                correctAnswer: "entdeckte"
+                options: ["durchfallen", "umfallen", "wegfallen"],
+                correctAnswer: "umfallen"
               },
               {
                 id: "28",
-                options: ["Dabei", "Inzwischen", "Während"],
-                correctAnswer: "Während"
+                options: ["dich", "dir", "mal"],
+                correctAnswer: "dir"
               },
               {
                 id: "29",
-                options: ["sowohl... als auch", "teils... teils", "weder... noch"],
-                correctAnswer: "sowohl... als auch"
+                options: ["alle", "ganze", "jede"],
+                correctAnswer: "jede"
               },
               {
                 id: "30",
-                options: ["auf Ihre Anzeige antworten", "auf Ihre Anzeige zu antworten", "auf Ihre Anzeige zu antworten"],
-                correctAnswer: "auf Ihre Anzeige zu antworten"
+                options: ["dabei", "damit", "davon"],
+                correctAnswer: "damit"
               }
             ],
-            fillText: `Sehr geehrter Herr Dr. Moosberger,
+            fillText: `Liebe Vanessa,
 
-mit (21) ________ Interesse habe ich Ihr Stellenangebot in der Essener Zeitung gelesen, (22) ________ Sie eine Teilzeit-Mitarbeiterin in Ihrem Antiquitätengeschäft suchen. Es reizt mich, eine verantwortungsvolle Aufgabe in einem renommierten Geschäft wie dem Ihrigen zu übernehmen, (23) ________ ich mich deshalb bewerbe.
+danke für deinen Brief, ________ ich mich total gefreut habe. Du fragst dich bestimmt, warum du schon drei Wochen ________ von mir gehört hast, oder? Ich war mit meiner Gastfamilie in Urlaub. Vierzehn Tage im Allgäu - mit den Kindern Stefan, Anja und Karina. Du weißt ________ selbst, wie anstrengend es ist, wenn man ständig drei kleine Kinder um sich hat, die pausenlos unterhalten werden möchten. ________ ist es übrigens in deiner Au-pair-Familie mit der kleinen Dorothea?
 
-Nach dem Abitur am Kreisgymnasium in Velbert (24) ________ ich eine dreijährige Schreinerlehre bei der Firma Eichelbohrer & Co und besuchte die Kreisberufsschule in Velbert. Nach erfolgreichem Abschluss meiner Berufsausbildung arbeitete ich (25) ________ bei Stutz & Partner - Möbeldesign in Düsseldorf. Danach schrieb ich mich an der Fachhochschule Köln im Fachbereich Möbeldesign ein und (26) ________ meine Liebe zu antiquarischen Möbelstücken.
+Das Allgäu liegt in Süddeutschland am Fuß ________ Alpen. Wir sind fast jeden Tag gewandert, immer bergauf und bergab. Den Kindern und mir haben ständig die Füße weh ________ , doch meine Gasteltern, Herr und Frau Zimmer, sind einfach immer weitergelaufen. Die Deutschen lieben es nämlich, in der Natur spazieren zu gehen, bis sie vor Erschöpfung ________ .
 
-Meine Spezialität ist das stilgenaue Restaurieren und Aufarbeiten antiquarischer Möbel, insbesondere aus dem Biedermeier und dem Jugendstil. (27) ________ meiner Berufstätigkeit und meines Studiums konnte ich umfangreiche Kenntnisse erwerben, was Möbelstile und die Herstellungskunst in den verschiedensten Epochen (28) ________ in Nord- (28) ________ in Südeuropa angeht.
+Unterwegs haben wir manchmal an einer sogenannten "Wassertretstelle" Rast gemacht. Das sind kleine Wasserbecken, die oft mitten im Wald liegen. Durch das Becken fließt ein Bach mit eiskaltem Wasser, das direkt von den Bergen kommt. Stell ________ vor, alle Wanderer ziehen ihre Schuhe und Strümpfe aus und laufen durch dieses Becken. Als ich meinen Fuß in dieses kalte Wasser getaucht hatte, dachte ich, dass ich gleich sterben muss.
 
-Mein Studium lässt mir genügend Zeit, eine Teilzeitstelle zu übernehmen, die darüber hinaus meinen beruflichen Fähigkeiten und Neigungen entspricht. Aus diesem Grund habe ich mich entschlossen, (29) ________, und bewerbe mich um die von Ihnen angebotene Teilzeitstelle.
+Am Wochenende haben wir alle Minigolf gespielt. Dabei muss ein Golfball mit einem Schläger in ein etwa Zehn Meter entferntes Loch geschlagen werden. Aber vor dem Loch gibt es ________ Menge Hindernisse: Gräben, kleine Hügel, Tunnel. Der Spieler, dessen Ball mit den wenigsten Schlägen im Loch ankommt, hat gewonnen. Die Kinder wollten gar nicht mehr ________ aufhören.
 
-Ich freue mich auf ein persönliches Gespräch.
+Jetzt muss ich aber Schluss machen, die Kinder warten auf ihr Abendessen, denn die Zimmers sind heute nicht da: Sie wandern mal wieder.
 
-Mit freundlichen Grüßen, Sabine Holzinger`
+Viele Grüße
+deine Mercedes`
           },
           { 
-            id: "s5", 
-            title: "Sprachbausteine, Teil 2", 
-            points: 15,
+            id:"s5", 
+            title:"Sprachbausteine, Teil 2", 
+            points:15,
             passageTitle:"Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort nur einmal verwenden. Nicht alle Wörter passen in den Text.",
             passage: "",
             questions:[],
             fillBlanks2: [
               {
                 id: "31",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "KAUM"
+                options: ["DAFÜR", "DAHER", "DAMIT", "DARAN", "DASS", "DAVON", "DAZU", "DENN", "FÜR", "GEGEN", "IRGENDEIN", "WAS", "WEITER", "ZU", "ZWISCHEN"],
+                correctAnswer: "DENN"
               },
               {
                 id: "32", 
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "AUF"
+                options: ["DAFÜR", "DAHER", "DAMIT", "DARAN", "DASS", "DAVON", "DAZU", "DENN", "FÜR", "GEGEN", "IRGENDEIN", "WAS", "WEITER", "ZU", "ZWISCHEN"],
+                correctAnswer: "FÜR"
               },
               {
                 id: "33",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "VORBEI"
+                options: ["DAFÜR", "DAHER", "DAMIT", "DARAN", "DASS", "DAVON", "DAZU", "DENN", "FÜR", "GEGEN", "IRGENDEIN", "WAS", "WEITER", "ZU", "ZWISCHEN"],
+                correctAnswer: "ZWISCHEN"
               },
               {
                 id: "34",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "STATT"
+                options: ["DAFÜR", "DAHER", "DAMIT", "DARAN", "DASS", "DAVON", "DAZU", "DENN", "FÜR", "GEGEN", "IRGENDEIN", "WAS", "WEITER", "ZU", "ZWISCHEN"],
+                correctAnswer: "IRGENDEIN"
               },
               {
                 id: "35",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "INNERHALB"
+                options: ["DAFÜR", "DAHER", "DAMIT", "DARAN", "DASS", "DAVON", "DAZU", "DENN", "FÜR", "GEGEN", "IRGENDEIN", "WAS", "WEITER", "ZU", "ZWISCHEN"],
+                correctAnswer: "DAFÜR"
               },
               {
                 id: "36",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "MÜSSEN"
+                options: ["DAFÜR", "DAHER", "DAMIT", "DARAN", "DASS", "DAVON", "DAZU", "DENN", "FÜR", "GEGEN", "IRGENDEIN", "WAS", "WEITER", "ZU", "ZWISCHEN"],
+                correctAnswer: "DAVON"
               },
               {
                 id: "37",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "AN"
+                options: ["DAFÜR", "DAHER", "DAMIT", "DARAN", "DASS", "DAVON", "DAZU", "DENN", "FÜR", "GEGEN", "IRGENDEIN", "WAS", "WEITER", "ZU", "ZWISCHEN"],
+                correctAnswer: "WEITER"
               },
               {
                 id: "38",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "SOLLEN"
+                options: ["DAFÜR", "DAHER", "DAMIT", "DARAN", "DASS", "DAVON", "DAZU", "DENN", "FÜR", "GEGEN", "IRGENDEIN", "WAS", "WEITER", "ZU", "ZWISCHEN"],
+                correctAnswer: "DAZU"
               },
               {
                 id: "39",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "DANN"
+                options: ["DAFÜR", "DAHER", "DAMIT", "DARAN", "DASS", "DAVON", "DAZU", "DENN", "FÜR", "GEGEN", "IRGENDEIN", "WAS", "WEITER", "ZU", "ZWISCHEN"],
+                correctAnswer: "DASS"
               },
               {
                 id: "40",
-                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
-                correctAnswer: "DENN"
+                options: ["DAFÜR", "DAHER", "DAMIT", "DARAN", "DASS", "DAVON", "DAZU", "DENN", "FÜR", "GEGEN", "IRGENDEIN", "WAS", "WEITER", "ZU", "ZWISCHEN"],
+                correctAnswer: "DARAN"
               }
             ],
-            fillText2: `Das Fahrrad: ernsthafte Konkurrenz fürs Auto?
+            fillText2: `Man(n) kocht selbst
+Immer mehr deutsche Männer nehmen die Töpfe selbst in die Hand
 
-Welches Fortbewegungsmittel, denken Sie, wird in Deutschland am häufigsten benutzt? Natürlich das Automobil. Volkswagen, Porsche, Mercedes Benz, BMW, Audi: In (31) ________ einem anderen Land gibt es so viele Automobilfabriken wie in Deutschland, spielt die Automobilindustrie eine so große Rolle. Nahezu jeder Haushalt verfügt über mindestens ein Auto, das Auto spielt im Leben der Deutschen eine große Rolle, sowohl als Fortbewegungsmittel zum Arbeitsplatz oder in den Urlaub als auch als Statussymbol: Zeig mir dein Auto und ich weiß, wer du bist.
+Selbst ist der Mann. Von der Wahrheit dieser alten deutschen Redewendung haben Frauen Generationen lang geträumt, wenn es um typische Hausarbeiten wie Waschen, Putzen oder Kochen ging. Zumindest bei Letzterem scheint sich jedoch in der letzten Jahren vieles zu ändern. ________ immer mehr Männer in Deutschland greifen jetzt selbst zum Kochtopf. Ein Grund ________ diese Entwicklung mag sein, dass es immer mehr Ein-Personen-Haushalte in Deutschland gibt. Es ist einfach niemand anderes da, der die Kocharbeit übernehmen könnte. Und Hunger zwingt bekanntlich zum Handeln. Andererseits ist das Kochen inzwischen ein allgemein akzeptiertes Hobby geworden, besonders unter Männern. Doch welch ein Unterschied besteht ________ den Ansprüchen einer traditionellen Hausfrau und denen eines Hobbykochs, was die Ausstattung der Küche angeht! Nicht ________ Topf darf es für den selbsternannten Drei-Sterne-Küchenchef sein: Gebürsteter Edelstahl mit versiegelter Antibehaftbeschichtung und integrierter digitaler Temperaturanzeige ist der Mindeststandard für einen echten kochenden Mann. Alles andere gilt als stillos.
 
-Doch hat das Autofahren auch Schattenseiten. Mangelnde Bewegungsmöglichkeiten, gesundheitliche Probleme und Stress bringen zumindest in den Großstädten immer more Autofahrer dazu, sich vom Automobil freizumachen und (32) ________ ein anderes Verkehrsmittel umzusteigen, das in dem Ruf steht, gesünder zu sein als das Auto: das Fahrrad. Nicht nur in der Freizeit, sondern auch auf dem Weg zum Arbeitsplatz wird das Rad benutzt. "Ich habe keine Lust, Morgen für Morgen im Stau zu stehen und Zeit zu verlieren", sagt Bettina Meier (25): "Da ist es viel entspannender, auf den zumeist gut ausgebauten Fahrradwegen an den im Stau wartenden Fahrzeugen (33) ________ und ausgeruht am Arbeitsplatz anzukommen."
+Die zweite Voraussetzung ________ , dass die Gerichte auch gelingen, ist das Wissen, wie man welche Speise am besten zubereitet. Zu diesem Zweck bieten die Buchhandlungen Berge von Kochbüchern an - mit Rezepten von Alaska bis Zimbabwe, mit oder ohne Fleisch, für zu Dicke und zu Dünne. Jetzt hängt es nur noch ________ ab, was der Hobbykoch aus den Kochideen der Buchautoren macht. Wird es ein exzellentes Mahl oder wäre unser "Chefkoch" nicht doch lieber zum Dönerstand um die Ecke gegangen? Überraschungen gehören zum Kochen dazu. Helfen die Bücher nicht ________ , bieten zum Beispiel die Volkshochschulen zahlreiche Kochkurse an, die in der Regel - zumeist von kochwilligen Männern - gut besucht sind. Das Kursangebot umfasst neben deutscher Hausmannskost wie Schnitzel, Krautwickel oder Rinderbraten zumeist also die mediterrane und die asiatische Küche. Das führt ________ , dass man(n) zu Hause immer öfter international kocht.
 
-Dass Fahrradfahren um einiges gesünder ist, als hinter dem Lenkrad zu sitzen, bestätigen auch die Mediziner. Wer Fahrrad fährt (34) ________ zu sitzen, bringt seinen Blutkreislauf in Schwung, stärkt die Abwehrkräfte des Körpers und trainiert seinen Körper. Auch die Bewegung an der frischen Luft tut Menschen gut, die sich sonst die meiste Zeit (35) ________ geschlossener Räume in Büros, Schulen oder Fabriken aufhalten (36) ________.
-
-Auch die Geschäftswelt hat die Fahrradfahrer als Kunden entdeckt. Ein breites Angebot (37) ________ Zubehör für Fahrräder von schicken Radfelgen über sportliche Mehrganggetriebe, mit denen Berge kein Problem mehr darstellen, bis zur Designer-Trinkflasche machen aus dem einfachen Fahrrad ein exlusives Fahrzeug. Und natürlich darf bei keinem Fahrradfahrer eine aufwändige Sicherheitsausstattung more fehlen: Schutzhelme, Ellenbogen- und Knieschützer, die das Fahrrad im Falle eines Unfalls fast so sicher wie einen Panzer machen (38) ________.
-
-Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (39) ________ sind die Autoschlangen wieder länger. (40) ________ einen praktischen Wetterschutz für Radfahrer haben die Geschäfte noch nicht im Angebot.`
+Das größte Problem der Hobbyköche ist aber, ________ es viel zu aufwändig ist, für sich alleine zu kochen. Daher sind zurzeit Internetseiten wie www.allein-kochen-ist-doof.de beliebt, wo sich Hobbyköche und -köchinnen Kochpartner für das gemeinsame Kochen und Essen suchen können. Das Interessante ________ ist, dass dabei unsere männlichen Chefköche feststellen müssen, dass es andere Menschen gibt, die mit vielleicht weniger Aufwand genauso gut ein Festmahl zubereiten können wie sie: nämlich die Frauen.`
           }
         ]
       };
 
+      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         questionIndex: 0, 
@@ -1839,6 +1838,7 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
+      /* ===== Timer Functions ===== */
       function startTimer(){
         if(state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -1872,6 +1872,7 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
+      /* ===== Reset Section Function ===== */
       function resetCurrentSection() {
         const currentSection = exam.sections[state.sectionIndex];
         
@@ -1902,6 +1903,7 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
         }
       }
 
+      /* ===== Render ===== */
       function renderTopTiles(){ 
         topTiles.innerHTML=''; 
         exam.sections.forEach((sec,idx)=>{ 
@@ -2272,14 +2274,17 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
 
       function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
+        // Build text but replace blanks with unique placeholders first (prevents ambiguous replacements)
         let textWithPlaceholders = section.fillText2;
         const placeholders = [];
         section.fillBlanks2.forEach(blank => {
           const ph = `BLANK_${blank.id}`;
           placeholders.push({id: blank.id, ph});
+          // replace first occurrence of the visual underline with placeholder
           textWithPlaceholders = textWithPlaceholders.replace('________', ph);
         });
 
+        // Now replace placeholders with actual span elements showing current answer (or underscore)
         placeholders.forEach(item => {
           const userAnswer = state.answers[item.id];
           const displayText = userAnswer ? userAnswer : '________';
@@ -2292,14 +2297,18 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
+        // attach click handlers to slots
         document.querySelectorAll('.blank-slot').forEach(slot => {
           slot.addEventListener('click', (e) => {
+            // use the element itself to open popup
             showSprachbausteine2Options(slot);
           });
         });
 
+        // Build word bank on the right
         let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
         const usedWords = Object.values(state.answers);
+        // Use section.wordBank if present, otherwise derive from fillBlanks2 options
         const bank = section.fillBlanks2[0] ? section.fillBlanks2[0].options : [];
         bank.forEach(word => {
           const isUsed = usedWords.includes(word);
@@ -2320,9 +2329,11 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
         setupSprachbausteine2DragAndDrop();
       }
 
+      // --- Added functions to handle drag/drop and clicks for Sprachbausteine Teil 2 ---
       let lastClickedSprachSlot = null;
 
       function setupSprachbausteine2DragAndDrop(){
+        // bank words: make draggable if not used, attach dragstart
         const bankWords = Array.from(document.querySelectorAll('.bank-word-vertical'));
         bankWords.forEach(el => {
           const word = el.dataset.word;
@@ -2331,13 +2342,16 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
           } else {
             el.setAttribute('draggable','false');
           }
+          // ensure single attached listener
           el.removeEventListener('dragstart', el._dstart);
           el._dstart = (e) => {
             e.dataTransfer.setData('text/plain', word);
+            // also set an indicator
             e.dataTransfer.setData('source', 'bank');
           };
           el.addEventListener('dragstart', el._dstart);
 
+          // keep onclick behavior (select into clicked slot)
           el.removeEventListener('click', el._onclick);
           el._onclick = () => {
             if(el.classList.contains('used')) return;
@@ -2346,6 +2360,7 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
           el.addEventListener('click', el._onclick);
         });
 
+        // blank slots: allow drop
         const slots = Array.from(document.querySelectorAll('.blank-slot'));
         slots.forEach(slot => {
           slot.addEventListener('dragover', (e) => {
@@ -2360,13 +2375,16 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
             slot.classList.remove('drag-over');
             const word = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/html');
             if(!word) return;
+            // Determine blank id
             const blankId = slot.dataset.blankId;
             if(!blankId) return;
+            // If this word is already used in another slot, free it
             Object.keys(state.answers).forEach(k => {
               if(state.answers[k] === word){
                 delete state.answers[k];
               }
             });
+            // If slot had a previous answer, free that bank word
             const prev = state.answers[blankId];
             if(prev){
               const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
@@ -2376,12 +2394,15 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
                 prevEl.addEventListener('click', prevEl._onclick);
               }
             }
+            // mark bank word used
             const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
             if(bankEl){
               bankEl.classList.add('used');
               bankEl.setAttribute('draggable','false');
+              // remove click to prevent double-placing
               bankEl.removeEventListener('click', bankEl._onclick);
             }
+            // assign to state and re-render
             state.answers[blankId] = word;
             renderAll();
           });
@@ -2389,12 +2410,14 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
       }
 
       function showSprachbausteine2Options(slot){
+        // highlight selected slot so click from bank knows target
         document.querySelectorAll('.blank-slot').forEach(s => s.classList.remove('selected-sprach'));
         slot.classList.add('selected-sprach');
         lastClickedSprachSlot = slot;
       }
 
       function selectSprachbausteine2FromBank(word){
+        // choose target slot: prefer lastClicked, otherwise first empty
         let slot = lastClickedSprachSlot;
         if(!slot){
           slot = Array.from(document.querySelectorAll('.blank-slot')).find(s => {
@@ -2403,14 +2426,17 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
           });
         }
         if(!slot) {
+          // if none available, do nothing
           return;
         }
         const blankId = slot.dataset.blankId;
+        // free previous occurrence of word
         Object.keys(state.answers).forEach(k => {
           if(state.answers[k] === word){
             delete state.answers[k];
           }
         });
+        // free previous word in target slot
         const prev = state.answers[blankId];
         if(prev){
           const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
@@ -2420,12 +2446,14 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
             if(prevEl._onclick) prevEl.addEventListener('click', prevEl._onclick);
           }
         }
+        // mark selected bank word as used
         const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
         if(bankEl){
           bankEl.classList.add('used');
           bankEl.setAttribute('draggable','false');
           if(bankEl._onclick) try{ bankEl.removeEventListener('click', bankEl._onclick); }catch(e){}
         }
+        // assign value
         state.answers[blankId] = word;
         try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
@@ -2456,7 +2484,7 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Text ${text.id}: ${userAnswer || '-'} 
+                <div>Text ${text.id}: ${userAnswer || 'Nicht beantwortet'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -2469,7 +2497,7 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>${question.text}: ${userAnswer || '-'} 
+                <div>${question.text}: ${userAnswer || 'Nicht beantwortet'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -2483,7 +2511,7 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Situation ${situation.id}: ${userAnswer || '-'} 
+                <div>Situation ${situation.id}: ${userAnswer || 'Nicht beantwortet'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -2496,7 +2524,7 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer || '-'} 
+                <div>Lücke ${blank.id}: ${userAnswer || 'Nicht beantwortet'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -2509,7 +2537,7 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer || '-'} 
+                <div>Lücke ${blank.id}: ${userAnswer || 'Nicht beantwortet'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -2528,6 +2556,7 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
         questionTitleEl.textContent = '';
       }
 
+      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex > 0){
           state.sectionIndex--;
@@ -2577,10 +2606,12 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
         showPage('hoeren-page');
       });
 
+      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
+      // Expose functions to global scope for event handlers
       window._lesenState = state;
       window.lesenApp = {
         selectOption,
@@ -2592,35 +2623,36 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
 
     // ===== HÖREN PAGE FUNCTIONALITY =====
     function initHoerenPage() {
+      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-hörverstehen",
-        durationSec: 17 * 60,
+        durationSec: 17 * 60, // 17 minutes in seconds
         sections: [
           { 
             id: "hörverstehen1", 
             title: "Hörverstehen, Teil 1", 
             points: 25,
-            correctAnswers: { "41": "falsch", "42": "richtig", "43": "richtig", "44": "falsch", "45": "richtig" },
+            correctAnswers: { "41": "richtig", "42": "richtig", "43": "falsch", "44": "falsch", "45": "falsch" },
             questions: [
               {
                 id: "41",
-                text: "Sie wurden nicht zur Preisverleihung eingeladen."
+                text: "Die Zahl der arbeitslosen Jugendlichen in der EU ist gesunken."
               },
               {
                 id: "42", 
-                text: "Die alte Brücke ist wieder befahrbar."
+                text: "Das Bundesministerium für Arbeit will ausländische Arbeitskräfte für bestimmte Berufe gewinnen."
               },
               {
                 id: "43",
-                text: "Der Wanderer wurde verarztet und in Sicherheit gebracht."
+                text: "Die 'Lange Nacht der Musik' findet auf dem Odeonsplatz in München statt."
               },
               {
                 id: "44",
-                text: "Im Unternehmen wurden Kündigungen ausgesprochen."
+                text: "Fast 10.000 Mumien wurden im 'Tal der Goldenen Mumien' gefunden."
               },
               {
                 id: "45",
-                text: "Nach der Registrierung kann man am Gruppenlauf teilnehmen."
+                text: "Die Gefahr durch schwere Gewitter ist jetzt vorbei."
               }
             ]
           },
@@ -2628,47 +2660,47 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
             id: "hörverstehen2", 
             title: "Hörverstehen, Teil 2", 
             points: 25,
-            correctAnswers: { "46": "richtig", "47": "falsch", "48": "richtig", "49": "richtig", "50": "richtig", "51": "falsch", "52": "falsch", "53": "falsch", "54": "richtig", "55": "falsch" },
+            correctAnswers: { "46": "richtig", "47": "falsch", "48": "richtig", "49": "richtig", "50": "falsch", "51": "falsch", "52": "richtig", "53": "falsch", "54": "falsch", "55": "falsch" },
             questions: [
               {
                 id: "46",
-                text: "Der Berufseinstieg in anderen Ländern ist für Carina nicht leicht."
+                text: "Für die Autorin Susa Huttop ist Schreiben sowohl Freude als auch Anstrengung."
               },
               {
                 id: "47",
-                text: "Carina ist ihr Privatleben wichtiger als ihr Beruf."
+                text: "Susa Huttop begann mit zwölf Jahren, ihr Buch 'Hinter Saram' zu schreiben."
               },
               {
                 id: "48", 
-                text: "Carina hat sich mit einem Film präsentiert."
+                text: "Zuerst dachte Susa nicht daran, ihre Geschichte zu veröffentlichen."
               },
               {
                 id: "49",
-                text: "Carina musste ihr Gewicht stark verändern für einen Film."
+                text: "Zuerst veröffentlichte Susa Ausschnitte ihrer Geschichte im Internet."
               },
               {
                 id: "50",
-                text: "Carina bevorzugt gefühlvolle Filme vor Action-Filmen."
+                text: "Begeisterte Nutzer haben den Verlag angerufen."
               },
               {
                 id: "51",
-                text: "Carina hatte Probleme mit dem Schuldirektor."
+                text: "Susa beschreibt absichtlich Personen aus ihrem privaten Umfeld."
               },
               {
                 id: "52",
-                text: "Carinas Eltern haben sie von Anfang an unterstützt."
+                text: "Die Autorin plant im Voraus genau, was in der Geschichte passieren wird."
               },
               {
                 id: "53",
-                text: "Der Wechsel zwischen Schule und Dreharbeiten war für Carina leicht."
+                text: "Susa folgt beim Schreiben keinen bestimmten Mustern."
               },
               {
                 id: "54",
-                text: "Bei Dialogen darf man nichts erfinden."
+                text: "Die junge Frau gab während des Radiointerviews eine Leseprobe."
               },
               {
                 id: "55",
-                text: "Carina empfiehlt, andere Schauspieler zu beobachten."
+                text: "Susa braucht immer Ruhe, um schreiben zu können."
               }
             ]
           },
@@ -2676,33 +2708,34 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
             id: "hörverstehen3", 
             title: "Hörverstehen, Teil 3", 
             points: 25,
-            correctAnswers: { "56": "richtig", "57": "falsch", "58": "falsch", "59": "falsch", "60": "richtig" },
+            correctAnswers: { "56": "richtig", "57": "falsch", "58": "falsch", "59": "richtig", "60": "falsch" },
             questions: [
               {
                 id: "56",
-                text: "Am \"Tag des Ehrenamts\" kann man probeweise helfen."
+                text: "Sie können im Internet prüfen, ob Ihre aktuelle Bestellung schon unterwegs ist."
               },
               {
                 id: "57",
-                text: "Die Skateboard-Vorführung fällt aus."
+                text: "Für die Nachtveranstaltung kann man noch Karten im Internet kaufen."
               },
               {
                 id: "58",
-                text: "Es gibt eine Warnung vor Passwort-Programmen."
+                text: "Die Teilnahme an der Party im Burghof kostet nichts."
               },
               {
                 id: "59",
-                text: "Es wird empfohlen, mit dem Fahrrad zum Volkspark zu fahren."
+                text: "Der Abflug der Fluges nach Mallorca ändert sich."
               },
               {
                 id: "60",
-                text: "Vor dem Training muss man Bescheid sagen."
+                text: "Bei einem wichtigen Anliegen soll man eine andere Nummer wählen."
               }
             ]
           }
         ]
       };
 
+      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
@@ -2717,6 +2750,7 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
       const timerEl = document.getElementById('timer-hoeren');
       const statusText = document.getElementById('statusText-hoeren');
 
+      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -2750,6 +2784,7 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
+      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -2765,6 +2800,7 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
         const answers = state.answers[section.id];
         if (!answers) return false;
         
+        // تحقق إذا تمت الإجابة على جميع الأسئلة في هذا القسم
         const answeredQuestions = Object.keys(answers).length;
         const totalQuestions = section.questions.length;
         
@@ -2855,6 +2891,8 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
         state.answers[sectionId][questionId] = answer;
         try{ localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
+        
+        // إعادة عرض البلاطات لتحديث حالة "تم"
         renderTopTiles();
       }
 
@@ -2917,6 +2955,7 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
         contentContainer.innerHTML = resultsHTML;
       }
 
+      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-hoeren').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -2963,10 +3002,12 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
         showPage('schreiben-page');
       });
 
+      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
+      // Expose functions to global scope for event handlers
         window._hoerenState = state;
         window.hoerenApp = {
         updateListeningAnswer
@@ -2975,9 +3016,10 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
 
     // ===== SCHREIBEN PAGE FUNCTIONALITY =====
     function initSchreibenPage() {
+      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-002",
-        durationSec: 30 * 60,
+        durationSec: 30 * 60, // 30 minutes in seconds
         sections: [
           { 
             id: "s1", 
@@ -2986,33 +3028,29 @@ Nur wenn es regnet - und das passiert in Deutschland leider nicht so selten -, (
             passageTitle: "Aufgabe: Schreiben Sie eine E-Mail",
             passage: "",
             writingTask: {
-              prompt: `Renovierungskurs
+              prompt: `Octavian-Therme mit Hotel und Frühstück
 
-Selbermachen will gelernt sein: Tapezieren und Streichen für Anfänger – Wochenendkurs im Urbi-Baumarkt.
+Wasser, Wärme, Wohlfühlen! Einfach mal raus aus dem Alltag? 
+In den komfortablen Zimmern im Hotel an der Therme finden Sie Ruhe und Entspannung. 
+Von Ihrem Balkon aus genießen Sie einen wunderschönen Blick in die Natur. 
+Unser gut geschulter Service sorgt dafür, dass alle Gäste sich rundum wohlfühlen.
 
-Ihre Küche kann neue Farbe gebrauchen? 
-Oder Sie möchten Ihr Wohnzimmer neu tapezieren und wissen nicht, wie das geht? 
+In der Octavian-Therme können Sie ein großes Schwimmbecken, ein Dampfbad, eine Saunalandschaft, 
+ein hervorragendes gastronomisches Angebot und vor allem viel Ruhe genießen. 
+Hier können Sie den ganzen Stress vergessen!
 
-Bei uns erfahren Sie alles, was Sie über das Renovieren wissen müssen:
-- Die Auswahl der richtigen Tapete.
-- Welches Werkzeug ist notwendig?
-- Welche Arbeiten sind vorher und nachher erforderlich?
-- Neue Streichtechniken kennenlernen.
+Buchen Sie noch heute Ihren Kururlaub: 
+2 Übernachtungen im Doppelzimmer, Tageskarte für die Therme, Frühstück vom Buffet, 
+frisches Obst auf dem Zimmer, kostenloser Parkplatz – nur 150 Euro pro Person.
 
-Mit vielen praktischen Übungen! 
-Ihr Kursleiter steht Ihnen mit Tipps und Expertenwissen zur Seite.
-
-Samstag und Sonntag von 14 bis 17 Uhr, maximal acht Teilnehmer.
-Teilnahmegebühr (inkl. Materialien)
-
-Urbi-Baumarkt
-Industriestraße 12
-56478 Montabaur`,
+Hotel an der Therme
+Thermenallee 5
+61352 Bad Hamburg`,
               requirements: [
-                "Beschreiben Sie, warum Sie sich für diesen Kurs entschieden haben.",
-                "Legen Sie dar, welche Probleme es im Kurs gab.",
-                "Berichten Sie von Ihren Erfahrungen mit ähnlichen Kursen.",
-                "Erklären Sie, wie der Kurs verbessert werden kann."
+                "Schreiben Sie, was Sie von Ihrem Aufenthalt erwartet hatten.",
+                "Beschreiben Sie, wovon Sie sich erholen wollten.",
+                "Erläutern Sie, warum Sie unzufrieden sind.",
+                "Machen Sie Verbesserungsvorschläge."
               ],
               wordCount: 0
             }
@@ -3020,6 +3058,7 @@ Industriestraße 12
         ]
       };
 
+      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
@@ -3036,6 +3075,7 @@ Industriestraße 12
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
 
+      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3069,6 +3109,7 @@ Industriestraße 12
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
+      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -3100,10 +3141,11 @@ Industriestraße 12
       function renderWritingSection() {
         const section = exam.sections[state.sectionIndex];
         
+        // Render the prompt in left panel
         passageContentEl.innerHTML = `
           <div class="writing-task">
             <div class="writing-prompt">${section.writingTask.prompt}</div>
-            <div class="instructions" style="border:1px solid #e1e8f6; padding:10px; margin:10px 0; border-radius:6px; background:#ffffff;">Sie haben an diesem Wochenendkurs teilgenommen. Leider haben Sie nicht viel gelernt und sind unzufrieden. 
+            <div class="instructions" style="border:1px solid #e1e8f6; padding:10px; margin:10px 0; border-radius:6px; background:#ffffff;">Sie haben ein Wochenende in diesem Hotel verbracht und die Therme besucht. Leider waren Sie nicht zufrieden. 
       Schreiben Sie eine Beschwerde.</div>
             <div class="writing-requirements">
               <h4>Schreiben Sie in Ihrer E-Mail:</h4>
@@ -3117,6 +3159,7 @@ Industriestraße 12
           </div>
         `;
         
+        // Render writing area in right panel
         const currentAnswer = state.answers[section.id] || '';
         const wordCount = countWords(currentAnswer);
         
@@ -3169,6 +3212,7 @@ Industriestraße 12
         writingContainer.innerHTML = '';
       }
 
+      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-schreiben').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3215,10 +3259,12 @@ Industriestraße 12
         showPage('ergebnisse-page');
       });
 
+      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
+      // Expose functions to global scope for event handlers
         window._schreibenState = state;
         window.schreibenApp = {
         updateWritingAnswer
@@ -3227,86 +3273,86 @@ Industriestraße 12
 
     // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
     function initErgebnissePage() {
-      // كائن الإجابات الصحيحة - يجب أخذه من امتحان العميل الأصلي
+      // ===== الإجابات الصحيحة المركزية =====
       const CORRECT_ANSWERS = {
         lesen: {
           // الجزء الأول: Überschriften zuordnen (النصوص 1-5)
-          "text1": "f",
-          "text2": "j", 
+          "text1": "h",
+          "text2": "f", 
           "text3": "c",
-          "text4": "h",
-          "text5": "e",
+          "text4": "a",
+          "text5": "d",
           
           // الجزء الثاني: Fragen zum Text (الأسئلة s2q1-s2q5)
           "s2q1": "s2q1o1",
-          "s2q2": "s2q2o1",
-          "s2q3": "s2q3o3",
+          "s2q2": "s2q2o3",
+          "s2q3": "s2q3o1",
           "s2q4": "s2q4o2",
           "s2q5": "s2q5o1",
           
           // الجزء الثالث: Texte zuordnen (المواقف 11-20)
-          "11": "L",
-          "12": "C",
-          "13": "B",
-          "14": "E",
-          "15": "X",
-          "16": "I",
-          "17": "G",
-          "18": "D",
-          "19": "X",
+          "11": "E",
+          "12": "J",
+          "13": "X",
+          "14": "I",
+          "15": "A",
+          "16": "B",
+          "17": "F",
+          "18": "X",
+          "19": "H",
           "20": "K",
           
           // Sprachbausteine Teil 1 (الفراغات 21-30)
-          "21": "allergrößtem",
-          "22": "dass",
-          "23": "und",
-          "24": "könnte",
-          "25": "begann",
-          "26": "ein jahr lang",
-          "27": "entdeckte",
-          "28": "Während",
-          "29": "sowohl... als auch",
-          "30": "auf Ihre Anzeige zu antworten",
+          "21": "über den",
+          "22": "nichts mehr",
+          "23": "doch",
+          "24": "Wie",
+          "25": "der",
+          "26": "getan",
+          "27": "umfallen",
+          "28": "dir",
+          "29": "jede",
+          "30": "damit",
           
           // Sprachbausteine Teil 2 (الفراغات 31-40)
-          "31": "KAUM",
-          "32": "AUF",
-          "33": "VORBEI",
-          "34": "STATT",
-          "35": "INNERHALB",
-          "36": "MÜSSEN",
-          "37": "AN",
-          "38": "SOLLEN",
-          "39": "DANN",
-          "40": "DENN"
+          "31": "DENN",
+          "32": "FÜR",
+          "33": "ZWISCHEN",
+          "34": "IRGENDEIN",
+          "35": "DAFÜR",
+          "36": "DAVON",
+          "37": "WEITER",
+          "38": "DAZU",
+          "39": "DASS",
+          "40": "DARAN"
         },
         
         hoeren: {
           // Hören Teil 1 (الأسئلة 41-45)
-          "41": "falsch",
+          "41": "richtig",
           "42": "richtig",
-          "43": "richtig",
+          "43": "falsch",
           "44": "falsch",
-          "45": "richtig",
+          "45": "falsch",
           
           // Hören Teil 2 (الأسئلة 46-55)
           "46": "richtig",
           "47": "falsch",
           "48": "richtig",
           "49": "richtig",
-          "50": "richtig",
+          "50": "falsch",
           "51": "falsch",
-          "52": "falsch",
+          "52": "richtig",
           "53": "falsch",
-          "54": "richtig",
+          "54": "falsch",
           "55": "falsch",
           
           // Hören Teil 3 (الأسئلة 56-60)
           "56": "richtig",
           "57": "falsch",
           "58": "falsch",
-          "59": "falsch",
-          "60": "richtig"
+          "59": "richtig",
+          "60": "falsch"
         }
       };
 
@@ -3321,68 +3367,23 @@ Industriestraße 12
           lesen: 40, 
           hoeren: 20 
         },
-        // ربط الإجابات الصحيحة من الكائن المركزي
         hoerenCorrect: CORRECT_ANSWERS.hoeren,
         lesenCorrect: CORRECT_ANSWERS.lesen
       };
 
-      // الدوال المساعدة
-      function getHeadingText(headingId) {
-        if (!headingId || headingId === '-') return '-';
-        const headings = {
-          "a": "Limonade aus dem Wasserhahn",
-          "b": "Limonade ist moderner als Wasser",
-          "c": "Sommer bedeutet in Zukunft nicht unbedingt Sonne",
-          "d": "Mehr Sauerstoff im Wasser macht müde Menschen fit",
-          "e": "Viel Wasser trinken - Gesundheit tanken",
-          "f": "Frische Luft macht stark",
-          "g": "Die Sonne macht Landwirten Probleme",
-          "h": "Sprudel hausgemacht – Zeit des Flaschen-Tragens ist vorbei",
-          "i": "Alarm: Nitrat im Regenwasser bedroht die Gesundheit",
-          "j": "Vom Regen zum Mineralwasser"
-        };
-        return headings[headingId] || headingId;
-      }
-
-      function getOptionText(questionId, optionId) {
-        if (!optionId || optionId === '-') return '-';
-        const options = {
-          "s2q1o1": "dominieren als Rinderrasse die Milchviehwirtschaft.",
-          "s2q1o2": "sind für die Milchproduktion wenig geeignet.",
-          "s2q1o3": "wurden ursprünglich in Norddeutschland gezüchtet.",
-          "s2q2o1": "hat bereits einige Preise gewonnen.",
-          "s2q2o2": "war Siegerin bei einer Veranstaltung in Italien.",
-          "s2q2o3": "wurde zur schönsten Kuh Europas gewählt.",
-          "s2q3o1": "bekam Krista ein Nachwuchs.",
-          "s2q3o2": "wäre Krista fast gestorben.",
-          "s2q3o3": "wurde Krista ärztlich behandelt.",
-          "s2q4o1": "betreffen die Familie Seeger nicht.",
-          "s2q4o2": "sind eine Folge des Verbraucherverhaltens.",
-          "s2q4o3": "werden im Film ausführlich behandelt.",
-          "s2q5o1": "begeistert Kinobetreiber bislang nicht.",
-          "s2q5o2": "könnte die Kritiker nicht überzeugen.",
-          "s2q5o3": "wurde für den Deutschen Filmpreis nominiert."
-        };
-        return options[optionId] || optionId;
-      }
-
-      function getSituationText(id) {
-        const situations = {
-          "11": "Ein Bekannter spielt Gitarre und möchte ein weiteres Instrument lernen.",
-          "12": "Ein Kollege möchte mit fünf Freunden eine mehrtägige Musikveranstaltung besuchen.",
-          "13": "Ein Bekannter hat bei der Messe Frankfurt gearbeitet und sucht eine andere Stelle in diesem Bereich.",
-          "14": "Sie möchten einer Freundin Eintrittskarten für eine Musikveranstaltung schenken.",
-          "15": "Sie interessieren sich für Bücher und möchten eine Messe besuchen.",
-          "16": "Die sechsjährige Tochter eines Nachbarn würde gerne mit anderen Kindern Musik machen.",
-          "17": "Ein Bekannter muss eine Jubiläumsfeier organisieren und sucht Unterstützung.",
-          "18": "Sie mögen Musik und möchten in dem Bereich einen Job.",
-          "19": "Ihre Nachbarin möchte ihre Violine verkaufen.",
-          "20": "Eine Bekannte ist Musikerin und sucht Möglichkeiten, mit ihrer Gruppe aufzutreten."
-        };
-        return situations[id] || id;
+      // ===== الدوال المساعدة =====
+      function normalizeAnswer(a) {
+        if (a === null || a === undefined || a === '') return '-';
+        let s = String(a).trim();
+        if (s === '') return '-';
+        const low = s.toLowerCase();
+        if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
+        if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
+        return s;
       }
 
       function escapeHtml(s) {
+        if (s === null || s === undefined) return '';
         return String(s)
           .replace(/&/g, '&amp;')
           .replace(/</g, '&lt;')
@@ -3391,31 +3392,461 @@ Industriestraße 12
           .replace(/'/g, '&#039;');
       }
 
-      function normalizeAnswer(a) {
-        if (a === null || a === undefined) return '';
-        let s = String(a).trim();
-        if (s === '') return '';
-        const low = s.toLowerCase();
-        if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
-        if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
-        return s;
+      function getOptionText(questionId, optionId) {
+        if (!optionId || optionId === '-' || optionId === '') return '-';
+        
+        const optionsMap = {
+          "s2q1o1": "führt in Unna einen kleinen Karnevalsumzug durch.",
+          "s2q1o2": "ist in Unna seit 50 Jahren eine gefeierte Persönlichkeit.",
+          "s2q1o3": "veranstaltet den einzigen Karnevalsumzug der Welt.",
+          "s2q2o1": "fährt traditionell ein blondes Schulmädchen mit.",
+          "s2q2o2": "präsentiert er kleine Szenen, die auf den Alltag Bezug nehmen.",
+          "s2q2o3": "stellt er sozialkritische Themen auf witzige Art und Weise dar.",
+          "s2q3o1": "hatte zunächst wenig Verständnis für Helmut Scherer.",
+          "s2q3o2": "hielt anfangs Helmut Scherer für kühl und nüchtern.",
+          "s2q3o3": "verhinderte Helmut Scherer ersten Karnevalsumzug.",
+          "s2q4o1": "hat Helmut Scherer sogar Geld eingebracht.",
+          "s2q4o2": "ist heute eine gute Reklame für die Stadt Unna.",
+          "s2q4o3": "wird in Zukunft von einer ganzen Gruppe von Leuten durchgeführt.",
+          "s2q5o1": "hat an Karnevalsumzügen in mehreren Städten teilgenommen.",
+          "s2q5o2": "hat inzwischen in ganz Deutschland Fan–Clubs.",
+          "s2q5o3": "sucht einen Nachfolger."
+        };
+        
+        return optionsMap[optionId] || optionId;
       }
 
-      function keyZeroToTen(k) {
-        return k === '0' ? '10' : k;
+      function getHeadingText(headingId) {
+        if (!headingId || headingId === '-' || headingId === '') return '-';
+        
+        const headingsMap = {
+          "a": "Sport ist gesund - wenn man einige wichtige Regeln beachtet",
+          "b": "Griechische Sportler so erfolgreich wie nie zuvor",
+          "c": "Fitness auch mit wenig Zeitaufwand erreichbar",
+          "d": "Geprüfte Qualität für Babys",
+          "e": "Bluthochdruck beschleunigt das flönehmen",
+          "f": "Sportbegeisterte Eltern - und auch die Babys sind beim Joggen dabei",
+          "g": "Täglich kurzes Sprints besser als langes Ausdeuertraining",
+          "h": "Eine Disziplin, die für alle Altersgruppen geeignet ist",
+          "i": "Unüberschaubares Angebot an Kinderwagen überfordert junge Eltern",
+          "j": "Autotndustrie: In Zukunft Mobilität ohne Grenzen"
+        };
+        
+        return headingsMap[headingId] || headingId;
       }
 
+      function getTextLetterById(textId) {
+        const map = {
+          "text1": "A", "text2": "B", "text3": "C", "text4": "D", "text5": "E"
+        };
+        return map[textId] || textId;
+      }
+
+      function getSituationText(id) {
+        const situations = {
+          "11": "Eine Bekannte interessiert sich für Bücher über den Tennissport.",
+          "12": "Ein befreundetes Ehepaar steht andauernd unter Stress und möchte wieder mehr Zeit für sich und andere haben.",
+          "13": "Eine Bekannte möchte bei ihren Partys eine perfekte Gastgeberin sein.",
+          "14": "Eine Studentin sucht Informationen, wie sie besser und systematischer lernen kann.",
+          "15": "Ein Bekannter möchte wissen, welche Botschaften durch Gestik und Mimik transportiert werden.",
+          "16": "Eine Bekannte möchte ihr äußeres Erscheinungsbild optimieren.",
+          "17": "Ein Bekannter ist sich noch unsicher, wie er sich bei einem Vorstellungsgespräch am besten präsentiert.",
+          "18": "Ein Bekannter schreibt an einer Hausarbeit über gesellschaftliche Normen und Verhaltensregeln verschiedener Jahrhunderte.",
+          "19": "Ein Bekannter möchte Kalligraphie (Schmuckschriften) lernen.",
+          "20": "Eine Bekannte ist sehr verunsichert, weil sie auf Konferenzen immer wieder Angst hat, frei zu sprechen."
+        };
+        return situations[id] || id;
+      }
+
+      // ===== دوال التصحيح =====
+      function gradeHoeren(userAnswers) {
+        const correct = CORRECT_ANSWERS.hoeren;
+        let okCount = 0;
+        const details = [];
+        
+        for (let q = 41; q <= 60; q++) {
+          const id = q.toString();
+          const userAnswer = normalizeAnswer(userAnswers[id] || '');
+          const correctAnswer = correct[id] || '';
+          const isCorrect = (userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+          if (isCorrect) okCount++;
+          
+          details.push({
+            frage: id,
+            user: userAnswer,
+            correct: correctAnswer,
+            richtig: isCorrect
+          });
+        }
+        
+        const total = (okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2);
+        return { okCount, total: parseFloat(total), details };
+      }
+
+      function gradeLesen(userAnswers) {
+        const correct = CORRECT_ANSWERS.lesen;
+        let okCount = 0;
+        const details = [];
+        
+        // Teil 1: Überschriften zuordnen (text1-text5)
+        for (let i = 1; i <= 5; i++) {
+          const id = `text${i}`;
+          const userAnswer = normalizeAnswer(userAnswers[id] || '');
+          const correctAnswer = correct[id] || '';
+          const isCorrect = (userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+          if (isCorrect) okCount++;
+          
+          details.push({
+            frage: `Text ${i}`,
+            user: getHeadingText(userAnswer),
+            correct: getHeadingText(correctAnswer),
+            richtig: isCorrect
+          });
+        }
+        
+        // Teil 2: Fragen zum Text (s2q1-s2q5)
+        for (let i = 1; i <= 5; i++) {
+          const id = `s2q${i}`;
+          const userAnswer = normalizeAnswer(userAnswers[id] || '');
+          const correctAnswer = correct[id] || '';
+          const isCorrect = (userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+          if (isCorrect) okCount++;
+          
+          details.push({
+            frage: `Frage ${i}`,
+            user: getOptionText(id, userAnswer),
+            correct: getOptionText(id, correctAnswer),
+            richtig: isCorrect
+          });
+        }
+        
+        // Teil 3: Texte zuordnen (11-20)
+        for (let i = 11; i <= 20; i++) {
+          const id = i.toString();
+          const userAnswer = normalizeAnswer(userAnswers[id] || '');
+          const correctAnswer = correct[id] || '';
+          const isCorrect = (userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+          if (isCorrect && userAnswer !== '') okCount++;
+          
+          details.push({
+            frage: `Situation ${i}`,
+            user: userAnswer === 'X' ? 'X - Kein passender Text' : (userAnswer !== '-' ? `Text ${userAnswer}` : '-'),
+            correct: correctAnswer ? `Text ${correctAnswer}` : 'X - Kein passender Text',
+            richtig: isCorrect
+          });
+        }
+        
+        // Sprachbausteine Teil 1 (21-30)
+        for (let i = 21; i <= 30; i++) {
+          const id = i.toString();
+          const userAnswer = normalizeAnswer(userAnswers[id] || '');
+          const correctAnswer = correct[id] || '';
+          const isCorrect = (userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+          if (isCorrect) okCount++;
+          
+          details.push({
+            frage: `Lücke ${i}`,
+            user: userAnswer,
+            correct: correctAnswer,
+            richtig: isCorrect
+          });
+        }
+        
+        // Sprachbausteine Teil 2 (31-40)
+        for (let i = 31; i <= 40; i++) {
+          const id = i.toString();
+          const userAnswer = normalizeAnswer(userAnswers[id] || '');
+          const correctAnswer = correct[id] || '';
+          const isCorrect = (userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+          if (isCorrect) okCount++;
+          
+          details.push({
+            frage: `Lücke ${i}`,
+            user: userAnswer,
+            correct: correctAnswer,
+            richtig: isCorrect
+          });
+        }
+        
+        const total = (okCount * (CONFIG.totals.lesen / CONFIG.counts.lesen)).toFixed(2);
+        return { okCount, total: parseFloat(total), details };
+      }
+
+      // ===== دوال العرض =====
+      function buildTable(title, details, total, max) {
+        let html = `<div class="result-item">
+                      <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
+                      <div class="section-table">
+                        <table class="true-false-table">
+                          <thead>
+                            <tr>
+                              <th style="width: 10%">Frage</th>
+                              <th style="width: 40%">Ihre Antwort</th>
+                              <th style="width: 40%">Richtige Antwort</th>
+                              <th style="width: 10%">Ergebnis</th>
+                            </tr>
+                          </thead>
+                          <tbody>`;
+        
+        details.forEach(x => {
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${escapeHtml(x.frage)}</strong></td>
+                    <td>${escapeHtml(x.user)}</td>
+                    <td>${escapeHtml(x.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody>
+                </table>
+                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                  <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
+                </div>
+              </div></div>`;
+        return html;
+      }
+
+      function renderLesenDetails(answers) {
+        const result = gradeLesen(answers || {});
+        
+        let html = `<div class="result-item">
+                    <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
+        
+        // Teil 1: Überschriften zuordnen
+        const teil1Details = result.details.slice(0, 5);
+        const teil1Correct = teil1Details.filter(d => d.richtig).length;
+        const teil1Total = (teil1Correct * (25/5)).toFixed(2);
+        
+        html += `<h4 style="margin-top: 20px;">Teil 1: Überschriften zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Text</th>
+                       <th style="width: 40%">Ihre Überschrift</th>
+                       <th style="width: 40%">Richtige Überschrift</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        teil1Details.forEach((x, idx) => {
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>Text ${idx + 1}</strong></td>
+                    <td>${escapeHtml(x.user)}</td>
+                    <td>${escapeHtml(x.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody>
+                </table>
+                <div style="margin-top: 10px; padding: 10px; background: #e3f2fd; border-radius: 6px;">
+                  <strong>Punkte: ${teil1Correct}/5 richtig = ${teil1Total}/25 Punkten</strong>
+                </div>`;
+        
+        // Teil 2: Fragen zum Text
+        const teil2Details = result.details.slice(5, 10);
+        const teil2Correct = teil2Details.filter(d => d.richtig).length;
+        const teil2Total = (teil2Correct * (25/5)).toFixed(2);
+        
+        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Frage</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        teil2Details.forEach((x, idx) => {
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${idx + 1}</strong></td>
+                    <td>${escapeHtml(x.user)}</td>
+                    <td>${escapeHtml(x.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody>
+                </table>
+                <div style="margin-top: 10px; padding: 10px; background: #e3f2fd; border-radius: 6px;">
+                  <strong>Punkte: ${teil2Correct}/5 richtig = ${teil2Total}/25 Punkten</strong>
+                </div>`;
+        
+        // Teil 3: Texte zuordnen
+        const teil3Details = result.details.slice(10, 20);
+        const teil3Correct = teil3Details.filter(d => d.richtig).length;
+        const teil3Total = (teil3Correct * (25/10)).toFixed(2);
+        
+        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Situation</th>
+                       <th style="width: 40%">Ihr Text</th>
+                       <th style="width: 40%">Richtiger Text</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        teil3Details.forEach((x, idx) => {
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${idx + 11}</strong></td>
+                    <td>${escapeHtml(x.user)}</td>
+                    <td>${escapeHtml(x.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody>
+                </table>
+                <div style="margin-top: 10px; padding: 10px; background: #e3f2fd; border-radius: 6px;">
+                  <strong>Punkte: ${teil3Correct}/10 richtig = ${teil3Total}/25 Punkten</strong>
+                </div>`;
+        
+        // Sprachbausteine Teil 1
+        const teil4Details = result.details.slice(20, 30);
+        const teil4Correct = teil4Details.filter(d => d.richtig).length;
+        const teil4Total = (teil4Correct * (15/10)).toFixed(2);
+        
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Lücke</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        teil4Details.forEach((x, idx) => {
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${idx + 21}</strong></td>
+                    <td>${escapeHtml(x.user)}</td>
+                    <td>${escapeHtml(x.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody>
+                </table>
+                <div style="margin-top: 10px; padding: 10px; background: #e3f2fd; border-radius: 6px;">
+                  <strong>Punkte: ${teil4Correct}/10 richtig = ${teil4Total}/15 Punkten</strong>
+                </div>`;
+        
+        // Sprachbausteine Teil 2
+        const teil5Details = result.details.slice(30, 40);
+        const teil5Correct = teil5Details.filter(d => d.richtig).length;
+        const teil5Total = (teil5Correct * (15/10)).toFixed(2);
+        
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Lücke</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        teil5Details.forEach((x, idx) => {
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${idx + 31}</strong></td>
+                    <td>${escapeHtml(x.user)}</td>
+                    <td>${escapeHtml(x.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody>
+                </table>
+                <div style="margin-top: 10px; padding: 10px; background: #e3f2fd; border-radius: 6px;">
+                  <strong>Punkte: ${teil5Correct}/10 richtig = ${teil5Total}/15 Punkten</strong>
+                </div>
+              </div>`;
+        
+        return html;
+      }
+
+      function buildHoerenDetails(userAnswers) {
+        const result = gradeHoeren(userAnswers || {});
+        
+        let html = `<table class="true-false-table">
+                      <thead>
+                        <tr>
+                          <th style="width: 10%">Frage</th>
+                          <th style="width: 40%">Ihre Antwort</th>
+                          <th style="width: 40%">Richtige Antwort</th>
+                          <th style="width: 10%">Ergebnis</th>
+                        </tr>
+                      </thead>
+                      <tbody>`;
+        
+        result.details.forEach(x => {
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${x.frage}</strong></td>
+                    <td>${escapeHtml(x.user)}</td>
+                    <td>${escapeHtml(x.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody>
+                </table>
+                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                  <strong>Erreichte Punkte: ${result.okCount}/20 richtig = ${result.total.toFixed(2)}/${CONFIG.totals.hoeren} Punkten</strong>
+                </div>`;
+        
+        return html;
+      }
+
+      // ===== قراءة النتائج من التخزين =====
       function readExamResults() {
         try {
           const lesen = {};
           const hoeren = {};
           const schreiben = { content: '', wordCount: 0 };
 
+          // محاولة القراءة من الذاكرة
           try {
             if (window._lesenState && window._lesenState.answers) {
-              Object.keys(window._lesenState.answers).forEach(k => {
-                lesen[k] = window._lesenState.answers[k];
-              });
+              Object.assign(lesen, window._lesenState.answers);
             }
           } catch (e) {}
 
@@ -3439,32 +3870,31 @@ Industriestraße 12
                 const keys = Object.keys(answers);
                 if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
               }
-              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0;
+              schreiben.wordCount = schreiben.content ? schreiben.content.trim().split(/\s+/).filter(Boolean).length : 0;
+            }
+          } catch (e) {}
+
+          // الاحتياطي: localStorage
+          try {
+            const storedL = localStorage.getItem('lesenAnswers');
+            if (storedL && Object.keys(lesen).length === 0) {
+              Object.assign(lesen, JSON.parse(storedL));
             }
           } catch (e) {}
 
           try {
-            if (Object.keys(lesen).length === 0) {
-              const storedL = localStorage.getItem('lesenAnswers');
-              if (storedL) Object.assign(lesen, JSON.parse(storedL));
+            const storedH = localStorage.getItem('hoerenAnswers');
+            if (storedH && Object.keys(hoeren).length === 0) {
+              Object.assign(hoeren, JSON.parse(storedH));
             }
           } catch (e) {}
 
           try {
-            if (Object.keys(hoeren).length === 0) {
-              const storedH = localStorage.getItem('hoerenAnswers');
-              if (storedH) Object.assign(hoeren, JSON.parse(storedH));
-            }
-          } catch (e) {}
-
-          try {
-            if (!schreiben.content) {
-              const storedS = localStorage.getItem('schreibenAnswers');
-              if (storedS) {
-                const obj = JSON.parse(storedS);
-                schreiben.content = obj.content || '';
-                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0);
-              }
+            const storedS = localStorage.getItem('schreibenAnswers');
+            if (storedS && !schreiben.content) {
+              const obj = JSON.parse(storedS);
+              schreiben.content = obj.content || '';
+              schreiben.wordCount = obj.wordCount || (schreiben.content ? schreiben.content.trim().split(/\s+/).filter(Boolean).length : 0);
             }
           } catch (e) {}
 
@@ -3474,349 +3904,69 @@ Industriestraße 12
         }
       }
 
-      function gradeHoeren(u) {
-        const c = CONFIG.hoerenCorrect;
-        let okCount = 0;
-        const d = [];
-        
-        for (let q = 41; q <= 60; q++) {
-          const k = String(q);
-          const uA = normalizeAnswer(u[k] || '');
-          const exp = normalizeAnswer(c[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
-          if (ok) okCount++;
-          const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
-          d.push({
-            frage: k,
-            user: uA || '-',
-            correct: exp || '-',
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
-          });
-        }
-        
-        const total = Number((okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2));
-        return { okCount, total, details: d };
-      }
-
-      function gradeLesen(u) {
-        const c = CONFIG.lesenCorrect;
-        let okCount = 0;
-        const d = [];
-        
-        Object.keys(c).forEach(k => {
-          const exp = normalizeAnswer(c[k]);
-          const uA = normalizeAnswer(u[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
-          if (ok) okCount++;
-          const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
-          d.push({
-            frage: k,
-            user: uA || '-',
-            correct: exp || '-',
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
-          });
-        });
-        
-        const total = Number((okCount * (CONFIG.totals.lesen / CONFIG.counts.lesen)).toFixed(2));
-        return { okCount, total, details: d };
-      }
-
-      function buildTable(title, dets, total, max) {
-        let html = `<div class="result-item">
-                      <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
-                      <div class="section-table">
-                        <table class="true-false-table">
-                          <thead>
-                            <tr>
-                              <th style="width: 10%">Frage</th>
-                              <th style="width: 40%">Ihre Antwort</th>
-                              <th style="width: 40%">Richtige Antwort</th>
-                              <th style="width: 10%">Ergebnis</th>
-                            </tr>
-                          </thead>
-                          <tbody>`;
-        
-        dets.forEach(x => {
-          const isCorrect = x.richtig;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${x.frage}</strong></td>
-                    <td>${escapeHtml(x.user)}</td>
-                    <td>${escapeHtml(x.correct)}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        });
-        
-        html += `</tbody>
-                </table>
-                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
-                  <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
-                </div>
-              </div></div>`;
-        return html;
-      }
-
-      function renderLesenDetails(answers) {
-        let html = `<div class="result-item">
-                    <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
-        
-        // 1. Überschriften zuordnen
-        html += `<h4>Teil 1: Überschriften zuordnen</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th>Text</th>
-                       <th>Ihre Antwort</th>
-                       <th>Richtige Antwort</th>
-                       <th>Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 1; i <= 5; i++) {
-          const key = `text${i}`;
-          const userAnswer = normalizeAnswer(answers[key] || '');
-          const correctAnswer = CORRECT_ANSWERS.lesen[key];
-          const isCorrect = userAnswer === correctAnswer;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅' : '❌';
-          const headingText = getHeadingText(userAnswer);
-          const correctHeadingText = getHeadingText(correctAnswer);
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>Text ${i}</strong></td>
-                    <td>${headingText}</td>
-                    <td>${correctHeadingText}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        
-        // 2. Fragen zum Text
-        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th>Frage</th>
-                       <th>Ihre Antwort</th>
-                       <th>Richtige Antwort</th>
-                       <th>Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 1; i <= 5; i++) {
-          const key = `s2q${i}`;
-          const userAnswer = normalizeAnswer(answers[key] || '');
-          const correctAnswer = CORRECT_ANSWERS.lesen[key];
-          const isCorrect = userAnswer === correctAnswer;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅' : '❌';
-          const optionText = getOptionText(key, userAnswer);
-          const correctOptionText = getOptionText(key, correctAnswer);
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>Frage ${i}</strong></td>
-                    <td>${optionText}</td>
-                    <td>${correctOptionText}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        
-        // 3. Texte zuordnen
-        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th>Situation</th>
-                       <th>Ihre Antwort</th>
-                       <th>Richtige Antwort</th>
-                       <th>Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 11; i <= 20; i++) {
-          const key = i.toString();
-          const userAnswer = normalizeAnswer(answers[key] || '');
-          const correctAnswer = CORRECT_ANSWERS.lesen[key];
-          const isCorrect = userAnswer === correctAnswer;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅' : '❌';
-          const situationText = getSituationText(key);
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${key}</strong></td>
-                    <td>${userAnswer || '-'}</td>
-                    <td>${correctAnswer || '-'}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        
-        // 4. Sprachbausteine Teil 1
-        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th>Lücke</th>
-                       <th>Ihre Antwort</th>
-                       <th>Richtige Antwort</th>
-                       <th>Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 21; i <= 30; i++) {
-          const key = i.toString();
-          const userAnswer = normalizeAnswer(answers[key] || '');
-          const correctAnswer = CORRECT_ANSWERS.lesen[key];
-          const isCorrect = userAnswer === correctAnswer;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅' : '❌';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${key}</strong></td>
-                    <td>${userAnswer || '-'}</td>
-                    <td>${correctAnswer || '-'}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        
-        // 5. Sprachbausteine Teil 2
-        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th>Lücke</th>
-                       <th>Ihre Antwort</th>
-                       <th>Richtige Antwort</th>
-                       <th>Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 31; i <= 40; i++) {
-          const key = i.toString();
-          const userAnswer = normalizeAnswer(answers[key] || '');
-          const correctAnswer = CORRECT_ANSWERS.lesen[key];
-          const isCorrect = userAnswer === correctAnswer;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅' : '❌';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${key}</strong></td>
-                    <td>${userAnswer || '-'}</td>
-                    <td>${correctAnswer || '-'}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table></div>`;
-        return html;
-      }
-
-      function buildHoerenDetails(answers) {
-        let html = `<table class="true-false-table">
-                      <thead>
-                        <tr>
-                          <th>Frage</th>
-                          <th>Ihre Antwort</th>
-                          <th>Richtige Antwort</th>
-                          <th>Ergebnis</th>
-                        </tr>
-                      </thead>
-                      <tbody>`;
-        
-        for (let i = 41; i <= 60; i++) {
-          const id = i.toString();
-          const userAnswer = normalizeAnswer(answers[id] || '');
-          const correctAnswer = CORRECT_ANSWERS.hoeren[id];
-          const isCorrect = userAnswer === correctAnswer;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅' : '❌';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${id}</strong></td>
-                    <td>${userAnswer}</td>
-                    <td>${correctAnswer}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        return html;
-      }
-
+      // ===== الدالة الرئيسية =====
       function renderResults() {
-        const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
-        const h = gradeHoeren(st.hoeren || {});
-        const l = gradeLesen(st.lesen || {});
+        const results = readExamResults();
+        const hoerenResult = gradeHoeren(results.hoeren || {});
+        const lesenResult = gradeLesen(results.lesen || {});
         const details = document.getElementById('details-ergebnisse');
         const tiles = document.getElementById('topTiles-ergebnisse');
+        
+        // قراءة درجة الكتابة
         const sScoreRaw = localStorage.getItem('schreibenScore');
-        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
+        const sScore = sScoreRaw ? parseFloat(sScoreRaw) : 0;
 
-        details.innerHTML = '';
-        tiles.innerHTML = '';
+        // عرض البلاطات
+        tiles.innerHTML = `
+          <div class="results-tile">
+            <h3>Lesen</h3>
+            <div class="score">${lesenResult.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
+            <div class="small-muted">(${((lesenResult.total / CONFIG.totals.lesen) * 100).toFixed(2)} %)</div>
+          </div>
+          <div class="results-tile">
+            <h3>Hören</h3>
+            <div class="score">${hoerenResult.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
+            <div class="small-muted">(${((hoerenResult.total / CONFIG.totals.hoeren) * 100).toFixed(2)} %)</div>
+          </div>
+          <div class="results-tile">
+            <h3>Schreiben</h3>
+            <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
+            <div class="small-muted">Manuelle Eingabe</div>
+          </div>`;
 
-        const tL = `<div class="results-tile">
-                      <h3>Lesen</h3>
-                      <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
-                      <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
-                    </div>`;
-                    
-        const tH = `<div class="results-tile">
-                      <h3>Hören</h3>
-                      <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
-                      <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
-                    </div>`;
-                    
-        const tS = `<div class="results-tile">
-                      <h3>Schreiben</h3>
-                      <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
-                      <div class="small-muted">Manuelle Eingabe</div>
-                    </div>`;
-                    
-        tiles.innerHTML = tL + tH + tS;
-
-        details.innerHTML += `<div class="result-item">
-                                <h2>📊 Detaillierte Ergebnisse</h2>
-                                <div class="instructions">Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Antworten. Grüne Zeilen sind richtig, rote Zeilen sind falsch.</div>
-                              </div>`;
+        // عرض التفاصيل
+        details.innerHTML = `
+          <h2>📊 Detaillierte Ergebnisse</h2>
+          <div class="instructions">Vergleichen Sie Ihre Antworten mit den richtigen Lösungen.</div>`;
         
-        details.innerHTML += `<div class="result-item">
-                                <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
-                                ${buildHoerenDetails(st.hoeren)}
-                              </div>`;
+        // قسم القراءة
+        details.innerHTML += renderLesenDetails(results.lesen);
         
-        details.innerHTML += renderLesenDetails(st.lesen);
-
-        let sHtml = '<div class="result-item"><h3>✍️ Schreiben — Ihre Antwort</h3>';
-        const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
-        const wc = st.schreiben.wordCount || '-';
+        // قسم الاستماع
+        details.innerHTML += `
+          <div class="result-item">
+            <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+            ${buildHoerenDetails(results.hoeren)}
+          </div>`;
         
-        sHtml += `<div class="small-muted">Wörter: ${wc}</div>
-                  <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px">${txt}</div>
-                  <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
-                    Punkte (0–45): 
-                    <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
-                    <button id="saveS" class="results-btn">Speichern</button>
-                  </div></div>`;
-                  
-        details.innerHTML += sHtml;
+        // قسم الكتابة
+        const schreibenText = results.schreiben.content || '';
+        const wordCount = results.schreiben.wordCount || 0;
+        
+        details.innerHTML += `
+          <div class="result-item">
+            <h3>✍️ Schreiben - Ihre Antwort</h3>
+            <div class="small-muted">Wörter: ${wordCount}</div>
+            <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px;white-space:pre-wrap">${escapeHtml(schreibenText) || '<span class="small-muted">Kein Text gefunden.</span>'}</div>
+            <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
+              Punkte (0–45): 
+              <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
+              <button id="saveS" class="results-btn">Speichern</button>
+            </div>
+          </div>`;
 
-        const total = (l.total + h.total + sScore).toFixed(2);
+        // حساب الإجمالي
+        const total = (lesenResult.total + hoerenResult.total + sScore).toFixed(2);
         const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);
         
         document.getElementById('finalSummary-ergebnisse').innerHTML = `
@@ -3828,12 +3978,13 @@ Industriestraße 12
             Prozentsatz: <strong>${percent} %</strong>
           </div>`;
 
+        // إعداد حدث زر الحفظ
         document.getElementById('saveS').onclick = () => {
-          const v = Number(document.getElementById('sInput').value) || 0;
+          const v = parseFloat(document.getElementById('sInput').value) || 0;
           localStorage.setItem('schreibenScore', v);
           document.getElementById('schreibenScoreDisplay').textContent = `${v.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte`;
           
-          const newTotal = (l.total + h.total + v).toFixed(2);
+          const newTotal = (lesenResult.total + hoerenResult.total + v).toFixed(2);
           const newPercent = ((newTotal / CONFIG.totals.gesamt) * 100).toFixed(2);
           
           document.getElementById('finalSummary-ergebnisse').innerHTML = `
@@ -3847,12 +3998,14 @@ Industriestraße 12
         };
       }
 
-      document.getElementById('calcBtn-ergebnisse').onclick = () => renderResults();
+      // ===== إعداد الأحداث =====
+      document.getElementById('calcBtn-ergebnisse').onclick = renderResults;
       document.getElementById('backBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
         showPage('start-page');
       };
       
+      // التهيئة التلقائية
       renderResults();
     }
   </script>

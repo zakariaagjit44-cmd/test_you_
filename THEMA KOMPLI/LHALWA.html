@@ -615,6 +615,7 @@
       padding: 10px;
       border-radius: 6px;
       background: #f8f9fa;
+      border: 1px solid #e1e8f6;
     }
     
     .instructions {
@@ -1511,6 +1512,677 @@
 
     // NOTE: removed automatic startCountdown() on page load to prevent the timer starting twice
 
+    // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
+    function initErgebnissePage() {
+      // كائن الإجابات الصحيحة المركزية (يجب تعبئته من الملف الأصلي للامتحان الجديد)
+      const CORRECT_ANSWERS = {
+        lesen: {
+          // الجزء الأول: Überschriften zuordnen (النصوص 1-5)
+          "text1": "h",
+          "text2": "e", 
+          "text3": "i",
+          "text4": "c",
+          "text5": "b",
+          
+          // الجزء الثاني: Fragen zum Text (الأسئلة s2q1-s2q5)
+          "s2q1": "s2q1o1",
+          "s2q2": "s2q2o3",
+          "s2q3": "s2q3o1",
+          "s2q4": "s2q4o3",
+          "s2q5": "s2q5o2",
+          
+          // الجزء الثالث: Texte zuordnen (المواقف 11-20)
+          "11": "D",
+          "12": "H",
+          "13": "J",
+          "14": "X",
+          "15": "F",
+          "16": "B",
+          "17": "E",
+          "18": "G",
+          "19": "A",
+          "20": "C",
+          
+          // Sprachbausteine Teil 1 (الفراغات 21-30)
+          "21": "um",
+          "22": "dass",
+          "23": "aber",
+          "24": "unbedingt",
+          "25": "mich",
+          "26": "als",
+          "27": "kommenden",
+          "28": "dazu",
+          "29": "sondern",
+          "30": "für",
+          
+          // Sprachbausteine Teil 2 (الفراغات 31-40)
+          "31": "KAUM",
+          "32": "AUF",
+          "33": "VORBEI",
+          "34": "STATT",
+          "35": "INNERHALB",
+          "36": "MÜSSEN",
+          "37": "AN",
+          "38": "SOLLEN",
+          "39": "DANN",
+          "40": "DENN"
+        },
+        
+        hoeren: {
+          // Hören Teil 1 (الأسئلة 41-45)
+          "41": "falsch",
+          "42": "richtig",
+          "43": "richtig",
+          "44": "falsch",
+          "45": "falsch",
+          
+          // Hören Teil 2 (الأسئلة 46-53)
+          "46": "richtig",
+          "47": "falsch",
+          "48": "richtig",
+          "49": "richtig",
+          "50": "richtig",
+          "51": "falsch",
+          "52": "falsch",
+          "53": "richtig",
+          
+          // Hören Teil 3 (الأسئلة 54-58)
+          "54": "richtig",
+          "55": "falsch",
+          "56": "falsch",
+          "57": "richtig",
+          "58": "falsch"
+        }
+      };
+
+      const CONFIG = {
+        totals: { 
+          lesen: 105, 
+          hoeren: 75, 
+          schreiben: 45, 
+          gesamt: 225 
+        },
+        counts: { 
+          lesen: 40, 
+          hoeren: 20 
+        },
+        hoerenCorrect: CORRECT_ANSWERS.hoeren,
+        lesenCorrect: CORRECT_ANSWERS.lesen
+      };
+
+      // ===== الدوال المساعدة =====
+      function normalizeAnswer(a) {
+        if (a === null || a === undefined || a === '') return '-';
+        let s = String(a).trim();
+        if (s === '') return '-';
+        const low = s.toLowerCase();
+        if (["richtig", "true", "yes", "ja", "r"].includes(low)) return 'richtig';
+        if (["falsch", "false", "no", "nein", "f"].includes(low)) return 'falsch';
+        return s;
+      }
+
+      function getHeadingText(headingId) {
+        if (!headingId || headingId === '-' || headingId === 'X') return '-';
+        const headings = {
+          "a": "Für unterwegs: Leckereien im Zugrestaurant",
+          "b": "In der Stadt der warmen Quellen",
+          "c": "Irrtum: Süßes macht doch nicht glücklich",
+          "d": "Mitmach-Museum: Bonbons selbst herstellen",
+          "e": "Naschen statt wegwerfen",
+          "f": "Neues Thermalbad in Rom",
+          "g": "Reisen: Die beliebtesten Thermalbäder",
+          "h": "Süßwaren mit langer Tradition",
+          "i": "Wasser, Wärme, Wellness - antike Badefreuden",
+          "j": "Zucker sorgt für Stimmungshoch"
+        };
+        return headings[headingId] || headingId;
+      }
+
+      function getOptionText(questionId, optionId) {
+        if (!optionId || optionId === '-') return '-';
+        const options = {
+          "s2q1o1": "erhielt kurz vor Eintritt in den Ruhestand einen Preis.",
+          "s2q1o2": "wechselte in ihrer beruflichen Laufbahn mehrmals die Schule.",
+          "s2q1o3": "wurde schon mehrfach für Auszeichnungen vorgeschlagen.",
+          "s2q2o1": "am liebsten direkt nach dem Studium heiraten wolle.",
+          "s2q2o2": "mit ihrem Studium gute Perspektiven haben werde.",
+          "s2q2o3": "womöglich nicht genug für ihren Lebensunterhalt verdienen könne.",
+          "s2q3o1": "die Schüler sich im Unterricht schlecht benehmen würden.",
+          "s2q3o2": "die Schüler wenig Interesse an ihren Fächern hätten.",
+          "s2q3o3": "sie kein Talent für das Unterrichten hätte.",
+          "s2q4o1": "haben erst nach dem Abitur von dem Wettbewerb erfahren.",
+          "s2q4o2": "reichten für den Wettbewerb verschiedene Einzelbeiträge ein.",
+          "s2q4o3": "wollten ihr für die gelungene Prüfungsvorbereitung Anerkennung zeigen.",
+          "s2q5o1": "bald Zeit für ausgedehnte Reisen zu haben.",
+          "s2q5o2": "mit ehemaligen Schülern ein Projekt zu planen.",
+          "s2q5o3": "nun endlich in Pension gehen zu können."
+        };
+        return options[optionId] || optionId;
+      }
+
+      function getSituationText(id) {
+        const situations = {
+          "11": "Die Tochter einer Bekannten wird vier Jahre alt. Sie möchten ihr etwas zum Geburtstag mitbringen.",
+          "12": "Ein Bekannter hat sich einen Fotoapparat gekauft und möchte die Grundlagen der Fotografie erlernen.",
+          "13": "Ein Bekannter möchte eine mehrtägige Reise unternehmen und dabei einen Fotokurs machen.",
+          "14": "Eine Bekannte kann gut fotografieren und hat bereits einige Kurse gemacht. Sie würde gerne neue kreative Techniken kennenlernen.",
+          "15": "Ein Freund würde gerne im Winter verreisen. Er möchte viel Zeit an der frischen Luft verbringen und sich bewegen.",
+          "16": "Eine Freundin hat viele Kleidungsstücke, die sie nicht mehr trägt. Sie sucht Anregungen, was sie damit machen könnte.",
+          "17": "Sie besuchen einen Freund, der sich für Malerei interessiert. Sie möchten ihm ein passendes Geschenk mitbringen.",
+          "18": "Sie fahren gerne Ski und möchten mit Ihrer Familie Wintersport machen.",
+          "19": "Sie möchten mit Ihrem zwölfjährigen Sohn eine Ausstellung besuchen. Er interessiert sich für Tiere.",
+          "20": "Sie treffen sich an einem Sonntagnachmittag mit einer Freundin, die sich gerne mit Mode und ihrer Geschichte beschäftigt. Sie möchten mit ihr etwas unternehmen."
+        };
+        return situations[id] || id;
+      }
+
+      function escapeHtml(s) {
+        if (s === '-') return '-';
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function buildTable(title, dets, total, max) {
+        let html = `<div class="result-item">
+                      <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
+                      <div class="section-table">
+                        <table class="true-false-table">
+                          <thead>
+                            <tr>
+                              <th style="width: 10%">Frage</th>
+                              <th style="width: 40%">Ihre Antwort</th>
+                              <th style="width: 40%">Richtige Antwort</th>
+                              <th style="width: 10%">Ergebnis</th>
+                            </tr>
+                          </thead>
+                          <tbody>`;
+        
+        dets.forEach(x => {
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${x.frage}</strong></td>
+                    <td>${escapeHtml(x.user)}</td>
+                    <td>${escapeHtml(x.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody>
+                </table>
+                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                  <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
+                </div>
+              </div></div>`;
+        return html;
+      }
+
+      function readExamResults() {
+        try {
+          const lesen = {};
+          const hoeren = {};
+          const schreiben = { content: '', wordCount: 0 };
+
+          // 1) Try to read from in-memory states exposed by pages
+          try {
+            if (window._lesenState && window._lesenState.answers) {
+              Object.keys(window._lesenState.answers).forEach(k => {
+                lesen[k] = window._lesenState.answers[k];
+              });
+            }
+          } catch (e) {}
+
+          try {
+            if (window._hoerenState && window._hoerenState.answers) {
+              Object.keys(window._hoerenState.answers).forEach(sectionId => {
+                const sec = window._hoerenState.answers[sectionId] || {};
+                Object.keys(sec).forEach(q => {
+                  hoeren[q] = sec[q];
+                });
+              });
+            }
+          } catch (e) {}
+
+          try {
+            if (window._schreibenState && window._schreibenState.answers) {
+              const answers = window._schreibenState.answers;
+              if (answers['s1']) {
+                schreiben.content = answers['s1'];
+              } else {
+                const keys = Object.keys(answers);
+                if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
+              }
+              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0;
+            }
+          } catch (e) {}
+
+          // 2) Fallback to localStorage if any part is still empty
+          try {
+            if (Object.keys(lesen).length === 0) {
+              const storedL = localStorage.getItem('lesenAnswers');
+              if (storedL) Object.assign(lesen, JSON.parse(storedL));
+            }
+          } catch (e) {}
+
+          try {
+            if (Object.keys(hoeren).length === 0) {
+              const storedH = localStorage.getItem('hoerenAnswers');
+              if (storedH) Object.assign(hoeren, JSON.parse(storedH));
+            }
+          } catch (e) {}
+
+          try {
+            if (!schreiben.content) {
+              const storedS = localStorage.getItem('schreibenAnswers');
+              if (storedS) {
+                const obj = JSON.parse(storedS);
+                schreiben.content = obj.content || '';
+                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0);
+              }
+            }
+          } catch (e) {}
+
+          // final safe return
+          return { hoeren, lesen, schreiben };
+        } catch (e) {
+          return { hoeren: {}, lesen: {}, schreiben: {} };
+        }
+      }
+
+      function gradeHoeren(u) {
+        const c = CORRECT_ANSWERS.hoeren;
+        let okCount = 0;
+        const d = [];
+        
+        for (let q = 41; q <= 58; q++) {
+          const k = String(q);
+          const uA = normalizeAnswer(u[k] || '');
+          const exp = normalizeAnswer(c[k] || '');
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
+          if (ok) okCount++;
+          const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
+          d.push({
+            frage: k,
+            user: uA,
+            correct: exp,
+            richtig: ok,
+            punkte: ok ? ptsPer.toFixed(2) : '0'
+          });
+        }
+        
+        const total = Number((okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2));
+        return { okCount, total, details: d };
+      }
+
+      function gradeLesen(u) {
+        const c = CORRECT_ANSWERS.lesen;
+        let okCount = 0;
+        const d = [];
+        
+        // تحقق من كل سؤال في القراءة
+        const allQuestions = [
+          // النصوص 1-5
+          "text1", "text2", "text3", "text4", "text5",
+          // الأسئلة s2q1-s2q5
+          "s2q1", "s2q2", "s2q3", "s2q4", "s2q5",
+          // المواقف 11-20
+          "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+          // الفراغات 21-30
+          "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+          // الفراغات 31-40
+          "31", "32", "33", "34", "35", "36", "37", "38", "39", "40"
+        ];
+        
+        allQuestions.forEach(k => {
+          const exp = normalizeAnswer(c[k] || '');
+          const uA = normalizeAnswer(u[k] || '');
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
+          if (ok) okCount++;
+          const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
+          
+          let displayUser = uA;
+          let displayCorrect = exp;
+          
+          // تحويل المعرفات إلى نصوص مقروءة
+          if (k.startsWith('text')) {
+            displayUser = getHeadingText(uA);
+            displayCorrect = getHeadingText(exp);
+          } else if (k.startsWith('s2q')) {
+            displayUser = getOptionText(k, uA);
+            displayCorrect = getOptionText(k, exp);
+          } else if (['11','12','13','14','15','16','17','18','19','20'].includes(k)) {
+            if (uA === 'X') {
+              displayUser = 'X - Kein passender Text';
+            } else {
+              displayUser = uA;
+            }
+            if (exp === 'X') {
+              displayCorrect = 'X - Kein passender Text';
+            } else {
+              displayCorrect = exp;
+            }
+          }
+          
+          d.push({
+            frage: k,
+            user: displayUser,
+            correct: displayCorrect,
+            richtig: ok,
+            punkte: ok ? ptsPer.toFixed(2) : '0'
+          });
+        });
+        
+        const total = Number((okCount * (CONFIG.totals.lesen / CONFIG.counts.lesen)).toFixed(2));
+        return { okCount, total, details: d };
+      }
+
+      function renderLesenDetails(answers) {
+        let html = `<div class="result-item">
+                    <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
+        
+        // 1. Überschriften zuordnen
+        html += `<h4>Teil 1: Überschriften zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Text</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 1; i <= 5; i++) {
+          const k = `text${i}`;
+          const uA = normalizeAnswer(answers[k] || '');
+          const exp = normalizeAnswer(CORRECT_ANSWERS.lesen[k] || '');
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
+          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = ok ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>Text ${String.fromCharCode(64+i)}</strong></td>
+                    <td>${escapeHtml(getHeadingText(uA))}</td>
+                    <td>${escapeHtml(getHeadingText(exp))}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // 2. Fragen zum Text
+        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Frage</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 1; i <= 5; i++) {
+          const k = `s2q${i}`;
+          const uA = normalizeAnswer(answers[k] || '');
+          const exp = normalizeAnswer(CORRECT_ANSWERS.lesen[k] || '');
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
+          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = ok ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${i}</strong></td>
+                    <td>${escapeHtml(getOptionText(k, uA))}</td>
+                    <td>${escapeHtml(getOptionText(k, exp))}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // 3. Texte zuordnen
+        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Situation</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 11; i <= 20; i++) {
+          const k = i.toString();
+          const uA = normalizeAnswer(answers[k] || '');
+          const exp = normalizeAnswer(CORRECT_ANSWERS.lesen[k] || '');
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
+          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = ok ? '✅' : '❌';
+          
+          let displayUser = uA;
+          let displayCorrect = exp;
+          if (uA === 'X') displayUser = 'X - Kein passender Text';
+          if (exp === 'X') displayCorrect = 'X - Kein passender Text';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${k}</strong></td>
+                    <td>${escapeHtml(displayUser)}</td>
+                    <td>${escapeHtml(displayCorrect)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // 4. Sprachbausteine Teil 1
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Lücke</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 21; i <= 30; i++) {
+          const k = i.toString();
+          const uA = normalizeAnswer(answers[k] || '');
+          const exp = normalizeAnswer(CORRECT_ANSWERS.lesen[k] || '');
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
+          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = ok ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${k}</strong></td>
+                    <td>${escapeHtml(uA)}</td>
+                    <td>${escapeHtml(exp)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // 5. Sprachbausteine Teil 2
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Lücke</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 31; i <= 40; i++) {
+          const k = i.toString();
+          const uA = normalizeAnswer(answers[k] || '');
+          const exp = normalizeAnswer(CORRECT_ANSWERS.lesen[k] || '');
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
+          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = ok ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${k}</strong></td>
+                    <td>${escapeHtml(uA)}</td>
+                    <td>${escapeHtml(exp)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table></div>`;
+        return html;
+      }
+
+      function buildHoerenDetails(answers) {
+        let html = `<table class="true-false-table">
+                      <thead>
+                        <tr>
+                          <th>Frage</th>
+                          <th>Ihre Antwort</th>
+                          <th>Richtige Antwort</th>
+                          <th>Ergebnis</th>
+                        </tr>
+                      </thead>
+                      <tbody>`;
+        
+        for (let i = 41; i <= 58; i++) {
+          const id = i.toString();
+          const userAnswer = normalizeAnswer(answers[id] || '');
+          const correctAnswer = CORRECT_ANSWERS.hoeren[id];
+          const isCorrect = (userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        return html;
+      }
+
+      function renderResults() {
+        const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
+        const h = gradeHoeren(st.hoeren || {});
+        const l = gradeLesen(st.lesen || {});
+        const details = document.getElementById('details-ergebnisse');
+        const tiles = document.getElementById('topTiles-ergebnisse');
+        const sScoreRaw = localStorage.getItem('schreibenScore');
+        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
+
+        details.innerHTML = '';
+        tiles.innerHTML = '';
+
+        const tL = `<div class="results-tile">
+                      <h3>Lesen</h3>
+                      <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
+                      <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
+                    </div>`;
+                    
+        const tH = `<div class="results-tile">
+                      <h3>Hören</h3>
+                      <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
+                      <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
+                    </div>`;
+                    
+        const tS = `<div class="results-tile">
+                      <h3>Schreiben</h3>
+                      <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
+                      <div class="small-muted">Manuelle Eingabe</div>
+                    </div>`;
+                    
+        tiles.innerHTML = tL + tH + tS;
+
+        details.innerHTML += `<h2>📊 Detaillierte Ergebnisse</h2>
+                             <div class="instructions">Unten sehen Sie eine detaillierte Auswertung Ihrer Prüfungsergebnisse.</div>`;
+        
+        // إضافة قسم القراءة
+        details.innerHTML += renderLesenDetails(st.lesen);
+        
+        // إضافة قسم الاستماع
+        details.innerHTML += `<div class="result-item">
+                                <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+                                ${buildHoerenDetails(st.hoeren)}
+                                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                                  <strong>Erreichte Punkte: ${h.total.toFixed(2)}/${CONFIG.totals.hoeren} (${((h.total/CONFIG.totals.hoeren)*100).toFixed(1)}%)</strong>
+                                </div>
+                              </div>`;
+        
+        // إضافة قسم الكتابة
+        let sHtml = '<div class="result-item"><h3>✍️ Schreiben - Ihre Antwort</h3>';
+        const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
+        const wc = st.schreiben.wordCount || '-';
+        
+        sHtml += `<div class="small-muted">Wörter: ${wc}</div>
+                  <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px; white-space: pre-wrap;">${txt}</div>
+                  <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
+                    Punkte (0–45): 
+                    <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
+                    <button id="saveS" class="results-btn">Speichern</button>
+                  </div></div>`;
+                  
+        details.innerHTML += sHtml;
+
+        const total = (l.total + h.total + sScore).toFixed(2);
+        const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);
+        
+        document.getElementById('finalSummary-ergebnisse').innerHTML = `
+          <div class="left">
+            Gesamtpunktzahl: <strong>${total}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
+            <span class="small-muted">Lesen + Hören + Schreiben</span>
+          </div>
+          <div class="right">
+            Prozentsatz: <strong>${percent} %</strong>
+          </div>`;
+
+        document.getElementById('saveS').onclick = () => {
+          const v = Number(document.getElementById('sInput').value) || 0;
+          localStorage.setItem('schreibenScore', v);
+          document.getElementById('schreibenScoreDisplay').textContent = `${v.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte`;
+          
+          const newTotal = (l.total + h.total + v).toFixed(2);
+          const newPercent = ((newTotal / CONFIG.totals.gesamt) * 100).toFixed(2);
+          
+          document.getElementById('finalSummary-ergebnisse').innerHTML = `
+            <div class="left">
+              Gesamtpunktzahl: <strong>${newTotal}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
+              <span class="small-muted">Lesen + Hören + Schreiben</span>
+            </div>
+            <div class="right">
+              Prozentsatz: <strong>${newPercent} %</strong>
+            </div>`;
+        };
+      }
+
+      document.getElementById('calcBtn-ergebnisse').onclick = () => renderResults();
+      document.getElementById('backBtn-ergebnisse').onclick = (e) => {
+        e.preventDefault();
+        showPage('start-page');
+      };
+      
+      // Initialize results on page load
+      renderResults();
+    }
+
     // ===== LESEN PAGE FUNCTIONALITY =====
     function initLesenPage() {
       /* ===== Self-contained exam (embedded) ===== */
@@ -1533,7 +2205,7 @@
               },
               {
                 id: "text2", 
-                content: "Am Frankfurter Hauptbahnhof können Reisende einen besonderen Snack genießen: Ein 'Ret-Tomat', ein Automat mit abgelaufenen oder bald ablaufenden Schokoriegeln, Chips und anderen Leckereien, steht bereit. Diese Produkte, deren Mindesthaltbarkeitsdatum meist fast abgelaufen ist, werden günstiger angeboten. Sie sind dennoch genießbar, wie ein Sprecher der Deutschen Bahn betont, da sie sorgfältig geprüft werden. Mit diesem Service will die Bahn den Bahnhof attraktiver machen, Ressourcen schützen und auf Lebensmittelverschwendung aufmerksam machen. Reisende können Süßigkeiten kaufen und gleichzeitig einen Beitrag zur Nachhaltigkeit leisten.",
+                content: "Am Frankfurter Hauptbahnhof können Reisende einen besonderen Snack genießen: Ein 'Ret-Tomat', ein Automat mit abgelaufenen oder bald ablaufenden Schokoriegeln, Chips und anderen Leckereien, steht bereit. Diese Produkte, deren Mindesthaltbarkeitsdatum meist fast abgelaufen ist, werden günstiger angeboten. Sie sind dennoch genießbar, wie ein Sprecher der Deutsche Bahn betont, da sie sorgfältig geprüft werden. Mit diesem Service will die Bahn den Bahnhof attraktiver machen, Ressourcen schützen und auf Lebensmittelverschwendung aufmerksam machen. Reisende können Süßigkeiten kaufen und gleichzeitig einen Beitrag zur Nachhaltigkeit leisten.",
                 correctAnswer: "e"
               },
               {
@@ -1661,7 +2333,7 @@ Denn einige ihrer Abiturienten möchten mit ihr eine Reise nach Griechenland org
               {id: "H", text: "Atemberaubende Fotos leicht gemacht Sie möchten Fotos machen, die einzigartig sind? Melden Sie sich für unser Seminar an. Dort lernen Sie die besten Techniken für Landschaftsfotografie. Teilnahme nur nach vorheriger Zahlung. Begrenzter Zugang nur für fünf Personen. Kontaktieren Sie uns für weitere Informationen. Jetzt anmelden: www.nt-pictures.net ", correctAnswer: null},
               {id: "I", text: "Nähen statt Einkaufsstress Die Suche nach einer perfekt sitzenden Jeans kann manchmal zum Albtraum werden: Stundenlang zieht man durch die Geschäfte, probiert eine Hose nach der anderen an. Warum also nicht einfach Jeans selbst nähen? Das ist einfacher, als es klingt. Buchen Sie unseren Online-Nähkurs für alle. Sie werden überrascht sein, wie viel Freude das Nähen macht und wie schnell Sie Ihre neue Hose in der Hand halten. ", correctAnswer: "14"},
               {id: "J", text: "Tolle Aufnahmen in einer spektakulären Landschaft Smaragdgrünes Wasser, majestätische Felswände und mit ein wenig Glück – ein hellblauer Himmel. Diesen Traum findet man an der südlichsten Spitze Deutschlands: Die Rede ist vom Königssee in Bayern – der ideale Ort für unseren Workshop Landschaftsfotografie. Programmpunkte:  Einführung zur Landschaftsfotografie Arbeit mit natürlichem Licht Bildkomposition Persönliches Feedback zu den Fotos Kurs für Fortgeschrittene, maximal 5 Teilnehmer Leitung: Jenny Holzhausen, Landschaftsfotografin und Buchautorin Termin: Samstag, 04.06.2022, von 9 Uhr bis 17 Uhr Preis: 99 €Trepunkt: Seestraße 3, 83471 Schönau am Königssee ", correctAnswer: "16"},
-              {id: "K", text: "Die Schneekönigin Es ist ein kalter, verschneiter Wintertag. Da bekommt der junge Kai Besuch von der Schneekönigin – und sie nimmt ihn mit in ihr eisiges Reich. Die mutige Gerda versucht alles, um Kai zu retten. Das Familien-Musical „Die Schneekönigin“ basiert auf dem bekannten Märchen von Hans-Christian Andersen. Unter der Regie von Bastian Nüchtermeier ist eine aufwendige Bühnenshow entstanden, Kinder ab 5 Jahren und Erwachsene sind eingeladen, in eine magische Welt einzutauchen. Und sogar Eis zum Schmelzen bringt. Die Schneekönigin, das Musical Konzertsaal Jena Sonntag, 4.12., 15 Uhr Tickets ab 19,95 € ", correctAnswer: "18"},
+              {id: "K", text: "Die Schneekönigin Es ist ein kalter, verschneiter Wintertag. Da bekommt der junge Kai Besuch von der Schneekönigin – und sie nimmt ihn mit in ihr eisiges Reich. Die mutige Gerda versucht alles, um Kai zu retten. Das Familien-Musical „Die Schneekönigin\" basiert auf dem bekannten Märchen von Hans-Christian Andersen. Unter der Regie von Bastian Nüchtermeier ist eine aufwendige Bühnenshow entstanden, Kinder ab 5 Jahren und Erwachsene sind eingeladen, in eine magische Welt einzutauchen. Und sogar Eis zum Schmelzen bringt. Die Schneekönigin, das Musical Konzertsaal Jena Sonntag, 4.12., 15 Uhr Tickets ab 19,95 € ", correctAnswer: "18"},
               {id: "L", text: "Lieblingsorte Der Ei􏰆elturm in Paris, Urlaubsorte der Kindheit, der Wald hinter dem Haus oder das Sofa daheim: An Lieblingsorten fühlt man sich wohl und man besucht diese gerne. Sie inspirieren aber auch Maler, Schriftsteller und Fotografen. Und vielleicht auch Sie? Bei diesem Fotowettbewerb suchen wir Ihre Aufnahmen von besonderen Orten. Belohnt werden die besten Fotos mit tollen Preisen und einer Verö􏰆entlichung in unserem Magazin. Einsendeschluss: am 30. Juni. Mehr Infos: www.fotomagazin-linse.net.", correctAnswer: "20"}
             ],
             situations: [
@@ -2497,7 +3169,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Text ${text.id}: ${userAnswer || 'Nicht beantwortet'} 
+                <div>Text ${text.id}: ${userAnswer || '-'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -2510,7 +3182,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>${question.text}: ${userAnswer || 'Nicht beantwortet'} 
+                <div>${question.text}: ${userAnswer || '-'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -2524,7 +3196,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Situation ${situation.id}: ${userAnswer || 'Nicht beantwortet'} 
+                <div>Situation ${situation.id}: ${userAnswer || '-'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -2537,7 +3209,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer || 'Nicht beantwortet'} 
+                <div>Lücke ${blank.id}: ${userAnswer || '-'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -2550,7 +3222,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer || 'Nicht beantwortet'} 
+                <div>Lücke ${blank.id}: ${userAnswer || '-'} 
                 ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
@@ -3197,7 +3869,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           resultsHTML += `
             <div class="writing-requirements">
               <h4>Ihre Antwort (${wordCount} Wörter):</h4>
-              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${userAnswer || 'Keine Antwort'}</div>
+              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${userAnswer || '-'}</div>
             </div>
           `;
           
@@ -3265,298 +3937,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         window.schreibenApp = {
         updateWritingAnswer
       };
-    }
-
-    // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
-    function initErgebnissePage() {
-      const CONFIG = {
-        totals: { 
-          lesen: 105, 
-          hoeren: 75, 
-          schreiben: 45, 
-          gesamt: 225 
-        },
-        counts: { 
-          lesen: 40, 
-          hoeren: 20 
-        },
-        hoerenCorrect: {
-          "41": "falsch", "42": "richtig", "43": "richtig", "44": "falsch", "45": "falsch",
-          "46": "richtig", "47": "falsch", "48": "richtig", "49": "richtig", "50": "richtig",
-          "51": "falsch", "52": "falsch", "53": "richtig", "54": "richtig", "55": "falsch",
-          "56": "falsch", "57": "richtig", "58": "falsch"
-        },
-        lesenCorrect: Object.assign({},
-          {"text1": "h", "text2": "e", "text3": "i", "text4": "c", "text5": "b"},
-          {"s2q1": "s2q1o1", "s2q2": "s2q2o3", "s2q3": "s2q3o1", "s2q4": "s2q4o3", "s2q5": "s2q5o2"},
-          {"11": "D", "12": "H", "13": "J", "14": "X", "15": "F", "16": "B", "17": "E", "18": "G", "19": "A", "20": "C"},
-          {"21": "um", "22": "dass", "23": "aber", "24": "unbedingt", "25": "mich", "26": "als", "27": "kommenden", "28": "dazu", "29": "sondern", "30": "für"},
-          {"31": "KAUM", "32": "AUF", "33": "VORBEI", "34": "STATT", "35": "INNERHALB", "36": "MÜSSEN", "37": "AN", "38": "SOLLEN", "39": "DANN", "40": "DENN"}
-        )
-      };
-
-      function normalizeAnswer(a) {
-        if (a === null || a === undefined) return '';
-        let s = String(a).trim();
-        if (s === '') return '';
-        const low = s.toLowerCase();
-        if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
-        if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
-        return s;
-      }
-
-      function keyZeroToTen(k) {
-        return k === '0' ? '10' : k;
-      }
-
-      function readExamResults() {
-        try {
-          const lesen = {};
-          const hoeren = {};
-          const schreiben = { content: '', wordCount: 0 };
-
-          // 1) Try to read from in-memory states exposed by pages
-          try {
-            if (window._lesenState && window._lesenState.answers) {
-              Object.keys(window._lesenState.answers).forEach(k => {
-                lesen[k] = window._lesenState.answers[k];
-              });
-            }
-          } catch (e) {}
-
-          try {
-            if (window._hoerenState && window._hoerenState.answers) {
-              Object.keys(window._hoerenState.answers).forEach(sectionId => {
-                const sec = window._hoerenState.answers[sectionId] || {};
-                Object.keys(sec).forEach(q => {
-                  hoeren[q] = sec[q];
-                });
-              });
-            }
-          } catch (e) {}
-
-          try {
-            if (window._schreibenState && window._schreibenState.answers) {
-              const answers = window._schreibenState.answers;
-              if (answers['s1']) {
-                schreiben.content = answers['s1'];
-              } else {
-                const keys = Object.keys(answers);
-                if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
-              }
-              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0;
-            }
-          } catch (e) {}
-
-          // 2) Fallback to localStorage if any part is still empty
-          try {
-            if (Object.keys(lesen).length === 0) {
-              const storedL = localStorage.getItem('lesenAnswers');
-              if (storedL) Object.assign(lesen, JSON.parse(storedL));
-            }
-          } catch (e) {}
-
-          try {
-            if (Object.keys(hoeren).length === 0) {
-              const storedH = localStorage.getItem('hoerenAnswers');
-              if (storedH) Object.assign(hoeren, JSON.parse(storedH));
-            }
-          } catch (e) {}
-
-          try {
-            if (!schreiben.content) {
-              const storedS = localStorage.getItem('schreibenAnswers');
-              if (storedS) {
-                const obj = JSON.parse(storedS);
-                schreiben.content = obj.content || '';
-                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0);
-              }
-            }
-          } catch (e) {}
-
-          // final safe return
-          return { hoeren, lesen, schreiben };
-        } catch (e) {
-          return { hoeren: {}, lesen: {}, schreiben: {} };
-        }
-      }
-
-      function gradeHoeren(u) {
-        const c = CONFIG.hoerenCorrect;
-        let okCount = 0;
-        const d = [];
-        
-        for (let q = 41; q <= 58; q++) {
-          const k = String(q);
-          const uA = normalizeAnswer(u[k] || '');
-          const exp = normalizeAnswer(c[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
-          if (ok) okCount++;
-          const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
-          d.push({
-            frage: k,
-            user: uA || '-',
-            correct: exp || '-',
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
-          });
-        }
-        
-        const total = Number((okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2));
-        return { okCount, total, details: d };
-      }
-
-      function gradeLesen(u) {
-        const c = CONFIG.lesenCorrect;
-        let okCount = 0;
-        const d = [];
-        
-        Object.keys(c).forEach(k => {
-          const exp = normalizeAnswer(c[k]);
-          const uA = normalizeAnswer(u[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
-          if (ok) okCount++;
-          const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
-          d.push({
-            frage: k,
-            user: uA || '-',
-            correct: exp || '-',
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
-          });
-        });
-        
-        const total = Number((okCount * (CONFIG.totals.lesen / CONFIG.counts.lesen)).toFixed(2));
-        return { okCount, total, details: d };
-      }
-
-      function escapeHtml(s) {
-        return String(s)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      }
-
-      function buildTable(title, dets, total, max) {
-        let h = `<h2>${title}</h2>
-                <table class="section-table">
-                  <thead>
-                    <tr>
-                      <th>Frage</th>
-                      <th>Ihre Antwort</th>
-                      <th>Richtige Antwort</th>
-                      <th>Ergebnis</th>
-                      <th>Punkte</th>
-                    </tr>
-                  </thead>
-                  <tbody>`;
-        
-        dets.forEach(x => {
-          h += `<tr>
-                  <td>${x.frage}</td>
-                  <td>${escapeHtml(x.user)}</td>
-                  <td>${escapeHtml(x.correct)}</td>
-                  <td>${x.richtig ? '✔️' : '✖️'}</td>
-                  <td>${x.punkte}</td>
-                </tr>`;
-        });
-        
-        h += `</tbody>
-              </table>
-              <div class="small-muted">Teilpunkte: ${total.toFixed(2)} / ${max}</div>`;
-        return h;
-      }
-
-      function renderResults() {
-        const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
-        const h = gradeHoeren(st.hoeren || {});
-        const l = gradeLesen(st.lesen || {});
-        const details = document.getElementById('details-ergebnisse');
-        const tiles = document.getElementById('topTiles-ergebnisse');
-        const sScoreRaw = localStorage.getItem('schreibenScore');
-        const sScore = sScoreRaw ? Number(sScoreRaw) : 0; // Default score is now 0
-
-        details.innerHTML = '';
-        tiles.innerHTML = '';
-
-        const tL = `<div class="results-tile">
-                    <h3>Lesen</h3>
-                    <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
-                    <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
-                  </div>`;
-                  
-        const tH = `<div class="results-tile">
-                    <h3>Hören</h3>
-                    <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
-                    <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
-                  </div>`;
-                  
-        const tS = `<div class="results-tile">
-                    <h3>Schreiben</h3>
-                    <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
-                    <div class="small-muted">Manuelle Eingabe</div>
-                  </div>`;
-                  
-        tiles.innerHTML = tL + tH + tS;
-
-        details.innerHTML += buildTable('Hören — Detail', h.details, h.total, CONFIG.totals.hoeren);
-        details.innerHTML += buildTable('Lesen — Detail', l.details, l.total, CONFIG.totals.lesen);
-
-        let sHtml = '<h2>Schreiben — Ergebnis (manuell)</h2>';
-        const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
-        const wc = st.schreiben.wordCount || '-';
-        
-        sHtml += `<div class="small-muted">Wörter: ${wc}</div>
-                <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px">${txt}</div>
-                <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
-                  Punkte (0–45): 
-                  <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
-                  <button id="saveS" class="results-btn">Speichern</button>
-                </div>`;
-                
-        details.innerHTML += sHtml;
-
-        const total = (l.total + h.total + sScore).toFixed(2);
-        const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);
-        
-        document.getElementById('finalSummary-ergebnisse').innerHTML = `
-          <div class="left">
-            Gesamtpunktzahl: <strong>${total}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
-            <span class="small-muted">Lesen + Hören + Schreiben</span>
-          </div>
-          <div class="right">
-            Prozentsatz: <strong>${percent} %</strong>
-          </div>`;
-
-        document.getElementById('saveS').onclick = () => {
-          const v = Number(document.getElementById('sInput').value) || 0;
-          localStorage.setItem('schreibenScore', v);
-          document.getElementById('schreibenScoreDisplay').textContent = `${v.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte`;
-          
-          const newTotal = (l.total + h.total + v).toFixed(2);
-          const newPercent = ((newTotal / CONFIG.totals.gesamt) * 100).toFixed(2);
-          
-          document.getElementById('finalSummary-ergebnisse').innerHTML = `
-            <div class="left">
-              Gesamtpunktzahl: <strong>${newTotal}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
-              <span class="small-muted">Lesen + Hören + Schreiben</span>
-            </div>
-            <div class="right">
-              Prozentsatz: <strong>${newPercent} %</strong>
-            </div>`;
-        };
-      }
-
-      document.getElementById('calcBtn-ergebnisse').onclick = () => renderResults();
-      document.getElementById('backBtn-ergebnisse').onclick = (e) => {
-        e.preventDefault();
-        showPage('start-page');
-      };
-      
-      // Initialize results on page load
-      renderResults();
     }
   </script>
 </body>

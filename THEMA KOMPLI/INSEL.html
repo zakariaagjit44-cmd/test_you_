@@ -1509,6 +1509,166 @@
       timerEl.style.color = "#e53e3e";
     });
 
+    // ===== KORREKTE ANTWORTEN (ZENTRAL) =====
+    const CORRECT_ANSWERS = {
+      lesen: {
+        // Teil 1: Überschriften zuordnen
+        "text1": "e",
+        "text2": "b", 
+        "text3": "i",
+        "text4": "c",
+        "text5": "j",
+        
+        // Teil 2: Fragen zum Text
+        "s2q1": "s2q1o1",
+        "s2q2": "s2q2o1",
+        "s2q3": "s2q3o3",
+        "s2q4": "s2q4o2",
+        "s2q5": "s2q5o1",
+        
+        // Teil 3: Texte zuordnen
+        "11": "L",
+        "12": "I",
+        "13": "B",
+        "14": "H",
+        "15": "X",
+        "16": "E",
+        "17": "A",
+        "18": "D",
+        "19": "F",
+        "20": "X",
+        
+        // Sprachbausteine Teil 1
+        "21": "um",
+        "22": "dass",
+        "23": "aber",
+        "24": "unbedingt",
+        "25": "mich",
+        "26": "als",
+        "27": "kommenden",
+        "28": "dazu",
+        "29": "sondern",
+        "30": "für",
+        
+        // Sprachbausteine Teil 2
+        "31": "KAUM",
+        "32": "AUF",
+        "33": "VORBEI",
+        "34": "STATT",
+        "35": "INNERHALB",
+        "36": "MÜSSEN",
+        "37": "AN",
+        "38": "SOLLEN",
+        "39": "DANN",
+        "40": "DENN"
+      },
+      
+      hoeren: {
+        // Hören Teil 1
+        "41": "falsch",
+        "42": "falsch",
+        "43": "falsch",
+        "44": "richtig",
+        "45": "richtig",
+        
+        // Hören Teil 2
+        "46": "falsch",
+        "47": "falsch",
+        "48": "richtig",
+        "49": "richtig",
+        "50": "falsch",
+        "51": "falsch",
+        "52": "richtig",
+        "53": "falsch",
+        "54": "falsch",
+        "55": "falsch",
+        
+        // Hören Teil 3
+        "56": "richtig",
+        "57": "falsch",
+        "58": "falsch",
+        "59": "falsch",
+        "60": "richtig"
+      }
+    };
+
+    // ===== HILFSFUNKTIONEN =====
+    function getHeadingText(headingId) {
+      if (!headingId || headingId === '-' || headingId === '') return '-';
+      const headings = {
+        "a": "Deutscher Forscher startet Expedition auf Vogelinsel in Südamerika",
+        "b": "Die beliebtesten Reiseziele unter den europäischen Inseln",
+        "c": "Fernreisen in eine unberührte Tierwelt",
+        "d": "Geführte Bootsausflüge zu einsamen Badebuchten",
+        "e": "Grüne Geisterinsel in Asien",
+        "f": "Immer mehr Reiseunternehmen streichen Thailand aus ihrem Angebot",
+        "g": "Inseln zählen weltweit zu den wichtigsten Reisedestinationen",
+        "h": "Nachhaltiger Tourismus auf chinesischen Inseln",
+        "i": "Tierparadies auf einer Nordseeinsel",
+        "j": "Umstrittener Umgang mit Tieren als Touristenmagnet"
+      };
+      return headings[headingId] || headingId;
+    }
+
+    function getOptionText(questionId, optionId) {
+      if (!optionId || optionId === '-' || optionId === '') return '-';
+      const options = {
+        "s2q1o1": "sind in der Milchproduktion beliebter als andere Rinderrassen.",
+        "s2q1o2": "spielen in der Milchproduktion kaum eine Rolle.",
+        "s2q1o3": "stammen aus Norddeutschland.",
+        "s2q2o1": "hat bereits einige Preise gewonnen.",
+        "s2q2o2": "war Siegerin bei einer Veranstaltung in Italien.",
+        "s2q2o3": "wurde als schönste Kuh Europas ausgezeichnet.",
+        "s2q3o1": "bekam Krista ein Kalb.",
+        "s2q3o2": "wäre Krista fast gestorben.",
+        "s2q3o3": "wurde Krista operiert.",
+        "s2q4o1": "betreffen die Familie Seeger nicht.",
+        "s2q4o2": "sind eine Folge des Verbraucherverhaltens.",
+        "s2q4o3": "werden im Film ausführlich behandelt.",
+        "s2q5o1": "begeistert Kinobetreiber bislang nicht.",
+        "s2q5o2": "konnte die Kritiker nicht überzeugen.",
+        "s2q5o3": "wurde als beste Dokumentation ausgezeichnet."
+      };
+      return options[optionId] || optionId;
+    }
+
+    function getSituationText(id) {
+      const situations = {
+        "11": "Ein Bekannter möchte einen Film sehen, der nach dem Werk eines Schriftstellers gedreht wurde.",
+        "12": "Bekannte interessieren sich für Wintersportveranstaltungen.",
+        "13": "Sie suchen eine Musiksendung. Sie mögen besonders Klaviermusik.",
+        "14": "Sie mögen Filme mit viel Action und viel Spaß. Ihre Lieblingshelden können auch mal zuschlagen.",
+        "15": "Ein Bekannter interessiert sich für kurdische Geschichte.",
+        "16": "Sie mögen Familienkomödien, besonders mit frechen Kindern.",
+        "17": "Eine Bekannte interessiert sich für die Geschichte des bis 1989 geteilten Berlins.",
+        "18": "Sie sehen gern spannende, aber auch spaßige Agentenfilme.",
+        "19": "Sie würden gern etwas über Großstadtjugendliche erfahren, die am Rand der Gesellschaft leben.",
+        "20": "Sie möchten im nächsten Urlaub tauchen und sich über die Risiken informieren."
+      };
+      return situations[id] || id;
+    }
+
+    function escapeHtml(s) {
+      if (s === null || s === undefined) return '';
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function normalizeAnswer(a) {
+      if (a === null || a === undefined || a === '') return '-';
+      let s = String(a).trim();
+      if (s === '') return '-';
+      const low = s.toLowerCase();
+      if (["richtig", "true", "yes", "ja", "wahr"].includes(low)) return 'richtig';
+      if (["falsch", "false", "no", "nein", "unwahr"].includes(low)) return 'falsch';
+      if (s === 'X' || s === 'x') return 'X';
+      return s;
+    }
+
     // ===== LESEN PAGE FUNCTIONALITY =====
     function initLesenPage() {
       /* ===== Self-contained exam (embedded) ===== */
@@ -1584,7 +1744,7 @@ Krista kann zunächst aus gesundheitlichen Gründen keine Kälber bekommen. Auch
 
 Während der jahrelangen Dreharbeiten hat sich auch die Familie entwickelt. Mittlerweile haben die Seegers zwei Kinder. "Deshalb verändert sich im Film mein Gewicht etwas", erzählt Janine Seeger und lacht. Und wie ist es so, vor der Kamera zu stehen? "Erst ungewohnt, dann irgendwie vertraut", sagt die 32-Jährige. Zu den Filmemachern habe sich ein freundschaftliches Verhältnis entwickelt. "Wie schön, Carsten und Antje sind wieder da", habe es dann nur noch geheißen, wenn das Team anrückte.
 
-Der Film zeigt aber auch, wie sich im Laufe der Jahre das Leben auf dem Hof der Seegers verändert hat und wie schwierig es auch hier geworden ist, mit Milchkühen Geld zu verdienen. Der Markt ist hart umkämpft und die Preise sinken immer weiter, denn die Verbraucher im Supermarkt greifen gerne zum günstigsten Produkt. Für viele ist es da nicht wichtig, wie die Milch produziert wurde. Auch das zeigt der Film, wenngleich eher nebenbei.
+Der Film zeigt aber auch, wie sich im Laufe der Jahre das Leben auf dem Hof der Seegers verändert hat und wie schwierig it auch hier geworden ist, mit Milchkühen Geld zu verdienen. Der Markt ist hart umkämpft und die Preise sinken immer weiter, denn die Verbraucher im Supermarkt greifen gerne zum günstigsten Produkt. Für viele ist es da nicht wichtig, wie die Milch produziert wurde. Auch das zeigt der Film, wenngleich eher nebenbei.
 
 Familie Seeger ist stolz drauf, dass ein Film über ihren Hof und über die schöne Kuh Krista gedreht wurde. So heißt nun übrigens auch der Film: "Die schöne Krista". Am vergangenen Wochenende haben die Seegers den Film bei einem Hoffest gezeigt. Familie und Freunde sowie Nachbarn waren zu Gast, und alle haben sich über den Film gefreut.
 
@@ -1981,7 +2141,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               <div class="text-title">Text ${letter.toUpperCase()}</div>
               <div class="text-content">${text.content}</div>
               <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}">
-                ${selectedHeading ? getHeadingTextById(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
+                ${selectedHeading ? getHeadingText(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
               </div>
             </div>
           `;
@@ -2008,12 +2168,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         
         questionBodyEl.innerHTML = '';
         questionTitleEl.textContent = '';
-      }
-
-      function getHeadingTextById(id){
-        const section = exam.sections[state.sectionIndex];
-        const heading = section.headings.find(h => h.id === id);
-        return heading ? `${heading.id}) ${heading.text}` : '';
       }
 
       function setupDragAndDrop(){
@@ -2470,66 +2624,70 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           if(section.id === 's1'){
             section.texts.forEach(text => {
               totalQuestions++;
-              const userAnswer = state.answers[text.id];
-              const isCorrect = userAnswer === text.correctAnswer;
+              const userAnswer = state.answers[text.id] || '-';
+              const correctAnswer = CORRECT_ANSWERS.lesen[text.id];
+              const isCorrect = userAnswer === correctAnswer;
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Text ${text.id}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                <div>Text ${text.id}: ${userAnswer} 
+                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
             });
           } else if(section.id === 's2'){
             section.questions.forEach(question => {
               totalQuestions++;
-              const userAnswer = state.answers[question.id];
-              const isCorrect = userAnswer === question.correctAnswer;
+              const userAnswer = state.answers[question.id] || '-';
+              const correctAnswer = CORRECT_ANSWERS.lesen[question.id];
+              const isCorrect = userAnswer === correctAnswer;
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>${question.text}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                <div>${question.text}: ${userAnswer} 
+                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
             });
           } else if(section.id === 's3'){
             section.situations.forEach(situation => {
               totalQuestions++;
-              const userAnswer = state.answers[situation.id];
-              const correctText = section.texts.find(t => t.correctAnswer === situation.id);
-              const isCorrect = userAnswer === (correctText ? correctText.id : null);
+              const userAnswer = state.answers[situation.id] || '-';
+              const correctAnswer = CORRECT_ANSWERS.lesen[situation.id];
+              const isCorrect = userAnswer === correctAnswer;
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Situation ${situation.id}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                <div>Situation ${situation.id}: ${userAnswer} 
+                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
             });
           } else if(section.id === 's4'){
             section.fillBlanks.forEach(blank => {
               totalQuestions++;
-              const userAnswer = state.answers[blank.id];
-              const isCorrect = userAnswer === blank.correctAnswer;
+              const userAnswer = state.answers[blank.id] || '-';
+              const correctAnswer = CORRECT_ANSWERS.lesen[blank.id];
+              const isCorrect = userAnswer === correctAnswer;
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                <div>Lücke ${blank.id}: ${userAnswer} 
+                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
             });
           } else if(section.id === 's5'){
             section.fillBlanks2.forEach(blank => {
               totalQuestions++;
-              const userAnswer = state.answers[blank.id];
-              const isCorrect = userAnswer === blank.correctAnswer;
+              const userAnswer = state.answers[blank.id] || '-';
+              const correctAnswer = CORRECT_ANSWERS.lesen[blank.id];
+              const isCorrect = userAnswer === correctAnswer;
               if(isCorrect) totalCorrect++;
               
               resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                <div>Lücke ${blank.id}: ${userAnswer} 
+                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
               `;
             });
@@ -2623,7 +2781,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             id: "hörverstehen1", 
             title: "Hörverstehen, Teil 1", 
             points: 25,
-            correctAnswers: { "41": "falsch", "42": "falsch", "43": "falsch", "44": "richtig", "45": "richtig" },
             questions: [
               {
                 id: "41",
@@ -2651,7 +2808,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             id: "hörverstehen2", 
             title: "Hörverstehen, Teil 2", 
             points: 25,
-            correctAnswers: { "46": "falsch", "47": "falsch", "48": "richtig", "49": "richtig", "50": "falsch", "51": "falsch", "52": "richtig", "53": "falsch", "54": "falsch", "55": "falsch" },
             questions: [
               {
                 id: "46",
@@ -2699,7 +2855,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             id: "hörverstehen3", 
             title: "Hörverstehen, Teil 3", 
             points: 25,
-            correctAnswers: { "56": "richtig", "57": "falsch", "58": "falsch", "59": "falsch", "60": "richtig" },
             questions: [
               {
                 id: "56",
@@ -2908,8 +3063,8 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           `;
           
           section.questions.forEach((question) => {
-            const userAnswer = userAnswers[question.id] || '-';
-            const correctAnswer = section.correctAnswers[question.id];
+            const userAnswer = normalizeAnswer(userAnswers[question.id] || '');
+            const correctAnswer = CORRECT_ANSWERS.hoeren[question.id];
             const gotCorrect = userAnswer === correctAnswer;
             const points = gotCorrect ? "1" : "0";
             
@@ -3260,34 +3415,238 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         counts: { 
           lesen: 40, 
           hoeren: 20 
-        },
-        hoerenCorrect: {
-          "41": "falsch", "42": "falsch", "43": "falsch", "44": "richtig", "45": "richtig",
-          "46": "falsch", "47": "falsch", "48": "richtig", "49": "richtig", "50": "falsch",
-          "51": "falsch", "52": "richtig", "53": "falsch", "54": "falsch", "55": "falsch",
-          "56": "richtig", "57": "falsch", "58": "falsch", "59": "falsch", "60": "richtig"
-        },
-        lesenCorrect: Object.assign({},
-          {"text1": "e", "text2": "d", "text3": "i", "text4": "c", "text5": "j"},
-          {"s2q1": "s2q1o1", "s2q2": "s2q2o1", "s2q3": "s2q3o3", "s2q4": "s2q4o2", "s2q5": "s2q5o1"},
-          {"11": "L", "12": "I", "13": "B", "14": "H", "15": "X", "16": "E", "17": "A", "18": "D", "19": "F", "20": "X"},
-          {"21": "um", "22": "ob", "23": "aber", "24": "unbedingt", "25": "mich", "26": "als", "27": "kommenden", "28": "dazu", "29": "sondern", "30": "für"},
-          {"31": "KAUM", "32": "AUF", "33": "VORBEI", "34": "STATT", "35": "INNERHALB", "36": "MÜSSEN", "37": "AN", "38": "SOLLEN", "39": "DANN", "40": "DENN"}
-        )
+        }
       };
 
-      function normalizeAnswer(a) {
-        if (a === null || a === undefined) return '';
-        let s = String(a).trim();
-        if (s === '') return '';
-        const low = s.toLowerCase();
-        if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
-        if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
-        return s;
+      function buildTable(title, dets, total, max) {
+        let html = `<div class="result-item">
+                      <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
+                      <div class="section-table">
+                        <table class="true-false-table">
+                          <thead>
+                            <tr>
+                              <th style="width: 10%">Frage</th>
+                              <th style="width: 40%">Ihre Antwort</th>
+                              <th style="width: 40%">Richtige Antwort</th>
+                              <th style="width: 10%">Ergebnis</th>
+                            </tr>
+                          </thead>
+                          <tbody>`;
+        
+        dets.forEach(x => {
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${x.frage}</strong></td>
+                    <td>${escapeHtml(x.user)}</td>
+                    <td>${escapeHtml(x.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody>
+                </table>
+                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                  <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
+                </div>
+              </div></div>`;
+        return html;
       }
 
-      function keyZeroToTen(k) {
-        return k === '0' ? '10' : k;
+      function renderLesenDetails(answers) {
+        let html = `<div class="result-item">
+                    <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
+        
+        // Teil 1: Überschriften zuordnen
+        html += `<h4>Teil 1: Überschriften zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Text</th>
+                       <th style="width: 40%">Ihre Überschrift</th>
+                       <th style="width: 40%">Richtige Überschrift</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 1; i <= 5; i++) {
+          const id = `text${i}`;
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id];
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>Text ${String.fromCharCode(64 + i)}</strong></td>
+                    <td>${userAnswer !== '-' ? getHeadingText(userAnswer) : '-'}</td>
+                    <td>${getHeadingText(correctAnswer)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // Teil 2: Fragen zum Text
+        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Frage</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 1; i <= 5; i++) {
+          const id = `s2q${i}`;
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id];
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${i}</strong></td>
+                    <td>${userAnswer !== '-' ? getOptionText(id, userAnswer) : '-'}</td>
+                    <td>${getOptionText(id, correctAnswer)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // Teil 3: Texte zuordnen
+        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Situation</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 11; i <= 20; i++) {
+          const id = i.toString();
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id];
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${i}</strong></td>
+                    <td>${userAnswer !== '-' ? (userAnswer === 'X' ? 'X - Kein passender Text' : `Text ${userAnswer}`) : '-'}</td>
+                    <td>${correctAnswer === 'X' ? 'X - Kein passender Text' : `Text ${correctAnswer}`}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // Sprachbausteine Teil 1
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Lücke</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 21; i <= 30; i++) {
+          const id = i.toString();
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id];
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${i}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // Sprachbausteine Teil 2
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th style="width: 10%">Lücke</th>
+                       <th style="width: 40%">Ihre Antwort</th>
+                       <th style="width: 40%">Richtige Antwort</th>
+                       <th style="width: 10%">Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 31; i <= 40; i++) {
+          const id = i.toString();
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id];
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${i}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table></div>`;
+        
+        return html;
+      }
+
+      function buildHoerenDetails(answers) {
+        let html = `<table class="true-false-table">
+                      <thead>
+                        <tr>
+                          <th style="width: 10%">Frage</th>
+                          <th style="width: 40%">Ihre Antwort</th>
+                          <th style="width: 40%">Richtige Antwort</th>
+                          <th style="width: 10%">Ergebnis</th>
+                        </tr>
+                      </thead>
+                      <tbody>`;
+        
+        for (let i = 41; i <= 60; i++) {
+          const id = i.toString();
+          const userAnswer = normalizeAnswer(answers[id] || '');
+          const correctAnswer = CORRECT_ANSWERS.hoeren[id];
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        return html;
       }
 
       function readExamResults() {
@@ -3296,7 +3655,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           const hoeren = {};
           const schreiben = { content: '', wordCount: 0 };
 
-          // 1) Try to read from in-memory states exposed by pages
+          // Try to read from in-memory states
           try {
             if (window._lesenState && window._lesenState.answers) {
               Object.keys(window._lesenState.answers).forEach(k => {
@@ -3329,7 +3688,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             }
           } catch (e) {}
 
-          // 2) Fallback to localStorage if any part is still empty
+          // Fallback to localStorage
           try {
             if (Object.keys(lesen).length === 0) {
               const storedL = localStorage.getItem('lesenAnswers');
@@ -3340,7 +3699,19 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           try {
             if (Object.keys(hoeren).length === 0) {
               const storedH = localStorage.getItem('hoerenAnswers');
-              if (storedH) Object.assign(hoeren, JSON.parse(storedH));
+              if (storedH) {
+                const parsed = JSON.parse(storedH);
+                // Handle nested structure
+                if (typeof parsed === 'object') {
+                  Object.keys(parsed).forEach(sectionId => {
+                    if (typeof parsed[sectionId] === 'object') {
+                      Object.keys(parsed[sectionId]).forEach(q => {
+                        hoeren[q] = parsed[sectionId][q];
+                      });
+                    }
+                  });
+                }
+              }
             }
           } catch (e) {}
 
@@ -3355,109 +3726,49 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             }
           } catch (e) {}
 
-          // final safe return
           return { hoeren, lesen, schreiben };
         } catch (e) {
           return { hoeren: {}, lesen: {}, schreiben: {} };
         }
       }
 
-      function gradeHoeren(u) {
-        const c = CONFIG.hoerenCorrect;
+      function gradeHoeren(answers) {
         let okCount = 0;
-        const d = [];
         
         for (let q = 41; q <= 60; q++) {
-          const k = String(q);
-          const uA = normalizeAnswer(u[k] || '');
-          const exp = normalizeAnswer(c[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
+          const k = q.toString();
+          const uA = normalizeAnswer(answers[k] || '');
+          const exp = CORRECT_ANSWERS.hoeren[k];
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
           if (ok) okCount++;
-          const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
-          d.push({
-            frage: k,
-            user: uA || '-',
-            correct: exp || '-',
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
-          });
         }
         
         const total = Number((okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2));
-        return { okCount, total, details: d };
+        return { okCount, total };
       }
 
-      function gradeLesen(u) {
-        const c = CONFIG.lesenCorrect;
+      function gradeLesen(answers) {
         let okCount = 0;
-        const d = [];
         
-        Object.keys(c).forEach(k => {
-          const exp = normalizeAnswer(c[k]);
-          const uA = normalizeAnswer(u[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
+        Object.keys(CORRECT_ANSWERS.lesen).forEach(k => {
+          const exp = CORRECT_ANSWERS.lesen[k];
+          const uA = normalizeAnswer(answers[k] || '');
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
           if (ok) okCount++;
-          const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
-          d.push({
-            frage: k,
-            user: uA || '-',
-            correct: exp || '-',
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
-          });
         });
         
         const total = Number((okCount * (CONFIG.totals.lesen / CONFIG.counts.lesen)).toFixed(2));
-        return { okCount, total, details: d };
-      }
-
-      function escapeHtml(s) {
-        return String(s)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      }
-
-      function buildTable(title, dets, total, max) {
-        let h = `<h2>${title}</h2>
-                <table class="section-table">
-                  <thead>
-                    <tr>
-                      <th>Frage</th>
-                      <th>Ihre Antwort</th>
-                      <th>Richtige Antwort</th>
-                      <th>Ergebnis</th>
-                      <th>Punkte</th>
-                    </tr>
-                  </thead>
-                  <tbody>`;
-        
-        dets.forEach(x => {
-          h += `<tr>
-                  <td>${x.frage}</td>
-                  <td>${escapeHtml(x.user)}</td>
-                  <td>${escapeHtml(x.correct)}</td>
-                  <td>${x.richtig ? '✔️' : '✖️'}</td>
-                  <td>${x.punkte}</td>
-                </tr>`;
-        });
-        
-        h += `</tbody>
-              </table>
-              <div class="small-muted">Teilpunkte: ${total.toFixed(2)} / ${max}</div>`;
-        return h;
+        return { okCount, total };
       }
 
       function renderResults() {
-        const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
+        const st = readExamResults();
         const h = gradeHoeren(st.hoeren || {});
         const l = gradeLesen(st.lesen || {});
         const details = document.getElementById('details-ergebnisse');
         const tiles = document.getElementById('topTiles-ergebnisse');
         const sScoreRaw = localStorage.getItem('schreibenScore');
-        const sScore = sScoreRaw ? Number(sScoreRaw) : 0; // Default score is now 0
+        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
 
         details.innerHTML = '';
         tiles.innerHTML = '';
@@ -3482,20 +3793,27 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
                   
         tiles.innerHTML = tL + tH + tS;
 
-        details.innerHTML += buildTable('Hören — Detail', h.details, h.total, CONFIG.totals.hoeren);
-        details.innerHTML += buildTable('Lesen — Detail', l.details, l.total, CONFIG.totals.lesen);
+        details.innerHTML = `<h2>📊 Detaillierte Ergebnisse</h2>
+                            <div class="instructions">Hier sehen Sie einen detaillierten Vergleich Ihrer Antworten mit den richtigen Lösungen.</div>`;
+        
+        details.innerHTML += renderLesenDetails(st.lesen);
+        
+        details.innerHTML += `<div class="result-item">
+                              <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+                              ${buildHoerenDetails(st.hoeren)}
+                            </div>`;
 
-        let sHtml = '<h2>Schreiben — Ergebnis (manuell)</h2>';
+        let sHtml = '<div class="result-item"><h3>✍️ Schreiben - Ihre Antwort</h3>';
         const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
         const wc = st.schreiben.wordCount || '-';
         
         sHtml += `<div class="small-muted">Wörter: ${wc}</div>
-                <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px">${txt}</div>
+                <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px;white-space:pre-wrap;">${txt}</div>
                 <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
                   Punkte (0–45): 
                   <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
                   <button id="saveS" class="results-btn">Speichern</button>
-                </div>`;
+                </div></div>`;
                 
         details.innerHTML += sHtml;
 
@@ -3536,7 +3854,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         showPage('start-page');
       };
       
-      // Initialize results on page load
       renderResults();
     }
   </script>

@@ -1392,14 +1392,12 @@
   <script>
     // ===== PAGE NAVIGATION =====
     function showPage(pageId) {
-      // Hide all pages
       document.getElementById('start-page').style.display = 'none';
       document.getElementById('lesen-page').style.display = 'none';
       document.getElementById('hoeren-page').style.display = 'none';
       document.getElementById('schreiben-page').style.display = 'none';
       document.getElementById('ergebnisse-page').style.display = 'none';
       
-      // Change body class based on page
       document.getElementById('body').className = '';
       if (pageId === 'ergebnisse-page') {
         document.getElementById('body').className = 'results-body';
@@ -1407,10 +1405,8 @@
         document.getElementById('body').className = 'exam-body';
       }
       
-      // Show selected page
       document.getElementById(pageId).style.display = 'block';
       
-      // Initialize the page if needed
       if (pageId === 'lesen-page' && typeof initLesenPage === 'function') {
         initLesenPage();
       } else if (pageId === 'hoeren-page' && typeof initHoerenPage === 'function') {
@@ -1436,12 +1432,9 @@
     const cancelBtn = document.getElementById("cancelBtn");
 
     function startCountdown() {
-      // prevent double-starts or starting after exam already began
       if (countdownRunning || examStarted) return;
       countdownRunning = true;
-      // disable start button while counting
       try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
-      // reset counter & UI
       counter = initialCounter;
       timerEl.textContent = counter;
       timeDisplayEl.textContent = counter;
@@ -1459,12 +1452,10 @@
           countdownInterval = null;
           countdownRunning = false;
           progressEl.style.transform = "scaleX(1)";
-          // ensure exam starts only once
           if (!examStarted) {
             examStarted = true;
             startExam();
           }
-          // safety: re-enable start button (page usually navigates away)
           try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
         }
       }, 1000);
@@ -1488,7 +1479,6 @@
     }
 
     function startExam() {
-      // guard to ensure startExam is triggered once
       if (!examStarted) examStarted = true;
       const selectedSection = selectEl.value;
       if (selectedSection === 'lesen') {
@@ -1500,7 +1490,6 @@
       }
     }
 
-    // wire buttons: start will now start the countdown (not the exam directly)
     startBtn.addEventListener('click', startCountdown);
 
     cancelBtn.addEventListener('click', () => {
@@ -1509,10 +1498,8 @@
       timerEl.style.color = "#e53e3e";
     });
 
-    // NOTE: removed automatic startCountdown() on page load to prevent the timer starting twice
-// ===== LESEN PAGE FUNCTIONALITY =====
+    // ===== LESEN PAGE FUNCTIONALITY =====
     function initLesenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-001",
         durationSec: 90 * 60,
@@ -1569,7 +1556,7 @@
             title: "Leseverstehen, Teil 2", 
             points: 25,
             passageTitle: "Österreich, das Land der Poolbesitzer",
-            passage: `Österreich schwimmt. Und das nicht nur in Seen, Teichen oder Frebadem, Ein Bick über die Gatenzaune des Landes macht deutlich: Die Österreicher schwimmen zunehmend gerne zu Hause. Die Poolbranche schätzt die Anzahl der Poolbesitzer in Österreich auf etwa 90.000 bis 150.000. Im Vergleich zu Deutschland ist Österreich wesentlich dichter mit Polls besiedelt. Warum Swimmingpools so beliebt sind, darüber herrscht Uneinigkeit. Manche Vertreter der Branche sehen darin eine Reaktion auf wirtschaftlich unsichere Zeiten. Da investierten die Leute gerne in die eigenen vier Wände und in den Gartern inklusive Pools, meinen sie. Aridere sehen darin einen Ausdruck des allgemeinen Wellness-und Gesundheitstrends. Auch die Sehnsucht nach dem Meer wird bisweilen als Argument für den ausgeprägten Wunsch nach einem Pool vorgebracht. Das allein kann es aber wohl nicht sein, denn als stärkster Poolmarkt in Europa gilt nach wie vor Frankreich. Branchenkenner führen den Boom aber auch auf finanzielle Gründe zurück. Dass der Umsatz in den vergangenen Jahren stetig angestiegen ist, sehen viele im Angebot an preismäßigen Pools begründet. Vor 20 Jahren sei ein eigenes Schwimmbad noch ein absolutes Luxusgut gewesen. Jetzt gebe es immer mehr Alternativen, die einen Pool erschwinglich machen. Welche Gründe auch ausschlaggebend sein mögen: Die Branche besitzt durchaus noch Potenzial, da sind sich alle einig. Laut einer kurzlei durchgeführten Studie träumt nämlich beinahe jeder zweite Österreicher von einem Pool. An erster Stelle der Wohnungswünsche steht er zwar nicht: So hat für 97 Prozent der befragten Österreicher die Traumimmobilie einen Balkon, eine Loogia oder eine Terrasse, und 92 Prozent wünschen sich eine Garage. 82 Prozent sehnen sich nach einem Garten, und 46 Prozent nach einem Swimmingpool - und zehn Prozent besitzen auch einen solchen. Dabei gibt es regionale Unterschiede. In absoluten Zahlen gibt es die meisten Pools in Wien und Niedergsterreich. Pro Kopf gerechnet gibt es aber in Vorarlberg die meisten privaten Schwimmbader. Einen nagelneuen Pool hat auch die 37-jährige Rija in ihrem neuen Zuhause. Die Wienerin ist mit ihrem Lebensgefährten vor kurzem nach Niederösterreich gezogen. Es war immer mein Traum einen Pool zu haben", sagt sie. Nun kann sie den Sommer im eigenen Pool genießen. Neben der Entspannung und Abkühlung hat der Pool für sie noch einen weiteren Wert Der Pool hat Leben in den Garten gebracht. Es haben sich schon alle möglichen Bekannten zum Schwimmen angemeldet", sagt sie, Denen drück ich aber vorher einen Spaten in die Hand - ein Teil vom Garten ist ja noch Baustelle." Tatsächlich schweißt so ein Pool nicht nur die Nachbarschaft zusammen. Es ist auch die beste Werbung für weitere Becken. Kaum hat einer in einer Siedlung einen Pool, hat der Nachbar spatiestens nach zwei Jahren auch einen", meint ein Branchenvertreter. Besonders deutlich wird das in Kleingartensiedlungen, bei denen ein kleines Schwimmbecken schon beinahe zur Grundausstattung gehörn. Doch manche Menschen bevorzugen naturnahe Schwimmteiche. Nach Schätzungen macht de Anteil der Schwimmteiche am Schwimmanlagenmarkt rund 15 Prozent aus, in den vergangenen Jahren ist die Nachfrage nach Schwimmteichen stark gestiegen. Das hat auch zur Entwicklung von Naturpools geführt. Optisch ein klassischer Swimmingpool, kommt der Naturpool ganzlich ohne Chemikalien aus Hier wird das Wasser durch Pumpen und Fillersysteme sauber gehalten. Bei der naturlichen Variante geht es übrigens bei 35.000 Euro los. Dafür spart man sich das jährliche Befüllen und Putzen. Das jährliche Befüllen von Pools aus den Wasserleitungen kann in manchen Regionen gelegentlich zu Wasserknappheit führen. Das betrifft aber meist nur jene Gemeinden, die von sehr kleinen Wassergenossenschaften versorgt werden. In Wien fali die Belülung der Pools kaum auf. Was den Leiter des Wiener Rohmetzes eher stort, ist der Wasserdiebstahl über Hydranten, also über die Zapistellen in den Straßen für Feuerwehr und Straßenreinigung. Denn wer es besonders eilig hat, kann seinen Pool auch über die Hydranten befüllen. Das geht schneller, muss aber angemeldet werden und kostet Geid. Generell gebe es aber keine Wasserknappheit. Es sei genug Wasser für alle da, so die Wesserversorger. Fürs Auffallen von Pools, aber auch fürs Blumengießen, zum Duschen und auch zum Trinken Wir verwenden in Österreich nur ein Prozent der vorhandenen Wasserressourcen.`,
+            passage: `Österreich schwimmt. Und das nicht nur in Seen, Teichen oder Frebadem, Ein Bick über die Gatenzaune des Landes macht deutlich: Die Österreicher schwimmen zunehmend gerne zu Hause. Die Poolbranche schätzt die Anzahl der Poolbesitzer in Österreich auf etwa 90.000 bis 150.000. Im Vergleich zu Deutschland ist Österreich wesentlich dichter mit Polls besiedelt. Warum Swimmingpools so beliebt sind, darüber herrscht Uneinigkeit. Manche Vertreter der Branche sehen darin eine Reaktion auf wirtschaftlich unsichere Zeiten. Da investierten die Leute gerne in die eigenen vier Wände und in den Gartern inklusive Pools, meinen sie. Aridere sehen darin einen Ausdruck des allgemeinen Wellness-und Gesundheitstrends. Auch die Sehnsucht nach dem Meer wird bisweilen als Argument für den ausgeprägten Wunsch nach einem Pool vorgebracht. Das allein kann es aber nicht sein, denn als stärkster Poolmarkt in Europa gilt nach wie vor Frankreich. Branchenkenner führen den Boom aber auch auf finanzielle Gründe zurück. Dass der Umsatz in den vergangenen Jahren stetig angestiegen ist, sehen viele im Angebot an preismäßigen Pools begründet. Vor 20 Jahren sei ein eigenes Schwimmbad noch ein absolutes Luxusgut gewesen. Jetzt gebe es immer mehr Alternativen, die einen Pool erschwinglich machen. Welche Gründe auch ausschlaggebend sein mögen: Die Branche besitzt durchaus noch Potenzial, da sind sich alle einig. Laut einer kurzlei durchgeführten Studie träumt nämlich beinahe jeder zweite Österreicher von einem Pool. An erster Stelle der Wohnungswünsche steht er zwar nicht: So hat für 97 Prozent der befragten Österreicher die Traumimmobilie einen Balkon, eine Loogia oder eine Terrasse, und 92 Prozent wünschen sich eine Garage. 82 Prozent sehnen sich nach einem Garten, und 46 Prozent nach einem Swimmingpool - und zehn Prozent besitzen auch einen solchen. Dabei gibt es regionale Unterschiede. In absoluten Zahlen gibt es die meisten Pools in Wien und Niedergsterreich. Pro Kopf gerechnet gibt es aber in Vorarlberg die meisten privaten Schwimmbader. Einen nagelneuen Pool hat auch die 37-jährige Rija in ihrem neuen Zuhause. Die Wienerin ist mit ihrem Lebensgefährten vor kurzem nach Niederösterreich gezogen. Es war immer mein Traum einen Pool zu haben", sagt sie. Nun kann sie den Sommer im eigenen Pool genießen. Neben der Entspannung und Abkühlung hat der Pool für sie noch einen weiteren Wert Der Pool hat Leben in den Garten gebracht. Es haben sich schon alle möglichen Bekannten zum Schwimmen angemeldet", sagt sie, Denen drück ich aber vorher einen Spaten in die Hand - ein Teil vom Garten ist ja noch Baustelle." Tatsächlich schweißt so ein Pool nicht nur die Nachbarschaft zusammen. Es ist auch die beste Werbung für weitere Becken. Kaum hat einer in einer Siedlung einen Pool, hat der Nachbar spatiestens nach zwei Jahren auch einen", meint ein Branchenvertreter. Besonders deutlich wird das in Kleingartensiedlungen, bei denen ein kleines Schwimmbecken schon beinahe zur Grundausstattung gehörn. Doch manche Menschen bevorzugen naturnahe Schwimmteiche. Nach Schätzungen macht de Anteil der Schwimmteiche am Schwimmanlagenmarkt rund 15 Prozent aus, in den vergangenen Jahren ist die Nachfrage nach Schwimmteichen stark gestiegen. Das hat auch zur Entwicklung von Naturpools geführt. Optisch ein klassischer Swimmingpool, kommt der Naturpool ganzlich ohne Chemikalien aus Hier wird das Wasser durch Pumpen und Fillersysteme sauber gehalten. Bei der naturlichen Variante geht es übrigens bei 35.000 Euro los. Dafür spart man sich das jährliche Befüllen und Putzen. Das jährliche Befüllen von Pools aus den Wasserleitungen kann in manchen Regionen gelegentlich zu Wasserknappheit führen. Das betrifft aber meist nur jene Gemeinden, die von sehr kleinen Wassergenossenschaften versorgt werden. In Wien fali die Belülung der Pools kaum auf. Was den Leiter des Wiener Rohmetzes eher stort, ist der Wasserdiebstahl über Hydranten, also über die Zapistellen in den Straßen für Feuerwehr und Straßenreinigung. Denn wer es besonders eilig hat, kann seinen Pool auch über die Hydranten befüllen. Das geht schneller, muss aber angemeldet werden und kostet Geid. Generell gebe es aber keine Wasserknappheit. Es sei genug Wasser für alle da, so die Wesserversorger. Fürs Auffallen von Pools, aber auch fürs Blumengießen, zum Duschen und auch zum Trinken Wir verwenden in Österreich nur ein Prozent der vorhandenen Wasserressourcen.`,
             questions: [
               {
                 id: "s2q1",
@@ -1805,7 +1792,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         ]
       };
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         questionIndex: 0, 
@@ -1829,7 +1815,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
-      /* ===== Timer Functions ===== */
       function startTimer(){
         if(state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -1863,7 +1848,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Reset Section Function ===== */
       function resetCurrentSection() {
         const currentSection = exam.sections[state.sectionIndex];
         
@@ -1894,7 +1878,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         }
       }
 
-      /* ===== Render ===== */
       function renderTopTiles(){ 
         topTiles.innerHTML=''; 
         exam.sections.forEach((sec,idx)=>{ 
@@ -2265,17 +2248,14 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
 
       function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
-        // Build text but replace blanks with unique placeholders first (prevents ambiguous replacements)
         let textWithPlaceholders = section.fillText2;
         const placeholders = [];
         section.fillBlanks2.forEach(blank => {
           const ph = `BLANK_${blank.id}`;
           placeholders.push({id: blank.id, ph});
-          // replace first occurrence of the visual underline with placeholder
           textWithPlaceholders = textWithPlaceholders.replace('________', ph);
         });
 
-        // Now replace placeholders with actual span elements showing current answer (or underscore)
         placeholders.forEach(item => {
           const userAnswer = state.answers[item.id];
           const displayText = userAnswer ? userAnswer : '________';
@@ -2288,18 +2268,14 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
-        // attach click handlers to slots
         document.querySelectorAll('.blank-slot').forEach(slot => {
           slot.addEventListener('click', (e) => {
-            // use the element itself to open popup
             showSprachbausteine2Options(slot);
           });
         });
 
-        // Build word bank on the right
         let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
         const usedWords = Object.values(state.answers);
-        // Use section.wordBank if present, otherwise derive from fillBlanks2 options
         const bank = section.wordBank && section.wordBank.length ? section.wordBank : (section.fillBlanks2[0] ? section.fillBlanks2[0].options : []);
         bank.forEach(word => {
           const isUsed = usedWords.includes(word);
@@ -2320,11 +2296,9 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         setupSprachbausteine2DragAndDrop();
       }
 
-      // --- Added functions to handle drag/drop and clicks for Sprachbausteine Teil 2 ---
       let lastClickedSprachSlot = null;
 
       function setupSprachbausteine2DragAndDrop(){
-        // bank words: make draggable if not used, attach dragstart
         const bankWords = Array.from(document.querySelectorAll('.bank-word-vertical'));
         bankWords.forEach(el => {
           const word = el.dataset.word;
@@ -2333,16 +2307,13 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           } else {
             el.setAttribute('draggable','false');
           }
-          // ensure single attached listener
           el.removeEventListener('dragstart', el._dstart);
           el._dstart = (e) => {
             e.dataTransfer.setData('text/plain', word);
-            // also set an indicator
             e.dataTransfer.setData('source', 'bank');
           };
           el.addEventListener('dragstart', el._dstart);
 
-          // keep onclick behavior (select into clicked slot)
           el.removeEventListener('click', el._onclick);
           el._onclick = () => {
             if(el.classList.contains('used')) return;
@@ -2351,7 +2322,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           el.addEventListener('click', el._onclick);
         });
 
-        // blank slots: allow drop
         const slots = Array.from(document.querySelectorAll('.blank-slot'));
         slots.forEach(slot => {
           slot.addEventListener('dragover', (e) => {
@@ -2366,16 +2336,13 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
             slot.classList.remove('drag-over');
             const word = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/html');
             if(!word) return;
-            // Determine blank id
             const blankId = slot.dataset.blankId;
             if(!blankId) return;
-            // If this word is already used in another slot, free it
             Object.keys(state.answers).forEach(k => {
               if(state.answers[k] === word){
                 delete state.answers[k];
               }
             });
-            // If slot had a previous answer, free that bank word
             const prev = state.answers[blankId];
             if(prev){
               const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
@@ -2385,15 +2352,12 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
                 prevEl.addEventListener('click', prevEl._onclick);
               }
             }
-            // mark bank word used
             const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
             if(bankEl){
               bankEl.classList.add('used');
               bankEl.setAttribute('draggable','false');
-              // remove click to prevent double-placing
               bankEl.removeEventListener('click', bankEl._onclick);
             }
-            // assign to state and re-render
             state.answers[blankId] = word;
             renderAll();
           });
@@ -2401,14 +2365,12 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
       }
 
       function showSprachbausteine2Options(slot){
-        // highlight selected slot so click from bank knows target
         document.querySelectorAll('.blank-slot').forEach(s => s.classList.remove('selected-sprach'));
         slot.classList.add('selected-sprach');
         lastClickedSprachSlot = slot;
       }
 
       function selectSprachbausteine2FromBank(word){
-        // choose target slot: prefer lastClicked, otherwise first empty
         let slot = lastClickedSprachSlot;
         if(!slot){
           slot = Array.from(document.querySelectorAll('.blank-slot')).find(s => {
@@ -2417,17 +2379,14 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           });
         }
         if(!slot) {
-          // if none available, do nothing
           return;
         }
         const blankId = slot.dataset.blankId;
-        // free previous occurrence of word
         Object.keys(state.answers).forEach(k => {
           if(state.answers[k] === word){
             delete state.answers[k];
           }
         });
-        // free previous word in target slot
         const prev = state.answers[blankId];
         if(prev){
           const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
@@ -2437,14 +2396,12 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
             if(prevEl._onclick) prevEl.addEventListener('click', prevEl._onclick);
           }
         }
-        // mark selected bank word as used
         const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
         if(bankEl){
           bankEl.classList.add('used');
           bankEl.setAttribute('draggable','false');
           if(bankEl._onclick) try{ bankEl.removeEventListener('click', bankEl._onclick); }catch(e){}
         }
-        // assign value
         state.answers[blankId] = word;
         try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
@@ -2547,7 +2504,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         questionTitleEl.textContent = '';
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex > 0){
           state.sectionIndex--;
@@ -2597,12 +2553,10 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         showPage('hoeren-page');
       });
 
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
       window._lesenState = state;
       window.lesenApp = {
         selectOption,
@@ -2614,10 +2568,9 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
 
     // ===== HÖREN PAGE FUNCTIONALITY =====
     function initHoerenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-hörverstehen",
-        durationSec: 17 * 60, // 17 minutes in seconds
+        durationSec: 17 * 60,
         sections: [
           { 
             id: "hörverstehen1", 
@@ -2726,7 +2679,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         ]
       };
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
@@ -2741,7 +2693,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
       const timerEl = document.getElementById('timer-hoeren');
       const statusText = document.getElementById('statusText-hoeren');
 
-      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -2775,7 +2726,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -2791,7 +2741,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         const answers = state.answers[section.id];
         if (!answers) return false;
         
-        // تحقق إذا تمت الإجابة على جميع الأسئلة في هذا القسم
         const answeredQuestions = Object.keys(answers).length;
         const totalQuestions = section.questions.length;
         
@@ -2882,8 +2831,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         state.answers[sectionId][questionId] = answer;
         try{ localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
-        
-        // إعادة عرض البلاطات لتحديث حالة "تم"
         renderTopTiles();
       }
 
@@ -2946,7 +2893,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         contentContainer.innerHTML = resultsHTML;
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-hoeren').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -2993,24 +2939,21 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         showPage('schreiben-page');
       });
 
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
-        window._hoerenState = state;
-        window.hoerenApp = {
+      window._hoerenState = state;
+      window.hoerenApp = {
         updateListeningAnswer
       };
     }
 
     // ===== SCHREIBEN PAGE FUNCTIONALITY =====
     function initSchreibenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-002",
-        durationSec: 30 * 60, // 30 minutes in seconds
+        durationSec: 30 * 60,
         sections: [
           { 
             id: "s1", 
@@ -3040,7 +2983,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         ]
       };
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
@@ -3057,7 +2999,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
 
-      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3091,7 +3032,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -3123,7 +3063,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
       function renderWritingSection() {
         const section = exam.sections[state.sectionIndex];
         
-        // Render the prompt in left panel
         passageContentEl.innerHTML = `
           <div class="writing-task">
             <div class="writing-prompt">${section.writingTask.prompt}</div>
@@ -3141,7 +3080,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           </div>
         `;
         
-        // Render writing area in right panel
         const currentAnswer = state.answers[section.id] || '';
         const wordCount = countWords(currentAnswer);
         
@@ -3194,7 +3132,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         writingContainer.innerHTML = '';
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-schreiben').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3241,20 +3178,92 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         showPage('ergebnisse-page');
       });
 
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
-        window._schreibenState = state;
-        window.schreibenApp = {
+      window._schreibenState = state;
+      window.schreibenApp = {
         updateWritingAnswer
       };
     }
 
     // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
     function initErgebnissePage() {
+      const CORRECT_ANSWERS = {
+        lesen: {
+          "text1": "d",
+          "text2": "f", 
+          "text3": "j",
+          "text4": "e",
+          "text5": "a",
+          
+          "s2q1": "s2q1o3",
+          "s2q2": "s2q2o2",
+          "s2q3": "s2q3o2",
+          "s2q4": "s2q4o1",
+          "s2q5": "s2q5o3",
+          
+          "11": "D",
+          "12": "L",
+          "13": "X",
+          "14": "B",
+          "15": "H",
+          "16": "A",
+          "17": "I",
+          "18": "C",
+          "19": "K",
+          "20": "E",
+          
+          "21": "waren",
+          "22": "da",
+          "23": "für",
+          "24": "sowohl.... als auch",
+          "25": "verwandeten",
+          "26": "unserer",
+          "27": "als",
+          "28": "ob",
+          "29": "tun",
+          "30": "hätten",
+          
+          "31": "WÄHREND",
+          "32": "DADURCH",
+          "33": "DASS",
+          "34": "UM",
+          "35": "NAHKOMMEN",
+          "36": "DAFÜR",
+          "37": "DENN",
+          "38": "EINGRIFFE",
+          "39": "NOCH",
+          "40": "GING"
+        },
+        
+        hoeren: {
+          "41": "falsch",
+          "42": "richtig",
+          "43": "richtig",
+          "44": "falsch",
+          "45": "richtig",
+          
+          "46": "falsch",
+          "47": "richtig",
+          "48": "falsch",
+          "49": "falsch",
+          "50": "falsch",
+          "51": "falsch",
+          "52": "richtig",
+          "53": "falsch",
+          "54": "falsch",
+          "55": "falsch",
+          
+          "56": "richtig",
+          "57": "falsch",
+          "58": "richtig",
+          "59": "falsch",
+          "60": "falsch"
+        }
+      };
+
       const CONFIG = {
         totals: { 
           lesen: 105, 
@@ -3266,19 +3275,8 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           lesen: 40, 
           hoeren: 20 
         },
-        hoerenCorrect: {
-          "41": "falsch", "42": "richtig", "43": "richtig", "44": "falsch", "45": "richtig",
-          "46": "falsch", "47": "richtig", "48": "falsch", "49": "falsch", "50": "falsch",
-          "51": "falsch", "52": "richtig", "53": "falsch", "54": "falsch", "55": "falsch",
-          "56": "richtig", "57": "falsch", "58": "richtig", "59": "falsch", "60": "falsch"
-        },
-        lesenCorrect: Object.assign({},
-          {"text1": "d", "text2": "f", "text3": "g", "text4": "e", "text5": "a"},
-          {"s2q1": "s2q1o3", "s2q2": "s2q2o2", "s2q3": "s2q3o2", "s2q4": "s2q4o1", "s2q5": "s2q5o3"},
-          {"11": "D", "12": "L", "13": "X", "14": "B", "15": "H", "16": "A", "17": "I", "18": "C", "19": "K", "20": "E"},
-          {"21": "waren", "22": "da", "23": "für", "24": "sowohl.... als auch", "25": "verwandeten", "26": "unserer", "27": "als", "28": "ob", "29": "tun", "30": "hätten"},
-          {"31": "WÄHREND", "32": "DADURCH", "33": "DASS", "34": "UM", "35": "NAHKOMMEN", "36": "DAFÜR", "37": "DENN", "38": "EINGRIFFE", "39": "NOCH", "40": "GING"}
-        )
+        hoerenCorrect: CORRECT_ANSWERS.hoeren,
+        lesenCorrect: CORRECT_ANSWERS.lesen
       };
 
       function normalizeAnswer(a) {
@@ -3291,17 +3289,12 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         return s;
       }
 
-      function keyZeroToTen(k) {
-        return k === '0' ? '10' : k;
-      }
-
       function readExamResults() {
         try {
           const lesen = {};
           const hoeren = {};
           const schreiben = { content: '', wordCount: 0 };
 
-          // 1) Try to read from in-memory states exposed by pages
           try {
             if (window._lesenState && window._lesenState.answers) {
               Object.keys(window._lesenState.answers).forEach(k => {
@@ -3330,11 +3323,10 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
                 const keys = Object.keys(answers);
                 if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
               }
-              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0;
+              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0;
             }
           } catch (e) {}
 
-          // 2) Fallback to localStorage if any part is still empty
           try {
             if (Object.keys(lesen).length === 0) {
               const storedL = localStorage.getItem('lesenAnswers');
@@ -3355,16 +3347,116 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
               if (storedS) {
                 const obj = JSON.parse(storedS);
                 schreiben.content = obj.content || '';
-                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0);
+                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0);
               }
             }
           } catch (e) {}
 
-          // final safe return
           return { hoeren, lesen, schreiben };
         } catch (e) {
           return { hoeren: {}, lesen: {}, schreiben: {} };
         }
+      }
+
+      function getHeadingText(headingId) {
+        if (!headingId || headingId === '-' || headingId === 'X') return '-';
+        const headings = {
+          "a": "Erneuerungskur für einen alten Markt",
+          "b": "Junge Influencer werben für Bioprodukte",
+          "c": "Neues Buch über einen Wiener Architekten erschienen",
+          "d": "Österreichs beliebteste Marktplätze",
+          "e": "Schreiben im Internet für die Karriere",
+          "f": "Schulung zum Erfolg im Beruf",
+          "g": "Seminar: Produkte erfolgreich verkaufen",
+          "h": "Warum immer mehr Menschen auf Märkten einkaufen",
+          "i": "Wenn Blogger Firmengeheimnisse verraten",
+          "j": "Wissenswertes über Wiens größten innerstädtischen Markt"
+        };
+        return headings[headingId] || headingId;
+      }
+
+      function getOptionText(questionId, optionId) {
+        if (!optionId || optionId === '-') return '-';
+        const options = {
+          "s2q1o1": "es in Österreich bald mehr Pools gibt als in Frankreich",
+          "s2q1o2": "in unsicheren Zeiten weniger investiert wird.",
+          "s2q1o3": "mehr Leute einen Pool bauen, weil Pools billiger geworden sind.",
+          "s2q2o1": "möchten die meisten Befragten ein Heim mit Garage.",
+          "s2q2o2": "steht ein Pool nicht an erster Stelle auf der Wunschliste,",
+          "s2q2o3": "wünschen sich 10 Prozent der Österreicher einen Pool.",
+          "s2q3o1": "ein Pool die Nachbarn neidisch macht.",
+          "s2q3o2": "ihr Pool ein Anziehungspunkt für Freunde geworden ist.",
+          "s2q3o3": "ihre Freunde beim Poolbau helfen sollen.",
+          "s2q4o1": "brauchen keine chemischen Reinigungsmittel.",
+          "s2q4o2": "müssen häufig geputzt werden.",
+          "s2q4o3": "sehen genauso aus wie Schwimmteiche.",
+          "s2q5o1": "darf man einen Pool nur mit Wasser aus der Leitung füllen.",
+          "s2q5o2": "führt das Befüllen von Pools regelmäßig zu Wasserknappheit.",
+          "s2q5o3": "wird manchmal Wasser zum Befüllen von Pools gestohlen"
+        };
+        return options[optionId] || optionId;
+      }
+
+      function getSituationText(id) {
+        const situations = {
+          "11": "Eine Bekannte interessiert sich für Bücher über den Tennissport.",
+          "12": "Ein befreundetes Ehepaar steht andauernd unter Stress und möchte wieder mehr Zeit für sich und andere haben.",
+          "13": "Eine Bekannte möchte ihre Wohnung renovieren und sucht Tipps zu Tapeten und Wandfarben.",
+          "14": "Eine Studentin sucht Informationen, wie sie besser und systematischer lernen kann.",
+          "15": "Ein Bekannter möchte wissen, welche Botschaften durch Gestik und Mimik transportiert werden.",
+          "16": "Eine Bekannte interessiert sich für Bücher über den Tennissport.",
+          "17": "Ein Bekannter ist sich noch unsicher, wie er sich bei einem Vorstellungsgespräch am besten präsentiert.",
+          "18": "Ein Bekannter schreibt an einer Hausarbeit über Höflichkeit und Benimmregeln in früheren Jahrhunderten.",
+          "19": "Ein Bekannter möchte lernen, wie man gute Geschäftsbriefe schreibt.",
+          "20": "Eine Bekannte ist sehr verunsichert, weil sie auf Konferenzen immer wieder Angst hat, frei zu sprechen."
+        };
+        return situations[id] || id;
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      function buildTable(title, dets, total, max) {
+        let html = `<div class="result-item">
+                <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
+                <div class="section-table">
+                  <table class="true-false-table">
+                    <thead>
+                      <tr>
+                        <th style="width: 10%">Frage</th>
+                        <th style="width: 40%">Ihre Antwort</th>
+                        <th style="width: 40%">Richtige Antwort</th>
+                        <th style="width: 10%">Ergebnis</th>
+                      </tr>
+                    </thead>
+                    <tbody>`;
+  
+        dets.forEach(x => {
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
+          
+          html += `<tr class="${rowClass}">
+              <td><strong>${x.frage}</strong></td>
+              <td>${escapeHtml(x.user)}</td>
+              <td>${escapeHtml(x.correct)}</td>
+              <td><strong>${resultIcon}</strong></td>
+            </tr>`;
+        });
+  
+        html += `</tbody>
+          </table>
+          <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+            <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
+          </div>
+        </div></div>`;
+        return html;
       }
 
       function gradeHoeren(u) {
@@ -3403,10 +3495,25 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
           if (ok) okCount++;
           const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
+          
+          let userDisplay = uA || '-';
+          let correctDisplay = exp || '-';
+          
+          if (k.startsWith('text')) {
+            userDisplay = getHeadingText(uA);
+            correctDisplay = getHeadingText(exp);
+          } else if (k.startsWith('s2q')) {
+            userDisplay = getOptionText(k, uA);
+            correctDisplay = getOptionText(k, exp);
+          } else if (['11','12','13','14','15','16','17','18','19','20'].includes(k)) {
+            userDisplay = uA === 'X' ? 'X' : (uA || '-');
+            correctDisplay = exp === 'X' ? 'X' : (exp || '-');
+          }
+          
           d.push({
             frage: k,
-            user: uA || '-',
-            correct: exp || '-',
+            user: userDisplay,
+            correct: correctDisplay,
             richtig: ok,
             punkte: ok ? ptsPer.toFixed(2) : '0'
           });
@@ -3416,43 +3523,55 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         return { okCount, total, details: d };
       }
 
-      function escapeHtml(s) {
-        return String(s)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
+      function renderLesenDetails(answers) {
+        const result = gradeLesen(answers || {});
+        
+        let html = `<div class="result-item">
+              <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
+        
+        const part1Details = result.details.filter(d => d.frage.startsWith('text'));
+        const part2Details = result.details.filter(d => d.frage.startsWith('s2q'));
+        const part3Details = result.details.filter(d => ['11','12','13','14','15','16','17','18','19','20'].includes(d.frage));
+        const part4Details = result.details.filter(d => ['21','22','23','24','25','26','27','28','29','30'].includes(d.frage));
+        const part5Details = result.details.filter(d => ['31','32','33','34','35','36','37','38','39','40'].includes(d.frage));
+        
+        if (part1Details.length > 0) {
+          html += `<h4 style="margin-top: 20px;">Teil 1: Überschriften zuordnen</h4>
+                   ${buildTable('Überschriften zuordnen', part1Details, 
+                     (result.okCount/result.details.length*25), 25).replace('<h3>', '<h4>').replace('</h3>', '</h4>')}`;
+        }
+        
+        if (part2Details.length > 0) {
+          html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
+                   ${buildTable('Fragen zum Text', part2Details, 
+                     (result.okCount/result.details.length*25), 25).replace('<h3>', '<h4>').replace('</h3>', '</h4>')}`;
+        }
+        
+        if (part3Details.length > 0) {
+          html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
+                   ${buildTable('Texte zuordnen', part3Details, 
+                     (result.okCount/result.details.length*25), 25).replace('<h3>', '<h4>').replace('</h3>', '</h4>')}`;
+        }
+        
+        if (part4Details.length > 0) {
+          html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
+                   ${buildTable('Sprachbausteine Teil 1', part4Details, 
+                     (result.okCount/result.details.length*15), 15).replace('<h3>', '<h4>').replace('</h3>', '</h4>')}`;
+        }
+        
+        if (part5Details.length > 0) {
+          html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
+                   ${buildTable('Sprachbausteine Teil 2', part5Details, 
+                     (result.okCount/result.details.length*15), 15).replace('<h3>', '<h4>').replace('</h3>', '</h4>')}`;
+        }
+        
+        html += `</div>`;
+        return html;
       }
 
-      function buildTable(title, dets, total, max) {
-        let h = `<h2>${title}</h2>
-                <table class="section-table">
-                  <thead>
-                    <tr>
-                      <th>Frage</th>
-                      <th>Ihre Antwort</th>
-                      <th>Richtige Antwort</th>
-                      <th>Ergebnis</th>
-                      <th>Punkte</th>
-                    </tr>
-                  </thead>
-                  <tbody>`;
-        
-        dets.forEach(x => {
-          h += `<tr>
-                  <td>${x.frage}</td>
-                  <td>${escapeHtml(x.user)}</td>
-                  <td>${escapeHtml(x.correct)}</td>
-                  <td>${x.richtig ? '✔️' : '✖️'}</td>
-                  <td>${x.punkte}</td>
-                </tr>`;
-        });
-        
-        h += `</tbody>
-              </table>
-              <div class="small-muted">Teilpunkte: ${total.toFixed(2)} / ${max}</div>`;
-        return h;
+      function buildHoerenDetails(answers) {
+        const result = gradeHoeren(answers || {});
+        return buildTable('Hörverstehen', result.details, result.total, CONFIG.totals.hoeren);
       }
 
       function renderResults() {
@@ -3462,7 +3581,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         const details = document.getElementById('details-ergebnisse');
         const tiles = document.getElementById('topTiles-ergebnisse');
         const sScoreRaw = localStorage.getItem('schreibenScore');
-        const sScore = sScoreRaw ? Number(sScoreRaw) : 0; // Default score is now 0
+        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
 
         details.innerHTML = '';
         tiles.innerHTML = '';
@@ -3487,10 +3606,18 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
                   
         tiles.innerHTML = tL + tH + tS;
 
-        details.innerHTML += buildTable('Hören — Detail', h.details, h.total, CONFIG.totals.hoeren);
-        details.innerHTML += buildTable('Lesen — Detail', l.details, l.total, CONFIG.totals.lesen);
+        details.innerHTML += `<h2 style="margin-top: 20px;">📊 Detaillierte Ergebnisse</h2>
+          <div class="instructions" style="margin-bottom: 20px;">
+            Hier sehen Sie eine detaillierte Auswertung Ihrer Prüfung. Richtige Antworten sind grün markiert, falsche rot.
+          </div>`;
+        
+        details.innerHTML += renderLesenDetails(st.lesen);
+        details.innerHTML += `<div class="result-item">
+          <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+          ${buildHoerenDetails(st.hoeren)}
+        </div>`;
 
-        let sHtml = '<h2>Schreiben — Ergebnis (manuell)</h2>';
+        let sHtml = '<div class="result-item"><h3>✍️ Schreiben - Ihre Antwort</h3>';
         const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
         const wc = st.schreiben.wordCount || '-';
         
@@ -3502,7 +3629,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
                   <button id="saveS" class="results-btn">Speichern</button>
                 </div>`;
                 
-        details.innerHTML += sHtml;
+        details.innerHTML += sHtml + '</div>';
 
         const total = (l.total + h.total + sScore).toFixed(2);
         const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);
@@ -3541,7 +3668,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         showPage('start-page');
       };
       
-      // Initialize results on page load
       renderResults();
     }
   </script>

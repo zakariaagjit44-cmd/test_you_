@@ -615,6 +615,7 @@
       padding: 10px;
       border-radius: 6px;
       background: #f8f9fa;
+      border: 1px solid #e1e8f6;
     }
     
     .instructions {
@@ -1538,7 +1539,7 @@
               },
               {
                 id: "text3",
-                content: "In Firmen gibt es sie schon, jetzt wollen auch Schulen Entspannungskurse anbieten. Schüler sollen zwischen den Unterrichtsstunden mit Entspannungstechniken lernen, Stress abzubauen. Ein erster Probelauf des Projekts an einer Gesamtschule in Hamburg ist bei den Teilnehmenden gut angekommen. Die Schüler waren zu Beginn zwar skeptisch, dann aber vom Ergebnis überzeugt. 'Ich konnte mich in meiner nächsten Stunde nach der Entspannungsübung viel besser konzentrieren und habe viel mehr mitbekommen', berichtet Jens aus der 12. Klasse. Die Schule hat damit auf Kritik von Schülern und Lehrern reagiert: Nach der Umstrukturierung der Stundenpläne klagten die Schüler zunehmend über Stress und zu wenige Pausen. Gerade Entspannungspausen seien aber wichtig, erklären Pädagogen und auch Neurowissenschaftler. Nur wer ausreichend Pausen macht, kann sich Dinge auch langfristig merken. Nachdem das Projekt in Hamburg solch einen Erfolg hatte, wollen es jetzt auch andere Schulen anbieten.",
+                content: "In Firmen gibt es sie schon, jetzt wollen auch Schulen Entspannungskurse anbieten. Schüler sollen zwischen den Unterrichtsstunden mit Entspannungstechniken lernen, Stress abzubauen. Ein erster Probelauf des Projekts an einer Gesamtschule in Hamburg ist bei den Teilnehmenden gut angekommen. Die Schüler waren zu Beginn zwar skeptisch, dann aber vom Ergebnis überzeugt. 'Ich konnte mich in meiner nächsten Stunde nach der Entspannungsübung viel besser konzentrieren und habe viel mehr mitbekommen', berichtet Jens aus der 12. Klasse. Die Schule hat damit auf Kritik von Schülern und Lehrern reagiert: Nach der Umstrukturierung der Stundenpläne klagten die Schüler zunehmend über Stress und zu wenige Pausen. Gerade Entspannungspausen seien aber wichtig, explizieren Pädagogen und auch Neurowissenschaftler. Nur wer ausreichend Pausen macht, kann sich Dinge auch langfristig merken. Nachdem das Projekt in Hamburg solch einen Erfolg hatte, wollen es jetzt auch andere Schulen anbieten.",
                 correctAnswer: "c"
               },
               {
@@ -1633,7 +1634,7 @@ Suma Hartmann "sortiert" jetzt im Geiste alle wichtigen Informationen in bestimm
                 options: [
                   {id: "s2q5o1", text: "lehrt andere, wie man sich 'Eselsbrücken' ausdenkt"},
                   {id: "s2q5o2", text: "verbindet Informationen mit Bildern"},
-                  {id: "s2q5o3", text: "verwendet für ihre Aktenablage nur Tiersymbole"}
+                  {id: "s2q5o3", text: "verwendat für ihre Aktenablage nur Tiersymbole"}
                 ],
                 correctAnswer: "s2q5o2"
               }
@@ -3289,6 +3290,89 @@ Schreiben Sie einen Beschwerdebrief an den Hersteller.</div>
 
     // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
     function initErgebnissePage() {
+      // كائن الإجابات الصحيحة المركزي
+      const CORRECT_ANSWERS = {
+        lesen: {
+          // الجزء الأول: Überschriften zuordnen (النصوص 1-5)
+          "text1": "e",
+          "text2": "d", 
+          "text3": "f",
+          "text4": "a",
+          "text5": "g",
+          
+          // الجزء الثاني: Fragen zum Text (الأسئلة s2q1-s2q5)
+          "s2q1": "s2q1o2",
+          "s2q2": "s2q2o3",
+          "s2q3": "s2q3o3",
+          "s2q4": "s2q4o3",
+          "s2q5": "s2q5o2",
+          
+          // الجزء الثالث: Texte zuordnen (المواقف 11-20)
+          "11": "L",
+          "12": "I", 
+          "13": "B",
+          "14": "H",
+          "15": "X",
+          "16": "E",
+          "17": "A",
+          "18": "D",
+          "19": "F",
+          "20": "G",
+          
+          // Sprachbausteine Teil 1 (الفراغات 21-30)
+          "21": "um",
+          "22": "ob",
+          "23": "aber",
+          "24": "unbedingt",
+          "25": "mich",
+          "26": "als",
+          "27": "kommenden",
+          "28": "dazu",
+          "29": "sondern",
+          "30": "für",
+          
+          // Sprachbausteine Teil 2 (الفراغات 31-40)
+          "31": "SONDERN",
+          "32": "SEIT",
+          "33": "WEGEN",
+          "34": "AB",
+          "35": "AM",
+          "36": "ES",
+          "37": "DA",
+          "38": "DARUM",
+          "39": "AUF",
+          "40": "UM"
+        },
+        
+        hoeren: {
+          // Hören Teil 1 (الأسئلة 41-45)
+          "41": "richtig",
+          "42": "falsch",
+          "43": "falsch",
+          "44": "richtig",
+          "45": "falsch",
+          
+          // Hören Teil 2 (الأسئلة 46-55)
+          "46": "richtig",
+          "47": "falsch",
+          "48": "richtig",
+          "49": "richtig",
+          "50": "richtig",
+          "51": "falsch",
+          "52": "falsch",
+          "53": "richtig",
+          "54": "falsch",
+          "55": "falsch",
+          
+          // Hören Teil 3 (الأسئلة 56-60)
+          "56": "richtig",
+          "57": "falsch",
+          "58": "falsch",
+          "59": "richtig",
+          "60": "falsch"
+        }
+      };
+
       const CONFIG = {
         totals: { 
           lesen: 105, 
@@ -3300,33 +3384,83 @@ Schreiben Sie einen Beschwerdebrief an den Hersteller.</div>
           lesen: 40, 
           hoeren: 20 
         },
-        hoerenCorrect: {
-          "41": "richtig", "42": "falsch", "43": "falsch", "44": "richtig", "45": "falsch",
-          "46": "richtig", "47": "falsch", "48": "richtig", "49": "richtig", "50": "richtig",
-          "51": "falsch", "52": "falsch", "53": "richtig", "54": "falsch", "55": "falsch",
-          "56": "richtig", "57": "falsch", "58": "falsch", "59": "richtig", "60": "falsch"
-        },
-        lesenCorrect: Object.assign({},
-          {"text1": "d", "text2": "j", "text3": "c", "text4": "b", "text5": "e"},
-          {"s2q1": "s2q1o2", "s2q2": "s2q2o3", "s2q3": "s2q3o3", "s2q4": "s2q4o3", "s2q5": "s2q5o2"},
-          {"11": "L", "12": "I", "13": "B", "14": "H", "15": "X", "16": "E", "17": "A", "18": "D", "19": "F", "20": "X"},
-          {"21": "um", "22": "ob", "23": "aber", "24": "unbedingt", "25": "mich", "26": "als", "27": "kommenden", "28": "dazu", "29": "sondern", "30": "für"},
-          {"31": "SONDERN", "32": "SEIT", "33": "WEGEN", "34": "AB", "35": "AM", "36": "ES", "37": "DA", "38": "DARUM", "39": "AUF", "40": "UM"}
-        )
+        hoerenCorrect: CORRECT_ANSWERS.hoeren, // ربط تلقائي
+        lesenCorrect: CORRECT_ANSWERS.lesen    // ربط تلقائي
       };
+
+      // دوال مساعدة جديدة
+      function getHeadingText(headingId) {
+        if (!headingId || headingId === '-' || headingId === 'X') return headingId;
+        const headings = {
+          "a": "Befragung bestätigt alte Vorurteile",
+          "b": "Freie Plätze im Tanzkurs",
+          "c": "Hilfen für überforderte Schüler",
+          "d": "Höher, schneller, weiter: Suche nach dem Nervenkitzel",
+          "e": "Keine Zeit für Langeweile",
+          "f": "Neue Lerntechniken präsentiert",
+          "g": "Neue Sportarten",
+          "h": "Stolze Eltern: vom Schüler zum Superstar",
+          "i": "Tanzlehrer fordern moderne Tänze bekannter machen",
+          "j": "Wandel im Freizeitverhalten von Jugendlichen"
+        };
+        return headings[headingId] || headingId;
+      }
+
+      function getOptionText(questionId, optionId) {
+        if (!optionId || optionId === '-') return '-';
+        const options = {
+          "s2q1o1": "ausschließlich Frauen, die im Büro arbeiten",
+          "s2q1o2": "junge und alte Menschen gleichermaßen",
+          "s2q1o3": "überwiegend alte Menschen",
+          "s2q2o1": "das Gefühl haben, dass ihr Gedächtnis schlechter wird",
+          "s2q2o2": "immer mehr vergessen",
+          "s2q2o3": "sich von den vielen Informationen überfordert fühlen",
+          "s2q3o1": "kann sich alle erdenklichen Geräusche und Gerüche merken",
+          "s2q3o2": "kann über einen Zeitraum von 20 Minuten alles behalten",
+          "s2q3o3": "vergisst die meisten Informationen innerhalb kürzester Zeit",
+          "s2q4o1": "als Kind etwas merken",
+          "s2q4o2": "an Daten und Begriffe erinnern",
+          "s2q4o3": "emotional aufgeladene Situationen merken",
+          "s2q5o1": "lehrt andere, wie man sich 'Eselsbrücken' ausdenkt",
+          "s2q5o2": "verbindet Informationen mit Bildern",
+          "s2q5o3": "verwendat für ihre Aktenablage nur Tiersymbole"
+        };
+        return options[optionId] || optionId;
+      }
+
+      function getSituationText(id) {
+        const situations = {
+          "11": "Ein Bekannter möchte einen Film sehen, der nach dem Werk eines Schriftstellers gedreht wurde.",
+          "12": "Bekannte interessieren sich für Wintersportveranstaltungen.",
+          "13": "Sie suchen eine Musiksendung. Sie mögen besonders Klaviermusik.",
+          "14": "Sie mögen Filme mit viel Action und viel Spaß. Ihre Lieblingshelden können auch mal zuschlagen.",
+          "15": "Ein Bekannter interessiert sich für korsische Geschichte.",
+          "16": "Sie mögen Familienkomödien, besonders mit frechen Kindern.",
+          "17": "Eine Bekannte interessiert sich für die Geschichte des bis 1989 geteilten Berlins.",
+          "18": "Sie sehen gern spannende, aber auch spaßige Agentenfilme.",
+          "19": "Sie würden gern etwas über Großstadtjugendliche erfahren, die am Rand der Gesellschaft leben.",
+          "20": "Sie möchten im nächsten Urlaub bergsteigen und sich über die Risiken informieren."
+        };
+        return situations[id] || id;
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
 
       function normalizeAnswer(a) {
         if (a === null || a === undefined) return '';
         let s = String(a).trim();
-        if (s === '') return '';
+        if (s === '') return '-';
         const low = s.toLowerCase();
         if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
         if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
         return s;
-      }
-
-      function keyZeroToTen(k) {
-        return k === '0' ? '10' : k;
       }
 
       function readExamResults() {
@@ -3364,7 +3498,7 @@ Schreiben Sie einen Beschwerdebrief an den Hersteller.</div>
                 const keys = Object.keys(answers);
                 if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
               }
-              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0;
+              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0;
             }
           } catch (e) {}
 
@@ -3389,7 +3523,7 @@ Schreiben Sie einen Beschwerdebrief an den Hersteller.</div>
               if (storedS) {
                 const obj = JSON.parse(storedS);
                 schreiben.content = obj.content || '';
-                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0);
+                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0);
               }
             }
           } catch (e) {}
@@ -3402,7 +3536,7 @@ Schreiben Sie einen Beschwerdebrief an den Hersteller.</div>
       }
 
       function gradeHoeren(u) {
-        const c = CONFIG.hoerenCorrect;
+        const c = CORRECT_ANSWERS.hoeren;
         let okCount = 0;
         const d = [];
         
@@ -3410,12 +3544,12 @@ Schreiben Sie einen Beschwerdebrief an den Hersteller.</div>
           const k = String(q);
           const uA = normalizeAnswer(u[k] || '');
           const exp = normalizeAnswer(c[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
           if (ok) okCount++;
           const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
           d.push({
             frage: k,
-            user: uA || '-',
+            user: uA,
             correct: exp || '-',
             richtig: ok,
             punkte: ok ? ptsPer.toFixed(2) : '0'
@@ -3427,19 +3561,19 @@ Schreiben Sie einen Beschwerdebrief an den Hersteller.</div>
       }
 
       function gradeLesen(u) {
-        const c = CONFIG.lesenCorrect;
+        const c = CORRECT_ANSWERS.lesen;
         let okCount = 0;
         const d = [];
         
         Object.keys(c).forEach(k => {
           const exp = normalizeAnswer(c[k]);
           const uA = normalizeAnswer(u[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
           if (ok) okCount++;
           const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
           d.push({
             frage: k,
-            user: uA || '-',
+            user: uA,
             correct: exp || '-',
             richtig: ok,
             punkte: ok ? ptsPer.toFixed(2) : '0'
@@ -3450,43 +3584,239 @@ Schreiben Sie einen Beschwerdebrief an den Hersteller.</div>
         return { okCount, total, details: d };
       }
 
-      function escapeHtml(s) {
-        return String(s)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      }
-
       function buildTable(title, dets, total, max) {
-        let h = `<h2>${title}</h2>
-                <table class="section-table">
-                  <thead>
-                    <tr>
-                      <th>Frage</th>
-                      <th>Ihre Antwort</th>
-                      <th>Richtige Antwort</th>
-                      <th>Ergebnis</th>
-                      <th>Punkte</th>
-                    </tr>
-                  </thead>
-                  <tbody>`;
+        let html = `<div class="result-item">
+                      <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
+                      <div class="section-table">
+                        <table class="true-false-table">
+                          <thead>
+                            <tr>
+                              <th style="width: 10%">Frage</th>
+                              <th style="width: 40%">Ihre Antwort</th>
+                              <th style="width: 40%">Richtige Antwort</th>
+                              <th style="width: 10%">Ergebnis</th>
+                            </tr>
+                          </thead>
+                          <tbody>`;
         
         dets.forEach(x => {
-          h += `<tr>
-                  <td>${x.frage}</td>
-                  <td>${escapeHtml(x.user)}</td>
-                  <td>${escapeHtml(x.correct)}</td>
-                  <td>${x.richtig ? '✔️' : '✖️'}</td>
-                  <td>${x.punkte}</td>
-                </tr>`;
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${x.frage}</strong></td>
+                    <td>${escapeHtml(x.user)}</td>
+                    <td>${escapeHtml(x.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
         });
         
-        h += `</tbody>
-              </table>
-              <div class="small-muted">Teilpunkte: ${total.toFixed(2)} / ${max}</div>`;
-        return h;
+        html += `</tbody>
+                </table>
+                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                  <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
+                </div>
+              </div></div>`;
+        return html;
+      }
+
+      function renderLesenDetails(answers) {
+        let html = `<div class="result-item">
+                    <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
+        
+        // 1. Überschriften zuordnen
+        html += `<h4 style="margin-top: 20px;">Teil 1: Überschriften zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Text</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 1; i <= 5; i++) {
+          const id = `text${i}`;
+          const userAnswer = normalizeAnswer(answers[id] || '');
+          const correctAnswer = CORRECT_ANSWERS.lesen[id];
+          const userText = getHeadingText(userAnswer);
+          const correctText = getHeadingText(correctAnswer);
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>Text ${String.fromCharCode(64+i)}</strong></td>
+                    <td>${userText}</td>
+                    <td>${correctText}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // 2. Fragen zum Text
+        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Frage</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 1; i <= 5; i++) {
+          const id = `s2q${i}`;
+          const userAnswer = normalizeAnswer(answers[id] || '');
+          const correctAnswer = CORRECT_ANSWERS.lesen[id];
+          const userText = getOptionText(id, userAnswer);
+          const correctText = getOptionText(id, correctAnswer);
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${i}</strong></td>
+                    <td>${userText}</td>
+                    <td>${correctText}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // 3. Texte zuordnen
+        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Situation</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 11; i <= 20; i++) {
+          const id = i.toString();
+          const userAnswer = normalizeAnswer(answers[id] || '');
+          const correctAnswer = CORRECT_ANSWERS.lesen[id];
+          const situationText = getSituationText(id).substring(0, 50) + '...';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong><br><small>${situationText}</small></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // 4. Sprachbausteine Teil 1
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Lücke</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 21; i <= 30; i++) {
+          const id = i.toString();
+          const userAnswer = normalizeAnswer(answers[id] || '');
+          const correctAnswer = CORRECT_ANSWERS.lesen[id];
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // 5. Sprachbausteine Teil 2
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Lücke</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 31; i <= 40; i++) {
+          const id = i.toString();
+          const userAnswer = normalizeAnswer(answers[id] || '');
+          const correctAnswer = CORRECT_ANSWERS.lesen[id];
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table></div>`;
+        return html;
+      }
+
+      function buildHoerenDetails(answers) {
+        let html = `<table class="true-false-table">
+                      <thead>
+                        <tr>
+                          <th>Frage</th>
+                          <th>Ihre Antwort</th>
+                          <th>Richtige Antwort</th>
+                          <th>Ergebnis</th>
+                        </tr>
+                      </thead>
+                      <tbody>`;
+        
+        for (let i = 41; i <= 60; i++) {
+          const id = i.toString();
+          const userAnswer = normalizeAnswer(answers[id] || '');
+          const correctAnswer = CORRECT_ANSWERS.hoeren[id];
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        return html;
       }
 
       function renderResults() {
@@ -3502,41 +3832,54 @@ Schreiben Sie einen Beschwerdebrief an den Hersteller.</div>
         tiles.innerHTML = '';
 
         const tL = `<div class="results-tile">
-                    <h3>Lesen</h3>
-                    <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
-                    <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
-                  </div>`;
-                  
+                      <h3>Lesen</h3>
+                      <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
+                      <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
+                    </div>`;
+                    
         const tH = `<div class="results-tile">
-                    <h3>Hören</h3>
-                    <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
-                    <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
-                  </div>`;
-                  
+                      <h3>Hören</h3>
+                      <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
+                      <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
+                    </div>`;
+                    
         const tS = `<div class="results-tile">
-                    <h3>Schreiben</h3>
-                    <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
-                    <div class="small-muted">Manuelle Eingabe</div>
-                  </div>`;
-                  
+                      <h3>Schreiben</h3>
+                      <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
+                      <div class="small-muted">Manuelle Eingabe</div>
+                    </div>`;
+                    
         tiles.innerHTML = tL + tH + tS;
 
-        details.innerHTML += buildTable('Hören — Detail', h.details, h.total, CONFIG.totals.hoeren);
-        details.innerHTML += buildTable('Lesen — Detail', l.details, l.total, CONFIG.totals.lesen);
-
-        let sHtml = '<h2>Schreiben — Ergebnis (manuell)</h2>';
+        details.innerHTML += `<h2 style="margin-top: 20px;">📊 Detaillierte Ergebnisse</h2>
+                             <div class="instructions">Hier sehen Sie eine detaillierte Aufstellung Ihrer Ergebnisse mit Vergleich Ihrer Antworten mit den richtigen Lösungen.</div>`;
+        
+        // إضافة قسم القراءة
+        details.innerHTML += renderLesenDetails(st.lesen);
+        
+        // إضافة قسم الاستماع
+        details.innerHTML += `<div class="result-item">
+                                <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+                                ${buildHoerenDetails(st.hoeren)}
+                                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                                  <strong>Erreichte Punkte: ${h.total.toFixed(2)}/${CONFIG.totals.hoeren} (${((h.total/CONFIG.totals.hoeren)*100).toFixed(1)}%)</strong>
+                                </div>
+                              </div>`;
+        
+        // إضافة قسم الكتابة
         const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
         const wc = st.schreiben.wordCount || '-';
         
-        sHtml += `<div class="small-muted">Wörter: ${wc}</div>
-                <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px">${txt}</div>
-                <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
-                  Punkte (0–45): 
-                  <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
-                  <button id="saveS" class="results-btn">Speichern</button>
-                </div>`;
-                
-        details.innerHTML += sHtml;
+        details.innerHTML += `<div class="result-item">
+                                <h3>✍️ Schreiben - Ihre Antwort</h3>
+                                <div class="small-muted">Wörter: ${wc}</div>
+                                <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px; white-space: pre-wrap;">${txt}</div>
+                                <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
+                                  Punkte (0–45): 
+                                  <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
+                                  <button id="saveS" class="results-btn">Speichern</button>
+                                </div>
+                              </div>`;
 
         const total = (l.total + h.total + sScore).toFixed(2);
         const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);

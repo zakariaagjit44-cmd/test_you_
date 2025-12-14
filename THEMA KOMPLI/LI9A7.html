@@ -1,4 +1,4 @@
-!<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="utf-8">
@@ -615,6 +615,7 @@
       padding: 10px;
       border-radius: 6px;
       background: #f8f9fa;
+      border-left: 4px solid #3498db;
     }
     
     .instructions {
@@ -1046,6 +1047,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
     }
     
     .summary .left {
@@ -1509,7 +1511,733 @@
       timerEl.style.color = "#e53e3e";
     });
 
-    // NOTE: removed automatic startCountdown() on page load to prevent the timer starting twice
+    // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
+    function initErgebnissePage() {
+      // ===== كائن الإجابات الصحيحة المركزية =====
+      const CORRECT_ANSWERS = {
+        lesen: {
+          // الجزء الأول: Überschriften zuordnen (النصوص 1-5)
+          "text1": "b",
+          "text2": "c",
+          "text3": "d",
+          "text4": "g",
+          "text5": "e",
+          
+          // الجزء الثاني: Fragen zum Text (الأسئلة s2q1-s2q5)
+          "s2q1": "s2q1o2",
+          "s2q2": "s2q2o3",
+          "s2q3": "s2q3o3",
+          "s2q4": "s2q4o2",
+          "s2q5": "s2q5o3",
+          
+          // الجزء الثالث: Texte zuordnen (المواقف 11-20)
+          "11": "A",
+          "12": "X",
+          "13": "D",
+          "14": "H",
+          "15": "L",
+          "16": "G",
+          "17": "I",
+          "18": "K",
+          "19": "X",
+          "20": "F",
+          
+          // Sprachbausteine Teil 1 (الفراغات 21-30)
+          "21": "Hoffentlich",
+          "22": "nämlich",
+          "23": "schon",
+          "24": "damit",
+          "25": "Als",
+          "26": "miteinander",
+          "27": "kurz",
+          "28": "weshalb",
+          "29": "vollkommen",
+          "30": "angenehmen",
+          
+          // Sprachbausteine Teil 2 (الفراغات 31-40)
+          "31": "ALS",
+          "32": "VERGANGENEN",
+          "33": "ZWAR",
+          "34": "DURCH",
+          "35": "DIESELBE",
+          "36": "WURDEN",
+          "37": "GERINGERES",
+          "38": "WENIGER",
+          "39": "DEUTLICH",
+          "40": "GEGENTEIL"
+        },
+        
+        hoeren: {
+          // Hören Teil 1 (الأسئلة 41-45)
+          "41": "falsch",
+          "42": "falsch",
+          "43": "richtig",
+          "44": "richtig",
+          "45": "richtig",
+          
+          // Hören Teil 2 (الأسئلة 46-55)
+          "46": "falsch",
+          "47": "richtig",
+          "48": "falsch",
+          "49": "richtig",
+          "50": "richtig",
+          "51": "falsch",
+          "52": "falsch",
+          "53": "richtig",
+          "54": "falsch",
+          "55": "richtig",
+          
+          // Hören Teil 3 (الأسئلة 56-60)
+          "56": "falsch",
+          "57": "falsch",
+          "58": "richtig",
+          "59": "richtig",
+          "60": "falsch"
+        }
+      };
+
+      const CONFIG = {
+        totals: { 
+          lesen: 105, 
+          hoeren: 75, 
+          schreiben: 45, 
+          gesamt: 225 
+        },
+        counts: { 
+          lesen: 40, 
+          hoeren: 20 
+        },
+        // ربط تلقائي بالإجابات الصحيحة الجديدة
+        hoerenCorrect: CORRECT_ANSWERS.hoeren,
+        lesenCorrect: CORRECT_ANSWERS.lesen
+      };
+
+      // ===== الدوال المساعدة =====
+      function normalizeAnswer(a) {
+        if (a === null || a === undefined || a === '') return '-';
+        let s = String(a).trim();
+        if (s === '') return '-';
+        const low = s.toLowerCase();
+        if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
+        if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
+        return s;
+      }
+
+      function escapeHtml(s) {
+        if (s === null || s === undefined) return '-';
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      }
+
+      // ===== دوال لتحويل الرموز إلى نصوص =====
+      function getHeadingText(headingId) {
+        if (!headingId || headingId === '-') return '-';
+        const headings = {
+          "a": "WHO gibt neue Empfehlungen für Grippe-Impfung heraus",
+          "b": "NEUE ERKENNTNISSE ÜBER ARTÜBERGREIFENDE KRANKHEITSERREGER",
+          "c": "Kontroverse um den Zugang zu Forschungsergebnissen",
+          "d": "HOFFNUNG AUF EINEN ALLUMFASSENDEN GRIPPESCHUTZ",
+          "e": "HINWEISE AUF EINGESCHRÄNKTEN ERFOLG VON INFLUENZA-IMPFUNGEN",
+          "f": "Gesetz verpflichtet Forscher zur Veröffentlichung ihrer Ergebnisse",
+          "g": "Geschlechtsspezifische Übertragung von Grippeviren",
+          "h": "ENDLICH EINE UNIVERSALE GRIPPE-IMPFUNG AUF DEM MARKT",
+          "i": "Durchschlagender Erfolg der diesjährigen Grippeimpfung",
+          "j": "Die häufigsten Kinderkrankheiten in der Grundschule"
+        };
+        return headings[headingId] || headingId;
+      }
+
+      function getOptionText(optionId) {
+        if (!optionId || optionId === '-') return '-';
+        const options = {
+          "s2q1o1": "wie stark die Entscheidungen den Körper steuern.",
+          "s2q1o2": "welche Einflüsse bestimmte Faktoren auf das Kaufverhalten haben.",
+          "s2q1o3": "warum Menschen so viel über das eigene Einkaufsverhalten nachdenken.",
+          "s2q2o1": "man sich im Winter häufiger verliebt als im Sommer.",
+          "s2q2o2": "Forscher bei ihren Experimenten die Konsumenten manipulierten.",
+          "s2q2o3": "das Empfinden von Kälte zum Kauf romantischer Filme animiert.",
+          "s2q3o1": "wie extrem günstige Angebote Konsumenten beeinflussen.",
+          "s2q3o2": "welche Kunden bei Sonderangeboten größere Mengen kaufen.",
+          "s2q3o3": "ob die Reihenfolge von Produktinformationen das Kaufverhalten beeinflusst.",
+          "s2q4o1": "verarbeitet beim Einkaufen hauptsächlich Preisangaben.",
+          "s2q4o2": "nutzt unter Zeitdruck vor allem die erste Information einer Botschaft.",
+          "s2q4o3": "kann unter Zeitdruck mathematische Aufgaben schneller lösen.",
+          "s2q5o1": "enthaltene Stückzahl möglichst hoch ist.",
+          "s2q5o2": "Produkte täglich beworben werden.",
+          "s2q5o3": "Mengenangabe vor dem Preis genannt wird."
+        };
+        return options[optionId] || optionId;
+      }
+
+      function getSituationText(id) {
+        const situations = {
+          "11": "Ihre Schwägerin erwartet ein Kind. Sie ist nicht sicher, ob Sie in einem Vorstellungsgespräch darauf hinweisen muss.",
+          "12": "Ihr Neffe sucht einen Ausbildungsplatz als Elektriker. Er weiß nicht genau, wie er seine Bewerbung korrekt schreiben soll.",
+          "13": "Eine Freundin, 20 Jahre alt, muss oft vor Arbeitskollegen Referate halten. Ihr Hauptproblem ist ihre Nervosität.",
+          "14": "Eine Freundin sucht einen Ausbildungsplatz. Sie ist zu einem Bewerbungsgespräch eingeladen und weiß nicht, was sie zu diesem Anlass anziehen soll.",
+          "15": "Eine Bekannte sucht Rat bei Ihnen, weil ihr Sohn ständig im Internet surft und dabei die Schule vernachlässigt.",
+          "16": "Eine Bekannte möchte eine Ausbildung machen und vielleicht später einmal studieren.",
+          "17": "Ein Freund surft täglich viele Stunden im Internet. Sie finden das zu viel und wollen ihm einen Rat geben.",
+          "18": "Ein Freund möchte wissen, welche schulischen Leistungen bei der Vergabe von Ausbildungsplätzen im Bankgewerbe besonders wichtig sind.",
+          "19": "Ein Bekannter ist Bankkaufmann und sucht eine Stelle.",
+          "20": "Ein älteres Ehepaar hat Goldene Hochzeit. Die Tochter möchte eine Rede halten und braucht dafür eine Anleitung."
+        };
+        return situations[id] || id;
+      }
+
+      function getTextContent(id) {
+        const texts = {
+          "A": "Das Vorstellungsgespräch ist eine wichtige Hürde bei der Suche nach einem Arbeitsplatz...",
+          "B": "Die Postbank gibt Bewerbern um einen Ausbildungsplatz ein Thema für ein Projekt...",
+          "C": "Rhetoriktrainer raten dazu, dem Anfang und dem Schluss eines Referats besonderes Augenmerk zu schenken...",
+          "D": "Robert Sonntag, Autor des Buches 'Hilfe, ich muss reden' behauptet, die Angst vor einem größeren Publikum zu reden...",
+          "E": "Bereiten Sie sich auf ein Vorstellungsgespräch intensiv vor...",
+          "F": "Nichts ist auf privaten Feierlichkeiten wie Hochzeiten, runden Geburtstagen oder sonstigen Jubiläen schlimmer als langatmige...",
+          "G": "Ein Auszubildender bei einer Bank oder Sparkasse bekommt 690,- Euro im ersten Ausbildungsjahr...",
+          "H": "Wer zu seinem Vorstellungsgespräch eingeladen wird, sollte auf korrekte und saubere Kleidung achten...",
+          "I": "Für junge Leute kann das Internet zu einer Droge werden...",
+          "J": "Zu einem zunehmend größer werdenden Problem am Arbeitsplatz wird die immer größer werdende Kluft...",
+          "K": "GRUNDSÄTZLICH HAT JEDER DIE MÖGLICHKEIT, BEI UNS EINE AUSBILDUNG ZU MACHEN...",
+          "L": "Viele junge Leute flüchten sich in die virtuelle Scheinwelt, weil ihnen die Realität als eine zu große Belastung erscheint..."
+        };
+        return texts[id] || id;
+      }
+
+      // ===== دالة لبناء جدول تفصيلي =====
+      function buildTable(title, details, total, max) {
+        let html = `<div class="result-item">
+                      <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
+                      <table class="true-false-table">
+                        <thead>
+                          <tr>
+                            <th style="width: 10%">Frage</th>
+                            <th style="width: 40%">Ihre Antwort</th>
+                            <th style="width: 40%">Richtige Antwort</th>
+                            <th style="width: 10%">Ergebnis</th>
+                          </tr>
+                        </thead>
+                        <tbody>`;
+        
+        details.forEach(item => {
+          const isCorrect = item.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${item.frage}</strong></td>
+                    <td>${escapeHtml(item.user)}</td>
+                    <td>${escapeHtml(item.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody>
+                </table>
+                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                  <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
+                </div>
+              </div>`;
+        return html;
+      }
+
+      // ===== قراءة النتائج من التخزين =====
+      function readExamResults() {
+        try {
+          const lesen = {};
+          const hoeren = {};
+          const schreiben = { content: '', wordCount: 0 };
+
+          // قراءة من الذاكرة المؤقتة
+          try {
+            if (window._lesenState && window._lesenState.answers) {
+              Object.keys(window._lesenState.answers).forEach(k => {
+                lesen[k] = window._lesenState.answers[k];
+              });
+            }
+          } catch (e) {}
+
+          try {
+            if (window._hoerenState && window._hoerenState.answers) {
+              Object.keys(window._hoerenState.answers).forEach(sectionId => {
+                const sec = window._hoerenState.answers[sectionId] || {};
+                Object.keys(sec).forEach(q => {
+                  hoeren[q] = sec[q];
+                });
+              });
+            }
+          } catch (e) {}
+
+          try {
+            if (window._schreibenState && window._schreibenState.answers) {
+              const answers = window._schreibenState.answers;
+              if (answers['s1']) {
+                schreiben.content = answers['s1'];
+              } else {
+                const keys = Object.keys(answers);
+                if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
+              }
+              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? 
+                String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0;
+            }
+          } catch (e) {}
+
+          // قراءة من localStorage
+          try {
+            if (Object.keys(lesen).length === 0) {
+              const storedL = localStorage.getItem('lesenAnswers');
+              if (storedL) Object.assign(lesen, JSON.parse(storedL));
+            }
+          } catch (e) {}
+
+          try {
+            if (Object.keys(hoeren).length === 0) {
+              const storedH = localStorage.getItem('hoerenAnswers');
+              if (storedH) Object.assign(hoeren, JSON.parse(storedH));
+            }
+          } catch (e) {}
+
+          try {
+            if (!schreiben.content) {
+              const storedS = localStorage.getItem('schreibenAnswers');
+              if (storedS) {
+                const obj = JSON.parse(storedS);
+                schreiben.content = obj.content || '';
+                schreiben.wordCount = obj.wordCount || 
+                  (schreiben.content.trim() ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0);
+              }
+            }
+          } catch (e) {}
+
+          return { hoeren, lesen, schreiben };
+        } catch (e) {
+          return { hoeren: {}, lesen: {}, schreiben: {} };
+        }
+      }
+
+      // ===== تصحيح قسم الاستماع =====
+      function gradeHoeren(userAnswers) {
+        const correct = CORRECT_ANSWERS.hoeren;
+        let okCount = 0;
+        const details = [];
+        
+        for (let q = 41; q <= 60; q++) {
+          const id = String(q);
+          const userAnswer = normalizeAnswer(userAnswers[id] || '');
+          const correctAnswer = correct[id] || '-';
+          const isCorrect = (userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+          if (isCorrect) okCount++;
+          
+          details.push({
+            frage: id,
+            user: userAnswer,
+            correct: correctAnswer,
+            richtig: isCorrect
+          });
+        }
+        
+        const total = Number((okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2));
+        return { okCount, total, details };
+      }
+
+      // ===== تصحيح قسم القراءة =====
+      function gradeLesen(userAnswers) {
+        const correct = CORRECT_ANSWERS.lesen;
+        let okCount = 0;
+        const details = [];
+        
+        // الجزء الأول: Überschriften (text1 - text5)
+        for (let i = 1; i <= 5; i++) {
+          const id = `text${i}`;
+          const userAnswer = normalizeAnswer(userAnswers[id] || '');
+          const correctAnswer = correct[id] || '-';
+          const isCorrect = (userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+          if (isCorrect) okCount++;
+          
+          details.push({
+            frage: `Text ${i}`,
+            user: getHeadingText(userAnswer),
+            correct: getHeadingText(correctAnswer),
+            richtig: isCorrect
+          });
+        }
+        
+        // الجزء الثاني: Fragen zum Text (s2q1 - s2q5)
+        for (let i = 1; i <= 5; i++) {
+          const id = `s2q${i}`;
+          const userAnswer = normalizeAnswer(userAnswers[id] || '');
+          const correctAnswer = correct[id] || '-';
+          const isCorrect = (userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+          if (isCorrect) okCount++;
+          
+          details.push({
+            frage: `Frage ${i}`,
+            user: getOptionText(userAnswer),
+            correct: getOptionText(correctAnswer),
+            richtig: isCorrect
+          });
+        }
+        
+        // الجزء الثالث: Texte zuordnen (11 - 20)
+        for (let i = 11; i <= 20; i++) {
+          const id = String(i);
+          const userAnswer = normalizeAnswer(userAnswers[id] || '');
+          const correctAnswer = correct[id] || '-';
+          const isCorrect = (userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+          if (isCorrect) okCount++;
+          
+          let userDisplay = '-';
+          let correctDisplay = '-';
+          
+          if (userAnswer !== '-') {
+            userDisplay = userAnswer === 'X' ? 'X - Kein passender Text' : getTextContent(userAnswer);
+          }
+          
+          if (correctAnswer !== '-') {
+            correctDisplay = correctAnswer === 'X' ? 'X - Kein passender Text' : getTextContent(correctAnswer);
+          }
+          
+          details.push({
+            frage: `Situation ${i}`,
+            user: userDisplay,
+            correct: correctDisplay,
+            richtig: isCorrect
+          });
+        }
+        
+        // Sprachbausteine Teil 1 (21 - 30)
+        for (let i = 21; i <= 30; i++) {
+          const id = String(i);
+          const userAnswer = normalizeAnswer(userAnswers[id] || '');
+          const correctAnswer = correct[id] || '-';
+          const isCorrect = (userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+          if (isCorrect) okCount++;
+          
+          details.push({
+            frage: `Lücke ${i}`,
+            user: userAnswer,
+            correct: correctAnswer,
+            richtig: isCorrect
+          });
+        }
+        
+        // Sprachbausteine Teil 2 (31 - 40)
+        for (let i = 31; i <= 40; i++) {
+          const id = String(i);
+          const userAnswer = normalizeAnswer(userAnswers[id] || '');
+          const correctAnswer = correct[id] || '-';
+          const isCorrect = (userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase());
+          if (isCorrect) okCount++;
+          
+          details.push({
+            frage: `Lücke ${i}`,
+            user: userAnswer,
+            correct: correctAnswer,
+            richtig: isCorrect
+          });
+        }
+        
+        const total = Number((okCount * (CONFIG.totals.lesen / CONFIG.counts.lesen)).toFixed(2));
+        return { okCount, total, details };
+      }
+
+      // ===== دالة عرض التفاصيل التفصيلية للقراءة =====
+      function renderLesenDetails(answers) {
+        const graded = gradeLesen(answers);
+        let html = `<div class="result-item">
+                    <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
+        
+        // قسم Überschriften zuordnen
+        html += `<h4>Teil 1: Überschriften zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Text</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 0; i < 5; i++) {
+          const item = graded.details[i];
+          const rowClass = item.richtig ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = item.richtig ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${item.frage}</strong></td>
+                    <td>${escapeHtml(item.user)}</td>
+                    <td>${escapeHtml(item.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // قسم Fragen zum Text
+        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Frage</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 5; i < 10; i++) {
+          const item = graded.details[i];
+          const rowClass = item.richtig ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = item.richtig ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${item.frage}</strong></td>
+                    <td>${escapeHtml(item.user)}</td>
+                    <td>${escapeHtml(item.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // قسم Texte zuordnen
+        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Situation</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 10; i < 20; i++) {
+          const item = graded.details[i];
+          const rowClass = item.richtig ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = item.richtig ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${item.frage}</strong></td>
+                    <td>${escapeHtml(item.user.length > 100 ? item.user.substring(0, 100) + '...' : item.user)}</td>
+                    <td>${escapeHtml(item.correct.length > 100 ? item.correct.substring(0, 100) + '...' : item.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // قسم Sprachbausteine Teil 1
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Lücke</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 20; i < 30; i++) {
+          const item = graded.details[i];
+          const rowClass = item.richtig ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = item.richtig ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${item.frage}</strong></td>
+                    <td>${escapeHtml(item.user)}</td>
+                    <td>${escapeHtml(item.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // قسم Sprachbausteine Teil 2
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Lücke</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 30; i < 40; i++) {
+          const item = graded.details[i];
+          const rowClass = item.richtig ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = item.richtig ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${item.frage}</strong></td>
+                    <td>${escapeHtml(item.user)}</td>
+                    <td>${escapeHtml(item.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>
+                 <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                   <strong>Gesamtergebnis Lesen: ${graded.total.toFixed(2)}/${CONFIG.totals.lesen} Punkte (${graded.okCount}/${CONFIG.counts.lesen} richtig)</strong>
+                 </div>
+               </div>`;
+        
+        return html;
+      }
+
+      // ===== دالة عرض التفاصيل التفصيلية للاستماع =====
+      function buildHoerenDetails(answers) {
+        const graded = gradeHoeren(answers);
+        let html = `<table class="true-false-table">
+                      <thead>
+                        <tr>
+                          <th style="width: 10%">Frage</th>
+                          <th style="width: 40%">Ihre Antwort</th>
+                          <th style="width: 40%">Richtige Antwort</th>
+                          <th style="width: 10%">Ergebnis</th>
+                        </tr>
+                      </thead>
+                      <tbody>`;
+        
+        graded.details.forEach(item => {
+          const rowClass = item.richtig ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = item.richtig ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${item.frage}</strong></td>
+                    <td>${escapeHtml(item.user)}</td>
+                    <td>${escapeHtml(item.correct)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody></table>
+                 <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                   <strong>Gesamtergebnis Hören: ${graded.total.toFixed(2)}/${CONFIG.totals.hoeren} Punkte (${graded.okCount}/${CONFIG.counts.hoeren} richtig)</strong>
+                 </div>`;
+        
+        return html;
+      }
+
+      // ===== الدالة الرئيسية لعرض النتائج =====
+      function renderResults() {
+        const results = readExamResults();
+        const h = gradeHoeren(results.hoeren || {});
+        const l = gradeLesen(results.lesen || {});
+        const details = document.getElementById('details-ergebnisse');
+        const tiles = document.getElementById('topTiles-ergebnisse');
+        const sScoreRaw = localStorage.getItem('schreibenScore');
+        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
+
+        details.innerHTML = '';
+        tiles.innerHTML = '';
+
+        // عرض البلاطات العلوية
+        tiles.innerHTML = `
+          <div class="results-tile">
+            <h3>Lesen</h3>
+            <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
+            <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
+          </div>
+          <div class="results-tile">
+            <h3>Hören</h3>
+            <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
+            <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
+          </div>
+          <div class="results-tile">
+            <h3>Schreiben</h3>
+            <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
+            <div class="small-muted">Manuelle Eingabe</div>
+          </div>`;
+
+        // عرض التفاصيل
+        details.innerHTML = `
+          <div class="instructions" style="background: #e3f2fd; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+            <h3 style="margin-top: 0;">📊 Detaillierte Ergebnisse</h3>
+            <p>Hier sehen Sie eine detaillierte Auswertung Ihrer Prüfung. Die richtigen Antworten sind mit <span style="color: #28a745; font-weight: bold;">✅</span> markiert, falsche Antworten mit <span style="color: #dc3545; font-weight: bold;">❌</span>.</p>
+          </div>`;
+
+        // قسم القراءة
+        details.innerHTML += renderLesenDetails(results.lesen);
+
+        // قسم الاستماع
+        details.innerHTML += `
+          <div class="result-item">
+            <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+            ${buildHoerenDetails(results.hoeren)}
+          </div>`;
+
+        // قسم الكتابة
+        const txt = results.schreiben.content ? escapeHtml(results.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
+        const wc = results.schreiben.wordCount || '-';
+        
+        details.innerHTML += `
+          <div class="result-item">
+            <h3>✍️ Schreiben - Ihre Antwort</h3>
+            <div class="small-muted">Wörter: ${wc}</div>
+            <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px">${txt}</div>
+            <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
+              Punkte (0–45): 
+              <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
+              <button id="saveS" class="results-btn">Speichern</button>
+            </div>
+          </div>`;
+
+        // حساب الإجمالي
+        const total = (l.total + h.total + sScore).toFixed(2);
+        const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);
+        
+        document.getElementById('finalSummary-ergebnisse').innerHTML = `
+          <div class="left">
+            <strong>Gesamtpunktzahl: ${total} / ${CONFIG.totals.gesamt} Punkte</strong><br>
+            <span class="small-muted">Lesen + Hören + Schreiben</span>
+          </div>
+          <div class="right">
+            <strong>Prozentsatz: ${percent} %</strong>
+          </div>`;
+
+        // حدث زر الحفظ
+        document.getElementById('saveS').onclick = () => {
+          const v = Number(document.getElementById('sInput').value) || 0;
+          localStorage.setItem('schreibenScore', v);
+          document.getElementById('schreibenScoreDisplay').textContent = `${v.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte`;
+          
+          const newTotal = (l.total + h.total + v).toFixed(2);
+          const newPercent = ((newTotal / CONFIG.totals.gesamt) * 100).toFixed(2);
+          
+          document.getElementById('finalSummary-ergebnisse').innerHTML = `
+            <div class="left">
+              <strong>Gesamtpunktzahl: ${newTotal} / ${CONFIG.totals.gesamt} Punkte</strong><br>
+              <span class="small-muted">Lesen + Hören + Schreiben</span>
+            </div>
+            <div class="right">
+              <strong>Prozentsatz: ${newPercent} %</strong>
+            </div>`;
+        };
+      }
+
+      // ===== إعداد الأحداث =====
+      document.getElementById('calcBtn-ergebnisse').onclick = () => renderResults();
+      document.getElementById('backBtn-ergebnisse').onclick = (e) => {
+        e.preventDefault();
+        showPage('start-page');
+      };
+      
+      // تهيئة النتائج عند تحميل الصفحة
+      renderResults();
+    }
 
     // ===== LESEN PAGE FUNCTIONALITY =====
     function initLesenPage() {
@@ -1578,7 +2306,7 @@ Andere Forschungen befassen sich mit dem Zusammenhang von Menge und Preis. Beim 
 
 Eine neue Studie untersuchte nun die Reaktionen der Konsumenten auf genau diese Reihenfolge. Die Information über eine große Menge vor die Preisinformation zu setzen scheint deutlich reizvoller auf Konsumenten zu wirken als den Preis vor der Menge zu nennen. Außerdem wurde untersucht, was passiert, wenn die Packungen groß oder klein sind und wenn die Preise pro Stück leicht auszurechnen sind.
 
-Wenn die Packung groß und der Stückpreis schwierig auszurechnen ist, zeigen sich die Konsumenten eher bereit, die Packung zu kaufen, wenn zuerst die Menge genannt wird. Außerdem sind sie dann der Meinung, dass ein solches Angebot einen guten Einkauf darstellt. Wenn allerdings der Preis zuerst dargestellt wird oder er ein Vielfaches der Stückzahl ausmacht und somit leicht auszurechnen ist (z. B. 5 DVDs für 50 €), tritt das genaue Gegenteil ein. Dies liegt unter anderem daran, dass das menschliche Gehirn Schwierigkeiten hat, große Zahlen zu verarbeiten. Unter Zeitdruck ercheinen uns dann sogar vermeintlich einfache Berechnungen als schwierig. Dann nutzen wir hauptsächlich die erste Information, die wir wahrnehmen, um so den Kauf und seine Vorteile oder Nachteile für uns zu bewerten.
+Wenn die Packung groß und der Stückpreis schwierig auszurechnen ist, zeigen sich die Konsumenten eher bereit, die Packung zu kaufen, wenn zuerst die Menge genannt wird. Außerdem sind sie dann der Meinung, dass ein solches Angebot einen guten Einkauf darstellt. Wenn allerdings der Preis zuerst dargestellt wird oder er ein Vielfaches der Stückzahl ausmacht und somit leicht auszurechnen ist (z. B. 5 DVDs für 50 €), tritt das genaue Gegenteil ein. Dies liegt unter anderem daran, dass das menschliche Gehirn Schwierigkeiten hat, große Zahlen zu verarbeiten. Unter Zeitdruck ercheinen uns dann sogar vermeintlich einfache Berechnungen als schwierig. Dann nutzen us hauptsächlich die erste Information, die wir wahrnehmen, um so den Kauf und seine Vorteile oder Nachteile für uns zu bewerten.
 
 Als Kunde begegnen wir also großen Packungen, bei denen zuerst die Menge mitteilt wird, und glauben, dass dies ein günstiges Angebot ist. Mit dem neuen Wissen über die Forschungsergebnisse sollten wir aber zumindest ab und zu beim Kauf von größeren Packungen innehalten und noch einmal überlegen, ob es sich wirklich um ein guten Angebot handelt. Aus der Perspektive der Geschäfte muss die Schlussfolgerung allerdings wie folgt lauten: Große Angebote zusammenstellen und erst mit der Menge und dann mit dem Preis werben. Dass diese Strategie funktioniert, lässt sich Tag für Tag im Supermarkt beobachten.`,
             questions: [
@@ -1649,16 +2377,16 @@ Als Kunde begegnen wir also großen Packungen, bei denen zuerst die Menge mittei
             texts: [
               {id: "A", text: "Das Vorstellungsgespräch ist eine wichtige Hürde bei der Suche nach einem Arbeitsplatz. In der Regelfangen sie mit Smalltalk an: Man redet über das Wetter, den Verkehr und Ähnliches. Doch dabei kommt es schon auf das 'Wie?' an. Wer viel kritisiert, hat schon verloren. Bei der Vorstellung ihrer Person sollten Bewerber darauf achten, dass sie ihre Fähigkeit und den Nutzen, den ihr potentiell zukünftiger Arbeitgeber von ihnen hat, in den Vordergrund stellen. Fragen nach Gesundheit, Familienplanung, Schwangerschaft oder Geld gehören nicht ins Bewerbungsgespräch. Sollten Sie dennoch gestellt werden, ist man nicht verpflichtet, diese wahrheitsgemäß zu beantworten.", correctAnswer: "11"},
               {id: "B", text: "Die Postbank gibt Bewerbern um einen Ausbildungsplatz ein Thema für ein Projekt, das sie ausarbeiten und dann präsentieren sollen. Nur wer diese Hürde nehmen kann und Engagement beweist, hat Chancen, aufgenommen zu werden. Schließlich sollen die Bewerber zeigen, dass sie belastbar und entscheidungsfähigen sind. Der Banker von heute hat ein weit gestecktes Tätigkeitsfeld; Kassierer am Schalter, die nichts als Geld oder Formulare ausgeben oder entgegennehmen, wird es in Zukunft immer weniger geben.", correctAnswer: "18"},
-              {id: "C", text: "Rhetoriktrainer raten dazu, dem Anfang und dem Schluss eines Referats besonderes Augenmerk zu schenken. In den ersten zwei Minuten eines Vortrags entscheide sich nämlich, ob ein Zuhörer an dem Referat Interesse hat oder nicht. Daher sei ein effektvoll und interessant gestalteter Einstieg äußerst wichtig. Am Schluss soll man den Zuhörern noch einmal mit auf den Weg geben, was dem Vortragenden besonders wichtig erscheint.", correctAnswer: "12"},
+              {id: "C", text: "Rhetoriktrainer raten dazu, dem Anfang und dem Schluss eines Referats besonderes Augenmerk zu schenken. In den ersten zwei Minuten eines Vortrags entscheide sich nämlich, ob ein Zuhörer an dem Referat Interesse hat oder nicht. Daher sei ein effektvoll und interessant gestalteter Einstieg äußerst wichtig. Am Schluss soll man den Zuhörers noch einmal mit auf den Weg geben, was dem Vortragenden besonders wichtig erscheint.", correctAnswer: "12"},
               {id: "D", text: "Robert Sonntag, Autor des Buches “Hilfe, ich muss reden” behauptet, die Angst vor einem größeren Publikum zu reden, sei ein Problem für die meisten Menschen. In Deutschland liegt in etwa 60 % der Menschen an diesem Phänomen. Dabei achten Zuhören nur zu 7 % auf das, was jemand sagt, 93 % der Wirkung eines Vortrags erziele man durch Körpersprache und seine Stimme. Der Autor rät zu Entspannungstechniken wie dem Autogenen Training oder Yoga, um gelassener zu werden, und einer gründlichen Vorbereitung des Vortrags. Seminarangebote unter www.rs-rethorik.de.", correctAnswer: "13"},
               {id: "E", text: "Bereiten Sie sich auf ein Vorstellungsgespräch intensiv vor. Überlegen Sie sich genau, was Sie Ihrer zukünftigen Firma an Nutzen bringen können, denn Sie werden danach gefragt werden, warum Sie sich gerade bei dieser und nicht bei einer anderen Firma beworben haben. Analysieren Sie Ihre persönlichen Stärken und Schwächen und überlegen Sie, wie Sie Ihre schwachen Seiten möglichst positiv präsentieren können. Überlegen Sie, was Ihre persönlichen Ziele sind, und sammeln Sie so viele Informationen wie möglich über Ihre zukünftige Arbeit und die Firma, bei der Sie sich beworben haben.", correctAnswer: "14"},
-              {id: "F", text: "Nichts ist auf privaten Feierlichkeiten wie Hochzeiten, runden Geburtstagen oder sonstigen Jubiläen schlimmer als langatmige, nicht enden wollende Ansprachen von Familienmitgliedern. Deshalb bieten viele Volkshochschulen in Deutschland Wochenendseminare an, in denen der Aufbau und der Vortrag einer guten Festansprache trainiert werden. Das Ziel dieser Seminare ist es, die zukünftigen Teilnehmenden in die Lage zu versetzen, spritzige Reden frei halten zu können.", correctAnswer: "15"},
+              {id: "F", text: "Nichts ist auf privaten Feierlichkeiten wie Hochzeiten, runden Geburtstagen oder sonstigen Jubiläen schlimmer als langatmige, nicht enden wollende Ansprachen von Familienmitgliedern. Deshalb bieten viele Volkshochschulen in Deutschland Wochenendseminare an, in denen der Aufbau und der Vortrag einer guten Festansprache trainiert werden. Das Ziel dieser Seminare ist es, die zukünftigen Teilnehmenden in die Lage zu versetzen, spritzige Reden frei halten zu können.", correctAnswer: "20"},
               {id: "G", text: "Ein Auszubildender bei einer Bank oder Sparkasse bekommt 690,- Euro im ersten Ausbildungsjahr. Am Ende seiner Ausbildung steigt die Vergütung auf 800,- Euro. Das Einstiegsgehalt für Bankangestellte liegt bei etwas über 2.000,- Euro monatlich. Aufstiegschancen haben die jungen Banker nur, wenn sie sich intensiv um ihre berufliche Fortbildung kümmern. Dafür bieten die Banken ihren Mitarbeitern viele Möglichkeiten an, wie das BankCollege der Volksbanken oder die Sparkassen-Akademie. Manche Banken geben besonders qualifizierten Mitarbeitern sogar Stipendien für ein Studium.", correctAnswer: "16"},
-              {id: "H", text: "Wer zu seinem Vorstellungsgespräch eingeladen wird, sollte auf korrekte und saubere Kleidung achten. Für viele Firmen ist es wichtig, dass auch Auszubildende die Firma gegenüber den Kunden repräsentieren können. Zerrissene Jeans und selbst gefärbte T-Shirts mögen zwar trendy sein, zu einem Vorstellungsgespräch gehören sie aber nicht. In Zweifelsfällen ist es ratsam, sich bei Eltern oder Bekannten Rat zu holen.", correctAnswer: null},
+              {id: "H", text: "Wer zu seinem Vorstellungsgespräch eingeladen wird, sollte auf korrekte und saubere Kleidung achten. Für viele Firmen ist es wichtig, dass auch Auszubildende die Firma gegenüber den Kunden repräsentieren können. Zerrissene Jeans und selbst gefärbte T-Shirts mögen zwar trendy sein, zu einem Vorstellungsgespräch gehören sie aber nicht. In Zweifelsfällen ist es ratsam, sich bei Eltern oder Bekannten Rat zu holen.", correctAnswer: "14"},
               {id: "I", text: "Für junge Leute kann das Internet zu einer Droge werden. Der typische Internet-Süchtige ist ca. 18 Jahre alt, männlich, Single und hat kaum soziale Kontakte. Er surft täglich um die 5 Stunden im World Wide Web und hat schlechte Laune, wenn er nicht vor dem Monitor sitzen kann. Pflichten werden oft vernachlässigt. Psychologen raten, die Surfzeiten schrittweise zu verringern und darüber ein Tagebuch zu führen sowie vor dem Surfen schriftlich zu notieren, was genau man im Internet suchen möchte. Wer diese strengen Regeln einhält, kann aus der Internetsucht aussteigen.", correctAnswer: "17"},
               {id: "J", text: "Zu einem zunehmend größer werdenden Problem am Arbeitsplatz wird die immer größer werdende Kluft zwischen dem Sprachgebrauch junger und alter Kollegen. Viele junge Leute verstehen laut einer Studie der Universität Kiel traditionelle Redewendungen wie z. B. “Den Nagel auf den Kopf treffen” oder “Öl ins Feuer gießen” nicht mehr, während Ältere nichts mit “keinen Bock haben” anzufangen wissen. Dadurch, dass Jung und Alt heute nicht mehr so lange wie in früheren Zeiten zusammenleben, sondern unter sich bleiben, verstärkt sich das Auseinanderdriften der Jugendsprache und der Sprache der Alten immer mehr auseinander.", correctAnswer: "19"},
-              {id: "K", text: "GRUNDSÄTZLICH HAT JEDER DIE MÖGLICHKEIT, BEI UNS EINE AUSBILDUNG ZU MACHEN, heißt es bei der Sparkassen-Akademie in Bonn. Die Bewerber sollen aber gute bis sehr gute Noten in Deutsch und Mathematik von der Schule mitbringen, und sie müssen in Rollenspielen ihre kommunikativen Fähigkeiten unter Beweis stellen, etwa, wie sie mit einem aggressiven Kunden umgehen würden. ", correctAnswer: "20"},
-              {id: "L", text: "Viele junge Leute flüchten sich in die virtuelle Scheinwelt, weil ihnen die Realität als eine zu große Belastung erscheint. Insbesondere Chatrooms verführen die Jugendlichen zu langen Sitzungen, die oft als Ersatz für mangelnde zwischenmenschliche Beziehungen herhalten. Häufige Folge: Vernachlässigung von Hausaufgaben und schlechte Zensuren. Eltern, die sich Sorgen um ihre Internetabhängigen Kinder machen, sollten viel mit ihnen sprechen - ohne Vorwürfe zu machen - und versuchen ihren Zöglingen Alternativen in der realen Welt aufzuzeigen.", correctAnswer: null}
+              {id: "K", text: "GRUNDSÄTZLICH HAT JEDER DIE MÖGLICHKEIT, BEI UNS EINE AUSBILDUNG ZU MACHEN, heißt es bei der Sparkassen-Akademie in Bonn. Die Bewerber sollen aber gute bis sehr gute Noten in Deutsch und Mathematik von der Schule mitbringen, und sie müssen in Rollenspielen ihre kommunikativen Fähigkeiten unter Beweis stellen, etwa, wie sie mit einem aggressiven Kunden umgehen würden. ", correctAnswer: "18"},
+              {id: "L", text: "Viele junge Leute flüchten sich in die virtuelle Scheinwelt, weil ihnen die Realität als eine zu große Belastung erscheint. Insbesondere Chatrooms verführen die Jugendlichen zu langen Sitzungen, die oft als Ersatz für mangelnde zwischenmenschliche Beziehungen herhalten. Häufige Folge: Vernachlässigung von Hausaufgaben und schlechte Zensuren. Eltern, die sich Sorgen um ihre Internetabhängigen Kinder machen, sollten viel mit ihnen sprechen - ohne Vorwürfe zu machen - und versuchen ihren Zöglingen Alternativen in der realen Welt aufzuzeigen.", correctAnswer: "15"}
             ],
             situations: [
               {id: "11", text: "Ihre Schwägerin erwartet ein Kind. Sie ist nicht sicher, ob Sie in einem Vorstellungsgespräch darauf hinweisen muss."},
@@ -1817,7 +2545,7 @@ Die Studie wurde in der ________ Woche in einem amerikanischen Fachmagazin verö
 
 Für die Studie ________ in Finnland 397 Babys über den Zeitraum von der neunten Lebenswoche bis zu ihrem ersten Geburtstag beobachtet. Dabei hatten die mit Hund oder Katze aufwachsenden Kinder ein um 30% ________ Risiko für Erkrankungen der Atemwege. Es fiel auf, dass bei diesen Kindern Ohrenentzündungen ________ auftraten.
 
-Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesellschaft von Tieren ________ besser sei. Frühere Untersuchungen aus den USA hatten das genaue ________ der jetzigen Ergebnisse ergeben. Ob diese Unterschiede mit den unterschiedlichen Lebens- und Umweltbedingungen der beiden Länder zusammenhängen, ist noch unklar.`
+Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesellschaft von Tiere ________ besser sei. Frühere Untersuchungen aus den USA hatten das genaue ________ der jetzigen Ergebnisse ergeben. Ob diese Unterschiede mit den unterschiedlichen Lebens- und Umweltbedingungen der beiden Länder zusammenhängen, ist noch unklar.`
           }
         ]
       };
@@ -3275,298 +4003,6 @@ prima-app GmbH, Sommerweg 34–36, 37269 Eschwege
         window.schreibenApp = {
         updateWritingAnswer
       };
-    }
-
-    // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
-    function initErgebnissePage() {
-      const CONFIG = {
-        totals: { 
-          lesen: 105, 
-          hoeren: 75, 
-          schreiben: 45, 
-          gesamt: 225 
-        },
-        counts: { 
-          lesen: 40, 
-          hoeren: 20 
-        },
-        hoerenCorrect: {
-          "41": "falsch", "42": "falsch", "43": "richtig", "44": "richtig", "45": "richtig",
-          "46": "falsch", "47": "richtig", "48": "falsch", "49": "richtig", "50": "richtig",
-          "51": "falsch", "52": "falsch", "53": "richtig", "54": "falsch", "55": "richtig",
-          "56": "falsch", "57": "falsch", "58": "richtig", "59": "richtig", "60": "falsch"
-        },
-        lesenCorrect: Object.assign({},
-          {"text1": "b", "text2": "c", "text3": "d", "text4": "g", "text5": "e"},
-          {"s2q1": "s2q1o2", "s2q2": "s2q2o3", "s2q3": "s2q3o3", "s2q4": "s2q4o2", "s2q5": "s2q5o3"},
-          {"11": "A", "12": "X", "13": "D", "14": "H", "15": "L", "16": "G", "17": "I", "18": "K", "19": "X", "20": "F"},
-          {"21": "Hoffentlich", "22": "nämlich", "23": "schon", "24": "damit", "25": "Als", "26": "miteinander", "27": "kurz", "28": "weshalb", "29": "vollkommen	", "30": "angenehmen"},
-          {"31": "ALS", "32": "VERGANGENEN", "33": "ZWAR", "34": "DURCH", "35": "DIESELBE", "36": "WURDEN", "37": "GERINGERES", "38": "WENIGER", "39": "DEUTLICH", "40": "GEGENTEIL"}
-        )
-      };
-
-      function normalizeAnswer(a) {
-        if (a === null || a === undefined) return '';
-        let s = String(a).trim();
-        if (s === '') return '';
-        const low = s.toLowerCase();
-        if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
-        if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
-        return s;
-      }
-
-      function keyZeroToTen(k) {
-        return k === '0' ? '10' : k;
-      }
-
-      function readExamResults() {
-        try {
-          const lesen = {};
-          const hoeren = {};
-          const schreiben = { content: '', wordCount: 0 };
-
-          // 1) Try to read from in-memory states exposed by pages
-          try {
-            if (window._lesenState && window._lesenState.answers) {
-              Object.keys(window._lesenState.answers).forEach(k => {
-                lesen[k] = window._lesenState.answers[k];
-              });
-            }
-          } catch (e) {}
-
-          try {
-            if (window._hoerenState && window._hoerenState.answers) {
-              Object.keys(window._hoerenState.answers).forEach(sectionId => {
-                const sec = window._hoerenState.answers[sectionId] || {};
-                Object.keys(sec).forEach(q => {
-                  hoeren[q] = sec[q];
-                });
-              });
-            }
-          } catch (e) {}
-
-          try {
-            if (window._schreibenState && window._schreibenState.answers) {
-              const answers = window._schreibenState.answers;
-              if (answers['s1']) {
-                schreiben.content = answers['s1'];
-              } else {
-                const keys = Object.keys(answers);
-                if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
-              }
-              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0;
-            }
-          } catch (e) {}
-
-          // 2) Fallback to localStorage if any part is still empty
-          try {
-            if (Object.keys(lesen).length === 0) {
-              const storedL = localStorage.getItem('lesenAnswers');
-              if (storedL) Object.assign(lesen, JSON.parse(storedL));
-            }
-          } catch (e) {}
-
-          try {
-            if (Object.keys(hoeren).length === 0) {
-              const storedH = localStorage.getItem('hoerenAnswers');
-              if (storedH) Object.assign(hoeren, JSON.parse(storedH));
-            }
-          } catch (e) {}
-
-          try {
-            if (!schreiben.content) {
-              const storedS = localStorage.getItem('schreibenAnswers');
-              if (storedS) {
-                const obj = JSON.parse(storedS);
-                schreiben.content = obj.content || '';
-                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0);
-              }
-            }
-          } catch (e) {}
-
-          // final safe return
-          return { hoeren, lesen, schreiben };
-        } catch (e) {
-          return { hoeren: {}, lesen: {}, schreiben: {} };
-        }
-      }
-
-      function gradeHoeren(u) {
-        const c = CONFIG.hoerenCorrect;
-        let okCount = 0;
-        const d = [];
-        
-        for (let q = 41; q <= 60; q++) {
-          const k = String(q);
-          const uA = normalizeAnswer(u[k] || '');
-          const exp = normalizeAnswer(c[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
-          if (ok) okCount++;
-          const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
-          d.push({
-            frage: k,
-            user: uA || '-',
-            correct: exp || '-',
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
-          });
-        }
-        
-        const total = Number((okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2));
-        return { okCount, total, details: d };
-      }
-
-      function gradeLesen(u) {
-        const c = CONFIG.lesenCorrect;
-        let okCount = 0;
-        const d = [];
-        
-        Object.keys(c).forEach(k => {
-          const exp = normalizeAnswer(c[k]);
-          const uA = normalizeAnswer(u[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
-          if (ok) okCount++;
-          const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
-          d.push({
-            frage: k,
-            user: uA || '-',
-            correct: exp || '-',
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
-          });
-        });
-        
-        const total = Number((okCount * (CONFIG.totals.lesen / CONFIG.counts.lesen)).toFixed(2));
-        return { okCount, total, details: d };
-      }
-
-      function escapeHtml(s) {
-        return String(s)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      }
-
-      function buildTable(title, dets, total, max) {
-        let h = `<h2>${title}</h2>
-                <table class="section-table">
-                  <thead>
-                    <tr>
-                      <th>Frage</th>
-                      <th>Ihre Antwort</th>
-                      <th>Richtige Antwort</th>
-                      <th>Ergebnis</th>
-                      <th>Punkte</th>
-                    </tr>
-                  </thead>
-                  <tbody>`;
-        
-        dets.forEach(x => {
-          h += `<tr>
-                  <td>${x.frage}</td>
-                  <td>${escapeHtml(x.user)}</td>
-                  <td>${escapeHtml(x.correct)}</td>
-                  <td>${x.richtig ? '✔️' : '✖️'}</td>
-                  <td>${x.punkte}</td>
-                </tr>`;
-        });
-        
-        h += `</tbody>
-              </table>
-              <div class="small-muted">Teilpunkte: ${total.toFixed(2)} / ${max}</div>`;
-        return h;
-      }
-
-      function renderResults() {
-        const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
-        const h = gradeHoeren(st.hoeren || {});
-        const l = gradeLesen(st.lesen || {});
-        const details = document.getElementById('details-ergebnisse');
-        const tiles = document.getElementById('topTiles-ergebnisse');
-        const sScoreRaw = localStorage.getItem('schreibenScore');
-        const sScore = sScoreRaw ? Number(sScoreRaw) : 0; // Default score is now 0
-
-        details.innerHTML = '';
-        tiles.innerHTML = '';
-
-        const tL = `<div class="results-tile">
-                    <h3>Lesen</h3>
-                    <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
-                    <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
-                  </div>`;
-                  
-        const tH = `<div class="results-tile">
-                    <h3>Hören</h3>
-                    <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
-                    <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
-                  </div>`;
-                  
-        const tS = `<div class="results-tile">
-                    <h3>Schreiben</h3>
-                    <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
-                    <div class="small-muted">Manuelle Eingabe</div>
-                  </div>`;
-                  
-        tiles.innerHTML = tL + tH + tS;
-
-        details.innerHTML += buildTable('Hören — Detail', h.details, h.total, CONFIG.totals.hoeren);
-        details.innerHTML += buildTable('Lesen — Detail', l.details, l.total, CONFIG.totals.lesen);
-
-        let sHtml = '<h2>Schreiben — Ergebnis (manuell)</h2>';
-        const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
-        const wc = st.schreiben.wordCount || '-';
-        
-        sHtml += `<div class="small-muted">Wörter: ${wc}</div>
-                <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px">${txt}</div>
-                <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
-                  Punkte (0–45): 
-                  <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
-                  <button id="saveS" class="results-btn">Speichern</button>
-                </div>`;
-                
-        details.innerHTML += sHtml;
-
-        const total = (l.total + h.total + sScore).toFixed(2);
-        const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);
-        
-        document.getElementById('finalSummary-ergebnisse').innerHTML = `
-          <div class="left">
-            Gesamtpunktzahl: <strong>${total}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
-            <span class="small-muted">Lesen + Hören + Schreiben</span>
-          </div>
-          <div class="right">
-            Prozentsatz: <strong>${percent} %</strong>
-          </div>`;
-
-        document.getElementById('saveS').onclick = () => {
-          const v = Number(document.getElementById('sInput').value) || 0;
-          localStorage.setItem('schreibenScore', v);
-          document.getElementById('schreibenScoreDisplay').textContent = `${v.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte`;
-          
-          const newTotal = (l.total + h.total + v).toFixed(2);
-          const newPercent = ((newTotal / CONFIG.totals.gesamt) * 100).toFixed(2);
-          
-          document.getElementById('finalSummary-ergebnisse').innerHTML = `
-            <div class="left">
-              Gesamtpunktzahl: <strong>${newTotal}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
-              <span class="small-muted">Lesen + Hören + Schreiben</span>
-            </div>
-            <div class="right">
-              Prozentsatz: <strong>${newPercent} %</strong>
-            </div>`;
-        };
-      }
-
-      document.getElementById('calcBtn-ergebnisse').onclick = () => renderResults();
-      document.getElementById('backBtn-ergebnisse').onclick = (e) => {
-        e.preventDefault();
-        showPage('start-page');
-      };
-      
-      // Initialize results on page load
-      renderResults();
     }
   </script>
 </body>

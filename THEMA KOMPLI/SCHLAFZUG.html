@@ -615,6 +615,7 @@
       padding: 10px;
       border-radius: 6px;
       background: #f8f9fa;
+      border: 1px solid #e6eef8;
     }
     
     .instructions {
@@ -2786,7 +2787,6 @@ Auf dem Großmarkt schauen sich die Käufer alles ________ an. Für makellose Sa
         const answers = state.answers[section.id];
         if (!answers) return false;
         
-        // تحقق إذا تمت الإجابة على جميع الأسئلة في هذا القسم
         const answeredQuestions = Object.keys(answers).length;
         const totalQuestions = section.questions.length;
         
@@ -2877,8 +2877,6 @@ Auf dem Großmarkt schauen sich die Käufer alles ________ an. Für makellose Sa
         state.answers[sectionId][questionId] = answer;
         try{ localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
-        
-        // إعادة عرض البلاطات لتحديث حالة "تم"
         renderTopTiles();
       }
 
@@ -2993,9 +2991,8 @@ Auf dem Großmarkt schauen sich die Käufer alles ________ an. Für makellose Sa
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
-        window._hoerenState = state;
-        window.hoerenApp = {
+      window._hoerenState = state;
+      window.hoerenApp = {
         updateListeningAnswer
       };
     }
@@ -3043,7 +3040,7 @@ Sie erhalten außerdem regelmäßig Beratung und Unterstützung durch unser erfa
 Setzen Sie Ihre Zeit, Ihr Wissen und Ihr Engagement ein, um das Leben eines Jugendlichen 
 positiv zu beeinflussen! 
 
-Mehr Informationen erhalten Sie unter: www.bildungspaten-fuer-jugendliche.net 
+Mehr Informationen erhalten Sie unter: www.bildungspaten-für-jugendliche.net 
 
 Adresse: 
 Bildungspaten für Jugendliche e. V. 
@@ -3144,7 +3141,6 @@ Hamburger Str. 112
       function renderWritingSection() {
         const section = exam.sections[state.sectionIndex];
         
-        // Render the prompt in left panel
         passageContentEl.innerHTML = `
           <div class="writing-task">
             <div class="writing-prompt">${section.writingTask.prompt}</div>
@@ -3162,7 +3158,6 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
           </div>
         `;
         
-        // Render writing area in right panel
         const currentAnswer = state.answers[section.id] || '';
         const wordCount = countWords(currentAnswer);
         
@@ -3267,14 +3262,96 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
-        window._schreibenState = state;
-        window.schreibenApp = {
+      window._schreibenState = state;
+      window.schreibenApp = {
         updateWritingAnswer
       };
     }
 
     // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
+    // ===== KORREKTE ANTWORTEN FÜR DIESE PRÜFUNG =====
+    const CORRECT_ANSWERS = {
+      lesen: {
+        // Teil 1: Überschriften zuordnen (text1-text5)
+        "text1": "i",
+        "text2": "j", 
+        "text3": "h",
+        "text4": "c",
+        "text5": "d",
+        
+        // Teil 2: Fragen zum Text (s2q1-s2q5)
+        "s2q1": "s2q1o2",
+        "s2q2": "s2q2o3",
+        "s2q3": "s2q3o2",
+        "s2q4": "s2q4o2",
+        "s2q5": "s2q5o1",
+        
+        // Teil 3: Texte zuordnen (11-20)
+        "11": "F",
+        "12": "D",
+        "13": "X",
+        "14": "X",
+        "15": "K",
+        "16": "L",
+        "17": "J",
+        "18": "A",
+        "19": "I",
+        "20": "C",
+        
+        // Sprachbausteine Teil 1 (21-30)
+        "21": "konntest",
+        "22": "würde",
+        "23": "für",
+        "24": "vielen",
+        "25": "gefällt",
+        "26": "denn",
+        "27": "Wenn",
+        "28": "Dann",
+        "29": "ausgeräumt",
+        "30": "weil",
+        
+        // Sprachbausteine Teil 2 (31-40)
+        "31": "doch",
+        "32": "Leitet",
+        "33": "Ankommt",
+        "34": "Nämlich",
+        "35": "Darf",
+        "36": "Als",
+        "37": "Genau",
+        "38": "Erwerben",
+        "39": "Sondern",
+        "40": "Abgeschlossen"
+      },
+      
+      hoeren: {
+        // Hören Teil 1 (19-23)
+        "19": "falsch",
+        "20": "richtig",
+        "21": "richtig",
+        "22": "falsch",
+        "23": "falsch",
+        
+        // Hören Teil 2 (24-33)
+        "24": "falsch",
+        "25": "falsch",
+        "26": "richtig",
+        "27": "richtig",
+        "28": "falsch",
+        "29": "falsch",
+        "30": "richtig",
+        "31": "falsch",
+        "32": "falsch",
+        "33": "falsch",
+        
+        // Hören Teil 3 (34-38)
+        "34": "richtig",
+        "35": "falsch",
+        "36": "falsch",
+        "37": "richtig",
+        "38": "falsch"
+      }
+    };
+
     function initErgebnissePage() {
       const CONFIG = {
         totals: { 
@@ -3287,19 +3364,8 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
           lesen: 40, 
           hoeren: 15 
         },
-        hoerenCorrect: {
-          "19": "falsch", "20": "richtig", "21": "richtig", "22": "falsch", "23": "falsch",
-          "24": "falsch", "25": "falsch", "26": "richtig", "27": "richtig", "28": "falsch",
-          "29": "falsch", "30": "richtig", "31": "falsch", "32": "falsch", "33": "falsch",
-          "34": "richtig", "35": "falsch", "36": "falsch", "37": "richtig", "38": "falsch"
-        },
-        lesenCorrect: Object.assign({},
-          {"text1": "i", "text2": "j", "text3": "h", "text4": "c", "text5": "d"},
-          {"s2q1": "s2q1o3", "s2q2": "s2q2o3", "s2q3": "s2q3o2", "s2q4": "s2q4o2", "s2q5": "s2q5o1"},
-          {"11": "F", "12": "D", "13": "X", "14": "X", "15": "K", "16": "L", "17": "J", "18": "A", "19": "I", "20": "C"},
-          {"21": "konntest", "22": "würde", "23": "für", "24": "vielen", "25": "gefällt", "26": "denn", "27": "Wenn", "28": "Dann", "29": "ausgeräumt", "30": "weil"},
-          {"31": "doch", "32": "Leitet", "33": "Ankommt", "34": "Nämlich", "35": "Darf", "36": "Als", "37": "Genau", "38": "Erwerben", "39": "Sondern", "40": "Abgeschlossen"}
-        )
+        hoerenCorrect: CORRECT_ANSWERS.hoeren,
+        lesenCorrect: CORRECT_ANSWERS.lesen
       };
 
       function normalizeAnswer(a) {
@@ -3312,8 +3378,68 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
         return s;
       }
 
-      function keyZeroToTen(k) {
-        return k === '0' ? '10' : k;
+      function getHeadingText(headingId) {
+        if (!headingId || headingId === '-') return '-';
+        const headings = {
+          "a": "Für unterwegs: Leckereien im Zugrestaurant In der",
+          "b": "Stadt der warmen Quellen",
+          "c": "Eine Wanderung macht gute Laune",
+          "d": "„Die Arbeit von Forschern erfordert weniger Zeit\"",
+          "e": "Naschen statt wegwerfen",
+          "f": "Neues Thermalbad in Rom",
+          "g": "Reisen: Die beliebtesten Thermalbäder",
+          "h": "Klug durch Schlafen",
+          "i": "Tiere Energiesparmodus",
+          "j": "Licht aus dem Klassenzimmer"
+        };
+        return headings[headingId] || headingId;
+      }
+
+      function getOptionText(questionId, optionId) {
+        if (!optionId || optionId === '-') return '-';
+        const options = {
+          "s2q1o1": "dieser im Vergleich zu Flugreisen oft billiger ist.",
+          "s2q1o2": "man dort leicht mit anderen Fahrgästen ins Gespräch kommt.",
+          "s2q1o3": "sie während der Fahrt meist gut schlafen kann.",
+          "s2q2o1": "hat der Österreichischen Bundesbahn einige Züge abgekauft.",
+          "s2q2o2": "möchte mehr Fahrten über Nacht anbieten.",
+          "s2q2o3": "verzichtete aus ökonomischen Gründen auf eigene Nachtzüge.",
+          "s2q3o1": "empfand Tom Schneider insgesamt als erholsam.",
+          "s2q3o2": "hat Tom Schneiders Sohn begeistert.",
+          "s2q3o3": "möchte Tom Schneider nicht wiederholen.",
+          "s2q4o1": "er im Zug ungern arbeitet.",
+          "s2q4o2": "er mit dem Flugzeug Zeit spart.",
+          "s2q4o3": "es ihm an Bequemlichkeit fehlt.",
+          "s2q5o1": "den Fahrgästen viel Privatsphäre bieten.",
+          "s2q5o2": "vor allem eine finanzkräftige Zielgruppe ansprechen.",
+          "s2q5o3": "zunächst Zielorte nördlich von Frankreich anfahren."
+        };
+        return options[optionId] || optionId;
+      }
+
+      function getSituationText(id) {
+        const situations = {
+          "11": "Ein Bekannter ist ein paar Tage in Berlin und würde sich gerne verschiedene Kunstausstellungen ansehen.",
+          "12": "Eine Bekannte träumt davon, selbst einmal bei einem Film mitzuspielen.",
+          "13": "Ein Freund würde sich gerne einen Dokumentarfilm über Tiere ansehen.",
+          "14": "Eine Freundin sucht einen Nebenjob. Sie würde dabei gerne viel Zeit draußen verbringen.",
+          "15": "hr Cousin ist Student und sucht für die Sommermonate einen Nebenjob.",
+          "16": "Ihre achtjährige Nichte interessiert sich für Tiere und Natur. Sie möchten ihr zum Geburtstag ein Buch schenken.",
+          "17": "Sie möchten eine besondere Stadtführung in Berlin buchen.",
+          "18": "Sie möchten mit Freunden einen unterhaltsamen Film anschauen.",
+          "19": "Sie sind zu einer Kostüm-Party eingeladen und brauchen dafür etwas zum Anziehen.",
+          "20": "Sie würden gerne mit Freunden eine mehrtägige Stadttour machen und suchen ein Angebot."
+        };
+        return situations[id] || id;
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
       }
 
       function readExamResults() {
@@ -3322,7 +3448,6 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
           const hoeren = {};
           const schreiben = { content: '', wordCount: 0 };
 
-          // 1) Try to read from in-memory states exposed by pages
           try {
             if (window._lesenState && window._lesenState.answers) {
               Object.keys(window._lesenState.answers).forEach(k => {
@@ -3351,11 +3476,10 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
                 const keys = Object.keys(answers);
                 if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
               }
-              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0;
+              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0;
             }
           } catch (e) {}
 
-          // 2) Fallback to localStorage if any part is still empty
           try {
             if (Object.keys(lesen).length === 0) {
               const storedL = localStorage.getItem('lesenAnswers');
@@ -3376,12 +3500,11 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
               if (storedS) {
                 const obj = JSON.parse(storedS);
                 schreiben.content = obj.content || '';
-                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0);
+                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0);
               }
             }
           } catch (e) {}
 
-          // final safe return
           return { hoeren, lesen, schreiben };
         } catch (e) {
           return { hoeren: {}, lesen: {}, schreiben: {} };
@@ -3437,43 +3560,230 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
         return { okCount, total, details: d };
       }
 
-      function escapeHtml(s) {
-        return String(s)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
+      function buildTable(title, dets, total, max) {
+        let h = `<div class="result-item">
+                <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
+                <div class="section-table">
+                  <table class="true-false-table">
+                    <thead>
+                      <tr>
+                        <th style="width: 10%">Frage</th>
+                        <th style="width: 40%">Ihre Antwort</th>
+                        <th style="width: 40%">Richtige Antwort</th>
+                        <th style="width: 10%">Ergebnis</th>
+                      </tr>
+                    </thead>
+                    <tbody>`;
+        
+        dets.forEach(x => {
+          const isCorrect = x.richtig;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
+          
+          h += `<tr class="${rowClass}">
+                <td><strong>${x.frage}</strong></td>
+                <td>${escapeHtml(x.user)}</td>
+                <td>${escapeHtml(x.correct)}</td>
+                <td><strong>${resultIcon}</strong></td>
+              </tr>`;
+        });
+        
+        h += `</tbody>
+            </table>
+            <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+              <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
+            </div>
+          </div></div>`;
+        return h;
       }
 
-      function buildTable(title, dets, total, max) {
-        let h = `<h2>${title}</h2>
-                <table class="section-table">
+      function renderLesenDetails(answers) {
+        const c = CORRECT_ANSWERS.lesen;
+        let html = `<div class="result-item">
+                  <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
+        
+        html += `<h4>Teil 1: Überschriften zuordnen</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Text</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+        
+        for (let i = 1; i <= 5; i++) {
+          const key = `text${i}`;
+          const userAnswer = answers[key] || '-';
+          const correctAnswer = c[key] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>Text ${i}</strong></td>
+                    <td>${getHeadingText(userAnswer)}</td>
+                    <td>${getHeadingText(correctAnswer)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Frage</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+        
+        for (let i = 1; i <= 5; i++) {
+          const key = `s2q${i}`;
+          const userAnswer = answers[key] || '-';
+          const correctAnswer = c[key] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>Frage ${i}</strong></td>
+                    <td>${getOptionText(key, userAnswer)}</td>
+                    <td>${getOptionText(key, correctAnswer)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Situation</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+        
+        for (let i = 11; i <= 20; i++) {
+          const key = `${i}`;
+          const userAnswer = answers[key] || '-';
+          const correctAnswer = c[key] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${i}</strong></td>
+                    <td>${userAnswer === 'X' ? 'X - Keine passende Situation' : userAnswer}</td>
+                    <td>${correctAnswer === 'X' ? 'X - Keine passende Situation' : correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Lücke</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+        
+        for (let i = 21; i <= 30; i++) {
+          const key = `${i}`;
+          const userAnswer = answers[key] || '-';
+          const correctAnswer = c[key] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${i}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Lücke</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+        
+        for (let i = 31; i <= 40; i++) {
+          const key = `${i}`;
+          const userAnswer = answers[key] || '-';
+          const correctAnswer = c[key] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${i}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table></div>`;
+        return html;
+      }
+
+      function buildHoerenDetails(answers) {
+        let html = `<table class="true-false-table">
                   <thead>
                     <tr>
                       <th>Frage</th>
                       <th>Ihre Antwort</th>
                       <th>Richtige Antwort</th>
                       <th>Ergebnis</th>
-                      <th>Punkte</th>
                     </tr>
                   </thead>
                   <tbody>`;
         
-        dets.forEach(x => {
-          h += `<tr>
-                  <td>${x.frage}</td>
-                  <td>${escapeHtml(x.user)}</td>
-                  <td>${escapeHtml(x.correct)}</td>
-                  <td>${x.richtig ? '✔️' : '✖️'}</td>
-                  <td>${x.punkte}</td>
-                </tr>`;
-        });
+        for (let i = 19; i <= 38; i++) {
+          const id = i.toString();
+          const userAnswer = normalizeAnswer(answers[id] || '');
+          const correctAnswer = CORRECT_ANSWERS.hoeren[id];
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
         
-        h += `</tbody>
-              </table>
-              <div class="small-muted">Teilpunkte: ${total.toFixed(2)} / ${max}</div>`;
-        return h;
+        html += `</tbody></table>`;
+        return html;
       }
 
       function renderResults() {
@@ -3483,35 +3793,44 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
         const details = document.getElementById('details-ergebnisse');
         const tiles = document.getElementById('topTiles-ergebnisse');
         const sScoreRaw = localStorage.getItem('schreibenScore');
-        const sScore = sScoreRaw ? Number(sScoreRaw) : 0; // Default score is now 0
+        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
 
         details.innerHTML = '';
         tiles.innerHTML = '';
 
         const tL = `<div class="results-tile">
-                    <h3>Lesen</h3>
-                    <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
-                    <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
-                  </div>`;
-                  
+                  <h3>Lesen</h3>
+                  <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
+                  <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
+                </div>`;
+                
         const tH = `<div class="results-tile">
-                    <h3>Hören</h3>
-                    <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
-                    <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
-                  </div>`;
-                  
+                  <h3>Hören</h3>
+                  <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
+                  <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
+                </div>`;
+                
         const tS = `<div class="results-tile">
-                    <h3>Schreiben</h3>
-                    <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
-                    <div class="small-muted">Manuelle Eingabe</div>
-                  </div>`;
-                  
+                  <h3>Schreiben</h3>
+                  <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
+                  <div class="small-muted">Manuelle Eingabe</div>
+                </div>`;
+                
         tiles.innerHTML = tL + tH + tS;
 
-        details.innerHTML += buildTable('Hören — Detail', h.details, h.total, CONFIG.totals.hoeren);
-        details.innerHTML += buildTable('Lesen — Detail', l.details, l.total, CONFIG.totals.lesen);
+        details.innerHTML += `<div class="result-item">
+                            <h2>📊 Detaillierte Ergebnisse</h2>
+                            <div class="instructions">Hier sehen Sie eine detaillierte Auswertung Ihrer Prüfung mit Vergleich Ihrer Antworten mit den korrekten Lösungen.</div>
+                          </div>`;
 
-        let sHtml = '<h2>Schreiben — Ergebnis (manuell)</h2>';
+        details.innerHTML += renderLesenDetails(st.lesen);
+        
+        details.innerHTML += `<div class="result-item">
+                            <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+                            ${buildHoerenDetails(st.hoeren)}
+                          </div>`;
+
+        let sHtml = '<div class="result-item"><h3>✍️ Schreiben - Ihre Antwort</h3>';
         const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
         const wc = st.schreiben.wordCount || '-';
         
@@ -3521,7 +3840,7 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
                   Punkte (0–45): 
                   <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
                   <button id="saveS" class="results-btn">Speichern</button>
-                </div>`;
+                </div></div>`;
                 
         details.innerHTML += sHtml;
 
@@ -3562,7 +3881,6 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
         showPage('start-page');
       };
       
-      // Initialize results on page load
       renderResults();
     }
   </script>
