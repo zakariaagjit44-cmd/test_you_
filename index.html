@@ -378,6 +378,67 @@
             transform: translateY(-2px);
         }
 
+        /* Signup Page */
+        .signup-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .signup-content {
+            text-align: center;
+            padding: 3rem;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(15px);
+            position: relative;
+            z-index: 2;
+            animation: contentSlideUp 0.8s ease;
+        }
+
+        @keyframes contentSlideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dark-mode .signup-content {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .signup-content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from { filter: drop-shadow(0 0 5px rgba(33, 150, 243, 0.5)); }
+            to { filter: drop-shadow(0 0 15px rgba(33, 150, 243, 0.8)); }
+        }
+
+        .signup-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .dark-mode .signup-subtitle {
+            color: #B0BEC5;
+        }
+
         /* Login Page */
         .login-container {
             min-height: 100vh;
@@ -402,11 +463,6 @@
             animation: contentSlideUp 0.8s ease;
         }
 
-        @keyframes contentSlideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         .dark-mode .login-content {
             background: rgba(13, 71, 161, 0.95);
             border: 1px solid rgba(227, 242, 253, 0.2);
@@ -420,11 +476,6 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: titleGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes titleGlow {
-            from { filter: drop-shadow(0 0 5px rgba(33, 150, 243, 0.5)); }
-            to { filter: drop-shadow(0 0 15px rgba(33, 150, 243, 0.8)); }
         }
 
         .login-subtitle {
@@ -509,7 +560,7 @@
             color: var(--white);
         }
 
-        .login-form {
+        .login-form, .signup-form {
             display: flex;
             flex-direction: column;
             gap: 1.2rem;
@@ -524,7 +575,8 @@
             border: 2px solid var(--primary);
             background: rgba(255, 255, 255, 0.9);
             transition: var(--transition);
-            text-align: center;
+            text-align: right;
+            width: 100%;
         }
 
         .form-input:focus {
@@ -538,6 +590,28 @@
             background: rgba(255, 255, 255, 0.1);
             color: var(--light);
             border: 2px solid var(--secondary);
+        }
+
+        .password-input-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-toggle {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.5rem;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary);
         }
 
         /* Menu Page */
@@ -830,6 +904,7 @@
         .kurs-card:nth-child(2) { animation-delay: 0.2s; }
         .kurs-card:nth-child(3) { animation-delay: 0.3s; }
         .kurs-card:nth-child(4) { animation-delay: 0.4s; }
+        .kurs-card:nth-child(5) { animation-delay: 0.5s; }
 
         .dark-mode .kurs-card {
             background: rgba(13, 71, 161, 0.95);
@@ -901,6 +976,50 @@
         .back-to-kurs:hover {
             transform: translateX(-8px) scale(1.05);
             box-shadow: 0 12px 30px rgba(66, 165, 245, 0.4);
+        }
+
+        /* Mündlich Submenu */
+        .mundlich-submenu {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+        }
+
+        .mundlich-submenu.active {
+            display: grid;
+        }
+
+        .mundlich-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(15px);
+            transform: translateY(30px);
+            opacity: 0;
+            animation: cardSlideUp 0.6s ease forwards;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .mundlich-card:nth-child(1) { animation-delay: 0.1s; }
+        .mundlich-card:nth-child(2) { animation-delay: 0.2s; }
+        .mundlich-card:nth-child(3) { animation-delay: 0.3s; }
+
+        .dark-mode .mundlich-card {
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.2);
+        }
+
+        .mundlich-card:hover {
+            transform: translateY(-12px) scale(1.08);
+            box-shadow: var(--shadow-hover);
         }
 
         /* Support Modal */
@@ -1282,6 +1401,28 @@
             color: #B0BEC5;
         }
 
+        .whatsapp-button {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: var(--white);
+            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin: 1.5rem auto;
+            transition: var(--transition);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(37, 211, 102, 0.4);
+        }
+
         /* Toast Notifications */
         .toast-container {
             position: fixed;
@@ -1329,7 +1470,7 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
-            .login-content, .waiting-content, .profile-card, .edit-modal-content {
+            .login-content, .signup-content, .waiting-content, .profile-card, .edit-modal-content {
                 padding: 2rem 1.5rem;
             }
 
@@ -1341,11 +1482,11 @@
                 font-size: 1.1rem;
             }
 
-            .menu-grid, .exams-grid, .kurs-submenu {
+            .menu-grid, .exams-grid, .kurs-submenu, .mundlich-submenu {
                 grid-template-columns: 1fr;
             }
 
-            .menu-card, .exam-card, .kurs-card {
+            .menu-card, .exam-card, .kurs-card, .mundlich-card {
                 padding: 2rem 1.5rem;
             }
 
@@ -1554,7 +1695,12 @@
                 
                 <div class="login-form">
                     <input type="email" class="form-input" id="emailInput" placeholder="البريد الإلكتروني">
-                    <input type="password" class="form-input" id="passwordInput" placeholder="كلمة المرور">
+                    <div class="password-input-container">
+                        <input type="password" class="form-input" id="passwordInput" placeholder="كلمة المرور">
+                        <button class="password-toggle" id="passwordToggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
                     <button class="auth-btn login-btn" id="loginButton">
                         <i class="fas fa-sign-in-alt"></i>
                         <span id="loginBtnText">تسجيل الدخول</span>
@@ -1575,6 +1721,44 @@
                 <div class="subscription-activation" id="subscriptionActivation">
                     <i class="fas fa-crown"></i>
                     <span>تفعيل الاشتراك</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Page -->
+    <div id="signupPage" class="page">
+        <div class="signup-container">
+            <div class="signup-content">
+                <h1 id="signupTitle">إنشاء حساب جديد</h1>
+                <p class="signup-subtitle" id="signupSubtitle">املأ المعلومات التالية لإنشاء حسابك</p>
+                
+                <div class="signup-form">
+                    <input type="text" class="form-input" id="signupName" placeholder="الاسم الكامل">
+                    <input type="email" class="form-input" id="signupEmail" placeholder="البريد الإلكتروني">
+                    <div class="password-input-container">
+                        <input type="password" class="form-input" id="signupPassword" placeholder="كلمة المرور">
+                        <button class="password-toggle" id="signupPasswordToggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="password-input-container">
+                        <input type="password" class="form-input" id="signupConfirmPassword" placeholder="تأكيد كلمة المرور">
+                        <button class="password-toggle" id="signupConfirmPasswordToggle">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <button class="auth-btn signup-btn" id="createAccountButton">
+                        <i class="fas fa-user-plus"></i>
+                        <span id="createAccountText">إنشاء الحساب</span>
+                    </button>
+                </div>
+
+                <div class="auth-buttons">
+                    <button class="auth-btn login-btn" id="backToLoginFromSignup">
+                        <i class="fas fa-arrow-right"></i>
+                        <span id="backToLoginText">العودة لتسجيل الدخول</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1638,6 +1822,12 @@
                     <h3 id="schreibenTitle">Schreiben</h3>
                     <p id="schreibenDescription">تدريبات الكتابة والتعبير الكتابي</p>
                 </div>
+
+                <div class="kurs-card" id="mundlichCard">
+                    <div class="menu-card-icon">🗣️</div>
+                    <h3 id="mundlichTitle">Mündlich</h3>
+                    <p id="mundlichDescription">تدريبات التحدث والتعبير الشفهي</p>
+                </div>
                 
                 <div class="kurs-card" id="pdfsCard">
                     <div class="menu-card-icon">📄</div>
@@ -1689,7 +1879,7 @@
         <div class="exams-container">
             <button class="back-to-kurs" id="backFromSchreiben">
                 <i class="fas fa-arrow-right"></i>
-                <span id="backSchreibenText">العودة إلى KURS</span>
+                                <span id="backSchreibenText">العودة إلى KURS</span>
             </button>
             <div class="header">
                 <h1 id="schreibenPageTitle">Schreiben - الكتابة</h1>
@@ -1698,6 +1888,40 @@
             
             <div class="exams-grid" id="schreibenGrid">
                 <!-- Schreiben exams will be dynamically added here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Mündlich Page -->
+    <div id="mundlichPage" class="page">
+        <div class="exams-container">
+            <button class="back-to-kurs" id="backFromMundlich">
+                <i class="fas fa-arrow-right"></i>
+                <span id="backMundlichText">العودة إلى KURS</span>
+            </button>
+            <div class="header">
+                <h1 id="mundlichPageTitle">Mündlich - التحدث</h1>
+                <p class="page-subtitle" id="mundlichPageSubtitle">اختر تمرين التحدث الذي ترغب في البدء به</p>
+            </div>
+            
+            <div class="mundlich-submenu active" id="mundlichSubmenu">
+                <div class="mundlich-card" id="teil1Card">
+                    <div class="menu-card-icon">1️⃣</div>
+                    <h3 id="teil1Title">Teil 1</h3>
+                    <p id="teil1Description">تدريبات التحدث الجزء الأول</p>
+                </div>
+                
+                <div class="mundlich-card" id="teil2Card">
+                    <div class="menu-card-icon">2️⃣</div>
+                    <h3 id="teil2Title">Teil 2</h3>
+                    <p id="teil2Description">تدريبات التحدث الجزء الثاني</p>
+                </div>
+                
+                <div class="mundlich-card" id="teil3Card">
+                    <div class="menu-card-icon">3️⃣</div>
+                    <h3 id="teil3Title">Teil 3</h3>
+                    <p id="teil3Description">تدريبات التحدث الجزء الثالث</p>
+                </div>
             </div>
         </div>
     </div>
@@ -1847,12 +2071,18 @@
     <div id="waitingPage" class="page">
         <div class="waiting-container">
             <div class="waiting-content">
-                <h1 id="waitingTitle">بانتظار الموافقة</h1>
-                <p id="waitingText">تم استلام طلب تسجيلك بنجاح! جاري مراجعته من قبل المسؤول</p>
+                <h1 id="waitingTitle">بانتظار مراجعة طلبك</h1>
+                <p id="waitingText">تم استقبال طلب التسجيل الخاص بك. نعمل الآن على مراجعة الطلب والتحقق من المعلومات.</p>
                 <div class="waiting-icon">
                     <i class="fas fa-clock fa-4x"></i>
                 </div>
-                <p id="waitingSubtext">سيتم إعلامك عبر البريد الإلكتروني عند الموافقة على طلبك</p>
+                <p id="waitingSubtext">سيتم إبلاغك بالنتيجة في أقرب وقت ممكن. يمكنك التواصل مع المسؤول للمزيد من المعلومات.</p>
+                
+                <button class="whatsapp-button" id="whatsappButton">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>التواصل عبر واتساب</span>
+                </button>
+                
                 <button class="auth-btn login-btn" id="signOutWaiting">
                     <i class="fas fa-sign-out-alt"></i>
                     <span id="signOutWaitingText">تسجيل الخروج</span>
@@ -1890,7 +2120,7 @@
             "GRUND SCHULE.html", "HACHARAT.html", "KELLNER.html", "L9AHWA.html", "LHALWA.html",
             "LI9A7.html", "LICHT.html", "LIMON.html", "MOBARMIJIN.html", "NA7L.html",
             "NAMSA.html", "SCHLAFZUG.html", "SPORT IST GESUND.html", "TANZKURZ.html", "TRANPOLIN.html",
-            "INSEL.html" // إضافة امتحان INSEL
+            "INSEL.html", "L2AL3AB.html", "KINDER HENDY.html", "DROGEN.html", "GELD.html"
         ];
 
         const lesenExams = [
@@ -1898,18 +2128,21 @@
             "BILDER.html", "GELD.html", "GRUNDSCHULE.html", "HACHARAT.html", "HATIF L2ATFAL.html",
             "INSEL.html", "INTIKHABAT.html", "KELLNER.html", "L7ALWA.html", "L9AHWA.html",
             "LI9A7.html", "LICHT.html", "LIMON.html", "MOBARMIJIN.html", "MOKHADIRAT.html",
-            "NA7L.html", "NAMSA.html", "SCHLAFZUG.html", "SPORT IST GESUND.html", "TANZKURS.html", "TRAMPOLIN.html"
+            "NA7L.html", "NAMSA.html", "SCHLAFZUG.html", "SPORT IST GESUND.html", "TANZKURS.html", 
+            "TRAMPOLIN.html", "L2AL3AB.html", "KINDER HENDY.html", "DROGEN.html"
         ];
 
-        const hoerenExams = ["HOREN.html", "HOREN1.html"]; // تغيير الاسماء من HÖREN إلى HOREN
+        const hoerenExams = ["HOREN.html", "HOREN1.html"];
         const schreibenExams = ["SCHREIBEN.html"];
+        const mundlichExams = ["teil1.pdf", "teil2.pdf", "teil3.pdf"];
         const pdfs = [
             "ALBI2A.pdf", "AL3AB.pdf", "ALPEN.pdf", "BATATA.pdf", "BENZIL.pdf",
             "BILDER.pdf", "GELD.pdf", "GRUNDSCHULE.pdf", "HACHARAT.pdf", "HATIF L2ATFAL.pdf",
             "INSEL.pdf", "INTIKHABAT.pdf", "KELLNER.pdf", "L7ALWA.pdf", "L9AHWA.pdf",
             "LI9A7.pdf", "LICHT.pdf", "LIMON.pdf", "MOBARMIJIN.pdf", "MOKHADIRAT.pdf",
             "NA7L.pdf", "NAMSA.pdf", "SCHLAFZUG.pdf", "SPORT IST GESUND.pdf", "TANZKURZ.pdf",
-            "TRAMPOLINE.pdf", "horen.pdf", "horen1.pdf", "Schreiben.pdf" // تغيير أسماء ملفات PDF
+            "TRAMPOLINE.pdf", "horen.pdf", "horen1.pdf", "Schreiben.pdf", "L2AL3AB.pdf",
+            "KINDER HENDY.pdf", "DROGEN.pdf", "GELD.pdf", "teil1.pdf", "teil2.pdf", "teil3.pdf"
         ];
 
         // الترجمات
@@ -1920,6 +2153,10 @@
                 loginBtnText: "تسجيل الدخول",
                 signupBtnText: "إنشاء حساب جديد",
                 guestBtnText: "الدخول كضيف",
+                signupTitle: "إنشاء حساب جديد",
+                signupSubtitle: "املأ المعلومات التالية لإنشاء حسابك",
+                createAccountText: "إنشاء الحساب",
+                backToLoginText: "العودة لتسجيل الدخول",
                 menuTitle: "TEST B2 Training Portal",
                 menuSubtitle: "اختر مجال تعلمك وابدأ التحضير للاختبار",
                 kursTitle: "KURS",
@@ -1936,6 +2173,8 @@
                 hoerenDescription: "تدريبات الاستماع والفهم السمعي",
                 schreibenTitle: "Schreiben",
                 schreibenDescription: "تدريبات الكتابة والتعبير الكتابي",
+                mundlichTitle: "Mündlich",
+                mundlichDescription: "تدريبات التحدث والتعبير الشفهي",
                 pdfsTitle: "PDFs",
                 pdfsDescription: "المواد الدراسية بصيغة PDF للتحميل",
                 backLesenText: "العودة إلى KURS",
@@ -1947,6 +2186,15 @@
                 backSchreibenText: "العودة إلى KURS",
                 schreibenPageTitle: "Schreiben - الكتابة",
                 schreibenPageSubtitle: "اختر تمرين الكتابة الذي ترغب في البدء به",
+                backMundlichText: "العودة إلى KURS",
+                mundlichPageTitle: "Mündlich - التحدث",
+                mundlichPageSubtitle: "اختر تمرين التحدث الذي ترغب في البدء به",
+                teil1Title: "Teil 1",
+                teil1Description: "تدريبات التحدث الجزء الأول",
+                teil2Title: "Teil 2",
+                teil2Description: "تدريبات التحدث الجزء الثاني",
+                teil3Title: "Teil 3",
+                teil3Description: "تدريبات التحدث الجزء الثالث",
                 backPdfsText: "العودة إلى KURS",
                 pdfsPageTitle: "PDFs - المواد الدراسية",
                 pdfsPageSubtitle: "اختر المادة التي ترغب في تحميلها",
@@ -1978,9 +2226,9 @@
                 phoneModalTitle: "تفعيل الاشتراك",
                 phoneModalText: "لتفعيل الاشتراك يرجى التواصل على الرقم التالي:",
                 trialBannerText: "النسخة التجريبية - متبقي:",
-                waitingTitle: "بانتظار الموافقة",
-                waitingText: "تم استلام طلب تسجيلك بنجاح! جاري مراجعته من قبل المسؤول",
-                waitingSubtext: "سيتم إعلامك عبر البريد الإلكتروني عند الموافقة على طلبك",
+                waitingTitle: "بانتظار مراجعة طلبك",
+                waitingText: "تم استقبال طلب التسجيل الخاص بك. نعمل الآن على مراجعة الطلب والتحقق من المعلومات.",
+                waitingSubtext: "سيتم إبلاغك بالنتيجة في أقرب وقت ممكن. يمكنك التواصل مع المسؤول للمزيد من المعلومات.",
                 signOutWaitingText: "تسجيل الخروج",
                 editProfileTitle: "تعديل الملف الشخصي"
             },
@@ -1990,6 +2238,10 @@
                 loginBtnText: "Login",
                 signupBtnText: "Create New Account",
                 guestBtnText: "Login as Guest",
+                signupTitle: "Create New Account",
+                signupSubtitle: "Fill in the following information to create your account",
+                createAccountText: "Create Account",
+                backToLoginText: "Back to Login",
                 menuTitle: "TEST B2 Training Portal",
                 menuSubtitle: "Choose your learning area and start preparing for the exam",
                 kursTitle: "KURS",
@@ -2006,6 +2258,8 @@
                 hoerenDescription: "Listening and auditory comprehension exercises",
                 schreibenTitle: "Schreiben",
                 schreibenDescription: "Writing and written expression exercises",
+                mundlichTitle: "Mündlich",
+                mundlichDescription: "Speaking and oral expression exercises",
                 pdfsTitle: "PDFs",
                 pdfsDescription: "Study materials in PDF format for download",
                 backLesenText: "Back to KURS",
@@ -2017,6 +2271,15 @@
                 backSchreibenText: "Back to KURS",
                 schreibenPageTitle: "Schreiben - Writing",
                 schreibenPageSubtitle: "Choose the writing exercise you want to start with",
+                backMundlichText: "Back to KURS",
+                mundlichPageTitle: "Mündlich - Speaking",
+                mundlichPageSubtitle: "Choose the speaking exercise you want to start with",
+                teil1Title: "Teil 1",
+                teil1Description: "Speaking exercises Part 1",
+                teil2Title: "Teil 2",
+                teil2Description: "Speaking exercises Part 2",
+                teil3Title: "Teil 3",
+                teil3Description: "Speaking exercises Part 3",
                 backPdfsText: "Back to KURS",
                 pdfsPageTitle: "PDFs - Study Materials",
                 pdfsPageSubtitle: "Choose the material you want to download",
@@ -2048,9 +2311,9 @@
                 phoneModalTitle: "Subscription Activation",
                 phoneModalText: "To activate subscription, please contact the following number:",
                 trialBannerText: "Trial Version - Remaining:",
-                waitingTitle: "Waiting for Approval",
-                waitingText: "Your registration request has been received successfully! Being reviewed by admin",
-                waitingSubtext: "You will be notified via email when your request is approved",
+                waitingTitle: "Waiting for Review",
+                waitingText: "Your registration request has been received. We are now reviewing the request and verifying the information.",
+                waitingSubtext: "You will be notified of the result as soon as possible. You can contact the administrator for more information.",
                 signOutWaitingText: "Sign Out",
                 editProfileTitle: "Edit Profile"
             },
@@ -2060,6 +2323,10 @@
                 loginBtnText: "Anmelden",
                 signupBtnText: "Neues Konto erstellen",
                 guestBtnText: "Als Gast anmelden",
+                signupTitle: "Neues Konto erstellen",
+                signupSubtitle: "Füllen Sie die folgenden Informationen aus, um Ihr Konto zu erstellen",
+                createAccountText: "Konto erstellen",
+                backToLoginText: "Zurück zur Anmeldung",
                 menuTitle: "TEST B2 Training Portal",
                 menuSubtitle: "Wählen Sie Ihren Lernbereich und beginnen Sie mit der Prüfungsvorbereitung",
                 kursTitle: "KURS",
@@ -2076,6 +2343,8 @@
                 hoerenDescription: "Hör- und Hörverständnisübungen",
                 schreibenTitle: "Schreiben",
                 schreibenDescription: "Schreib- und schriftliche Ausdrucksübungen",
+                mundlichTitle: "Mündlich",
+                mundlichDescription: "Sprech- und mündliche Ausdrucksübungen",
                 pdfsTitle: "PDFs",
                 pdfsDescription: "Lernmaterialien im PDF-Format zum Download",
                 backLesenText: "Zurück zu KURS",
@@ -2087,6 +2356,15 @@
                 backSchreibenText: "Zurück zu KURS",
                 schreibenPageTitle: "Schreiben - Writing",
                 schreibenPageSubtitle: "Wählen Sie die Schreibübung, mit der Sie beginnen möchten",
+                backMundlichText: "Zurück zu KURS",
+                mundlichPageTitle: "Mündlich - Speaking",
+                mundlichPageSubtitle: "Wählen Sie die Sprechübung, mit der Sie beginnen möchten",
+                teil1Title: "Teil 1",
+                teil1Description: "Sprechübungen Teil 1",
+                teil2Title: "Teil 2",
+                teil2Description: "Sprechübungen Teil 2",
+                teil3Title: "Teil 3",
+                teil3Description: "Sprechübungen Teil 3",
                 backPdfsText: "Zurück zu KURS",
                 pdfsPageTitle: "PDFs - Lernmaterialien",
                 pdfsPageSubtitle: "Wählen Sie das Material aus, das Sie herunterladen möchten",
@@ -2118,9 +2396,9 @@
                 phoneModalTitle: "Abo-Aktivierung",
                 phoneModalText: "Um das Abonnement zu aktivieren, wenden Sie sich bitte an die folgende Nummer:",
                 trialBannerText: "Testversion - Verbleibend:",
-                waitingTitle: "Warten على Genehmigung",
-                waitingText: "Ihre Registrierungsanfrage wurde erfolgreich empfangen! Wird vom Administrator überprüft",
-                waitingSubtext: "Sie werden per E-Mail benachrichtigt, wenn Ihre Anfrage genehmigt wird",
+                waitingTitle: "Warten auf Überprüfung",
+                waitingText: "Ihre Registrierungsanfrage wurde empfangen. Wir überprüfen nun die Anfrage und die Informationen.",
+                waitingSubtext: "Sie werden so schnell wie möglich über das Ergebnis informiert. Sie können sich für weitere Informationen an den Administrator wenden.",
                 signOutWaitingText: "Abmelden",
                 editProfileTitle: "Profil bearbeiten"
             }
@@ -2131,11 +2409,13 @@
             // العناصر الأساسية
             const pages = {
                 login: document.getElementById('loginPage'),
+                signup: document.getElementById('signupPage'),
                 menu: document.getElementById('menuPage'),
                 kurs: document.getElementById('kursPage'),
                 lesen: document.getElementById('lesenPage'),
                 hoeren: document.getElementById('hoerenPage'),
                 schreiben: document.getElementById('schreibenPage'),
+                mundlich: document.getElementById('mundlichPage'),
                 pdfs: document.getElementById('pdfsPage'),
                 exams: document.getElementById('examsPage'),
                 profile: document.getElementById('profilePage'),
@@ -2148,9 +2428,11 @@
             const backFromLesen = document.getElementById('backFromLesen');
             const backFromHoeren = document.getElementById('backFromHoeren');
             const backFromSchreiben = document.getElementById('backFromSchreiben');
+            const backFromMundlich = document.getElementById('backFromMundlich');
             const backFromPdfs = document.getElementById('backFromPdfs');
             const backFromExams = document.getElementById('backFromExams');
             const backFromProfile = document.getElementById('backFromProfile');
+            const backToLoginFromSignup = document.getElementById('backToLoginFromSignup');
 
             // أزرار القائمة
             const kursCard = document.getElementById('kursCard');
@@ -2158,7 +2440,11 @@
             const lesenCard = document.getElementById('lesenCard');
             const hoerenCard = document.getElementById('hoerenCard');
             const schreibenCard = document.getElementById('schreibenCard');
+            const mundlichCard = document.getElementById('mundlichCard');
             const pdfsCard = document.getElementById('pdfsCard');
+            const teil1Card = document.getElementById('teil1Card');
+            const teil2Card = document.getElementById('teil2Card');
+            const teil3Card = document.getElementById('teil3Card');
 
             // عناصر تسجيل الدخول
             const emailInput = document.getElementById('emailInput');
@@ -2166,6 +2452,16 @@
             const loginButton = document.getElementById('loginButton');
             const signupButton = document.getElementById('signupButton');
             const guestButton = document.getElementById('guestButton');
+            const passwordToggle = document.getElementById('passwordToggle');
+
+            // عناصر إنشاء الحساب
+            const signupName = document.getElementById('signupName');
+            const signupEmail = document.getElementById('signupEmail');
+            const signupPassword = document.getElementById('signupPassword');
+            const signupConfirmPassword = document.getElementById('signupConfirmPassword');
+            const createAccountButton = document.getElementById('createAccountButton');
+            const signupPasswordToggle = document.getElementById('signupPasswordToggle');
+            const signupConfirmPasswordToggle = document.getElementById('signupConfirmPasswordToggle');
 
             // عناصر التحكم
             const themeToggle = document.getElementById('themeToggle');
@@ -2199,6 +2495,7 @@
 
             // عناصر صفحة الانتظار
             const signOutWaiting = document.getElementById('signOutWaiting');
+            const whatsappButton = document.getElementById('whatsappButton');
 
             // Toast container
             const toastContainer = document.getElementById('toastContainer');
@@ -2282,11 +2579,18 @@
             }
 
             async function handleSignUp() {
-                const email = emailInput.value.trim();
-                const password = passwordInput.value;
+                const name = signupName.value.trim();
+                const email = signupEmail.value.trim();
+                const password = signupPassword.value;
+                const confirmPassword = signupConfirmPassword.value;
                 
-                if (!email || !password) {
-                    showToast('يرجى إدخال البريد الإلكتروني وكلمة المرور', 'error');
+                if (!name || !email || !password || !confirmPassword) {
+                    showToast('يرجى ملء جميع الحقول', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showToast('كلمة المرور وتأكيدها غير متطابقين', 'error');
                     return;
                 }
                 
@@ -2301,7 +2605,7 @@
                         password,
                         options: {
                             data: {
-                                full_name: email.split('@')[0]
+                                full_name: name
                             }
                         }
                     });
@@ -2310,22 +2614,24 @@
 
                     // إضافة المستخدم إلى جدول طلبات التسجيل
                     if (data.user) {
-                        await addUserToRegistrationRequests(data.user);
+                        await addUserToRegistrationRequests(data.user, name);
                     }
 
-                    showToast('تم إنشاء الحساب بنجاح! يرجى انتظار موافقة المسؤول', 'success');
+                    showToast('تم إنشاء الحساب بنجاح! يرجى انتظار مراجعة المسؤول', 'success');
                     showPage('waiting');
                     
                     // إعادة تعيين الحقول
-                    emailInput.value = '';
-                    passwordInput.value = '';
+                    signupName.value = '';
+                    signupEmail.value = '';
+                    signupPassword.value = '';
+                    signupConfirmPassword.value = '';
                     
                 } catch (error) {
                     showToast('خطأ في إنشاء الحساب: ' + error.message, 'error');
                 }
             }
 
-            async function addUserToRegistrationRequests(user) {
+            async function addUserToRegistrationRequests(user, name) {
                 try {
                     const { data, error } = await supabase
                         .from('registration_requests')
@@ -2333,7 +2639,7 @@
                             {
                                 user_id: user.id,
                                 email: user.email,
-                                full_name: user.email.split('@')[0],
+                                full_name: name,
                                 status: 'pending'
                             }
                         ]);
@@ -2391,20 +2697,6 @@
                 // تم تعطيل الدخول كضيف
                 showToast('الدخول كضيف غير متوفر حالياً', 'warning');
                 return;
-                
-                // الكود القديم:
-                if (isTrialExpired()) {
-                    showToast('انتهت الفترة التجريبية. يرجى التسجيل للاستمرار.', 'error');
-                    showPage('login');
-                    return;
-                }
-                
-                showToast('الوضع الضيف محدود الوصول. يرجى التسجيل للوصول الكامل.', 'info');
-                
-                currentUser = { guest: true };
-                isGuest = true;
-                updateUIForGuestUser();
-                showPage('menu');
             }
 
             function updateUIForLoggedInUser() {
@@ -2576,8 +2868,8 @@
                             return;
                         }
                         // توجيه المستخدم إلى الملف المناسب مع تغيير أسماء ملفات PDF
-                        if (pdf === "horen.pdf" || pdf === "horen1.pdf") {
-                            window.location.href = 'PDFs/' + pdf;
+                        if (pdf === "teil1.pdf" || pdf === "teil2.pdf" || pdf === "teil3.pdf") {
+                            window.location.href = 'KURS/MUNDLICH/' + pdf;
                         } else {
                             window.location.href = 'PDFs/' + pdf;
                         }
@@ -2806,19 +3098,46 @@
                 }
             }
 
+            // وظائف تبديل رؤية كلمة المرور
+            function togglePasswordVisibility(inputId, toggleButton) {
+                const input = document.getElementById(inputId);
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    toggleButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
+                } else {
+                    input.type = 'password';
+                    toggleButton.innerHTML = '<i class="fas fa-eye"></i>';
+                }
+            }
+
+            // وظيفة فتح واتساب
+            function openWhatsApp() {
+                const phoneNumber = '+212649661976';
+                const message = 'مرحبا، أود الاستفسار عن حالة طلب التسجيل الخاص بي';
+                const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                window.open(url, '_blank');
+            }
+
             // إعداد مستمعي الأحداث
             function setupEventListeners() {
                 // تسجيل الدخول والتسجيل
                 loginButton.addEventListener('click', handleLogin);
-                signupButton.addEventListener('click', handleSignUp);
+                signupButton.addEventListener('click', () => showPage('signup'));
+                createAccountButton.addEventListener('click', handleSignUp);
                 guestButton.addEventListener('click', handleGuestLogin);
+                
+                // تبديل رؤية كلمة المرور
+                passwordToggle.addEventListener('click', () => togglePasswordVisibility('passwordInput', passwordToggle));
+                signupConfirmPasswordToggle.addEventListener('click', () => togglePasswordVisibility('signupConfirmPassword', signupConfirmPasswordToggle));
                 
                 // التنقل بين الصفحات
                 backToLogin.addEventListener('click', handleSignOut);
+                backToLoginFromSignup.addEventListener('click', () => showPage('login'));
                 backFromKurs.addEventListener('click', () => showPage('menu'));
                 backFromLesen.addEventListener('click', () => showPage('kurs'));
                 backFromHoeren.addEventListener('click', () => showPage('kurs'));
                 backFromSchreiben.addEventListener('click', () => showPage('kurs'));
+                backFromMundlich.addEventListener('click', () => showPage('kurs'));
                 backFromPdfs.addEventListener('click', () => showPage('kurs'));
                 backFromExams.addEventListener('click', () => showPage('menu'));
                 backFromProfile.addEventListener('click', () => showPage('menu'));
@@ -2831,7 +3150,19 @@
                 lesenCard.addEventListener('click', () => showPage('lesen'));
                 hoerenCard.addEventListener('click', () => showPage('hoeren'));
                 schreibenCard.addEventListener('click', () => showPage('schreiben'));
+                mundlichCard.addEventListener('click', () => showPage('mundlich'));
                 pdfsCard.addEventListener('click', () => showPage('pdfs'));
+                
+                // القائمة الفرعية لـ Mündlich
+                teil1Card.addEventListener('click', () => {
+                    window.location.href = 'KURS/MUNDLICH/teil1.pdf';
+                });
+                teil2Card.addEventListener('click', () => {
+                    window.location.href = 'KURS/MUNDLICH/teil2.pdf';
+                });
+                teil3Card.addEventListener('click', () => {
+                    window.location.href = 'KURS/MUNDLICH/teil3.pdf';
+                });
                 
                 // عناصر التحكم
                 themeToggle.addEventListener('click', () => {
@@ -2865,6 +3196,9 @@
                 closeSupportModal.addEventListener('click', () => {
                     supportModal.style.display = 'none';
                 });
+                
+                // زر واتساب
+                whatsappButton.addEventListener('click', openWhatsApp);
                 
                 // إغلاق النماذج بالنقر خارجها
                 phoneModal.addEventListener('click', (e) => {
@@ -2925,6 +3259,18 @@
                 passwordInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
                         handleLogin();
+                    }
+                });
+                
+                signupPassword.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        handleSignUp();
+                    }
+                });
+                
+                signupConfirmPassword.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        handleSignUp();
                     }
                 });
             }
