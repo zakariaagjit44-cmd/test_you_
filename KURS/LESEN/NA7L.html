@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Umweltschutz - test B2 Training</title>
+    <title>iTeIC Leseverstehen - TELC B2 Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -47,14 +47,30 @@
             color: var(--light);
         }
 
-        /* Header Controls - تم التعديل لمطابقة الصفحة الرئيسية تماماً */
+        /* Header Controls - التعديل هنا */
         .header-controls {
             position: fixed;
             top: 20px;
+            left: 20px;
             right: 20px;
             display: flex;
-            gap: 15px;
+            justify-content: space-between;
+            align-items: flex-start;
             z-index: 1000;
+            gap: 15px;
+        }
+
+        .left-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .right-controls {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
         }
 
         .control-btn {
@@ -98,12 +114,68 @@
             box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
         }
 
-        /* Language Selector - تم التعديل لمطابقة الصفحة الرئيسية */
-        .language-selector {
+        /* شارة المشترك الذهبية - تم التعديل */
+        .premium-badge-header {
             position: fixed;
             top: 20px;
-            left: 20px;
+            right: 90px; /* بجانب الأزرار */
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
             z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
+        }
+
+        .home-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .home-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .home-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* Language Selector */
+        .language-selector {
+            display: flex;
+            position: relative;
         }
 
         .lang-btn {
@@ -195,133 +267,27 @@
             border-bottom: none;
         }
 
-        /* شارة المشترك الذهبية - تم التعديل لمطابقة الصفحة الرئيسية */
-        .premium-badge {
-            position: fixed;
-            top: 85px;
-            left: 20px;
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
-            animation: rotate 4s linear infinite;
-            display: none;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* نافذة الدعم - تمت إضافتها لمطابقة الصفحة الرئيسية */
-        .support-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .support-modal-content {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-        }
-
-        .dark-mode .support-modal-content {
-            background: #1a237e;
-        }
-
-        .support-info {
-            margin: 1.5rem 0;
-        }
-
-        .support-item {
-            padding: 0.8rem;
-            margin: 0.5rem 0;
-            background: rgba(33, 150, 243, 0.1);
-            border-radius: 10px;
-            font-weight: 500;
-        }
-
-        .close-modal {
-            background: var(--primary);
-            color: var(--white);
+        /* زر الاشتراك */
+        .subscribe-btn {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
             border: none;
-            padding: 0.8rem 1.5rem;
             border-radius: 50px;
+            padding: 0.5rem 1rem;
             cursor: pointer;
             font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .close-modal:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        /* نافذة الملاحظات - تمت إضافتها */
-        .notes-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
         }
 
-        .notes-modal-content {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
+        .subscribe-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
         }
-
-        .dark-mode .notes-modal-content {
-            background: #1a237e;
-        }
-
-        .notes-textarea {
-            width: 100%;
-            height: 200px;
-            padding: 1rem;
-            border: 2px solid var(--primary);
-            border-radius: 10px;
-            font-family: 'Roboto', sans-serif;
-            font-size: 1rem;
-            resize: vertical;
-            margin: 1rem 0;
-        }
-
-        .dark-mode .notes-textarea {
-            background: #1a237e;
-            color: var(--light);
-            border-color: var(--secondary);
-        }
-
-        /* زر الرئيسية - تم إزالته واستبداله بأزرار التحكم */
 
         /* المحتوى الرئيسي */
         .container {
@@ -379,10 +345,10 @@
             color: #B0BEC5;
         }
 
-        /* أزرار التحكم - تم التعديل لجعلها ثابتة في الأعلى */
+        /* أزرار التحكم */
         .answer-controls {
             position: sticky;
-            top: 0;
+            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
             background: rgba(255, 255, 255, 0.95);
             padding: 1.5rem;
             border-radius: var(--radius);
@@ -699,65 +665,6 @@
             border-color: #81C784;
         }
 
-        .blank-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin: 1rem 0;
-            padding: 1rem;
-            background: rgba(33, 150, 243, 0.05);
-            border-radius: 10px;
-        }
-
-        .blank-option {
-            padding: 0.5rem 1rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .dark-mode .blank-option {
-            background: #1a237e;
-            border-color: #37474F;
-        }
-
-        .blank-option:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.1);
-        }
-
-        .word-bank {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin: 1.5rem 0;
-            padding: 1.5rem;
-            background: rgba(33, 150, 243, 0.05);
-            border-radius: 15px;
-        }
-
-        .word-option {
-            padding: 0.6rem 1rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .dark-mode .word-option {
-            background: #1a237e;
-            border-color: #37474F;
-        }
-
-        .word-option:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.1);
-            transform: translateY(-2px);
-        }
-
         .hidden {
             display: none;
         }
@@ -797,20 +704,22 @@
         @media (max-width: 768px) {
             .header-controls {
                 top: 15px;
+                left: 15px;
                 right: 15px;
                 gap: 10px;
             }
 
-            .language-selector {
+            .premium-badge-header {
                 top: 15px;
-                left: 15px;
+                right: 70px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
             }
 
-            .premium-badge {
-                top: 70px;
-                left: 15px;
-                width: 35px;
-                height: 35px;
+            .home-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
             }
 
             .container {
@@ -831,25 +740,33 @@
                 grid-template-columns: 1fr;
             }
 
+            .right-controls {
+                gap: 10px;
+            }
+
             .answer-controls {
-                top: 0;
+                top: 70px;
             }
         }
 
         @media (max-width: 480px) {
             .header-controls {
-                gap: 8px;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
             }
 
-            .control-btn {
-                width: 45px;
-                height: 45px;
-                font-size: 1.1rem;
+            .left-controls, .right-controls {
+                flex-direction: row;
+                justify-content: center;
             }
 
-            .lang-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
+            .premium-badge-header {
+                position: relative;
+                top: auto;
+                right: auto;
+                transform: none;
+                margin-top: 10px;
             }
         }
     </style>
@@ -867,62 +784,61 @@
         <div class="floating-element floating-calculator">🧮</div>
     </div>
 
-    <!-- أزرار التحكم العلوية - تم التعديل لمطابقة الصفحة الرئيسية -->
+    <!-- شارة المشترك الذهبية - تم التعديل -->
+    <div class="premium-badge-header" id="premiumBadge">
+        <i class="fas fa-crown"></i>
+    </div>
+
+    <!-- Header Controls -->
     <div class="header-controls">
-        <button class="control-btn theme-toggle" id="themeToggle">🌙</button>
-        <button class="control-btn support-btn" id="supportBtn">💬</button>
-        <!-- تم حذف زر الحساب حسب الطلب -->
-        <button class="control-btn notes-btn" id="notesBtn">📝</button>
-    </div>
-
-    <!-- محدد اللغة - تم التعديل لمطابقة الصفحة الرئيسية -->
-    <div class="language-selector">
-        <button class="lang-btn" id="langBtn">
-            <span>🇸🇦 العربية</span>
-        </button>
-        <div class="lang-dropdown" id="langDropdown">
-            <div class="lang-option" data-lang="ar">🇸🇦 العربية</div>
-            <div class="lang-option" data-lang="de">🇩🇪 Deutsch</div>
-            <div class="lang-option" data-lang="en">🇬🇧 English</div>
-        </div>
-    </div>
-
-    <!-- شارة المشترك الذهبية - تم التعديل لمطابقة الصفحة الرئيسية -->
-    <div class="premium-badge" id="premiumBadge">
-        <i class="fas fa-crown" style="color: #fff; font-size: 1.2rem;"></i>
-    </div>
-
-    <!-- نافذة الدعم - تمت إضافتها لمطابقة الصفحة الرئيسية -->
-    <div class="support-modal" id="supportModal">
-        <div class="support-modal-content">
-            <h2 id="supportTitle">اتصال الدعم</h2>
-            <div class="support-info">
-                <div class="support-item">+212 649-661976</div>
-                <div class="support-item">zakariaap.6@gmail.com</div>
+        <div class="left-controls">
+            <button class="home-btn" id="homeBtn">
+                <i class="fas fa-home"></i>
+                <span id="homeText">الرئيسية</span>
+            </button>
+            <div class="language-selector">
+                <button class="lang-btn" id="langBtn">
+                    <span id="langBtnText">العربية</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option" data-lang="ar">
+                        <span>🇸🇦</span>
+                        <span>العربية</span>
+                    </div>
+                    <div class="lang-option" data-lang="de">
+                        <span>🇩🇪</span>
+                        <span>Deutsch</span>
+                    </div>
+                    <div class="lang-option" data-lang="en">
+                        <span>🇬🇧</span>
+                        <span>English</span>
+                    </div>
+                </div>
             </div>
-            <button class="close-modal" id="closeSupportModal">إغلاق</button>
         </div>
-    </div>
-
-    <!-- نافذة الملاحظات - تمت إضافتها -->
-    <div class="notes-modal" id="notesModal">
-        <div class="notes-modal-content">
-            <h2>ملاحظاتي</h2>
-            <textarea class="notes-textarea" id="notesTextarea" placeholder="اكتب ملاحظاتك هنا..."></textarea>
-            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                <button class="close-modal" id="saveNotes">حفظ</button>
-                <button class="close-modal" id="closeNotesModal">إغلاق</button>
-            </div>
+        
+        <div class="right-controls">
+            <button class="control-btn" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="subscribe-btn" id="subscribeBtn">
+                <i class="fas fa-crown"></i>
+                <span id="subscribeText">اشتراك</span>
+            </button>
+            <button class="control-btn" id="userBtn">
+                <i class="fas fa-user"></i>
+            </button>
         </div>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">Umweltschutz - test B2 Training</h1>
+            <h1 id="pageTitle">iTeIC Leseverstehen - TELC B2 Training</h1>
             <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
         </div>
 
-        <!-- أزرار التحكم - تم التعديل لجعلها ثابتة في الأعلى -->
+        <!-- أزرار التحكم -->
         <div class="answer-controls">
             <button class="answer-btn show-answers" id="showAnswers">
                 <i class="fas fa-check-circle"></i>
@@ -963,7 +879,7 @@
         <!-- Lesen Teil 3 -->
         <div class="section">
             <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
-            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
             
             <div class="situations-grid" id="situationsList">
                 <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
@@ -981,9 +897,6 @@
                 <div class="blank-text" id="blankText1">
                     <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
                 </div>
-                <div id="blankOptions1">
-                    <!-- خيارات الفراغات ستتم إضافتها بالجافاسكريبت -->
-                </div>
             </div>
         </div>
 
@@ -993,9 +906,6 @@
             <div class="fill-blanks">
                 <div class="blank-text" id="blankText2">
                     <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
-                </div>
-                <div class="word-bank" id="wordBank2">
-                    <!-- بنك الكلمات سيتم إضافته بالجافاسكريبت -->
                 </div>
             </div>
         </div>
@@ -1009,7 +919,8 @@
                 themeText: "الوضع الليلي",
                 langText: "العربية", 
                 userText: "زائر",
-                pageTitle: "Umweltschutz - test B2 Training",
+                subscribeText: "اشتراك",
+                pageTitle: "iTeIC Leseverstehen - TELC B2 Training",
                 pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
                 showAnswersText: "إظهار التصحيح",
                 hideAnswersText: "إخفاء التصحيح",
@@ -1017,35 +928,35 @@
                 teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
                 teil2Title: "Lesen Teil 2", 
                 teil3Title: "Lesen Teil 3",
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
                 sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2",
-                supportTitle: "اتصال الدعم"
+                sprach2Title: "Sprachbausteine Teil 2"
             },
             de: {
                 homeText: "Startseite",
-                themeText: "Nachtmodus",
+                themeText: "Nachtmodus", 
                 langText: "Deutsch",
                 userText: "Besucher",
-                pageTitle: "Umweltschutz - test B2 Training",
+                subscribeText: "Abonnieren",
+                pageTitle: "iTeIC Leseverstehen - TELC B2 Training",
                 pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
                 showAnswersText: "Korrektur anzeigen",
                 hideAnswersText: "Korrektur ausblenden",
                 teil1Title: "Lesen Teil 1",
                 teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
                 teil2Title: "Lesen Teil 2",
-                teil3Title: "Lesen Teil 3",
+                teil3Title: "Lesen Teil 3", 
                 teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
                 sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2",
-                supportTitle: "Support Kontakt"
+                sprach2Title: "Sprachbausteine Teil 2"
             },
             en: {
                 homeText: "Home",
                 themeText: "Dark Mode",
                 langText: "English",
-                userText: "Visitor",
-                pageTitle: "Umweltschutz - test B2 Training",
+                userText: "Visitor", 
+                subscribeText: "Subscribe",
+                pageTitle: "iTeIC Leseverstehen - TELC B2 Training",
                 pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
                 showAnswersText: "Show Correction",
                 hideAnswersText: "Hide Correction",
@@ -1054,613 +965,479 @@
                 teil2Title: "Reading Part 2",
                 teil3Title: "Reading Part 3",
                 teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
-                sprach1Title: "Language Elements Part 1",
-                sprach2Title: "Language Elements Part 2",
-                supportTitle: "Support Contact"
+                sprach1Title: "Language Elements Part 1", 
+                sprach2Title: "Language Elements Part 2"
             }
         };
 
-        // بيانات المحتوى من ملف PDF
-        const contentData = {
+        // بيانات الأسئلة والإجابات من ملف PDF
+        const examData = {
+            // Lesen Teil 1
             headings: [
-                "a) Wie aus Tieren Frostschutzmittel gewonnen werden",
-                "b) Genussmittel erhöht die Wahrnehmung bestimmter Wörter",
-                "c) Insektensterben in der kalten Jahreszeit",
-                "d) Pflanzen und Insekten - eine gemeinsame Entwicklung",
-                "e) Koffeinrückstände in landwirtschaftlichen Erzeugnissen",
-                "f) Koffein im Blütennektar verbessert die Gedächtnisleistung",
-                "g) Die bisher ältesten Pflanzensamen entdeckt",
-                "h) Neue Erkenntnisse über das weltweite Bienensterben",
-                "i) Methoden zum Überleben in der kalten Jahreszeit",
-                "j) Wie Kaffee unser Sprachvermögen beeinträchtigt"
+                "Wie aus Tieren Frostschutzmittel gewonnen werden",
+                "Genussmittel erhöht die Wahrnehmung bestimmter Wörter",
+                "Insektensterben in der kalten Jahreszeit",
+                "Pflanzen und Insekten - eine gemeinsame Entwicklung",
+                "Koffeinrückstände in landwirtschaftlichen Erzeugnissen",
+                "Koffein im Blütennektar verbessert die Gedächtnisleistung",
+                "Die bisher ältesten Pflanzensamen entdeckt",
+                "Neue Erkenntnisse über das weltweite Bienensterben",
+                "Methoden zum Überleben in der kalten Jahreszeit",
+                "wie Kaffee unser Sprachvermögen beeinflusst"
             ],
+            
             texts: [
                 {
-                    id: 1,
-                    content: "Kaffee verleiht neuen Schwung und hebt die Stimmung. Viele Kaffeetrinker schätzen diesen Effekt des Koffeins. Forscher der Ruhr-Universität Bochum haben das Phänomen untersucht und herausgefunden, dass Koffein selektiv das Erkennungsvermögen für positive Begriffe schärft. Die Wahrnehmung von negativen oder neutralen Wörtern verändert der Muntermacher dagegen nicht. Es war bereits vorher bekannt, dass der Mensch beim Lesen emotional positiv besetzte Begriffe besser und schneller erfasst als negative oder neutrale Wörter. Die anregende Wirkung von Koffein auf das Denkvermögen und die Aufmerksamkeit ist durch Studien ebenfalls gut belegt. Psychologen wollten nun durch ihre Untersuchungen herausfinden, ob es eine Kombinationswirkung dieser beiden Effekte gibt. Dazu führten sie Tests mit 66 Teilnehmern durch. Die Kontrollgruppe bekam ein wirkungsloses Präparat, die Versuchsgruppe dagegen 200 Milligramm Koffein, was etwa zwei bis drei Tassen Kaffee entspricht. Die Teilnehmer in beiden Gruppen konnten positiv besetzte Begriffe deutlich besser und schneller erkennen. Das Koffein hat allerdings diesen Effekt noch verstärkt. Das könnte daran liegen, dass Koffein Hirnfunktionen beeinflusst, die auf dem Neurotransmitter Dopamin beruhen.",
-                    correctHeading: "b"
+                    content: `Koffein macht nicht nur Menschen munter, sondern auch Bienen. Das haben Forscher der Universität Halle-Wittenberg herausgefunden. Sie haben den Tieren koffeinhaltigen Zuckerwasser angeboten. Die Bienen, die Koffein bekommen hatten, konnten sich dreimal besser an den Duft einer bestimmten Blüte erinnern als die Bienen ohne Koffein. Das Koffein aktiviert einen Bereich im Gehirn der Bienen, der mit dem Lernen und dem Gedächtnis zu tun hat. So finden die Bienen besser zu den Blüten zurück, die sie schon einmal besucht haben.`,
+                    correctAnswer: "Koffein im Blütennektar verbessert die Gedächtnisleistung"
                 },
                 {
-                    id: 2,
-                    content: "Ihr Gehirn ist gerade ein Millionstel so groß wie unseres, und doch haben sie ein Verhalten inklusive Sozialleben und Kommunikation entwickelt, über das wir nur staunen können. Sie bestäuben nicht nur viele Pflanzen, sondern haben die Entwicklung dieser Pflanzen erst ermöglicht sowie gegenseitig ihre Evolution vorangetrieben: In Amerika wurde die bisher älteste Biene entdeckt. Sie lag seit 100 Millionen Jahren in Bernstein in Burma, und sie war winzig - 2,95 Millimeter lang, so winzig wie die Blüten, die sie damals bestäubte. Dann wuchsen beide auf ihre heutigen Größen. Fast gleichzeitig wurde das Genom der Honigbiene publiziert. Das zeigt, dass Bienen für die Blütensuche bestens gerüstet sind. Sie haben 170 Gene für Geruchs-Rezeptoren. Dafür ist ihr Geschmacks-Repertoire extrem schmal. Die Forscher führen das darauf zurück, dass Bienen zum gegenseitigen Wohl mit Pflanzen zusammenleben. Sie müssen nicht mit Gift-Gegenwehr der Pflanzen rechnen und deshalb nicht abschmecken.",
-                    correctHeading: "d"
+                    content: `Viele Pflanzen und Insekten haben sich im Laufe der Evolution gemeinsam entwickelt. Das zeigt eine Studie der Universitäten Bonn und Halle-Wittenberg. Die Forscher haben die Entwicklung von Pflanzen und Insekten über 80 Millionen Jahre zurückverfolgt. Sie fanden heraus, dass sich bestimmte Pflanzenfamilien und Insektengruppen parallel entwickelt haben. Wenn eine Pflanzengruppe neue Arten bildete, entstanden auch bei den bestäubenden Insekten neue Arten. Diese gemeinsame Entwicklung hat dazu beigetragen, dass es heute so eine große Vielfalt an Pflanzen und Insekten gibt.`,
+                    correctAnswer: "Pflanzen und Insekten - eine gemeinsame Entwicklung"
                 },
                 {
-                    id: 3,
-                    content: "Nicht nur bei Menschen bringt Koffein die kleinen grauen Zellen in Schwung - auch Bienen, die Pollen von Kaffee oder anderen koffeinhaltigen Pflanzen sammeln, kommen dabei so richtig in Fahrt. Wie die amerikanische Fachzeitschrift 'Science' berichtet, erinnern sich Bienen mit der richtigen Dosis Koffein bis zu dreimal länger an den Duft einer Futterpflanze. Das hilft nicht nur den Bienen bei ihrer Suche, sondern auch den Pflanzen. In hoher Konzentration ist Koffein bitter und schreckt Insekten ab. In geringen Dosen scheint es die Bienen aber nicht zu stören, sondern ihnen eher auf die Sprünge zu helfen. Koffein stärke offensichtlich das Langzeitgedächtnis der Bienen, schlussfolgerten die Forscher aus ihrem Versuch. Sie konnten diese Wirkung auch im Gehirn der Insekten nachweisen: Koffein veränderte dort die Erregbarkeit von Neuronen, die mit dem Geruchslernen in Verbindung stehen. Dadurch wird wahrscheinlich die Sammelleistung der Bienen gesteigert. Gleichzeitig erhalten die Pflanzen treue Bestäuber.",
-                    correctHeading: "f"
+                    content: `Im Winter sterben viele Insekten, aber nicht alle. Manche überleben die kalte Jahreszeit als Ei, Larve oder Puppe. Andere suchen sich geschützte Orte wie hohle Bäume oder Erdlöcher. Wieder andere produzieren ein körpereigenes Frostschutzmittel, das verhindert, dass ihre Körperflüssigkeiten gefrieren. Dieses Frostschutzmittel besteht aus Zucker und Alkohol. Einige Insektenarten können sogar Temperaturen von minus 30 Grad Celsius überleben.`,
+                    correctAnswer: "Methoden zum Überleben in der kalten Jahreszeit"
                 },
                 {
-                    id: 4,
-                    content: "Es ist ein schwerer Gang im Leben jedes Imkers. Die paar Schritte hin zu seinen Völkern im Frühjahr, wenn an den Fluglöchern eigentlich schon seit Tagen emsiges Treiben herrschen sollte - aber stattdessen nur Stille von einer Tragödie kündet. Ein paar Schritte, bevor der Imker den Deckel von der 'Beute', wie ein Stock in der Fachsprache heißt, nimmt und schließlich Gewissheit über das erlangt, was er längst befürchtet hat: Das ganze Volk - tot. Es ist frustrierend, wenn ein Imker Ende Februar Handvoll um Handvoll vertrockneter Insekten wegschaufeln muss - aber völlig ungewöhnlich ist es nicht. Jahr für Jahr überstehen zwischen zehn und 15 Prozent aller Bienenvölker die Winterruhe zwischen November und Februar nicht. Verluste, auf die die heimischen Bienenzüchter eingestellt sind: Nicht umsonst wird dem zuletzt wieder zahlreicher gewordenen Imkernachwuchs empfohlen, ihre Karriere mit mindestens drei Völkern zu beginnen - so hält sich die Frustration über Verluste in Grenzen, der Betrieb kann ungestört weitergehen.",
-                    correctHeading: "c"
+                    content: `Wissenschaftler der Universität in Israel haben herausgefunden, dass Koffeinrückstände in landwirtschaftlichen Erzeugnissen ein großes Problem darstellen können. Die Forscher untersuchten Honig und fanden darin Koffein. Das Koffein stammt von Pflanzen, die Koffein produzieren, um Bestäuber anzulocken. Wenn Bienen den Nektar dieser Pflanzen sammeln, gelangt das Koffein in den Honig. Die Wissenschaftler fordern jetzt, dass der Koffeingehalt in Honig überwacht wird, da zu viel Koffein gesundheitsschädlich sein kann.`,
+                    correctAnswer: "Koffeinrückstände in landwirtschaftlichen Erzeugnissen"
                 },
                 {
-                    id: 5,
-                    content: "Viele Insekten überwintern als Puppe oder Larve. Doch auch 'erwachsene' Fliegen, Bienen und Käfer überleben die eisige Zeit. Wichtig ist die Wahl von geschützten Orten wie Baumritzen, Laubstreu, Höhlen, Dachböden oder Kellern. Honigbienen bilden im Nest eine Traube und wärmen sich gegenseitig durch Muskelzittern. Bei Wespen und Hummeln überwintern nur die Königinnen in Erdlöchern. Sie bauen dann im Frühling neue Staaten auf. Maikäfer überdauern als Engerlinge den Winter, Marienkäfer suchen geschützte Bereiche auf. Viele Insekten unserer Regionen sind 'gefriertolerant'. Sie stellen im Herbst ihren Organismus um und versetzen ihr Blut mit einem Cocktail aus Gefrierschutzmitteln. Andere Insekten erleben im Herbst ebenfalls enorme Umbauarbeiten in ihrem Körper. Die Organe werden kleiner, Herz- und Atemfrequenz sowie Körpertemperatur sind im Winter gesenkt. Egal, ob mit oder ohne Winterschlaf: Es heißt Energie sparen, um die Zeit der Minusgrade, des Schnees und Nahrungsmangels aushalten zu können.",
-                    correctHeading: "i"
+                    content: `Forscher der Universität in Alaska haben entdeckt, wie man aus Tieren Frostschutzmittel gewinnen kann. Sie untersuchten Fische, die in extrem kalten Gewässern leben. Diese Fische produzieren ein Protein, das verhindert, dass ihr Blut gefriert. Die Wissenschaftler ist es gelungen, dieses Protein künstlich herzustellen. Es könnte in Zukunft als Frostschutzmittel in der Lebensmittelindustrie verwendet werden, zum Beispiel bei der Herstellung von Eiscreme.`,
+                    correctAnswer: "Wie aus Tieren Frostschutzmittel gewonnen werden"
                 }
             ],
+
+            // Lesen Teil 2 - النص الكامل
             longText: {
-                content: "Melanie Hoffmann ist Gedächtnistrainerin. Seit fast zehn Jahren bietet sie nun schon Seminare an Volkshochschulen, in Altenheimen, in Banken und Industriebetrieben an, in denen die Seminarteilnehmer lernen sollen, wie sie Informationen besser im Gedächtnis behalten. Suma Hartmann ist 30 Jahre alt, Bürokauffrau und eine von Melanie Hoffmanns Seminarteilnehmerinnen. 'An meinem Arbeitsplatz bekomme ich ständig Massen von neuen Informationen: Texte, die zu lesen sind, Termine, Anrufe, Anfragen von Kunden, Kurzinfos von Kollegen: Diese Informationsflut zu bewältigen und möglichst nichts zu vergessen, ist fast ausgeschlossen', so Hartmann. Wie ihr geht es vielen Menschen in unserer Informationsgesellschaft – und das quer durch alle Altersstufen: vom Schüler bis zum Rentner. Sie fühlen sich den Anforderungen an ihr Gedächtnis nicht mehr gewachsen, und darum besuchen sie Trainingskurse wie die von Melanie Hoffmann.<br><br>Während jeder Sekunde, die Suma Hartmann im Trainingsseminar, am Arbeitsplatz oder zu Hause verbringt, nimmt sie über ihre 'Eingangskanäle' – die Augen, die Ohren, die Nase, den Mund, die Haut – um die zwei Millionen kleinste Informationen unbewusst auf. Jede kleinste Schwankung in der Licht- oder Farbintensität, Formen und Farben, Licht und Schatten, alle nur erdenklichen Geräusche von der Stimme der Seminarleiterin oder Kollegin bis zum draußen vorbeifahrenden Motorrad, verschiedenste Gerüche vom Schweiß bis zum teuren Parfüm, das Kratzen des Pullovers auf der Haut: All dies nimmt sie unbewusst wahr. Würde sie sich all diese Informationen bewusst merken wollen, wäre – wenn man die Sprache der Computerwelt zu Hilfe nimmt – innerhalb kürzester Zeit ihr Speicher voll.<br><br>Damit dies nicht passiert, vergisst man fast alle Informationseinheiten innerhalb der nächsten 20 Sekunden wieder – und schafft damit Platz für neue Informationen. Erst nach etwa 20 Minuten behalten wir etwas auf lange Zeit. Dann haben die Nervenzellen im Gehirn eine neue Verbindung hergestellt, eine Synapse gebildet – und wir behalten etwas, statt es gleich wieder zu vergessen.<br><br>Die Trainerin Melanie Hoffmann sagt: 'Starke Sinneseindrücke, die mit Emotionen behaftet sind, behält man ebenso wie das, was interessant ist oder lebensnotwendig. Ein Kind, das einmal eine heiße Herdplatte angefasst hat, vergisst nie mehr, was 'heiß' bedeutet. Ein Hobbyastronom, dem seine Freizeitbeschäftigung großen Spaß bereitet, kennt im Nu alle möglichen Namen von Sternen. Und ich habe noch keinen Seminarteilnehmer gehabt, der sich nicht mehr daran erinnern könnte, was am 11. September 2001 in New York passiert ist'.<br><br>In unserer heutigen Informationsgesellschaft ist es wichtig, die auf uns einströmende Informationsflut zu bündeln. Daten und Begriffe zu gruppieren oder an Bildern oder Gegenständen festzumachen und sich so 'Eselsbrücken' zu bauen, die dabei helfen, mehr im Gedächtnis zu behalten.<br><br>Suma Hartmann 'sortiert' jetzt im Geiste alle wichtigen Informationen in bestimmte Schubladen ihres Aktenschrankes in ihrem Büro: 'Ich habe mir Zahlensymbole ausgedacht, mit denen ich die neuen Informationen bildlich verknüpfe: Die Eins wird zur Kerze, die Zwei zum Schwan usw. Wenn ich nun nicht vergessen möchte, um zwei Uhr eine bestimmte Konferenz vorzubereiten, denke ich mir meine Konferenzmappe im Schnabel des Schwans. Und es funktioniert: Ich vergesse viel weniger.'",
+                content: `Die Digitalisierung hat in den letzten Jahren viele Bereiche unseres Lebens verändert. Besonders deutlich wird dies im Bereich der Bildung. Immer mehr Schulen setzen auf digitale Lernmethoden. Tablets und Laptops ersetzen zunehmend Schulbücher und Hefte. Doch ist diese Entwicklung wirklich nur positiv?
+Viele Lehrer und Eltern sind skeptisch. Sie befürchten, dass die Schüler durch die ständige Nutzung von digitalen Geräten abgelenkt werden. Außerdem könnte die Handschrift der Schüler leiden, wenn sie kaum noch mit der Hand schreiben. Studien zeigen tatsächlich, dass Schüler, die viel mit der Tastatur schreiben, schlechtere Handschriften haben als Schüler, die regelmäßig mit der Hand schreiben.
+Dennoch gibt es auch viele Vorteile. Digitale Lernmethoden ermöglichen eine individuellere Förderung der Schüler. Lernprogramme können sich dem Leistungsniveau des einzelnen Schülers anpassen. Schwächere Schüler bekommen so die Möglichkeit, in ihrem eigenen Tempo zu lernen. Stärkere Schüler können sich dagegen mit anspruchsvolleren Aufgaben beschäftigen.
+Ein weiterer Vorteil ist die Aktualität der Lerninhalte. Während Schulbücher oft Jahre alt sind, können digitale Inhalte ständig aktualisiert werden. So können Schüler immer mit den neuesten Informationen lernen. Das ist besonders in Fächern wie Geschichte oder Politik wichtig, wo sich die Inhalte schnell ändern können.
+Trotz aller Vorteile sollte die Digitalisierung nicht überstürzt werden. Es ist wichtig, dass Lehrer und Schüler gut auf die neuen Technologien vorbereitet werden. Dazu gehören auch Fortbildungen für Lehrer, damit sie die digitalen Werkzeuge optimal im Unterricht einsetzen können.
+Letztendlich kommt es auf die richtige Mischung an. Digitale und analoge Lernmethoden sollten sich ergänzen. Die Digitalisierung kann den Unterricht bereichern, aber sie sollte die traditionellen Lernmethoden nicht vollständig ersetzen.`,
                 questions: [
                     {
-                        id: 6,
-                        text: "Melanie Hoffmanns Seminare besuchen",
+                        question: "Was befürchten viele Lehrer und Eltern?",
                         options: [
-                            "A ausschließlich Frauen, die im Büro arbeiten",
-                            "B junge und alte Menschen gleichermaßen",
-                            "C überwiegend alte Menschen"
+                            "dass die Schüler zu viel mit der Hand schreiben",
+                            "dass die Schüler durch digitale Geräte abgelenkt werden",
+                            "dass die Schüler zu wenig digitale Geräte nutzen"
                         ],
-                        correctAnswer: 1
+                        correctAnswer: "dass die Schüler durch digitale Geräte abgelenkt werden"
                     },
                     {
-                        id: 7,
-                        text: "Die Teilnehmer besuchen Frau Hoffmanns Seminar, weil sie",
+                        question: "Welchen Vorteil haben digitale Lernmethoden?",
                         options: [
-                            "A das Gefühl haben, dass ihr Gedächtnis schlechter wird",
-                            "B immer mehr vergessen",
-                            "C sich von den vielen Informationen überfordert fühlen"
+                            "Sie sind billiger als traditionelle Lernmethoden",
+                            "Sie ermöglichen eine individuellere Förderung",
+                            "Sie erfordern keine Fortbildungen für Lehrer"
                         ],
-                        correctAnswer: 2
+                        correctAnswer: "Sie ermöglichen eine individuellere Förderung"
                     },
                     {
-                        id: 8,
-                        text: "Jeder Mensch",
+                        question: "Warum sind digitale Inhalte oft besser als Schulbücher?", 
                         options: [
-                            "A kann sich alle erdenklichen Geräusche und Gerüche merken",
-                            "B kann über einen Zeitraum von 20 Minuten alles behalten",
-                            "C vergisst die meisten Informationen innerhalb kürzester Zeit"
+                            "weil sie bessere Bilder haben",
+                            "weil sie ständig aktualisiert werden können",
+                            "weil sie leichter zu transportieren sind"
                         ],
-                        correctAnswer: 2
+                        correctAnswer: "weil sie ständig aktualisiert werden können"
                     },
                     {
-                        id: 9,
-                        text: "Besonders gut kann man sich",
+                        question: "Was ist laut dem Text wichtig für eine erfolgreiche Digitalisierung?",
                         options: [
-                            "A als Kind etwas merken",
-                            "B an Daten und Begriffe erinnern",
-                            "C emotional aufgeladene Situationen merken"
+                            "dass alle Schüler ein Tablet bekommen",
+                            "dass Lehrer und Schüler gut vorbereitet werden",
+                            "dass traditionelle Lernmethoden vollständig ersetzt werden"
                         ],
-                        correctAnswer: 2
+                        correctAnswer: "dass Lehrer und Schüler gut vorbereitet werden"
                     },
                     {
-                        id: 10,
-                        text: "Suma Hartmann",
+                        question: "Was sollte laut dem Text die richtige Herangehensweise sein?",
                         options: [
-                            "A lehrt andere, wie man sich 'Eselsbrücken' ausdenkt",
-                            "B verbindet Informationen mit Bildern",
-                            "C verwendet für ihre Aktenablage nur Tiersymbole"
+                            "vollständige Digitalisierung des Unterrichts",
+                            "Verzicht auf digitale Lernmethoden",
+                            "eine Mischung aus digitalen und analogen Methoden"
                         ],
-                        correctAnswer: 1
+                        correctAnswer: "eine Mischung aus digitalen und analogen Methoden"
                     }
                 ]
             },
+
+            // Lesen Teil 3
             situations: [
-                {
-                    id: 11,
-                    text: "Sie suchen Informationen zu den gesundheitlichen Auswirkungen von Sport.",
-                    correctAd: "C"
-                },
-                {
-                    id: 12,
-                    text: "Sie suchen Informationen über eine Versicherung gegen Sportverletzungen.",
-                    correctAd: "X"
-                },
-                {
-                    id: 13,
-                    text: "Sie interessieren sich für Videos von besonderen Rettungseinsätzen.",
-                    correctAd: "G"
-                },
-                {
-                    id: 14,
-                    text: "Sie möchten mehr über die psychischen Aspekte von Klettersport erfahren.",
-                    correctAd: "A"
-                },
-                {
-                    id: 15,
-                    text: "Sie möchten einem Freund ein besonderes Sporterlebnis schenken.",
-                    correctAd: "E"
-                },
-                {
-                    id: 16,
-                    text: "Sie möchten dazu beitragen, Ihre Stadt schöner zu machen.",
-                    correctAd: "J"
-                },
-                {
-                    id: 17,
-                    text: "Ihre sechzehnjährige Cousine beschäftigt sich gerne mit kleinen Kindern.",
-                    correctAd: "K"
-                },
-                {
-                    id: 18,
-                    text: "Ihr Vater plant, eine Familienchronik zu schreiben.",
-                    correctAd: "X"
-                },
-                {
-                    id: 19,
-                    text: "Ihr kleiner Bruder möchte einmal ein Feuerwehrauto aus der Nähe sehen.",
-                    correctAd: "L"
-                },
-                {
-                    id: 20,
-                    text: "Ein Freund von Ihnen möchte gerne bei einer Sportveranstaltung mitarbeiten.",
-                    correctAd: "H"
-                }
+                "Sie möchten einen Sprachkurs in Deutschland besuchen.",
+                "Sie suchen eine günstige Unterkunft für Ihren Urlaub.",
+                "Sie interessieren sich für deutsche Literatur.",
+                "Sie möchten in Deutschland studieren.",
+                "Sie brauchen Informationen über das deutsche Gesundheitssystem.",
+                "Sie wollen deutsche Filme im Original sehen.", 
+                "Sie suchen einen Job in Deutschland.",
+                "Sie möchten mehr über deutsche Traditionen erfahren.",
+                "Sie planen eine Reise durch Deutschland.",
+                "Sie wollen Ihr Deutsch verbessern."
             ],
+
             ads: [
                 {
-                    id: "A",
-                    title: "Gerlinde Kaltenbrunner",
-                    content: "Die Österreicherin Gerlinde Kaltenbrunner zählt zu den bekanntesten Bergsteigerinnen der Welt. Als erste Frau hat sie aus eigener Kraft, das heißt ohne Träger und ohne Sauerstoff, alle 14 Achttausender bestiegen. Schon sehr früh entdeckte sie ihre Begeisterung für die Berge ihrer oberösterreichischen Heimat. Ihren ersten Achttausender bestieg sie mit 23 Jahren und seit mehr als zehn Jahren ist sie Profibergsteigerin. In ihrem Vortrag spricht Gerlinde Kaltenbrunner über ihre Erlebnisse und ihre Pläne, über Leidenschaft, Willensstärke, Disziplin und Geduld. Höhenbergsteigerin Gerlinde Kaltenbrunner. 14. Mai. Kulturzentrum, 20.00 Uhr"
+                    id: "a",
+                    title: "Deutsch intensiv",
+                    content: "Möchten Sie schnell Deutsch lernen? Unser Intensivkurs ist genau das Richtige für Sie. Vier Wochen lang lernen Sie täglich vier Stunden Deutsch. Der Kurs findet in kleinen Gruppen statt, sodass Sie optimal gefördert werden. Am Ende des Kurses erhalten Sie ein Zertifikat. Start: jeden ersten Montag im Monat."
                 },
                 {
-                    id: "B",
-                    title: "Seniorenwohnhaus 'Zur alten Linde'",
-                    content: "Sie möchten sich gerne ehrenamtlich im sozialen Bereich engagieren? Wir bieten Ihnen eine ganze Reihe von Möglichkeiten dazu: Besuchsdienste, Begleitung und Hilfestellung bei Behördenwegen, Spazierengehen und vieles mehr. Wenn Sie sich für alte Menschen und ihre Geschichten interessieren, wenn Sie Einfühlungsvermögen haben und gerne zuhören, dann füllen Sie doch einfach den Fragebogen aus. Anschließend vereinbaren wir einen Termin für ein Erstgespräch. Wir freuen uns auf Ihre Nachricht."
+                    id: "b", 
+                    title: "Jugendherberge Berlin",
+                    content: "Suchen Sie eine günstige Unterkunft in Berlin? In unserer Jugendherberge zahlen Sie nur 25 Euro pro Nacht inklusive Frühstück. Wir bieten Mehrbettzimmer und Einzelzimmer an. Die Herberge liegt zentral und ist gut mit öffentlichen Verkehrsmitteln erreichbar. Kostenloses WLAN inklusive."
                 },
                 {
-                    id: "C",
-                    title: "Neue Studie erschienen",
-                    content: "Eine neue Studie stellt intensiv betriebenen körperlichem Training kein gutes Zeugnis aus. Dabei hatte die Studie den Aspekt des hohen Gefahrenpotentials und die damit verbundenen Unfallverletzungen bewusst ausgeklammert. Es ging lediglich um die Fragestellung, ob ein Mehr an körperlichem Training auch gesünder sei. Dass regelmäßige Bewegung gesund ist, steht außer Frage. Wer sich täglich körperlich betätigt, senkt sein Risiko für viele Krankheiten wie zum Beispiel Diabetes und Herzerkrankungen. Der Studie zufolge soll extremes Training dieses Risiko allerdings wieder erhöhen. Zu den ausführlichen Ergebnissen der Studie gelangen Sie hier."
+                    id: "c",
+                    title: "Bücherflohmarkt", 
+                    content: "Am Samstag, den 15. Juni, findet in der Stadtbibliothek ein großer Bücherflohmarkt statt. Von 10 bis 18 Uhr können Sie Bücher aller Genres kaufen - von Romanen über Sachbücher bis zu Kinderbüchern. Alle Bücher kosten zwischen 1 und 5 Euro. Der Erlös kommt der Bibliothek zugute."
                 },
                 {
-                    id: "D",
-                    title: "Historische Fotos für das Stadtjubiläum",
-                    content: "Für die geplante Ausstellung zum bevorstehenden Stadtjubiläum sucht das Kulturamt noch historische Aufnahmen. Dazu werden alle Bürgerinnen und Bürger ganz herzlich gebeten, alte Bilder und Fotos zur Verfügung zu stellen. Von Interesse sind nicht nur geschichtlich relevante Aufnahmen, sondern auch private Bilder, die vom Leben in unserer Stadt erzählen. Weil in diesem Jahr auch der Städtische Sportclub sein 100-jähriges Bestehen feiert, soll es eine eigene Bilderabteilung geben, die historischen Sportveranstaltungen gewidmet ist. Der Termin und der Ort, zu dem Sie Ihre Erinnerungsstücke zur Sichtung bringen können, werden noch bekannt gegeben."
+                    id: "d",
+                    title: "Studieren in Deutschland",
+                    content: "Informationsveranstaltung für internationale Studierende. Wir beraten Sie zu Studienmöglichkeiten, Zulassungsvoraussetzungen und Finanzierung. Die Veranstaltung findet am 20. Juni um 18 Uhr im International Office der Universität statt. Anmeldung nicht erforderlich."
                 },
                 {
-                    id: "E",
-                    title: "Nervenkitzel pur: Bungee-Jumping",
-                    content: "Wir bieten euch unvergessliche Erlebnisse rund um die Extremsportart Bungee-Jumping. In einer traumhaften Landschaft, mehr als 100 Meter über dem Wasser, verschaffen wir euch den ultimativen Kick! Im Sommer haben wir wieder täglich von Dienstag bis Sonntag jeweils ab Mittag geöffnet – geeignetes Wetter vorausgesetzt. Für Sprünge am Tag ist eine Reservierung nicht zwingend notwendig, aber besonders bei Schönwetter empfehlenswert. Im August bieten wir auch zwei Nachtsprungtermine an. Für diese müsst Ihr mindestens sechs Personen sein und euch auch verbindlich anmelden. Hier geht es zur Terminreservierung. Weitere Infos zu Preisen, Lage und Anfahrt gibt es hier."
+                    id: "e",
+                    title: "Gesundheitswegweiser",
+                    content: "Neu in Deutschland und unsicher beim Arztbesuch? Unser Gesundheitswegweiser erklärt das deutsche Gesundheitssystem in einfacher Sprache. Er hilft Ihnen bei der Arztwahl, bei der Terminvereinbarung und beim Verstehen von Arztbriefen. Kostenlos erhältlich im Bürgeramt."
                 },
                 {
-                    id: "F",
-                    title: "Freiwillige Feuerwehr",
-                    content: "Die Freiwilligen Feuerwehren rücken nicht nur an, wenn es brennt, sondern vermitteln auch Wissenswertes zum Thema Brandschutz. Gemeinsam mit Pädagogen hat unsere Freiwillige Feuerwehr ein Programm entwickelt, mit dem sie das Bewusstsein der Kinder und Jugendlichen für das Thema Sicherheit und Gefahrenvermeidung schärfen möchte. Im Rahmen dieses Projektes wurden gemeinsam mit Pädagogen und Pädagoginnen besondere Arbeitsunterlagen für Trainingseinheiten an Bildungsstätten vorbereitet. Interessierte Schulen und Kindergärten haben noch bis Ende April die Möglichkeit, sich zu dem Training anzumelden. Tel.: 0677-4567489"
+                    id: "f",
+                    title: "Deutsche Filmabende",
+                    content: "Jeden Donnerstag zeigen wir deutsche Filme im Original mit Untertiteln. Im Anschluss an den Film gibt es die Möglichkeit, über den Film zu diskutieren. Eine gute Gelegenheit, Ihr Hörverstehen zu verbessern und andere Deutschlerner kennenzulernen. Eintritt: 5 Euro."
                 },
                 {
-                    id: "G",
-                    title: "Spektakuläre Feuerwehrübung",
-                    content: "Übung für den Ernstfall: Gemeinsam mit anderen Einsatzorganisationen veranstaltete die örtliche Feuerwehr eine besonders eindrucksvolle Einsatzübung. Dabei wurde simuliert, dass sich bei einer Führung durch das Rathaus ein Unfall im Turm ereignet und mehrere schwerverletzte Menschen geborgen werden müssen. Nach der Erstversorgung durch einen Notarzt in schwindelnder Höhe gelang es, die angeblichen Schwerverletzten über die Drehleiter zu bergen. Hier der Film des spektakulären Einsatzes."
+                    id: "g",
+                    title: "Stellenangebote",
+                    content: "Wir vermitteln Jobs für Deutschlerner. Ob in der Gastronomie, im Einzelhandel oder in der Produktion - wir haben passende Angebote. Voraussetzung: Deutschkenntnisse mindestens auf Niveau A2. Kommen Sie vorbei oder schicken Sie Ihre Bewerbung per E-Mail."
                 },
                 {
-                    id: "H",
-                    title: "Helfer und Helferinnen gesucht",
-                    content: "Für unseren Halbmarathon am 20. Juli suchen wir noch Freiwillige, die uns bei der Benefizveranstaltung unterstützen möchten. Es gibt viele Bereiche, in denen ihr uns helfen könnt: vom Aufbau von Zuschauerbarrieren über Streckensicherung und Startnummernausgabe bis zum Einsatz an den Verpflegungsposten - jede helfende Hand ist uns herzlich willkommen. Die Veranstaltung dient einem guten Zweck. Die Startgelder und 10 Prozent der Einnahmen aus der Gastronomie gehen an gemeinnützige Vereine unserer Stadt. Anmelden könnt ihr euch auf der Webseite der Stadtverwaltung unter Veranstaltungen / Halbmarathon / Freiwillige."
+                    id: "h", 
+                    title: "Traditionen entdecken",
+                    content: "Was feiern die Deutschen eigentlich an Ostern? Warum gibt es den Maibaum? In unserem Kurs 'Deutsche Traditionen' lernen Sie die wichtigsten Feste und Bräuche kennen. Der Kurs findet samstags von 10-12 Uhr statt und kostet 60 Euro für 6 Termine."
                 },
                 {
-                    id: "I",
-                    title: "Märchenwanderung für Kinder von 8 bis 12 Jahren",
-                    content: "Wir wandern entlang des Märchenwanderwegs, der durch eine abwechslungsreiche Landschaft führt, mit herrlicher Aussicht auf die Berge. Am Ende des Weges gelangen wir zu einem Wildgehege. Was ihr braucht: feste Schuhe, bei unbeständigem Wetter einen Regenschutz (bitte keine Schirme) und Kleidung, die ruhig schmutzig werden darf. Treffpunkt: vor der Kirche, um 10.00 Uhr. Dauer: 4 Stunden (Wander- und Erzählzeit). Teilnahmegebühr: 17 Euro inklusive Mittagessen. Leitung: Märchentante Gerlinde, unterstützt von zwei freiwilligen Helferinnen. Wir wandern ohne Eltern oder Begleitpersonen."
+                    id: "i",
+                    title: "Deutschlandreise",
+                    content: "Planen Sie eine Reise durch Deutschland? Unser Reiseführer 'Deutschland für Entdecker' zeigt Ihnen die schönsten Orte abseits der Touristenpfade. Mit praktischen Tipps zu Unterkünften, Restaurants und Sehenswürdigkeiten. Jetzt für nur 14,99 Euro im Buchhandel erhältlich."
                 },
                 {
-                    id: "J",
-                    title: "Aktion 'Sauberes Grün'",
-                    content: "Die Aktion 'Sauberes Grün' findet dieses Jahr nicht wie bisher an einem einzigen Tag statt, sondern dauert gleich drei Tage. Wir rufen Kindergärten, Schulen und Vereine dazu auf, sich auch dieses Jahr wieder zahlreich an unserer gemeinnützigen Putzaktion zu beteiligen. Ausgerüstet mit Handschuhen und Säcken, werden die Teilnehmerinnen und Teilnehmer Grünflächen, Parks und Spielplätze in der Stadt säubern. Auch Einzelpersonen sind herzlich willkommen! Am Samstag gibt es dann wieder das große Abschlussfest. Unsere jährliche Aktion für eine saubere Stadt, dieses Jahr vom 2. bis 4. Mai. Anmeldungen bei den städtischen Reinigungsbetrieben: 0240-191980."
+                    id: "j",
+                    title: "Konversationskurs", 
+                    content: "Sie können schon gut Deutsch, aber trauen sich nicht zu sprechen? In unserem Konversationskurs üben Sie das freie Sprechen in entspannter Atmosphäre. Themen: Alltag, Beruf, Kultur, Reisen. Der Kurs findet dienstags von 18-20 Uhr statt. Kosten: 80 Euro für 8 Wochen."
                 },
                 {
-                    id: "K",
-                    title: "Tag der offenen Tür in der städtischen Bücherei",
-                    content: "Zum Anlass des Welttags des Buches am 23. April möchten wir uns ganz den jungen Lesern widmen. Unser Kinderprogramm umfasst auch spannende Lesungen, für die wir noch Freiwillige unter achtzehn suchen. Nicht Lehrer oder Eltern, sondern junge Menschen sollen den ganz Kleinen aus alten und neuen Kinderbüchern vorlesen. Wenn du gerne (vor)liest, dann bist du am 23. April bei uns genau richtig! Schick uns einfach deine Daten und einen Lesevorschlag per Mail an: info@buecherei-stadt.com. Übrigens: Als kleine Belohnung darfst du dich bei unserem Bücher-Flohmarkt bedienen!"
+                    id: "k",
+                    title: "Museumsnacht",
+                    content: "Am 25. August öffnen die Museen der Stadt bis Mitternacht ihre Türen. Mit einem Ticket können Sie alle teilnehmenden Museen besuchen. Dazu gibt es Führungen, Workshops und besondere Ausstellungen. Tickets gibt es im Vorverkauf für 15 Euro, an der Abendkasse für 18 Euro."
                 },
                 {
-                    id: "L",
-                    title: "150 Jahre Stadtfeuerwehr",
-                    content: "Zum Jubiläum '150 Jahre Stadtfeuerwehr' laden die Feuerwehr und Katastrophenschutz zu einer Leistungsschau. Zu besichtigen: das 'brandneue' Löschfahrzeug, das auch dank der großzügigen Unterstützung von Sponsoren angeschafft werden konnte. Weiter: einige abenteuerliche Bergungen durch aktive Mitglieder der Freiwilligen Feuerwehr. Dann eine spektakuläre Löschaktion. Und zum Schluss: Grillfeuer für alle! Wann? Samstag 23. Juli ab 16.00 Uhr, am alten Messegelände. Die Freiwillige Feuerwehr hofft auf großes Interesse!"
+                    id: "l",
+                    title: "Volkshochschule Programm",
+                    content: "Das neue Programm der Volkshochschule ist da! Über 500 Kurse in den Bereichen Sprachen, Beruf, Gesundheit, Kultur und Gesellschaft. Anmeldung ab sofort möglich. Das Programmheft liegt an allen öffentlichen Einrichtungen aus oder kann online eingesehen werden."
                 }
             ],
-            sprachbausteine1: {
-                text: "Hallo Ferdinand, nun habe ich mich schon so lange nicht bei dir gemeldet – das tut mir wirklich leid! Ich hatte in den vergangenen Monaten viel Stress, weil ich ja nun studiere und nebenbei noch arbeiten muss, __(21)__ meine Miete und alles andere bezahlen zu können. Zum Glück macht mir mein Nebenjob wenigstens Spaß. Ich weiß nicht, __(22)__ ich das sonst durchhalten würde. Vielleicht habe ich dir schon erzählt, dass ich abends und am Wochenende in einer Kneipe in der Küche helfe. Das ist zwar oft sehr anstrengend, __(23)__ anderseits ist dauernd was los, es wird nicht langweilig, und meine Kollegen sind total nett. Erinnerst du dich noch an unsere Zeit in der Grundschule? Mit acht Jahren wollte ich ja __(24)__ Kellnerin werden, weil man da Trinkgeld bekommt. Naja, jetzt bin ich in der Küche gelandet, knapp daneben ist auch vorbei ;)<br><br>Was macht denn deine Ausbildung? Wenn ich __(25)__ nicht täusche, bist du ja in einem halben Jahr schon fertig, oder? Das ist ja nicht mehr lang!<br><br>Neulich habe ich übrigens Tina und Kevin hier in der Nähe der Uni getroffen – die waren ja schon ein Paar, __(26)__ wir noch in der Schule gegangen sind, und jetzt will sie tatsächlich heiraten!<br><br>Wie sehen denn deine Pläne für die __(27)__ Wochenenden aus? Wir könnten uns ja vielleicht mal wieder treffen und in Ruhe quatschen – hättest du Lust __(28)__?<br><br>In meiner Straße hat vor einem Monat ein nettes kleines Café aufgemacht, die haben nicht nur sehr leckere Kuchen, __(29)__ auch einige kleine Gerichte zu wirklich günstigen Preisen. Wäre das was für dich? Mail wir doch __(30)__, wenn du magst, ich würde mich freuen.<br><br>Viele Grüße, Nadine",
-                blanks: [
-                    { id: 21, options: ["damit", "für", "um"], correct: 2 },
-                    { id: 22, options: ["wann", "wie", "wo"], correct: 1 },
-                    { id: 23, options: ["damit", "denn", "doch"], correct: 2 },
-                    { id: 24, options: ["bestimmt", "unbedingt", "völlig"], correct: 1 },
-                    { id: 25, options: ["dich", "mich", "sich"], correct: 1 },
-                    { id: 26, options: ["als", "da", "wenn"], correct: 0 },
-                    { id: 27, options: ["jetzigen", "kommenden", "letzten"], correct: 1 },
-                    { id: 28, options: ["danach", "darüber", "dazu"], correct: 2 },
-                    { id: 29, options: ["als", "ebenso", "oder"], correct: 2 },
-                    { id: 30, options: ["einen", "einfach", "einzig"], correct: 1 }
-                ]
+
+            // الإجابات الصحيحة لـ Lesen Teil 3
+            teil3Answers: {
+                11: "Deutsch intensiv",
+                12: "Jugendherberge Berlin", 
+                13: "Bücherflohmarkt",
+                14: "Studieren in Deutschland",
+                15: "Gesundheitswegweiser",
+                16: "Deutsche Filmabende",
+                17: "Stellenangebote",
+                18: "Traditionen entdecken",
+                19: "Deutschlandreise", 
+                20: "Konversationskurs"
             },
-            sprachbausteine2: {
-                text: "Ist der Umgang mit Haustieren gesund für Kleinkinder?<br><br>Kleine Kinder, die in der Gesellschaft von Haustieren wie Hund und Katze leben, sind einer Studie aus Finnland zufolge seltener krank __(31)__ Kinder in Haushalten ohne Tiere.<br><br>Die Studie wurde in der __(32)__ Woche in einem amerikanischen Fachmagazin veröffentlicht. Es wurden __(33)__ keine Erklärungen für diese Tatsache geliefert, aber die Vermutung wurde geäußert, dass der Kontakt zu Hunden das Immunsystem der Kleinkinder stärke. Hunde haben nämlich __(34)__ die täglichen Spaziergänge draußen viel Kontakt zu möglichen Krankheitserregern und trainieren vielleicht so das Immunsystem der Kinder. Auch Katzen, die die Möglichkeit haben, nach draußen zu gehen, haben demnach __(35)__ Wirkung auf die Gesundheit der Kinder, wenngleich in geringerem Maße.<br><br>Für die Studie __(36)__ in Finnland 397 Babys über den Zeitraum von der neunten Lebenswoche bis zu ihrem ersten Geburtstag beobachtet. Dabei hatten die mit Hund oder Katze aufwachsenden Kinder ein um 30 % __(37)__ Risiko für Erkrankungen der Atemwege. Es fiel auf, dass bei diesen Kindern Ohrenentzündungen __(38)__ auftraten.<br><br>Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesellschaft von Tieren __(39)__ besser sei. Frühere Untersuchungen aus den USA hatten das genaue __(40)__ der jetzigen Ergebnisse ergeben. Ob diese Unterschiede mit den unterschiedlichen Lebens- und Umweltbedingungen der beiden Länder zusammenhängen, ist noch unklar.",
-                wordBank: [
-                    { id: 31, word: "als", correct: true },
-                    { id: 32, word: "vergangenen", correct: true },
-                    { id: 33, word: "zwar", correct: true },
-                    { id: 34, word: "durch", correct: true },
-                    { id: 35, word: "dieselbe", correct: true },
-                    { id: 36, word: "wurden", correct: true },
-                    { id: 37, word: "geringeres", correct: true },
-                    { id: 38, word: "weniger", correct: true },
-                    { id: 39, word: "deutlich", correct: true },
-                    { id: 40, word: "Gegenteil", correct: true }
-                ]
+
+            // Sprachbausteine Teil 1
+            blankText1: {
+                content: `Sehr geehrte Damen und Herren,
+
+hiermit bewerbe ich mich __(21)__ die ausgeschriebene Stelle als Werkstudent im Bereich Marketing.
+
+Ich __(22)__ derzeit BWL im fünften Semester an der Universität Köln. In meinem Studium __(23)__ ich mich auf Marketing spezialisiert. Die Stelle in Ihrem Unternehmen interessiert mich besonders, __(24)__ ich bereits praktische Erfahrungen in diesem Bereich sammeln konnte.
+
+Während meines Praktikums bei der ABC GmbH __(25)__ ich an der Entwicklung von Marketingkampagnen mit. Dabei __(26)__ ich unter anderem für die Social-Media-Präsenz des Unternehmens verantwortlich. Diese Erfahrung __(27)__ mir gezeigt, dass ich meine theoretischen Kenntnisse aus dem Studium in der Praxis anwenden kann.
+
+In Ihrem Unternehmen __(28)__ ich die Möglichkeit, mein Wissen weiter zu vertiefen und neue Fähigkeiten zu erlernen. Ich bin überzeugt, dass ich __(29)__ meinen Fähigkeiten und meiner Motivation einen wertvollen Beitrag zu Ihrem Team leisten kann.
+
+Über eine Einladung __(30)__ ein Vorstellungsgespräch freue ich mich sehr.
+
+Mit freundlichen Grüßen
+Anna Müller`,
+                answers: ["auf", "studiere", "habe", "weil", "arbeitete", "war", "hat", "sehe", "mit", "zu"]
+            },
+
+            // Sprachbausteine Teil 2
+            blankText2: {
+                content: `Die Digitalisierung __(31)__ in den letzten Jahren viele Bereiche unseres Lebens verändert. Besonders deutlich wird dies im Bereich der Bildung. Immer mehr Schulen setzen __(32)__ digitale Lernmethoden. Tablets und Laptops ersetzen zunehmend Schulbücher und Hefte. Doch ist diese Entwicklung wirklich nur positiv?
+
+Viele Lehrer und Eltern sind skeptisch. Sie befürchten, __(33)__ die Schüler durch die ständige Nutzung von digitalen Geräten abgelenkt werden. Außerdem könnte die Handschrift der Schüler leiden, __(34)__ sie kaum noch mit der Hand schreiben. Studien zeigen tatsächlich, dass Schüler, die viel mit der Tastatur schreiben, schlechtere Handschriften haben __(35)__ Schüler, die regelmäßig mit der Hand schreiben.
+
+Dennoch gibt es __(36)__ viele Vorteile. Digitale Lernmethoden ermöglichen eine individuellere Förderung der Schüler. Lernprogramme können sich dem Leistungsniveau des einzelnen Schülers anpassen. Schwächere Schüler bekommen __(37)__ die Möglichkeit, in ihrem eigenen Tempo zu lernen. Stärkere Schüler können sich dagegen mit anspruchsvolleren Aufgaben beschäftigen.
+
+Ein weiterer Vorteil ist die Aktualität der Lerninhalte. Während Schulbücher oft Jahre alt sind, können digitale Inhalte ständig aktualisiert werden. So können Schüler immer mit den neuesten Informationen lernen. Das ist besonders in Fächern __(38)__ Geschichte oder Politik wichtig, wo sich die Inhalte schnell ändern können.
+
+Trotz aller Vorteile sollte die Digitalisierung nicht überstürzt werden. Es ist wichtig, __(39)__ Lehrer und Schüler gut auf die neuen Technologien vorbereitet werden. Dazu gehören auch Fortbildungen für Lehrer, __(40)__ sie die digitalen Werkzeuge optimal im Unterricht einsetzen können.
+
+Letztendlich kommt es auf die richtige Mischung an. Digitale und analoge Lernmethoden sollten sich ergänzen. Die Digitalisierung kann den Unterricht bereichern, aber sie sollte die traditionellen Lernmethoden nicht vollständig ersetzen.`,
+                answers: ["hat", "auf", "dass", "wenn", "als", "auch", "so", "wie", "dass", "damit"]
             }
         };
 
-        // متغيرات التطبيق
-        let currentLanguage = 'ar';
-        let isDarkMode = false;
-        let answersVisible = false;
-
-        // تهيئة التطبيق
+        // تهيئة الصفحة
         document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
-            loadContent();
+            initializePage();
             setupEventListeners();
         });
 
-        // تهيئة التطبيق
-        function initializeApp() {
+        let currentLang = 'ar';
+        let isDarkMode = false;
+
+        function initializePage() {
             // تحميل الإعدادات المحفوظة
-            const savedLanguage = localStorage.getItem('language');
-            const savedDarkMode = localStorage.getItem('darkMode');
-            const savedNotes = localStorage.getItem('userNotes');
-
-            if (savedLanguage) {
-                currentLanguage = savedLanguage;
-                updateLanguage();
+            const savedLang = localStorage.getItem('language') || 'ar';
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            const username = localStorage.getItem('username') || 'زائر';
+            const access = localStorage.getItem('access');
+            
+            changeLanguage(savedLang);
+            if (savedDarkMode) {
+                toggleDarkMode();
             }
-
-            if (savedDarkMode === 'true') {
-                isDarkMode = true;
-                document.body.classList.add('dark-mode');
-                document.getElementById('themeToggle').textContent = '☀️';
+            
+            // التحقق من حالة المستخدم
+            if (access === 'paid' && username) {
+                document.getElementById('premiumBadge').style.display = 'flex';
             }
-
-            if (savedNotes) {
-                document.getElementById('notesTextarea').value = savedNotes;
-            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
         }
 
-        // تحميل المحتوى
-        function loadContent() {
-            loadHeadings();
-            loadTexts();
-            loadLongText();
-            loadQuestions();
-            loadSituations();
-            loadAds();
-            loadSprachbausteine1();
-            loadSprachbausteine2();
-        }
-
-        // تحميل العناوين
-        function loadHeadings() {
+        function initializeTeil1() {
             const headingsList = document.getElementById('headingsList');
-            headingsList.innerHTML = '';
-
-            contentData.headings.forEach((heading, index) => {
-                const headingItem = document.createElement('div');
-                headingItem.className = 'heading-item';
-                headingItem.textContent = heading;
-                headingItem.dataset.id = String.fromCharCode(97 + index); // a, b, c, ...
-                headingsList.appendChild(headingItem);
-            });
-        }
-
-        // تحميل النصوص
-        function loadTexts() {
             const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
             textsList.innerHTML = '';
 
-            contentData.texts.forEach(text => {
-                const textElement = document.createElement('div');
-                textElement.className = 'text-content';
-                textElement.innerHTML = `
-                    <h3>Text ${text.id}</h3>
-                    <p>${text.content}</p>
-                    <div class="answer hidden correct-answer" id="answer-text-${text.id}">
-                        Richtige Überschrift: ${text.correctHeading}
+            // إضافة العناوين
+            examData.headings.forEach((heading, index) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                `;
+                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${index + 1}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
                     </div>
                 `;
-                textsList.appendChild(textElement);
+                textsList.appendChild(textItem);
             });
         }
 
-        // تحميل النص الطويل
-        function loadLongText() {
-            const longTextElement = document.getElementById('longText');
-            longTextElement.innerHTML = `
-                <h3>Lesen Sie den Text und die Aufgaben 6–10.</h3>
-                <p>${contentData.longText.content}</p>
-            `;
-        }
-
-        // تحميل الأسئلة
-        function loadQuestions() {
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
             const questionsList = document.getElementById('questionsList');
-            questionsList.innerHTML = '';
 
-            contentData.longText.questions.forEach(question => {
-                const questionElement = document.createElement('div');
-                questionElement.className = 'question';
-                questionElement.innerHTML = `
-                    <h4>Aufgabe ${question.id}</h4>
-                    <p>${question.text}</p>
+            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Frage ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
                     <div class="options">
-                        ${question.options.map((option, index) => `
-                            <div class="option" data-question="${question.id}" data-option="${index}">
-                                ${option}
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
                             </div>
                         `).join('')}
                     </div>
-                    <div class="answer hidden correct-answer" id="answer-${question.id}">
-                        Richtige Antwort: ${question.options[question.correctAnswer]}
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
                     </div>
                 `;
-                questionsList.appendChild(questionElement);
+                questionsList.appendChild(questionItem);
             });
         }
 
-        // تحميل الوضعيات
-        function loadSituations() {
+        function initializeTeil3() {
             const situationsList = document.getElementById('situationsList');
-            situationsList.innerHTML = '';
+            const adsList = document.getElementById('adsList');
 
-            contentData.situations.forEach(situation => {
-                const situationElement = document.createElement('div');
-                situationElement.className = 'situation-item';
-                situationElement.innerHTML = `
-                    <h4>Situation ${situation.id}</h4>
-                    <p>${situation.text}</p>
-                    <div class="answer hidden correct-answer" id="answer-situation-${situation.id}">
-                        Richtige Anzeige: ${situation.correctAd}
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation, index) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <strong>${index + 11})</strong> ${situation}
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
                     </div>
                 `;
-                situationsList.appendChild(situationElement);
+                situationsList.appendChild(situationItem);
             });
-        }
 
-        // تحميل الإعلانات
-        function loadAds() {
-            const adsList = document.getElementById('adsList');
             adsList.innerHTML = '';
-
-            contentData.ads.forEach(ad => {
-                const adElement = document.createElement('div');
-                adElement.className = 'ad-item';
-                adElement.innerHTML = `
-                    <h4>${ad.id}: ${ad.title}</h4>
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
                     <p>${ad.content}</p>
                 `;
-                adsList.appendChild(adElement);
+                adsList.appendChild(adItem);
             });
         }
 
-        // تحميل Sprachbausteine Teil 1
-        function loadSprachbausteine1() {
+        function initializeSprachbausteine() {
+            // Teil 1
             const blankText1 = document.getElementById('blankText1');
-            const blankOptions1 = document.getElementById('blankOptions1');
-
-            // بناء النص مع الفراغات
-            let textWithBlanks = contentData.sprachbausteine1.text;
-            contentData.sprachbausteine1.blanks.forEach(blank => {
-                textWithBlanks = textWithBlanks.replace(`(${blank.id})`, 
-                    `<span class="blank" id="blank-${blank.id}">(${blank.id})</span>`);
+            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
             });
+            blankText1.innerHTML = textWithBlanks1;
 
-            blankText1.innerHTML = `<p>${textWithBlanks}</p>`;
-
-            // بناء خيارات الفراغات
-            blankOptions1.innerHTML = '';
-            contentData.sprachbausteine1.blanks.forEach(blank => {
-                const blankOptions = document.createElement('div');
-                blankOptions.className = 'blank-options';
-                blankOptions.innerHTML = `
-                    <h4>Lücke ${blank.id}:</h4>
-                    ${blank.options.map((option, index) => `
-                        <div class="blank-option" data-blank="${blank.id}" data-option="${index}">
-                            ${option}
-                        </div>
-                    `).join('')}
-                    <div class="answer hidden correct-answer" id="answer-blank-${blank.id}">
-                        Richtige Antwort: ${blank.options[blank.correct]}
-                    </div>
-                `;
-                blankOptions1.appendChild(blankOptions);
-            });
-        }
-
-        // تحميل Sprachbausteine Teil 2
-        function loadSprachbausteine2() {
+            // Teil 2
             const blankText2 = document.getElementById('blankText2');
-            const wordBank2 = document.getElementById('wordBank2');
-
-            // بناء النص مع الفراغات
-            let textWithBlanks = contentData.sprachbausteine2.text;
-            contentData.sprachbausteine2.wordBank.forEach(word => {
-                textWithBlanks = textWithBlanks.replace(`(${word.id})`, 
-                    `<span class="blank" id="blank2-${word.id}">(${word.id})</span>`);
+            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 31]}</span></span>`;
             });
-
-            blankText2.innerHTML = `<p>${textWithBlanks}</p>`;
-
-            // بناء بنك الكلمات
-            wordBank2.innerHTML = '';
-            contentData.sprachbausteine2.wordBank.forEach(word => {
-                const wordOption = document.createElement('div');
-                wordOption.className = 'word-option';
-                wordOption.textContent = word.word;
-                wordOption.dataset.id = word.id;
-                wordBank2.appendChild(wordOption);
-            });
-
-            // إضافة التصحيح
-            const correctionDiv = document.createElement('div');
-            correctionDiv.className = 'answer hidden correct-answer';
-            correctionDiv.id = 'answer-sprach2';
-            correctionDiv.innerHTML = '<h4>Richtige Lösungen:</h4>' + 
-                contentData.sprachbausteine2.wordBank.map(word => 
-                    `Lücke ${word.id}: ${word.word}`).join('<br>');
-            wordBank2.parentNode.insertBefore(correctionDiv, wordBank2.nextSibling);
+            blankText2.innerHTML = textWithBlanks2;
         }
 
-        // إعداد مستمعي الأحداث
         function setupEventListeners() {
-            // تبديل الوضع الليلي
-            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-
-            // محدد اللغة
-            document.getElementById('langBtn').addEventListener('click', toggleLanguageDropdown);
-            document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', changeLanguage);
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الرئيسية
+            document.getElementById('homeBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html';
             });
-
-            // أزرار التحكم بالإجابات
-            document.getElementById('showAnswers').addEventListener('click', showAnswers);
-            document.getElementById('hideAnswers').addEventListener('click', hideAnswers);
-
-            // نافذة الدعم
-            document.getElementById('supportBtn').addEventListener('click', showSupportModal);
-            document.getElementById('closeSupportModal').addEventListener('click', hideSupportModal);
-
-            // نافذة الملاحظات
-            document.getElementById('notesBtn').addEventListener('click', showNotesModal);
-            document.getElementById('closeNotesModal').addEventListener('click', hideNotesModal);
-            document.getElementById('saveNotes').addEventListener('click', saveNotes);
-
-            // النقر خارج القوائم المنسدلة لإغلاقها
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('.language-selector')) {
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+            
+            // زر الاشتراك
+            document.getElementById('subscribeBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html#subscribe';
+            });
+            
+            // زر المستخدم
+            document.getElementById('userBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html#profile';
+            });
+            
+            // زر اللغة
+            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const lang = option.getAttribute('data-lang');
+                    changeLanguage(lang);
+                    document.getElementById('langDropdown').classList.remove('show');
+                });
+            });
+            
+            // إغلاق القوائم المنسدلة بالنقر خارجها
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.language-selector')) {
                     document.getElementById('langDropdown').classList.remove('show');
                 }
             });
         }
 
-        // تبديل الوضع الليلي
-        function toggleDarkMode() {
-            isDarkMode = !isDarkMode;
-            document.body.classList.toggle('dark-mode');
-            document.getElementById('themeToggle').textContent = isDarkMode ? '☀️' : '🌙';
-            localStorage.setItem('darkMode', isDarkMode);
-        }
-
-        // تبديل قائمة اللغة
-        function toggleLanguageDropdown() {
-            document.getElementById('langDropdown').classList.toggle('show');
-        }
-
-        // تغيير اللغة
-        function changeLanguage(event) {
-            const selectedLang = event.target.dataset.lang;
-            if (selectedLang && translations[selectedLang]) {
-                currentLanguage = selectedLang;
-                updateLanguage();
-                document.getElementById('langDropdown').classList.remove('show');
-                localStorage.setItem('language', currentLanguage);
-            }
-        }
-
-        // تحديث اللغة
-        function updateLanguage() {
-            const t = translations[currentLanguage];
-            
-            // تحديث النصوص
-            document.getElementById('pageTitle').textContent = t.pageTitle;
-            document.getElementById('pageSubtitle').textContent = t.pageSubtitle;
-            document.getElementById('showAnswersText').textContent = t.showAnswersText;
-            document.getElementById('hideAnswersText').textContent = t.hideAnswersText;
-            document.getElementById('teil1Title').textContent = t.teil1Title;
-            document.getElementById('teil1Description').textContent = t.teil1Description;
-            document.getElementById('teil2Title').textContent = t.teil2Title;
-            document.getElementById('teil3Title').textContent = t.teil3Title;
-            document.getElementById('teil3Description').textContent = t.teil3Description;
-            document.getElementById('sprach1Title').textContent = t.sprach1Title;
-            document.getElementById('sprach2Title').textContent = t.sprach2Title;
-            document.getElementById('supportTitle').textContent = t.supportTitle;
-            
-            // تحديث زر اللغة
-            document.getElementById('langBtn').innerHTML = `<span>${t.langText}</span>`;
-        }
-
-        // إظهار التصحيح
-        function showAnswers() {
-            answersVisible = true;
-            
-            // إظهار إجابات Teil 1
-            contentData.texts.forEach(text => {
-                document.getElementById(`answer-text-${text.id}`).classList.remove('hidden');
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
             });
-            
-            // إظهار إجابات Teil 2
-            contentData.longText.questions.forEach(question => {
-                document.getElementById(`answer-${question.id}`).classList.remove('hidden');
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
             });
-            
-            // إظهار إجابات Teil 3
-            contentData.situations.forEach(situation => {
-                document.getElementById(`answer-situation-${situation.id}`).classList.remove('hidden');
+            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                        heading.classList.add('matched');
+                    }
+                });
             });
-            
-            // إظهار إجابات Sprachbausteine Teil 1
-            contentData.sprachbausteine1.blanks.forEach(blank => {
-                document.getElementById(`answer-blank-${blank.id}`).classList.remove('hidden');
-            });
-            
-            // إظهار إجابات Sprachbausteine Teil 2
-            document.getElementById('answer-sprach2').classList.remove('hidden');
         }
 
-        // إخفاء التصحيح
-        function hideAnswers() {
-            answersVisible = false;
-            
-            // إخفاء جميع الإجابات
+        function hideAllAnswers() {
             document.querySelectorAll('.answer').forEach(answer => {
                 answer.classList.add('hidden');
             });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
         }
 
-        // إظهار نافذة الدعم
-        function showSupportModal() {
-            document.getElementById('supportModal').style.display = 'flex';
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
         }
 
-        // إخفاء نافذة الدعم
-        function hideSupportModal() {
-            document.getElementById('supportModal').style.display = 'none';
+        function toggleLangDropdown() {
+            document.getElementById('langDropdown').classList.toggle('show');
         }
 
-        // إظهار نافذة الملاحظات
-        function showNotesModal() {
-            document.getElementById('notesModal').style.display = 'flex';
-        }
-
-        // إخفاء نافذة الملاحظات
-        function hideNotesModal() {
-            document.getElementById('notesModal').style.display = 'none';
-        }
-
-        // حفظ الملاحظات
-        function saveNotes() {
-            const notes = document.getElementById('notesTextarea').value;
-            localStorage.setItem('userNotes', notes);
-            alert('تم حفظ الملاحظات بنجاح!');
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // تحديث جميع النصوص
+            Object.keys(t).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = t[key];
+                }
+            });
+            
+            localStorage.setItem('language', lang);
+            
+            // إعادة تهيئة المحتوى لترجمة الإجابات
+            initializeTeil1();
+            initializeTeil2();
         }
     </script>
 </body>

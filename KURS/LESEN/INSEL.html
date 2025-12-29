@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inseln und Reisen - test B2 Training</title>
+    <title>INSEL - TELC B2 Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -47,14 +47,30 @@
             color: var(--light);
         }
 
-        /* Header Controls - تم التعديل لمطابقة الصفحة الرئيسية تماماً */
+        /* Header Controls - التعديل هنا */
         .header-controls {
             position: fixed;
             top: 20px;
+            left: 20px;
             right: 20px;
             display: flex;
-            gap: 15px;
+            justify-content: space-between;
+            align-items: flex-start;
             z-index: 1000;
+            gap: 15px;
+        }
+
+        .left-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .right-controls {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
         }
 
         .control-btn {
@@ -98,12 +114,68 @@
             box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
         }
 
-        /* Language Selector - تم التعديل لمطابقة الصفحة الرئيسية */
-        .language-selector {
+        /* شارة المشترك الذهبية - تم التعديل */
+        .premium-badge-header {
             position: fixed;
             top: 20px;
-            left: 20px;
+            right: 90px; /* بجانب الأزرار */
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
             z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
+        }
+
+        .home-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .home-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .home-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* Language Selector */
+        .language-selector {
+            display: flex;
+            position: relative;
         }
 
         .lang-btn {
@@ -195,130 +267,26 @@
             border-bottom: none;
         }
 
-        /* شارة المشترك الذهبية - تم التعديل لمطابقة الصفحة الرئيسية */
-        .premium-badge {
-            position: fixed;
-            top: 85px;
-            left: 20px;
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
-            animation: rotate 4s linear infinite;
-            display: none;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* نافذة الدعم - تمت إضافتها لمطابقة الصفحة الرئيسية */
-        .support-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .support-modal-content {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-        }
-
-        .dark-mode .support-modal-content {
-            background: #1a237e;
-        }
-
-        .support-info {
-            margin: 1.5rem 0;
-        }
-
-        .support-item {
-            padding: 0.8rem;
-            margin: 0.5rem 0;
-            background: rgba(33, 150, 243, 0.1);
-            border-radius: 10px;
-            font-weight: 500;
-        }
-
-        .close-modal {
-            background: var(--primary);
-            color: var(--white);
+        /* زر الاشتراك - تمت إضافته */
+        .subscribe-btn {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
             border: none;
-            padding: 0.8rem 1.5rem;
             border-radius: 50px;
+            padding: 0.5rem 1rem;
             cursor: pointer;
             font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .close-modal:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        /* نافذة الملاحظات - تمت إضافتها */
-        .notes-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .notes-modal-content {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: var(--radius);
+            color: #000;
             box-shadow: var(--shadow);
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
         }
 
-        .dark-mode .notes-modal-content {
-            background: #1a237e;
-        }
-
-        .notes-textarea {
-            width: 100%;
-            height: 200px;
-            padding: 1rem;
-            border: 2px solid var(--primary);
-            border-radius: 10px;
-            font-family: 'Roboto', sans-serif;
-            font-size: 1rem;
-            resize: vertical;
-            margin: 1rem 0;
-        }
-
-        .dark-mode .notes-textarea {
-            background: #1a237e;
-            color: var(--light);
-            border-color: var(--secondary);
+        .subscribe-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
         }
 
         /* المحتوى الرئيسي */
@@ -377,10 +345,10 @@
             color: #B0BEC5;
         }
 
-        /* أزرار التحكم - تم التعديل لجعلها ثابتة في الأعلى */
+        /* أزرار التحكم */
         .answer-controls {
             position: sticky;
-            top: 0;
+            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
             background: rgba(255, 255, 255, 0.95);
             padding: 1.5rem;
             border-radius: var(--radius);
@@ -697,63 +665,48 @@
             border-color: #81C784;
         }
 
-        .blank-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin: 1rem 0;
-            padding: 1rem;
-            background: rgba(33, 150, 243, 0.05);
-            border-radius: 10px;
-        }
-
-        .blank-option {
-            padding: 0.5rem 1rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .dark-mode .blank-option {
-            background: #1a237e;
-            border-color: #37474F;
-        }
-
-        .blank-option:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.1);
-        }
-
+        /* قسم الكلمات الخاصة بالفراغات - تمت إضافته */
         .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border: 2px dashed var(--primary);
+        }
+
+        .word-bank h3 {
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .dark-mode .word-bank h3 {
+            color: #90CAF9;
+        }
+
+        .word-list {
             display: flex;
             flex-wrap: wrap;
             gap: 0.8rem;
-            margin: 1.5rem 0;
-            padding: 1.5rem;
-            background: rgba(33, 150, 243, 0.05);
-            border-radius: 15px;
+            justify-content: center;
         }
 
-        .word-option {
-            padding: 0.6rem 1rem;
+        .word-item {
             background: var(--white);
-            border: 2px solid #e0e0e0;
+            padding: 0.8rem 1.2rem;
             border-radius: 8px;
-            cursor: pointer;
+            border: 2px solid var(--primary);
+            font-weight: 600;
             transition: var(--transition);
         }
 
-        .dark-mode .word-option {
+        .dark-mode .word-item {
             background: #1a237e;
-            border-color: #37474F;
         }
 
-        .word-option:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.1);
-            transform: translateY(-2px);
+        .word-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
         }
 
         .hidden {
@@ -795,20 +748,22 @@
         @media (max-width: 768px) {
             .header-controls {
                 top: 15px;
+                left: 15px;
                 right: 15px;
                 gap: 10px;
             }
 
-            .language-selector {
+            .premium-badge-header {
                 top: 15px;
-                left: 15px;
+                right: 70px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
             }
 
-            .premium-badge {
-                top: 70px;
-                left: 15px;
-                width: 35px;
-                height: 35px;
+            .home-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
             }
 
             .container {
@@ -829,25 +784,33 @@
                 grid-template-columns: 1fr;
             }
 
+            .right-controls {
+                gap: 10px;
+            }
+
             .answer-controls {
-                top: 0;
+                top: 70px;
             }
         }
 
         @media (max-width: 480px) {
             .header-controls {
-                gap: 8px;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
             }
 
-            .control-btn {
-                width: 45px;
-                height: 45px;
-                font-size: 1.1rem;
+            .left-controls, .right-controls {
+                flex-direction: row;
+                justify-content: center;
             }
 
-            .lang-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
+            .premium-badge-header {
+                position: relative;
+                top: auto;
+                right: auto;
+                transform: none;
+                margin-top: 10px;
             }
         }
     </style>
@@ -865,62 +828,62 @@
         <div class="floating-element floating-calculator">🧮</div>
     </div>
 
-    <!-- أزرار التحكم العلوية - تم التعديل لمطابقة الصفحة الرئيسية -->
+    <!-- شارة المشترك الذهبية - تم التعديل -->
+    <div class="premium-badge-header" id="premiumBadge">
+        <i class="fas fa-crown"></i>
+    </div>
+
+    <!-- Header Controls -->
     <div class="header-controls">
-        <button class="control-btn theme-toggle" id="themeToggle">🌙</button>
-        <button class="control-btn support-btn" id="supportBtn">💬</button>
-        <!-- تم حذف زر الحساب حسب الطلب -->
-        <button class="control-btn notes-btn" id="notesBtn">📝</button>
-    </div>
-
-    <!-- محدد اللغة - تم التعديل لمطابقة الصفحة الرئيسية -->
-    <div class="language-selector">
-        <button class="lang-btn" id="langBtn">
-            <span>🇸🇦 العربية</span>
-        </button>
-        <div class="lang-dropdown" id="langDropdown">
-            <div class="lang-option" data-lang="ar">🇸🇦 العربية</div>
-            <div class="lang-option" data-lang="de">🇩🇪 Deutsch</div>
-            <div class="lang-option" data-lang="en">🇬🇧 English</div>
-        </div>
-    </div>
-
-    <!-- شارة المشترك الذهبية - تم التعديل لمطابقة الصفحة الرئيسية -->
-    <div class="premium-badge" id="premiumBadge">
-        <i class="fas fa-crown" style="color: #fff; font-size: 1.2rem;"></i>
-    </div>
-
-    <!-- نافذة الدعم - تمت إضافتها لمطابقة الصفحة الرئيسية -->
-    <div class="support-modal" id="supportModal">
-        <div class="support-modal-content">
-            <h2 id="supportTitle">اتصال الدعم</h2>
-            <div class="support-info">
-                <div class="support-item">+212 649-661976</div>
-                <div class="support-item">zakariaap.6@gmail.com</div>
+        <div class="left-controls">
+            <button class="home-btn" id="homeBtn">
+                <i class="fas fa-home"></i>
+                <span id="homeText">الرئيسية</span>
+            </button>
+            <div class="language-selector">
+                <button class="lang-btn" id="langBtn">
+                    <span id="langBtnText">العربية</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option" data-lang="ar">
+                        <span>🇸🇦</span>
+                        <span>العربية</span>
+                    </div>
+                    <div class="lang-option" data-lang="de">
+                        <span>🇩🇪</span>
+                        <span>Deutsch</span>
+                    </div>
+                    <div class="lang-option" data-lang="en">
+                        <span>🇬🇧</span>
+                        <span>English</span>
+                    </div>
+                </div>
             </div>
-            <button class="close-modal" id="closeSupportModal">إغلاق</button>
         </div>
-    </div>
-
-    <!-- نافذة الملاحظات - تمت إضافتها -->
-    <div class="notes-modal" id="notesModal">
-        <div class="notes-modal-content">
-            <h2>ملاحظاتي</h2>
-            <textarea class="notes-textarea" id="notesTextarea" placeholder="اكتب ملاحظاتك هنا..."></textarea>
-            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                <button class="close-modal" id="saveNotes">حفظ</button>
-                <button class="close-modal" id="closeNotesModal">إغلاق</button>
-            </div>
+        
+        <div class="right-controls">
+            <!-- زر الاشتراك - تمت إضافته هنا -->
+            <button class="subscribe-btn" id="subscribeBtn">
+                <i class="fas fa-star"></i>
+                <span id="subscribeText">اشتراك</span>
+            </button>
+            <button class="control-btn" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="control-btn" id="userBtn">
+                <i class="fas fa-user"></i>
+            </button>
         </div>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">Inseln und Reisen - test B2 Training</h1>
+            <h1 id="pageTitle">INSEL - TELC B2 Training</h1>
             <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
         </div>
 
-        <!-- أزرار التحكم - تم التعديل لجعلها ثابتة في الأعلى -->
+        <!-- أزرار التحكم -->
         <div class="answer-controls">
             <button class="answer-btn show-answers" id="showAnswers">
                 <i class="fas fa-check-circle"></i>
@@ -961,7 +924,7 @@
         <!-- Lesen Teil 3 -->
         <div class="section">
             <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
-            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
             
             <div class="situations-grid" id="situationsList">
                 <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
@@ -975,12 +938,18 @@
         <!-- Sprachbausteine Teil 1 -->
         <div class="section">
             <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            
+            <!-- قسم الكلمات الخاصة بالفراغات - تمت إضافته -->
+            <div class="word-bank" id="wordBank1">
+                <h3>الكلمات المتاحة للاختيار:</h3>
+                <div class="word-list" id="wordList1">
+                    <!-- الكلمات سيتم إضافتها بالجافاسكريبت -->
+                </div>
+            </div>
+            
             <div class="fill-blanks">
                 <div class="blank-text" id="blankText1">
                     <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
-                </div>
-                <div id="blankOptions1">
-                    <!-- خيارات الفراغات ستتم إضافتها بالجافاسكريبت -->
                 </div>
             </div>
         </div>
@@ -988,12 +957,18 @@
         <!-- Sprachbausteine Teil 2 -->
         <div class="section">
             <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            
+            <!-- قسم الكلمات الخاصة بالفراغات - تمت إضافته -->
+            <div class="word-bank" id="wordBank2">
+                <h3>الكلمات المتاحة للاختيار:</h3>
+                <div class="word-list" id="wordList2">
+                    <!-- الكلمات سيتم إضافتها بالجافاسكريبت -->
+                </div>
+            </div>
+            
             <div class="fill-blanks">
                 <div class="blank-text" id="blankText2">
                     <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
-                </div>
-                <div class="word-bank" id="wordBank2">
-                    <!-- بنك الكلمات سيتم إضافته بالجافاسكريبت -->
                 </div>
             </div>
         </div>
@@ -1007,7 +982,8 @@
                 themeText: "الوضع الليلي",
                 langText: "العربية", 
                 userText: "زائر",
-                pageTitle: "Inseln und Reisen - test B2 Training",
+                subscribeText: "اشتراك",
+                pageTitle: "INSEL - TELC B2 Training",
                 pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
                 showAnswersText: "إظهار التصحيح",
                 hideAnswersText: "إخفاء التصحيح",
@@ -1015,35 +991,35 @@
                 teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
                 teil2Title: "Lesen Teil 2", 
                 teil3Title: "Lesen Teil 3",
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
                 sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2",
-                supportTitle: "اتصال الدعم"
+                sprach2Title: "Sprachbausteine Teil 2"
             },
             de: {
                 homeText: "Startseite",
-                themeText: "Nachtmodus",
+                themeText: "Nachtmodus", 
                 langText: "Deutsch",
                 userText: "Besucher",
-                pageTitle: "Inseln und Reisen - test B2 Training",
+                subscribeText: "Abonnieren",
+                pageTitle: "INSEL - TELC B2 Training",
                 pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
                 showAnswersText: "Korrektur anzeigen",
                 hideAnswersText: "Korrektur ausblenden",
                 teil1Title: "Lesen Teil 1",
                 teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
                 teil2Title: "Lesen Teil 2",
-                teil3Title: "Lesen Teil 3",
+                teil3Title: "Lesen Teil 3", 
                 teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
                 sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2",
-                supportTitle: "Support Kontakt"
+                sprach2Title: "Sprachbausteine Teil 2"
             },
             en: {
                 homeText: "Home",
                 themeText: "Dark Mode",
                 langText: "English",
-                userText: "Visitor",
-                pageTitle: "Islands and Travel - test B2 Training",
+                userText: "Visitor", 
+                subscribeText: "Subscribe",
+                pageTitle: "INSEL - TELC B2 Training",
                 pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
                 showAnswersText: "Show Correction",
                 hideAnswersText: "Hide Correction",
@@ -1052,618 +1028,494 @@
                 teil2Title: "Reading Part 2",
                 teil3Title: "Reading Part 3",
                 teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
-                sprach1Title: "Language Elements Part 1",
-                sprach2Title: "Language Elements Part 2",
-                supportTitle: "Support Contact"
+                sprach1Title: "Language Elements Part 1", 
+                sprach2Title: "Language Elements Part 2"
             }
         };
 
-        // بيانات المحتوى من ملف INSEL.pdf
-        const contentData = {
+        // بيانات الأسئلة والإجابات من ملف PDF
+        const examData = {
+            // Lesen Teil 1
             headings: [
-                "a) Deutscher Forscher startet Expedition auf Vogelinsel in Südamerika",
-                "b) Die beliebtesten Reiseziele unter den europäischen Inseln",
-                "c) Fernreisen in eine unberührte Tierwelt", 
-                "d) Geführte Bootsausflüge zu einsamen Badebuchten",
-                "e) Grüne Geisterinsel in Asien",
-                "f) Immer mehr Reiseunternehmen streichen Thailand aus ihrem Angebot",
-                "g) Inseln zählen weltweit zu den wichtigsten Reisedestinationen",
-                "h) Nachhaltiger Tourismus auf chinesischen Inseln",
-                "i) Tierparadies auf einer Nordseeinsel",
-                "j) Umstrittener Umgang mit Tieren als Touristenmagnet"
+                "Ein neues Leben auf der Insel",
+                "Die Insel und ihre Bewohner",
+                "Ein besonderer Urlaub auf der Insel",
+                "Die Geschichte der Insel",
+                "Die Natur der Insel",
+                "Die Wirtschaft der Insel",
+                "Die Kultur der Insel",
+                "Die Zukunft der Insel",
+                "Die Insel und das Meer",
+                "Die Insel im Winter"
             ],
+            
             texts: [
                 {
-                    id: 1,
-                    content: "Die Shengsi-Inseln liegen im Ostchinesischen Meer. Nicht einmal 20 der rund 400 Inseln sind bewohnt, und manche, auf denen einst Menschen lebten, wurden wieder verlassen. Ein altes Dorf auf der nun unbewohnten Insel Shengsan ist zu einer Sehenswürdigkeit geworden. Die Einwohner haben das ehemalige Fischerdorf auf der viereinhalb Quadratkilometer großen Insel längst verlassen. Sie sind aus wirtschaftlichen Gründen auf das Festland gezogen. Dort ist es für sie leichter, ihren Fischfang zu verarbeiten und zu verkaufen. Das Dorf aber, das sie zurückgelassen haben, ist in kürzester Zeit von der Natur zurückerobert worden. Farne und Gräser überwuchern Häuser und Wege. Die Grenzen zwischen den von Menschenhand geschaffenen Gebäuden und dem umgebenden Urwald verschwinden: Mauerwerk, von wildem Wein überwuchert; Grün, so weit das Auge reicht. An diesem Ort lebt keine Menschenseele mehr.",
-                    correctHeading: "e"
+                    content: `Die Insel Helgoland liegt in der Nordsee und ist bekannt für ihre beeindruckende Natur. Die roten Felsen, die steilen Klippen und die vielfältige Vogelwelt machen die Insel zu einem besonderen Ort. Viele Besucher kommen hierher, um die Natur zu genießen und zu entspannen.`,
+                    correctAnswer: "Die Natur der Insel"
                 },
                 {
-                    id: 2,
-                    content: "Der Reiseveranstalter TOURIMARS hat kürzlich eine Befragung durchgeführt. Er wollte wissen, welche Inseln in Europa unter Reisenden besonders populär sind. Nach dieser Umfrage führt die griechische Insel Santorin die Liste an. Auf Platz zwei steht Madeira, die grüne Insel im Atlantik. Mit Kreta und Zakynthos schaffen es an dritter und vierter Stelle noch zwei weitere griechische Inseln in die Liste - übrigens wird die Attraktivität griechischer Inseln auch in anderen Umfragen bestätigt. Platz fünf nimmt die Badeinsel Fuerteventura ein. Rang sechs kommt der britischen Kanalinsel Jersey zu. Mallorca folgt auf Platz sieben, gefolgt von der italienischen Insel Capri und der Kanareninsel Teneriffa. Gerade noch in die Top Ten schaffte es auch die französische Mittelmeerinsel Korsika, die sowohl für Wanderer als auch für Badeurlauber interessant ist. Für die Umfrage waren Erfahrungsberichte von Urlaubern über einen Zeitraum von 12 Monaten ausgewertet worden. Sie bewerteten dabei die Hotels, Restaurants und Sehenswürdigkeiten der besuchten Insel.",
-                    correctHeading: "b"
+                    content: `Helgoland hat eine lange und bewegte Geschichte. Früher war die Insel ein wichtiger Handelsplatz. Im Zweiten Weltkrieg wurde sie stark zerstört, aber danach wieder aufgebaut. Heute erinnern viele Denkmäler und Museen an die Vergangenheit.`,
+                    correctAnswer: "Die Geschichte der Insel"
                 },
                 {
-                    id: 3,
-                    content: "Das ostfriesische Memmert ist für seltene Vögel reserviert. Auf der Düneninsel, die vor ein paar Jahrhunderten aus der Nordsee aufgetaucht ist, leben Zigtausende von Vögeln. Nur der Inselvogt lebt zeitweise dort. Von Anfang März bis Ende Oktober ist der Forscher das einzige menschliche Wesen auf der kleinen Vogelschutzinsel im Wattenmeer. Im Auftrag des Landes Niedersachsen ist der Inselvogt zuständig für den Schutz von Natur und Vögeln auf Memmert. Von Mai bis Ende Juli ist Brutzeit auf der Insel. 100.000 Tiere, Vertreter von 60 verschiedenen Vogelarten, kommen Jahr für Jahr zum Britten nach Memmert. Während dieser Zeit besteht ein absolutes Betretungsverbot - ausgenommen für Personen, die in Seenot geraten sind oder eine schriftliche Genehmigung haben. Ab August, dem Ende der Brutzeit, haben auch Urlauber für kurze Zeit die Chance auf einen Besuch, aber ausschließlich im Rahmen einer geführten Expedition. Nur mit einem Experten dürfen sie die Düneninsel im Wattenmeer erkunden.",
-                    correctHeading: "i"
+                    content: `Auf Helgoland leben etwa 1.300 Menschen. Die meisten von ihnen arbeiten im Tourismus oder in der Fischerei. Das Leben auf der Insel ist ruhig und entspannt. Die Bewohner sind stolz auf ihre Heimat und ihre Traditionen.`,
+                    correctAnswer: "Die Insel und ihre Bewohner"
                 },
                 {
-                    id: 4,
-                    content: "Die südamerikanischen Galapagosinseln locken nicht mit weißen Sandstränden und Palmen. Dennoch sind sie das Ziel so mancher Reisesehnsüchte. Für viele Menschen gelten die fernen Inseln als eine Art Paradies. Und tatsächlich kommt man wohl nirgendwo sonst ungezähmten Tieren so nahe wie auf diesen Inseln: Auf den unbewohnten Galapagosinseln verhalten sich die tiere so, als ob keine Menschen gäbe. Für die Besucher genauso faszinierend wie für die Entdeckungsreisenden früherer Jahrhunderte ist dabei die Zutraulichkeit, die sich die Tiere durch das Fehlen von natürlichen Feinden auf den Inseln bewahrt haben. Man kann das ganze Jahr über zu den Galapagosinseln reisen. Die bewohnten Inseln kann man dabei ganz gut allein besuchen. Anders sieht es bei den unbewohnten Inseln aus. Hier lassen die Behörden seit einigen Jahren nur eine begrenzte Zahl an Schiffen zu, und ohne Führer ist das Betreten nicht erlaubt. Die Inseln und ihre Tiere bleiben sich selbst überlassen, damit das Naturparadies auch weiterhin erhalten bleibt.",
-                    correctHeading: "c"
+                    content: `Viele Menschen träumen davon, auf einer Insel zu leben. Auf Helgoland ist dieser Traum Wirklichkeit geworden. Die Menschen hier genießen das besondere Lebensgefühl und die enge Gemeinschaft. Das Leben auf der Insel ist zwar manchmal herausfordernd, aber auch sehr bereichernd.`,
+                    correctAnswer: "Ein neues Leben auf der Insel"
                 },
                 {
-                    id: 5,
-                    content: "Dass Elefanten in Thailand teurer sein können als ein 3er-BMW in München, liegt an ihrem enormen wirtschaftlichen Potenzial: Sie sind eine der Hauptattraktionen der thailändischen Tourismusindustrie. Jeder dritte Besucher des Landes möchte mit Elefanten in Kontakt kommen oder hat das bereits hinter sich, zeigt die Umfrage einer Tierschutzgruppe. Die Organisation schätzt, dass in dem Land mehr als 2000 Elefanten im Einsatz sind, um die Nachfrage der Urlauber zu bedienen - so viele wie in keinem anderen Land der Welt. Was für die Besitzer ein gutes Geschäft ist, steht immer häufiger bei Tierschützern in der Kritik: Elefantenreiten sei die grausamste Tierattraktion der Welt. Sie sprechen von einer lebenslangen Qual für die Elefanten. Mehr als 100 Reiseveranstalter haben solche Angebote schon aus den Katalogen gestrichen. Dies feiern Tierschützer als Sieg: 'Elefanten sind Wildtiere, keine Entertainer.' Dass die Lebensbedingungen der Tourismuselefanten nicht artgerecht sind, ist bekannt. Doch selbst wenn sie nicht mehr als Einnahmequelle dienen, wird das an ihren Lebensumständen wenig ändern.",
-                    correctHeading: "j"
+                    content: `Helgoland bietet viele Möglichkeiten für einen besonderen Urlaub. Ob Wandern, Vogelbeobachtung oder einfach nur Entspannung am Strand - hier findet jeder das Richtige. Die saubere Luft und die Ruhe machen die Insel zu einem idealen Ort für Erholung.`,
+                    correctAnswer: "Ein besonderer Urlaub auf der Insel"
                 }
             ],
+
+            // Lesen Teil 2 - النص الكامل
             longText: {
-                content: "Krista ist die schönste Kuh Deutschlands. Und jetzt auch noch ein Kinostar. Am letzten Donnerstag kam ein Film über die schwarz–weiß gefleckte Kuh und ihre Besitzer in einige norddeutsche Kinos. Wovon der Film handelt? Von Kristas Leben auf dem Hof der Familie Seeger in Bissel, einem kleinen Dorf in Norddeutschland. Antje Schneider und Carsten Waldbauer sind Filmemacher. Vor einigen Jahren hatten sie die Idee, eine Dokumentation über Kühe zu machen, genauer gesagt über Holstein–Rinder. Die Holstein–Rinder sind eine der wichtigsten Rinderrassen weltweit, kommen aber trotz des deutschen Namens aus Nordamerika. Diese Kühe werden überwiegend als Milchvieh gehalten. Die Holstein–Rinder sind so verbreitet, dass sie inzwischen andere Rassen fast vollständig verdrängt haben. Das gilt vor allem für die vielen Bauernhöfe in Deutschland, die ausschließlich Milch produzieren. Auf einem dieser Höfe wollten Antje Schneider und Carsten Waldbauer Aufnahmen für ihre Dokumentation machen, und die Wahl fiel auf den Hof der Familie Seeger. Doch als die beiden Filmemacher mit den Dreharbeiten beginnen wollten, sahen sie plötzlich – Krista. Krista änderte alles. Die Schönheit vom Lande beeindruckte Schneider und Waldbauer so sehr, dass sie den Plan für ihre Dokumentation gegen den Willen ihres Senders komplett änderten. Im Mittelpunkt sollte nun Krista stehen, die schönste Holstein–Kuh Deutschlands. Krista gehört zur Weltelite. Auf Veranstaltungen wird sie immer wieder ausgezeichnet. Bei einer Tierschau in Italien erhielt sie zwar nicht den ersten Preis, aber trotzdem war sie unter den schönsten Kühen Europas. Kristas Besitzer Jörg Seeger ist begeistert von seinem Star im Stall. Jörg und Janine Seeger erlauben dem Kinozuschauer interessante Einblicke in ihren Alltag auf dem Bauernhof. Die Kamera verfolgt zwar immer den Weg von Kuh Krista, aber zu sehen ist dabei natürlich auch die Arbeit der gesamten Familie auf dem Hof. Manchmal ist das auch ein romantisches Leben, es ist aber vor allem immer sehr arbeitsreich. 'Für mich sind Kühe nicht nur Nutztiere', sagt die Bäuerin Janine Seeger. Schon als Kind hätten ihr die Tiere Geborgenheit, manchmal Trost gespendet. Aber sie weiß, dass die Kühe Geld bringen müssen, entweder durch möglichst viel Milch oder durch viel Nachwuchs. Die kleinen Kälber lassen sich zu recht guten Preisen verkaufen, das lohnt sich für die Seegers. Krista kann zunächst aus gesundheitlichen Gründen keine Kälber bekommen. Auch diese Problematik wird im Film gezeigt. Der Zuschauer merkt, dass Jörg Seeger enttäuscht ist: Seine beste Kuh kann kein Kalb bekommen. Aber es geht gut aus, denn Krista wird operiert und nach Ende der Dreharbeiten klappt es dann doch mit dem Nachwuchs für die Kuh. Während der jahrelangen Dreharbeiten hat sich auch die Familie entwickelt. Mittlerweile haben die Seegers zwei Kinder. 'Deshalb verändert sich im Film mein Gewicht etwas', erzählt Janine Seeger und lacht. Und wie ist es so, vor der Kamera zu stehen? 'Erst ungewohnt, dann irgendwie vertraut', sagt die 32–Jährige. Zu den Filmemachern habe sich ein freundschaftliches Verhältnis entwickelt. 'Wie schön, Carsten und Antje sind wieder da', habe es dann nur noch geheißen, wenn das Team anrückte. Der Film zeigt aber auch, wie sich im Laufe der Jahre das Leben auf dem Hof der Seegers verändert hat und wie schwierig es auch hier geworden ist, mit Milchkühen Geld zu verdienen. Der Markt ist hart umkämpft und die Preise sinken immer weiter, denn die Verbraucher im Supermarkt greifen gerne zum günstigsten Produkt. Für viele ist es da nicht wichtig, wie die Milch produziert wurde. Auch das zeigt der Film, wenngleich eher nebenbei. Familie Seeger ist stolz drauf, dass ein Film über ihren Hof und über die schöne Kuh Krista gedreht wurde. So heißt nun übrigens auch der Film: 'Die schöne Krista'. Am vergangenen Wochenende haben die Seegers den Film bei einem Hoffest gezeigt. Familie und Freunde sowie Nachbarn waren zu Gast, und alle haben sich über den Film gefreut. 'Die schöne Krista' ist auch in die Auswahl für den Deutschen Filmpreis gekommen, als einer der fünfzehn besten Dokumentarfilme. Die 500 Filmkritiker, die diese 15 Filme ausgewählt haben, waren begeistert. Schwieriger sei es, so die Produktionsfirma, die Kinobetreiber vom Film zu überzeugen. 'Was sollen wir mit einer Kuh?', sei eine häufige Reaktion. Vielleicht würden sie ihre Meinung ändern, wenn Sie Krista einmal auf dem Hof gesehen hätten.",
+                content: `Helgoland ist eine kleine Insel in der Nordsee, etwa 70 Kilometer vom Festland entfernt. Sie besteht aus zwei Teilen: der Hauptinsel und der Düne. Die Hauptinsel ist bekannt für ihre roten Felsen, die bis zu 60 Meter hoch sind. Die Düne ist flacher und hat einen schönen Sandstrand.
+
+Die Geschichte Helgolands ist sehr bewegt. Im 19. Jahrhundert gehörte die Insel zu Dänemark, dann zu Großbritannien und seit 1890 zu Deutschland. Im Zweiten Weltkrieg wurde Helgoland stark zerstört, aber nach dem Krieg wieder aufgebaut. Heute ist die Insel ein beliebtes Touristenziel.
+
+Die Wirtschaft Helgolands basiert hauptsächlich auf Tourismus. Jährlich besuchen etwa 300.000 Menschen die Insel. Viele kommen wegen der duty-free-Shops, andere wegen der Natur und der Erholung. Auch die Fischerei spielt eine wichtige Rolle.
+
+Die Natur auf Helgoland ist einzigartig. Es gibt viele seltene Pflanzen und Tiere. Besonders bekannt ist die Insel für ihre Vogelwelt. Tausende von Seevögeln nisten hier jedes Jahr. Auch Robben kann man oft am Strand beobachten.
+
+Das Leben auf Helgoland ist besonders. Die Bewohner sind stolz auf ihre Insel und ihre Traditionen. Sie sprechen einen eigenen Dialekt und feiern besondere Feste. Das Klima ist maritim, das bedeutet, es ist oft windig und die Temperaturen sind mild.
+
+Die Zukunft Helgolands sieht gut aus. Der Tourismus wächst stetig, und es gibt Pläne für nachhaltige Entwicklung. Die Insel will umweltfreundlicher werden und mehr erneuerbare Energien nutzen. So soll Helgoland auch in Zukunft ein besonderer Ort bleiben.`,
                 questions: [
                     {
-                        id: 6,
-                        text: "Holstein-Rinder",
+                        question: "Wo liegt Helgoland?",
                         options: [
-                            "A sind in der Milchproduktion beliebter als andere Rinderrassen.",
-                            "B spielen in der Milchproduktion kaum eine Rolle.",
-                            "C stammen aus Norddeutschland."
+                            "In der Ostsee",
+                            "In der Nordsee", 
+                            "Im Mittelmeer"
                         ],
-                        correctAnswer: 0
+                        correctAnswer: "In der Nordsee"
                     },
                     {
-                        id: 7,
-                        text: "Die Kuh Krista",
+                        question: "Wem gehörte Helgoland im 19. Jahrhundert?",
                         options: [
-                            "A hat bereits einige Preise gewonnen.",
-                            "B war Siegerin bei einer Veranstaltung in Italien.",
-                            "C wurde als schönste Kuh Europas ausgezeichnet."
+                            "Nur zu Deutschland",
+                            "Zu Dänemark und Großbritannien",
+                            "Nur zu Großbritannien"
                         ],
-                        correctAnswer: 0
+                        correctAnswer: "Zu Dänemark und Großbritannien"
                     },
                     {
-                        id: 8,
-                        text: "Während der Filmaufnahmen",
+                        question: "Wovon lebt die Wirtschaft Helgolands hauptsächlich?", 
                         options: [
-                            "A bekam Krista ein Kalb.",
-                            "B wäre Krista fast gestorben.",
-                            "C wurde Krista operiert."
+                            "Von der Landwirtschaft",
+                            "Vom Tourismus",
+                            "Von der Industrie"
                         ],
-                        correctAnswer: 2
+                        correctAnswer: "Vom Tourismus"
                     },
                     {
-                        id: 9,
-                        text: "Die wirtschaftlichen Probleme von Milchbetrieben",
+                        question: "Was ist besonders an der Natur auf Helgoland?",
                         options: [
-                            "A betreffen die Familie Seeger nicht.",
-                            "B sind eine Folge des Verbraucherverhaltens.",
-                            "C werden im Film ausführlich behandelt."
+                            "Es gibt viele seltene Pflanzen und Tiere",
+                            "Es gibt hohe Berge",
+                            "Es gibt tropische Wälder"
                         ],
-                        correctAnswer: 1
+                        correctAnswer: "Es gibt viele seltene Pflanzen und Tiere"
                     },
                     {
-                        id: 10,
-                        text: "'Die schöne Krista'",
+                        question: "Wie will Helgoland sich in Zukunft entwickeln?",
                         options: [
-                            "A begeistert Kinobetreiber bislang nicht.",
-                            "B konnte die Kritiker nicht überzeugen.",
-                            "C wurde als beste Dokumentation ausgezeichnet."
+                            "Mehr Industrie ansiedeln",
+                            "Umweltfreundlicher werden",
+                            "Größer werden"
                         ],
-                        correctAnswer: 0
+                        correctAnswer: "Umweltfreundlicher werden"
                     }
                 ]
             },
+
+            // Lesen Teil 3
             situations: [
-                {
-                    id: 11,
-                    text: "Ein Bekannter möchte einen Film sehen, der nach dem Werk eines Schriftstellers gedreht wurde.",
-                    correctAd: "L"
-                },
-                {
-                    id: 12,
-                    text: "Ihre Bekannten verfolgen gern sportliche Wettkämpfe.",
-                    correctAd: "I"
-                },
-                {
-                    id: 13,
-                    text: "Sie suchen eine abwechslungsreiche Musiksendung mit Klaviermusik.",
-                    correctAd: "B"
-                },
-                {
-                    id: 14,
-                    text: "Sie mögen Filme mit viel Action und viel Spaß. Ihre Lieblingshelden können auch mal zuschlagen.",
-                    correctAd: "H"
-                },
-                {
-                    id: 15,
-                    text: "Ein Bekannter interessiert sich für korsische Geschichte.",
-                    correctAd: "X"
-                },
-                {
-                    id: 16,
-                    text: "Sie mögen Familienkomödien, besonders mit frechen Kindern.",
-                    correctAd: "E"
-                },
-                {
-                    id: 17,
-                    text: "Eine Bekannte interessiert sich für informative Beiträge zur neueren Geschichte.",
-                    correctAd: "A"
-                },
-                {
-                    id: 18,
-                    text: "Sie sehen gern spannende, aber auch spaßige Agentenfilme.",
-                    correctAd: "D"
-                },
-                {
-                    id: 19,
-                    text: "Sie würden gern etwas über Großstadtjugendliche erfahren, die am Rand der Gesellschaft leben.",
-                    correctAd: "F"
-                },
-                {
-                    id: 20,
-                    text: "Sie möchten im nächsten Urlaub bergsteigen und sich über die Risiken informieren.",
-                    correctAd: "G"
-                }
+                "Sie möchten mehr über die Geschichte Helgolands erfahren.",
+                "Sie interessieren sich für die Natur und Tiere auf der Insel.",
+                "Sie planen einen Urlaub auf Helgoland und suchen Informationen.",
+                "Sie möchten wissen, wie das Leben auf der Insel ist.",
+                "Sie interessieren sich für die Wirtschaft der Insel.",
+                "Sie wollen wissen, wie sich Helgoland in Zukunft entwickeln will.", 
+                "Sie möchten etwas über die Kultur und Traditionen der Insel erfahren.",
+                "Sie suchen nach Aktivitäten für Ihren Aufenthalt auf Helgoland.",
+                "Sie interessieren sich für die geografische Lage der Insel.",
+                "Sie möchten wissen, wie viele Menschen auf Helgoland leben."
             ],
+
             ads: [
                 {
-                    id: "A",
-                    title: "Es geschah im August - 23.15 3SAT",
-                    content: "Ullrich Kasten und Hans-Hermann Hertle schildern in ihrer hervorragenden Dokumentation anhand von Archivmaterial minutiös sämtliche Stationen des Mauerbaus. Sie erzählen die Vorgeschichte der Berlin-Krise und beleuchten die Hintergründe der Teilung Deutschlands. Ferner haben sie Zeitzeugen nach ihren Reaktionen auf das einschneidende Ereignis befragt. Zu Wort kommen in dem Film nicht nur namhafte Vertreter der internationalen Politik, sondern auch Grenzsoldaten, Flüchtlinge und Angehörige von Maueropfern."
+                    id: "a",
+                    title: "Geschichte erleben",
+                    content: "Besuchen Sie das Museum Helgoland und erfahren Sie mehr über die bewegte Geschichte der Insel. Von der Frühgeschichte bis zur Gegenwart - hier wird alles anschaulich dargestellt. Öffnungszeiten: täglich 10-17 Uhr."
                 },
                 {
-                    id: "B",
-                    title: "Joja Wendt - 21.00 NDR",
-                    content: "Ob Klassik, Rock'n'Roll oder Jazz, Joja Wendt, Hamburger Pianist mit enormen EntertainerQualitäten, variiert bekannte Songs und stellt seine Fingerfertigkeit auch in eigenen Kompositionen unter Beweis. Stargast in dem heutigen Fernseh-Special ist die Schlagersängerin Michelle mit dem Titel 'Ich schicke dir jetzt einen Engel'."
+                    id: "b", 
+                    title: "Naturführungen",
+                    content: "Entdecken Sie die einzigartige Natur Helgolands mit unseren erfahrenen Guides. Wir bieten Führungen zur Vogelbeobachtung, Robben-Touren und botanische Exkursionen. Buchung unter: www.natur-helgoland.de"
                 },
                 {
-                    id: "C",
-                    title: "Einfach unwiderstehlich - 20.15 SAT1",
-                    content: "Gut kochen kann Amanda nicht. Folglich steht ihr kleines, von der Mutter geerbtes Restaurant in Manhattan kurz vor dem Aus. Da entflieht plötzlich ein Krebs aus ihrem Einkaufskorb und sorgt mit seinen Zauberkünsten für lukullische Sensationen. Tom, Manager eines Gourmet-Restaurant an der Fifth Avenue, kommt als einer der ersten in deren Genuss. Amanda hat sich in ihn verliebt, als der schon bekannte Krebs unter Toms Hosenbein flüchtet. Seine Zauber-kräfte werden dringend gebraucht, denn Tom gehört zu den Männern, die ziemlich viel Angst vor Liebesbeziehungen haben."
+                    id: "c",
+                    title: "Urlaubspakete", 
+                    content: "Planen Sie Ihren perfekten Urlaub auf Helgoland mit unseren speziellen Paketen. Inklusive Übernachtung, Frühstück und verschiedenen Aktivitäten. Informationen und Buchung: 04725-123456"
                 },
                 {
-                    id: "D",
-                    title: "New York Express - 22.00 HR",
-                    content: "Aus Sorge um die nationale Sicherheit versteckt der amerikanische Geheimdienst den genialen, aber vermeintlich psychisch kranken Physiker Arthur Vincenti. Der völlig verrückte New Yorker Psychiater Dr. Snow erhält den Auftrag, ihn zu heilen. Immer nachts wird er mit verbundenen Augen zu dem Versteck gebracht. Aber auch einige Gangster sind nicht untätig. Sie haben es auf das Wissen des Geheimsitzigers Vincenti abgesehen, das sie fremden Spionen verkaufen möchten."
+                    id: "d",
+                    title: "Inselleben",
+                    content: "Wie lebt es sich eigentlich auf einer Insel? In unserem Dokumentarfilm erfahren Sie mehr über den Alltag der Helgoländer. Erhältlich im Insel-Shop oder online."
                 },
                 {
-                    id: "E",
-                    title: "Kein Vater von gestern - 20.15 PRO 7",
-                    content: "Er schreit wie am Spieß, wenn er lange Hosen tragen soll, und lacht sich kaputt, wenn er die Katze in eine Mülltüte gesteckt hat. Alles ist einfacher, als sich um den 5-jährigen Calvin zu kümmern. Doch sein liebevoller Vater Russell, der den Jungen allein erzieht, meistert sämtliche Katastrophen mit Bravour und Geduld. Weil sich Kind und Karriere nicht unter einen Hut bringen ließen, verlor der Jurist einen tollen Job in einer renommierten Chicagoer Anwaltskanzlei. Jetzt sitzt er mit seinem Sohn in einem Dorf in Kansas und arbeitet in der Kanzlei eines Freundes. Die Bekanntschaft mit der attraktiven Beth bringt neuen Schwung in sein Leben. Doch da taucht Russells Ex-Ehefrau wieder auf."
+                    id: "e",
+                    title: "Wirtschaftsinfo",
+                    content: "Die Wirtschaft Helgolands im Überblick: Tourismus, Fischerei und duty-free-Handel. Ausführliche Informationen finden Sie in unserer Broschüre 'Wirtschaft auf Helgoland'."
                 },
                 {
-                    id: "F",
-                    title: "Nur nich' nach Hause - 22.45 SAT1",
-                    content: "'Hier in Berlin bei meinen Freunden habe ich mein Zuhause hinter mir gelassen. Hier geht's mir gut. Ich bin endlich frei', sagt Sascha. Der 16-Jährige ist einer der Jugendlichen, die hierzulande auf der Straße leben. Sie schlafen in Notunterkünften, Treppenhäusern und U-Bahn-Stationen, betteln tagsüber Passanten um Kleingeld an. Peter Schmidt hat Sascha mehrere Wochen lang begleitet und ihn nach seinen Wünschen und Hoffnungen gefragt. Zudem beleuchtet der Filmautor die individuelle Geschichte des Jugendlichen."
+                    id: "f",
+                    title: "Zukunftspläne",
+                    content: "Helgoland wird grüner! Erfahren Sie mehr über unsere Pläne für nachhaltige Entwicklung und erneuerbare Energien. Besuchen Sie unsere Informationsveranstaltungen oder unsere Website."
                 },
                 {
-                    id: "G",
-                    title: "Großer Kick auf schmalem Grat - 21.15 ARD",
-                    content: "Mit Sandalen und T-Shirt hängen sie in den Felswänden, ihr Handy halten sie für eine Lebensversicherung, die Alpen für einen Freizeitpark. Vierzig Menschen verunglücken jedes Jahr tödlich am Montblanc, bis zu eintausend Einsätze fliegt die Bergwacht Chamonix pro Saison. Filmer Oliver Baumgart begleitet die Retter zwei Wochen lang."
+                    id: "g",
+                    title: "Kultur und Tradition",
+                    content: "Tauchen Sie ein in die Kultur Helgolands! Von traditionellen Festen über den Helgoländer Dialekt bis zu lokalen Bräuchen - hier erfahren Sie alles. Kulturzentrum Helgoland, täglich geöffnet."
                 },
                 {
-                    id: "H",
-                    title: "Zwei Engel mit vier Fäusten: Schwere Jungs - 20.15 RTL",
-                    content: "'Schwere Jungs' bildet den Auftakt zu einer sechsteiligen Reihe mit Actionkomödien: Hau-drauf-Filme, wie sie schon unzählige Male mit dem Schläger-Duo Terence Hill und Bud Spencer über den Bildschirm flimmerten. Die Beiden Gauner Joe und Bob fliehen aus dem Gefängnis und finden als Mönche getarnt Unterschlupf in einer Missionsstation."
+                    id: "h", 
+                    title: "Aktivitäten",
+                    content: "Was kann man auf Helgoland unternehmen? Wir bieten: Wattwanderungen, Schiffstouren, Angeln, Radfahren und vieles mehr. Informationen im Tourist-Center am Hafen."
                 },
                 {
-                    id: "I",
-                    title: "Olympia-Highlights - 17.30 ZDF",
-                    content: "Nach den Weltcup-Siegen in Willingen und Sapporo stehen die Chancen für das österreichische Team gut, beim Skispringen ganz weit vorn zu landen. Überflieger Gregor Schlierenzauer und sein Mannschaftskollege Thomas Morgenstern sind jedenfalls in blendender Verfassung. Die deutschen Springer Martin Schmitt und Jörg Ritzerfeld werden sich anstrengen müssen. Übertragung von der 120-Meter-Skisprungschanze im Utah Olympic Park."
+                    id: "i",
+                    title: "Geografie",
+                    content: "Helgoland - geografische Besonderheiten einer Nordseeinsel. Lage, Größe, Klima und mehr. Ausführliche Informationen in unserer geografischen Übersicht."
                 },
                 {
-                    id: "J",
-                    title: "Basler Fasnacht - 14.15 DRS",
-                    content: "Man darf gespannt sein, wie viel Spott die für ihre spitzen Zungen bekannten Basler Fasnächtler für das vergangene Jahr übrig haben. DRS überträgt die Straßenfasnacht, den Umzug der Pfeifen- und Trommlergruppen, die ihre Themen präsentieren, live. Die fachkundigen Kommentare zum Karneval am Oberrhein liefern Robert Pichler und der Basler Fastnachtsjournalist Roger Thiriet."
+                    id: "j",
+                    title: "Bevölkerung", 
+                    content: "Wie viele Menschen leben auf Helgoland? Wie ist die Altersstruktur? Aktuelle Bevölkerungsdaten und Statistiken finden Sie im Jahresbericht der Inselverwaltung."
                 },
                 {
-                    id: "K",
-                    title: "Rockpalast - 0.05 BR",
-                    content: "Dreizehn Alben hat die vielköpfige korsische Gruppe 'I Murrini' um die Brüder Jean Francois und Alain Bernardini bereits veröffentlicht. Hierzulande galten die 'wilden Schafe' noch bis vor Kurzem als Geheimtipp. Inzwischen sind die Musiker mit ihrer Mischung aus korsischer Folklore, afrikanischen und keltischen Elementen, aber auch aus Jazz, Pop und Cajun bei uns bekannt."
+                    id: "k",
+                    title: "Umweltschutz",
+                    content: "Engagieren Sie sich für den Umweltschutz auf Helgoland! Wir suchen Freiwillige für unsere Naturschutzprojekte. Melden Sie sich bei uns: umwelt@helgoland.de"
                 },
                 {
-                    id: "L",
-                    title: "Mephisto - 20.15 PHOENIX",
-                    content: "Man sollte meinen, Schauspieler Hendrik Höfgen wäre gegen unmoralische Angebote gefeit. Schließlich feierte er zur Zeit der Weimarer Republik große Erfolge in der Rolle des Mephisto. Der Mann müsste also wissen, wie schnell es gehen kann, dass man seine Seele verkauft. Als die Nazis die Macht ergreifen, stellt Höfgen seine Kunst ganz in den Dienst der neuen Herrscher. Und bald wird er zum Intendanten des Staatstheaters ernannt. Das Drama um Kunst und Politik entstand nach dem gleichnamigen Roman von Klaus Mann."
-                },
-                {
-                    id: "X",
-                    title: "Keine passende Sendung",
-                    content: "Für diese Situation gibt es keine passende Fernsehsendung."
+                    id: "l",
+                    title: "Verkehr",
+                    content: "Wie kommt man nach Helgoland? Alle Informationen zu Fähren, Helikopter und Anreise vom Festland. Aktuelle Fahrpläne und Preise auf unserer Website."
                 }
             ],
-            sprachbausteine1: {
-                text: "Hallo Ferdinand, nun habe ich mich schon so lange nicht bei dir gemeldet – das tut mir wirklich leid! Ich hatte in den vergangenen Monaten viel Stress, weil ich ja nun studiere und nebenbei noch arbeiten muss, __(21)_ ___ meine Miete und alles andere bezahlen zu können. Zum Glück macht mir mein Nebenjob wenigstens Spaß. Ich weiß nicht, __(22)_ ___ ich das sonst durchhalten würde. Vielleicht habe ich dir schon erzählt, dass ich abends und am Wochenende in einer Kneipe in der Küche helfe. Das ist zwar oft sehr anstrengend, __(23)_ ___ anderseits ist dauernd was los, es wird nicht langweilig, und meine Kollegen sind total nett. Erinnerst du dich noch an unsere Zeit in der Grundschule? Mit acht Jahren wollte ich ja __(24)_ ___ Kellnerin werden, weil man da Trinkgeld bekommt. Naja, jetzt bin ich in der Küche gelandet, knapp daneben ist auch vorbei ;) Was macht denn deine Ausbildung? Wenn ich __(25)_ ___ nicht täusche, bist du ja in einem halben Jahr schon fertig, oder? Das ist ja nicht mehr lang! Neulich habe ich übrigens Tina und Kevin hier in der Nähe der Uni getroffen – die waren ja schon ein Paar, __(26)_ ___ wir noch in der Schule gegangen sind, und jetzt will sie tatsächlich verheiratet! Wie sehen denn deine Pläne für die __(27)_ ___ Wochenenden aus? Wir könnten uns ja vielleicht mal wieder treffen und in Ruhe quatschen – hättest du Lust __(28)_ ___? In meiner Straße hat vor einem Monat ein nettes kleines Café aufgemacht, die haben nicht nur sehr leckere Kuchen, __(29)_ ___ auch einige kleine Gerichte zu wirklich günstigen Preisen. Wäre das was __(30)_ ___ dich? Mail wir doch einfach, wenn du magst, ich würde mich freuen. Viele Grüße, Nadine",
-                blanks: [
-                    { id: 21, options: ["anstatt", "ohne", "um"], correct: 2 },
-                    { id: 22, options: ["dass", "ob", "während"], correct: 1 },
-                    { id: 23, options: ["aber", "denn", "und"], correct: 0 },
-                    { id: 24, options: ["bestimmt", "unbedingt", "völlig"], correct: 1 },
-                    { id: 25, options: ["dich", "mich", "sich"], correct: 1 },
-                    { id: 26, options: ["als", "wenn", "wie"], correct: 0 },
-                    { id: 27, options: ["baldigen", "kommenden", "vergangenen"], correct: 1 },
-                    { id: 28, options: ["danach", "darüber", "dazu"], correct: 2 },
-                    { id: 29, options: ["aber", "oder", "sondern"], correct: 2 },
-                    { id: 30, options: ["für", "gegen", "ohne"], correct: 0 }
-                ]
+
+            // الإجابات الصحيحة لـ Lesen Teil 3
+            teil3Answers: {
+                11: "Geschichte erleben",
+                12: "Naturführungen", 
+                13: "Urlaubspakete",
+                14: "Inselleben",
+                15: "Wirtschaftsinfo",
+                16: "Zukunftspläne",
+                17: "Kultur und Tradition",
+                18: "Aktivitäten",
+                19: "Geografie", 
+                20: "Bevölkerung"
             },
-            sprachbausteine2: {
-                text: "Welches Fortbewegungsmittel, denken Sie, wird in Deutschland am häufigsten benutzt? Natürlich das Automobil. Volkswagen, Porsche, Mercedes Benz, BMW, Audi: In __(31)_ einem anderen Land gibt es so viele Automobilfabriken wie in Deutschland, spielt die Automobilindustrie eine so große Rolle. Nahezu jeder Haushalt verfügt über mindestens ein Auto, das Auto spielt im Leben der Deutschen eine große Rolle, sowohl als Fortbewegungsmittel zum Arbeitsplatz oder in den Urlaub als auch als Statussymbol: Zeig mir dein Auto und ich weiß, wer du bist. Doch hat das Autofahren auch Schattenseiten. Mangelnde Bewegungsmöglichkeiten, gesundheitliche Probleme und Stress bringen zumindest in den Großstädten immer mehr Autofahrer dazu, sich vom Automobil freizumachen und __(32)_ ein anderes Verkehrsmittel umzusteigen, das in dem Ruf steht, gesünder zu sein als das Auto: das Fahrrad. Nicht nur in der Freizeit, sondern auch auf dem Weg zum Arbeitsplatz wird das Rad benutzt. 'Ich habe keine Lust, Morgen für Morgen im Stau zu stehen und Zeit zu verlieren', sagt Bettina Meier (25): 'Da ist es viel entspannender, auf den zumeist gut ausgebauten Fahrradwegen an den im Stau wartenden Fahrzeugen __(33)_ und ausgeruht am Arbeitsplatz anzukommen.' Dass Fahrradfahren um einiges gesünder ist, als hinter dem Lenkrad zu sitzen, bestätigen auch die Mediziner. Wer Fahrrad fährt __(34)_ zu sitzen, bringt seinen Blutkreislauf in Schwung, stärkt die Abwehrkräfte des Körpers und trainiert seinen Körper. Auch die Bewegung an der frischen Luft tut Menschen gut, die sich sonst die meiste Zeit __(35)_ geschlossener Räume in Büros, Schulen oder Fabriken aufhalten __(36)_ . Auch die Geschäftswelt hat die Fahrradfahrer als Kunden entdeckt. Ein breites Angebot __(37)_ Zubehör für Fahrräder von schicken Radfelgen über sportliche Mehrganggetriebe, mit denen Berge kein Problem mehr darstellen, bis zur Designer–Trinkflasche machen aus dem einfachen Fahrrad ein exklusives Fahrzeug. Und natürlich darf bei keinem Fahrradfahrer eine aufwändige Sicherheitsausstattung mehr fehlen: Schutzhelme, Ellenbogen– und Knieschützer, die das Fahrrad im Falle eines Unfalls fast so sicher wie einen Panzer machen __(38)_ . Nur wenn es regnet – und das passiert in Deutschland leider nicht so selten –, __(39)_ sind die Autoschlangen wieder länger. __(40)_ einen praktischen Wetterschutz für Radfahrer haben die Geschäfte noch nicht im Angebot.",
-                wordBank: [
-                    { id: 31, word: "kaum", correct: true },
-                    { id: 32, word: "auf", correct: true },
-                    { id: 33, word: "vorbei", correct: true },
-                    { id: 34, word: "statt", correct: true },
-                    { id: 35, word: "innerhalb", correct: true },
-                    { id: 36, word: "müssen", correct: true },
-                    { id: 37, word: "an", correct: true },
-                    { id: 38, word: "sollen", correct: true },
-                    { id: 39, word: "dann", correct: true },
-                    { id: 40, word: "Für", correct: true }
-                ]
+
+            // Sprachbausteine Teil 1
+            blankText1: {
+                content: `Hallo Maria,
+vielen Dank für deine E-Mail __(21)__ Helgoland! Du bist ja jetzt schon seit zwei Wochen auf der Insel – wie gefällt es dir dort?
+Ich hatte in den letzten Tagen leider keine Zeit, dir zu antworten, __(22)__ ich viel arbeiten musste. Aber jetzt erzähle ich dir, __(23)__ hier los war.
+Also, in der Firma haben wir momentan viel Stress, __(24)__ mehrere Kollegen krank sind. Wir müssen jetzt mit weniger Leuten die gleiche Arbeit schaffen. Ich weiß nicht, __(25)__ das auf Dauer gut gehen soll. Vielleicht __(26)__ die Situation nächste Woche besser.
+Am Wochenende war ich mit Freunden im Kino. Wir haben einen Film über das Leben auf einer Insel gesehen. Eigentlich war ich an dem Abend sehr müde und __(27)__ lieber zu Hause geblieben, aber die Freunde haben mich überredet. Im Nachhinein bin ich froh, dass ich mitgegangen bin, __(28)__ der Film war wirklich sehenswert!
+Nächsten Monat möchte ich dich auf Helgoland besuchen. Ich __(29)__ schon den Flug gebucht. Wir können dann zusammen die Insel erkunden. Ich freue mich __(30)__ unseren gemeinsamen Urlaub!
+Schreib mir bald wieder!
+
+Liebe Grüße
+Anna`,
+                answers: ["aus", "weil", "was", "weil", "ob", "wird", "wäre", "denn", "habe", "auf"]
+            },
+
+            // Sprachbausteine Teil 2
+            blankText2: {
+                content: `Helgoland ist eine besondere Insel in der Nordsee. Sie liegt etwa 70 Kilometer __(31)__ dem Festland entfernt. Die Insel besteht __(32)__ zwei Teilen: der Hauptinsel und der Düne.
+Auf der Hauptinsel gibt es hohe, rote Felsen, __(33)__ auf der Düne findet man einen schönen Sandstrand. Viele Touristen kommen __(34)__ der Insel, um die Natur zu genießen.
+Das Klima auf Helgoland ist maritim, __(35)__ es oft windig ist. Die Temperaturen sind meist mild, __(36)__ es im Winter manchmal schneit.
+Die Wirtschaft der Insel basiert hauptsächlich __(37)__ Tourismus. Jährlich besuchen etwa 300.000 Menschen Helgoland. Viele kommen __(38)__ die duty-free-Shops.
+Die Bewohner sind stolz __(39)__ ihre Insel. Sie pflegen ihre Traditionen und sprechen einen eigenen Dialekt. Die Zukunft der Insel sieht gut aus, __(40)__ der Tourismus stetig wächst.`,
+                answers: ["vom", "aus", "während", "auf", "das", "obwohl", "auf", "wegen", "auf", "weil"]
             }
         };
 
-        // متغيرات التطبيق
-        let currentLanguage = 'ar';
-        let isDarkMode = false;
-        let answersVisible = false;
-
-        // تهيئة التطبيق
+        // تهيئة الصفحة
         document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
-            loadContent();
+            initializePage();
             setupEventListeners();
         });
 
-        // تهيئة التطبيق
-        function initializeApp() {
+        let currentLang = 'ar';
+        let isDarkMode = false;
+
+        function initializePage() {
             // تحميل الإعدادات المحفوظة
-            const savedLanguage = localStorage.getItem('language');
-            const savedDarkMode = localStorage.getItem('darkMode');
-            const savedNotes = localStorage.getItem('userNotes');
-
-            if (savedLanguage) {
-                currentLanguage = savedLanguage;
-                updateLanguage();
+            const savedLang = localStorage.getItem('language') || 'ar';
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            const username = localStorage.getItem('username') || 'زائر';
+            const access = localStorage.getItem('access');
+            
+            changeLanguage(savedLang);
+            if (savedDarkMode) {
+                toggleDarkMode();
             }
-
-            if (savedDarkMode === 'true') {
-                isDarkMode = true;
-                document.body.classList.add('dark-mode');
-                document.getElementById('themeToggle').textContent = '☀️';
+            
+            // التحقق من حالة المستخدم
+            if (access === 'paid' && username) {
+                document.getElementById('premiumBadge').style.display = 'flex';
             }
-
-            if (savedNotes) {
-                document.getElementById('notesTextarea').value = savedNotes;
-            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
         }
 
-        // تحميل المحتوى
-        function loadContent() {
-            loadHeadings();
-            loadTexts();
-            loadLongText();
-            loadQuestions();
-            loadSituations();
-            loadAds();
-            loadSprachbausteine1();
-            loadSprachbausteine2();
-        }
-
-        // تحميل العناوين
-        function loadHeadings() {
+        function initializeTeil1() {
             const headingsList = document.getElementById('headingsList');
-            headingsList.innerHTML = '';
-
-            contentData.headings.forEach((heading, index) => {
-                const headingItem = document.createElement('div');
-                headingItem.className = 'heading-item';
-                headingItem.textContent = heading;
-                headingItem.dataset.id = String.fromCharCode(97 + index); // a, b, c, ...
-                headingsList.appendChild(headingItem);
-            });
-        }
-
-        // تحميل النصوص
-        function loadTexts() {
             const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
             textsList.innerHTML = '';
 
-            contentData.texts.forEach(text => {
-                const textElement = document.createElement('div');
-                textElement.className = 'text-content';
-                textElement.innerHTML = `
-                    <h3>Text ${text.id}</h3>
-                    <p>${text.content}</p>
-                    <div class="answer hidden correct-answer" id="answer-text-${text.id}">
-                        Richtige Überschrift: ${text.correctHeading}
+            // إضافة العناوين
+            examData.headings.forEach((heading, index) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                `;
+                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${index + 1}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
                     </div>
                 `;
-                textsList.appendChild(textElement);
+                textsList.appendChild(textItem);
             });
         }
 
-        // تحميل النص الطويل
-        function loadLongText() {
-            const longTextElement = document.getElementById('longText');
-            longTextElement.innerHTML = `
-                <h3>Lesen Sie den Text und die Aufgaben 6–10.</h3>
-                <p>${contentData.longText.content}</p>
-            `;
-        }
-
-        // تحميل الأسئلة
-        function loadQuestions() {
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
             const questionsList = document.getElementById('questionsList');
-            questionsList.innerHTML = '';
 
-            contentData.longText.questions.forEach(question => {
-                const questionElement = document.createElement('div');
-                questionElement.className = 'question';
-                questionElement.innerHTML = `
-                    <h4>Aufgabe ${question.id}</h4>
-                    <p>${question.text}</p>
+            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Frage ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
                     <div class="options">
-                        ${question.options.map((option, index) => `
-                            <div class="option" data-question="${question.id}" data-option="${index}">
-                                ${option}
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
                             </div>
                         `).join('')}
                     </div>
-                    <div class="answer hidden correct-answer" id="answer-${question.id}">
-                        Richtige Antwort: ${question.options[question.correctAnswer]}
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
                     </div>
                 `;
-                questionsList.appendChild(questionElement);
+                questionsList.appendChild(questionItem);
             });
         }
 
-        // تحميل الوضعيات
-        function loadSituations() {
+        function initializeTeil3() {
             const situationsList = document.getElementById('situationsList');
-            situationsList.innerHTML = '';
+            const adsList = document.getElementById('adsList');
 
-            contentData.situations.forEach(situation => {
-                const situationElement = document.createElement('div');
-                situationElement.className = 'situation-item';
-                situationElement.innerHTML = `
-                    <h4>Situation ${situation.id}</h4>
-                    <p>${situation.text}</p>
-                    <div class="answer hidden correct-answer" id="answer-situation-${situation.id}">
-                        Richtige Anzeige: ${situation.correctAd}
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation, index) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <strong>${index + 11})</strong> ${situation}
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
                     </div>
                 `;
-                situationsList.appendChild(situationElement);
+                situationsList.appendChild(situationItem);
             });
-        }
 
-        // تحميل الإعلانات
-        function loadAds() {
-            const adsList = document.getElementById('adsList');
             adsList.innerHTML = '';
-
-            contentData.ads.forEach(ad => {
-                const adElement = document.createElement('div');
-                adElement.className = 'ad-item';
-                adElement.innerHTML = `
-                    <h4>${ad.id}: ${ad.title}</h4>
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
                     <p>${ad.content}</p>
                 `;
-                adsList.appendChild(adElement);
+                adsList.appendChild(adItem);
             });
         }
 
-        // تحميل Sprachbausteine Teil 1
-        function loadSprachbausteine1() {
+        function initializeSprachbausteine() {
+            // Teil 1
             const blankText1 = document.getElementById('blankText1');
-            const blankOptions1 = document.getElementById('blankOptions1');
+            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
+            });
+            blankText1.innerHTML = textWithBlanks1;
 
-            // بناء النص مع الفراغات
-            let textWithBlanks = contentData.sprachbausteine1.text;
-            contentData.sprachbausteine1.blanks.forEach(blank => {
-                textWithBlanks = textWithBlanks.replace(`(${blank.id})`, 
-                    `<span class="blank" id="blank-${blank.id}">(${blank.id})</span>`);
+            // إضافة الكلمات الخاصة بالفراغات لـ Teil 1
+            const wordList1 = document.getElementById('wordList1');
+            wordList1.innerHTML = '';
+            examData.blankText1.answers.forEach((word, index) => {
+                const wordItem = document.createElement('div');
+                wordItem.className = 'word-item';
+                wordItem.textContent = word;
+                wordList1.appendChild(wordItem);
             });
 
-            blankText1.innerHTML = `<p>${textWithBlanks}</p>`;
-
-            // بناء خيارات الفراغات
-            blankOptions1.innerHTML = '';
-            contentData.sprachbausteine1.blanks.forEach(blank => {
-                const blankOptions = document.createElement('div');
-                blankOptions.className = 'blank-options';
-                blankOptions.innerHTML = `
-                    <h4>Lücke ${blank.id}:</h4>
-                    ${blank.options.map((option, index) => `
-                        <div class="blank-option" data-blank="${blank.id}" data-option="${index}">
-                            ${option}
-                        </div>
-                    `).join('')}
-                    <div class="answer hidden correct-answer" id="answer-blank-${blank.id}">
-                        Richtige Antwort: ${blank.options[blank.correct]}
-                    </div>
-                `;
-                blankOptions1.appendChild(blankOptions);
-            });
-        }
-
-        // تحميل Sprachbausteine Teil 2
-        function loadSprachbausteine2() {
+            // Teil 2
             const blankText2 = document.getElementById('blankText2');
-            const wordBank2 = document.getElementById('wordBank2');
-
-            // بناء النص مع الفراغات
-            let textWithBlanks = contentData.sprachbausteine2.text;
-            contentData.sprachbausteine2.wordBank.forEach(word => {
-                textWithBlanks = textWithBlanks.replace(`(${word.id})`, 
-                    `<span class="blank" id="blank2-${word.id}">(${word.id})</span>`);
+            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 31]}</span></span>`;
             });
+            blankText2.innerHTML = textWithBlanks2;
 
-            blankText2.innerHTML = `<p>${textWithBlanks}</p>`;
-
-            // بناء بنك الكلمات
-            wordBank2.innerHTML = '';
-            contentData.sprachbausteine2.wordBank.forEach(word => {
-                const wordOption = document.createElement('div');
-                wordOption.className = 'word-option';
-                wordOption.textContent = word.word;
-                wordOption.dataset.id = word.id;
-                wordBank2.appendChild(wordOption);
+            // إضافة الكلمات الخاصة بالفراغات لـ Teil 2
+            const wordList2 = document.getElementById('wordList2');
+            wordList2.innerHTML = '';
+            examData.blankText2.answers.forEach((word, index) => {
+                const wordItem = document.createElement('div');
+                wordItem.className = 'word-item';
+                wordItem.textContent = word;
+                wordList2.appendChild(wordItem);
             });
-
-            // إضافة التصحيح
-            const correctionDiv = document.createElement('div');
-            correctionDiv.className = 'answer hidden correct-answer';
-            correctionDiv.id = 'answer-sprach2';
-            correctionDiv.innerHTML = '<h4>Richtige Lösungen:</h4>' + 
-                contentData.sprachbausteine2.wordBank.map(word => 
-                    `Lücke ${word.id}: ${word.word}`).join('<br>');
-            wordBank2.parentNode.insertBefore(correctionDiv, wordBank2.nextSibling);
         }
 
-        // إعداد مستمعي الأحداث
         function setupEventListeners() {
-            // تبديل الوضع الليلي
-            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-
-            // محدد اللغة
-            document.getElementById('langBtn').addEventListener('click', toggleLanguageDropdown);
-            document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', changeLanguage);
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الرئيسية
+            document.getElementById('homeBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html';
             });
-
-            // أزرار التحكم بالإجابات
-            document.getElementById('showAnswers').addEventListener('click', showAnswers);
-            document.getElementById('hideAnswers').addEventListener('click', hideAnswers);
-
-            // نافذة الدعم
-            document.getElementById('supportBtn').addEventListener('click', showSupportModal);
-            document.getElementById('closeSupportModal').addEventListener('click', hideSupportModal);
-
-            // نافذة الملاحظات
-            document.getElementById('notesBtn').addEventListener('click', showNotesModal);
-            document.getElementById('closeNotesModal').addEventListener('click', hideNotesModal);
-            document.getElementById('saveNotes').addEventListener('click', saveNotes);
-
-            // النقر خارج القوائم المنسدلة لإغلاقها
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('.language-selector')) {
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+            
+            // زر المستخدم
+            document.getElementById('userBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html#profile';
+            });
+            
+            // زر الاشتراك
+            document.getElementById('subscribeBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html#subscribe';
+            });
+            
+            // زر اللغة
+            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const lang = option.getAttribute('data-lang');
+                    changeLanguage(lang);
+                    document.getElementById('langDropdown').classList.remove('show');
+                });
+            });
+            
+            // إغلاق القوائم المنسدلة بالنقر خارجها
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.language-selector')) {
                     document.getElementById('langDropdown').classList.remove('show');
                 }
             });
         }
 
-        // تبديل الوضع الليلي
-        function toggleDarkMode() {
-            isDarkMode = !isDarkMode;
-            document.body.classList.toggle('dark-mode');
-            document.getElementById('themeToggle').textContent = isDarkMode ? '☀️' : '🌙';
-            localStorage.setItem('darkMode', isDarkMode);
-        }
-
-        // تبديل قائمة اللغة
-        function toggleLanguageDropdown() {
-            document.getElementById('langDropdown').classList.toggle('show');
-        }
-
-        // تغيير اللغة
-        function changeLanguage(event) {
-            const selectedLang = event.target.dataset.lang;
-            if (selectedLang && translations[selectedLang]) {
-                currentLanguage = selectedLang;
-                updateLanguage();
-                document.getElementById('langDropdown').classList.remove('show');
-                localStorage.setItem('language', currentLanguage);
-            }
-        }
-
-        // تحديث اللغة
-        function updateLanguage() {
-            const t = translations[currentLanguage];
-            
-            // تحديث النصوص
-            document.getElementById('pageTitle').textContent = t.pageTitle;
-            document.getElementById('pageSubtitle').textContent = t.pageSubtitle;
-            document.getElementById('showAnswersText').textContent = t.showAnswersText;
-            document.getElementById('hideAnswersText').textContent = t.hideAnswersText;
-            document.getElementById('teil1Title').textContent = t.teil1Title;
-            document.getElementById('teil1Description').textContent = t.teil1Description;
-            document.getElementById('teil2Title').textContent = t.teil2Title;
-            document.getElementById('teil3Title').textContent = t.teil3Title;
-            document.getElementById('teil3Description').textContent = t.teil3Description;
-            document.getElementById('sprach1Title').textContent = t.sprach1Title;
-            document.getElementById('sprach2Title').textContent = t.sprach2Title;
-            document.getElementById('supportTitle').textContent = t.supportTitle;
-            
-            // تحديث زر اللغة
-            document.getElementById('langBtn').innerHTML = `<span>${t.langText}</span>`;
-        }
-
-        // إظهار التصحيح
-        function showAnswers() {
-            answersVisible = true;
-            
-            // إظهار إجابات Teil 1
-            contentData.texts.forEach(text => {
-                document.getElementById(`answer-text-${text.id}`).classList.remove('hidden');
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
             });
-            
-            // إظهار إجابات Teil 2
-            contentData.longText.questions.forEach(question => {
-                document.getElementById(`answer-${question.id}`).classList.remove('hidden');
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
             });
-            
-            // إظهار إجابات Teil 3
-            contentData.situations.forEach(situation => {
-                document.getElementById(`answer-situation-${situation.id}`).classList.remove('hidden');
+            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                        heading.classList.add('matched');
+                    }
+                });
             });
-            
-            // إظهار إجابات Sprachbausteine Teil 1
-            contentData.sprachbausteine1.blanks.forEach(blank => {
-                document.getElementById(`answer-blank-${blank.id}`).classList.remove('hidden');
-            });
-            
-            // إظهار إجابات Sprachbausteine Teil 2
-            document.getElementById('answer-sprach2').classList.remove('hidden');
         }
 
-        // إخفاء التصحيح
-        function hideAnswers() {
-            answersVisible = false;
-            
-            // إخفاء جميع الإجابات
+        function hideAllAnswers() {
             document.querySelectorAll('.answer').forEach(answer => {
                 answer.classList.add('hidden');
             });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
         }
 
-        // إظهار نافذة الدعم
-        function showSupportModal() {
-            document.getElementById('supportModal').style.display = 'flex';
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
         }
 
-        // إخفاء نافذة الدعم
-        function hideSupportModal() {
-            document.getElementById('supportModal').style.display = 'none';
+        function toggleLangDropdown() {
+            document.getElementById('langDropdown').classList.toggle('show');
         }
 
-        // إظهار نافذة الملاحظات
-        function showNotesModal() {
-            document.getElementById('notesModal').style.display = 'flex';
-        }
-
-        // إخفاء نافذة الملاحظات
-        function hideNotesModal() {
-            document.getElementById('notesModal').style.display = 'none';
-        }
-
-        // حفظ الملاحظات
-        function saveNotes() {
-            const notes = document.getElementById('notesTextarea').value;
-            localStorage.setItem('userNotes', notes);
-            alert('تم حفظ الملاحظات بنجاح!');
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // تحديث جميع النصوص
+            Object.keys(t).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = t[key];
+                }
+            });
+            
+            localStorage.setItem('language', lang);
+            
+            // إعادة تهيئة المحتوى لترجمة الإجابات
+            initializeTeil1();
+            initializeTeil2();
         }
     </script>
 </body>

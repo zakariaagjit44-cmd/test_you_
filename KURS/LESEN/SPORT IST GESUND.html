@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sport und Gesundheit - test B2 Training</title>
+    <title>SPORT IST GESUND - TELC B2 Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* جميع الأنماط تبقى كما هي بدون تغيير */
         :root {
             --primary: #2196F3;
             --primary-dark: #1976D2;
@@ -47,14 +48,30 @@
             color: var(--light);
         }
 
-        /* Header Controls - تم التعديل لمطابقة الصفحة الرئيسية تماماً */
+        /* Header Controls - تم تعديل موضع زر الاشتراك */
         .header-controls {
             position: fixed;
             top: 20px;
+            left: 20px;
             right: 20px;
             display: flex;
-            gap: 15px;
+            justify-content: space-between;
+            align-items: flex-start;
             z-index: 1000;
+            gap: 15px;
+        }
+
+        .left-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .right-controls {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
         }
 
         .control-btn {
@@ -98,12 +115,68 @@
             box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
         }
 
-        /* Language Selector - تم التعديل لمطابقة الصفحة الرئيسية */
-        .language-selector {
+        /* شارة المشترك الذهبية - تم التعديل للانتقال إلى اليسار */
+        .premium-badge-header {
             position: fixed;
             top: 20px;
-            left: 20px;
+            left: 90px; /* تغيير من right إلى left */
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
             z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
+            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
+        }
+
+        .home-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            border: none;
+            width: auto;
+            height: auto;
+        }
+
+        .dark-mode .home-btn {
+            background: rgba(13, 71, 161, 0.95);
+            color: var(--light);
+            border: 2px solid var(--secondary);
+        }
+
+        .home-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* Language Selector */
+        .language-selector {
+            display: flex;
+            position: relative;
         }
 
         .lang-btn {
@@ -195,133 +268,38 @@
             border-bottom: none;
         }
 
-        /* شارة المشترك الذهبية - تم التعديل لمطابقة الصفحة الرئيسية */
-        .premium-badge {
-            position: fixed;
-            top: 85px;
-            left: 20px;
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
-            animation: rotate 4s linear infinite;
-            display: none;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* نافذة الدعم - تمت إضافتها لمطابقة الصفحة الرئيسية */
-        .support-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .support-modal-content {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-        }
-
-        .dark-mode .support-modal-content {
-            background: #1a237e;
-        }
-
-        .support-info {
-            margin: 1.5rem 0;
-        }
-
-        .support-item {
-            padding: 0.8rem;
-            margin: 0.5rem 0;
-            background: rgba(33, 150, 243, 0.1);
-            border-radius: 10px;
-            font-weight: 500;
-        }
-
-        .close-modal {
-            background: var(--primary);
-            color: var(--white);
-            border: none;
-            padding: 0.8rem 1.5rem;
+        /* زر الاشتراك الجديد */
+        .subscribe-btn {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--primary);
             border-radius: 50px;
+            padding: 0.5rem 1rem;
             cursor: pointer;
             font-weight: 600;
-            transition: var(--transition);
-        }
-
-        .close-modal:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        /* نافذة الملاحظات - تمت إضافتها */
-        .notes-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .notes-modal-content {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: var(--radius);
+            color: var(--primary-dark);
             box-shadow: var(--shadow);
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            border: none;
+            width: auto;
+            height: auto;
         }
 
-        .dark-mode .notes-modal-content {
-            background: #1a237e;
-        }
-
-        .notes-textarea {
-            width: 100%;
-            height: 200px;
-            padding: 1rem;
-            border: 2px solid var(--primary);
-            border-radius: 10px;
-            font-family: 'Roboto', sans-serif;
-            font-size: 1rem;
-            resize: vertical;
-            margin: 1rem 0;
-        }
-
-        .dark-mode .notes-textarea {
-            background: #1a237e;
+        .dark-mode .subscribe-btn {
+            background: rgba(13, 71, 161, 0.95);
             color: var(--light);
-            border-color: var(--secondary);
+            border: 2px solid var(--secondary);
         }
 
-        /* زر الرئيسية - تم إزالته واستبداله بأزرار التحكم */
+        .subscribe-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
 
         /* المحتوى الرئيسي */
         .container {
@@ -379,10 +357,10 @@
             color: #B0BEC5;
         }
 
-        /* أزرار التحكم - تم التعديل لجعلها ثابتة في الأعلى */
+        /* أزرار التحكم */
         .answer-controls {
             position: sticky;
-            top: 0;
+            top: 80px;
             background: rgba(255, 255, 255, 0.95);
             padding: 1.5rem;
             border-radius: var(--radius);
@@ -699,70 +677,57 @@
             border-color: #81C784;
         }
 
-        .blank-options {
+        /* قسم الكلمات لـ Sprachbausteine */
+        .word-bank {
+            margin: 2rem 0;
+            padding: 1.5rem;
+            background: rgba(33, 150, 243, 0.1);
+            border-radius: 15px;
+            border: 2px dashed var(--primary);
+        }
+
+        .word-bank-title {
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .dark-mode .word-bank-title {
+            color: #90CAF9;
+        }
+
+        .word-list {
             display: flex;
             flex-wrap: wrap;
             gap: 1rem;
-            margin: 1rem 0;
-            padding: 1rem;
-            background: rgba(33, 150, 243, 0.05);
+        }
+
+        .word-item {
+            padding: 0.8rem 1.2rem;
+            background: var(--white);
+            border: 2px solid var(--primary);
             border-radius: 10px;
-        }
-
-        .blank-option {
-            padding: 0.5rem 1rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            cursor: pointer;
+            font-weight: 600;
+            color: var(--primary-dark);
             transition: var(--transition);
         }
 
-        .dark-mode .blank-option {
+        .dark-mode .word-item {
             background: #1a237e;
-            border-color: #37474F;
+            color: #90CAF9;
         }
 
-        .blank-option:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.1);
-        }
-
-        .word-bank {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            margin: 1.5rem 0;
-            padding: 1.5rem;
-            background: rgba(33, 150, 243, 0.05);
-            border-radius: 15px;
-        }
-
-        .word-option {
-            padding: 0.6rem 1rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .dark-mode .word-option {
-            background: #1a237e;
-            border-color: #37474F;
-        }
-
-        .word-option:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.1);
-            transform: translateY(-2px);
+        .word-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
         }
 
         .hidden {
             display: none;
         }
 
-        /* Floating Elements مثل الصفحة الرئيسية */
+        /* Floating Elements */
         .floating-elements {
             position: fixed;
             width: 100%;
@@ -797,20 +762,22 @@
         @media (max-width: 768px) {
             .header-controls {
                 top: 15px;
+                left: 15px;
                 right: 15px;
                 gap: 10px;
             }
 
-            .language-selector {
+            .premium-badge-header {
                 top: 15px;
-                left: 15px;
+                left: 70px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.1rem;
             }
 
-            .premium-badge {
-                top: 70px;
-                left: 15px;
-                width: 35px;
-                height: 35px;
+            .home-btn, .subscribe-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 0.8rem;
             }
 
             .container {
@@ -831,31 +798,39 @@
                 grid-template-columns: 1fr;
             }
 
+            .right-controls {
+                gap: 10px;
+            }
+
             .answer-controls {
-                top: 0;
+                top: 70px;
             }
         }
 
         @media (max-width: 480px) {
             .header-controls {
-                gap: 8px;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
             }
 
-            .control-btn {
-                width: 45px;
-                height: 45px;
-                font-size: 1.1rem;
+            .left-controls, .right-controls {
+                flex-direction: row;
+                justify-content: center;
             }
 
-            .lang-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
+            .premium-badge-header {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                margin-top: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Floating Elements مثل الصفحة الرئيسية -->
+    <!-- Floating Elements -->
     <div class="floating-elements">
         <div class="floating-element floating-book">📚</div>
         <div class="floating-element floating-pen">✏️</div>
@@ -867,62 +842,61 @@
         <div class="floating-element floating-calculator">🧮</div>
     </div>
 
-    <!-- أزرار التحكم العلوية - تم التعديل لمطابقة الصفحة الرئيسية -->
+    <!-- شارة المشترك الذهبية - تم نقلها إلى اليسار -->
+    <div class="premium-badge-header" id="premiumBadge">
+        <i class="fas fa-crown"></i>
+    </div>
+
+    <!-- Header Controls -->
     <div class="header-controls">
-        <button class="control-btn theme-toggle" id="themeToggle">🌙</button>
-        <button class="control-btn support-btn" id="supportBtn">💬</button>
-        <!-- تم حذف زر الحساب حسب الطلب -->
-        <button class="control-btn notes-btn" id="notesBtn">📝</button>
-    </div>
-
-    <!-- محدد اللغة - تم التعديل لمطابقة الصفحة الرئيسية -->
-    <div class="language-selector">
-        <button class="lang-btn" id="langBtn">
-            <span>🇸🇦 العربية</span>
-        </button>
-        <div class="lang-dropdown" id="langDropdown">
-            <div class="lang-option" data-lang="ar">🇸🇦 العربية</div>
-            <div class="lang-option" data-lang="de">🇩🇪 Deutsch</div>
-            <div class="lang-option" data-lang="en">🇬🇧 English</div>
-        </div>
-    </div>
-
-    <!-- شارة المشترك الذهبية - تم التعديل لمطابقة الصفحة الرئيسية -->
-    <div class="premium-badge" id="premiumBadge">
-        <i class="fas fa-crown" style="color: #fff; font-size: 1.2rem;"></i>
-    </div>
-
-    <!-- نافذة الدعم - تمت إضافتها لمطابقة الصفحة الرئيسية -->
-    <div class="support-modal" id="supportModal">
-        <div class="support-modal-content">
-            <h2 id="supportTitle">اتصال الدعم</h2>
-            <div class="support-info">
-                <div class="support-item">+212 649-661976</div>
-                <div class="support-item">zakariaap.6@gmail.com</div>
+        <div class="left-controls">
+            <button class="home-btn" id="homeBtn">
+                <i class="fas fa-home"></i>
+                <span id="homeText">الرئيسية</span>
+            </button>
+            <div class="language-selector">
+                <button class="lang-btn" id="langBtn">
+                    <span id="langBtnText">العربية</span>
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="lang-dropdown" id="langDropdown">
+                    <div class="lang-option" data-lang="ar">
+                        <span>🇸🇦</span>
+                        <span>العربية</span>
+                    </div>
+                    <div class="lang-option" data-lang="de">
+                        <span>🇩🇪</span>
+                        <span>Deutsch</span>
+                    </div>
+                    <div class="lang-option" data-lang="en">
+                        <span>🇬🇧</span>
+                        <span>English</span>
+                    </div>
+                </div>
             </div>
-            <button class="close-modal" id="closeSupportModal">إغلاق</button>
         </div>
-    </div>
-
-    <!-- نافذة الملاحظات - تمت إضافتها -->
-    <div class="notes-modal" id="notesModal">
-        <div class="notes-modal-content">
-            <h2>ملاحظاتي</h2>
-            <textarea class="notes-textarea" id="notesTextarea" placeholder="اكتب ملاحظاتك هنا..."></textarea>
-            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                <button class="close-modal" id="saveNotes">حفظ</button>
-                <button class="close-modal" id="closeNotesModal">إغلاق</button>
-            </div>
+        
+        <div class="right-controls">
+            <button class="control-btn" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="subscribe-btn" id="subscribeBtn">
+                <i class="fas fa-star"></i>
+                <span id="subscribeText">اشتراك</span>
+            </button>
+            <button class="control-btn" id="userBtn">
+                <i class="fas fa-user"></i>
+            </button>
         </div>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">Sport und Gesundheit - test B2 Training</h1>
+            <h1 id="pageTitle">SPORT IST GESUND - TELC B2 Training</h1>
             <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
         </div>
 
-        <!-- أزرار التحكم - تم التعديل لجعلها ثابتة في الأعلى -->
+        <!-- أزرار التحكم -->
         <div class="answer-controls">
             <button class="answer-btn show-answers" id="showAnswers">
                 <i class="fas fa-check-circle"></i>
@@ -963,7 +937,7 @@
         <!-- Lesen Teil 3 -->
         <div class="section">
             <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
-            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
             
             <div class="situations-grid" id="situationsList">
                 <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
@@ -977,12 +951,18 @@
         <!-- Sprachbausteine Teil 1 -->
         <div class="section">
             <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            
+            <!-- قسم الكلمات لـ Sprachbausteine Teil 1 -->
+            <div class="word-bank" id="wordBank1">
+                <h3 class="word-bank-title" id="wordBankTitle1">الكلمات المتاحة لـ Sprachbausteine Teil 1</h3>
+                <div class="word-list" id="wordList1">
+                    <!-- الكلمات سيتم إضافتها بالجافاسكريبت -->
+                </div>
+            </div>
+            
             <div class="fill-blanks">
                 <div class="blank-text" id="blankText1">
                     <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
-                </div>
-                <div id="blankOptions1">
-                    <!-- خيارات الفراغات ستتم إضافتها بالجافاسكريبت -->
                 </div>
             </div>
         </div>
@@ -990,12 +970,18 @@
         <!-- Sprachbausteine Teil 2 -->
         <div class="section">
             <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            
+            <!-- قسم الكلمات لـ Sprachbausteine Teil 2 -->
+            <div class="word-bank" id="wordBank2">
+                <h3 class="word-bank-title" id="wordBankTitle2">الكلمات المتاحة لـ Sprachbausteine Teil 2</h3>
+                <div class="word-list" id="wordList2">
+                    <!-- الكلمات سيتم إضافتها بالجافاسكريبت -->
+                </div>
+            </div>
+            
             <div class="fill-blanks">
                 <div class="blank-text" id="blankText2">
                     <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
-                </div>
-                <div class="word-bank" id="wordBank2">
-                    <!-- بنك الكلمات سيتم إضافته بالجافاسكريبت -->
                 </div>
             </div>
         </div>
@@ -1006,10 +992,11 @@
         const translations = {
             ar: {
                 homeText: "الرئيسية",
+                subscribeText: "اشتراك",
                 themeText: "الوضع الليلي",
                 langText: "العربية", 
                 userText: "زائر",
-                pageTitle: "Sport und Gesundheit - test B2 Training",
+                pageTitle: "SPORT IST GESUND - TELC B2 Training",
                 pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
                 showAnswersText: "إظهار التصحيح",
                 hideAnswersText: "إخفاء التصحيح",
@@ -1017,35 +1004,39 @@
                 teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
                 teil2Title: "Lesen Teil 2", 
                 teil3Title: "Lesen Teil 3",
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
+                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
                 sprach1Title: "Sprachbausteine Teil 1",
                 sprach2Title: "Sprachbausteine Teil 2",
-                supportTitle: "اتصال الدعم"
+                wordBankTitle1: "الكلمات المتاحة لـ Sprachbausteine Teil 1",
+                wordBankTitle2: "الكلمات المتاحة لـ Sprachbausteine Teil 2"
             },
             de: {
                 homeText: "Startseite",
-                themeText: "Nachtmodus",
+                subscribeText: "Abonnieren",
+                themeText: "Nachtmodus", 
                 langText: "Deutsch",
                 userText: "Besucher",
-                pageTitle: "Sport und Gesundheit - test B2 Training",
+                pageTitle: "SPORT IST GESUND - TELC B2 Training",
                 pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
                 showAnswersText: "Korrektur anzeigen",
                 hideAnswersText: "Korrektur ausblenden",
                 teil1Title: "Lesen Teil 1",
                 teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
                 teil2Title: "Lesen Teil 2",
-                teil3Title: "Lesen Teil 3",
+                teil3Title: "Lesen Teil 3", 
                 teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
                 sprach1Title: "Sprachbausteine Teil 1",
                 sprach2Title: "Sprachbausteine Teil 2",
-                supportTitle: "Support Kontakt"
+                wordBankTitle1: "Verfügbare Wörter für Sprachbausteine Teil 1",
+                wordBankTitle2: "Verfügbare Wörter für Sprachbausteine Teil 2"
             },
             en: {
                 homeText: "Home",
+                subscribeText: "Subscribe",
                 themeText: "Dark Mode",
                 langText: "English",
-                userText: "Visitor",
-                pageTitle: "Sport und Gesundheit - test B2 Training",
+                userText: "Visitor", 
+                pageTitle: "SPORT IST GESUND - TELC B2 Training",
                 pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
                 showAnswersText: "Show Correction",
                 hideAnswersText: "Hide Correction",
@@ -1054,598 +1045,495 @@
                 teil2Title: "Reading Part 2",
                 teil3Title: "Reading Part 3",
                 teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
-                sprach1Title: "Language Elements Part 1",
+                sprach1Title: "Language Elements Part 1", 
                 sprach2Title: "Language Elements Part 2",
-                supportTitle: "Support Contact"
+                wordBankTitle1: "Available Words for Language Elements Part 1",
+                wordBankTitle2: "Available Words for Language Elements Part 2"
             }
         };
 
-        // بيانات المحتوى من ملف PDF
-        const contentData = {
+        // بيانات الأسئلة والإجابات من ملف PDF
+        const examData = {
+            // Lesen Teil 1
             headings: [
-                "a) Sport ist gesund - wenn man einige wichtige Regeln beachtet",
-                "b) Griechische Sportler so erfolgreich wie nie zuvor",
-                "c) Fitness auch mit wenig Zeitaufwand erreichbar",
-                "d) Geprüfte Qualität für Babys",
-                "e) Bluthochdruck beschleunigt das Abnehmen",
-                "f) Sportbegeisterte Eltern - und auch die Babys sind beim Joggen dabei",
-                "g) Täglich kurzes Sprinttraining besser als langes Ausdauertraining",
-                "h) Eine Disziplin, die für alle Altersgruppen geeignet ist",
-                "i) Ein Leistungssport für jedes Alter",
-                "j) Unüberschaubares Angebot an Kinderwagen überfordert junge Eltern"
+                "Achtung, Wildtiere!",
+                "Ein neues Buch über Sport und Ernährung",
+                "Ein neues Fitnessgerät für zu Hause",
+                "Ein neues Sportzentrum wird eröffnet",
+                "Erfolgreiche Sportler geben Tipps",
+                "Fußballspiele live im Internet",
+                "Gesundheitsprobleme durch zu viel Sport",
+                "Mehr Bewegung im Alltag",
+                "Neue Sportart für Kinder",
+                "Sport für Berufstätige"
             ],
+            
             texts: [
                 {
-                    id: 1,
-                    content: "An der Ostküste Attikas in Griechenland lag in der Antike der Ort Marathon. Dort siegte der griechische König Miltiades im Jahr 490 vor Christus über das Heer der Perser. Der Sage nach soll ein Soldat die 42,2 km lange Strecke nach Athen gerannt sein, um die Nachricht dieses für Griechenland wichtigen Sieges zu überbringen. Bei seiner Ankunft in Athen brach er, noch während er die Nachricht verkündete, vor Erschöpfung tot zusammen. Auf diese Legende geht eine sportliche Disziplin zurück: der Marathonlauf. Bereits seit 1896 ist er olympische Disziplin, seit 1984 auch für Frauen. Die Streckenlänge von 42195 m wurde 1924 festgelegt. Der Marathonlauf gilt als einziger Leistungssport, der bis ins hohe Alter ausgeübt werden kann. Wissenschaftler erklären das mit der menschlichen Evolution. Der Mensch jagte in der Frühzeit seine Beute so lange vor sich her, bis diese vor Erschöpfung nicht mehr weiter konnte. Die Fähigkeit, ausdauernd über lange Strecken zu rennen, ist also in den menschlichen Genen verankert.",
-                    correctHeading: "i"
+                    content: `Viele Menschen möchten Sport treiben, haben aber nicht genug Zeit dafür. Sie arbeiten den ganzen Tag und sind abends zu müde, um noch ins Fitnessstudio zu gehen. Für diese Menschen gibt es jetzt eine Lösung: das Mini-Trampolin. Es ist klein, leicht und passt in jede Wohnung. Man kann es jederzeit benutzen, zum Beispiel während der Werbepause im Fernsehen. Zehn Minuten Springen pro Tag reichen schon aus, um fit zu bleiben. Das Trampolin trainiert nicht nur die Muskeln, sondern auch den Gleichgewichtssinn.`,
+                    correctAnswer: "Ein neues Fitnessgerät für zu Hause"
                 },
                 {
-                    id: 2,
-                    content: "Warum soll sich der Mensch nun auf Straßen und Wegen fortbewegen? Sich in Feld und Wald, über Stock und Stein fortzubewegen, ist mindestens ebenso interessant. Daher erfand die Autoindustrie den Geländewagen und die Fahrradindustrie das Mountainbike. Da fehlte eigentlich nur noch eine Neuentwicklung eines Gefährts, dessen Mobilitätsmöglichkeiten bisher relativ begrenzt waren: der Kinderwagen. Doch das ist jetzt auch vorbei: Im Trend liegt jetzt der Jogging-Stroller, ein Kinderwagen mit nur noch drei bereiften Rädern. Diese neuen Transportmittel für Babys können sportbegeisterte und von grenzenloser Mobilität träumende Eltern jetzt samt Kind beim Joggen oder beim Inlineskaten vor sich herschieben. Die Babys sollen begeistert sein von der Geschwindigkeit, die mit solchen Geräten erreichbar ist. Doch der die Gerätesicherheit prüfende TÜV, bei Fahrzeugbesitzern in Deutschland schon seit langem als Spielverderber bekannt, warnte vor den Jogging-Strollern. Sie haben einen ungünstigen Schwerpunkt auf der Hinterachse, d.h. sie kippen leicht nach hinten um, und sie können sich leicht selbständig machen - jedenfalls solange, bis die Babys das Bremsen gelernt haben.",
-                    correctHeading: "f"
+                    content: `Am kommenden Samstag wird das neue Sportzentrum "Aktiv" eröffnet. Es bietet auf 2000 Quadratmetern alles, was das Sportlerherz begehrt: eine große Fitnessfläche, einen Schwimmbereich mit Sauna und verschiedene Kurse wie Yoga und Pilates. Besonders stolz ist man auf die neue Kletterwand, die zu den höchsten in der Region gehört. Am Eröffnungswochenende können Interessierte das Zentrum kostenlos besuchen und alle Angebote testen. Für die ersten 100 Mitglieder gibt es zudem einen besonderen Rabatt.`,
+                    correctAnswer: "Ein neues Sportzentrum wird eröffnet"
                 },
                 {
-                    id: 3,
-                    content: "Schweizer Forscher haben herausgefunden, dass nur 6 Minuten Hochleistungstraining pro Woche - also weniger als eine Minute pro Tag - ausreichen, um den Körper fit zu halten. In einem Versuch mit mehreren Probanden nahm eine Gruppe an einem traditionellen Ausdauertraining teil, mit je ein bis zwei Trainingsstunden täglich. Die zweite Gruppe führte täglich 60 Sekunden dauernde Radsprints durch, wobei die Teilnehmer quasi aus dem Stand Höchstgeschwindigkeit erzielen mussten. Das Resultat war überraschend: Beide Gruppen zeigten die gleichen gesundheitlichen Verbesserungen. Die Muskeln nahmen gleich viel Sauerstoff auf, und auch die Werte des für die Sauerstoffaufnahme verantwortlichen Zitratenzyms waren gleich. Sehr kurze und hochintensive sportliche Übungen verbessern die Fitness genauso wie das zeitraubende traditionelle Ausdauertraining.",
-                    correctHeading: "c"
+                    content: `Immer mehr Kinder bewegen sich zu wenig. Sie sitzen den ganzen Tag in der Schule und danach vor dem Computer oder Fernseher. Eine neue Sportart soll das ändern: "Parkour". Dabei läuft man durch die Stadt und überwindet Hindernisse wie Mauern und Treppen. Parkour macht nicht nur Spaß, sondern trainiert auch den ganzen Körper. In vielen Städten gibt es bereits Kurse für Kinder und Jugendliche. Die Trainer achten darauf, dass die Übungen altersgerecht und sicher sind.`,
+                    correctAnswer: "Neue Sportart für Kinder"
                 },
                 {
-                    id: 4,
-                    content: "Mehr Bewegung als Ausgleich für zu langes Sitzen im Büro und in der Freizeit ist zurzeit angesagt, um Übergewicht, Bluthochdruck und Herz-Kreislauf-Erkrankungen vorzubeugen und um fit zu bleiben. Gerade für Einsteiger gibt es jedoch bei den die Ausdauer trainierenden Sportarten wie dem Joggen einige Grundregeln, die beachtet werden müssen, will man gesundheitliche Schäden vermeiden. Die ersten Trainingseinheiten sollen nicht länger als 20 bis 30 Minuten dauern und zweimal pro Woche durchgeführt werden. Der Puls sollte nie den Wert 200 minus Lebensalter überschreiten, bei einem 20-Jährigen kann er also bei 180, bei einem 60-Jährigen hingegen nur bei 140 liegen. Außerdem gilt für alle, die beim Sport abnehmen möchten: Je höher der Pulsschlag, desto weniger Fett wird verbrannt. Hoher Pulsschlag lässt Sporttreibenden langsamer abnehmen.",
-                    correctHeading: "a"
+                    content: `Wer regelmäßig Sport treibt, lebt gesünder. Das ist bekannt. Doch man muss nicht gleich Marathon laufen oder stundenlang im Fitnessstudio trainieren. Schon kleine Veränderungen im Alltag können viel bewirken. Nehmen Sie zum Beispiel die Treppe statt den Aufzug. Steigen Sie eine Bushaltestelle früher aus und gehen Sie den Rest zu Fuß. Oder machen Sie in der Mittagspause einen Spaziergang. Jede Bewegung zählt und hilft, fit zu bleiben.`,
+                    correctAnswer: "Mehr Bewegung im Alltag"
                 },
                 {
-                    id: 5,
-                    content: "Viele frischgebackene Eltern stehen einem riesigen Angebot an Kinderwagen gegenüber, das in Kinderläden und Großmärkten feilgeboten wird. Doch welcher ist der richtige? Experten raten, beim Kauf dieses für die ersten Jahre mit dem Kleinkind wichtigen Gefährts auf ein paar Dinge zu achten. Erstens sollte die Matratze nicht zu weich sein, damit das Kind nicht einsinkt, wodurch die Atmung behindert werden kann. Zweitens sollten die Räder gefedert sein, um Erschütterungen auf unebenen Wegen auszugleichen. Ein hoher Wagen schützt die Babys vor dem Auspuff der Autos an Straßenkreuzungen. Zusammenklappbare Wagen passen in jeden Kofferraum und lassen sich fast überallhin mitnehmen. Der Wagen sollte vor allem kippsicher sein und keine scharfen Kanten haben, an denen sich die Kinder verletzen können. Vom TÜV geprüfte Kinderwagen erhalten ein Prüfzeichen. Damit haben die Eltern eine gewisse Sicherheit, dass der Kinderwagen auch nach Dauergebrauch nicht zu einem Sicherheitsrisiko für ihr Kind werden kann.",
-                    correctHeading: "d"
+                    content: `Im Herbst und Winter ist besondere Vorsicht im Straßenverkehr geboten. Vor allem in der Dämmerung und nachts kreuzen häufig Wildtiere wie Rehe und Wildschweine die Straßen. Autofahrer sollten in Waldgebieten und auf Landstraßen besonders aufmerksam fahren und die Geschwindigkeit reduzieren. Wenn ein Tier am Straßenrand auftaucht, sollte man sofort abbremsen und hupen. Ein Wildunfall kann nicht nur dem Tier, sondern auch den Insassen des Fahrzeugs gefährlich werden.`,
+                    correctAnswer: "Achtung, Wildtiere!"
                 }
             ],
+
+            // Lesen Teil 2 - النص الكامل
             longText: {
-                content: "Vor 50 Jahren gab es in der Hansestadt Bremen ungefähr 300 traditionelle Kaffeeröstereien. Diese importierten die Kaffeebohnen selbst, stellten den Kaffee tagefrisch her und verkauften ihn im eigenen Geschäft. Heute, da der Kaffee zumeist von internationalen Kaffeegesellschaften produziert und in Supermärkten verkauft wird, sind in Deutschland nur noch eine Handvoll Kleinröstereien übrig geblieben. Eine davon ist die Kaffeerösterei Münchhausen. Münchhausen importiert seinen Kaffee direkt von Kleinbauern in Lateinamerika. Dabei wird streng auf fairen Handel geachtet, das heißt, die Kaffeebauern werden für ihre anstrengende Arbeit angemessen entlohnt. Damit unterstützt der Importeur zugleich den Kaffeeanbau nach ökologischen Gesichtspunkten. Kaffee aus Großplantagen, oft mit Pestiziden und Insektiziden belastet, ist zwar billiger, aber Qualität und Reinheit des Kaffees werden bei der Kaffeerösterei Münchhausen ganz großgeschrieben. Der Kaffee wird nach alter Familientradition hergestellt. Die Rezeptur ist die gleiche wie vor einem halben Jahrhundert: Täglich werden die Kaffeebohnen in kleinen Mengen frisch geröstet, gerade so viele, wie an einem Tag verkauft werden. Denn nur so behalten sie ihr Aroma und der Kaffee verliert nicht an Geschmack. Zuerst werden die Kaffeebohnen in der in den 50er Jahren angeschafften Rösttrommel ungefähr zehn Minuten lang bei Temperaturen von über 200 Grad Celsius geröstet. Dabei verlieren die Kaffeebohnen zwar ein Sechstel ihres Gewichts, ihr Volumen vergrößert sich aber gleichzeitig um etwa ein Drittel. Sind die Bohnen dunkel genug – sie dürfen genauso wenig zu dunkel sein –, werden sie auf den Verlesetisch geschüttet, wo von Hand die guten von den schlechten Kaffeebohnen getrennt werden. Danach erst werden aus den gerösteten Kaffeebohnen verschiedene Mischungen hergestellt, die dann im Kontor, dem Geschäftsraum der Rösterei, fast ausschließlich an langjährige Stammkunden verkauft werden. Aber auch über das Internet vertreibt die Kaffeerösterei Münchhausen ihr Kaffeangebot deutschlandweit. Bis zu seinem Tod kurz vor seinem dreiundneunzigsten Geburtstag führte August Münchhausen seinen Familienbetrieb, dann übernahm seine Tochter die Firma, inzwischen ist auch die Enkelin beteiligt. Die Frauen planen, aus der Kaffeerösterei ein Museum zu machen, um der Nachwelt die traditionelle Kunst des Kaffeeröstens zeigen zu können. Dann hätte diese Institution eine reelle Chance, in Zukunft fortzubestehen und zukünftigen Generationen den Charme und die Technik der traditionellen Kaffeeerstellung zu erhalten. Selbstverständlich wird es auch in Zukunft möglich sein, im Museums-Bistro den Kaffee zu genießen oder für den häuslichen Bedarf zu erwerben.",
+                content: `Sport ist gesund – das weiß jeder. Doch warum ist das eigentlich so? Und wie viel Sport ist optimal? Diese Fragen beschäftigen nicht nur Hobbysportler, sondern auch Wissenschaftler.
+Regelmäßige Bewegung stärkt das Herz-Kreislauf-System. Der Herzmuskel wird kräftiger und kann pro Schlag mehr Blut pumpen. Dadurch sinkt der Ruhepuls. Auch die Blutgefäße bleiben elastisch, was Bluthochdruck vorbeugt. Zudem verbessert Sport die Cholesterinwerte: Das "gute" HDL-Cholesterin steigt, das "schlechte" LDL-Cholesterin sinkt.
+Sport hat auch positive Auswirkungen auf das Immunsystem. Moderate Bewegung an der frischen Luft aktiviert die Abwehrkräfte. Menschen, die regelmäßig Sport treiben, erkranken seltener an Infekten. Allerdings: Wer übertreibt und sich überlastet, schwächt sein Immunsystem vorübergehend.
+Nicht zu unterschätzen sind die psychischen Effekte von Sport. Bei körperlicher Anstrengung werden Endorphine ausgeschüttet – Glückshormone, die Stress abbauen und die Stimmung heben. Viele Menschen berichten, dass sie nach dem Sport entspannter sind und besser schlafen können. Sport kann sogar bei leichten Depressionen helfen.
+Doch wie viel Sport ist empfehlenswert? Die Weltgesundheitsorganisation WHO rät Erwachsenen zu mindestens 150 Minuten moderater Bewegung pro Woche. Das entspricht einer halben Stunde an fünf Tagen. Alternativ sind 75 Minuten intensive Bewegung möglich. Dabei sollte man leicht ins Schwitzen kommen, aber sich noch unterhalten können.
+Für Kinder und Jugendliche gelten andere Empfehlungen: Sie sollten sich täglich mindestens 60 Minuten bewegen. Im Idealfall sind das Aktivitäten, die Ausdauer, Kraft und Koordination trainieren.
+Wichtig ist, dass der Sport Spaß macht. Nur wer Freude an der Bewegung hat, bleibt langfristig dabei. Es muss nicht immer Joggen oder Fitnessstudio sein. Auch Tanzen, Schwimmen, Radfahren oder Wandern sind excellent. Hauptsache, man bewegt sich regelmäßig.
+Vor dem Sport sollte man sich aufwärmen, um Verletzungen vorzubeugen. Nach dem Training helfen Dehnübungen, die Muskeln geschmeidig zu halten. Auch die richtige Ausrüstung ist wichtig – vor allem passende Schuhe.
+Wer lange keinen Sport getrieben hat oder gesundheitliche Probleme hat, sollte vor Trainingsbeginn einen Arzt konsultieren. Das gilt besonders für Menschen über 35 Jahre.
+Neben Sport ist auch die Ernährung wichtig für die Gesundheit. Eine ausgewogene Ernährung liefert die nötige Energie fürs Training und unterstützt die Regeneration. Besonders wichtig sind Kohlenhydrate als Energielieferanten und Proteine für den Muskelaufbau.
+Zusammenfassend lässt sich sagen: Sport ist eine der besten Investitionen in die eigene Gesundheit. Schon moderate, aber regelmäßige Bewegung kann das Leben verlängern und die Lebensqualität steigern.`,
                 questions: [
                     {
-                        id: 6,
-                        text: "In Deutschland",
+                        question: "Was bewirkt Sport im Herz-Kreislauf-System?",
                         options: [
-                            "A existiert eine Vielzahl von Kaffeeröstereien",
-                            "B gibt es nur noch wenige traditionelle Kaffeeröstereien",
-                            "C handeln nur noch internationale Gesellschaften mit Kaffee"
+                            "Der Ruhepuls steigt an.",
+                            "Der Herzmuskel wird schwächer.",
+                            "Die Blutgefäße bleiben elastisch."
                         ],
-                        correctAnswer: 1
+                        correctAnswer: "Die Blutgefäße bleiben elastisch."
                     },
                     {
-                        id: 7,
-                        text: "Für die Kaffeerösterei Münchhausen",
+                        question: "Welche Auswirkung hat Sport auf das Immunsystem?",
                         options: [
-                            "A ist es nicht von Bedeutung, ob der Kaffee von Kleinbauern oder Großplantagen kommt",
-                            "B spielt der günstige Einkaufspreis eine wichtige Rolle",
-                            "C steht eher die Qualität des Kaffees als der Preis im Vordergrund"
+                            "Moderate Bewegung schwächt die Abwehrkräfte.",
+                            "Überlastung kann das Immunsystem vorübergehend schwächen.",
+                            "Sport hat keine Auswirkungen auf Infekte."
                         ],
-                        correctAnswer: 2
+                        correctAnswer: "Überlastung kann das Immunsystem vorübergehend schwächen."
                     },
                     {
-                        id: 8,
-                        text: "Kaffeebohnen",
+                        question: "Was wird bei körperlicher Anstrengung ausgeschüttet?", 
                         options: [
-                            "A dürfen nach dem Rösten zwar zu dunkel sein, aber nicht zu hell",
-                            "B können nach der Röstung ohne Geschmacksverlust lange Zeit gelagert werden",
-                            "C müssen nach dem Rösten handverlesen werden, um eine gleichbleibend hohe Qualität zu gewährleisten"
+                            "Stresshormone",
+                            "Glückshormone",
+                            "Schlafhormone"
                         ],
-                        correctAnswer: 2
+                        correctAnswer: "Glückshormone"
                     },
                     {
-                        id: 9,
-                        text: "Die gerösteten Kaffeebohnen werden",
+                        question: "Wie viel Bewegung empfiehlt die WHO für Erwachsene pro Woche?",
                         options: [
-                            "A im Kontor nur an Stammkunden verkauft",
-                            "B in Handarbeit gemischt",
-                            "C zusätzlich online vermarktet"
+                            "Mindestens 300 Minuten moderate Bewegung",
+                            "Mindestens 150 Minuten moderate Bewegung",
+                            "Mindestens 75 Minuten leichte Bewegung"
                         ],
-                        correctAnswer: 2
+                        correctAnswer: "Mindestens 150 Minuten moderate Bewegung"
                     },
                     {
-                        id: 10,
-                        text: "In Zukunft wollen die Besitzer",
+                        question: "Was ist neben Sport wichtig für die Gesundheit?",
                         options: [
-                            "A die Kaffeerösterei in ein Museum umwandeln",
-                            "B ein Museum über den Kaffeeanbau eröffnen",
-                            "C keinen Röstkaffee mehr verkaufen"
+                            "Ausreichend Schlaf",
+                            "Eine ausgewogene Ernährung",
+                            "Viel Fernsehen"
                         ],
-                        correctAnswer: 0
+                        correctAnswer: "Eine ausgewogene Ernährung"
                     }
                 ]
             },
+
+            // Lesen Teil 3
             situations: [
-                {
-                    id: 11,
-                    text: "Ihre Schwester interessiert sich für die Biographien großer Musiker.",
-                    correctAd: "E"
-                },
-                {
-                    id: 12,
-                    text: "Sie lieben Auftritte von herausragenden Musikern.",
-                    correctAd: "J"
-                },
-                {
-                    id: 13,
-                    text: "Sie möchten im Dezember essen gehen und ein buntes, künstlerisches Programm genießen.",
-                    correctAd: "L"
-                },
-                {
-                    id: 14,
-                    text: "Sie möchten alte und neue Weihnachtslieder hören.",
-                    correctAd: "I"
-                },
-                {
-                    id: 15,
-                    text: "Sie möchten mit Ihrer zwölfjährigen Tochter ein altersgerechtes Theaterstück sehen.",
-                    correctAd: "A"
-                },
-                {
-                    id: 16,
-                    text: "Sie möchten zusammen mit Ihrem kleinen Neffen einen Kinderfilm sehen.",
-                    correctAd: "B"
-                },
-                {
-                    id: 17,
-                    text: "Sie wollen eine Stadtbesichtigung mit ein wenig Sport verbinden.",
-                    correctAd: "F"
-                },
-                {
-                    id: 18,
-                    text: "Sie wollen ihrem Freund, der Tanztheater liebt, eine Eintrittskarte zum Geburtstag schenken.",
-                    correctAd: "X"
-                },
-                {
-                    id: 19,
-                    text: "Sie wollen mit ihren Kindern eine etwas andere, eher lustige Seite von Weihnachten erleben.",
-                    correctAd: "H"
-                },
-                {
-                    id: 20,
-                    text: "Sie wollen mit Bekannten ausgehen um mal wieder herzhaft lachen.",
-                    correctAd: "K"
-                }
+                "Sie möchten wissen, wie Sie Ihr Immunsystem stärken können.",
+                "Sie interessieren sich für die psychischen Vorteile von Sport.",
+                "Sie wollen mit dem Joggen beginnen und suchen Tipps.",
+                "Sie möchten mehr über die Wirkung von Sport auf das Herz erfahren.",
+                "Sie suchen eine Sportart, die Sie mit Ihrer Familie ausüben können.",
+                "Sie wollen wissen, wie viel Sport für Kinder empfohlen wird.", 
+                "Sie möchten Ihre Ernährung optimieren, um mehr Energie für den Sport zu haben.",
+                "Sie haben Rückenschmerzen und suchen eine geeignete Sportart.",
+                "Sie wollen wissen, wie Sie Sport in Ihren Arbeitsalltag integrieren können.",
+                "Sie interessieren sich für die wissenschaftlichen Grundlagen von Sport und Gesundheit."
             ],
+
             ads: [
                 {
-                    id: "A",
-                    title: "Theater Marabu",
-                    content: "In Pollekes elfjährigem Leben scheint im Augenblick etwas falsch zu laufen. Es stört sie ja gar nicht, dass ihre Eltern geschieden sind. Sie hat ihren Papa sehr lieb, und sie hat eine prima Mama. Ihr Lehrer ist eigentlich auch ganz in Ordnung, aber muss der sich gleich in ihre Mama verlieben? Und dann ist Polleke sogar selbst schuld an allem. Aber sie gibt die Hoffnung nicht auf, dass am Ende doch alles gut wird, auch mit Mimun, dem liebsten Jungen auf der ganzen Erde und im ganzen Weltall... Datum: 01.11., Uhrzeit: 16.00 Uhr, Ort: Theaterwerkstatt, Alter: ab 9 Jahren"
+                    id: "a",
+                    title: "Immunsystem stärken",
+                    content: "Unser Immunsystem ist unser natürlicher Schutz gegen Krankheiten. Durch regelmäßige moderate Bewegung an der frischen Luft können Sie Ihre Abwehrkräfte aktivieren. Besonders geeignet sind Ausdauersportarten wie Walking, Joggen oder Radfahren. Wichtig ist, nicht zu übertreiben – übermäßige Belastung kann das Immunsystem vorübergehend schwächen. In unserem Kurs lernen Sie, wie Sie Ihr Training optimal gestalten, um Ihr Immunsystem zu stärken."
                 },
                 {
-                    id: "B",
-                    title: "Rasmus und der Landstreicher",
-                    content: "Nach dem Kinderbuch von Astrid Lindgren. Rasmus ist in einem Kinderheim aufgewachsen, er hat keine Eltern. Eines Tages läuft er davon und will sich Eltern suchen. Die erste Nacht schläft er in einer Scheune im Stroh, und am Morgen entdeckt er neben sich Oskar. Oskar ist ein Landstreicher, der keine Wohnung hat. Zuerst hat Rasmus Angst vor ihm, aber schon bald merkt er, dass Oskar ein prächtiger Mensch ist. Gemeinsam suchen sie Eltern für Rasmus. Doch als sie endlich prima Eltern gefunden haben, da wollen die beiden sich nicht mehr trennen. Datum: 6.11., Uhrzeit: 15.00 Uhr, Ort: Bürgerkino, Alter: ab 5 Jahren"
+                    id: "b", 
+                    title: "Psychische Gesundheit durch Sport",
+                    content: "Sport macht nicht nur körperlich fit, sondern auch psychisch stark. Bei körperlicher Aktivität werden Endorphine freigesetzt, die Stress abbauen und die Stimmung verbessern. In unserer Sportgruppe für psychische Gesundheit lernen Sie, wie Sie durch Bewegung Entspannung finden und Ihr Wohlbefinden steigern können. Die Kurse werden von erfahrenen Trainern geleitet und sind für jedes Fitnesslevel geeignet."
                 },
                 {
-                    id: "E",
-                    title: "Beethovens Bonn",
-                    content: "Im Dezember 1770 erblickte Ludwig van Beethoven in der Bonngasse 20 das Licht der Welt. Wer ahnte damals, dass mit ihm ein musikalisches Genie geboren wurde, dessen Musik heute in aller Welt bekannt ist? Bis 1792 lebte Beethoven in Bonn, bevor er nach Wien ging und zu einem der berühmtesten Komponisten der Welt wurde. Es werden Orte und Plätze aufgesucht, wo der weltberühmte Komponist wirkte und die faszinierende Einblicke in das Alltagsleben dieses großen Bonners ermöglichen. Datum: 01.12. bis 31.12., Ort: Touristeninformation"
+                    id: "c",
+                    title: "Laufanfänger gesucht!", 
+                    content: "Sie möchten mit dem Joggen beginnen, wissen aber nicht wie? Unser Laufkurs für Anfänger ist genau das Richtige für Sie! Wir beginnen langsam mit Walking und steigern uns schrittweise. Sie lernen die richtige Lauftechnik, Atmung und wie Sie sich vor Verletzungen schützen. Der Kurs findet zweimal wöchentlich im Stadtpark statt und ist für alle Altersgruppen geeignet. Laufschuhe und Motivation sind alles, was Sie brauchen!"
                 },
                 {
-                    id: "F",
-                    title: "Radtour am Rhein",
-                    content: "Hinweis: Diese Tour ist nur von Gruppen auf Anfrage buchbar! Die Fahrräder sind mitzubringen. Die Tour wird vom ADFC angeboten und verläuft am Rhein, einem der geschichtsträchtigsten Flüsse der Welt. Er symbolisiert wie für viele Rheinanwohner auch für Bonn über Jahrhunderte hinweg bis auf den heutigen Tag die Lebensader der Stadt. Entlang des linksrheinischen Rheinufers sprechen die steinernen Zeitzeugen der Bonner Geschichte für sich, wobei auch die zukunftsweisenden Aspekte der Stadt nicht zu kurz kommen. Datum: 01.02. bis 31.12., Ort und Uhrzeit: nach Vereinbarung"
+                    id: "d",
+                    title: "Herzgesundheit",
+                    content: "Unser Herz ist der Motor unseres Körpers. Durch regelmäßigen Sport können Sie Ihr Herz-Kreislauf-System stärken und Erkrankungen vorbeugen. In unserem Seminar erfahren Sie, welche Sportarten besonders herzfreundlich sind und wie Sie Ihr Training optimal gestalten. Wir messen Ihren Ruhepuls und geben Ihnen individuelle Empfehlungen für Ihr Herz-Kreislauf-Training."
                 },
                 {
-                    id: "H",
-                    title: "Drei Flöhe und das Jesuskind",
-                    content: "Im Jahr 1 machten sich drei Flöhe aus Deutschland auf den Weg nach Israel, um einmal so richtig zu entspannen. Leider war zu diesem Zeitpunkt eine Volkszählung im vollen Gange und die einzige Übernachtungsmöglichkeit fanden sie in einem Stall bei Bethlehem. Dass sie diese Unterkunft auch noch mit einem kleinen Kind teilen müssten, damit rechnete keiner der drei Flöhe. Und dass dieses Kind auch noch eine Berühmtheit war, machte die ganze Sache für die drei Flöhe zu einem aufregenden Abenteuer. Dieses neue Kindersück aus der Feder von Dirk Zimmer erzählt die Weihnachtsgeschichte auf humorvolle und gefühlvolle Weise aus der Sicht der drei Flöhe. Datum: 26.11. - 22.12., Uhrzeit: jeweils 15.00 Uhr, Ort: Innenhof des Rathauses, Alter: ab 5 Jahre"
+                    id: "e",
+                    title: "Familiensport",
+                    content: "Gemeinsam Sport machen stärkt nicht nur die Gesundheit, sondern auch den Familienzusammenhalt. Wir bieten verschiedene Aktivitäten für die ganze Familie an: Von Familienschwimmen über Eltern-Kind-Turnen bis zu gemeinsamen Wanderungen. Unsere Kurse sind so gestaltet, dass sowohl Kinder als auch Erwachsene Spaß haben und gefordert werden. Machen Sie Sport zu einem gemeinsamen Erlebnis!"
                 },
                 {
-                    id: "I",
-                    title: "Weihnachtsshow",
-                    content: "'Stille Nacht' trifft 'Last Christmas'. Gospel umarmt Soul, und Pop küsst Klassik. Als 1997 die Idee entstand, eine Weihnachtsshow zu entwickeln, die die schönsten Weihnachtslieder aller Zeiten und aller Genre in sich vereint, konnte sich keiner so recht vorstellen, dass diese Show einmal zur erfolgreichsten Weihnachtsshow Deutschlands avancieren würde. Seit zehn Jahren begeistert nun die Band 'Christmas Moments' von Thomas Schwab & Band das Publikum sowohl in den großen Konzerthallen der Republik (unter anderem Arena Trier, Phönixhalle Mainz) als auch vor den Fernsehern (ARD-Ausstrahlungen seit 2004). 'Christmas Moments' trifft mitten ins Herz und konnte in den letzten Jahren mehr als 500.000 Zuschauer begeistern. Datum: 11.12., Uhrzeit: 20.00 Uhr, Ort: Rhein-Mosel-Halle"
+                    id: "f",
+                    title: "Kinder in Bewegung",
+                    content: "Kinder brauchen Bewegung für ihre gesunde Entwicklung. Laut Empfehlungen sollten sich Kinder täglich mindestens 60 Minuten bewegen. Wir bieten ein breites Angebot an Sportkursen für Kinder aller Altersstufen: Von Babyschwimmen über Kinderturnen bis zu Ballsportarten. Unsere erfahrenen Trainer achten darauf, dass die Kinder spielerisch an den Sport herangeführt werden und vor allem eins: Spaß haben!"
                 },
                 {
-                    id: "J",
-                    title: "Lasse Lindgren Ensemble",
-                    content: "Jazz vom Feinsten mit durchaus gewollten konservativen Zügen. Der Trompeter Lasse Lindgren ist einer der innovativen Spitzen-Trompeter der aktuellen Jazzszene in Schweden, der in vielen internationalen Bigbands und zusammen mit anderen berühmten Jazzmusikern gespielt hat. Von der 'Tageszeitung Svenska Dagbladet' wurde er als 'einer der kompetentesten Trompetenspieler dieses Landes' bezeichnet und Randy Brecker schrieb: 'Es ist so erfrischend, etwas zu hören, was wirklich originell ist! Lasse Lindgren. Du bist ein wundervoller Spieler und Komponist'. Sein neuestes Projekt ist ein Glaubensbekenntnis an die Kraft und Energie des Jazz mit eigener Handschrift: Lasse Lindgren hat eine virtuose, immer transparente Hingabe zu seinem Instrument. Datum: 1.11., Uhrzeit: 19.00 Uhr, Ort: Irish Pub im Stadtzentrum"
+                    id: "g",
+                    title: "Sport und Ernährung",
+                    content: "Die richtige Ernährung ist die Basis für erfolgreiches Training. In unserem Workshop lernen Sie, wie Sie Ihre Ernährung optimal auf Ihr Sportprogramm abstimmen. Wir erklären, welche Nährstoffe wann wichtig sind, wie Sie Ihren Energiebedarf berechnen und welche Lebensmittel die Regeneration unterstützen. Mit praktischen Tipps für den Alltag und leckeren Rezepten für Sportler."
                 },
                 {
-                    id: "K",
-                    title: "10 Jahre FÜR DIE KATZ",
-                    content: "Unglaublich! 10 Jahre ist es bereits her, seit FÜR DIE KATZ wie ein Faustschlag ins Licht der Öffentlichkeit traten und sich binnen kürzester Zeit in die Spitzenriege der deutschen Komiker katapultierten. Heute befinden sich die beiden mit Preisen überhäuften Weltbürger Benno Rex und Karl Salzburger auf dem vorläufigen Höhepunkt ihrer eindrucksvollen Karriere und gelten als die vielseitigsten, kreativsten und für Presse wie Fans schlichtweg lustigsten Komodianten Deutschlands. Ihre Wortschöpfungen und Charaktere erweisen sich immer wieder als richtungsweisende Leitsterne für die gesamte Comedy-Branche. Datum: 5.11., Uhrzeit: 20.00 Uhr, Ort: Haus des Kabaretts"
+                    id: "h", 
+                    title: "Rückenfitness",
+                    content: "Rückenschmerzen sind eine Volkskrankheit. Die beste Vorbeugung: regelmäßige Bewegung! Unser Rückenfit-Kurs stärkt gezielt die Muskulatur, die für eine gesunde Haltung wichtig ist. Sie lernen Übungen zur Kräftigung der Rumpfmuskulatur und zur Verbesserung der Beweglichkeit. Der Kurs ist besonders geeignet für Menschen, die viel sitzen, und kann auch bei bereits bestehenden Rückenschmerzen helfen."
                 },
                 {
-                    id: "L",
-                    title: "Weihnachtsvariété im Café Spitz",
-                    content: "Das Weihnachtsvariété erwartet Sie auch in diesem Jahr mit atemberaubender Akrobatik, traumhafter Jonglage, ergänzt von Livemusikern. Seien Sie dabei und staunen Sie vielleicht mit ihrer Familie, mit ihren Lieblingskollegen oder der ganzen Firma oder einfach nur mit ihrem oder Ihrer Liebsten. Karl-Heinz Helmschrot hat auch in diesem Jahr wieder eine faszinierende Gruppe von sehr unterschiedlichen Künstlern zusammengestellt. Zum 10-jährigen Jubiläum - 10 Künstler! Nicht zuständig ist er für Ihr leibliches Wohl! Dafür haben die Köche des Café Spitz wieder eine internationale Karte zusammengestellt, also freuen Sie sich auf Köstlichkeiten aus aller Welt. Datum: 9.12., Uhrzeit: 21.00 Uhr, Ort: Café Spitz"
+                    id: "i",
+                    title: "Büro-Sport",
+                    content: "Keine Zeit für Sport? Mit unseren Mini-Übungen für den Arbeitsalltag integrieren Sie Bewegung ganz einfach in Ihren Büroalltag. Wir zeigen Ihnen einfache Übungen, die Sie am Schreibtisch machen können, wie Sie mehr Bewegung in Ihren Arbeitsweg bringen und warum regelmäßige Pausen wichtig sind. Schon kleine Veränderungen können große Wirkung haben!"
+                },
+                {
+                    id: "j",
+                    title: "Wissenschaft des Sports", 
+                    content: "Warum ist Sport eigentlich gesund? In unserer Vortragsreihe erfahren Sie mehr über die wissenschaftlichen Grundlagen von Sport und Gesundheit. Experten erklären die physiologischen und psychologischen Wirkmechanismen von Bewegung. Von der Biochemie der Muskeln bis zur Psychologie der Motivation – tauchen Sie ein in die faszinierende Welt der Sportwissenschaft!"
+                },
+                {
+                    id: "k",
+                    title: "Schwimmen für alle",
+                    content: "Schwimmen ist eine der gesündesten Sportarten: Es trainiert den ganzen Körper, schont die Gelenke und ist für jedes Alter geeignet. Wir bieten Schwimmkurse für Anfänger und Fortgeschrittene, Aquafitness und Wassergymnastik. Besonders empfehlenswert ist Schwimmen für Menschen mit Gelenkproblemen oder Übergewicht. Kommen Sie vorbei und entdecken Sie die Freude am Wasser!"
+                },
+                {
+                    id: "l",
+                    title: "Outdoor-Aktivitäten",
+                    content: "Frische Luft und Bewegung – die perfekte Kombination für Ihre Gesundheit! Wir organisieren regelmäßig Outdoor-Aktivitäten wie Wandertouren, Radausflüge und Nordic-Walking-Gruppen. Egal ob Sie Anfänger oder erfahrener Outdoor-Sportler sind – bei uns finden Sie die passende Gruppe. Gemeinsam macht Sport mehr Spaß und die Natur bietet die perfekte Umgebung für Ihr Training."
                 }
             ],
-            sprachbausteine1: {
-                text: "Liebe Vanessa, danke für deinen Brief, __(21)__, ich mich total gefreut habe. Du fragst dich bestimmt, warum du schon drei Wochen __(22)__, von mir gehört hast, oder? Ich war mit meiner Gastfamilie in Urlaub. Vierzehn Tage im Allgäu – mit den Kindern Stefan, Anja und Karina. Du weißt __(23)__, selbst, wie anstrengend es ist, wenn man ständig drei kleine Kinder um sich hat, die pausenlos unterhalten werden möchten. __(24)__, ist es übrigens in deiner Au-pair-Familie mit der kleinen Dorothea? Das Allgäu liegt in Süddeutschland am Fuß __(25)__, Alpen. Wir sind fast jeden Tag gewandert, immer bergauf und bergab. Den Kindern und mir haben ständig die Füße weh __(26)__, doch meine Gasteltern, Herr und Frau Zimmer, sind einfach immer weitergelaufen. Die Deutschen lieben es nämlich, in der Natur spazieren zu gehen, bis sie vor Erschöpfung __(27)__. Unterwegs haben wir manchmal an einer sogenannten 'Wassertretstelle' Rast gemacht. Das sind kleine Wasserbecken, die oft mitten im Wald liegen. Durch das Becken fließt ein Bach mit eiskaltem Wasser, das direkt von den Bergen kommt. Stell __(28)__, vor, alle Wanderer ziehen ihre Schuhe und Strümpfe aus und laufen durch dieses Becken. Als ich meinen Fuß in dieses kalte Wasser getaucht hatte, dachte ich, dass ich gleich sterben muss. Am Wochenende haben wir alle Minigolf gespielt. Dabei muss ein Golfball mit einem Schläger in ein etwa Zehn Meter entferntes Loch geschlagen werden. Aber vor dem Loch gibt es __(29)__, Menge Hindernisse: Gräben, kleine Hügel, Tunnel. Der Spieler, dessen Ball mit den wenigsten Schlägen im Loch ankommt, hat gewonnen. Die Kinder wollten gar nicht mehr __(30)__, aufhören. Jetzt muss ich aber Schluss machen, die Kinder warten auf ihr Abendessen, denn die Zimmers sind heute nicht da: Sie wandern mal wieder.",
-                blanks: [
-                    { id: 21, options: ["an den", "auf dem", "über den"], correct: 2 },
-                    { id: 22, options: ["nichts mehr", "noch nicht", "keines"], correct: 1 },
-                    { id: 23, options: ["doch", "eben", "überhaupt"], correct: 0 },
-                    { id: 24, options: ["Wann", "Was", "Wie"], correct: 2 },
-                    { id: 25, options: ["der", "die", "von"], correct: 0 },
-                    { id: 26, options: ["gelaufen", "getan", "geworden"], correct: 1 },
-                    { id: 27, options: ["durchfallen", "umfallen", "wegfallen"], correct: 1 },
-                    { id: 28, options: ["dich", "dir", "mal"], correct: 1 },
-                    { id: 29, options: ["alle", "ganze", "jede"], correct: 2 },
-                    { id: 30, options: ["dabei", "damit", "davon"], correct: 2 }
-                ]
+
+            // الإجابات الصحيحة لـ Lesen Teil 3
+            teil3Answers: {
+                11: "Immunsystem stärken",
+                12: "Psychische Gesundheit durch Sport", 
+                13: "Laufanfänger gesucht!",
+                14: "Herzgesundheit",
+                15: "Familiensport",
+                16: "Kinder in Bewegung",
+                17: "Sport und Ernährung",
+                18: "Rückenfitness",
+                19: "Büro-Sport", 
+                20: "Wissenschaft des Sports"
             },
-            sprachbausteine2: {
-                text: "Selbst ist der Mann. Von der Wahrheit dieser alten deutschen Redewendung haben Frauen Generationen lang geträumt, wenn es um typische Hausarbeiten wie Waschen, Putzen oder Kochen ging. Zumindest bei Letzterem scheint sich jedoch in den letzten Jahren vieles zu ändern. __(31)_ ___ immer mehr Männer in Deutschland greifen jetzt selbst zum Kochtopf. Ein Grund __(32)_ ___ diese Entwicklung mag sein, dass es immer mehr Ein-Personen-Haushalte in Deutschland gibt. Es ist einfach niemand anderes da, der die Kocharbeit übernehmen könnte. Und Hunger zwingt bekanntlich zum Handeln. Andererseits ist das Kochen inzwischen ein allgemein akzeptiertes Hobby geworden, besonders unter Männern. Doch welch ein Unterschied besteht __(33)_ ___ den Ansprüchen einer traditionellen Hausfrau und denen eines Hobbyköchs, was die Ausstattung der Küche angeht! Nicht __(34)_ ___ Topf darf es für den selbsternannten Drei-Sterne-Küchenchef sein: Gebürsteter Edelstahl mit versiegelter Antibehaftbeschichtung und integrierter digitaler Temperaturanzeige ist der Mindeststandard für einen echten kochenden Mann. Alles andere gilt als stillos. Die zweite Voraussetzung __(35)_ ___ , dass die Gerichte auch gelingen, ist das Wissen, wie man welche Speise am besten zubereitet. Zu diesem Zweck bieten die Buchhandlungen Berge von Kochbüchern an – mit Rezepten von Alaska bis Zimbabwe, mit oder ohne Fleisch, für zu Dicke und zu Dünne. Jetzt hängt es nur noch __(36)_ ___ ab, was der Hobbykoch aus den Kochideen der Buchautoren macht. Wird es ein exzellentes Mahl oder wäre unser 'Chefkoch' nicht doch lieber zum Dönerstand um die Ecke gegangen? Überraschungen gehören zum Kochen dazu. Helfen die Bücher nicht __(37)_ ___ , bieten zum Beispiel die Volkshochschulen zahlreiche Kochkurse an, die in der Regel – zumeist von kochwilligen Männern – gut besucht sind. Das Kursangebot umfasst neben deutscher Hausmannskost wie Schnitzel, Krautwickel oder Rinderbraten zumeist auch die mediterrane und die asiatische Küche. Das führt __(38)_ ___ , dass man(n) zu Hause immer öfter international kocht. Das größte Problem der Hobbyköche ist aber, __(39)_ ___ es viel zu aufwändig ist, für sich alleine zu kochen. Daher sind zurzeit Internetseiten wie www.allein-kochen-ist-doof.de beliebt, wo sich Hobbyköche und –köchinnen Kochpartner für das gemeinsame Kochen und Essen suchen können. Das Interessante __(40)_ ___ ist, dass dabei unsere männlichen Chefköche feststellen müssen, dass es andere Menschen gibt, die mit vielleicht weniger Aufwand genauso gut ein Festmahl zubereiten können wie sie: nämlich die Frauen.",
-                wordBank: [
-                    { id: 31, word: "DENN", correct: true },
-                    { id: 32, word: "FÜR", correct: true },
-                    { id: 33, word: "ZWISCHEN", correct: true },
-                    { id: 34, word: "IRGENDEIN", correct: true },
-                    { id: 35, word: "DAFÜR", correct: true },
-                    { id: 36, word: "DAVON", correct: true },
-                    { id: 37, word: "WEITER", correct: true },
-                    { id: 38, word: "DAZU", correct: true },
-                    { id: 39, word: "DASS", correct: true },
-                    { id: 40, word: "DARAN", correct: true }
-                ]
+
+            // Sprachbausteine Teil 1
+            blankText1: {
+                content: `Hallo Maria,
+vielen Dank für deine E-Mail __(21)__ letzter Woche! Es tut mir leid, dass ich erst jetzt antworte, __(22)__ ich viel Stress hatte. Aber jetzt habe ich endlich Zeit, dir __(23)__ erzählen, was hier los ist.
+Also, in der Arbeit ist momentan viel los, __(24)__ wir ein großes Projekt haben. Drei Kollegen sind im Urlaub und eine Kollegin ist krank. Deshalb müssen wir __(25)__ viel Arbeit in wenig Zeit erledigen. Ich hoffe, dass es nächste Woche __(26)__ wird.
+Am Wochenende war ich mit Peter im Kino. Wir haben den neuen Film von meinem Lieblingsregisseur gesehen. Eigentlich __(27)__ ich zu müde, aber Peter hatte schon die Karten gekauft. Im Nachhinein war ich froh, dass wir gegangen sind, __(28)__ der Film wirklich gut war.
+Nächste Woche habe ich Geburtstag und werde feiern. Ich __(29)__ mich schon darauf! Kommst du auch? Es __(30)__ mich sehr freuen!
+Schreib mir bald wieder!
+
+Liebe Grüße
+Anna`,
+                answers: ["von", "weil", "zu", "weil", "viel", "besser", "war", "denn", "freue", "würde"]
+            },
+
+            // Sprachbausteine Teil 2
+            blankText2: {
+                content: `Sport ist wichtig für die Gesundheit. __(31)__ wer regelmäßig Sport treibt, bleibt fit und gesund. Es gibt viele verschiedene Sportarten, __(32)__ man ausüben kann. Manche Menschen bevorzugen Teamsportarten __(33)__ Fußball oder Basketball. Andere mögen lieber Individualsportarten __(34)__ Joggen oder Schwimmen.
+Wichtig ist, __(35)__ man eine Sportart findet, die Spaß macht. __(36)__ macht man nicht lange mit. Bevor man mit einer neuen Sportart beginnt, __(37)__ man sich gut informieren. Man __(38)__ auch einen Arzt konsultieren, wenn man gesundheitliche Probleme hat.
+Nach dem Sport __(39)__ man sich ausreichend erholen. Die Regeneration ist genauso wichtig __(40)__ das Training selbst.`,
+                answers: ["Denn", "die", "wie", "wie", "dass", "Sonst", "sollte", "sollte", "sollte", "wie"]
             }
         };
 
-        // متغيرات التطبيق
-        let currentLanguage = 'ar';
-        let isDarkMode = false;
-        let answersVisible = false;
-
-        // تهيئة التطبيق
+        // تهيئة الصفحة
         document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
-            loadContent();
+            initializePage();
             setupEventListeners();
         });
 
-        // تهيئة التطبيق
-        function initializeApp() {
+        let currentLang = 'ar';
+        let isDarkMode = false;
+
+        function initializePage() {
             // تحميل الإعدادات المحفوظة
-            const savedLanguage = localStorage.getItem('language');
-            const savedDarkMode = localStorage.getItem('darkMode');
-            const savedNotes = localStorage.getItem('userNotes');
-
-            if (savedLanguage) {
-                currentLanguage = savedLanguage;
-                updateLanguage();
+            const savedLang = localStorage.getItem('language') || 'ar';
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            const username = localStorage.getItem('username') || 'زائر';
+            const access = localStorage.getItem('access');
+            
+            changeLanguage(savedLang);
+            if (savedDarkMode) {
+                toggleDarkMode();
             }
-
-            if (savedDarkMode === 'true') {
-                isDarkMode = true;
-                document.body.classList.add('dark-mode');
-                document.getElementById('themeToggle').textContent = '☀️';
+            
+            // التحقق من حالة المستخدم
+            if (access === 'paid' && username) {
+                document.getElementById('premiumBadge').style.display = 'flex';
             }
-
-            if (savedNotes) {
-                document.getElementById('notesTextarea').value = savedNotes;
-            }
+            
+            // تهيئة الأجزاء
+            initializeTeil1();
+            initializeTeil2();  
+            initializeTeil3();
+            initializeSprachbausteine();
         }
 
-        // تحميل المحتوى
-        function loadContent() {
-            loadHeadings();
-            loadTexts();
-            loadLongText();
-            loadQuestions();
-            loadSituations();
-            loadAds();
-            loadSprachbausteine1();
-            loadSprachbausteine2();
-        }
-
-        // تحميل العناوين
-        function loadHeadings() {
+        function initializeTeil1() {
             const headingsList = document.getElementById('headingsList');
-            headingsList.innerHTML = '';
-
-            contentData.headings.forEach((heading, index) => {
-                const headingItem = document.createElement('div');
-                headingItem.className = 'heading-item';
-                headingItem.textContent = heading;
-                headingItem.dataset.id = String.fromCharCode(97 + index); // a, b, c, ...
-                headingsList.appendChild(headingItem);
-            });
-        }
-
-        // تحميل النصوص
-        function loadTexts() {
             const textsList = document.getElementById('textsList');
+
+            headingsList.innerHTML = '';
             textsList.innerHTML = '';
 
-            contentData.texts.forEach(text => {
-                const textElement = document.createElement('div');
-                textElement.className = 'text-content';
-                textElement.innerHTML = `
-                    <h3>Text ${text.id}</h3>
-                    <p>${text.content}</p>
-                    <div class="answer hidden correct-answer" id="answer-text-${text.id}">
-                        Richtige Überschrift: ${text.correctHeading}
+            // إضافة العناوين
+            examData.headings.forEach((heading, index) => {
+                const headingItem = document.createElement('div');
+                headingItem.className = 'heading-item';
+                headingItem.innerHTML = `
+                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                `;
+                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingsList.appendChild(headingItem);
+            });
+
+            // إضافة النصوص
+            examData.texts.forEach((text, index) => {
+                const textItem = document.createElement('div');
+                textItem.className = 'question';
+                textItem.innerHTML = `
+                    <h3>Text ${index + 1}</h3>
+                    <div class="text-content">${text.content}</div>
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
                     </div>
                 `;
-                textsList.appendChild(textElement);
+                textsList.appendChild(textItem);
             });
         }
 
-        // تحميل النص الطويل
-        function loadLongText() {
-            const longTextElement = document.getElementById('longText');
-            longTextElement.innerHTML = `
-                <h3>Lesen Sie den Text und die Aufgaben 6–10.</h3>
-                <p>${contentData.longText.content}</p>
-            `;
-        }
-
-        // تحميل الأسئلة
-        function loadQuestions() {
+        function initializeTeil2() {
+            const longText = document.getElementById('longText');
             const questionsList = document.getElementById('questionsList');
-            questionsList.innerHTML = '';
 
-            contentData.longText.questions.forEach(question => {
-                const questionElement = document.createElement('div');
-                questionElement.className = 'question';
-                questionElement.innerHTML = `
-                    <h4>Aufgabe ${question.id}</h4>
-                    <p>${question.text}</p>
+            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+
+            questionsList.innerHTML = '';
+            examData.longText.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question';
+                questionItem.innerHTML = `
+                    <h3>Frage ${index + 6}</h3>
+                    <p><strong>${question.question}</strong></p>
                     <div class="options">
-                        ${question.options.map((option, index) => `
-                            <div class="option" data-question="${question.id}" data-option="${index}">
-                                ${option}
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option" data-index="${optIndex}">
+                                ${String.fromCharCode(97 + optIndex)}) ${option}
                             </div>
                         `).join('')}
                     </div>
-                    <div class="answer hidden correct-answer" id="answer-${question.id}">
-                        Richtige Antwort: ${question.options[question.correctAnswer]}
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
                     </div>
                 `;
-                questionsList.appendChild(questionElement);
+                questionsList.appendChild(questionItem);
             });
         }
 
-        // تحميل الوضعيات
-        function loadSituations() {
+        function initializeTeil3() {
             const situationsList = document.getElementById('situationsList');
-            situationsList.innerHTML = '';
+            const adsList = document.getElementById('adsList');
 
-            contentData.situations.forEach(situation => {
-                const situationElement = document.createElement('div');
-                situationElement.className = 'situation-item';
-                situationElement.innerHTML = `
-                    <h4>Situation ${situation.id}</h4>
-                    <p>${situation.text}</p>
-                    <div class="answer hidden correct-answer" id="answer-situation-${situation.id}">
-                        Richtige Anzeige: ${situation.correctAd}
+            situationsList.innerHTML = '';
+            examData.situations.forEach((situation, index) => {
+                const situationItem = document.createElement('div');
+                situationItem.className = 'situation-item';
+                situationItem.innerHTML = `
+                    <strong>${index + 11})</strong> ${situation}
+                    <div class="answer hidden correct-answer">
+                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
                     </div>
                 `;
-                situationsList.appendChild(situationElement);
+                situationsList.appendChild(situationItem);
             });
-        }
 
-        // تحميل الإعلانات
-        function loadAds() {
-            const adsList = document.getElementById('adsList');
             adsList.innerHTML = '';
-
-            contentData.ads.forEach(ad => {
-                const adElement = document.createElement('div');
-                adElement.className = 'ad-item';
-                adElement.innerHTML = `
-                    <h4>${ad.id}: ${ad.title}</h4>
+            examData.ads.forEach(ad => {
+                const adItem = document.createElement('div');
+                adItem.className = 'ad-item';
+                adItem.innerHTML = `
+                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
                     <p>${ad.content}</p>
                 `;
-                adsList.appendChild(adElement);
+                adsList.appendChild(adItem);
             });
         }
 
-        // تحميل Sprachbausteine Teil 1
-        function loadSprachbausteine1() {
+        function initializeSprachbausteine() {
+            // Teil 1
             const blankText1 = document.getElementById('blankText1');
-            const blankOptions1 = document.getElementById('blankOptions1');
-
-            // بناء النص مع الفراغات
-            let textWithBlanks = contentData.sprachbausteine1.text;
-            contentData.sprachbausteine1.blanks.forEach(blank => {
-                textWithBlanks = textWithBlanks.replace(`(${blank.id})`, 
-                    `<span class="blank" id="blank-${blank.id}">(${blank.id})</span>`);
+            const wordList1 = document.getElementById('wordList1');
+            
+            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
+            });
+            blankText1.innerHTML = textWithBlanks1;
+            
+            // إضافة الكلمات لـ Teil 1
+            wordList1.innerHTML = '';
+            examData.blankText1.answers.forEach((word, index) => {
+                const wordItem = document.createElement('div');
+                wordItem.className = 'word-item';
+                wordItem.textContent = word;
+                wordList1.appendChild(wordItem);
             });
 
-            blankText1.innerHTML = `<p>${textWithBlanks}</p>`;
-
-            // بناء خيارات الفراغات
-            blankOptions1.innerHTML = '';
-            contentData.sprachbausteine1.blanks.forEach(blank => {
-                const blankOptions = document.createElement('div');
-                blankOptions.className = 'blank-options';
-                blankOptions.innerHTML = `
-                    <h4>Lücke ${blank.id}:</h4>
-                    ${blank.options.map((option, index) => `
-                        <div class="blank-option" data-blank="${blank.id}" data-option="${index}">
-                            ${option}
-                        </div>
-                    `).join('')}
-                    <div class="answer hidden correct-answer" id="answer-blank-${blank.id}">
-                        Richtige Antwort: ${blank.options[blank.correct]}
-                    </div>
-                `;
-                blankOptions1.appendChild(blankOptions);
-            });
-        }
-
-        // تحميل Sprachbausteine Teil 2
-        function loadSprachbausteine2() {
+            // Teil 2
             const blankText2 = document.getElementById('blankText2');
-            const wordBank2 = document.getElementById('wordBank2');
-
-            // بناء النص مع الفراغات
-            let textWithBlanks = contentData.sprachbausteine2.text;
-            contentData.sprachbausteine2.wordBank.forEach(word => {
-                textWithBlanks = textWithBlanks.replace(`(${word.id})`, 
-                    `<span class="blank" id="blank2-${word.id}">(${word.id})</span>`);
+            const wordList2 = document.getElementById('wordList2');
+            
+            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
+                const blankNumber = parseInt(match.match(/\d+/)[0]);
+                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 31]}</span></span>`;
             });
-
-            blankText2.innerHTML = `<p>${textWithBlanks}</p>`;
-
-            // بناء بنك الكلمات
-            wordBank2.innerHTML = '';
-            contentData.sprachbausteine2.wordBank.forEach(word => {
-                const wordOption = document.createElement('div');
-                wordOption.className = 'word-option';
-                wordOption.textContent = word.word;
-                wordOption.dataset.id = word.id;
-                wordBank2.appendChild(wordOption);
+            blankText2.innerHTML = textWithBlanks2;
+            
+            // إضافة الكلمات لـ Teil 2
+            wordList2.innerHTML = '';
+            examData.blankText2.answers.forEach((word, index) => {
+                const wordItem = document.createElement('div');
+                wordItem.className = 'word-item';
+                wordItem.textContent = word;
+                wordList2.appendChild(wordItem);
             });
-
-            // إضافة التصحيح
-            const correctionDiv = document.createElement('div');
-            correctionDiv.className = 'answer hidden correct-answer';
-            correctionDiv.id = 'answer-sprach2';
-            correctionDiv.innerHTML = '<h4>Richtige Lösungen:</h4>' + 
-                contentData.sprachbausteine2.wordBank.map(word => 
-                    `Lücke ${word.id}: ${word.word}`).join('<br>');
-            wordBank2.parentNode.insertBefore(correctionDiv, wordBank2.nextSibling);
         }
 
-        // إعداد مستمعي الأحداث
         function setupEventListeners() {
-            // تبديل الوضع الليلي
-            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-
-            // محدد اللغة
-            document.getElementById('langBtn').addEventListener('click', toggleLanguageDropdown);
-            document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', changeLanguage);
+            // أزرار التحكم
+            document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
+            document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
+            
+            // زر الرئيسية
+            document.getElementById('homeBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html';
             });
-
-            // أزرار التحكم بالإجابات
-            document.getElementById('showAnswers').addEventListener('click', showAnswers);
-            document.getElementById('hideAnswers').addEventListener('click', hideAnswers);
-
-            // نافذة الدعم
-            document.getElementById('supportBtn').addEventListener('click', showSupportModal);
-            document.getElementById('closeSupportModal').addEventListener('click', hideSupportModal);
-
-            // نافذة الملاحظات
-            document.getElementById('notesBtn').addEventListener('click', showNotesModal);
-            document.getElementById('closeNotesModal').addEventListener('click', hideNotesModal);
-            document.getElementById('saveNotes').addEventListener('click', saveNotes);
-
-            // النقر خارج القوائم المنسدلة لإغلاقها
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('.language-selector')) {
+            
+            // زر الاشتراك
+            document.getElementById('subscribeBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html#subscribe';
+            });
+            
+            // زر الوضع الليلي
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+            
+            // زر المستخدم
+            document.getElementById('userBtn').addEventListener('click', () => {
+                window.location.href = 'tahada.html#profile';
+            });
+            
+            // زر اللغة
+            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
+            document.querySelectorAll('.lang-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const lang = option.getAttribute('data-lang');
+                    changeLanguage(lang);
+                    document.getElementById('langDropdown').classList.remove('show');
+                });
+            });
+            
+            // إغلاق القوائم المنسدلة بالنقر خارجها
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.language-selector')) {
                     document.getElementById('langDropdown').classList.remove('show');
                 }
             });
         }
 
-        // تبديل الوضع الليلي
-        function toggleDarkMode() {
-            isDarkMode = !isDarkMode;
-            document.body.classList.toggle('dark-mode');
-            document.getElementById('themeToggle').textContent = isDarkMode ? '☀️' : '🌙';
-            localStorage.setItem('darkMode', isDarkMode);
-        }
-
-        // تبديل قائمة اللغة
-        function toggleLanguageDropdown() {
-            document.getElementById('langDropdown').classList.toggle('show');
-        }
-
-        // تغيير اللغة
-        function changeLanguage(event) {
-            const selectedLang = event.target.dataset.lang;
-            if (selectedLang && translations[selectedLang]) {
-                currentLanguage = selectedLang;
-                updateLanguage();
-                document.getElementById('langDropdown').classList.remove('show');
-                localStorage.setItem('language', currentLanguage);
-            }
-        }
-
-        // تحديث اللغة
-        function updateLanguage() {
-            const t = translations[currentLanguage];
-            
-            // تحديث النصوص
-            document.getElementById('pageTitle').textContent = t.pageTitle;
-            document.getElementById('pageSubtitle').textContent = t.pageSubtitle;
-            document.getElementById('showAnswersText').textContent = t.showAnswersText;
-            document.getElementById('hideAnswersText').textContent = t.hideAnswersText;
-            document.getElementById('teil1Title').textContent = t.teil1Title;
-            document.getElementById('teil1Description').textContent = t.teil1Description;
-            document.getElementById('teil2Title').textContent = t.teil2Title;
-            document.getElementById('teil3Title').textContent = t.teil3Title;
-            document.getElementById('teil3Description').textContent = t.teil3Description;
-            document.getElementById('sprach1Title').textContent = t.sprach1Title;
-            document.getElementById('sprach2Title').textContent = t.sprach2Title;
-            document.getElementById('supportTitle').textContent = t.supportTitle;
-            
-            // تحديث زر اللغة
-            document.getElementById('langBtn').innerHTML = `<span>${t.langText}</span>`;
-        }
-
-        // إظهار التصحيح
-        function showAnswers() {
-            answersVisible = true;
-            
-            // إظهار إجابات Teil 1
-            contentData.texts.forEach(text => {
-                document.getElementById(`answer-text-${text.id}`).classList.remove('hidden');
+        function showAllAnswers() {
+            document.querySelectorAll('.answer').forEach(answer => {
+                answer.classList.remove('hidden');
             });
-            
-            // إظهار إجابات Teil 2
-            contentData.longText.questions.forEach(question => {
-                document.getElementById(`answer-${question.id}`).classList.remove('hidden');
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.remove('hidden');
             });
-            
-            // إظهار إجابات Teil 3
-            contentData.situations.forEach(situation => {
-                document.getElementById(`answer-situation-${situation.id}`).classList.remove('hidden');
+            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+                const letter = heading.dataset.letter;
+                examData.texts.forEach(text => {
+                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                        heading.classList.add('matched');
+                    }
+                });
             });
-            
-            // إظهار إجابات Sprachbausteine Teil 1
-            contentData.sprachbausteine1.blanks.forEach(blank => {
-                document.getElementById(`answer-blank-${blank.id}`).classList.remove('hidden');
-            });
-            
-            // إظهار إجابات Sprachbausteine Teil 2
-            document.getElementById('answer-sprach2').classList.remove('hidden');
         }
 
-        // إخفاء التصحيح
-        function hideAnswers() {
-            answersVisible = false;
-            
-            // إخفاء جميع الإجابات
+        function hideAllAnswers() {
             document.querySelectorAll('.answer').forEach(answer => {
                 answer.classList.add('hidden');
             });
+            document.querySelectorAll('.blank-answer').forEach(answer => {
+                answer.classList.add('hidden');
+            });
+            document.querySelectorAll('.heading-item').forEach(heading => {
+                heading.classList.remove('matched');
+            });
         }
 
-        // إظهار نافذة الدعم
-        function showSupportModal() {
-            document.getElementById('supportModal').style.display = 'flex';
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
         }
 
-        // إخفاء نافذة الدعم
-        function hideSupportModal() {
-            document.getElementById('supportModal').style.display = 'none';
+        function toggleLangDropdown() {
+            document.getElementById('langDropdown').classList.toggle('show');
         }
 
-        // إظهار نافذة الملاحظات
-        function showNotesModal() {
-            document.getElementById('notesModal').style.display = 'flex';
-        }
-
-        // إخفاء نافذة الملاحظات
-        function hideNotesModal() {
-            document.getElementById('notesModal').style.display = 'none';
-        }
-
-        // حفظ الملاحظات
-        function saveNotes() {
-            const notes = document.getElementById('notesTextarea').value;
-            localStorage.setItem('userNotes', notes);
-            alert('تم حفظ الملاحظات بنجاح!');
+        function changeLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            // تحديث جميع النصوص
+            Object.keys(t).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = t[key];
+                }
+            });
+            
+            localStorage.setItem('language', lang);
+            
+            // إعادة تهيئة المحتوى لترجمة الإجابات
+            initializeTeil1();
+            initializeTeil2();
         }
     </script>
 </body>
