@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Deutsch B2 Prüfung - Komplett</title>
   <style>
     /* ===== GLOBAL STYLES ===== */
@@ -1194,6 +1194,124 @@
         padding: 20px 15px;
       }
     }
+
+    /* === تحسينات خاصة للهواتف الصغيرة جدا === */
+    @media (max-width: 480px) {
+      /* 1. تحسين الحاويات الرئيسية */
+      .container, .container-split, .container-full {
+        grid-template-columns: 1fr !important;
+        padding: 8px !important;
+        gap: 10px !important;
+      }
+      
+      /* 2. جعل اللوحات (panels) تأخذ عرض كامل */
+      .left-panel, .right-panel, .main-panel {
+        max-height: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        margin-bottom: 10px;
+      }
+      
+      /* 3. تحسين الهيدر */
+      .topbar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 10px !important;
+      }
+      
+      .brand {
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+      
+      /* 4. تحسين الأزرار في الهيدر */
+      .buttons-grid {
+        grid-template-columns: 1fr !important;
+        width: 100%;
+      }
+      
+      .exam-btn {
+        width: 100% !important;
+        margin: 2px 0 !important;
+        font-size: 14px !important;
+        padding: 12px 8px !important;
+      }
+      
+      /* 5. تحسين التايلات */
+      .top-tiles {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .tile {
+        flex: 0 0 calc(33% - 5px) !important;
+        max-width: calc(33% - 5px) !important;
+        margin: 2px;
+        font-size: 11px !important;
+        padding: 8px 4px !important;
+      }
+      
+      /* 6. تحسين النصوص */
+      .passage, .text-content, .question-text {
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+      }
+      
+      /* 7. تحسين الخيارات */
+      .option {
+        padding: 12px 10px !important;
+        margin: 4px 0 !important;
+      }
+      
+      /* 8. تحسين جداول True/False */
+      .true-false-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      
+      /* 9. تحسين منطقة الكتابة */
+      .writing-textarea {
+        min-height: 300px !important;
+        font-size: 16px !important;
+      }
+      
+      /* 10. تحسين الفوتر */
+      footer.controls {
+        flex-direction: column !important;
+        gap: 10px !important;
+      }
+      
+      .footer-buttons {
+        width: 100%;
+        display: flex;
+        gap: 5px;
+      }
+      
+      .footer-buttons .exam-btn {
+        flex: 1;
+      }
+      
+      /* 11. تحسين النتائج */
+      .results-tiles {
+        flex-direction: column !important;
+      }
+      
+      .results-tile {
+        margin-bottom: 10px;
+      }
+    }
+
+    /* === تحسينات للهواتف المتوسطة === */
+    @media (min-width: 481px) and (max-width: 768px) {
+      .container, .container-split {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .tile {
+        max-width: 180px !important;
+      }
+    }
   </style>
 </head>
 <body id="body">
@@ -1390,6 +1508,94 @@
   </div>
 
   <script>
+    // تحسين السحب والإفلات للشاشات التي تعمل باللمس
+    function setupTouchDragAndDrop() {
+      if ('ontouchstart' in window) {
+        // تغيير سلوك العناصر القابلة للسحب
+        document.querySelectorAll('[draggable="true"]').forEach(item => {
+          item.addEventListener('touchstart', handleTouchStart);
+          item.addEventListener('touchend', handleTouchEnd);
+        });
+        
+        document.querySelectorAll('.title-slot, .blank-slot').forEach(slot => {
+          slot.addEventListener('touchmove', handleTouchMove);
+          slot.addEventListener('touchend', handleTouchDrop);
+        });
+      }
+    }
+
+    function handleTouchStart(e) {
+      // تنفيذ السحب عند اللمس
+      e.preventDefault();
+      const item = e.target;
+      const data = item.getAttribute('data-heading-id') || 
+                   item.getAttribute('data-situation-id') || 
+                   item.getAttribute('data-word');
+      if (data) {
+        e.dataTransfer = {
+          setData: function(type, value) {
+            this.data = value;
+          },
+          getData: function(type) {
+            return this.data;
+          },
+          data: data
+        };
+        
+        item.classList.add('dragging');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function handleTouchEnd(e) {
+      document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+      document.body.style.overflow = '';
+    }
+
+    function handleTouchMove(e) {
+      e.preventDefault();
+    }
+
+    function handleTouchDrop(e) {
+      e.preventDefault();
+      const slot = e.target;
+      const draggingItem = document.querySelector('.dragging');
+      
+      if (draggingItem && slot.classList.contains('title-slot')) {
+        const data = e.dataTransfer.getData('text/plain');
+        const textId = slot.getAttribute('data-text-id');
+        
+        if (window.lesenApp) {
+          if (draggingItem.getAttribute('data-heading-id')) {
+            Object.keys(window._lesenState.answers).forEach(key => {
+              if(window._lesenState.answers[key] === data) {
+                delete window._lesenState.answers[key];
+              }
+            });
+            
+            window._lesenState.answers[textId] = data;
+          } else if (draggingItem.getAttribute('data-situation-id')) {
+            Object.keys(window._lesenState.answers).forEach(key => {
+              if(window._lesenState.answers[key] === data) {
+                delete window._lesenState.answers[key];
+              }
+            });
+            
+            window._lesenState.answers[data] = textId;
+          }
+          
+          if (typeof window.lesenApp.renderAll === 'function') {
+            window.lesenApp.renderAll();
+          }
+        }
+      }
+    }
+
+    // استدعاء الدالة عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(setupTouchDragAndDrop, 1000);
+    });
+
     // ===== PAGE NAVIGATION =====
     function showPage(pageId) {
       // Hide all pages
@@ -1420,6 +1626,9 @@
       } else if (pageId === 'ergebnisse-page' && typeof initErgebnissePage === 'function') {
         initErgebnissePage();
       }
+      
+      // إعادة تهيئة السحب والإفلات للشاشات التي تعمل باللمس
+      setTimeout(setupTouchDragAndDrop, 500);
     }
 
     // ===== START PAGE FUNCTIONALITY =====
@@ -1535,7 +1744,7 @@
               },
               {
                 id: "text3",
-                content: "Mit Drogen kennt sich Falko aus. Der sechs Jahre alte Schäferhund sucht für den Zoll nach Kokain, Haschisch und Heroin. Bis zu vier Kofferladungen, meist aus Südamerika, Afrika und Südostasien, beschnüffelt der Vierbeiner am Tag. Rund 300 Mal in der Minute atmet er dabei ein und aus - ein wahrer Nasenmarathon. Hunde riechen bis zu eine Million mal besser als Menschen. Hat der Mensch fünf Millionen Riechzellen, so sind es bei einem Schäferhund 220 Millionen. Grundsätzlich gilt: Je länger die Hundeschnauze, desto besser das Geruchsvermögen. Schnüffler wie Falko können 'stereo' riechen, das heißt, ihre Nase kann zwischen rechts und links unterscheiden. Spürhunde erkennen deshalb auch die Richtung eines Geruchs. Doch die beste Hundenase nutzt nichts, wenn sie nicht geschult wird. So lernen Drogenspürhunde in jungen Jahren, wie sie sogenannte weiche und harte Drogen finden. Werden bei der Ausbildung noch alle Drogen zusammengepackt, so schafft es Falko, sie beim Kofferschnüffeln dann einzeln wahrzunehmen. Bis zu zehn Jahre können Spürhunde des Zolls arbeiten, ehe sie samt ihrer Nase in den verdienten Hunde-Ruhestand gehen dürfen.",
+                content: "Mit Drogen kennt sich Falko aus. Der sechs Jahre alte Schäferhund sucht für den Zoll nach Kokain, Haschisch und Heroin. Bis zu vier Kofferladungen, meist aus Südamerika, Afrika und Südostasien, beschnüffelt der Vierbeiner am Day. Rund 300 Mal in der Minute atmet er dabei ein und aus - ein wahrer Nasenmarathon. Hunde riechen bis zu eine Million mal besser als Menschen. Hat der Mensch fünf Millionen Riechzellen, so sind es bei einem Schäferhund 220 Millionen. Grundsätzlich gilt: Je länger die Hundeschnauze, desto besser das Geruchsvermögen. Schnüffler wie Falko können 'stereo' riechen, das heißt, ihre Nase kann zwischen rechts und links unterscheiden. Spürhunde erkennen deshalb auch die Richtung eines Geruchs. Doch die beste Hundenase nutzt nichts, wenn sie nicht geschult wird. So lernen Drogenspürhunde in jungen Jahren, wie sie sogenannte weiche und harte Drogen finden. Werden bei der Ausbildung noch alle Drogen zusammengepackt, so schafft es Falko, sie beim Kofferschnüffeln dann einzeln wahrzunehmen. Bis zu zehn Jahre können Spürhunde des Zolls arbeiten, ehe sie samt ihrer Nase in den verdienten Hunde-Ruhestand gehen dürfen.",
                 correctAnswer: "e"
               },
               {
@@ -1567,13 +1776,13 @@
             title:"Leseverstehen, Teil 2", 
             points:25,
             passageTitle: "Wer parkt, muss zahlen - Parkuhren in Deutschland",
-            passage: `Es geschah am 1. Januar 1954. In Duisburg, einer Großstadt am Rhein zwischen Köln und der niederländischen Grenze am Rande des Ruhrgebiets, gab es für die Autofahrer, die in der Straße “Am Buchenbaum” ihre Autos parken wollten, eine Überraschung. 20 etwa 1,5 Meter hohe Metallstangen mit uhrenförmigen Aufsätzen standen am Straßenrand mit der unmissverständlichen Aufschrift: “Einwurf 10 Pfennig für eine Stunde“. Die ersten Parkuhren in Deutschland waren aufgestellt.
+            passage: `Es geschah am 1. Januar 1954. In Duisburg, einer Großstadt am Rhein zwischen Köln und der niederländischen Grenze am Rande des Ruhrgebiets, gab es für die Autofahrer, die in der Straße "Am Buchenbaum" ihre Autos parken wollten, eine Überraschung. 20 etwa 1,5 Meter hohe Metallstangen mit uhrenförmigen Aufsätzen standen am Straßenrand mit der unmissverständlichen Aufschrift: "Einwurf 10 Pfennig für eine Stunde". Die ersten Parkuhren in Deutschland waren aufgestellt.
 Nur Basel in der Schweiz und Stockholm in Schweden hatten vor Duisburg Parkuhren installiert, um Dauerparker aus den Stadtzentren zu vertreiben. Das eingenommene Geld wurde in Duisburg anfangs für gemeinnützige Zwecke ausgegeben: für Alte, Kranke, Kriegsversehrte, für elternlose Kinder. Und die Stadtverwaltung war sich sicher, dass die Autofahrer Verständnis für die Parkuhren aufbringen würden, dienten sie doch einem guten Zweck.
-Doch bei den Autofahrern war man nicht so erfreut über diese neuen Apparate. “Groschengrab” wurden sie dann auch bald überall genannt: ein Apparat, in den man Groschen – wie die 10–Pfennig–Stücke damals genannt wurden – hineinwarf. Dieser schluckte zwar gnadenlos Zehner, gab aber zum Verdruss vieler trotzdem oft keine Parkzeit frei. Tat er dies, dann aber in der Regel nur für höchstens 60 Minuten. Viele Autofahrer waren außerdem verärgert, weil sie immer passendes Kleingeld dabei haben mussten. Die ersten Parkuhren konnten nämlich nicht wechseln.
-Wer parkte, ohne zu zahlen, riskierte damals wie heute einen Strafbescheid, liebevoll “Knöllchen” genannt. In allen anderen deutschen Städten erschienen nach und nach auch Parkuhren. Bald gehörten sie zu den Innenstädten wie das Rad zum Auto. Und das blieb so bis zum Ende der 1980er Jahre.
-Dann geschah so etwas wie eine Parkuhren–Revolution. Die guten, alten Parkuhren, die ein im Vergleich zu heute immer noch billiges Parken erlaubten, weil sie nicht beliebig oft auf neue Beträge umgestellt werden konnten, wurden mehr und mehr ersetzt durch die gerade neu entwickelten Parkscheinautomaten. Mit Solarenergie angetrieben, computergesteuert und beliebig programmierbar machten sie es nun möglich, ohne technische Beschränkungen die Preise und Zeiten für das Parken flexibel zu gestalten. Von Vorteil ist auch ihre Kundenfreundlichkeit: Die Zeiten, in denen nur Münzen als Zahlungsmittel akzeptiert wurden, sind passé; jetzt schlucken sie auch problemlos Papier– und Plastikgeld – und Wechselgeld wird ausgespuckt.
-Das Parken wurde immer teurer. Und längst dienten die eingenommenen Beträge nicht mehr gemeinnützigen Zwecken. Sie wurden vielmehr als Einnahmequelle entdeckt für die leeren Stadtkassen, die nach immer mehr Geld verlangten. Gut 2 Millionen Euro verdient zum Beispiel Duisburg in einem Jahr an den Parkgebühren. In Köln kommen etwa 10 Millionen Euro im Jahr zusammen. Noch einmal so viel Geld verdienen die Städte an den “Knöllchen“ für falsches Parken.
-Aus 10 Pfennig für eine Stunde im Jahr 1954 – das wären heute etwa 5 Cents – sind inzwischen weit höhere Beträge geworden. Spitzenreiter in Deutschland sind Düsseldorf und Berlin mit mehreren Euro pro Stunde. Tendenz steigend. Doch aus dem Kölner Rathaus heißt es an alle sich beschwerenden Autofahrer gerichtet, das Geld werde selbstverständlich zweckgebunden verwendet: für den Bau neuer Straßen. An denen neue Parkscheinautomaten stehen?`,
+Doch bei den Autofahrern war man nicht so erfreut über diese neuen Apparate. "Groschengrab" wurden sie dann auch bald überall genannt: ein Apparat, in den man Groschen - wie die 10-Pfennig-Stücke damals genannt wurden - hineinwarf. Dieser schluckte zwar gnadenlos Zehner, gab aber zum Verdruss vieler trotzdem oft keine Parkzeit frei. Tat er dies, dann aber in der Regel nur für höchstens 60 Minuten. Viele Autofahrer waren außerdem verärgert, weil sie immer passendes Kleingeld dabei haben mussten. Die ersten Parkuhren konnten nämlich nicht wechseln.
+Wer parkte, ohne zu zahlen, riskierte damals wie heute einen Strafbescheid, liebevoll "Knöllchen" genannt. In allen anderen deutschen Städten erschienen nach und nach auch Parkuhren. Bald gehörten sie zu den Innenstädten wie das Rad zum Auto. Und das blieb so bis zum Ende der 1980er Jahre.
+Dann geschah so etwas wie eine Parkuhren-Revolution. Die guten, alten Parkuhren, die ein im Vergleich zu heute immer noch billiges Parken erlaubten, weil sie nicht beliebig oft auf neue Beträge umgestellt werden konnten, wurden mehr und mehr ersetzt durch die gerade neu entwickelten Parkscheinautomaten. Mit Solarenergie angetrieben, computergesteuert und beliebig programmierbar machten sie es nun möglich, ohne technische Beschränkungen die Preise und Zeiten für das Parken flexibel zu gestalten. Von Vorteil ist auch ihre Kundenfreundlichkeit: Die Zeiten, in denen nur Münzen als Zahlungsmittel akzeptiert wurden, sind passé; jetzt schlucken sie auch problemlos Papier- und Plastikgeld - und Wechselgeld wird ausgespuckt.
+Das Parken wurde immer teurer. Und längst dienten die eingenommenen Beträge nicht mehr gemeinnützigen Zwecken. Sie wurden vielmehr als Einnahmequelle entdeckt für die leeren Stadtkassen, die nach immer mehr Geld verlangten. Gut 2 Millionen Euro verdient zum Beispiel Duisburg in einem Jahr an den Parkgebühren. In Köln kommen etwa 10 Millionen Euro im Jahr zusammen. Noch einmal so viel Geld verdienen die Städte an den "Knöllchen" für falsches Parken.
+Aus 10 Pfennig für eine Stunde im Jahr 1954 - das wären heute etwa 5 Cents - sind inzwischen weit höhere Beträge geworden. Spitzenreiter in Deutschland sind Düsseldorf und Berlin mit mehreren Euro pro Stunde. Tendenz steigend. Doch aus dem Kölner Rathaus heißt es an alle sich beschwerenden Autofahrer gerichtet, das Geld werde selbstverständlich zweckgebunden verwendet: für den Bau neuer Straßen. An denen neue Parkscheinautomaten stehen?`,
             questions: [
               {
                 id: "s2q1",
@@ -1641,16 +1850,16 @@ Aus 10 Pfennig für eine Stunde im Jahr 1954 – das wären heute etwa 5 Cents �
             questions:[],
             texts: [
               {id: "A", text: "Das Vorstellungsgespräch ist eine wichtige Hürde bei der Suche nach einem Arbeitsplatz. In der Regel fangen sie mit Smalltalk an: Man redet über das Wetter, den Verkehr und Ähnliches. Doch dabei kommt es schon auf das 'Wie?' an. Wer viel kritisiert, hat schon verloren. Bei der Vorstellung ihrer Person sollten Bewerber darauf achten, dass sie ihre Fähigkeit und den Nutzen, den ihr potentiell zukünftiger Arbeitgeber von ihnen hat, in den Vordergrund stellen. Fragen nach Gesundheit, Familienplanung, Schwangerschaft oder Geld gehören nicht ins Bewerbungsgespräch. Sollten Sie dennoch gestellt werden, ist man nicht verpflichtet, diese wahrheitsgemäß zu beantworten.", correctAnswer: "11"},
-              {id: "B", text: "Die Postbank gibt Bewerbern um einen Ausbildungsplatz ein Thema für ein Projekt, das sie ausarbeiten und dann präsentieren sollen. Nur wer diese Hürde nehmen kann und Engagement beweist, hat Chancen, aufgenommen zu werden. Schließlich sollen die Bewerber zeigen, dass sie belastbar und entscheidungsfähig sind. Der Banker von heute hat ein weit gestecktes Tätigkeitsfeld: Kassierer am Schalter, die nichts als Geld oder Formulare ausgeben oder entgegennehmen, wird es in Zukunft immer weniger geben.", correctAnswer: null},
+              {id: "B", text: "Die Postbank gibt Bewerbern um einen Ausbildungsplatz ein Thema für ein Projekt, das sie ausarbeiten und dann präsentieren sollen. Nur wer diese Hürde nehmen kann und Engagement beweist, hat Chancen, aufgenommen zu werden. Schließlich sollen die Bewerber zeigen, dass sie belastbar und entscheidungsfähig sind. Der Banker von heute hat ein weit gestrecktes Tätigkeitsfeld: Kassierer am Schalter, die nichts als Geld oder Formulare ausgeben oder entgegennehmen, wird es in Zukunft immer weniger geben.", correctAnswer: null},
               {id: "C", text: "Rhetoriktrainer raten dazu, dem Anfang und dem Schluss eines Referats besonderes Augenmerk zu schenken. In den ersten zwei Minuten eines Vortrags entscheide sich nämlich, ob ein Zuhörer an dem Referat Interesse hat oder nicht. Daher sei ein effektvoll und interessant gestalteter Einstieg äußerst wichtig. Am Schluss soll man den Zuhörern noch einmal mit auf den Weg geben, was dem Vortragenden besonders wichtig erscheint.", correctAnswer: null},
               {id: "D", text: "Robert Sonntag, Autor des Buches 'Hilfe, ich muss reden' behauptet, die Angst vor einem größeren Publikum zu reden, sei ein Problem für die meisten Menschen. In Deutschland liegt in etwa 60 % der Menschen an diesem Phänomen. Dabei achten Zuhörer nur zu 7 % auf das, was jemand sagt, 93 % der Wirkung eines Vortrags erziele man durch Körpersprache und seine Stimme. Der Autor rät zu Entspannungstechniken wie dem Autogenen Training oder Yoga, um gelassener zu werden, und einer gründlichen Vorbereitung des Vortrags. Seminarangebote unter www.rs-rethorik.de.", correctAnswer: "13"},
               {id: "E", text: "Bereiten Sie sich auf ein Vorstellungsgespräch intensiv vor. Überlegen Sie sich genau, was Sie Ihrer zukünftigen Firma an Nutzen bringen können, denn Sie werden danach gefragt werden, warum Sie sich gerade bei dieser und nicht bei einer anderen Firma beworben haben. Analysieren Sie Ihre persönlichen Stärken und Schwächen und überlegen Sie, wie Sie Ihre schwachen Seiten möglichst positiv präsentieren können. Überlegen Sie, was Ihre persönlichen Ziele sind, und sammeln Sie so viele Informationen wie möglich über Ihre zukünftige Arbeit und die Firma, bei der Sie sich beworben haben.", correctAnswer: null},
               {id: "F", text: "Nichts ist auf privaten Feierlichkeiten wie Hochzeiten, runden Geburtstagen oder sonstigen Jubiläen schlimmer als langatmige, nicht enden wollende Ansprachen von Familienmitgliedern. Deshalb bieten viele Volkshochschulen in Deutschland Wochenendseminare an, in denen der Aufbau und der Vortrag einer guten Festansprache trainiert werden. Das Ziel dieser Seminare ist es, die zukünftigen Teilnehmenden in die Lage zu versetzen, spritzige Reden frei halten zu können.", correctAnswer: "20"},
               {id: "G", text: "Ein Auszubildender bei einer Bank oder Sparkasse bekommt 690,- Euro im ersten Ausbildungsjahr. Am Ende seiner Ausbildung steigt die Vergütung auf 800,- Euro. Das Einstiegsgehalt für Bankangestellte liegt bei etwas über 2.000,- Euro monatlich. Aufstiegschancen haben die jungen Banker nur, wenn sie sich intensiv um ihre berufliche Fortbildung kümmern. Dafür bieten die Banken ihren Mitarbeitern viele Möglichkeiten an, wie das BankCollege der Volksbanken oder die Sparkassen-Akademie. Manche Banken geben besonders qualifizierten Mitarbeitern sogar Stipendien für ein Studium.", correctAnswer: "16"},
-              {id: "H", text: "Wer zu seinem Vorstellungsgespräch eingeladen wird, sollte auf korrekte und saubere Kleidung achten. Für viele Firmen ist es wichtig, dass auch Auszubildende die Firma gegenüber den Kunden repräsentieren können. Zerrissene Jeans und selbst gefärbte T-Shirts mögen zwar trendy sein, zu einem Vorstellungsgespräch gehören sie aber nicht. In Zweifelsfällen ist it ratsam, sich bei Eltern oder Bekannten Rat zu holen.", correctAnswer: "14"},
+              {id: "H", text: "Wer zu seinem Vorstellungsgespräch eingeladen wird, sollte auf korrekte und saubere Kleidung achten. Für viele Firmen ist es wichtig, dass auch Auszubildende die Firma gegenüber den Kunden repräsentieren können. Zerrissene Jeans und selbst gefärbte T-Shirts mögen zwar trendy sein, zu einem Vorstellungsgespräch gehören sie aber nicht. In Zweifelsfällen ist es ratsam, sich bei Eltern oder Bekannten Rat zu holen.", correctAnswer: "14"},
               {id: "I", text: "", correctAnswer: null},
               {id: "J", text: "Für junge Leute kann das Internet zu einer Droge werden. Der typische Internet-Süchtige ist ca. 18 Jahre alt, männlich, Single und hat kaum soziale Kontakte. Er surft täglich um die 5 Stunden im World Wide Web und hat schlechte Laune, wenn er nicht vor dem Monitor sitzen kann. Pflichten werden oft vernachlässigt. Psychologen raten, die Surfzeiten schrittweise zu verringern und darüber ein Tagebuch zu führen sowie vor dem Surfen schriftlich zu notieren, was genau man im Internet suchen möchte. Wer diese strengen Regeln einhält, kann aus der Internetsucht aussteigen.", correctAnswer: "17"},
-              {id: "K", text: "Zu einem zunehmend größer werdenden Problem am Arbeitsplatz wird die immer größer werdende Kluft zwischen dem Sprachgebrauch junger und alter Kollegen. Viele junge Leute verstehen laut einer Studie der Universität Kiel traditionelle Redewendungen wie z. B. 'Den Nagel auf den Kopf treffen' oder 'Öl ins Feuer gießen' nicht mehr, während Ältere nichts mit 'keinen Bock haben' anzufangen wissen. Dadurch, dass Jung und Alt heute nicht mehr so lange wie in früheren Zeiten zusammenleben, sondern unter sich bleiben, verstärkt sich das Auseinanderdriften der Jugendsprache und der Sprache der Alten immer mehr auseinander.", correctAnswer: null},
+              {id: "K", text: "Zu einem zunehmend größer werdenden Problem am Arbeitsplatz wird die immer größer werdende Kluft zwischen dem Sprachgebrauch junger und alter Kollegen. Viele junge Leute verstehen laut einer Studie der Universität Kiel traditionelle Redewendungen wie z. B. 'Den Nagel auf den Kopf treffen' oder 'Öl ins Feuer gießen' nicht mehr, während Ältere nichts mit 'keinen Bock haben' anzufangen wissen. Dadurch, dass Jung und Alt heute nicht mehr so lange wie in früheren Zeiten zusammenleben, sondern unter sich bleiben, verstärkt sich das Auseinanderdriften der Jugendsprache und der Sprache der Alten immer mehr.", correctAnswer: null},
               {id: "L", text: "'GRUNDSÄTZLICH HAT JEDER DIE MÖGLICHKEIT, BEI UNS EINE AUSBILDUNG ZU MACHEN', heißt es bei der Sparkassen-Akademie in Bonn. Die Bewerber sollen aber gute bis sehr gute Noten in Deutsch und Mathematik von der Schule mitbringen, und sie müssen in Rollenspielen ihre kommunikativen Fähigkeiten unter Beweis stellen, etwa, wie sie mit einem aggressiven Kunden umgehen würden. Viele junge Leute flüchten sich in die virtuelle Scheinwelt, weil ihnen die Realität als eine zu große Belastung erscheint. Insbesondere Chatrooms verführen die Jugendlichen zu langen Sitzungen, die oft als Ersatz für mangelnde zwischenmenschliche Beziehungen herhalten. Häufige Folge: Vernachlässigung von Hausaufgaben und schlechte Zensuren. Eltern, die sich Sorgen um ihre Internetabhängigen Kinder machen, sollten viel mit ihnen sprechen - ohne Vorwürfe zu machen - und versuchen ihren Zöglingen Alternativen in der realen Welt aufzuzeigen.", correctAnswer: "15"}
             ],
             situations: [
@@ -1805,11 +2014,11 @@ Cem`
 
 Die gelernte Krankenschwester Jaqueline Delgado drückt mit 38 Jahren noch einmal die Schulbank. ________ (31) sie hat sich für einen beruflichen Neustart entschieden. Da ihr früherer Beruf ihr keinen Spaß mehr machte, begann sie eine Berufsausbildung bei der Polizei. Ihr Ziel: Sie ________ (32) in den Streifendienst gehen.
 
-Mit über 30 noch einmal einen ganz neuen Job zu erlernen – lange Zeit war das kaum möglich. Arbeitgeber suchten nur junge Berufseinsteiger. ________ (33) es heute in vielen Branchen aber an Nachwuchs fehlt, geben sie öfter auch Älteren eine ________ (34) .
+Mit über 30 noch einmal einen ganz neuen Job zu erlernen - lange Zeit war das kaum möglich. Arbeitgeber suchten nur junge Berufseinsteiger. ________ (33) es heute in vielen Branchen aber an Nachwuchs fehlt, geben sie öfter auch Älteren eine ________ (34) .
 
 Thomas Neuendorfer, der stellvertretende Sprecher der Polizei Berlin, erklärt, ________ (35) sein Arbeitgeber gerne Ältere ausbildet: "Sie haben in ihrem Berufsleben Erfahrungen gesammelt, die der Polizei und auch den Bürgern der Stadt zu Gute kommen". Sie seien häufig emotional reifer, außerdem bereit, Verantwortung zu ________ (36) und motiviert, die Ausbildung erfolgreich abzuschließen. Zudem ________ (37) sie die Jüngeren unterstützen und ihnen als Vorbild dienen. Davon profitierten dann auch die Arbeitgeber. Gegen die Einstellung von Älteren spreche nur, dass sie dem Unternehmen kürzer vor ________ (38) stehen. ________ (39) haben ältere Azubis in vielen Bereichen Möglichkeiten: in kaufmännischen oder in gewerblich-technischen Berufen, im Gesundheitswesen oder vor allem in der Gastronomie.
 
-Wenn das Azubi–Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeitsagentur. Der Betrag wird dabei nicht nach dem Alter festgelegt, ________ (40) es wird der individuelle, konkrete Bedarf ermittelt. Im August schließt Delgado ihre Ausbildung ab. In dem künftigen Polizei–Job wird sie ihr medizinisches Wissen, ihre Menschenkenntnis sowie ihre spanischen und englischen Sprachkenntnisse wohl gut gebrauchen können.`
+Wenn das Azubi-Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeitsagentur. Der Betrag wird dabei nicht nach dem Alter festgelegt, ________ (40) es wird der individuelle, konkrete Bedarf ermittelt. Im August schließt Delgado ihre Ausbildung ab. In dem künftigen Polizei-Job wird sie ihr medizinisches Wissen, ihre Menschenkenntnis sowie ihre spanischen und englischen Sprachkenntnisse wohl gut gebrauchen können.`
           }
         ]
       },
@@ -2729,7 +2938,8 @@ Hamburger Str. 112
         markNoMatch,
         selectSprachbausteine1,
         selectSprachbausteine2,
-        selectSprachbausteine2FromBank
+        selectSprachbausteine2FromBank,
+        renderAll
       };
     }
 

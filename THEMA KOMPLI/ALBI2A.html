@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Deutsch B2 Prüfung - Komplett</title>
   <style>
     /* ===== GLOBAL STYLES ===== */
@@ -322,10 +322,6 @@
       padding: 6px 10px;
       min-width: auto;
       margin-top: 5px;
-    }
-    
-    .exam-btn.no-match:hover {
-      background: #7f8c8d;
     }
     
     .exam-btn.no-match.selected {
@@ -1194,6 +1190,124 @@
         padding: 20px 15px;
       }
     }
+
+    /* === تحسينات خاصة للهواتف الصغيرة جدا === */
+    @media (max-width: 480px) {
+      /* 1. تحسين الحاويات الرئيسية */
+      .container, .container-split, .container-full {
+        grid-template-columns: 1fr !important;
+        padding: 8px !important;
+        gap: 10px !important;
+      }
+      
+      /* 2. جعل اللوحات (panels) تأخذ عرض كامل */
+      .left-panel, .right-panel, .main-panel {
+        max-height: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        margin-bottom: 10px;
+      }
+      
+      /* 3. تحسين الهيدر */
+      .topbar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 10px !important;
+      }
+      
+      .brand {
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+      
+      /* 4. تحسين الأزرار في الهيدر */
+      .buttons-grid {
+        grid-template-columns: 1fr !important;
+        width: 100%;
+      }
+      
+      .exam-btn {
+        width: 100% !important;
+        margin: 2px 0 !important;
+        font-size: 14px !important;
+        padding: 12px 8px !important;
+      }
+      
+      /* 5. تحسين التايلات */
+      .top-tiles {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .tile {
+        flex: 0 0 calc(33% - 5px) !important;
+        max-width: calc(33% - 5px) !important;
+        margin: 2px;
+        font-size: 11px !important;
+        padding: 8px 4px !important;
+      }
+      
+      /* 6. تحسين النصوص */
+      .passage, .text-content, .question-text {
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+      }
+      
+      /* 7. تحسين الخيارات */
+      .option {
+        padding: 12px 10px !important;
+        margin: 4px 0 !important;
+      }
+      
+      /* 8. تحسين جداول True/False */
+      .true-false-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      
+      /* 9. تحسين منطقة الكتابة */
+      .writing-textarea {
+        min-height: 300px !important;
+        font-size: 16px !important;
+      }
+      
+      /* 10. تحسين الفوتر */
+      footer.controls {
+        flex-direction: column !important;
+        gap: 10px !important;
+      }
+      
+      .footer-buttons {
+        width: 100%;
+        display: flex;
+        gap: 5px;
+      }
+      
+      .footer-buttons .exam-btn {
+        flex: 1;
+      }
+      
+      /* 11. تحسين النتائج */
+      .results-tiles {
+        flex-direction: column !important;
+      }
+      
+      .results-tile {
+        margin-bottom: 10px;
+      }
+    }
+
+    /* === تحسينات للهواتف المتوسطة === */
+    @media (min-width: 481px) and (max-width: 768px) {
+      .container, .container-split {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .tile {
+        max-width: 180px !important;
+      }
+    }
   </style>
 </head>
 <body id="body">
@@ -1390,6 +1504,29 @@
   </div>
 
   <script>
+    // تحسين السحب والإفلات للشاشات التي تعمل باللمس
+    function setupTouchDragAndDrop() {
+      if ('ontouchstart' in window) {
+        // تغيير سلوك العناصر القابلة للسحب
+        document.querySelectorAll('[draggable="true"]').forEach(item => {
+          item.addEventListener('touchstart', handleTouchStart);
+          item.addEventListener('touchend', handleTouchEnd);
+        });
+        
+        document.querySelectorAll('.title-slot, .blank-slot').forEach(slot => {
+          slot.addEventListener('touchmove', handleTouchMove);
+          slot.addEventListener('touchend', handleTouchDrop);
+        });
+      }
+    }
+
+    function handleTouchStart(e) {
+      // تنفيذ السحب عند اللمس
+    }
+
+    // استدعاء الدالة عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', setupTouchDragAndDrop);
+
     // ===== PAGE NAVIGATION =====
     function showPage(pageId) {
       // Hide all pages
@@ -1569,7 +1706,7 @@
             title: "Leseverstehen, Teil 2", 
             points: 25,
             passageTitle: "Der Puppenmacher",
-            passage: `Die Schaufensterpuppe ist eine Pariserin und hatte erstmals 1849 in der Hauptstadt der Mode ihren Auftritt. Der französische Schneider Alexis Lavigne gilt als ihr Erfinder, auch wenn er damals seine Kleiderkreationen noch auf einer Schneiderpuppe vorführte. Bald schon taten es ihm andere Pariser Kollegen gleich. Sie begannen, ihre Modelle vor den Geschäften aufzustellen, um die Passanten in die Verkaufsräume zu locken. Als Anfang des 20. Jahrhunderts die ersten großen Kaufhäuser eröffneten, erlebte die Schaufensterpuppe ihren Durchbruch. Der Puppenmacher Lester Gaba entwickelte in den 1930er Jahren das erste lebensecht wirkende Modell, Cynthia. Sie durfte sogar mit auf Veranstlungen, was beide berühmt machte. Fortan spiegelte die Schaufensterpuppe Zeitgeist und Schönheitsideale. Der Linzer Puppenmacher André Bauernfeind hat als Sammler begonnen, mittlerweile sind Schaufensterpuppen sein Beruf. Der 37-Jährige, der mehr als 1000 Modelle besitzt, ist österreichweit der Einzige, bei dem man sie reparieren lassen, aber auch mieten kann. Wer ihn an seinem Arbeitsplatz aufsucht, muss in den Keller. Die Eisentür steht offen, lädt ein in sein großes Atelier voller Schaufensterpuppen: Kinder, Frauen und Männer, mit Perücke, geschminkt oder farblos, sitzend, liegend, dürr, oder mollig, in Kisten verpackt oder in Einzelteilen von der Decke hängend. Während sich die Puppen in der Welt draußen perfekt präsentieren, wird hier in der Werkstatt mitunter ordentlich an ihrer Oberfläche gekratzt. Der 37-Jährige ist so etwas wie ein Schönheitschirurg für Schaufensterpuppen. Er macht sie wieder heil, verpasst ihnen aber auch Ganzkörper-Liftings, wenn gewünscht. Die bestehende Farbe wird dann entfernt, anschließend eine Grundierung und Farbe aufgetragen. Er klebt ihnen falsche Wimpern an und trägt mit einem Pinsel Schminke auf. Die Kosmetikprodukte kommen meistens aus der Drogerie, tragen aber manchmal auch Luxusnamen wie Armani oder Dior. Nur herkömmlichen Nagellack kann Bauernfeld nicht verwenden, weil dieser die Ölfarbe auflöst. Nicht selten fehlt den Puppen ein Finger, ein Ohr oder eine Nase. Dann greift der Linzer zur Modelliermasse, deren Zusammensetzung streng geheim ist.Weniger geheim sind die Preise: Für 45 Euro fertigt er eine neue Nase, rekonstruiert ein Ohr oder auch ein Kinn. Wer allerdings einen Kopf modellieren lassen möchte, muss mit 2500 Euro und acht Wochen rechnen, für einen gesamten Körper mit 15.000 Euro und Monaten. Obgleich er als Kind am liebsten mit Autos spielte, faszinierten ihn schon früh diese Mannequins in den Schaufenstern. Heute kommt er an keinem Schaufenster vorbei, ohne einen Blick hineinzuwerfen. „Ich erkenne schon an ihrem Standsockel um welchen Hersteller es sich handelt\", sagt der gelernte Dekorateur. Sein erstes Exemplar kaufte he während seiner Ausbildung. 3500 Schilling wollte der Besitzer haben, man einigte sich auf Ratenzahlungen. Ein Jahr lang hat he sie abbezahlt. Die Puppe aus der Serie Ragazza mit der Nummer 9908 bekam bald Gesellschaft, die Sammlung vergrößerte sich sukzessive, zählte schon bald mehr als 100 Exponate. Aus dem Hobby wurde später ein Beruf. Bauernfeind verfeinerte sein Handwerk und übernahm schließlich ein altes Schaufensterpuppen-Unternehmen in Linz. Heute ist he Besitzer 1200 Puppen, vermietet und repariert sie, stellt Sonderanfertigungen her. Bauernfeind verkauft auch für andere Hersteller. Er besitzt exklusive die Handelsvertretung für eine belgische Schaufensterpuppen-Firma. Alle anderen renommierten Hersteller aus Europa haben irgendwann ihre Produktion nach Asien verlagert. Qualität und Nachhaltigkeit sind ihm wichtig.Gemeinsam mit einem Farblieferanten hat er deshalb eine Farbe für Puppen entwickelt, die nicht nur ökologisch einwandfrei, sondern auch für den Menschen unbedenklich ist. „ Schließlich dringen die Farbstoffe in die Textilien ein. Meine Farbe könnte man sogar essen, und es würde nichts passieren.\"Weltweit gibt es etwa 100 Hersteller von Schaufensterpuppen, die zweimal im Jahr eine neue Kollektion herausbringen. Denn wie die Mode sind auch die Puppen Trends unterworfen: „In Frankreich, England und den USA werden natürliche Modelle immer beliebter, während bei uns noch abstrakte Modelle dominieren. Es lässt aber beobachten, dass man von einer Einheit gar wegkommt und dass immer häufiger vielfarbige Figurtypen gewünscht werden\", sagt der Puppenmacher.`,
+            passage: `Die Schaufensterpuppe ist eine Pariserin und hatte erstmals 1849 in der Hauptstadt der Mode ihren Auftritt. Der französische Schneider Alexis Lavigne gilt als ihr Erfinder, auch wenn er damals seine Kleiderkreationen noch auf einer Schneiderpuppe vorführte. Bald schon taten es ihm andere Pariser Kollegen gleich. Sie begannen, ihre Modelle vor den Geschäften aufzustellen, um die Passanten in die Verkaufsräume zu locken. Als Anfang des 20. Jahrhunderts die ersten großen Kaufhäuser eröffneten, erlebte die Schaufensterpuppe ihren Durchbruch. Der Puppenmacher Lester Gaba entwickelte in den 1930er Jahren das erste lebensecht wirkende Modell, Cynthia. Sie durfte sogar mit auf Veranstlungen, was beide berühmt machte. Fortan spiegelte die Schaufensterpuppe Zeitgeist und Schönheitsideale. Der Linzer Puppenmacher André Bauernfeind hat als Sammler begonnen, mittlerweile sind Schaufensterpuppen sein Beruf. Der 37-Jährige, der mehr als 1000 Modelle besitzt, ist österreichweit der Einzige, bei dem man sie reparieren lassen, aber auch mieten kann. Wer ihn an seinem Arbeitsplatz aufsucht, muss in den Keller. Die Eisentür steht offen, lädt ein in sein großes Atelier voller Schaufensterpuppen: Kinder, Frauen und Männer, mit Perücke, geschminkt oder farblos, sitzend, liegend, dürr, oder mollig, in Kisten verpackt oder in Einzelteilen von der Decke hängend. Während sich die Puppen in der Welt draußen perfekt präsentieren, wird hier in der Werkstatt mitunter ordentlich an ihrer Oberfläche gekratzt. Der 37-Jährige ist so etwas wie ein Schönheitschirurg für Schaufensterpuppen. Er macht sie wieder heil, verpasst ihnen aber auch Ganzkörper-Liftings, wenn gewünscht. Die bestehende Farbe wird dann entfernt, anschließend eine Grundierung und Farbe aufgetragen. Er klebt ihnen falsche Wimpern an und trägt mit einem Pinsel Schminke auf. Die Kosmetikprodukte kommen meistens aus der Drogerie, tragen aber manchmal auch Luxusnamen wie Armani oder Dior. Nur herkömmlichen Nagellack kann Bauernfeld nicht verwenden, weil dieser die Ölfarbe auflöst. Nicht selten fehlt den Puppen ein Finger, ein Ohr oder eine Nase. Dann greift der Linzer zur Modelliermasse, deren Zusammensetzung streng geheim ist.Weniger geheim sind die Preise: Für 45 Euro fertigt er eine neue Nase, rekonstruiert ein Ohr oder auch ein Kinn. Wer allerdings einen Kopf modellieren lassen möchte, muss mit 2500 Euro und acht Wochen rechnen, für einen gesamten Körper mit 15.000 Euro und Monaten. Obgleich er als Kind am liebsten mit Autos spielte, faszinierten ihn schon früh diese Mannequins in den Schaufenstern. Heute kommt er an keinem Schaufenster vorbei, ohne einen Blick hineinzuwerfen. „Ich erkenne schon an ihrem Standsockel um welchen Hersteller es sich handelt\", sagt der gelernte Dekorateur. Sein erstes Exemplar kaufte he während seiner Ausbildung. 3500 Schilling wollte der Besitzer haben, man einigte sich auf Ratenzahlungen. Ein Jahr lang has he sie abbezahlt. Die Puppe aus der Serie Ragazza mit der Nummer 9908 bekam bald Gesellschaft, die Sammlung vergrößerte sich sukzessive, zählte schon bald mehr als 100 Exponate. Aus dem Hobby wurde später ein Beruf. Bauernfeind verfeinerte sein Handwerk und übernahm schließlich ein altes Schaufensterpuppen-Unternehmen in Linz. Heute ist he Besitzer 1200 Puppen, vermietet und repariert sie, stellt Sonderanfertigungen her. Bauernfeind verkauft auch für andere Hersteller. Er besitzt exklusive die Handelsvertretung für eine belgische Schaufensterpuppen-Firma. Alle anderen renommierten Hersteller aus Europa haben irgendwann ihre Produktion nach Asien verlagert. Qualität und Nachhaltigkeit sind ihm wichtig.Gemeinsam mit einem Farblieferanten hat er deshalb eine Farbe für Puppen entwickelt, die nicht nur ökologisch einwandfrei, sondern auch für den Menschen unbedenklich ist. „ Schließlich dringen die Farbstoffe in die Textilien ein. Meine Farbe könnte man sogar essen, und es würde nichts passieren.\"Weltweit gibt es etwa 100 Hersteller von Schaufensterpuppen, die zweimal im Jahr eine neue Kollektion herausbringen. Denn wie die Mode sind auch die Puppen Trends unterworfen: „In Frankreich, England und den USA werden natürliche Modelle immer beliebter, während bei uns noch abstrakte Modelle dominieren. Es lässt aber beobachten, dass man von einer Einheit gar wegkommt und dass immer häufiger vielfarbige Figurtypen gewünscht werden\", sagt der Puppenmacher.`,
             questions: [
               {
                 id: "s2q1",
@@ -1642,7 +1779,7 @@
               {id: "D", text: "Entspannte Sommernächte. Genießen Sie sechs Tage Filmvergnügen unter dem Sternenhimmel, in bequemen Liegestühlen vor einer nächtlichen Naturkulisse. Besuchen Sie unser Open-Air-Filmfestival mitten im Wald: von Montag, 17.08., bis Samstag, 22.08. im Waldpark Schlosshofen. Wir präsentieren Ihnen Komödien, Science-Fiction und Abenteuerfilme für Erwachsene und Kinder ab 12 Jahren. Das Filmprogramm erhalten Sie an allen Informationsstellen der Stadt Schlosshofen und im City-Kino. Eintritt: 12 €, ermäßigt 7 €.", correctAnswer: ""},
               {id: "E", text: "Schon lange lebt Kaninchen Hoppi mit seiner Familie und vielen Freunden auf der Sonnenwiese. Doch eines Tages kauft der reiche Herr Großkopf die Wiese und will aus ihr einen Golfplatz machen... Müssen die Kaninchen sich nun eine neue Heimat suchen? So schnell lassen sie sich jedenfalls nicht verjagen. Hoppi schmiedet einen Plan, damit die Kaninchen ihr Zuhause behalten können. „Hoppi gibt nicht auf\" ist ein Animationsfilm mit liebenswerten tierischen Helden, vielen originellen Ideen und märchenhaften Abenteuern für Kinder ab 6 Jahren. Stadtkino, täglich um 15 Uhr.", correctAnswer: "14"},
               {id: "F", text: "Du bist gern kreativ und möchtest professionelle Mal- und Zeichentechniken erlernen? Dann haben wir genau das richtige Angebot für dich: „Junge Künstler\" - unser regelmäßiger Kurs für Nachwuchskünstler ab 10 Jahren. In einer kleinen Gruppe könnt ihr gemeinsam zeichnen und malen. Dozentin Rebecca Kling ist freischaffende Künstlerin und leitet Kreativkurse für Kinder und Jugendliche. Kurszeiten: jeden Dienstag von 14 bis 16 Uhr Kunstatelier Rebecca Kling Pestalozzistr. 53, 50767 Köln Anmeldung und Infos: rebecca@kunstatelier-kling.net", correctAnswer: "17"},
-              {id: "G", text: "Mit einem scharfen Blick fürs Detail gestaltete der deutsch-baltische Maler Jürgen Freiherr v. Wolffshausen seine Landschafts- und Tierbilder. Seine Liebe zur Natur, seine außergewöhnliche Beobachtungsgabe und seine präzise Maltechnik verleihen seinen Werken einen ganz besonderen Reiz. Sein Entdeckerdrang führte ihn u. a. nach. Äthiopien. Die Ausstellung, Natur im Porträt\" präsentiert die Werke des Maler und seine Biographie und gibt außerdem naturkundliche Informationen. Museum Lüneburg, 19. Februar bis 10. Juni Eintritt 3 €", correctAnswer: "13"},
+              {id: "G", text: "Mit einem scharfen Blick fürs Detail gestaltete der deutsch-baltische Maler Jürgen Freiherr v. Wolffshausen seine Landschafts- und Tierbilder. Seine Liebe zur Natur, seine außergewöhnliche Beobachtungsgabe und seine präzise Maltechnik verleihen seinen Werken einen ganz besonderer Reiz. Sein Entdeckerdrang führte ihn u. a. nach. Äthiopien. Die Ausstellung, Natur im Porträt\" präsentiert die Werke des Maler und seine Biographie und gibt außerdem naturkundliche Informationen. Museum Lüneburg, 19. Februar bis 10. Juni Eintritt 3 €", correctAnswer: "13"},
               {id: "H", text: "Spiel, Spaß, Nervenkitzel. Für alle Kinder und Jugendliche, die am Ende der Ferien noch etwas erleben wollen. Sommerfest im Wildpark. Live-Musik Bogenschießen Axtwerfen Baumklettern bis auf 20 Meter Höhe Seilrutsche für Kinder Riesenschaukel Wettsägen Kräuterbrot backen Basteln für Kinder und noch vieles mehr! Wildpark Rittersbach 12. und 13. September, von 10 bis 17 Uhr", correctAnswer: ""},
               {id: "I", text: "Noch nicht lange ist es her, dass Wildkatzen in Europa weitverbreitet waren. Heute sind sie fast überall verschwunden. Doch es gibt sie noch, auch wenn man sie nur selten zu Gesicht bekommt. Die Tierdokument Die Wildkatze in unseren Wäldern geht der Frage nach, ob das Tier bei uns überhaupt wieder heimisch werden kann. Hat es überhaupt eine Chance in unserer dicht besiedelten Landschaft? Und leben in unseren Wäldern noch echte Wildkatzen oder vielleicht nur verwilderte Hauskatzen? Denn äußerlich unterscheidet sich die Europäische Wildkatze kaum von einer getigerten Hauskatze. Der Film berichtet außerdem über ein Projekt zur Rettung der Wildkatze. Am 10.5. zeigen wir die Dokumentation in unserer Reihe „Filmabende im Rathaus\" um 19 Uhr.", correctAnswer: "16"},
               {id: "J", text: "In der Dauerausstellung, Wege in die Natur erfahren Sie alles über den Nationalpark Bayerischer Wald, eine der größten zusammenhängenden Waldflächen Europas. Warum ist der Wald wichtig für uns? Und wer oder was lebt dort eigentlich? Über all das und noch viel mehr bekommen die Besucher beim Rundgang Informationen. In unserem Kino präsentieren wir außerdem ein abwechslungsreiches Filmprogramm. Ort: Besucherzentrum Nationalpark Bayeirscher Wald Öffnungszeiten: täglich von 9 bis 17 Uhr Der Eintritt ist frei", correctAnswer: ""},
@@ -1792,7 +1929,7 @@ Elise`
             wordBank: ["ALS", "BEOBACHTUNG", "BETRACHTUNG", "DENN", "DER", "DEUTLICH", "DOCH", "ENTWARFEN", "ENTWICKELTEN", "FÄHIG", "FÜR", "GENAU", "NOCH", "ÜBRIGENS", "WER"],
             fillText2: `Fische sind dumm, stumm und haben keine Empfindungen - diese Vorurteile halten sich hartnäckig. <span class="blank-slot" data-blank-id="31">________</span> das Gegenteil ist der Fall. Sie sind nämlich zu erstaunlichen kognitiven <span class="blank-slot" data-blank-id="32">________</span> und können sowohl Freude als auch Schmerz empfinden. Die meisten Menschen wüssten so gut wie nichts über Fische, beklagt der Verhaltensbiologe Douglas Allan. Wenn man genauer hinsehe, verändere sich aber die Sicht auf sie.<br><br>
 Denn das Leben im Wasser stellt die etwa 33.000 existierenden Arten vor besondere Herausforderungen. Im Laufe der Zeit <span class="blank-slot" data-blank-id="33">________</span> sie hochspezialisierte Sinnesfähigkeiten und Kommunikationsformen. So verständigen sie sich über Geräusche, Gerüche oder Berührungen. Einige Arten lernen durch <span class="blank-slot" data-blank-id="34">________</span> oder benutzen sogar Werkzeuge.<br><br>
-Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35">________</span> nicht einmal zugetraut, dass sie hören können. Erst dem österreichischen Verhaltensforscher Karl von Frisch gelang der Nachweis: Er brachte seinem blinden Wels Xaverl bei, auf ein akustisches Signal zu reagieren. Wenn er pfiff, kam Xaverl aus seinem Versteck, um Futter in Empfang zu nehmen. Der Forscher bewies <span class="blank-slot" data-blank-id="36">________</span> auch als Erster, dass Fische Farben sehen können.<br><br>
+Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35">________</span> nicht einmal zugetraut, dass sie hören können. Erst dem österreichischen Verhaltensforscher Karl von Frisch gelang der Nachweis: Er brachte seinem blinden Wels Xaverl bei, auf ein akustisches Signal zu reagieren. Wenn he pfiff, kam Xaverl aus seinem Versteck, um Futter in Empfang zu nehmen. Der Forscher bewies <span class="blank-slot" data-blank-id="36">________</span> auch als Erster, dass Fische Farben sehen können.<br><br>
 <span class="blank-slot" data-blank-id="37">________</span> warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Intelligent halten wir oft nur Tiere, die uns ähnlich sind\", erklärt Douglas Allan. Fische hätten daher schlechte Karten. Schließlich müssten sie mit ganz anderen Lebensbedingungen zurechtkommen <span class="blank-slot" data-blank-id="38">________</span> Tiere an Land. Allan rät: <span class="blank-slot" data-blank-id="39">________</span> mehr über Fische herausfinden wolle, solle einfach mal in einem Aquarium im Zoo ein paar Minuten lang einen einzelnen Fisch beobachten. Dann erkenne man <span class="blank-slot" data-blank-id="40">________</span>, dass Fische nicht nur ein Bewusstsein, sondern auch einen eigenen Charakter und Bedürfnisse hätten.`
           }
         ]
@@ -2277,7 +2414,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         });
 
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können jedes Wort nur einmal verwenden.</div>
+          <div class="instructions">Klicken Sie auf jede Lücke و wählen Sie das passende Wort aus. Sie können jedes Wort nur einmal verwenden.</div>
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
@@ -2903,26 +3040,26 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
                 <tbody>
           `;
           
-          section.questions.forEach((question) => {
-            const userAnswer = userAnswers[question.id] || '-';
-            const correctAnswer = section.correctAnswers[question.id];
-            const gotCorrect = userAnswer === correctAnswer;
-            const points = gotCorrect ? "1" : "0";
-            
-            if (gotCorrect) correctCount++;
-            
-            const rowClass = gotCorrect ? 'correct-answer' : 'incorrect-answer';
-            
-            resultsHTML += `
-              <tr class="${rowClass}">
-                <td><strong>${question.id}</strong></td>
-                <td class="question-text">${question.text}</td>
-                <td>${userAnswer}</td>
-                <td>${correctAnswer}</td>
-                <td><strong>${points}</strong></td>
-              </tr>
-            `;
-          });
+        section.questions.forEach((question) => {
+          const userAnswer = userAnswers[question.id] || '-';
+          const correctAnswer = section.correctAnswers[question.id];
+          const gotCorrect = userAnswer === correctAnswer;
+          const points = gotCorrect ? "1" : "0";
+          
+          if (gotCorrect) correctCount++;
+          
+          const rowClass = gotCorrect ? 'correct-answer' : 'incorrect-answer';
+          
+          resultsHTML += `
+            <tr class="${rowClass}">
+              <td><strong>${question.id}</strong></td>
+              <td class="question-text">${question.text}</td>
+              <td>${userAnswer}</td>
+              <td>${correctAnswer}</td>
+              <td><strong>${points}</strong></td>
+            </tr>
+          `;
+        });
           
           const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
           
@@ -3358,7 +3495,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
           "s2q2o1": "darf Herr Bauernfeind keinen normalen Nagellack auftragen",
           "s2q2o2": "können keine Luxusmarken eingesetzt werden",
           "s2q2o3": "verwendet he nur billige Produkte",
-          "s2q3o1": "hat schon als Kind gerne mit Puppen gespielt",
+          "s2q3o1": "hat schon als Child gerne mit Puppen gespielt",
           "s2q3o2": "konnte seine erste Schaufensterpuppe nicht auf einmal zahlen",
           "s2q3o3": "organizierte eine Ausstellung mit Schaufensterpuppen",
           "s2q4o1": "eröffnete die erste Linzer Firma für Schaufensterpuppen",

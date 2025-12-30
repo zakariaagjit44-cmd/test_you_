@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Deutsch B2 Prüfung - Komplett</title>
   <style>
     /* ===== GLOBAL STYLES ===== */
@@ -1194,6 +1194,182 @@
         padding: 20px 15px;
       }
     }
+
+    /* === تحسينات خاصة للهواتف الصغيرة جدا === */
+    @media (max-width: 480px) {
+      /* 1. تحسين الحاويات الرئيسية */
+      .container, .container-split, .container-full {
+        grid-template-columns: 1fr !important;
+        padding: 8px !important;
+        gap: 10px !important;
+      }
+      
+      /* 2. جعل اللوحات (panels) تأخذ عرض كامل */
+      .left-panel, .right-panel, .main-panel {
+        max-height: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        margin-bottom: 10px;
+      }
+      
+      /* 3. تحسين الهيدر */
+      .topbar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 10px !important;
+      }
+      
+      .brand {
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+      
+      /* 4. تحسين الأزرار في الهيدر */
+      .buttons-grid {
+        grid-template-columns: 1fr !important;
+        width: 100%;
+      }
+      
+      .exam-btn {
+        width: 100% !important;
+        margin: 2px 0 !important;
+        font-size: 14px !important;
+        padding: 12px 8px !important;
+      }
+      
+      /* 5. تحسين التايلات */
+      .top-tiles {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .tile {
+        flex: 0 0 calc(33% - 5px) !important;
+        max-width: calc(33% - 5px) !important;
+        margin: 2px;
+        font-size: 11px !important;
+        padding: 8px 4px !important;
+      }
+      
+      /* 6. تحسين النصوص */
+      .passage, .text-content, .question-text {
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+      }
+      
+      /* 7. تحسين الخيارات */
+      .option {
+        padding: 12px 10px !important;
+        margin: 4px 0 !important;
+      }
+      
+      /* 8. تحسين جداول True/False */
+      .true-false-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      
+      /* 9. تحسين منطقة الكتابة */
+      .writing-textarea {
+        min-height: 300px !important;
+        font-size: 16px !important;
+      }
+      
+      /* 10. تحسين الفوتر */
+      footer.controls {
+        flex-direction: column !important;
+        gap: 10px !important;
+      }
+      
+      .footer-buttons {
+        width: 100%;
+        display: flex;
+        gap: 5px;
+      }
+      
+      .footer-buttons .exam-btn {
+        flex: 1;
+      }
+      
+      /* 11. تحسين النتائج */
+      .results-tiles {
+        flex-direction: column !important;
+      }
+      
+      .results-tile {
+        margin-bottom: 10px;
+      }
+      
+      /* 12. تحسين البدء صفحة */
+      .start-content {
+        padding: 20px 15px !important;
+      }
+      
+      .logo-icon {
+        font-size: 40px !important;
+      }
+      
+      h1 {
+        font-size: 24px !important;
+      }
+      
+      .card {
+        padding: 15px 12px !important;
+      }
+      
+      .btn {
+        padding: 10px 15px !important;
+        font-size: 14px !important;
+      }
+      
+      .timer {
+        font-size: 36px !important;
+      }
+      
+      /* 13. تحسين السحب والإفلات للهاتف */
+      .heading-item, .bank-word-vertical {
+        padding: 12px 10px !important;
+        font-size: 14px !important;
+        touch-action: manipulation;
+      }
+      
+      .title-slot {
+        min-height: 50px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px !important;
+      }
+      
+      /* 14. تحسين الخيارات الصغيرة */
+      .option-btn {
+        padding: 10px 12px !important;
+        font-size: 13px !important;
+      }
+      
+      /* 15. تحسين حقول الإدخال */
+      select, input[type="number"] {
+        font-size: 16px !important;
+        padding: 12px !important;
+      }
+    }
+
+    /* === تحسينات للهواتف المتوسطة === */
+    @media (min-width: 481px) and (max-width: 768px) {
+      .container, .container-split {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .tile {
+        max-width: 180px !important;
+      }
+      
+      .exam-btn {
+        min-width: 130px !important;
+        padding: 10px 15px !important;
+      }
+    }
   </style>
 </head>
 <body id="body">
@@ -1390,6 +1566,74 @@
   </div>
 
   <script>
+    // ===== دوال لتحسين تجربة اللمس للهواتف =====
+    function setupTouchDragAndDrop() {
+      if ('ontouchstart' in window) {
+        console.log("Touch device detected, setting up touch interactions");
+        
+        let draggedElement = null;
+        
+        document.addEventListener('touchstart', function(e) {
+          const target = e.target.closest('[draggable="true"]');
+          if (target && !target.classList.contains('used')) {
+            draggedElement = target;
+            target.classList.add('dragging');
+            e.preventDefault();
+          }
+        }, { passive: false });
+        
+        document.addEventListener('touchmove', function(e) {
+          if (draggedElement) {
+            e.preventDefault();
+          }
+        }, { passive: false });
+        
+        document.addEventListener('touchend', function(e) {
+          if (draggedElement) {
+            const dropTarget = document.elementFromPoint(
+              e.changedTouches[0].clientX,
+              e.changedTouches[0].clientY
+            );
+            
+            if (dropTarget) {
+              const slot = dropTarget.closest('.title-slot, .blank-slot');
+              if (slot) {
+                if (draggedElement.classList.contains('heading-item')) {
+                  const headingId = draggedElement.dataset.headingId;
+                  const textId = slot.dataset.textId;
+                  if (headingId && textId) {
+                    window.lesenApp.handleDrop(headingId, textId);
+                  }
+                } else if (draggedElement.classList.contains('situation-item')) {
+                  const situationId = draggedElement.dataset.situationId;
+                  const textId = slot.dataset.textId;
+                  if (situationId && textId) {
+                    window.lesenApp.handleDrop(situationId, textId);
+                  }
+                } else if (draggedElement.classList.contains('bank-word-vertical')) {
+                  const word = draggedElement.dataset.word;
+                  const blankId = slot.dataset.blankId;
+                  if (word && blankId) {
+                    window.lesenApp.selectSprachbausteine2FromBank(word, blankId);
+                  }
+                }
+              }
+            }
+            
+            draggedElement.classList.remove('dragging');
+            draggedElement = null;
+          }
+        });
+        
+        // جعل العناصر القابلة للسحب أكبر وأسهل للمس
+        document.querySelectorAll('[draggable="true"]').forEach(el => {
+          el.style.touchAction = 'none';
+          el.style.userSelect = 'none';
+          el.style.webkitUserSelect = 'none';
+        });
+      }
+    }
+    
     // ===== كائن الإجابات الصحيحة =====
     const CORRECT_ANSWERS = {
       lesen: {
@@ -1816,6 +2060,9 @@
       } else if (pageId === 'ergebnisse-page' && typeof initErgebnissePage === 'function') {
         initErgebnissePage();
       }
+      
+      // Setup touch interactions for mobile
+      setTimeout(setupTouchDragAndDrop, 100);
     }
 
     // ===== START PAGE FUNCTIONALITY =====
@@ -1964,7 +2211,7 @@
             title: "Leseverstehen, Teil 2", 
             points: 25,
             passageTitle: "Müdigkeit und juckende Augen - Arbeit in Großraumbüros",
-            passage: `Die deutsche Sehnsucht nach dem Einzelbüro Dieser Artikel entsteht unter katastrophalen Bedingungen. Links vom Autor, keinen halben Meter entfernt, diskutieren die Onlineredakteure gerade über portugiesische Bankgeschäfte. Von rechts eilt nun der befreundete Kollege heran: "Sag mal, hast du eine Ahnung, ob das Bayern- Spiel heute Abend live im Fernsehen übertragen wird?" Und da, die Chefin, ganz aufgeregt winkt sie herüber: "Wann wir denn die Geschichte endlich fertig? Die hätte vor einer halben Stunde ins Korrektorat gemusst. Beeil dich bitte!" Was wir Arbeitenden im Großraumbüro immer schon ahaten, haben Schweizer Forscher nun erstmals auf breiter wissenschaftlicher Basis nachgewiesen: Großraum ist schlecht. Zumindest für diejenigen, die im Großraum arbeiten müssen. Mag sein, dass die Chefs in ihren Einzelbüros da anderer Meinung sind. Gut 1200 Beschäftigte aus unterschiedlichsten Berufen hat die Hochschule in Luzern befragt. Die Ergebnisse der Erhebung sind eindeutig. Beispiel Lärm: In Büros mit mehr als 16 Mitarbeitern fühlen sich 80% der Befragten regelmäßig durch Gespräche oder Telefonate gestört in Zweierbüros sind es nicht mal 30%. Auch was die alltäglichen Büro Probleme betrifft, ist der Großraum von Nachteil. Einerlei, wonach die Forscher nun fragten, ob nach Müdigkeit, Schweregefühl im Kopf, juckende Augen oder verstopfte Nase immer litten Mitarbeiter im Großraumbüro am stärksten. Wundert da, dass vier von zehn Großraumbeschäftigten mit ihrer Bürosituation im Allgemeinen" sehr oder gar außerordentlich unzufrieden sind? Zum Vergleich: Acht von zehn Arbeitnehmern mit Einzelbüro geben an, sie seien ziemlich, sehr oder fast 50% außerordentlich zufrieden." Einzelbüros für alle müsste die Lösung lauten, doch der Trend geht in die andere Richtung: Offene Raumstrukturen nehmen zu. Kritiker dieser Entwicklung sehen dahinter vor allem einen Grund: Arbeitgeber wollen die Mieten und Heizkosten niedrig halten. Aber zumindest ein Argument dürfte auch die Arbeitgeber interessieren: Der Schweizer Studie zufolge ist die Zahl der Krankheitstage bei Beschäftigten in Großraumbüros deutlich höher als bei anderen. deutsche Sehnsucht nach dem Einzelbüro Mein Schreibtisch. Mein Computer. Mein Büro. Das Einzelzimmer war fester Bestandteil der deutschen Bürokultur. Aber auch heute haben es noch viele und wer keines hat, träumt zumindest davon. Diese Sehnsucht ist typisch deutsch. "Verglichen mit den Beschäftigten in anderen Ländern, sitzen wir sehr bequem. Auch wenn alle Mitarbeiter die gleiche Möblierung haben, sitzen wir alle doch an unseren eigenen Schreibtischen, benutzen unsere eigenen Aktienschränke und möchten am liebsten die Tür zumachen können", sagt Robert Menke von der Immobilienberatung Kuschmann & Wakefield. Die hat eine Studie veröffentlicht, wonach deutsche Angestellte im internationalen Vergleich den meisten Platz haben: durchschnittlich 30 Quadratmeter Mietfläche pro Kopf. Damit ist natürlich nicht nur das Schreibtisch-Areal gemeint, auch der Flur oder Küchenzeilen sindfalls vorhanden - eingerechnet. Doch umso erstaunlicher sind die Quadratmeterzahlen am anderen Ende der Statistik: In einigen osteuropäischen Ländern, aber auch in Schottland kommt jeder Beschäftigte gerade mal auf 10 Quadratmeter, selbst in Österreich sind es nur zwölf. Im angelsächsischen Raum gibt es viel mehr Großßraumbüros als bei uns. In London, wo Baroraum weltweit mit am tewersten ist, ist etwa eine Zusammenarbeit auf eine Fläche von 600 Quadratmetern und mehr ganz normal, normal "Häufig teilen sich sogar mehrere Mitarbeiter einen Arbeitsplatz. Statt eines festen Schreibtisches verfügt dann jeder über einen Rollcontainer. Der wird immer dorthin mitgenommen, wo gerade ein Arbeitsplatz frei ist. Das geht in der Regel über alle Hierarchiestufen", sagt Menke. Robert Menke erkennt auch in Deutschland "in einigen Bereichen eine Amerikanisierung des Büroraumes". Banken und Unternehmer im Telekommunikationssektor wären da varne dabei. Doch das sind noch Ausnahmen. Nach wie vur arbeiten die meisten Angestellten entweder in kleinen Gruppen in etwas größeren Büros oder in "Einzelzellen" wie Büros für eine Person in der Sprache der Immobilienmakler heißen. Laut der Studie überlegen zwar 40% der befragten Unternehmer, ihre Großraumflächen zu erweitern oder die Arbeitsplätze flexibel zu gestalten, aber "richtige Grofßraumbüros gibt es eher selten", sagt Menke.`,
+            passage: `Die deutsche Sehnsucht nach dem Einzelbüro Dieser Artikel entsteht unter katastrophalen Bedingungen. Links vom Autor, keinen halben Meter entfernt, diskutieren die Onlineredakteure gerade über portugiesische Bankgeschäfte. Von rechts eilt nun der befreundete Kollege heran: "Sag mal, hast du eine Ahnung, ob das Bayern- Spiel heute Abend live im Fernsehen übertragen wird?" Und da, die Chefin, ganz aufgeregt winkt sie herüber: "Wann wir denn die Geschichte endlich fertig? Die hätte vor einer halben Stunde ins Korrektorat gemusst. Beeil dich bitte!" Was wir Arbeitenden im Großraumbüro immer schon ahaten, haben Schweizer Forscher nun erstmals auf breiter wissenschaftlicher Basis nachgewiesen: Großraum ist schlecht. Zumindest für diejenigen, die im Großraum arbeiten müssen. Mag sein, dass die Chefs in ihren Einzelbüros da anderer Meinung sind. Gut 1200 Beschäftigte aus unterschiedlichsten Berufen hat die Hochschule in Luzern befragt. Die Ergebnisse der Erhebung sind eindeutig. Beispiel Lärm: In Büros mit mehr als 16 Mitarbeitern fühlen sich 80% der Befragten regelmäßig durch Gespräche oder Telefonate gestört in Zweierbüros sind es nicht mal 30%. Auch was die alltäglichen Büro Probleme betrifft, ist der Großraum von Nachteil. Einerlei, wonach die Forscher nun fragten, ob nach Müdigkeit, Schweregefühl im Kopf, juckende Augen oder verstopfte Nase immer litten Mitarbeiter im Großraumbüro am stärksten. Wundert da, dass vier von zehn Großraumbeschäftigten mit ihrer Bürosituation im Allgemeinen" sehr oder gar außerordentlich unzufrieden sind? Zum Vergleich: Acht von zehn Arbeitnehmern mit Einzelbüro geben an, sie seien ziemlich, sehr oder fast 50% außerordentlich zufrieden." Einzelbüros für alle müsste die Lösung lauten, doch der Trend geht in die andere Richtung: Offene Raumstrukturen nehmen zu. Kritiker dieser Entwicklung sehen dahinter vor allem einen Grund: Arbeitgeber wollen die Mieten und Heizkosten niedrig halten. Aber zumindest ein Argument dürfte auch die Arbeitgeber interessieren: Der Schweizer Studie zufolge ist die Zahl der Krankheitstage bei Beschäftigten in Großraumbüros deutlich höher als bei anderen. deutsche Sehnsucht nach dem Einzelbüro Mein Schreibtisch. Mein Computer. Mein Büro. Das Einzelzimmer war fester Bestandteil der deutschen Bürokultur. Aber auch heute haben es noch viele und wer keines hat, träumt zumindest davon. Diese Sehnsucht ist typisch deutsch. "Verglichen mit den Beschäftigten in anderen Ländern, sitzen wir sehr bequem. Auch wenn alle Mitarbeiter die gleiche Möblierung haben, sitzen wir alle doch an unseren eigenen Schreibtischen, benutzen unsere eigenen Aktienschränke und möchten am liebsten die Tür zumachen können", sagt Robert Menke von der Immobilienberatung Kuschmann & Wakefield. Die hat eine Studie veröffentlicht, wonach deutsche Angestellte im internationalen Vergleich den meisten Platz haben: durchschnittlich 30 Quadratmeter Mietfläche per Kopf. Damit ist natürlich nicht nur das Schreibtisch-Areal gemeint, auch der Flur oder Küchenzeilen sindfalls vorhanden - eingerechnet. Doch umso erstaunlicher sind die Quadratmeterzahlen am anderen Ende der Statistik: In einigen osteuropäischen Ländern, aber auch in Schottland kommt jeder Beschäftigte gerade mal auf 10 Quadratmeter, selbst in Österreich sind es nur zwölf. Im angelsächsischen Raum gibt es viel mehr Großßraumbüros als bei uns. In London, wo Baroraum weltweit mit am tewersten ist, ist etwa eine Zusammenarbeit auf eine Fläche von 600 Quadratmetern und mehr ganz normal, normal "Häufig teilen sich sogar mehrere Mitarbeiter einen Arbeitsplatz. Statt eines festen Schreibtisches verfügt dann jeder über einen Rollcontainer. Der wird immer dorthin mitgenommen, wo gerade ein Arbeitsplatz frei ist. Das geht in der Regel über alle Hierarchiestufen", sagt Menke. Robert Menke erkennt auch in Deutschland "in einigen Bereichen eine Amerikanisierung des Büroraumes". Banken und Unternehmer im Telekommunikationssektor wären da varne dabei. Doch das sind noch Ausnahmen. Nach wie vur arbeiten die meisten Angestellten entweder in kleinen Gruppen in etwas größeren Büros oder in "Einzelzellen" wie Büros für eine Person in der Sprache der Immobilienmakler heißen. Laut der Studie überlegen zwar 40% der befragten Unternehmer, ihre Großraumflächen zu erweitern oder die Arbeitsplätze flexibel zu gestalten, aber "richtige Grofßraumbüros gibt es eher selten", sagt Menke.`,
             questions: [
               {
                 id: "s2q1",
@@ -2040,7 +2287,7 @@
               {id: "G", text: "Französisch ist Ihre Muttersprache? Wir suchen eine freie Mitarbeiterin oder einen Mitarbeiter für Übersetzungen vom Deutschen ins Französische. Sie arbeiten fallweise und von zuhause aus (keine feste Anstellung). Ihr Aufgabenbereich: Übersetzung von einfachen kurzen Texten (Anfragen, Beantwortung von Anfragen, Reaktion auf Beschwerden usw.). Wenn nötig führen Sie auch kurze Telefonate mit französischen Kundinnen oder Kunden. Sie werden von uns eingearbeitet. Sie lernen unsere Produkte und das Fachvokabular anhand zweisprachiger Unterlagen kennen. Bei Fragen stehen Ihnen unsere Mitarbeiter gerne zur Verfügung. Interessiert? Wir hören auf Ihre Online-Bewerbung.", correctAnswer: "14"},
               {id: "H", text: "Ein Tag im Zeichen der guten Nachbarschaft. Im Rahmen des europäischen Nachbarschaftstages wurde auch heuer wieder in unserem Bezirk zu gemeinsamem Kochen und Genießen eingeladen. Solche Veranstaltungen dienen dazu, andere Menschen und Kulturen besser kennenzulernen. Wie auch in den vergangenen Jahren wurde das Fest wieder sehr gut aufgenommen. Die Veranstalter erhielten begeisterte Mails. Da viele Leute die zahlreichen Spezialitäten aus aller Welt nachkochen möchten, finden Sie hier unser Online-Kochbuch.", correctAnswer: "17"},
               {id: "I", text: "Konto-Neuheiten. Mit der neuen BaZa-App erledigen Sie Ihre Bankgeschäfte, wann und wo Sie wollen. Für die schnelle Überweisung unterwegs, mit ein paar Klicks: Geben Sie einfach den Namen Ihres Baza-Kontaktes an, alles andere erledigt die App für Sie. Oder per Smartphone-Kamera: Sie fotografieren einen Zahlschein, und die App erfasst die Daten automatisch. Mit der App können Sie auch direkt mit Ihrer Kundenbetreuerin oder Ihrem Kundenbetreuer Kontakt aufnehmen, eine Nachricht schicken, einen Termin vereinbaren oder um einen Rückruf bitten. Für alle, die schon ein Baza-Konto haben: jetzt die neue App herunterladen. Zum Download.", correctAnswer: "16"},
-              {id: "J", text: "Seit einigen Jahren bietet die Volkshochschule Laiendolmetscherinnen und Laiendolmetscher an, die fremdsprachigen Eltern den Kontakt mit der Schule erleichtern sollen. Das Angebot soll dazu beitragen, die Beziehungen zwischen Eltern, Lehrerinnen und Lehrern sowie der Schulleitung zu verbessern. Das Ziel ist ein besseres Miteinander und mehr Verständnis füreinander. Die Laiendolmetscher werden von der VHS auf ihre Aufgabe vorbereitet. Momentan bietet die VHS Laiendolmetscher in den Sprachen Albanisch, Bosnisch, Kroatisch, Serbisch, Slowakisch, Rumänisch, Türkisch, Spanisch und Italienisch an. In Zukunft soll das Angebot um weitere Sprachen erweitert werden.", correctAnswer: null},
+              {id: "J", text: "Seit einigen Jahren bietet die Volkshochschule Laiendolmetscherinnen und Laiendolmetscher an, die fremdsprachigen Eltern den Kontakt mit der Schule erleichtern sollen. Das Angebot soll dazu beitragen, die Beziehungen zwischen Eltern, Lehrerinnen und Lehrern sowie der Schulleitung zu verbessern. Das Ziel ist ein besseres Miteinander und mehr Verständnis füreinander. Die Laiendolmetscher werden von der VHS auf ihre Aufgabe vorbereitet. Momentan bietet die VHS Laiendolmetscher in den Sprachen Albanisch, Bosnisch, Kroatisch, Serbisch, Slowakisch, Rumänisch, Türkisch, Spanisch, Italienisch und Französisch an. In Zukunft soll das Angebot um weitere Sprachen erweitert werden.", correctAnswer: null},
               {id: "K", text: "Spezialitäten aus der Küche. Viele klassische Gerichte, die in Österreich auf den Tisch kommen, stammen aus den ehemaligen Kronländern der Monarchie: das Schnitzel aus Italien, die Palatschinken aus Ungarn, Golatschen und Knödel aus dem heutigen Tschechien. Dazu kommen zahlreiche regionale Spezialitäten wie Kasnudeln aus Kärnten, Steirisches Wurzelfleisch oder Salzburger Nockerl. Dies und vieles mehr können Sie bei einem unserer Kochkurse kennenlernen. Besonders willkommen sind Menschen, die aus anderen Ländern zu uns gekommen sind. Die Liste der Veranstaltungen finden Sie weiter unten.", correctAnswer: "11"},
               {id: "L", text: "Am Weltspartag zur Bank. Der Weltspartag wurde am 1. Internationalen Sparkassenkongress in Mailand im Oktober 1924 ins Leben gerufen, um die Bevölkerung zum Sparen zu bringen. Offiziell wird der Weltspartag am 31. Oktober gefeiert, in Österreich manchmal auch am letzten Werktag vor dem 31. Oktober. Denn an diesem speziellen Tag sollen die Banken für Kunden geöffnet haben. Besonders bei Kindern ist der Weltspartag sehr beliebt. Sie erhalten nämlich kleine Geschenke, wenn sie an diesem Tag mit ihrem Sparschwein zur Bank kommen. Aber auch für Erwachsene gibt es am Weltspartag oft besondere Angebote.", correctAnswer: "12"}
             ],
@@ -2176,7 +2423,7 @@ Richard`
               },
               {
                 id: "37",
-                options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"],
+                options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTig", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"],
                 correctAnswer: "MIT"
               },
               {
@@ -2521,6 +2768,19 @@ Eine unterhaltsame, schöne und gesellige Zeit. Das stellt man sich unter einem 
         renderAll();
       }
 
+      function handleDrop(sourceId, targetId) {
+        Object.keys(state.answers).forEach(key => {
+          if(state.answers[key] === sourceId) {
+            delete state.answers[key];
+          }
+        });
+        
+        state.answers[sourceId] = targetId;
+        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
+        
+        renderAll();
+      }
+
       function setupPart3DragAndDrop(){
         const situationItems = document.querySelectorAll('.situation-item:not(.used)');
         const textSlots = document.querySelectorAll('.text-item .title-slot');
@@ -2672,7 +2932,7 @@ Eine unterhaltsame, schöne und gesellige Zeit. Das stellt man sich unter einem 
         });
 
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können jedes Wort nur einmal verwenden.</div>
+          <div class="instructions">Klicken Sie على كل فراغ واختر الكلمة المناسبة. يمكنك استخدام كل كلمة مرة واحدة فقط.</div>
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
@@ -2778,24 +3038,30 @@ Eine unterhaltsame, schöne und gesellige Zeit. Das stellt man sich unter einem 
         lastClickedSprachSlot = slot;
       }
 
-      function selectSprachbausteine2FromBank(word){
+      function selectSprachbausteine2FromBank(word, blankId = null){
         let slot = lastClickedSprachSlot;
-        if(!slot){
+        if(!slot && !blankId){
           slot = Array.from(document.querySelectorAll('.blank-slot')).find(s => {
             const id = s.dataset.blankId;
             return !state.answers[id];
           });
         }
+        
+        if(!slot && blankId) {
+          slot = document.querySelector(`.blank-slot[data-blank-id="${blankId}"]`);
+        }
+        
         if(!slot) {
           return;
         }
-        const blankId = slot.dataset.blankId;
+        
+        const targetBlankId = blankId || slot.dataset.blankId;
         Object.keys(state.answers).forEach(k => {
           if(state.answers[k] === word){
             delete state.answers[k];
           }
         });
-        const prev = state.answers[blankId];
+        const prev = state.answers[targetBlankId];
         if(prev){
           const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
           if(prevEl){
@@ -2810,7 +3076,7 @@ Eine unterhaltsame, schöne und gesellige Zeit. Das stellt man sich unter einem 
           bankEl.setAttribute('draggable','false');
           if(bankEl._onclick) try{ bankEl.removeEventListener('click', bankEl._onclick); }catch(e){}
         }
-        state.answers[blankId] = word;
+        state.answers[targetBlankId] = word;
         try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
         lastClickedSprachSlot = null;
@@ -2976,8 +3242,12 @@ Eine unterhaltsame, schöne und gesellige Zeit. Das stellt man sich unter einem 
         selectOption,
         markNoMatch,
         selectSprachbausteine1,
-        selectSprachbausteine2FromBank
+        selectSprachbausteine2FromBank,
+        handleDrop
       };
+      
+      // Setup touch interactions
+      setTimeout(setupTouchDragAndDrop, 100);
     }
 
     // ===== HÖREN PAGE FUNCTIONALITY =====
@@ -3358,6 +3628,9 @@ Eine unterhaltsame, schöne und gesellige Zeit. Das stellt man sich unter einem 
       window.hoerenApp = {
         updateListeningAnswer
       };
+      
+      // Setup touch interactions
+      setTimeout(setupTouchDragAndDrop, 100);
     }
 
     // ===== SCHREIBEN PAGE FUNCTIONALITY =====
@@ -3591,6 +3864,9 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
       window.schreibenApp = {
         updateWritingAnswer
       };
+      
+      // Setup touch interactions
+      setTimeout(setupTouchDragAndDrop, 100);
     }
 
     // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
@@ -3830,6 +4106,11 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
       
       renderResults();
     }
+    
+    // Initialize touch interactions on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(setupTouchDragAndDrop, 500);
+    });
   </script>
 </body>
 </html>

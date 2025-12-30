@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Deutsch B2 Prüfung - Komplett</title>
   <style>
     /* ===== GLOBAL STYLES ===== */
@@ -1194,6 +1194,124 @@
         padding: 20px 15px;
       }
     }
+    
+    /* === تحسينات خاصة للهواتف الصغيرة جدا === */
+    @media (max-width: 480px) {
+      /* 1. تحسين الحاويات الرئيسية */
+      .container, .container-split, .container-full {
+        grid-template-columns: 1fr !important;
+        padding: 8px !important;
+        gap: 10px !important;
+      }
+      
+      /* 2. جعل اللوحات (panels) تأخذ عرض كامل */
+      .left-panel, .right-panel, .main-panel {
+        max-height: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        margin-bottom: 10px;
+      }
+      
+      /* 3. تحسين الهيدر */
+      .topbar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 10px !important;
+      }
+      
+      .brand {
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+      
+      /* 4. تحسين الأزرار في الهيدر */
+      .buttons-grid {
+        grid-template-columns: 1fr !important;
+        width: 100%;
+      }
+      
+      .exam-btn {
+        width: 100% !important;
+        margin: 2px 0 !important;
+        font-size: 14px !important;
+        padding: 12px 8px !important;
+      }
+      
+      /* 5. تحسين التايلات */
+      .top-tiles {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .tile {
+        flex: 0 0 calc(33% - 5px) !important;
+        max-width: calc(33% - 5px) !important;
+        margin: 2px;
+        font-size: 11px !important;
+        padding: 8px 4px !important;
+      }
+      
+      /* 6. تحسين النصوص */
+      .passage, .text-content, .question-text {
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+      }
+      
+      /* 7. تحسين الخيارات */
+      .option {
+        padding: 12px 10px !important;
+        margin: 4px 0 !important;
+      }
+      
+      /* 8. تحسين جداول True/False */
+      .true-false-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      
+      /* 9. تحسين منطقة الكتابة */
+      .writing-textarea {
+        min-height: 300px !important;
+        font-size: 16px !important;
+      }
+      
+      /* 10. تحسين الفوتر */
+      footer.controls {
+        flex-direction: column !important;
+        gap: 10px !important;
+      }
+      
+      .footer-buttons {
+        width: 100%;
+        display: flex;
+        gap: 5px;
+      }
+      
+      .footer-buttons .exam-btn {
+        flex: 1;
+      }
+      
+      /* 11. تحسين النتائج */
+      .results-tiles {
+        flex-direction: column !important;
+      }
+      
+      .results-tile {
+        margin-bottom: 10px;
+      }
+    }
+    
+    /* === تحسينات للهواتف المتوسطة === */
+    @media (min-width: 481px) and (max-width: 768px) {
+      .container, .container-split {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .tile {
+        max-width: 180px !important;
+      }
+    }
   </style>
 </head>
 <body id="body">
@@ -1390,6 +1508,79 @@
   </div>
 
   <script>
+    // ===== تحسين نظام السحب والإفلات للشاشات التي تعمل باللمس =====
+    function setupTouchDragAndDrop() {
+      if ('ontouchstart' in window) {
+        // تغيير سلوك العناصر القابلة للسحب
+        document.querySelectorAll('[draggable="true"]').forEach(item => {
+          item.addEventListener('touchstart', handleTouchStart);
+          item.addEventListener('touchend', handleTouchEnd);
+        });
+        
+        document.querySelectorAll('.title-slot, .blank-slot').forEach(slot => {
+          slot.addEventListener('touchmove', handleTouchMove);
+          slot.addEventListener('touchend', handleTouchDrop);
+        });
+      }
+    }
+
+    function handleTouchStart(e) {
+      // تنفيذ السحب عند اللمس
+      const item = e.target;
+      if (item.classList.contains('heading-item') || 
+          item.classList.contains('bank-word-vertical') ||
+          item.classList.contains('situation-item')) {
+        
+        item.classList.add('dragging');
+        
+        // إضافة تأثير مرئي
+        e.preventDefault();
+        return false;
+      }
+    }
+
+    function handleTouchMove(e) {
+      // منع السلوك الافتراضي للتمرير
+      e.preventDefault();
+    }
+
+    function handleTouchDrop(e) {
+      const slot = e.target;
+      if (slot.classList.contains('title-slot') || 
+          slot.classList.contains('blank-slot')) {
+        
+        // البحث عن العنصر الذي يتم سحبه
+        const draggingItem = document.querySelector('.dragging');
+        if (draggingItem) {
+          draggingItem.classList.remove('dragging');
+          
+          // محاكاة عملية الإفلات
+          if (draggingItem.classList.contains('heading-item')) {
+            const headingId = draggingItem.getAttribute('data-heading-id');
+            const textId = slot.getAttribute('data-text-id');
+            
+            if (headingId && textId) {
+              // تحديث الحالة
+              if (typeof window.lesenApp !== 'undefined') {
+                // تنفيذ إجراءات التحديث
+              }
+            }
+          }
+        }
+      }
+    }
+
+    function handleTouchEnd(e) {
+      document.querySelectorAll('.dragging').forEach(item => {
+        item.classList.remove('dragging');
+      });
+    }
+
+    // استدعاء الدالة عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(setupTouchDragAndDrop, 1000);
+    });
+
     // ===== PAGE NAVIGATION =====
     function showPage(pageId) {
       // Hide all pages
@@ -1546,7 +1737,7 @@
               },
               {
                 id: "text5",
-                content: "Wer verbringt nicht gerne sein Wochenende fernab der Stadt? Im Grünen, wo noch Wiesen und Schmetterlinge zu finden sind, wo Wälder rauschen und Bäche fließen. Genau das tat auch Dirk: Dort braucht man nicht einmal ein Auto, um die Natur zu erleben. Für viele Stadtbewohner ist it die beste Möglichkeit, für kurze Zeit dem hektischen Alltag zu entkommen. Besonders Familien mit Kindern schätzen es, wenn sie ihre Freizeit in der Natur verbringen können. Untersuchungen zeigen, dass ein Aufenthalt im Grünen den Stress abbaut, die Konzentration fördert und die Gesundheit stärkt. Immer mehr Großstädter suchen daher Erholung in der natur.",
+                content: "Wer verbringt nicht gerne sein Wochenende fernab der Stadt? Im Grünen, wo noch Wiesen und Schmetterlinge zu finden sind, wo Wälder rauschen und Bäche fließen. Genau das tat auch Dirk: Dort braucht man nicht einmal ein Auto, um die Natur zu erleben. Für viele Stadtbewohner ist it die beste Möglichkeit, für kurze Zeit dem hektischen Alltag zu entkommen. Besonders Familien mit Kindern schätzen es, wenn sie ihre Freizeit in der natur verbringen können. Untersuchungen zeigen, dass ein Aufenthalt im Grünen den Stress abbaut, die Konzentration fördert und die Gesundheit stärkt. Immer mehr Großstädter suchen daher Erholung in der natur.",
                 correctAnswer: "d"
               }
             ],
@@ -1648,7 +1839,7 @@ Besonders deutlich wird das in Kleingartensiedlungen, bei denen ein kleines Schw
               {id: "G", text: "Mit einem scharfen Blick fürs Detail gestaltete der deutsch-baltische Maler Jürgen Freiherr v. Wolffshausen seine Landschafts- und Tierbilder. Seine Liebe zur Natur, seine außergewöhnliche Beobachtungsgabe und seine präzise Maltechnik verleihen seinen Werken einen ganz besonderen Reiz. Sein Entdeckerdrang führte ihn u. a. nach. Äthiopien. Die Ausstellung, Natur im Porträt\" präsentiert die Werke des Maler und seine Biographie und gibt außerdem naturkundliche Informationen. Museum Lüneburg, 19. Februar bis 10. Juni Eintritt 3 €", correctAnswer: "12"},
               {id: "H", text: "Spiel, Spaß, Nervenkitzel. Für alle Kinder und Jugendliche, die am Ende der Ferien noch etwas erleben wollen. Sommerfest im Wildpark. Live-Musik Bogenschießen Axtwerfen Baumklettern bis auf 20 Meter Höhe Seilrutsche für Kinder Riesenschaukel Wettsägen Kräuterbrot backen Basteln für Kinder und noch vieles more! Wildpark Rittersbach 12. und 13. September, von 10 bis 17 Uhr", correctAnswer: "20"},
               {id: "I", text: "Noch nicht lange ist es her, dass Wildkatzen in Europa weitverbreitet waren. Heute sind sie fast überall verschwunden. Doch es gibt sie noch, auch wenn man sie nur selten zu Gesicht bekommt. Die Tierdokument Die Wildkatze in unseren Wäldern geht der Frage nach, ob das Tier bei uns überhaupt wieder heimisch werden kann. Hat es überhaupt eine Chance in unserer dicht besiedelten Landschaft? Und leben in unseren Wäldern noch echte Wildkatzen oder vielleicht nur verwilderte Hauskatzen? Denn äußerlich unterscheidet sich die Europäische Wildkatze kaum von einer getigerten Hauskatze. Der Film berichtet außerdem über ein Projekt zur Rettung der Wildkatze. Am 10.5. zeigen wir die Dokumentation in unserer Reihe „Filmabende im Rathaus\" um 19 Uhr.", correctAnswer: "16"},
-              {id: "J", text: "In der Dauerausstellung, Wege in die Natur erfahren Sie alles über den Nationalpark Bayerischer Wald, eine der größten zusammenhängenden Waldflächen Europas. Warum ist der Wald wichtig für uns? Und wer oder was lebt dort eigentlich? Über all das und noch viel more bekommen die Besucher beim Rundgang Informationen. In unserem Kino präsentieren wir außerdem ein abwechslungsreiches Filmprogramm. Ort: Besucherzentrum Nationalpark Bayeirscher Wald Öffnungszeiten: täglich von 9 bis 17 Uhr Der Eintritt ist frei", correctAnswer: "18"},
+              {id: "J", text: "In der Dauerausstellung, Wege in die Natur erfahren Sie alles über den Nationalpark Bayerischer Wald, eine der größten zusammenhängenden Waldflächen Europas. Warum ist der Wald wichtig für us? Und wer oder was lebt dort eigentlich? Über all das und noch viel more bekommen die Besucher beim Rundgang Informationen. In unserem Kino präsentieren wir außerdem ein abwechslungsreiches Filmprogramm. Ort: Besucherzentrum Nationalpark Bayeirscher Wald Öffnungszeiten: täglich von 9 bis 17 Uhr Der Eintritt ist frei", correctAnswer: "18"},
               {id: "K", text: "Heiße Rhythmen und kühle Drinks Am Samstag, dem 3. August, erwartet Sie im Waldschwimmbad Hainichen bei Rock am Pool ein Feuerwerk aus Musik und Unterhaltung. Einlass zum Konzert ist ab 18:30 Uhr. Die Bands, Lion Poem\" und, Cosmos 1 heizen den Besuchern ordentlich ein. Das Konzertendet um 0:30 Uhr Dis 23 Uhr können die Besucher baden oder Beach-Volieyball spielen. Das Jugendzentrum Hainichen hat ein Programm für Jugendliche mit Lagerfeuer und Spielen vorbereitet. Für Essen und Getränke zu moderaten Preisen ist gesorgt Die Eintrittspreise: Erwachsene 8€ Kinder und Jugendliche von 7 bis 14 Jahren 6 €.", correctAnswer: "20"},
               {id: "L", text: "Zeichenschule für Kinder Vom Kreis zum Schaf, vom Strich zum Krokodil: Mit Björn Henkels Buch „Kinder zeichnen Tiere\" lernen die Kleinen, Schritt für Schritt ihre Lieblingstiere zu zeichnen. Aus einfachen Grundelementen entstehen lustige Tiereschaf, Katze und Wellensittich, Igel, Biber, Eichhörnchen und Waschbär. Erfolg und Spaß sind garantiert. Björn Henkel malt und zeichnet, seit er einen Stift halten kann. Nach seinem Studium der Kunstgeschichte lebt er heute als selbständiger Autor und lustrator in Bochum. Das Buch ist geeignet für Kinder zwischen 4 und 6 Jahren. Broschiert, 8 €", correctAnswer: "13"}
             ],
@@ -1798,7 +1989,7 @@ Dennoch gibt es einen neuen Trend, der mit Handschrift zu ________ hat: Unter de
 Beim Lettering werden Buchstaben auf kunstvolle Weise gezeichnet und dekoriert. Von der klassischen Schönschrift unterscheidet it sich dadurch, dass die einzelnen Buchstaben eher wie ________ als wie Wörter empfunden. Der visuelle Eindruck von Schrift und Bild ist entscheidend. Erfahrungen ________ hat auch die Wiener Designerin Nina Holler gemacht, die Schrift-Workshops für Kinder und Erwachsene anbietet. Auf ________ Weise vermittelt die Künstlerin das Thema Schrift
              
 aus unterschiedlichen Zeitepochen bis hin zum handgezeichneten modernen Alphabet. So will sie dem persönlichen sprachlichen Ausdruck wieder ________ Tiefe verleihen. Der Künstlerin ist es ein Anliegen, ________ Kinder die Freude am Schreiben wiederentdecken. Die Schülerinnen und Schüler lernen durch Lettering nebenbei auch, coole Einladungen und Logos zu ________.
-Der Rhythmus mache den individuellen Ausdruck beim Schreiben mit der Hand aus. Es nütze wenig, an einzelnen Buchstaben zu üben, meint Nina Holler. Zu Beginn lässt sie ihre Schüler daher nur einzelne Elemente von Buchstaben schreiben, bis ihnen das flüssig von der Hand ________. So wird die Feinmotorik wieder gestärkt, die vielen Kindern abhandengekommen ist.
+Der Rhythmus mache den individuellen Ausdruck beim Schreiben mit der Hand aus. Es nütze wenig, an einzelnen Buchstaben zu üben, meint Nina Holler. Zu Beginn lässt sie daher ihre Schüler nur einzelne Elemente von Buchstaben schreiben, bis ihnen das flüssig von der Hand ________. So wird die Feinmotorik wieder gestärkt, die vielen Kindern abhandengekommen ist.
 Gerade Jugendlichen im Alter zwischen 13 und 15 Jahren biete die Auseinandersetzung mit Schrift eine Möglichkeit, die eigene Handschrift zu beurteilen und zu entwickeln. So sollen sie neue Wege finden, um sich auszudrücken.`
           }
         ]
@@ -2662,7 +2853,7 @@ Gerade Jugendlichen im Alter zwischen 13 und 15 Jahren biete die Auseinandersetz
               },
               {
                 id: "48", 
-                text: "Frau Schenk lebt seit etwas mehr als zwei Jahren in Bayern"
+                text: "Frau Schenk lebt seit etwas more als zwei Jahren in Bayern"
               },
               {
                 id: "49",
@@ -2670,7 +2861,7 @@ Gerade Jugendlichen im Alter zwischen 13 und 15 Jahren biete die Auseinandersetz
               },
               {
                 id: "50",
-                text: "Auch in der modernen Jugendherberge von Frau Schenk gibt es Schlafräume mit mehr als zehn Betten"
+                text: "Auch in der modernen Jugendherberge von Frau Schenk gibt es Schlafräume mit more als zehn Betten"
               },
               {
                 id: "51",
