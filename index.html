@@ -2525,7 +2525,8 @@
                 localStorage.setItem('examDate', examDate.toISOString());
             }
 
-            // وظائف المصادقة مع التحقق من الأجهزة
+            // ========== التعديلات الجديدة ==========
+            // دالة لتسجيل الدخول مع تتبع الجلسات والأجهزة
             async function handleLogin() {
                 const email = emailInput.value.trim();
                 const password = passwordInput.value;
@@ -2545,7 +2546,21 @@
 
                     currentUser = data.user;
                     
-                    // التحقق من حد الأجهزة
+                    // 1️⃣ تسجيل جلسة الدخول
+                    const { data: sessionData, error: sessionError } = await supabase
+                        .rpc('log_user_login', {
+                            user_uuid: currentUser.id,
+                            device: deviceId
+                        });
+                    
+                    if (sessionError) {
+                        console.error('Error logging session:', sessionError);
+                    } else {
+                        // حفظ معرف الجلسة
+                        localStorage.setItem('currentSessionId', sessionData);
+                    }
+                    
+                    // 2️⃣ التحقق من حد الأجهزة
                     const { data: deviceCheck, error: deviceError } = await supabase
                         .rpc('verify_device_limit', {
                             user_uuid: currentUser.id,
@@ -2554,14 +2569,23 @@
 
                     if (deviceError) throw deviceError;
 
-                    if (deviceCheck === 'blocked') {
-                        showToast('❌ تم تجاوز الحد المسموح به من الأجهزة (2 فقط)', 'error');
+                    if (deviceCheck.status === 'blocked') {
+                        showToast(deviceCheck.message, 'error');
+                        
+                        // تسجيل الخروج من الجلسة
+                        if (localStorage.getItem('currentSessionId')) {
+                            await supabase.rpc('log_user_logout', {
+                                session_uuid: localStorage.getItem('currentSessionId')
+                            });
+                        }
+                        
                         await supabase.auth.signOut();
                         currentUser = null;
+                        localStorage.removeItem('currentSessionId');
                         return;
                     }
                     
-                    // التحقق من صلاحية المستخدم
+                    // 3️⃣ التحقق من صلاحية المستخدم
                     const hasAccess = await checkUserAccess();
                     
                     if (hasAccess) {
@@ -2577,6 +2601,139 @@
                     showToast('خطأ في تسجيل الدخول: ' + error.message, 'error');
                 }
             }
+
+            // دالة لتسجيل الخروج مع تتبع الوقت
+            async function handleSignOut() {
+                try {
+                    // تسجيل وقت الخروج إذا كان هناك جلسة نشطة
+                    const sessionId = localStorage.getItem('currentSessionId');
+                    if (sessionId && currentUser) {
+                        await supabase.rpc('log_user_logout', {
+                            session_uuid: sessionId
+                        });
+                        localStorage.removeItem('currentSessionId');
+                    }
+                    
+                    const { error } = await supabase.auth.signOut();
+                    if (error) throw error;
+                    
+                    currentUser = null;
+                    isGuest = false;
+                    updateUIForLoggedOutUser();
+                    showPage('login');
+                    
+                    showToast('تم تسجيل الخروج بنجاح', 'success');
+                    
+                } catch (error) {
+                    console.error('Sign out error:', error);
+                    showToast('خطأ في تسجيل الخروج', 'error');
+                }
+            }
+
+            // التحقق من صلاحية المستخدم مع التحقق من انتهاء الاشتراك
+            async function checkUserAccess() {
+                if (!currentUser) return false;
+                
+                try {
+                    const { data, error } = await supabase
+                        .from('user_permissions')
+                        .select('can_access, subscription_type, subscription_expiry, trial_expiry')
+                        .eq('user_id', currentUser.id)
+                        .single();
+
+                    // إذا لم يكن للمستخدم صلاحية
+                    if (error || !data || !data.can_access) {
+                        return false;
+                    }
+
+                    // التحقق من انتهاء الاشتراك
+                    const now = new Date();
+                    
+                    // إذا كان اشتراك تجريبي وانتهى
+                    if (data.subscription_type === 'trial_24h' && data.trial_expiry) {
+                        const trialExpiry = new Date(data.trial_expiry);
+                        if (trialExpiry < now) {
+                            // تحديث الحالة إلى منتهية
+                            await supabase
+                                .from('user_permissions')
+                                .update({ can_access: false })
+                                .eq('user_id', currentUser.id);
+                            return false;
+                        }
+                    }
+                    
+                    // إذا كان اشتراك عادي وانتهى
+                    if (data.subscription_expiry) {
+                        const subscriptionExpiry = new Date(data.subscription_expiry);
+                        if (subscriptionExpiry < now) {
+                            // تحديث الحالة إلى منتهية
+                            await supabase
+                                .from('user_permissions')
+                                .update({ can_access: false })
+                                .eq('user_id', currentUser.id);
+                            return false;
+                        }
+                    }
+
+                    return true;
+
+                } catch (error) {
+                    console.error('Error checking user access:', error);
+                    return false;
+                }
+            }
+
+            // دالة تغيير كلمة المرور الفعلية
+            async function changeUserPassword() {
+                if (!currentUser) {
+                    showToast('يجب تسجيل الدخول أولاً', 'error');
+                    return;
+                }
+                
+                const currentPassword = prompt('أدخل كلمة المرور الحالية:');
+                if (!currentPassword) return;
+                
+                // التحقق من كلمة المرور الحالية
+                try {
+                    const { error } = await supabase.auth.signInWithPassword({
+                        email: currentUser.email,
+                        password: currentPassword
+                    });
+                    
+                    if (error) {
+                        showToast('كلمة المرور الحالية غير صحيحة', 'error');
+                        return;
+                    }
+                    
+                    const newPassword = prompt('أدخل كلمة المرور الجديدة (6 أحرف على الأقل):');
+                    if (!newPassword || newPassword.length < 6) {
+                        showToast('كلمة المرور الجديدة يجب أن تكون 6 أحرف على الأقل', 'error');
+                        return;
+                    }
+                    
+                    const confirmPassword = prompt('أكد كلمة المرور الجديدة:');
+                    if (newPassword !== confirmPassword) {
+                        showToast('كلمة المرور غير متطابقة', 'error');
+                        return;
+                    }
+                    
+                    // تحديث كلمة المرور في Supabase
+                    const { error: updateError } = await supabase.auth.updateUser({
+                        password: newPassword
+                    });
+                    
+                    if (updateError) {
+                        throw updateError;
+                    }
+                    
+                    showToast('تم تغيير كلمة المرور بنجاح', 'success');
+                    
+                } catch (error) {
+                    console.error('Error changing password:', error);
+                    showToast('خطأ في تغيير كلمة المرور: ' + error.message, 'error');
+                }
+            }
+            // ========== نهاية التعديلات الجديدة ==========
 
             async function handleSignUp() {
                 const name = signupName.value.trim();
@@ -2649,47 +2806,6 @@
                     return data;
                 } catch (error) {
                     console.error('Error adding user to registration requests:', error);
-                }
-            }
-
-            async function checkUserAccess() {
-                if (!currentUser) return false;
-                
-                try {
-                    const { data, error } = await supabase
-                        .from('user_permissions')
-                        .select('can_access, is_admin')
-                        .eq('user_id', currentUser.id)
-                        .single();
-
-                    // إذا لم يكن للمستخدم صلاحية أو لم يتم العثور على بياناته
-                    if (error || !data || !data.can_access) {
-                        return false;
-                    }
-
-                    return true;
-
-                } catch (error) {
-                    console.error('Error checking user access:', error);
-                    return false;
-                }
-            }
-
-            async function handleSignOut() {
-                try {
-                    const { error } = await supabase.auth.signOut();
-                    if (error) throw error;
-                    
-                    currentUser = null;
-                    isGuest = false;
-                    updateUIForLoggedOutUser();
-                    showPage('login');
-                    
-                    showToast('تم تسجيل الخروج بنجاح', 'success');
-                    
-                } catch (error) {
-                    console.error('Sign out error:', error);
-                    showToast('خطأ في تسجيل الخروج', 'error');
                 }
             }
 
@@ -3053,15 +3169,6 @@
                 editModal.style.display = 'none';
             }
 
-            // تغيير كلمة المرور
-            function changeUserPassword() {
-                const newPassword = prompt('أدخل كلمة المرور الجديدة:');
-                if (newPassword && newPassword.trim() !== '') {
-                    // في التطبيق الحقيقي، سيتم تحديث كلمة المرور في Supabase
-                    showToast('تم تغيير كلمة المرور بنجاح', 'success');
-                }
-            }
-
             // تنسيق التاريخ لحقل الإدخال
             function formatDateForInput(date) {
                 const year = date.getFullYear();
@@ -3245,6 +3352,7 @@
                 // تعديل الملف الشخصي
                 editProfileBtn.addEventListener('click', openEditProfile);
                 saveProfile.addEventListener('click', saveProfileChanges);
+                // ========== التعديل: استخدام دالة تغيير كلمة المرور الحقيقية ==========
                 changePasswordBtn.addEventListener('click', changeUserPassword);
                 changePassword.addEventListener('click', changeUserPassword);
                 cancelEdit.addEventListener('click', () => {
