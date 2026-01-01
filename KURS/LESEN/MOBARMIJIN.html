@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MOBARMIJIN - TELC B2 Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,16 +20,17 @@
             --text: #333;
             --text-light: #546E7A;
             --white: #ffffff;
-            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
-            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
-            --radius: 25px;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -38,8 +39,11 @@
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
             transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
         }
 
         body.dark-mode {
@@ -47,338 +51,71 @@
             color: var(--light);
         }
 
-        /* Header Controls - التعديل هنا */
-        .header-controls {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            right: 20px;
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            z-index: 1000;
-            gap: 15px;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .left-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-start;
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
         }
 
-        .right-controls {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
+        .theme-btn {
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            border: none;
-            background: var(--primary);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .control-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .control-btn:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-
-        .control-btn:hover {
-            transform: scale(1.15) rotate(5deg);
-            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
-        }
-
-        /* شارة المشترك الذهبية - تم التعديل */
-        .premium-badge-header {
-            position: fixed;
-            top: 20px;
-            left: 90px; /* تغيير الموقع إلى اليسار */
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            padding: 0.5rem;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
-        }
-
-        .home-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .home-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .home-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        /* Language Selector */
-        .language-selector {
-            display: flex;
-            position: relative;
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: var(--radius);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .lang-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .lang-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            background: var(--white);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
-            overflow: hidden;
-            min-width: 120px;
-            animation: dropdownSlide 0.3s ease;
-            z-index: 1001;
-        }
-
-        .dark-mode .lang-dropdown {
-            background: #1a237e;
-            color: var(--light);
-        }
-
-        @keyframes dropdownSlide {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .lang-dropdown.show {
-            display: block;
-        }
-
-        .lang-option {
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            color: var(--text);
-        }
-
-        .dark-mode .lang-option {
-            color: var(--light);
-            border-bottom: 1px solid #37474F;
-        }
-
-        .lang-option:hover {
-            background: #f5f5f5;
-            transform: translateX(5px);
-        }
-
-        .dark-mode .lang-option:hover {
-            background: #283593;
-        }
-
-        .lang-option:last-child {
-            border-bottom: none;
-        }
-
-        /* المحتوى الرئيسي */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: var(--radius);
-            padding: 3rem;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(15px);
-            margin-top: 6rem;
-            transition: var(--transition);
-        }
-
-        .dark-mode .container {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: contentSlideUp 0.8s ease;
-        }
-
-        @keyframes contentSlideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .header h1 {
-            font-size: 2.8rem;
-            color: var(--primary-dark);
-            margin-bottom: 1rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .dark-mode .header h1 {
-            color: #90CAF9;
-        }
-
-        .page-subtitle {
             font-size: 1.2rem;
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .dark-mode .page-subtitle {
-            color: #B0BEC5;
-        }
-
-        /* أزرار التحكم */
-        .answer-controls {
-            position: sticky;
-            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1.5rem;
-            border-radius: var(--radius);
+            cursor: pointer;
             box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-            z-index: 100;
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
             display: flex;
             gap: 1rem;
-            justify-content: center;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-        }
-
-        .dark-mode .answer-controls {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            align-items: center;
         }
 
         .answer-btn {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
-            position: relative;
-            overflow: hidden;
             border: none;
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.5rem;
             transition: var(--transition);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .answer-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: right 0.6s;
-        }
-
-        .answer-btn:hover::before {
-            right: 100%;
+            min-width: 180px;
+            justify-content: center;
         }
 
         .answer-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
         }
 
         .show-answers {
@@ -391,47 +128,107 @@
             color: var(--white);
         }
 
-        /* التصميم الخاص بالأسئلة */
-        .section {
-            margin: 2rem 0;
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
             padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
             transition: var(--transition);
         }
 
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
         .dark-mode .section {
-            background: rgba(13, 71, 161, 0.9);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
         }
 
         .section-title {
             color: var(--primary-dark);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
             border-bottom: 2px solid var(--primary);
             font-weight: 600;
+            text-align: left;
         }
 
         .dark-mode .section-title {
             color: #90CAF9;
         }
 
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
         .question {
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: rgba(33, 150, 243, 0.05);
-            border-radius: 15px;
-            border-right: 4px solid var(--primary);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .question {
-            background: rgba(33, 150, 243, 0.1);
+            background: rgba(33, 150, 243, 0.08);
         }
 
         .options {
@@ -439,25 +236,25 @@
         }
 
         .option {
-            margin: 0.8rem 0;
-            padding: 1rem;
+            margin: 0.6rem 0;
+            padding: 0.8rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
             cursor: pointer;
             transition: var(--transition);
             font-weight: 500;
+            text-align: left;
         }
 
         .dark-mode .option {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .option:hover {
             border-color: var(--primary);
             background: rgba(33, 150, 243, 0.05);
-            transform: translateX(-5px);
         }
 
         .correct {
@@ -473,361 +270,493 @@
         .answer {
             margin-top: 1rem;
             padding: 1rem;
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 600;
-            animation: slideInUp 0.5s ease;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
         }
 
         @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* التصحيح - تم التعديل للوضع الليلي */
         .correct-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
-            border: 2px solid #4CAF50;
-            font-weight: bold;
+            border: 1px solid #4CAF50;
         }
 
         .dark-mode .correct-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
-            border: 2px solid #81C784;
+            border: 1px solid #81C784;
         }
 
         /* النصوص والعناوين */
         .text-content {
-            line-height: 1.7;
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
-            font-size: 1.1rem;
-            transition: var(--transition);
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .text-content {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
+        /* Lesen Teil 1 - تصميم محسن */
         .headings-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1rem;
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .heading-item {
-            padding: 1.2rem;
+            padding: 1rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            text-align: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
             font-weight: 500;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .heading-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .matched {
             border-color: #4CAF50;
             background: rgba(76, 175, 80, 0.1);
-            transform: scale(1.02);
         }
 
-        /* الإعلانات والوضعيات */
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
         .ads-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
         }
 
         .ad-item {
-            padding: 1.5rem;
+            padding: 1.2rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            min-height: 150px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .ad-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .ad-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-hover);
         }
 
-        .situations-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.2rem;
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
         }
 
-        .situation-item {
-            padding: 1.2rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            transition: var(--transition);
+        .dark-mode .ad-letter {
+            color: #90CAF9;
         }
 
-        .dark-mode .situation-item {
-            background: #1a237e;
-            border-color: #37474F;
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
         }
 
-        .situation-item:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.05);
+        .dark-mode .ad-title {
+            color: var(--light);
         }
 
-        /* Sprachbausteine */
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
         .fill-blanks {
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .blank-text {
-            line-height: 2;
-            margin: 1.5rem 0;
-            font-size: 1.2rem;
-            padding: 1.5rem;
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .blank-text {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .blank {
             display: inline-block;
             min-width: 120px;
-            margin: 0 8px;
-            padding: 0.5rem 1rem;
-            border-bottom: 3px solid var(--primary);
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
             text-align: center;
             font-weight: 600;
             background: var(--white);
-            border-radius: 8px;
+            border-radius: 6px;
             transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
         }
 
         .dark-mode .blank {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
         }
 
         .blank-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
             border-color: #4CAF50;
-            font-weight: bold;
         }
 
         .dark-mode .blank-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
             border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
         }
 
         .hidden {
             display: none;
         }
 
-        /* Floating Elements مثل الصفحة الرئيسية */
-        .floating-elements {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .floating-element {
-            position: absolute;
-            font-size: 3.5rem;
-            opacity: 0.15;
-            animation: float 8s ease-in-out infinite;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
-
-        .floating-book { top: 15%; left: 8%; animation-delay: 0s; }
-        .floating-pen { top: 75%; right: 12%; animation-delay: 1s; }
-        .floating-globe { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
-        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
-        .floating-graduate { top: 65%; left: 5%; animation-delay: 4s; }
-        .floating-notebook { bottom: 15%; right: 10%; animation-delay: 5s; }
-        .floating-pencil { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
-        .floating-calculator { top: 35%; right: 15%; animation-delay: 7s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
-            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
-        }
-
+        /* تحسينات للهواتف */
         @media (max-width: 768px) {
-            .header-controls {
-                top: 15px;
-                left: 15px;
-                right: 15px;
-                gap: 10px;
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
             }
-
-            .premium-badge-header {
-                top: 15px;
-                left: 70px;
-                width: 45px;
-                height: 45px;
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
                 font-size: 1.1rem;
             }
-
-            .home-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
-            }
-
-            .container {
-                padding: 2rem;
-                margin: 1rem;
-                margin-top: 5rem;
-            }
-
+            
             .header h1 {
-                font-size: 2rem;
+                font-size: 1.6rem;
             }
-
-            .headings-grid {
-                grid-template-columns: 1fr;
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
             }
-
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
             .ads-grid {
                 grid-template-columns: 1fr;
             }
-
-            .right-controls {
-                gap: 10px;
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
             }
-
-            .answer-controls {
-                top: 70px;
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
             }
         }
 
         @media (max-width: 480px) {
-            .header-controls {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
             }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
 
-            .left-controls, .right-controls {
-                flex-direction: row;
-                justify-content: center;
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
             }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
-            .premium-badge-header {
-                position: relative;
-                top: auto;
-                left: auto;
-                transform: none;
-                margin-top: 10px;
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
             }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Floating Elements مثل الصفحة الرئيسية -->
-    <div class="floating-elements">
-        <div class="floating-element floating-book">📚</div>
-        <div class="floating-element floating-pen">✏️</div>
-        <div class="floating-element floating-globe">🌍</div>
-        <div class="floating-element floating-clock">⏰</div>
-        <div class="floating-element floating-graduate">🎓</div>
-        <div class="floating-element floating-notebook">📓</div>
-        <div class="floating-element floating-pencil">✏️</div>
-        <div class="floating-element floating-calculator">🧮</div>
-    </div>
-
-    <!-- شارة المشترك الذهبية - تم التعديل -->
-    <div class="premium-badge-header" id="premiumBadge">
-        <i class="fas fa-crown"></i>
-    </div>
-
-    <!-- Header Controls -->
-    <div class="header-controls">
-        <div class="left-controls">
-            <button class="home-btn" id="homeBtn">
-                <i class="fas fa-home"></i>
-                <span id="homeText">الرئيسية</span>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
             </button>
-            <div class="language-selector">
-                <button class="lang-btn" id="langBtn">
-                    <span id="langBtnText">العربية</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="lang-dropdown" id="langDropdown">
-                    <div class="lang-option" data-lang="ar">
-                        <span>🇸🇦</span>
-                        <span>العربية</span>
-                    </div>
-                    <div class="lang-option" data-lang="de">
-                        <span>🇩🇪</span>
-                        <span>Deutsch</span>
-                    </div>
-                    <div class="lang-option" data-lang="en">
-                        <span>🇬🇧</span>
-                        <span>English</span>
-                    </div>
-                </div>
-            </div>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
         </div>
         
-        <div class="right-controls">
-            <button class="control-btn" id="themeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="control-btn" id="userBtn">
-                <i class="fas fa-user"></i>
-            </button>
-        </div>
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">MOBARMIJIN - TELC B2 Training</h1>
-            <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
-        </div>
-
-        <!-- أزرار التحكم -->
-        <div class="answer-controls">
-            <button class="answer-btn show-answers" id="showAnswers">
-                <i class="fas fa-check-circle"></i>
-                <span id="showAnswersText">إظهار التصحيح</span>
-            </button>
-            <button class="answer-btn hide-answers" id="hideAnswers">
-                <i class="fas fa-eye-slash"></i>
-                <span id="hideAnswersText">إخفاء التصحيح</span>
-            </button>
+            <h1 id="pageTitle">BILDER - TELC B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
         </div>
 
         <!-- Lesen Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="teil1Title">Lesen Teil 1</h2>
-            <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
             
             <div class="headings-grid" id="headingsList">
                 <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
@@ -840,8 +769,8 @@
 
         <!-- Lesen Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
-            <div class="text-content" id="longText">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
                 <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
             </div>
 
@@ -850,10 +779,10 @@
             </div>
         </div>
 
-        <!-- Lesen Teil 3 -->
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
         <div class="section">
-            <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
-            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
             
             <div class="situations-grid" id="situationsList">
                 <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
@@ -866,303 +795,310 @@
 
         <!-- Sprachbausteine Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
             <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
                 <div class="blank-text" id="blankText1">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
 
         <!-- Sprachbausteine Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
             <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
                 <div class="blank-text" id="blankText2">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // الترجمات
-        const translations = {
-            ar: {
-                homeText: "الرئيسية",
-                themeText: "الوضع الليلي",
-                langText: "العربية", 
-                userText: "زائر",
-                pageTitle: "MOBARMIJIN - TELC B2 Training",
-                pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
-                showAnswersText: "إظهار التصحيح",
-                hideAnswersText: "إخفاء التصحيح",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2", 
-                teil3Title: "Lesen Teil 3",
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            de: {
-                homeText: "Startseite",
-                themeText: "Nachtmodus", 
-                langText: "Deutsch",
-                userText: "Besucher",
-                pageTitle: "MOBARMIJIN - TELC B2 Training",
-                pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
-                showAnswersText: "Korrektur anzeigen",
-                hideAnswersText: "Korrektur ausblenden",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2",
-                teil3Title: "Lesen Teil 3", 
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            en: {
-                homeText: "Home",
-                themeText: "Dark Mode",
-                langText: "English",
-                userText: "Visitor", 
-                pageTitle: "MOBARMIJIN - TELC B2 Training",
-                pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
-                showAnswersText: "Show Correction",
-                hideAnswersText: "Hide Correction",
-                teil1Title: "Reading Part 1",
-                teil1Description: "First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).",
-                teil2Title: "Reading Part 2",
-                teil3Title: "Reading Part 3",
-                teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
-                sprach1Title: "Language Elements Part 1", 
-                sprach2Title: "Language Elements Part 2"
-            }
-        };
-
-        // بيانات الأسئلة والإجابات من ملف PDF
+        // بيانات الأسئلة والإجابات المحدثة من MOBARMIJIN.html
         const examData = {
-            // Lesen Teil 1
             headings: [
-                "Immer mehr Jugendliche werden Programmierer",
-                "Automobilindustrie schafft neue Arbeitsplätze", 
-                "Diskussion über schulische Berufsorientierung",
-                "Förderwochenende für junge Softwareentwickler",
-                "Immer mehr Frauen ergreifen technische Berufe",
-                "Mehr Bemühungen um weiblichen Nachwuchs gefordert",
-                "Spannende Gewinne für wissenschaftliche Nachwuchstalente",
-                "Berufswahl: Jugendliche werden stark von ihrem gesellschaftlichen Umfeld geprägt",
-                "Studienabsolventen technischer Fächer sehen ihre Zukunft meist in der Automobilindustrie",
-                "Verleihung des Jugendhobelpreises in Stockholm"
+                {id: "a", text: "Immer mehr Jugendliche werden Programmierer"},
+                {id: "b", text: "Studienabsolventen technischer Fächer sehen ihre Zukunft meist in der Fahrzeugbranche"},
+                {id: "c", text: "Diskussion über schulische Berufsorientierung"},
+                {id: "d", text: "Mehr Bemühungen um weiblichen Nachwuchs gefordert"},
+                {id: "e", text: "Immer mehr Frauen ergreifen technische Berufe"},
+                {id: "f", text: "Immer mehr Jugendliche werden Programmierer"},
+                {id: "g", text: "Förderwochenende für junge Softwareentwickler"},
+                {id: "h", text: "Spannende Gewinne für wissenschaftliche Nachwuchstalente"},
+                {id: "i", text: "Berufswahl: Jugendliche werden stark von ihrem gesellschaftlichen Umfeld geprägt"},
+                {id: "j", text: "Verleihung des Jugendnobelpreises in Stockholm"}
             ],
             
             texts: [
                 {
-                    content: `Marina Lux hat ein Hobby, mit dem sie im Kreis ihrer Freundinnen ziemlich allein steht: Sie programmiert in ihrer Freizeit. "Mich hat immer schon interessiert, wie Computerprogramme eigentlich funktionieren", sagt die 17-Jährige. Außerdem habe sie großen Spaß an logischem Denken. Ihr Informatiklehrer erzählte ihr von einem Workshop in Berlin: Bei "Jugend programmiert" traf Marina von letztem Freitag bis Sonntag mit gleichgesinnten Jungen und Mädchen zwischen zwölf und 18 Jahren zusammen, um gemeinsam Programme zu entwickeln. Dabei standen ihnen erfahrene Informatiker zur Seite. In 15 Gruppen entwickelten die jungen Nachwuchsprogrammierer ihre Projekte. Eine Jury verlieh Preise in vier Kategorien. Bewertet wurden die originellste Idee, die sauberste Umsetzung, die beste Präsentation und die größte Relevanz für die Gesellschaft. Marinas Gruppe gewann den Preis für die originellste Idee.`,
-                    correctAnswer: "Förderwochenende für junge Softwareentwickler"
+                    id: "text1",
+                    content: `Marina Lux hat ein Hobby, mit dem sie im Kreis ihrer Freundinnen ziemlich allein steht: Sie programmiert in ihrer Freizeit. 'Mich hat immer schon interessiert, wie Computerprogramme eigentlich funktionieren', sagt die 17-Jährige. Außerdem habe sie großen Spaß an logischem Denken. Ihr Informatiklehrer erzählte ihr von einem Workshop in Berlin: Bei 'Jugend programmiert' traf Marina von letztem Freitag bis Sonntag mit gleichgesinnten Jungen und Mädchen zwischen zwölf und 18 Jahren zusammen, um gemeinsam Programme zu entwickeln. Dabei standen ihnen erfahrene Informatiker zur Seite. In 15 Gruppen entwickelten die jungen Nachwuchsprogrammierer ihre Projekte. Eine Jury verlieh Preise in vier Kategorien. Bewertet wurden die originellste Idee, die sauberste Umsetzung, die beste Präsentation und die größte Relevanz für die Gesellschaft. Marinas Gruppe erhielt zwar keinen Preis, aber das Wochenende hat sich für sie auf jeden Fall gelohnt. Sie hat zwei Mädchen kennengelernt, mit denen sie auch in Zukunft gemeinsam programmieren möchte. Zu wissen, dass sie nicht allein ist mit ihrem Hobby, das ist für sie ein besonders wichtiges Ergebnis dieses Wochenendes, meint Marina.`,
+                    correctAnswer: "g",
+                    correctAnswerText: "g) Förderwochenende für junge Softwareentwickler"
                 },
                 {
-                    content: `Die Wahl des Berufs ist für Jugendliche eine der wichtigsten Entscheidungen im Leben. Dabei spielen viele Faktoren eine Rolle. Eine Studie des Bundesinstituts für Berufsbildung (BIBB) hat untersucht, welche Personen und Institutionen die Berufswahl von Jugendlichen beeinflussen. Das Ergebnis: Am wichtigsten sind die Eltern, gefolgt von Freunden und Bekannten. Auch Lehrer haben einen großen Einfluss. Weniger bedeutend sind hingegen Berufsberater der Arbeitsagenturen oder Berufsmessen. Die Studie zeigt auch, dass die Berufswahl stark vom sozialen Umfeld geprägt wird. So entscheiden sich Jugendliche aus Akademikerfamilien häufiger für ein Studium als Jugendliche aus Familien ohne akademischen Hintergrund.`,
-                    correctAnswer: "Berufswahl: Jugendliche werden stark von ihrem gesellschaftlichen Umfeld geprägt"
+                    id: "text2",
+                    content: `'Jugend forscht' ist ein bundesweiter Nachwuchswettbewerb für junge Menschen bis zum Alter von 21 Jahren, bei dem besondere Leistungen in Mathematik, Technik, Naturwissenschaften und Informatik ausgezeichnet werden. Neben Geldpreisen werden auch einige Sonderpreise vergeben, die bei den Jugendlichen ganz besonders begehrt sind. Dazu gehört die Teilnahme an internationalen Wettbewerben, bei denen die jungen Forscher Fachleuten aus aller Welt ihre Projekte vorstellen können. Auch Einladungen zu Studienreisen und Kongressen im Ausland sind für viele Teilnehmer besonders attraktiv. Im Rahmen von 'Jugend forscht' wird sogar eine Reise zu Nobelpreisverleihung in Stockholm angeboten. Im Inland haben die Preisträger die Möglichkeit, ein langes Praktikum an angesehenen Forschungsinstituten und bei wichtigen Unternehmen zu absolvieren. Dort bekommen die Jugendlichen im Arbeitsalltag eine gute Vorstellung davon, wie Forschungsarbeit funktioniert. Zusätzlich gibt es auch Abonnements für technische und naturwissenschaftliche Fachzeitschriften zu gewinnen. Auch Schulen und Projektbetreuer können teilnehmen. Bei diesem Wettbewerb haben junge Menschen die Möglichkeit, wertvolle Erfahrungen mit Forschungsprojekten zusammen. Mitmachen lohnt sich auf jeden Fall.`,
+                    correctAnswer: "h",
+                    correctAnswerText: "h) Spannende Gewinne für wissenschaftliche Nachwuchstalente"
                 },
                 {
-                    content: `In Deutschland gibt es immer mehr Studentinnen in den sogenannten MINT-Fächern. MINT steht für Mathematik, Informatik, Naturwissenschaften und Technik. Im Studienjahr 2021/2022 lag der Frauenanteil in diesen Fächern bei 34,5 Prozent. Das ist ein neuer Rekord. Besonders stark gestiegen ist die Zahl der Studentinnen in der Informatik: Hier hat sich der Frauenanteil in den letzten zehn Jahren mehr als verdoppelt. Auch in den Ingenieurwissenschaften studieren immer mehr Frauen. Allerdings sind Frauen in diesen Fächern immer noch unterrepräsentiert. Die Bundesregierung fördert daher verschiedene Programme, um Mädchen und junge Frauen für MINT-Berufe zu begeistern.`,
-                    correctAnswer: "Immer mehr Frauen ergreifen technische Berufe"
+                    id: "text3",
+                    content: `Die Industriellenvereinigung beklagt in einer jüngsten Pressemitteilung den deutlichen Mangel an Fachkräften in der Naturwissenschaften und den technischen Berufen. Dieser Fachkräftemangel sei besonders ausgeprägt in den Bereichen Maschinenbau, Elektrotechnik, Werkstoffwissenschaften und Verfahrenstechnik, heißt es in dem Papier. Um dem entgegenzusteuern, ruft die Industriellenvereinigung unter anderem dazu auf, insbesondere Mädchen und junge Frauen für solche Berufe zu gewinnen. Die Berufsorientierung der Schulen müssen noch gezielter auf die vielfältigen und interessanten Themenfelder sowie die guten Zukunftschancen technischer Berufe hinweisen. Erfolgreiche Frauen aus diesen Bereichen sollten sich zudem verstärkt als Vorbilder für SchülerInnen präsentieren. In diesem Zusammenhang wird in der Pressemitteilung auch an die Möglichkeit erinnert, am bevorstehenden bundesweiten Mädchenzukunftstag 'Girls' Day' an den Standorten namhafter Firmen Einblicke in den Arbeitsalltag in technischen Berufen zu bekommen. Die Industriellenvereinigung fordert die Unternehmen und Organisationen auf, ihre Türen für potenzielle Talente zu öffnen und sich Fachkräfte für die Zukunft zu sichern.`,
+                    correctAnswer: "d",
+                    correctAnswerText: "d) Mehr Bemühungen um weiblichen Nachwuchs gefordert"
                 },
                 {
-                    content: `Die schwedische Königin Silvia hat am Donnerstag in Stockholm den Jugendhobelpreis verliehen. Der mit 50.000 Euro dotierte Preis wird seit 1999 jährlich an junge Menschen vergeben, die sich in besonderer Weise für die Umwelt engagieren. In diesem Jahr ging der Preis an die 16-jährige Finnen Laura Ketonen für ihr Projekt "Saubere Meere". Laura hat eine App entwickelt, mit der Nutzer Müll an Stränden und in Gewässern melden können. Die App zeigt dann Reinigungsaktionen in der Nähe an. Bisher wurde die App bereits über 10.000 Mal heruntergeladen. "Ich bin überwältigt und freue mich sehr über diese Auszeichnung", sagte Laura bei der Preisverleihung. Das Preisgeld will sie nutzen, um ihre App weiterzuentwickeln.`,
-                    correctAnswer: "Verleihung des Jugendhobelpreises in Stockholm"
+                    id: "text4",
+                    content: `Im Kulturzentrum war gestern Abend Tobias Meyer zu Gast. Die Organisatoren hatten den bekannten Autor zahlreicher Sachbücher über Erziehung und Bildung eingeladen, zum Thema Berufsorientierung zu sprechen. In seinem Vortrag ging Meyer auf zwei wesentliche Aspekte von Berufsorientierung ein. Zum einen versteht er Berufsorientierung als eine Entwicklung, die eng mit dem persönlichen und sozialen Beziehungen eines jungen Menschen zusammenhängt. Die Orientierung auf einen Beruf hin wertet er als einen Teil der Persönlichkeitsentwicklung. In engem Zusammenhang damit sieht er die Berufsvorbilder, an denen sich Jugendliche orientieren: Diese hängen ebenso wie die Erwartungen, die an einen Beruf gestellt würden, stark von der sozialen Umgebung ab. Zudem spielten lokale wirtschaftliche Umstände eine Rolle bei der Berufsorientierung. Meyer zeigte anhand konkreter Beispiele, wie große Unternehmen vor Ort die Berufswahl junger Menschen entscheidend beeinflussen können. Anschließend ging Meyer auf einen zweiten wesentlichen Aspekt, nämlich Berufsorientierung im Rahmen der Schulen, ein. Hier könnten entscheidende Impulse gesetzt werden, indem Talente und Stärken erkannt und bereits sehr früh gefördert würden.`,
+                    correctAnswer: "i",
+                    correctAnswerText: "i) Berufswahl: Jugendliche werden stark von ihrem gesellschaftlichen Umfeld geprägt"
                 },
                 {
-                    content: `Die deutsche Automobilindustrie baut ihre Aktivitäten in der Informationstechnologie aus. Nach Angaben des Verbands der Automobilindustrie (VDA) wollen die Unternehmen in den nächsten fünf Jahren rund 10.000 neue IT-Spezialisten einstellen. Grund ist die zunehmende Digitalisierung der Fahrzeuge. "Moderne Autos sind rollende Computer", sagte VDA-Präsidentin Hildegard Müller. "Wir brauchen daher immer mehr Softwareentwickler, Data Scientists und IT-Sicherheitsexperten." Die Branche bietet attraktive Gehälter und gute Aufstiegschancen. Viele Unternehmen kooperieren mit Universitäten, um frühzeitig Kontakt zu talentierten Nachwuchskräften zu knüpfen.`,
-                    correctAnswer: "Automobilindustrie schafft neue Arbeitsplätze"
+                    id: "text5",
+                    content: `Wie eine repräsentative Umfrage unter Studenten kürzlich zeigte, erfreut sich die Automobilindustrie nach wie vor großer Beliebtheit bei Studierenden der Fachgebiete Wirtschaft und Technik. Gefragt nach der den fünf attraktivsten zukünftigen Arbeitgebern, namten Wirtschaftsstudenten vier führende Automobilkonzerne und eine InternetSuchmaschine; künftige Ingenieure nannten sogar ausschließlich Automobilunternehmen. Auch für Studenten der Informatik gewinnt die Automobilindustrie zunehmend an Attraktivität - wenig verwunderlich angesichts der rasch zunehmenden Bedeutung, die der Elektronik in Fahrzeugen zukommt. Die Branche punktet bei jungen Absolventen mit vielen spannenden Themen: Wie wird die Mobilität der Zukunft aussehen? Welche alternative Antriebe wird es geben? Die Automobilindustrie bietet viel Raum für Innovationen und somit gute Chancen für motivierte Berufseinsteiger. Doch ausschlaggebend sind not nur solide Berufsaussichten. Wie die Befragung ergab, spielt auch der emotionalale Faktor eine Rolle: Viele Studierende sind einfach begeistert vom Thema Auto.`,
+                    correctAnswer: "b",
+                    correctAnswerText: "b) Studienabsolventen technischer Fächer sehen ihre Zukunft meist in der Fahrzeugbranche"
                 }
             ],
 
-            // Lesen Teil 2 - النص الكامل
             longText: {
-                content: `Die Digitalisierung verändert die Arbeitswelt grundlegend. Immer mehr Tätigkeiten werden von Computern und Robotern übernommen. Gleichzeitig entstehen neue Berufe, die es vor wenigen Jahren noch nicht gab. Wie bereitet man Jugendliche auf diese sich ständig wandelnde Arbeitswelt vor?
+                content: `In der öffentlichen Beschreibung kennt man die Familie oft als Problemzone. Bestsellerautoren suggerieren der Öffentlichkeit, Eltern seien zum Erziehen heute kam noch in der Lage; Berichte über steigende Scheidungsraten, Verwahrlosung und Jugendkriminalität verstärken ebenfalls den Eindruck, um die Familien sei es nicht gut bestellt. Tatsächlich hat sich Erziehung in den letzten Jahrzehnten grundlegend gewandelt. In vielerlei Hinsicht allerdings eher zum Guten als zum Schlechten. Wie lebt es sich heute in der Familie? Ausgesprochen gut, in den meisten Fällen sogar recht kuschelig. Das legen zumindest Umfragen und Statistiken über die Familienwirklichkeit nahe. Sie zeigen ein erfreulich positives Bild, nach dem sich die Familie in den vergangenen Jahrzehnten sehr gut entwickelt hat. Das gilt für die materiellen Bedingungen, in denen die meisten Eltern und Kinder heute leben, wie auch für das Ansehen, das die Familie in der Gesellschaft genießt. Den größten Fortschritt habe aber das gemeinsame Zusammenleben gemacht, sagen Experten: "Es gibt kaum noch wirkliche Konflikte zwischen den Generationen."
 
-Eine wichtige Rolle spielt die schulische Berufsorientierung. In vielen Bundesländern ist Berufsorientierung fester Bestandteil des Lehrplans. Schüler besuchen Betriebe, absolvieren Praktika und nehmen an Berufsmessen teil. Doch reicht das aus? Experten fordern eine frühere und intensivere Berufsorientierung. "Schon in der Grundschule sollten Kinder verschiedene Berufe kennenlernen", sagt die Bildungsforscherin Professorin Dr. Anja Schmidt. "Je früher sich Jugendliche mit ihrer beruflichen Zukunft beschäftigen, desto besser können sie ihre Stärken und Interessen entwickeln."
+Dass heute 67 Prozent der 16– bis 29–Jährigen angeben, sie hätten eine glückliche Kindheit, während es bei den über 60–Jährigen nur 50 Prozent sind, kann zwar sicher nicht nur auf den Wandel der Erziehung zurückgeführt werden. Schließlich war die Kindheit vieler von ihnen noch von Krieg und Not geprägt, während die Jüngeren in Wohlstand und Sicherheit aufwuchsen. Aber fast alle Jugendlichen geben heute an, dass sie ein gutes Verhältnis zu den Eltern haben. Außerdem orientieren sich sie stark an ihrer Familie, Gestützt unter anderem auf den emotionalen Rückhalt der Eltern blicken die allermeisten Jugendlichen optimistisch nach vorn. Fast 75 Prozent der Befragten würden ihre eigenen Kinder genau so erziehen, wie sie selbst erzogen wurden. Genauso viele glauben, dass man eine Familie braucht, um wirklich glücklich leben zu können. Die Eltern sehen es übrigens kaum anders. Von ihnen berichten 74 Prozent von Harmonie, Wärme und Geborgenheit im Zusammenlebe.
 
-Ein Problem ist die mangelnde Aktualität der Berufsinformationen. "Viele Lehrkräfte haben selbst nur begrenzte Kenntnisse über die aktuellen Entwicklungen auf dem Arbeitsmarkt", kritisiert Schmidt. Sie plädiert für eine stärkere Einbindung externer Experten in den Unterricht. Unternehmen sollten enger mit Schulen zusammenarbeiten und praxisnahe Einblicke in die Berufswelt bieten.
+Vor 40 Jahren fanden viele Jugendliche ihre Eltern noch spielig, und Eltern konnten sich erregen über die Frisuren oder den Musikgeschmack des Nachwuchses. Heute gleichen sich die Lebensstile und die Wertvorstellungen. So entspannt ist der Umgang zwischen Jung und Alt geworden, dass man es schon wieder bedenklich finden kann. Ist es denn normal, dass Kinder als wichtigstes Vorbild die eigene Mutter nennen? Selbst Oma und Opa findet nur noch jeder fünfte Teenager altmodisch.
 
-Besonders wichtig ist die Berufsorientierung für Mädchen. Noch immer entscheiden sich viele Mädchen für traditionell weibliche Berufe wie Erzieherin oder medizinische Fachangestellte. Dabei gibt es in technischen Berufen gute Karrierechancen. "Wir müssen Mädchen frühzeitig für Technik begeistern und ihnen weibliche Vorbilder in MINT-Berufen zeigen", fordert Schmidt. Erfolgreiche Ingenieurinnen oder Programmiererinnen sollten in Schulen über ihren Berufsalltag berichten.
+Gerade Großeltern haben noch nie zuvor für ihre Enken eine so große Bedeutung. Dank besserer Gesundheit und steigender Lebenserwartung verbringen sie mehr Zeit als früher mit ihren Enkeln. Der Kontakt ist persönlicher und er hält länger an. Heute sieht rund ein Drittel der Jugendlichen Oma und Opa mindestens einmal pro Woche, ein weiteres Drittel telefoniert wenigstens mit ihnen.
 
-Auch die Eltern spielen eine cruciale Rolle bei der Berufswahl. Viele Eltern haben jedoch veraltete Vorstellungen von bestimmten Berufen. "Eltern denken oft an die Berufe, die sie aus ihrer Jugend kennen", erklärt Schmidt. Dabei habe sich die Arbeitswelt in den letzten Jahren rasant verändert. Digitale Kompetenzen seien in fast allen Berufen wichtig geworden. Eltern sollten sich daher gemeinsam mit ihren Kindern über neue Berufsfelder informieren.
+Mit den Lebenseinstellungen wandelten sich die Erziehungsvorstellungen. Erwachsene nehmen mehr Rücksicht auf die Bedürfnisse von Kindern. Statt eines autoritären Umgangs mit den Kindern pflegen die meisten Familien den Verhandlungssitl, wie es Pädagogen nennen. Der ist nicht selten anstrengend und wird mitunter übertrieben, ist aber am Ende zielführender als die familiären Kleinkriege, die früher das Klima in vielen Familie bestimmten. Besonders Väter profitieren von der neuen Nähe zu ihren Kindern. Sie spielen heute häufiger mit ihnen als früher oder lesen ihnen vor – auch wenn weiterhin die Mütter den Großteil der Familienarbeit leisten.
 
-Ein weiteres Problem ist die soziale Ungleichheit bei der Berufswahl. Jugendliche aus bildungsfernen Familien haben oft weniger Zugang zu Informationen über verschiedene Berufe. "Wir brauchen mehr niedrigschwellige Angebote, die alle Jugendlichen erreichen", sagt Schmidt. Berufsorientierung sollte unabhängig vom sozialen Hintergrund der Eltern stattfinden.
+Das führt zu Stress, da Mütter mit Kindern heute doppelt so häufig berufstätig sind wie noch vor 40 Jahren. Trotzdem haben sie nicht weniger Zeit für ihre Kinder, weil sie den Haushalt dank moderner Technik schneller erledigen. 1990 verbrachten Eltern mit ihren unter sechsjährigen Söhnen und Töchtern pro Tag vier Stunden und 52 Minuten. Heute ist es eine Dreiviertelstunde more.
 
-Die Bundesagentur für Arbeit bietet zwar Berufsberatung an, doch viele Jugendliche nutzen diese Angebote nicht. "Die Hemmschwelle, zur Berufsberatung zu gehen, ist für manche Jugendliche zu hoch", meint Schmidt. Sie schlägt vor, die Berufsberatung stärker in den Schulalltag zu integrieren. Berufsberater sollten regelmäßig in die Schulen kommen und nicht nur auf Anfrage tätig werden.
-
-Zukunftsfähige Berufsorientierung muss auch digitale Kompetenzen vermitteln. "Jugendliche sollten nicht nur Nutzer digitaler Technologien sein, sondern auch verstehen, wie diese funktionieren", betont Schmidt. Grundkenntnisse im Programmieren sollten ebenso selbstverständlich werden wie Lesen und Schreiben. Einige Bundesländer haben Programmierunterricht bereits in ihren Lehrplänen verankert.
-
-Trotz aller Herausforderungen sieht Schmidt die Zukunft positiv: "Die heutigen Jugendlichen sind digital natives. Sie wachsen mit Smartphones und Internet auf. Diese Kompetenzen können sie in der Arbeitswelt nutzen." Wichtig sei, dass die Berufsorientierung mit der technologischen Entwicklung Schritt halte.
-
-Abschließend betont Schmidt: "Berufsorientierung ist keine einmalige Veranstaltung, sondern ein kontinuierlicher Prozess. Sie sollte in der Schule beginnen und bis zum Eintritt ins Berufsleben andauern. Nur so können wir Jugendliche optimal auf die Arbeitswelt von morgen vorbereiten."`,
+Auch der Eindruck, dass Familien sich nicht mehr täglich um den gedeckten Tisch versammeln, um sich untereinander auszutauschen, stimmt nicht, haben Ernährungsforscher ermittelt. Heute dauern die bewusst inszenierten Zusammentreffen von Jung und Alt um Suppenschüssel oder Nudeltopf sogar länger als noch vor 20 Jahren.`,
                 questions: [
                     {
-                        question: "Laut Professorin Schmidt sollte Berufsorientierung",
+                        id: "q1",
+                        question: "Etwa die Hälfte der Senioren über 60 gibt an, dass sie",
                         options: [
-                            "erst in der weiterführenden Schule beginnen.",
-                            "schon in der Grundschule starten.", 
-                            "hauptsächlich von den Eltern durchgeführt werden."
+                            "ihre Kinder strenger erziehen würden",
+                            "die geänderten Erziehungsmethoden begrüßen",
+                            "als Kind glücklich wären"
                         ],
-                        correctAnswer: "schon in der Grundschule starten."
+                        correctAnswer: "als Kind glücklich wären"
                     },
                     {
-                        question: "Ein Problem bei der Berufsorientierung ist",
+                        id: "q2",
+                        question: "Die meisten Jugendlichen",
                         options: [
-                            "dass zu viele externe Experten in den Unterricht einbezogen werden.",
-                            "die mangelnde Aktualität der Berufsinformationen.",
-                            "dass Unternehmen nicht mit Schulen zusammenarbeiten wollen."
+                            "verstehen sich mit ihren Eltern gut",
+                            "haben keine Meinung zu Erziehungsfragen",
+                            "denken, dass man auch ohne Familie glücklich sein kann"
                         ],
-                        correctAnswer: "die mangelnde Aktualität der Berufsinformationen."
+                        correctAnswer: "verstehen sich mit ihren Eltern gut"
                     },
                     {
-                        question: "Für Mädchen ist Berufsorientierung besonders wichtig, weil", 
+                        id: "q3",
+                        question: "Heute gibt es zwischen Eltern und Kindern",
                         options: [
-                            "sie sich oft für traditionell weibliche Berufe entscheiden.",
-                            "sie bessere schulische Leistungen haben als Jungen.",
-                            "technische Berufe für Mädchen unattraktiv sind."
+                            "Konflikte wegen unterschiedlicher Werte",
+                            "kaum Unterschiede in der Lebensart",
+                            "immer wieder Probleme wegen zu engen Wohnraums"
                         ],
-                        correctAnswer: "sie sich oft für traditionell weibliche Berufe entscheiden."
+                        correctAnswer: "kaum Unterschiede in der Lebensart"
                     },
                     {
-                        question: "Eltern haben bei der Berufswahl ihrer Kinder oft",
+                        id: "q4",
+                        question: "Mütter haben heute mehr Zeit für ihre Kinder, weil",
                         options: [
-                            "kein Interesse an der Berufswahl ihrer Kinder.",
-                            "veraltete Vorstellungen von Berufen.",
-                            "ausreichend Wissen über neue Berufsfelder."
+                            "sie in der Arbeit weniger Stress haben",
+                            "Geräte die Hausarbeit leichter machen",
+                            "die Großeltern ihnen Arbeit abnehmen"
                         ],
-                        correctAnswer: "veraltete Vorstellungen von Berufen."
+                        correctAnswer: "Geräte die Hausarbeit leichter machen"
                     },
                     {
-                        question: "Die Berufsberatung der Bundesagentur für Arbeit",
+                        id: "q5",
+                        question: "In der Öffentlichkeit",
                         options: [
-                            "wird von allen Jugendlichen intensiv genutzt.",
-                            "sollte stärker in den Schulalltag integriert werden.",
-                            "kommt bereits regelmäßig in alle Schulen."
+                            "wird der Wandel in der Erziehung nicht wahrgenommen",
+                            "ist das Thema Familie nicht interessant",
+                            "entsteht oft ein falsches Bild der Familie"
                         ],
-                        correctAnswer: "sollte stärker in den Schulalltag integriert werden."
+                        correctAnswer: "entsteht oft ein falsches Bild der Familie"
                     }
                 ]
             },
 
-            // Lesen Teil 3
+            // Lesen Teil 3 - البيانات المحدثة
             situations: [
-                "Sie möchten sich über Studienmöglichkeiten im Ausland informieren.",
-                "Ein Freund interessiert sich für nachhaltige Landwirtschaft.",
-                "Sie suchen ein Praktikum in einem Medienunternehmen.",
-                "Sie wollen Ihre Bewerbungsunterlagen optimieren lassen.",
-                "Ein Bekannter möchte sich über duale Studiengänge informieren.",
-                "Sie interessieren sich für Berufe im Gesundheitswesen.", 
-                "Sie möchten an einem Workshop zur Persönlichkeitsentwicklung teilnehmen.",
-                "Ein Freund sucht Informationen über Ausbildungsberufe im Handwerk.",
-                "Sie wollen wissen, welche Berufe gute Zukunftsaussichten bieten.",
-                "Sie möchten Kontakt zu anderen Studierenden in Ihrem Fachbereich knüpfen."
+                {
+                    id: "11",
+                    text: "Ihre Schwägerin erwartet ein Kind. Sie ist nicht sicher, ob Sie in einem Vorstellungsgespräch darauf hinweisen muss.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "12",
+                    text: "Ihr Neffe sucht einen Ausbildungsplatz als Elektriker. Er weiß nicht genau, wie er seine Bewerbung korrekt schreiben soll.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "13",
+                    text: "Eine Freundin, 20 Jahre alt, muss oft vor Arbeitskollegen Referate halten. Ihr Hauptproblem ist ihre Nervosität.",
+                    correctAnswer: "D"
+                },
+                {
+                    id: "14",
+                    text: "Eine Freundin sucht einen Ausbildungsplatz. Sie ist zu einem Bewerbungsgespräch eingeladen und weiß nicht, was sie zu diesem Anlass anziehen soll.",
+                    correctAnswer: "H"
+                },
+                {
+                    id: "15",
+                    text: "Eine Bekannte sucht Rat bei Ihnen, weil ihr Sohn ständig im Internet surft und dabei die Schule vernachlässigt.",
+                    correctAnswer: "L"
+                },
+                {
+                    id: "16",
+                    text: "Eine Bekannte möchte eine Ausbildung machen und vielleicht später einmal studieren.",
+                    correctAnswer: "G"
+                },
+                {
+                    id: "17",
+                    text: "Ein Freund surft täglich viele Stunden im Internet. Sie finden das zu viel und wollen ihm einen Rat geben.",
+                    correctAnswer: "I"
+                },
+                {
+                    id: "18",
+                    text: "Ein Freund möchte wissen, welche schulischen Leistungen bei der Vergabe von Ausbildungsplätzen im Bankgewerbe besonders wichtig sind.",
+                    correctAnswer: "K"
+                },
+                {
+                    id: "19",
+                    text: "Ein Bekannter ist Bankkaufmann und sucht eine Stelle.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "20",
+                    text: "Ein älteres Ehepaar hat Goldene Hochzeit. Die Tochter möchte eine Rede halten und braucht dafür eine Anleitung.",
+                    correctAnswer: "F"
+                }
             ],
 
             ads: [
                 {
-                    id: "a",
-                    title: "Studieren weltweit",
-                    content: "Informieren Sie sich über Studienmöglichkeiten im Ausland! Unser Service bietet umfassende Beratung zu Partneruniversitäten, Stipendien und Finanzierungsmöglichkeiten. Wir helfen bei der Bewerbung und unterstützen Sie bei allen formalen Fragen. Ob Semester im Ausland oder komplettes Studium - wir finden die passende Lösung für Sie. Kostenlose Beratungstermine nach Vereinbarung."
+                    id: "A",
+                    title: "Das Vorstellungsgespräch",
+                    content: "Das Vorstellungsgespräch ist eine wichtige Hürde bei der Suche nach einem Arbeitsplatz. In der Regel fangen sie mit Smalltalk an: Man redet über das Wetter, den Verkehr und Ähnliches. Doch dabei kommt es schon auf das Wie? an. Wer viel kritisiert, hat schon verloren. Bei der Vorstellung ihrer Person sollten Bewerber darauf achten, dass sie ihre Fähigkeit und den Nutzen, den ihr potentiell zukünftiger Arbeitgeber von ihnen hat, in den Vordergrund stellen. Fragen nach Gesundheit, Familienplanung, Schwangerschaft oder Geld gehören nicht ins Bewerbungsgespräch. Sollten Sie dennoch gestellt werden, ist man nicht verpflichtet, diese wahrheitsgemäß zu beantworten."
                 },
                 {
-                    id: "b", 
-                    title: "Grüne Berufe",
-                    content: "Nachhaltigkeit und Umweltschutz werden immer wichtiger. In unserer Broschüre 'Grüne Berufe' stellen wir über 50 Ausbildungsberufe und Studiengänge vor, die sich mit Umwelt- und Klimaschutz beschäftigen. Von der ökologischen Landwirtschaft über erneuerbare Energien bis hin zur Umwelttechnik - entdecken Sie zukunftssichere Berufsperspektiven. Die Broschüre steht kostenlos zum Download bereit."
+                    id: "B",
+                    title: "Die Postbank und Projektarbeit",
+                    content: "Die Postbank gibt Bewerbern um einen Ausbildungsplatz ein Thema für ein Projekt, das sie ausarbeiten und dann präsentieren sollen. Nur wer diese Hürde nehmen kann und Engagement beweist, hat Chancen, aufgenommen zu werden. Schließlich sollen die Bewerber zeigen, dass sie belastbar und entscheidungsfähig sind. Der Banker von heute hat ein weit gestecktes Tätigkeitsfeld; Kassierer am Schalter, die nichts als Geld oder Formulare ausgeben oder entgegennehmen, wird es in Zukunft immer weniger geben."
                 },
                 {
-                    id: "c",
-                    title: "Mediencampus", 
-                    content: "Du interessierst dich für Journalismus, Film oder Social Media? Unser Mediencampus bietet Praktika in verschiedenen Medienunternehmen. Wir vermitteln Studierende und Absolventen an Radio- und Fernsehsender, Verlage und Online-Medien. Bewirb dich jetzt für ein Praktikum und sammle praktische Erfahrungen in der Medienbranche. Dauer: 3-6 Monate, Vergütung nach Vereinbarung."
+                    id: "C",
+                    title: "Rhetoriktrainer raten",
+                    content: "Rhetoriktrainer raten dazu, dem Anfang und dem Schluss eines Referats besonderes Augenmerk zu schenken. In den ersten zwei Minuten eines Vortrags entscheide sich nämlich, ob ein Zuhörer an dem Referat Interesse hat oder not. Daher sei ein effektvoll und interessant gestalteter Einstieg äußerst wichtig. Am Schluss soll man den Zuhörers noch einmal mit auf den Weg geben, was dem Vortragenden besonders wichtig erscheint."
                 },
                 {
-                    id: "d",
-                    title: "Bewerbungscoaching",
-                    content: "Perfektionieren Sie Ihre Bewerbungsunterlagen! Unsere erfahrenen Coaches helfen Ihnen bei der Erstellung eines überzeugenden Lebenslaufs und Anschreibens. Wir bieten auch Vorbereitung auf Vorstellungsgespräche und Assessment-Center. Individuelle Termine nach Vereinbarung, auch online möglich. Kosten: 50 Euro pro Stunde, ermäßigte Pakete verfügbar."
+                    id: "D",
+                    title: "Hilfe, ich muss reden",
+                    content: "Robert Sonntag, Autor des Buches Hilfe, ich muss reden behauptet, die Angst vor einem größeren Publikum zu reden, sei ein Problem für die meisten Menschen. In Deutschland liegt in etwa 60 % der Menschen an diesem Phänomen. Dabei achten Zuhören nur zu 7 % auf das, was jemand sagt, 93 % der Wirkung eines Vortrags erziele man durch Körpersprache und seine Stimme. Der Autor rät zu Entspannungstechniken wie dem Autogenen Training oder Yoga, um gelassener zu werden, und einer gründlichen Vorbereitung des Vortrags. Seminarangebote unter www.rs-rethorik.de."
                 },
                 {
-                    id: "e",
-                    title: "Duales Studium",
-                    content: "Theorie und Praxis optimal verbinden - das bietet ein duales Studium. In unserer Datenbank finden Sie über 1.000 duale Studiengänge in verschiedenen Bereichen. Wir informieren über Voraussetzungen, Bewerbungsfristen und Partnerunternehmen. Regelmäßige Infoveranstaltungen und Messen. Kostenloser Newsletter mit aktuellen Angeboten."
+                    id: "E",
+                    title: "Bereiten Sie sich auf ein Vorstellungsgespräch intensiv vor",
+                    content: "Bereiten Sie sich auf ein Vorstellungsgespräch intensiv vor. Überlegen Sie sich genau, was Sie Ihrer zukünftigen Firma an Nutzen bringen können, denn Sie werden danach gefragt werden, warum Sie sich gerade bei dieser und nicht bei einer anderen Firma beworben haben. Analysieren Sie Ihre persönlichen Stärken und Schwächen und überlegen Sie, wie Sie Ihre schwachen Seiten möglichst positiv präsentieren können. Überlegen Sie, was Ihre persönlichen Ziele sind, und sammeln Sie so viele Informationen wie möglich über Ihre zukünftige Arbeit und die Firma, bei der Sie sich beworben haben."
                 },
                 {
-                    id: "f",
-                    title: "Gesundheitsberufe im Fokus",
-                    content: "Von der Pflegefachkraft über den Medizintechniker bis hin zum Gesundheitsmanager - die Welt der Gesundheitsberufe ist vielfältig. Unser Karriereguide stellt über 100 Berufe im Gesundheitswesen vor. Mit Informationen zu Ausbildungswegen, Gehaltsaussichten und Zukunftsperspektiven. Jetzt bestellen oder digital herunterladen."
+                    id: "F",
+                    title: "Festansprache lernen",
+                    content: "Nichts ist auf privaten Feierlichkeiten wie Hochzeiten, runden Geburtstagen oder sonstigen Jubiläen schlimmer als langatmige, nicht enden wollende Ansprachen von Familienmitgliedern. Deshalb bieten viele Volkshochschulen in Deutschland Wochenendseminare an, in denen der Aufbau und der Vortrag einer guten Festansprache trainiert werden. Das Ziel dieser Seminare ist es, die zukünftigen Teilnehmenden in die Lage zu versetzen, spritzige Reden frei halten zu können."
                 },
                 {
-                    id: "g",
-                    title: "Persönlichkeitstraining",
-                    content: "Stärken Sie Ihre Soft Skills! In unseren Workshops lernen Sie, selbstbewusst aufzutreten, Teamfähigkeit zu entwickeln und Konflikte zu lösen. Unsere Trainer arbeiten mit modernen Methoden wie Rollenspielen und Videoanalysen. Nächster Workshop: 'Kommunikation und Rhetorik' am 15. November. Anmeldung bis 10. November."
+                    id: "G",
+                    title: "Ausbildungsgehälter und Aufstiegschancen",
+                    content: "Ein Auszubildender bei einer Bank oder Sparkasse bekommt 690.- Euro im ersten Ausbildungsjahr. Am Ende seiner Ausbildung steigt die Vergütung auf 800.- Euro. Das Einstiegsgehalt für Bankangestellte liegt bei etwas über 2.000.- Euro monatlich. Aufstiegschancen haben die jungen Banker nur, wenn sie sich intensiv um ihre berufliche Fortbildung kümmern. Dafür bieten die Banken ihren Mitarbeitern viele Möglichkeiten an, wie das BankCollege der Volksbanken oder die Sparkassen-Akademie, Manche Banken geben besonders qualifizierten Mitarbeitern sogar Stipendien für ein Studium."
                 },
                 {
-                    id: "h", 
-                    title: "Handwerk hat Zukunft",
-                    content: "Über 130 Ausbildungsberufe im Handwerk warten auf dich! Von A wie Anlagenmechaniker bis Z wie Zweiradmechatroniker. Unser Service bietet kostenlose Berufsberatung, Hilfe bei der Suche nach Ausbildungsplätzen und Informationen zu Aufstiegsmöglichkeiten. Regelmäßige Schnuppertage in Handwerksbetrieben. Jetzt informieren!"
+                    id: "H",
+                    title: "Kleidung beim Vorstellungsgespräch",
+                    content: "Wer zu seinem Vorstellungsgespräch eingeladen wird, sollte auf korrekte und saubere Kleidung achten. Für viele Firmen ist es wichtig, dass auch Auszubildende die Firma gegenüber den Kunden repräsentieren können. Zerrissene Jeans und selbst gefärbte T-Shirts mögen zwar trendy sein, zu einem Vorstellungsgespräch gehören sie aber nicht. In Zweifelsfällen ist es ratsam, sich bei Eltern oder Bekannten Rat zu holen."
                 },
                 {
-                    id: "i",
-                    title: "Zukunftsberufe 2030",
-                    content: "Welche Berufe werden in Zukunft gefragt sein? Unsere Studie analysiert Megatrends und ihre Auswirkungen auf den Arbeitsmarkt. Wir stellen 20 Zukunftsberufe vor, von Data Scientists bis zu Nachhaltigkeitsmanagern. Mit Informationen zu benötigten Qualifikationen und Einstiegsmöglichkeiten. Studie kostenlos als PDF erhältlich."
+                    id: "I",
+                    title: "Internetsucht bei jungen Leuten",
+                    content: "Für junge Leute kann das Internet zu einer Droge werden. Der typische Internet-Süchtige ist ca. 18 Jahre alt, männlich. Single und hat kaum soziale Kontakte. Er surft täglich um die 5 Stunden im World Wide Web und hat schlechte Laune, wenn er not vor dem Monitor sitzen kann. Pflichten werden oft vernachlässigt. Psychologen raten, die Sufizetten schrittweise zu verringern und darüber ein Tagebuch zu führen sowie vor dem Surfen schriftlich zu notieren, was genau man im Internet suchen möchte. Wer diese strengen Regeln einhält, kann aus der Internetsucht aussteigen."
                 },
                 {
-                    id: "j",
-                    title: "Fachschaftsnetzwerk", 
-                    content: "Tausche dich mit anderen Studierenden aus! Unser Netzwerk verbindet Fachschaften verschiedener Hochschulen. Regelmäßige Treffen, Workshops und gemeinsame Projekte. Perfekt zum Erfahrungsaustausch, Lerngruppen bilden und Kontakte knüpfen. Kostenlose Mitgliedschaft für alle immatrikulierten Studierenden. Jetzt anmelden!"
+                    id: "J",
+                    title: "Sprachgebrauch zwischen Generationen",
+                    content: "Zu einem zunehmend größer werdenden Problem am Arbeitsplatz wird die immer größer werdende Kluft zwischen dem Sprachgebrauch junger und alter Kollegen. Viele junge Leute verstehen laut einer Studie der Universität Kiel traditionelle Redewendungen wie z. B. Den Nagel auf den Kopf treffen oder Öl ins Feuer gießen nicht mehr, während Ältere nichts mit keinen Bock haben anzufangen wissen. Dadurch, dass Jung und Alt heute nicht mehr so lange wie in früheren Zeiten zusammenleben, sondern unter sich bleiben, verstärkt sich das Auseinanderdriften der Jugendsprache und der Sprache der Alten immer mehr auseinander."
                 },
                 {
-                    id: "k",
-                    title: "Karriereguide Digitalisierung",
-                    content: "Die Digitalisierung verändert alle Berufsfelder. Unser Karriereguide zeigt, welche digitalen Kompetenzen in verschiedenen Branchen gefragt sind. Mit Praxistipps zur Weiterbildung und Porträts von Berufseinsteigern in digitalen Jobs. Kostenloser Download oder Printversion für 5 Euro."
+                    id: "K",
+                    title: "Sparkassen-Akademie Bonn",
+                    content: "GRUNDSÄTZLICH HAT JEDER DIE MÖGLICHKEIT, BEI UNS EINE AUSBILDUNG ZU MACHEN, heißt es bei der Sparkassen-Akademie in Bonn. Die Bewerber sollen aber gute bis sehr gute Noten in Deutsch und Mathematik von der Schule mitbringen, und sie müssen in Rollenspielen ihre kommunikativen Fähigkeiten unter Beweis stellen, etwa, wie sie mit einem aggressiven Kunden umgehen würden."
                 },
                 {
-                    id: "l",
-                    title: "Studienfinanzierung",
-                    content: "Wie finanziere ich mein Studium? Unser Ratgeber bietet einen Überblick über alle Finanzierungsmöglichkeiten: BAföG, Stipendien, Studienkredite und Nebenjobs. Mit Tipps zur Antragstellung und Erfahrungsberichten von Studierenden. Kostenlose Beratungstermine jeden Donnerstag von 14-18 Uhr."
+                    id: "L",
+                    title: "Virtuelle Scheinwelt als Flucht",
+                    content: "Viele junge Leute flüchten sich in die virtuelle Scheinwelt, weil ihnen die Realität als eine zu große Belastung erscheint. Insbesondere Chatrooms verführen die Jugendlichen zu langen Sitzungen, die oft als Ersatz für mangelnde zwischenmenschliche Beziehungen herhalten. Häufige Folge: Vernachlässigung von Hausaufgaben und schlechte Zensuren. Eltern, die sich Sorgen um ihre Internetabhängigen Kinder machen, sollten viel mit ihnen sprechen - ohne Vorwürfe zu machen - und versuchen ihren Zöglingen Alternativen in der realen Welt aufzuzeigen."
                 }
             ],
 
-            // الإجابات الصحيحة لـ Lesen Teil 3
-            teil3Answers: {
-                11: "Studieren weltweit",
-                12: "Grüne Berufe", 
-                13: "Mediencampus",
-                14: "Bewerbungscoaching",
-                15: "Duales Studium",
-                16: "Gesundheitsberufe im Fokus",
-                17: "Persönlichkeitstraining",
-                18: "Handwerk hat Zukunft",
-                19: "Zukunftsberufe 2030", 
-                20: "Fachschaftsnetzwerk"
-            },
-
             // Sprachbausteine Teil 1
             blankText1: {
-                content: `Liebe Maria,
-vielen Dank für deinen Brief __(21)__ Hamburg! Es freut mich sehr, dass du dich in deiner neuen Stadt schon so gut eingelebt hast.
-Ich muss mich bei dir entschuldigen, __(22)__ ich so lange nicht geantwortet habe. Die letzte Zeit war sehr stressig, __(23)__ ich viele Prüfungen hatte. Jetzt sind die Prüfungen endlich vorbei und ich kann dir endlich ausführlich schreiben.
-Letzte Woche war ich mit meiner Familie im Urlaub. Wir sind an die Ostsee gefahren, __(24)__ das Wetter dort meistens besser ist als hier. Leider hatten wir nicht so viel Glück mit dem Wetter. Es hat fast die ganze Zeit geregnet, __(25)__ wir trotzdem viel unternommen haben. Wir sind oft spazieren gegangen und haben Museen besucht.
-Nächste Woche fange ich mit meinem Praktikum bei einer Zeitung an. Ich bin schon sehr aufgeregt, __(26)__ ich noch nie in einem Verlag gearbeitet habe. Meine Chefin scheint sehr nett zu sein. Sie hat mir gestern eine E-Mail geschrieben und mir alle wichtigen Informationen mitgeteilt. Ich hoffe, __(27)__ alles gut klappt.
-Am Wochenende treffe ich mich mit einigen Freunden. Wir wollen zusammen kochen und dann einen Film anschauen. Ich freue mich schon darauf, __(28)__ ich meine Freunde lange nicht gesehen habe.
-So, das war's erstmal von mir. Ich würde mich sehr freuen, __(29)__ bald wieder von dir zu hören. Vielleicht können wir uns ja in den Ferien treffen? __(30)__ wärst du damit einverstanden?
-Alles Liebe
-Deine Anna`,
-                answers: ["aus", "dass", "weil", "weil", "aber", "da", "dass", "weil", "wenn", "Wie"]
+                content: `Liebe Familie Geissler, oder Dippold
+
+vielen Dank für Ihre Antwort ________ (21) meine Bewerbung als Au-pair-Mädchen. Danke schön auch für die Fotos von den Kindern. Ich bin schon sehr gespannt und freue mich sehr Ihre Familie im September kennenzulernen!
+
+Im Juni schließe ich meine Schulausbildung ________ (22) und möchte auch noch mein Deutsch ________ (23) verbessern. Dafür werde ich im Sommer noch einen Sprachkurs an einer Sommerschule in meiner Heimat ________ (24). Anschließend fahre ich mit meiner Familie für drei Wachen in Urlaub ans Meer.
+
+Ich habe noch eine Frage ________ (25) Sie. Sie schreiben, dass Sie für die Weihnachtsferien einen Skiurlaub planen, bei dem ich mitfahren kann, wenn ich möchte. Ich habe aber keine Ski und Skibekleidung. Kann ich mir diese Sachen bei ________ (26) ausleihen? In meiner Heimat werde ich sie kaum jemals wieder brauchen. Aber ich bin immer offen für Neues und möchte das Skilaufen gern einmal ausprobieren.
+
+Danke schön, ________ (27) Sie mich am Flughafen abholen kommen. Ich habe meinen Flug ________ (28) gebucht. Am 2.9. werde ich sehr früh in Frankfurt laden, nämlich um 5:15 Uhr. Ich schlage ________ (29), dass wir uns erst gegen 7:30 Uhr in einem Café treffen. Vielleicht komme ich ja mit Verspätung oder muss länger auf mein Gepäck warten. Dann müssen Sie nicht so früh da sein. nach Frankfurt
+
+Bitte schreiben Sie mir, wenn Sie noch etwas über mich wissen möchten! Ich schicke einige Fotos mit der Mail, damit die Kinder schon ein bisschen ________ (30) von mir sehen.
+
+Viele Grüße
+
+Ihre Asja`,
+                options: [
+                    ["wegen", "von", "auf"],        // 21
+                    ["zu", "aus", "ab"],             // 22
+                    ["kaum", "fast", "ein bisschen"], // 23
+                    ["unterrichten", "machen", "lernen"], // 24
+                    ["über", "für", "an"],           // 25
+                    ["irgendwo", "irgendjemanden", "irgendetwas"], // 26
+                    ["falls", "dass", "dafür"],      // 27
+                    ["schon", "noch", "bevor"],      // 28
+                    ["zu", "am", "vor"],             // 29
+                    ["weniger", "viel", "mehr"]      // 30
+                ],
+                answers: ["auf", "ab", "ein bisschen", "machen", "an", "irgendjemanden", "dass", "schon", "vor", "mehr"]
             },
 
             // Sprachbausteine Teil 2
             blankText2: {
-                content: `Die Digitalisierung __(31)__ die Arbeitswelt in den letzten Jahren stark verändert. Viele Berufe, die es früher gab, __(32)__ heute nicht mehr existieren. Gleichzeitig sind neue Berufe entstanden, die vor zehn Jahren noch unbekannt waren.
-Um in dieser sich wandelnden Arbeitswelt erfolgreich zu sein, __(33)__ man bestimmte Kompetenzen entwickeln. Dazu gehören nicht nur fachliche Kenntnisse, __(34)__ auch soziale und digitale Fähigkeiten. Lifelong Learning, also das lebenslange Lernen, __(35)__ heute wichtiger denn je.
-Viele Unternehmen bieten ihren Mitarbeitern Weiterbildungsmöglichkeiten an. __(36)__ man sich weiterbilden möchte, hat man verschiedene Optionen: Man kann an Seminaren teilnehmen, Online-Kurse belegen __(37)__ ein berufsbegleitendes Studium absolvieren.
-Die Wahl der richtigen Weiterbildung __(38)__ von verschiedenen Faktoren ab. Zunächst sollte man sich überlegen, welche Kompetenzen für den eigenen Beruf wichtig sind. __(39)__ man unsicher ist, kann man eine Berufsberatung in Anspruch nehmen.
-__(40)__ man sich entschieden hat, sollte man einen konkreten Plan erstellen. Dabei kann es helfen, mit Kollegen oder Vorgesetzten zu sprechen. Wichtig ist, realistische Ziele zu setzen und sich nicht zu übernehmen.`,
-                answers: ["hat", "würden", "muss", "sondern", "ist", "Wenn", "oder", "hängt", "Falls", "Bevor"]
+                content: `Die wichtigsten Regeln auf der Skipiste
+
+Wer beim Skifahren fahrlässig einen anderen Sportler verletzt oder gefährdet, muss auch mit rechtlichen Folgen ________ (31) Das Strafgesetzbuch ist sowohl auf der Straße als auch auf der Piste ________ (32) Laut Gesetz gibt es Freiheitsstrafen bis zu 3 Monaten oder eine entsprechende Geldstrafe. Bei schwerer Körperverletzung sieht das Gesetz Freiheitsstrafen bis zu 6 Monaten ________ (33) Der deutsche Skiverband hat eine Pistenordnung erarbeitet, die bei gerichtlichen Entscheidungen angewandt wird. Jeder Wintersportler ________ (34) diese Regeln kennen:
+
+Jeder Skifahrer muss sich stets ________ (35) verhalten, dass er keinen anderen gefährdet oder schädigt. Er muss die Zeichen und Hinweisschilder an der Piste kennen und beachten. Er muss die eigene Geschwindigkeit und Fahrweise seinem Können und dem Gelände sowie den herrschenden Wetterverhältnissen ________ (36)
+
+Ein von hinten kommender Skifahrer muss seine Fahrspur so wählen, dass er vor ihm fahrende Skifahrer nicht gefährdet. Überholen darf man rechts oder links, ________ (37) immer in einem Abstand, der dem überholten Skifahrer genug Raum für seine Bewegungen lässt. Aufsteigende Skifahrer dürfen nur den ________ (38) einer Abfahrtstrecke benützen. Dasselbe gilt für einen Skifahrer, der zu Fuß absteigt. Bei schlechten Sichtverhältnissen ist die Benutzung des Pistenrands verboten und der Skifahrer muss diesen verlassen. Niemand sollte sich an unübersichtlichen oder engen Stellen aufhalten. Gestürzte Skifahrer müssen eine solche ________ (39) so schnell wie möglich freimachen. Bei Unfällen ist jeder zur Hilfeleistung verpflichtet. Jeder Zeuge oder
+
+Verantwortliche muss bei einem Unfall außerdem seine Personalien ________ (40) Durch Beachtung dieser Regeln ist die Sicherheit auf den Pisten deutlich gestiegen.`,
+                options: ["ZWAR", "RECHNEN", "VOR", "GRAND", "STELLE", "KANN", "SOLLTE", "GÜLTIG", "SO", "GELTEN", "KEINORDNEN", "DARF", "ANPASSEN", "ANGEBEN", "ALLERDINGS"],
+                answers: ["RECHNEN", "GÜLTIG", "VOR", "SOLLTE", "SO", "ANPASSEN", "ALLERDINGS", "GRAND", "STELLE", "ANGEBEN"]
             }
         };
 
@@ -1172,24 +1108,14 @@ __(40)__ man sich entschieden hat, sollte man einen konkreten Plan erstellen. Da
             setupEventListeners();
         });
 
-        let currentLang = 'ar';
         let isDarkMode = false;
 
         function initializePage() {
             // تحميل الإعدادات المحفوظة
-            const savedLang = localStorage.getItem('language') || 'ar';
             const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-            const username = localStorage.getItem('username') || 'زائر';
-            const access = localStorage.getItem('access');
             
-            changeLanguage(savedLang);
             if (savedDarkMode) {
                 toggleDarkMode();
-            }
-            
-            // التحقق من حالة المستخدم
-            if (access === 'paid' && username) {
-                document.getElementById('premiumBadge').style.display = 'flex';
             }
             
             // تهيئة الأجزاء
@@ -1207,13 +1133,13 @@ __(40)__ man sich entschieden hat, sollte man einen konkreten Plan erstellen. Da
             textsList.innerHTML = '';
 
             // إضافة العناوين
-            examData.headings.forEach((heading, index) => {
+            examData.headings.forEach((heading) => {
                 const headingItem = document.createElement('div');
                 headingItem.className = 'heading-item';
                 headingItem.innerHTML = `
-                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                    <strong>${heading.id})</strong> ${heading.text}
                 `;
-                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingItem.dataset.letter = heading.id;
                 headingsList.appendChild(headingItem);
             });
 
@@ -1222,10 +1148,10 @@ __(40)__ man sich entschieden hat, sollte man einen konkreten Plan erstellen. Da
                 const textItem = document.createElement('div');
                 textItem.className = 'question';
                 textItem.innerHTML = `
-                    <h3>Text ${index + 1}</h3>
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
                     <div class="text-content">${text.content}</div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
                     </div>
                 `;
                 textsList.appendChild(textItem);
@@ -1236,14 +1162,14 @@ __(40)__ man sich entschieden hat, sollte man einen konkreten Plan erstellen. Da
             const longText = document.getElementById('longText');
             const questionsList = document.getElementById('questionsList');
 
-            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
 
             questionsList.innerHTML = '';
             examData.longText.questions.forEach((question, index) => {
                 const questionItem = document.createElement('div');
                 questionItem.className = 'question';
                 questionItem.innerHTML = `
-                    <h3>Frage ${index + 6}</h3>
+                    <h3>Question ${index + 6}</h3>
                     <p><strong>${question.question}</strong></p>
                     <div class="options">
                         ${question.options.map((option, optIndex) => `
@@ -1253,7 +1179,7 @@ __(40)__ man sich entschieden hat, sollte man einen konkreten Plan erstellen. Da
                         `).join('')}
                     </div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
                     </div>
                 `;
                 questionsList.appendChild(questionItem);
@@ -1265,14 +1191,12 @@ __(40)__ man sich entschieden hat, sollte man einen konkreten Plan erstellen. Da
             const adsList = document.getElementById('adsList');
 
             situationsList.innerHTML = '';
-            examData.situations.forEach((situation, index) => {
+            examData.situations.forEach((situation) => {
                 const situationItem = document.createElement('div');
                 situationItem.className = 'situation-item';
                 situationItem.innerHTML = `
-                    <strong>${index + 11})</strong> ${situation}
-                    <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
-                    </div>
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
                 `;
                 situationsList.appendChild(situationItem);
             });
@@ -1282,27 +1206,87 @@ __(40)__ man sich entschieden hat, sollte man einen konkreten Plan erstellen. Da
                 const adItem = document.createElement('div');
                 adItem.className = 'ad-item';
                 adItem.innerHTML = `
-                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
-                    <p>${ad.content}</p>
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
                 `;
                 adsList.appendChild(adItem);
             });
         }
 
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
         function initializeSprachbausteine() {
             // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
             const blankText1 = document.getElementById('blankText1');
-            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText1.innerHTML = textWithBlanks1;
 
             // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
             const blankText2 = document.getElementById('blankText2');
-            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 31]}</span></span>`;
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText2.innerHTML = textWithBlanks2;
         }
@@ -1312,35 +1296,8 @@ __(40)__ man sich entschieden hat, sollte man einen konkreten Plan erstellen. Da
             document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
             document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
             
-            // زر الرئيسية
-            document.getElementById('homeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html';
-            });
-            
             // زر الوضع الليلي
             document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-            
-            // زر المستخدم
-            document.getElementById('userBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#profile';
-            });
-            
-            // زر اللغة
-            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
-            document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const lang = option.getAttribute('data-lang');
-                    changeLanguage(lang);
-                    document.getElementById('langDropdown').classList.remove('show');
-                });
-            });
-            
-            // إغلاق القوائم المنسدلة بالنقر خارجها
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.language-selector')) {
-                    document.getElementById('langDropdown').classList.remove('show');
-                }
-            });
         }
 
         function showAllAnswers() {
@@ -1350,10 +1307,10 @@ __(40)__ man sich entschieden hat, sollte man einen konkreten Plan erstellen. Da
             document.querySelectorAll('.blank-answer').forEach(answer => {
                 answer.classList.remove('hidden');
             });
-            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+            document.querySelectorAll('.heading-item').forEach(heading => {
                 const letter = heading.dataset.letter;
                 examData.texts.forEach(text => {
-                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                    if (text.correctAnswer === letter) {
                         heading.classList.add('matched');
                     }
                 });
@@ -1383,29 +1340,6 @@ __(40)__ man sich entschieden hat, sollte man einen konkreten Plan erstellen. Da
             } else {
                 themeIcon.className = 'fas fa-moon';
             }
-        }
-
-        function toggleLangDropdown() {
-            document.getElementById('langDropdown').classList.toggle('show');
-        }
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            
-            // تحديث جميع النصوص
-            Object.keys(t).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = t[key];
-                }
-            });
-            
-            localStorage.setItem('language', lang);
-            
-            // إعادة تهيئة المحتوى لترجمة الإجابات
-            initializeTeil1();
-            initializeTeil2();
         }
     </script>
 </body>

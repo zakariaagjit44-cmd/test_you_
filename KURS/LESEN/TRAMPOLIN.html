@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TRAMPOLINE - TELC B2 Training</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TRANPOLIN - TELC B2 Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -20,16 +20,17 @@
             --text: #333;
             --text-light: #546E7A;
             --white: #ffffff;
-            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
-            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
-            --radius: 25px;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -38,8 +39,11 @@
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
             transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
         }
 
         body.dark-mode {
@@ -47,337 +51,71 @@
             color: var(--light);
         }
 
-        /* Header Controls - التعديل هنا */
-        .header-controls {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            right: 20px;
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            z-index: 1000;
-            gap: 15px;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .left-controls {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
         }
 
-        .right-controls {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
+        .theme-btn {
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            border: none;
-            background: var(--primary);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .control-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .control-btn:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-
-        .control-btn:hover {
-            transform: scale(1.15) rotate(5deg);
-            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
-        }
-
-        /* شارة المشترك الذهبية - تم التعديل */
-        .premium-badge-header {
-            position: fixed;
-            top: 20px;
-            left: 90px; /* تغيير الموقع إلى اليسار */
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            padding: 0.5rem;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
-        }
-
-        .home-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .home-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .home-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        /* Language Selector */
-        .language-selector {
-            display: flex;
-            position: relative;
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: var(--radius);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .lang-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .lang-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            background: var(--white);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
-            overflow: hidden;
-            min-width: 120px;
-            animation: dropdownSlide 0.3s ease;
-            z-index: 1001;
-        }
-
-        .dark-mode .lang-dropdown {
-            background: #1a237e;
-            color: var(--light);
-        }
-
-        @keyframes dropdownSlide {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .lang-dropdown.show {
-            display: block;
-        }
-
-        .lang-option {
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            color: var(--text);
-        }
-
-        .dark-mode .lang-option {
-            color: var(--light);
-            border-bottom: 1px solid #37474F;
-        }
-
-        .lang-option:hover {
-            background: #f5f5f5;
-            transform: translateX(5px);
-        }
-
-        .dark-mode .lang-option:hover {
-            background: #283593;
-        }
-
-        .lang-option:last-child {
-            border-bottom: none;
-        }
-
-        /* المحتوى الرئيسي */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: var(--radius);
-            padding: 3rem;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(15px);
-            margin-top: 6rem;
-            transition: var(--transition);
-        }
-
-        .dark-mode .container {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: contentSlideUp 0.8s ease;
-        }
-
-        @keyframes contentSlideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .header h1 {
-            font-size: 2.8rem;
-            color: var(--primary-dark);
-            margin-bottom: 1rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .dark-mode .header h1 {
-            color: #90CAF9;
-        }
-
-        .page-subtitle {
             font-size: 1.2rem;
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .dark-mode .page-subtitle {
-            color: #B0BEC5;
-        }
-
-        /* أزرار التحكم */
-        .answer-controls {
-            position: sticky;
-            top: 80px;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1.5rem;
-            border-radius: var(--radius);
+            cursor: pointer;
             box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-            z-index: 100;
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
             display: flex;
             gap: 1rem;
-            justify-content: center;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-        }
-
-        .dark-mode .answer-controls {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            align-items: center;
         }
 
         .answer-btn {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
-            position: relative;
-            overflow: hidden;
             border: none;
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.5rem;
             transition: var(--transition);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .answer-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: right 0.6s;
-        }
-
-        .answer-btn:hover::before {
-            right: 100%;
+            min-width: 180px;
+            justify-content: center;
         }
 
         .answer-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
         }
 
         .show-answers {
@@ -390,47 +128,107 @@
             color: var(--white);
         }
 
-        /* التصميم الخاص بالأسئلة */
-        .section {
-            margin: 2rem 0;
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
             padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
             transition: var(--transition);
         }
 
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
         .dark-mode .section {
-            background: rgba(13, 71, 161, 0.9);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
         }
 
         .section-title {
             color: var(--primary-dark);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
             border-bottom: 2px solid var(--primary);
             font-weight: 600;
+            text-align: left;
         }
 
         .dark-mode .section-title {
             color: #90CAF9;
         }
 
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
         .question {
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: rgba(33, 150, 243, 0.05);
-            border-radius: 15px;
-            border-right: 4px solid var(--primary);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .question {
-            background: rgba(33, 150, 243, 0.1);
+            background: rgba(33, 150, 243, 0.08);
         }
 
         .options {
@@ -438,25 +236,25 @@
         }
 
         .option {
-            margin: 0.8rem 0;
-            padding: 1rem;
+            margin: 0.6rem 0;
+            padding: 0.8rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
             cursor: pointer;
             transition: var(--transition);
             font-weight: 500;
+            text-align: left;
         }
 
         .dark-mode .option {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .option:hover {
             border-color: var(--primary);
             background: rgba(33, 150, 243, 0.05);
-            transform: translateX(-5px);
         }
 
         .correct {
@@ -472,361 +270,493 @@
         .answer {
             margin-top: 1rem;
             padding: 1rem;
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 600;
-            animation: slideInUp 0.5s ease;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
         }
 
         @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* التصحيح - تم التعديل للوضع الليلي */
         .correct-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
-            border: 2px solid #4CAF50;
-            font-weight: bold;
+            border: 1px solid #4CAF50;
         }
 
         .dark-mode .correct-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
-            border: 2px solid #81C784;
+            border: 1px solid #81C784;
         }
 
         /* النصوص والعناوين */
         .text-content {
-            line-height: 1.7;
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
-            font-size: 1.1rem;
-            transition: var(--transition);
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .text-content {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
+        /* Lesen Teil 1 - تصميم محسن */
         .headings-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1rem;
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .heading-item {
-            padding: 1.2rem;
+            padding: 1rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            text-align: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
             font-weight: 500;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .heading-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .matched {
             border-color: #4CAF50;
             background: rgba(76, 175, 80, 0.1);
-            transform: scale(1.02);
         }
 
-        /* الإعلانات والوضعيات */
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
         .ads-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
         }
 
         .ad-item {
-            padding: 1.5rem;
+            padding: 1.2rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            min-height: 150px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .ad-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .ad-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-hover);
         }
 
-        .situations-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.2rem;
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
         }
 
-        .situation-item {
-            padding: 1.2rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            transition: var(--transition);
+        .dark-mode .ad-letter {
+            color: #90CAF9;
         }
 
-        .dark-mode .situation-item {
-            background: #1a237e;
-            border-color: #37474F;
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
         }
 
-        .situation-item:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.05);
+        .dark-mode .ad-title {
+            color: var(--light);
         }
 
-        /* Sprachbausteine */
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
         .fill-blanks {
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .blank-text {
-            line-height: 2;
-            margin: 1.5rem 0;
-            font-size: 1.2rem;
-            padding: 1.5rem;
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .blank-text {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .blank {
             display: inline-block;
             min-width: 120px;
-            margin: 0 8px;
-            padding: 0.5rem 1rem;
-            border-bottom: 3px solid var(--primary);
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
             text-align: center;
             font-weight: 600;
             background: var(--white);
-            border-radius: 8px;
+            border-radius: 6px;
             transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
         }
 
         .dark-mode .blank {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
         }
 
         .blank-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
             border-color: #4CAF50;
-            font-weight: bold;
         }
 
         .dark-mode .blank-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
             border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
         }
 
         .hidden {
             display: none;
         }
 
-        /* Floating Elements مثل الصفحة الرئيسية */
-        .floating-elements {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .floating-element {
-            position: absolute;
-            font-size: 3.5rem;
-            opacity: 0.15;
-            animation: float 8s ease-in-out infinite;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
-
-        .floating-book { top: 15%; left: 8%; animation-delay: 0s; }
-        .floating-pen { top: 75%; right: 12%; animation-delay: 1s; }
-        .floating-globe { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
-        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
-        .floating-graduate { top: 65%; left: 5%; animation-delay: 4s; }
-        .floating-notebook { bottom: 15%; right: 10%; animation-delay: 5s; }
-        .floating-pencil { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
-        .floating-calculator { top: 35%; right: 15%; animation-delay: 7s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
-            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
-        }
-
+        /* تحسينات للهواتف */
         @media (max-width: 768px) {
-            .header-controls {
-                top: 15px;
-                left: 15px;
-                right: 15px;
-                gap: 10px;
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
             }
-
-            .premium-badge-header {
-                top: 15px;
-                left: 70px;
-                width: 45px;
-                height: 45px;
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
                 font-size: 1.1rem;
             }
-
-            .home-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
-            }
-
-            .container {
-                padding: 2rem;
-                margin: 1rem;
-                margin-top: 5rem;
-            }
-
+            
             .header h1 {
-                font-size: 2rem;
+                font-size: 1.6rem;
             }
-
-            .headings-grid {
-                grid-template-columns: 1fr;
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
             }
-
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
             .ads-grid {
                 grid-template-columns: 1fr;
             }
-
-            .right-controls {
-                gap: 10px;
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
             }
-
-            .answer-controls {
-                top: 70px;
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
             }
         }
 
         @media (max-width: 480px) {
-            .header-controls {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
             }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
 
-            .left-controls, .right-controls {
-                flex-direction: row;
-                justify-content: center;
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
             }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
-            .premium-badge-header {
-                position: relative;
-                top: auto;
-                left: auto;
-                transform: none;
-                margin-top: 10px;
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
             }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Floating Elements مثل الصفحة الرئيسية -->
-    <div class="floating-elements">
-        <div class="floating-element floating-book">📚</div>
-        <div class="floating-element floating-pen">✏️</div>
-        <div class="floating-element floating-globe">🌍</div>
-        <div class="floating-element floating-clock">⏰</div>
-        <div class="floating-element floating-graduate">🎓</div>
-        <div class="floating-element floating-notebook">📓</div>
-        <div class="floating-element floating-pencil">✏️</div>
-        <div class="floating-element floating-calculator">🧮</div>
-    </div>
-
-    <!-- شارة المشترك الذهبية - تم التعديل -->
-    <div class="premium-badge-header" id="premiumBadge">
-        <i class="fas fa-crown"></i>
-    </div>
-
-    <!-- Header Controls -->
-    <div class="header-controls">
-        <div class="left-controls">
-            <button class="home-btn" id="homeBtn">
-                <i class="fas fa-home"></i>
-                <span id="homeText">الرئيسية</span>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
             </button>
-            <div class="language-selector">
-                <button class="lang-btn" id="langBtn">
-                    <span id="langBtnText">العربية</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="lang-dropdown" id="langDropdown">
-                    <div class="lang-option" data-lang="ar">
-                        <span>🇸🇦</span>
-                        <span>العربية</span>
-                    </div>
-                    <div class="lang-option" data-lang="de">
-                        <span>🇩🇪</span>
-                        <span>Deutsch</span>
-                    </div>
-                    <div class="lang-option" data-lang="en">
-                        <span>🇬🇧</span>
-                        <span>English</span>
-                    </div>
-                </div>
-            </div>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
         </div>
         
-        <div class="right-controls">
-            <button class="control-btn" id="themeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="control-btn" id="userBtn">
-                <i class="fas fa-user"></i>
-            </button>
-        </div>
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">TRAMPOLINE - TELC B2 Training</h1>
-            <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
-        </div>
-
-        <!-- أزرار التحكم -->
-        <div class="answer-controls">
-            <button class="answer-btn show-answers" id="showAnswers">
-                <i class="fas fa-check-circle"></i>
-                <span id="showAnswersText">إظهار التصحيح</span>
-            </button>
-            <button class="answer-btn hide-answers" id="hideAnswers">
-                <i class="fas fa-eye-slash"></i>
-                <span id="hideAnswersText">إخفاء التصحيح</span>
-            </button>
+            <h1 id="pageTitle">BILDER - TELC B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
         </div>
 
         <!-- Lesen Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="teil1Title">Lesen Teil 1</h2>
-            <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
             
             <div class="headings-grid" id="headingsList">
                 <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
@@ -839,8 +769,8 @@
 
         <!-- Lesen Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
-            <div class="text-content" id="longText">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
                 <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
             </div>
 
@@ -849,10 +779,10 @@
             </div>
         </div>
 
-        <!-- Lesen Teil 3 -->
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
         <div class="section">
-            <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
-            <p id="teil3Description">Lesen Sie zuerst die beiden Artikel und lösen Sie dann die Aufgaben 6–10 zu den Texten.</p>
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
             
             <div class="situations-grid" id="situationsList">
                 <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
@@ -865,258 +795,353 @@
 
         <!-- Sprachbausteine Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
             <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
                 <div class="blank-text" id="blankText1">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
 
         <!-- Sprachbausteine Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
             <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
                 <div class="blank-text" id="blankText2">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // الترجمات
-        const translations = {
-            ar: {
-                homeText: "الرئيسية",
-                themeText: "الوضع الليلي",
-                langText: "العربية", 
-                userText: "زائر",
-                pageTitle: "TRAMPOLINE - TELC B2 Training",
-                pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
-                showAnswersText: "إظهار التصحيح",
-                hideAnswersText: "إخفاء التصحيح",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2", 
-                teil3Title: "Lesen Teil 3",
-                teil3Description: "Lesen Sie zuerst die beiden Artikel und lösen Sie dann die Aufgaben 6–10 zu den Texten.",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            de: {
-                homeText: "Startseite",
-                themeText: "Nachtmodus", 
-                langText: "Deutsch",
-                userText: "Besucher",
-                pageTitle: "TRAMPOLINE - TELC B2 Training",
-                pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
-                showAnswersText: "Korrektur anzeigen",
-                hideAnswersText: "Korrektur ausblenden",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2",
-                teil3Title: "Lesen Teil 3", 
-                teil3Description: "Lesen Sie zuerst die beiden Artikel und lösen Sie dann die Aufgaben 6–10 zu den Texten.",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            en: {
-                homeText: "Home",
-                themeText: "Dark Mode",
-                langText: "English",
-                userText: "Visitor", 
-                pageTitle: "TRAMPOLINE - TELC B2 Training",
-                pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
-                showAnswersText: "Show Correction",
-                hideAnswersText: "Hide Correction",
-                teil1Title: "Reading Part 1",
-                teil1Description: "First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).",
-                teil2Title: "Reading Part 2",
-                teil3Title: "Reading Part 3",
-                teil3Description: "First read the two articles and then solve tasks 6-10 on the texts.",
-                sprach1Title: "Language Elements Part 1", 
-                sprach2Title: "Language Elements Part 2"
-            }
-        };
-
-        // بيانات الأسئلة والإجابات من ملف PDF
+        // بيانات الأسئلة والإجابات المأخوذة من TRANPOLIN.html
         const examData = {
-            // Lesen Teil 1
             headings: [
-                "Viele Trampoline haben erhebliche Sicherheitsmängel",
-                "Traditionelle Nachrichtenmedien immer noch getragt",
-                "Soziale Medien erszeten alte Informationsquellen",
-                "SCHÜLER BEREITEN NACHRICHTENSENDUNGEN VOR",
-                "Mit Nachrichten im Unterricht arbeiten",
-                "Medienkonsum fördert ungesunde Lebensweise",
-                "Kritik an der Nachrichtensprache",
-                "Jugendliche konsumieren mehr Fett und Zucker",
-                "Informationen leichter verstehen",
-                "Fachleute warnen vor unsachgemäßer Nutzung von Sprunggeräten"
+                {id: "a", text: "Viele Trampoline haben erhebliche Sicherheitsmängel"},
+                {id: "b", text: "Traditionelle Nachrichtenmedien immer noch getragt"},
+                {id: "c", text: "Soziale Medien ersetzen alte Informationsquellen"},
+                {id: "d", text: "Schüler bereiten Nachrichtensendungen vor"},
+                {id: "e", text: "Mit Nachrichten im Unterricht arbeiten"},
+                {id: "f", text: "Medienkonsum fördert ungesunde Lebensweise"},
+                {id: "g", text: "Kritik an der Nachrichtensprache"},
+                {id: "h", text: "Jugendliche konsumieren mehr Fett und Zucker"},
+                {id: "i", text: "Informationen leichter verstehen"},
+                {id: "j", text: "Fachleute warnen vor unsachgemäßer Nutzung von Sprunggeräten"}
             ],
             
             texts: [
                 {
-                    content: `Die Weltgesundheitsorganisation (WHO) hat eine Studie veröffentlicht, die einen Zusammenhang zwischen Medienkonsum und ungesunder Ernährung bei Jugendlichen herstellt. Demnach konsumieren Jugendliche, die täglich mehr als vier Stunden vor Bildschirmen verbringen, deutlich mehr zucker- und fetthaltige Lebensmittel als Altersgenossen mit geringerem Medienkonsum. Die Studie empfiehlt Eltern, den Medienkonsum ihrer Kinder zu begrenzen und auf eine ausgewogene Ernährung zu achten.`,
-                    correctAnswer: "Medienkonsum fördert ungesunde Lebensweise"
+                    id: "text1",
+                    content: `Die meisten Menschen verbinden den Begriff „Barrierefreiheit“ mit dem Zugang zu Gebäuden oder Transportmitteln. Dabei betrifft Barrierefreiheit viel mehr Bereiche unseres Alltags, so zum Beispiel auch die Informations und Kommunikationstechnologie. Die APA, die Austria Presse Agentur, hat deshalb einen Nachrichtendienst in einfacher und leicht verständlicher Sprache ins Leben gerufen. Er wandet sich an Menschen die Lese- oder Lernschwierigkeiten haben oder die die deutsche Sprache noch nicht so gut beherrschen. Für diesen Nachrichtendienst werden die wichtigsten Meldungen des Tages aus Politik, Wirtschaft, Sport, Kultur und Lokalnachrichten für die Niveaustufen A2 und B1 geschrieben. Interessenten können sich die Texte fünfmal pro Woche am späten Nachmittag per E-Mail schicken lassen oder über eine besondere Informationsplattform bekommen. Das Projekt wird vom Sozialministerium gefördert und wurde gemeinsam mit einem Grazer Unternehmen entwickelt, das auf Textübertragungen für verschiedene Schwierigkeitsstufen spezialisiert ist. Der Nachrichtendienst wurde bereits als innovativer Beitrag zum Thema Barrierefreiheit ausgezeichnet.`,
+                    correctAnswer: "i",
+                    correctAnswerText: "i) Informationen leichter verstehen"
                 },
                 {
-                    content: `Die Austria Presse Agentur (APA) hat einen neuen Service gestartet: "Nachrichtenleicht". Dabei handelt es sich um ein Angebot, das aktuelle Nachrichten in leicht verständlicher Sprache präsentiert. Zielgruppe sind Menschen mit Lernschwierigkeiten, geringen Deutschkenntnissen oder kognitiven Einschränkungen. Die Texte werden von erfahrenen Journalisten verfasst und enthalten Erklärungen schwieriger Begriffe.`,
-                    correctAnswer: "Informationen leichter verstehen"
+                    id: "text2", 
+                    content: `Die WOH, die Weltgesundheitsorganisation warnt vor den Folgen „ungesunder“ Werbung im Internet. Kinder und Jugendiche treffen beim Nutzen der Sozialen Medien häufig auf Anzeigen für ungesunde Lebensmittel wie Süßigkeiten oder salzige und fettreiche Snacks. So werden Übergewicht und damit zusammenhängende Krankheiten im Erwachsenenalter gefördert, mahnt die Organisation. Sie fordert deshalb Regierungen dazu auf, diese Werbung zum Schutze der Kinder stärker zu begrenzen. Die WHO weist außerdem auf die Gefahr von Bewegungsmangel im Zusammenhang mit den Neuen Medien hin. Das betrifft nicht nur Jugendliche, sondern auch Kleinkinder Gerade in den ersten Lebensjahren sollte der natürliche Bewegungsdrang der Kinder genutzt werden, damit sie Freude an Bewegung und Sport entwickeln. Kleinkinder sollten sich mindestens drei Stunden pro Jahr bewegen und so wenig Zeit wie möglich vor einem Bildschirm verbringen. Überhaupt sollten Kinder, die jünger als zwei Jahre sind, grundsätzlich nicht vor ein Tablet oder einen PC gesetzt werden. Denn wer viel sitzt, wird in der Folge leichter krank.`,
+                    correctAnswer: "f",
+                    correctAnswerText: "f) Medienkonsum fördert ungesunde Lebensweise"
                 },
                 {
-                    content: `Immer mehr Lehrer integrieren aktuelle Nachrichten in ihren Unterricht. Sie nutzen dabei sowohl traditionelle Medien als auch Online-Quellen. Studien zeigen, dass Schüler durch die Auseinandersetzung mit tagesaktuellen Themen nicht nur ihr Allgemeinwissen verbessern, sondern auch kritische Medienkompetenz entwickeln. Besonders beliebt sind Projekte, bei denen Schüler selbst Nachrichten produzieren.`,
-                    correctAnswer: "Mit Nachrichten im Unterricht arbeiten"
+                    id: "text3",
+                    content: `Schülerinnen und Schüler sollen im Schulunterricht auch den Umgang mit Nachrichten lernen. Das forderten kürzlich in Wein die Teilnehmenden an einer Konferenz zur politischen Bildung von Jugendlichen. Das Ziel dabei ist, jungen Menschen den kritischen Umgang mit den Inhalten und der Präsentation von Nachrichten beizubringen. Heute ist der Zugriff auf Nachrichtensendungen so einfach wie noch nie. Viele Nachrichtensendungen des ORF können mindestens eine Woche lang im Internet abgerufen werden. Schülerinnen und Schüler können sie so zur eigenen Arbeit nutzen oder gemeinsam in der Klasse besprechen. Die Konferenz nannte auch gleich konkrete Fragen für die Analyse von Nachrichtensendungen: Welche Nachrichten werden angeboten - Politik und Wirtschaft, Unfälle. Sport oder Prominews? Berichten die Moderatorinnen und Moderatoren sachlich oder machen sie persönliche Bemerkungen zu den einzelnen Nachrichten? Wie ist die Reihenfolge, wie lange sind die Beiträge? Am besten eignen sich die Unterrichtsfächer Politische Bildung, Geschichte ind Deutsch oder Englisch, so die Expertenrunde.`,
+                    correctAnswer: "e",
+                    correctAnswerText: "e) Mit Nachrichten im Unterricht arbeiten"
                 },
                 {
-                    content: `Der deutsche TÜV warnt vor Sicherheitsmängeln bei vielen Trampolinen. Bei Tests wurden bei mehr als der Hälfte der geprüften Modelle erhebliche Sicherheitsdefizite festgestellt. Besonders kritisch: unzureichend abgesicherte Federn und instabile Rahmen. Experten raten Verbrauchern, beim Kauf auf geprüfte Sicherheit zu achten und Trampoline nur unter Aufsicht zu nutzen.`,
-                    correctAnswer: "Fachleute warnen vor unsachgemäßer Nutzung von Sprunggeräten"
+                    id: "text4",
+                    content: `Mit dem Trampolin den Körper in Schwung bringen für viele Menschen ist das Sprunggerät eine gute Möglichkeit, sich mit viel spaß und ohne allzu großen Aufwand zu bewegen. Besonders beleibt ist dasTrampolin bei Kindern. Expertinnen und Experten betonen auch die Vorteile des Hüpfens auf dem Trampolin. Die Bewegung auf dem Trampolin fördet nicht nur die Beweglichkeit ‚sondern auch die Koordination. Allerdings ist sie nicht ganz ungefährlich. Orthopäden weisen auf die extrem hohe Unfallgefahr hin. Die Ärzteschaft möchte kindren und Eltern keineswegs die Freude am Trampolinspringen verderben. Vielmehr möchte sie dazu aufrufen, einige Sicherheitsregeln zu befolgen, mit denen sich Unfälle leicht vermeiden lassen. Eine harte, ebene Stellfläche und ein Sicherheitsnetz sind dabei unverzichtbare Voraussetzungen, Viele Sportvereine bieten Kurse an, in denen Kinder sicheres Trampolinspringen lernen können.`,
+                    correctAnswer: "j",
+                    correctAnswerText: "j) Fachleute warnen vor unsachgemäßer Nutzung von Sprunggeräten"
                 },
                 {
-                    content: `Eine aktuelle Studie des Medienpädagogischen Forschungsverbunds Südwest zeigt: Trotz der Beliebtheit sozialer Medien informieren sich Jugendliche in Deutschland weiterhin vorwiegend über traditionelle Medien. Fernsehnachrichten und Tageszeitungen bleiben wichtige Informationsquellen. Allerdings nutzen Jugendliche diese Angebote zunehmend digital.`,
-                    correctAnswer: "Traditionelle Nachrichtenmedien immer noch getragt"
+                    id: "text5",
+                    content: `Die Klage, dass Jugendliche und Junge Erwachsene kein Interesse mehr an Nachrichten haben, ist unbegründet. So lautet zumindest eine der Schlussfolgerungen aus einer Studie zum durchschnittlichen Medienkonsum junger Menschen mit dem Schwerpunkt Nachrichten. Demnach lesen oder hören in Österreich nahezu 50% der Personen unter 30 Jahren täglich Nachrichten viele der Befragten gaben an, dass sie sich nicht auf die Inthalte der Sozialen Medien verlassen möchten, da ihre Glaubwürdigkeit often angezweifelt wird. Den Klassischen Medien wie Nachrichtensendungen oder Tageszeitungen wird hingegen eher geglaubt. Soziale Netzwerke können herkömmliche Nachrichtenquellen nicht ersetzen, so die vorherrschende Meinung auch wenn diese Quellen in der Gestaltung often als eher langweilig empfunden werden.`,
+                    correctAnswer: "b",
+                    correctAnswerText: "b) Traditionelle Nachrichtenmedien immer noch getragt"
                 }
             ],
 
-            // Lesen Teil 2 - النص الكامل
             longText: {
-                content: `André Bauernfeind ist Puppenmacher. In seiner Werkstatt in München stellt er Schaufensterpuppen her. Jede Puppe ist ein Unikat, handgefertigt und individuell gestaltet. Die Herstellung einer Puppe dauert etwa eine Woche und erfordert handwerkliches Geschick und künstlerisches Talent.
+                content: `Der Puppenmacher
 
-Die Geschichte der Schaufensterpuppe begann im 19. Jahrhundert in Frankreich. Ein Schneider fertigte die erste Puppe an, um seine Kreationen besser präsentieren zu können. Seitdem haben sich Materialien und Herstellungstechniken ständig weiterentwickelt.
+Die Schaufensterpuppe ist eine Pariserin und hatte erstmals 1849 in der Hauptstadt der Mode ihren Auftritt. Der französische Schneider Alexis Lavigne gilt als ihr Erfinder, auch wenn er damals seine Kleiderkreationen noch auf einer Schneiderpuppe vorführte.
+Bald schon taten es ihm andere Pariser Kollegen gleich. Sie begannen, ihre Modelle vor den Geschäften aufzustellen, um die Passanten in die Verkaufsräume zu locken. Als Anfang des 20. Jahrhunderts die ersten großen Kaufhäuser eröffneten, erlebte die Schaufensterpuppe ihren Durchbruch. Der Puppenmacher Lester Gaba entwickelte in den 1930er Jahren das erste lebensecht wirkende Modell, Cynthia. Sie durfte sogar mit auf Veranstaltungen, was beide berühmt machte. Fortan spiegelte die Schaufensterpuppe Zeitgeist und Schönheitsideale. 
 
-Bauernfeind verwendet für seine Puppen spezielle Materialien. Da die Puppen in direktem Kontakt mit Kleidung stehen, dürfen sie keine schädlichen Substanzen abgeben. Aus diesem Grund verwendet Bauernfeind nur zertifizierte, umweltfreundliche Farben und Lacke.
+Der Linzer Puppenmacher André Bauernfeind hat als Sammler begonnen, mittlerweile sind Schaufensterpuppen sein Beruf. Der 37-Jährige, der mehr als 1000 Modelle besitzt, ist österreichweit der Einzige, bei dem man sie reparieren lassen, aber auch mieten kann. Wer ihn an seinem Arbeitsplatz aufsucht, muss in den Keller. Die Eisentür steht offen, lädt ein in sein großes Atelier voller Schaufensterpuppen: Kinder, Frauen und Männer, mit Perücke, geschminkt oder farblos, sitzend, liegend, dürr, oder mollig, in Kisten verpackt oder in Einzelteilen von der Decke hängend.
 
-Die Karriere des Puppenmachers begann vor zwanzig Jahren. Damals konnte er sich seine erste Schaufensterpuppe nicht auf einmal leisten und zahlte in Raten. Heute stellt er nicht nur Puppen her, sondern handelt auch mit Puppen anderer Hersteller.
+Während sich die Puppen in der Welt draußen perfekt präsentieren, wird hier in der Werkstatt mitunter ordentlich an ihrer Oberfläche gekratzt. Der 37-Jährige ist so etwas wie ein Schönheitschirurg für Schaufensterpuppen. Er macht sie wieder hell, verpasst ihnen aber auch Ganzkörper-Liftings, wenn gewünscht. Die bestehende Farbe wird dann entfernt, anschließend eine Grundierung und Farbe aufgetragen. Er klebt ihnen falsche Wimpern an und trägt mit einem Pinsel Schminke auf. Die Kosmetikprodukte kommen meistens aus der Drogerie, tragen aber manchmal auch Luxusnamen wie Armani oder Dior. Nur herkömmlichen Nagellack kann Bauernfeld nicht verwenden, weil dieser die Ölfarbe auflöst.
 
-Seine Kunden sind Modehäuser, Designer und Theater. Jede Puppe wird nach den spezifischen Wünschen des Kunden angefertigt. Besonderen Wert legt Bauernfeind auf ökologische Aspekte: Alle verwendeten Materialien sind umweltverträglich und recyclingfähig.`,
+Nicht selten fehlt den Puppen ein Finger, ein Ohr oder eine Nase. Dann greift der Linzer zur Modelltermasse, deren Zusammensetzung streng geheim ist.Weniger geheim sind die Preise: Für 45 Euro fertigt er eine neue Nase, rekonstruiert ein Ohr oder auch ein Kinn. Wer allerdings einen Kopf modellieren lassen möchte, muss mit 2500 Euro und acht Wochen rechnen, für einen gesamten Körper mit 15.000 Euro und Monaten.
+
+Obgleich er als Child am liebsten mit Autos spielte, faszinierten ihn schon früh diese Mannequins in den Schaufenstern. Heute kommt er an keinem Schaufenster vorbei, ohne einen Blick hineinzuwerfen. „Ich erkenne schon an ihrem Standsockel um welchen Hersteller es sich handelt", sagt der gelernte Dekorateur. Sein erstes Exemplar kaufte er während seiner Ausbildung. 3500 Schilling wollte der Besitzer haben, man einigte sich auf Ratenzahlungen. Ein Jahr lang hat herabgezahlt. Die Puppe aus der Serie Ragazza mit der Nummer 9908 bekam bald Gesellschaft, die Sammlung vergrößerte sich sukzessive, zählte schon bald mehr als 100 Exponate.
+
+Aus dem Hobby wurde später ein Beruf. Bauernfeind verfeinerte sein Handwerk und übernahm schließlich ein altes Schaufensterpuppen-Unternehmen im Linz. Heute ist er Besitzer 1200 Puppen, vermietet und repariert sie, stellt Sonderanfertigungen her. Bauernfeind verkauft auch für andere Hersteller. Er besitzt exklusive die Handelsvertretung für eine belgische Schaufensterpuppen-Firma. Alle anderen renommierten Hersteller aus Europa haben irgendwann ihre Produktion nach Asien verlagert.
+
+Qualität und Nachhaltigkeit sind ihm wichtig. Gemeinsam mit einem Farblieferanten hat er deshalb eine Farbe für Puppen entwickelt, die nicht nur ökologisch einwandfrei, sondern auch für den Menschen unbedenklich ist. „Schließlich dringen die Farbstoffe in die Textilien ein. Meine Farbe könnte man sogar essen, und es würde nichts passieren."
+
+Weltweit gibt es etwa 100 Hersteller von Schaufensterpuppen, die zweimal im Jahr eine neue Kollektion herausbringen. Denn wie die Mode sind auch die Puppen Trends unterworfen: „In Frankreich, England und den USA werden natürliche Modelle immer beliebter, während bei uns noch abstrakte Modelle dominieren. Es lässt aber beobachten, dass man von einer Einheit gut wegkommt und dass immer häuftiger vielfarbige Figurtypen gewüncht werden", sagt der Puppenmacher.`,
                 questions: [
                     {
+                        id: "q1",
                         question: "Die erste Schaufensterpuppe wurde",
                         options: [
-                            "von einem deutschen Künstler entworfen.",
-                            "im 18. Jahrhundert hergestellt.", 
+                            "Anfang des 20. Jahrhunderts von einem Puppenmacher erschaffen.",
+                            "für die ersten großen Kaufhäuser produziert.",
                             "von einem französischen Schneider erfunden."
                         ],
                         correctAnswer: "von einem französischen Schneider erfunden."
                     },
                     {
-                        question: "André Bauernfeind",
+                        id: "q2",
+                        question: "Bei der Restaurierung der Schaufensterpuppen",
                         options: [
-                            "darf keinen normalen Nagellack auftragen.",
-                            "verwendet nur industriell gefertigte Materialien.",
-                            "arbeitet ausschließlich für Modehäuser."
+                            "darf Herr Bauernfeind keinen normalen Nagellack auftragen.",
+                            "können keine Luxusmarken eingesetzt werden.",
+                            "verwendet er nur billige Produkte."
                         ],
-                        correctAnswer: "darf keinen normalen Nagellack auftragen."
+                        correctAnswer: "darf Herr Bauernfeind keinen normalen Nagellack auftragen."
                     },
                     {
-                        question: "Zu Beginn seiner Karriere", 
+                        id: "q3",
+                        question: "Der Puppenmacher",
                         options: [
-                            "hatte Bauernfeind keine eigene Werkstatt.",
+                            "hat schon als Kind gerne mit Puppen gespielt.",
                             "konnte seine erste Schaufensterpuppe nicht auf einmal zahlen.",
-                            "stellte er nur Puppen für Theater her."
+                            "organisierte eine Ausstellung mit Schaufensterpuppen."
                         ],
                         correctAnswer: "konnte seine erste Schaufensterpuppe nicht auf einmal zahlen."
                     },
                     {
-                        question: "Heute",
+                        id: "q4",
+                        question: "Herr Bauernfeind",
                         options: [
-                            "stellt Bauernfeind nur noch Puppen für Museen her.",
+                            "eröffnete die erste Linzer Firma für Schaufensterpuppen.",
                             "handelt mit Schaufensterpuppen anderer Produzenten.",
-                            "arbeitet er ausschließlich mit ökologischen Materialien."
+                            "stellt heute keine Schaufensterpuppen mehr her."
                         ],
                         correctAnswer: "handelt mit Schaufensterpuppen anderer Produzenten."
                     },
                     {
-                        question: "Bauernfeinds Puppen",
+                        id: "q5", 
+                        question: "Schaufensterpuppen",
                         options: [
                             "können mit umweltfreundlichen Farben bemalt werden.",
-                            "werden ausschließlich aus recyceltem Material hergestellt.",
-                            "sind immer gleich gestaltet."
+                            "sind nicht von Tendenzen der Mode abhängig.",
+                            "sollen immer die gleiche Form haben."
                         ],
                         correctAnswer: "können mit umweltfreundlichen Farben bemalt werden."
                     }
                 ]
             },
 
-            // Lesen Teil 3
+            // Lesen Teil 3 - البيانات المحدثة
             situations: [
-                "Drei Flöhe und das Jesuskind - Ein Weihnachtsstück für Kinder ab 4 Jahren",
-                "Weihnachtsshow - Spektakuläre Akrobatik und bezaubernde Musik",
-                "Lasse Lindgren Ensemble - Jazzkonzert mit skandinavischen Klängen",
-                "10 Jahre FÜR DIE KATZ - Comedy-Programm zum Jubiläum",
-                "Weihnachtsvarieté im Café Spitz - Traditionelles Varieté mit modernen Elementen"
+                {
+                    id: "11",
+                    text: "Sie wollen mit Ihren Kindern eine etwas andere, eher lustige Seite von Weihnachten erleben.",
+                    correctAnswer: "H"
+                },
+                {
+                    id: "12",
+                    text: "Sie möchten mit Ihrer zwölfjährigen Tochter ein altersgerechtes Theaterstück besuchen.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "13",
+                    text: "Sie wollen eine Stadtbesichtigung mit ein wenig Sport verbinden.",
+                    correctAnswer: "F"
+                },
+                {
+                    id: "14",
+                    text: "Sie möchten an einem Abend alte und neue Weihnachtslieder hören.",
+                    correctAnswer: "I"
+                },
+                {
+                    id: "15",
+                    text: "Sie lieben Auftritte von herausragenden Musikern.",
+                    correctAnswer: "J"
+                },
+                {
+                    id: "16",
+                    text: "Sie möchten zusammen mit Ihrem kleinen Neffen einen Kinderfilm sehen.",
+                    correctAnswer: "B"
+                },
+                {
+                    id: "17",
+                    text: "Sie möchten im Dezember essen gehen und ein buntes, künstlerisches Programm genießen.",
+                    correctAnswer: "L"
+                },
+                {
+                    id: "18",
+                    text: "Sie wollen Ihrem Freund, der Tanztheater liebt, eine Eintrittskarte zum Geburtstag schenken.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "19",
+                    text: "Ihre Schwester interessiert sich für die Biographien größer Musiker.",
+                    correctAnswer: "E"
+                },
+                {
+                    id: "20",
+                    text: "Sie wollen mit Bekannten ausgehen und mal wieder herzhaft lachen.",
+                    correctAnswer: "K"
+                }
             ],
 
             ads: [
                 {
-                    id: "a",
-                    title: "Drei Flöhe und das Jesuskind",
-                    content: "Ein bezauberndes Weihnachtsstück für die ganze Familie. Die Geschichte dreier Flöhe, die das Jesuskind in der Krippe besuchen. Für Kinder ab 4 Jahren geeignet. Termine: 15.-23. Dezember, täglich 15:00 Uhr. Eintritt: Kinder 8€, Erwachsene 12€."
+                    id: "A",
+                    title: "Theater Marabu: Polleke",
+                    content: "In Pollekes elfjährigem Leben scheint im Augenblick etwas falsch zu laufen. Es stört sie ja gar nicht, dass ihre Eltern geschieden sind. Sie hat ihren Papa sehr lieb, und sie hat eine prima Mama. Ihr Lehrer ist eigentlich auch ganz in Ordnung, aber muss der sich gleich in ihre Mama verlieben? Und dann ist Polleke sogar selbst schuld an allem. Aber sie gibt die Hoffnung nicht auf, dass am Ende doch alles gut wird, auch mit Mimun, dem liebsten Jungen auf der ganzen Erde und im ganzen Weltall... Datum: 01.11., Uhrzeit: 16.00 Uhr, Ort: Theaterwerkstatt, Alter: ab 9 Jahren"
                 },
                 {
-                    id: "b", 
-                    title: "Weihnachtsshow",
-                    content: "Erleben Sie eine atemberaubende Show mit internationalen Artisten. Akrobatik, Tanz und magische Momente erwarten Sie. Vom 20. Dezember bis 6. Januar im Stadttheater. Vorverkauf an allen bekannten Vorverkaufsstellen."
+                    id: "B",
+                    title: "Rasmus und der Landstreicher",
+                    content: "Nach dem Kinderbuch von Astrid Lindgren. Rasmus ist in einem Kinderheim aufgewachsen, er hat keine Eltern. Eines Tages läuft er davon und will sich Eltern suchen. Die erste Nacht schläft er in einer Scheune im Stroh, und am Morgen entdeckt er neben sich Oskar. Oskar ist ein Landstreicher, der keine Wohnung hat. Zuerst hat Rasmus Angst vor ihm, aber schon bald merkt er, dass Oskar ein prächtiger Mensch ist. Gemeinsam suchen sie Eltern für Rasmus. Doch als sie endlich prima Eltern gefunden haben, da wollen die beiden sich nicht mehr trennen. Datum: 6.11., Uhrzeit: 15.00 Uhr, Ort: Bürgerkino, Alter: ab 5 Jahren"
                 },
                 {
-                    id: "c",
-                    title: "Lasse Lindgren Ensemble", 
-                    content: "Der bekannte schwedische Jazzmusiker Lasse Lindgren kommt mit seinem Ensemble nach Deutschland. Genießen Sie einen Abend mit nordischen Jazzklängen. 18. Dezember, 20:00 Uhr in der Philharmonie. Karten: 25-45€."
+                    id: "C",
+                    title: "Claus von Wagner: Im Feld",
+                    content: "Die Verführung des Buches 'Im Feld' handelt von einem jungen Mann, der bisher mit den Wölfen gereult hat. Er hat stets gemacht, was alle gemacht haben, und sich nach der Mehrheit gerichtet: Führerschein, Studium, Beruf, Freundin, iPod. In dieser Reihenfolge, Nun soll er plötzlich Vater werden. Doch der Antibeld ergreift die Flucht, um nachzudenken. Verfolgt von städtischen Beamten, der Polizei, den Reportern eines regionalen Hörfunksenders und seinen eigenen Ängsten, stürzt er sich in pointenreiche Analysen des Weltzustandes… Datum: 30.10. bis 01.11., Uhrzeit: 20.00 Uhr, Ort: Kinopolis"
                 },
                 {
-                    id: "d",
+                    id: "D",
+                    title: "Geschlossene Gesellschaft",
+                    content: "Drama von Jean-Paul-Sartre: Drei Personen, ein Mann und zwei Frauen, werden nach ihrem Tod in einem Zimmer eingesperrt, das keiner der drei jemals wieder verlassen und niemand anderes je betreten wird: Der Ort des Geschehens ist die Hölle. Alle drei sind sich bewusst, dass sie sich in der Hölle befinden, und machen sich auf das Schlimmste gefasst, aber die erwartete Folter und die körperlichen Qualen stellen sich nicht ein, nur eine leichte Hitze ist zu verspüren. Tastend versuchen Sie, voneinander den Grund für die Höllenfahrt zu erfahren, ohne jedoch ihre eigene Schuld zu offenbaren. Datum: 01.11., Uhrzeit: 20.00 Uhr, Ort: Euro Theater Central"
+                },
+                {
+                    id: "E",
+                    title: "Beehovens Bonn",
+                    content: "Im Dezember 1770 erblickte Ludwig von Beethoven in der Bonngasse 20 das Licht der Welt. Wer ahnte damals, dass mit ihm ein musikalisches Genie geboren wurde, dessen Musik heute in aller Welt bekannt ist? Bis 1792 lebte Beethoven in Bonn, bevor er nach Wien ging und zu einem der berühmtesten Komponisten der Welt wurde. Es werden Orte und Plätze aufgesucht, wo der weltberühmte Komponist wirkte und die faszinierende Einblicke in das Alltagsleben dieses großen Bonners ermöglichen. Datum: 01.12. bis 31.12., Ort: Touristeninformation"
+                },
+                {
+                    id: "F",
+                    title: "Radtour am Rhein",
+                    content: "Hinweis: Diese Tour ist nur von Gruppen auf Anfrage buchbar! Die Fahrräder sind mitzubringen. Die Tour wird vom ADFC angeboten und verläuft am Rhein, einem der geschichtsträchtigsten Flüsse der Welt. Er symbolisiert wie für viele Rheinanwohner auch für Bond über Jahrhunderte hinweg bis auf den heutigen Tag die Lebensader der Stadt. Entlang des linksrheinischen Rheinufers sprechen die steinernen Zeitzeugen der Bonner Geschichte für sich, wobei auch die zukunftsweisenden Aspekte der Stadt nicht zu kurz kommen. Datum: 01.02. bis 31.12. Ort und Uhrzeit: nach Vereinbarung"
+                },
+                {
+                    id: "G",
+                    title: "Weihnachtsmarkt in Koblenz",
+                    content: "Über 100 festlich geschmückte Holzhäuschen, der Duft von Lebkuchen und Glühwein liegt in der Luft. Weihnachtsmelodien erklingen im malerischen Ambiente der historischen Altstadt unweit der Einkaufsstraßen: Das ist der Koblenzer Weihnachtsmarkt 2007. Alles, was das Herz in der Weihnachtszeit begehrte, findet sich hier wieder, denn auch in diesem Jahr warten wieder ein umfangreiches Angebot an Kunsthandwerk und Weihnachtsschmuck und eine riesige Auswahl an Geschenkartikein auf die Besucher. Abgerundet durch Weihnachtsbäckerei und viele Attraktionen, wird der Besuch auf dem Koblenzer Weihnachtsmarkt zu einem Erlebnis, das Sie sich nicht entgehen lassen sollen. Datum: 23.11. - 23.12., Ort: Fußgängerzone im Zentrum"
+                },
+                {
+                    id: "H",
+                    title: "Drei Flöhe in Bethlehem",
+                    content: "Im Jahr I machten sich drei Flöhe aus Deutschland auf den Weg nach Israel, um einmal so richtig zu entspannen. Leider war zu diesem Zeitpunkt eine Volkszählung im vollen Gange und die einzige Übernachtungsmöglichkeit fanden sie in einem Stall bei Bethlehem. Dass sie diese Unterkunft auch noch mit einem kleinen Kind teilen müssten, damit rechnete keiner der drei Flöhe. Und dass dieses Kind auch noch eine Berühmtheit war, machte die ganze Sache für die drei Flöhe zu einem aufregenden Abenteuer. Dieses neue Kinderstück aus der Feder von Dirk Zimmer erzählt die Weihnachtsgeschichte auf humorvolle und geführvolle Weise aus der Sicht der drei Flöhen. Datum: 26.11. – 22.12., Uhrzeit: jeweils 15.00 Uhr, Ort: Innenhof des Rathauses. Alter: ab 5 Jahre"
+                },
+                {
+                    id: "I",
+                    title: "Weihnachtsshow: 'Stille Nacht' trifft 'Last Christmas'",
+                    content: "Gospel umarmt Soul, und Pop küsst Klassik. Als 1997 die Idee entstand, eine Weihnachtsshow zu entwickeln, die die schönsten Weihnachtslieder aller Zeiten und aller Genre in sich vereint, konnte sich keiner so recht vorstellen, dass diese Show einmal zur erfolgreichsten Weihnachtsshow Deutschlands avancieren würde. Seit zehn Jahren begeistert nun die Band 'Christmas Moments' von Thomas Schwab & Band das Publikum sowohl in den großen Konzerthallen der Republik (unter anderem Arena Trier, Phönixhalle Mainz) als auch vor den Fernsehern (ARD- Ausstrahlungen seit 2004), 'Christmas Moments' trifft mitten ins Herz und konnte in den letzten Jahren mehr als 500.000 Zuschauer begeistern. Datum: 11.12., Uhrzeit: 20.00 Uhr, Ort: Rhein-Mosel-Halle"
+                },
+                {
+                    id: "J",
+                    title: "Lasse Lindgren Ensemble: Jazz vom Feinsten",
+                    content: "Jazz vom Feinsten mit durchaus gewollten konservativen Zügen. Der Trompeter Lasse Lindgren ist einer der innovativen Spitzen-Trompeter der aktuellen Jazzszene in Schweden, der in vielen internationalen Biobands und zusammen mit anderen berühmten Jazzmusikern gespielt hat. Von der 'Tageszeitung 'Svenska Dagbladet' wurde er als 'einer der kompetentesten Trompetenspieler dieses Landes bezeichnet und Randy Brecker schrieb: 'Es ist so erfrischend, etwas zu hören, was wirklich originell ist! Lass Lindgren. Du bist ein wundervoller Spieler und Komponist'. Sein neuestes Projekt ist ein Glaubensbekenntnis an die Kraft und Energie des Jazz mit eigener Handschrift: Lasse Lindgren hat eine virtuose, immer transparente Hingabe zu seinem Instrument. Datum: 1.11., Uhrzeit : 19.00 Uhr, Ort: Irish Pub im Stadtzentrum"
+                },
+                {
+                    id: "K",
                     title: "10 Jahre FÜR DIE KATZ",
-                    content: "Das erfolgreiche Comedy-Programm feiert Jubiläum! Lassen Sie sich von den charmanten Geschichten der Ensemblemitglieder unterhalten. 12. Dezember, 19:30 Uhr im Kulturzentrum. Eintritt: 15€."
+                    content: "Unglaublich! 10 Jahre ist es bereits her, seit FÜR DIE KATZ wie ein Faustschlag ins Licht der Öffentlichkeit traten und sich binnen kürzester Zeit in die Spitzenriege der deutschen Komiker katapultierten. Heute befinden sich die beiden mit Preisen überhäuften Weltbürger Benno Rex und Karl Salzburger auf dem vorläufigen Höhepunkt ihrer eindrucksvollen Karriere und gelten als die vielseitigsten, kreativsten und für Presse wie Fans schlichtweg lustigsten Komodianten Deutschlands ihre Wortschöpfungen und Charaktere erweisen sich immer wieder als richtungsweisende Leitsterne für die gesamte Comedy-Branche. Datum: 5.11., Uhrzeit: 20.00 Uhr, Ort: Haus des Kabaretts"
                 },
                 {
-                    id: "e",
-                    title: "Weihnachtsvarieté im Café Spitz",
-                    content: "Tradition meets Modern: Unser Weihnachtsvarieté verbindet klassische Varieté-Elemente mit moderner Bühnentechnik. Vom 10.-30. Dezember, Dienstag bis Sonntag, 20:00 Uhr. Reservierung empfohlen."
+                    id: "L",
+                    title: "Weihnachtsvariete im Café Spitz",
+                    content: "Das Weihnachtsvariete erwartet Sie auch in diesem Jahr mit atemberaubender Akrobatik, traumhafter Jonglage, ergänzt von Livermusikern. Seien Sie dabei und staunen Sie vielleicht mit ihrer Familie, mit ihren Lieblingskollegen oder der ganzen Firma oder einfach nur mit ihrem oder ihrer Liebsten. Karl-Heinz Helmschrot hat auch in diesem Jahr wieder eine faszinierende Gruppe von sehr unterschiedlichen Künstlern zusammengestellt. Zum 10-jährigen Jubiläum - 10 Künstler! Nicht zuständig ist er für Ihr leibliches Wohl! Dafür haben die Köche des Café Spitz wieder eine internationale Karte zusammengestellt, also freuen Sie sich auf Köstlichkeiten aus aller Welt. Datum: 9.12., Uhrzeit: 21.00 Uhr, Ort: Café Spitz"
                 }
             ],
 
-            // الإجابات الصحيحة لـ Lesen Teil 3
-            teil3Answers: {
-                11: "Drei Flöhe und das Jesuskind - Ein Weihnachtsstück für Kinder ab 4 Jahren",
-                12: "Weihnachtsshow - Spektakuläre Akrobatik und bezaubernde Musik", 
-                13: "Lasse Lindgren Ensemble - Jazzkonzert mit skandinavischen Klängen",
-                14: "10 Jahre FÜR DIE KATZ - Comedy-Programm zum Jubiläum",
-                15: "Weihnachtsvarieté im Café Spitz - Traditionelles Varieté mit modernen Elementen"
-            },
-
             // Sprachbausteine Teil 1
             blankText1: {
-                content: `Hallo Lina, hallo Florian,
-wie geht es euch? Wir hoffen, dass ihr beide gesund seid und es euch gut geht. Ihr __(21)__ euch sicher fragen, warum wir so lange nicht geschrieben haben. Die Antwort ist einfach: Wir waren im Urlaub! Zwei Wochen in Italien, bei Chiaras Familie.
+                content: `Liebe Lina, leber Florian,
 
-Der Urlaub war wirklich wunderbar. Das Wetter war perfekt __(22)__ Strandtage und Ausflüge. Wir haben viel unternommen und __(23)__ Chiaras Familie viele schöne Orte besucht. Besonders beeindruckt hat uns __(24)__ Besuch in Venedig. Diese Stadt ist einfach magisch!
+nun sind wir schon einige Monate in unserer neuen Wohnung, und ihr habt uns noch immer nicht
+besucht. Ihr ________ doch endlich unser neues Heim und unsere kleine Stadt Kennenlernen.
+Deshalb möchten wir euch ________ das verlängerte Wochenende Anfang Juni einladen. Wenn ihr am
+Donnerstagabend anreist, haben wir drei ganze Tage zur Verfügung. Wohnen könnt ihr natürlich
+ ________ uns. Emma fährt im Juni in Urlaub, und sie überlässt euch gern ihr Zimmer.
 
-Während __(25)__ Aufenthalts in Italien haben wir nicht nur die Sehenswürdigkeiten besichtigt, sondern auch die italienische Küche genossen. Die Restaurants __(26)__ dort einfach fantastisch. Jeden Abend haben wir in einem anderen Restaurant gegessen, __(27)__ wir die lokale Spezialitäten probieren konnten.
+Die Stadt Steyr hat ________ zu bieten. Wir können eine Führung durch die historische Altstadt
+machen, die romantischen Innenhöfe besichtigen und auf ________ Tum der Stadtpfarrkirche steigen.
+Da geht es über 228 Stufen 60 Meter hinauf. Bei einem längeren Rundgang ________ Auch die
+wunderbare Schlossbibliothek und das Tapetenzimmer zu besichtigen. Besonders interessant ist
+die Runde durch den Wehrgraten, ________ man an den alten Bauten den Wandel der Industrie
+nachvollziehen kann, ________ erfährt man alles über die Eisenindustrie, die den Reichtum der Stadt
+begründet hat.
 
-__(28)__ besonders gefreut hat uns, dass Chiaras Familie so gastfreundlich war. Sie haben uns in __(29)__ Haus aufgenommen und sich rundum um uns gekümmert. Wir haben __(30)__ sehr willkommen gefühlt.
+Außerdem finden an  ________ Wochenende die jährlichen Literaturtage Stadt. Bei dieser Veranstaltung
+präsentieren zeitgenössische Autorinnen und Autoren ihre Neuerscheinungen. Die Lesungen
+finden zum Großteil in den prächtigen Arkadenhöfen statt. Die Stimmung dort ist wirklich eine ganz
+besondere. Lina, das wäre doch was für dich, oder?
 
-Jetzt sind wir zurück in Deutschland und müssen uns wieder an den Alltag gewöhnen. Das fällt nicht leicht nach so einem schönen Urlaub!
+Auch die Umgebung kann ________ sehen lassen. Praktisch vor den Toren der Stadt beginnt der
+Nationalpark Kalkalpen, Dort kann man wunderbar wandern und Rad fahren. Ihr könnt in der Stadt
+auch Räder ausleihen.
 
-Wir würden uns freuen, bald von euch zu hören. Vielleicht könnt ihr uns ja demnächst besuchen?
+Wir hoffen sehr, dass ihr noch keine Plane für das Wochenende habt und zu uns kommen könnt.
+Viele liebe Grüße und hoffentlich bis bald!
 
-Liebe Grüße
 Chiara und Mark`,
-                answers: ["könnt", "für", "bei", "einiges", "dem", "sind", "wo", "Dabei", "diesem", "uns"]
+                options: [
+                    ["könnt", "müsst", "sollt"],      // 21
+                    ["an", "für", "zu"],           // 22
+                    ["bei", "mit", "zu"],      // 23
+                    ["einiges", "etwas", "vieles"],         // 24
+                    ["das", "dem", "den"], // 25
+                    ["ist", "sind", "waren"],          // 26
+                    ["wann", "wie", "wo"], // 27
+                    ["Dabei", "Damit", "Dann"], // 28
+                    ["dabei", "daneben", "darin"],                 // 29
+                    ["man", "sich", "sie"]                // 30
+                ],
+                answers: ["sollt", "zu", "bei", "einiges", "den", "können", "da", "Dabei", "dem", "etwas"]
             },
 
             // Sprachbausteine Teil 2
             blankText2: {
-                content: `Bio-Lebensmittel werden immer beliebter. Immer mehr Menschen fragen __(31)__, diese Produkte wirklich gesünder sind. Studien zeigen, dass Bio-Produkte weniger Pestizidrückstände enthalten. __(32)__ sind sie oft reicher an bestimmten Nährstoffen.
+                content: `Was steckt hinter "Bio"? 
 
-Bio-Lebensmittel __(33)__ keine künstlichen Farb- oder Aromastoffe. Hinter der Bio-Zertifizierung steckt ein strenges Kontrollsystem. Die Bauern müssen __(34)__ die Einhaltung der Richtlinien garantieren.
+Überall gibt es inzwischen Bio-Lebensmittel – aber häufig fehlen den Käufern Hintergrundinformationen. 
+Viele Verbraucher fragen sich beispielsweise, 
+________ Bio-Produkte nun auch wirklich die gesünderen sind. 
+Skepsis macht sich breit, spätestens wenn wieder einmal ein Skandal in den Nachrichten ist. 
+________ sind Bio-Produkte teurer – und den Aufpreis will man nur zahlen, 
+wenn man sicher ist, dass die Bio-Lebensmittel die bessere Wahl sind. 
+Der Informationsdienst der Bundesministeriums für Ernährung, Landwirtschaft und Verbraucherschutz gibt darüber eine eindeutige Auskunft: 
+Bio-Lebensmittel sind gesünder. Sie 
+________ weniger Nitrat, mehr Nährstoffe und sind besser geeignet, wenn man Allergien hat.
 
-Der Anbau von Bio-Produkten soll die Umwelt __(35)__. Die Landwirte verzichten __(36)__ chemische Pflanzenschutzmittel und verwenden stattdessen natürliche Methoden.
+Doch Bio-Lebensmittel sind nicht nur gut für die Gesundheit. 
+Bei vielen Verbrauchern steht 
+________ ihrem Einkaufsverhalten ein ökologisches Bewusstsein. 
+Bio-Verbraucher machen sich Gedanken über die Herkunft der Lebensmittel, denn auch die umweltfreundliche Landwirtschaft ist besser für Tiere und Pflanzen, kurz: Sie 
+________ unsere Umwelt. 
+Und viele Bio-Verbraucher wollen als gesunde Menschen in einer gesunden Umwelt leben und auch der nächsten Generation eine gesunde Umwelt hinterlassen.
 
-Verbraucher, die sich __(37)__ Bio-Lebensmittel interessieren, sollten auf das EU-Bio-Siegel achten. Dieses Siegel wird nur für Produkte __(38)__, die nach den strengen EU-Richtlinien produziert wurden.
+Bio-Lebensmittel kommen 
+________ ökologischer Landwirtschaft, die im Einklang mit der Natur steht. 
+Die Mindestrichtlinien der Bio-Landwirtschaft beinhalten eine artgerechte Tierhaltung: Alle Tiere müssen ausreichend Platz haben, es gibt keine langen Tiertransporte, keine Gentechnik. 
+Die Produkte werden möglichst in der näheren Umgebung verkauft, beispielsweise 
+________ Wochenmärkten oder in Bio-Supermärkten. 
+Außerdem dürfen weder Kunstdünger noch chemische Schädlingsbekämpfungsmittel 
+________ werden.
 
-Es ist wichtig, __(39)__ wissen, __(40)__ Bio-Lebensmittel zwar umweltfreundlicher produziert werden, aber nicht automatisch gesünder sind als konventionelle Produkte.`,
-                answers: ["OB", "AUSERDEM", "ENTHALTEN", "HINTER", "SCHÜTZEN", "AUS", "AN", "VERWENDET", "AUS", "DASS"]
+Wenn die Bio-Lebensmittel weiterverarbeitet werden – beispielsweise aus Bio-Eiern, Bio-Mehl und Bio-Zucker ein Bio-Kuchen gebacken wird –, 
+dürfen 
+________ nur Bio-Lebensmittel benutzt werden. 
+Für Bio-Produkte gibt es übrigens auch ein Zertifikat, das Bio-Siegel. 
+Diese Richtlinien garantieren, 
+________ die Produkte wirklich "bio" sind.`,
+                options: ["AB", "AUF", "AUS", "AUßERDEM", "DASS", "ENTHALTEN", "ENTHALTEN", "FÜR", "HINTER", "OB", "SOGAR", "SONDERN", "VERWENDET", "WENN", "WIRKLICH"],
+                answers: ["OB", "AUßERDEM", "ENTHALTEN", "HINTER", "SCHÜTZEN", "AUS", "AUF", "VERWENDET", "WIRKLICH", "DASS"]
             }
         };
 
@@ -1126,24 +1151,14 @@ Es ist wichtig, __(39)__ wissen, __(40)__ Bio-Lebensmittel zwar umweltfreundlich
             setupEventListeners();
         });
 
-        let currentLang = 'ar';
         let isDarkMode = false;
 
         function initializePage() {
             // تحميل الإعدادات المحفوظة
-            const savedLang = localStorage.getItem('language') || 'ar';
             const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-            const username = localStorage.getItem('username') || 'زائر';
-            const access = localStorage.getItem('access');
             
-            changeLanguage(savedLang);
             if (savedDarkMode) {
                 toggleDarkMode();
-            }
-            
-            // التحقق من حالة المستخدم
-            if (access === 'paid' && username) {
-                document.getElementById('premiumBadge').style.display = 'flex';
             }
             
             // تهيئة الأجزاء
@@ -1161,13 +1176,13 @@ Es ist wichtig, __(39)__ wissen, __(40)__ Bio-Lebensmittel zwar umweltfreundlich
             textsList.innerHTML = '';
 
             // إضافة العناوين
-            examData.headings.forEach((heading, index) => {
+            examData.headings.forEach((heading) => {
                 const headingItem = document.createElement('div');
                 headingItem.className = 'heading-item';
                 headingItem.innerHTML = `
-                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                    <strong>${heading.id})</strong> ${heading.text}
                 `;
-                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingItem.dataset.letter = heading.id;
                 headingsList.appendChild(headingItem);
             });
 
@@ -1176,10 +1191,10 @@ Es ist wichtig, __(39)__ wissen, __(40)__ Bio-Lebensmittel zwar umweltfreundlich
                 const textItem = document.createElement('div');
                 textItem.className = 'question';
                 textItem.innerHTML = `
-                    <h3>Text ${index + 1}</h3>
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
                     <div class="text-content">${text.content}</div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
                     </div>
                 `;
                 textsList.appendChild(textItem);
@@ -1190,14 +1205,14 @@ Es ist wichtig, __(39)__ wissen, __(40)__ Bio-Lebensmittel zwar umweltfreundlich
             const longText = document.getElementById('longText');
             const questionsList = document.getElementById('questionsList');
 
-            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
 
             questionsList.innerHTML = '';
             examData.longText.questions.forEach((question, index) => {
                 const questionItem = document.createElement('div');
                 questionItem.className = 'question';
                 questionItem.innerHTML = `
-                    <h3>Frage ${index + 6}</h3>
+                    <h3>Question ${index + 6}</h3>
                     <p><strong>${question.question}</strong></p>
                     <div class="options">
                         ${question.options.map((option, optIndex) => `
@@ -1207,7 +1222,7 @@ Es ist wichtig, __(39)__ wissen, __(40)__ Bio-Lebensmittel zwar umweltfreundlich
                         `).join('')}
                     </div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
                     </div>
                 `;
                 questionsList.appendChild(questionItem);
@@ -1219,14 +1234,12 @@ Es ist wichtig, __(39)__ wissen, __(40)__ Bio-Lebensmittel zwar umweltfreundlich
             const adsList = document.getElementById('adsList');
 
             situationsList.innerHTML = '';
-            examData.situations.forEach((situation, index) => {
+            examData.situations.forEach((situation) => {
                 const situationItem = document.createElement('div');
                 situationItem.className = 'situation-item';
                 situationItem.innerHTML = `
-                    <strong>${index + 11})</strong> ${situation}
-                    <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
-                    </div>
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
                 `;
                 situationsList.appendChild(situationItem);
             });
@@ -1236,27 +1249,87 @@ Es ist wichtig, __(39)__ wissen, __(40)__ Bio-Lebensmittel zwar umweltfreundlich
                 const adItem = document.createElement('div');
                 adItem.className = 'ad-item';
                 adItem.innerHTML = `
-                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
-                    <p>${ad.content}</p>
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
                 `;
                 adsList.appendChild(adItem);
             });
         }
 
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
         function initializeSprachbausteine() {
             // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
             const blankText1 = document.getElementById('blankText1');
-            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText1.innerHTML = textWithBlanks1;
 
             // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
             const blankText2 = document.getElementById('blankText2');
-            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 31]}</span></span>`;
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText2.innerHTML = textWithBlanks2;
         }
@@ -1266,35 +1339,8 @@ Es ist wichtig, __(39)__ wissen, __(40)__ Bio-Lebensmittel zwar umweltfreundlich
             document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
             document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
             
-            // زر الرئيسية
-            document.getElementById('homeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html';
-            });
-            
             // زر الوضع الليلي
             document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-            
-            // زر المستخدم
-            document.getElementById('userBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#profile';
-            });
-            
-            // زر اللغة
-            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
-            document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const lang = option.getAttribute('data-lang');
-                    changeLanguage(lang);
-                    document.getElementById('langDropdown').classList.remove('show');
-                });
-            });
-            
-            // إغلاق القوائم المنسدلة بالنقر خارجها
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.language-selector')) {
-                    document.getElementById('langDropdown').classList.remove('show');
-                }
-            });
         }
 
         function showAllAnswers() {
@@ -1304,10 +1350,10 @@ Es ist wichtig, __(39)__ wissen, __(40)__ Bio-Lebensmittel zwar umweltfreundlich
             document.querySelectorAll('.blank-answer').forEach(answer => {
                 answer.classList.remove('hidden');
             });
-            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+            document.querySelectorAll('.heading-item').forEach(heading => {
                 const letter = heading.dataset.letter;
                 examData.texts.forEach(text => {
-                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                    if (text.correctAnswer === letter) {
                         heading.classList.add('matched');
                     }
                 });
@@ -1337,29 +1383,6 @@ Es ist wichtig, __(39)__ wissen, __(40)__ Bio-Lebensmittel zwar umweltfreundlich
             } else {
                 themeIcon.className = 'fas fa-moon';
             }
-        }
-
-        function toggleLangDropdown() {
-            document.getElementById('langDropdown').classList.toggle('show');
-        }
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            
-            // تحديث جميع النصوص
-            Object.keys(t).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = t[key];
-                }
-            });
-            
-            localStorage.setItem('language', lang);
-            
-            // إعادة تهيئة المحتوى لترجمة الإجابات
-            initializeTeil1();
-            initializeTeil2();
         }
     </script>
 </body>

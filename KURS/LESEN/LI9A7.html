@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BILDER - TELC B2 Training</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LI9A7 - TELC B2 Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -20,16 +20,17 @@
             --text: #333;
             --text-light: #546E7A;
             --white: #ffffff;
-            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
-            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
-            --radius: 25px;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -38,8 +39,11 @@
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
             transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
         }
 
         body.dark-mode {
@@ -47,371 +51,71 @@
             color: var(--light);
         }
 
-        /* Header Controls - التعديل هنا */
-        .header-controls {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            right: 20px;
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            z-index: 1000;
-            gap: 15px;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .left-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-start;
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
         }
 
-        .right-controls {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
+        .theme-btn {
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            border: none;
-            background: var(--primary);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .control-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .control-btn:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-
-        .control-btn:hover {
-            transform: scale(1.15) rotate(5deg);
-            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
-        }
-
-        /* شارة المشترك الذهبية - تم التعديل */
-        .premium-badge-header {
-            position: fixed;
-            top: 20px;
-            right: 90px; /* بجانب الأزرار */
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            padding: 0.5rem;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
-        }
-
-        .home-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .home-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .home-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        /* Language Selector */
-        .language-selector {
-            display: flex;
-            position: relative;
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: var(--radius);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .lang-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .lang-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            background: var(--white);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
-            overflow: hidden;
-            min-width: 120px;
-            animation: dropdownSlide 0.3s ease;
-            z-index: 1001;
-        }
-
-        .dark-mode .lang-dropdown {
-            background: #1a237e;
-            color: var(--light);
-        }
-
-        @keyframes dropdownSlide {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .lang-dropdown.show {
-            display: block;
-        }
-
-        .lang-option {
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            color: var(--text);
-        }
-
-        .dark-mode .lang-option {
-            color: var(--light);
-            border-bottom: 1px solid #37474F;
-        }
-
-        .lang-option:hover {
-            background: #f5f5f5;
-            transform: translateX(5px);
-        }
-
-        .dark-mode .lang-option:hover {
-            background: #283593;
-        }
-
-        .lang-option:last-child {
-            border-bottom: none;
-        }
-
-        /* زر التهادا */
-        .tahada-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .tahada-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .tahada-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        /* المحتوى الرئيسي */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: var(--radius);
-            padding: 3rem;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(15px);
-            margin-top: 6rem;
-            transition: var(--transition);
-        }
-
-        .dark-mode .container {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: contentSlideUp 0.8s ease;
-        }
-
-        @keyframes contentSlideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .header h1 {
-            font-size: 2.8rem;
-            color: var(--primary-dark);
-            margin-bottom: 1rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .dark-mode .header h1 {
-            color: #90CAF9;
-        }
-
-        .page-subtitle {
             font-size: 1.2rem;
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .dark-mode .page-subtitle {
-            color: #B0BEC5;
-        }
-
-        /* أزرار التحكم */
-        .answer-controls {
-            position: sticky;
-            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1.5rem;
-            border-radius: var(--radius);
+            cursor: pointer;
             box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-            z-index: 100;
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
             display: flex;
             gap: 1rem;
-            justify-content: center;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-        }
-
-        .dark-mode .answer-controls {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            align-items: center;
         }
 
         .answer-btn {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
-            position: relative;
-            overflow: hidden;
             border: none;
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.5rem;
             transition: var(--transition);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .answer-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: right 0.6s;
-        }
-
-        .answer-btn:hover::before {
-            right: 100%;
+            min-width: 180px;
+            justify-content: center;
         }
 
         .answer-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
         }
 
         .show-answers {
@@ -424,47 +128,107 @@
             color: var(--white);
         }
 
-        /* التصميم الخاص بالأسئلة */
-        .section {
-            margin: 2rem 0;
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
             padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
             transition: var(--transition);
         }
 
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
         .dark-mode .section {
-            background: rgba(13, 71, 161, 0.9);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
         }
 
         .section-title {
             color: var(--primary-dark);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
             border-bottom: 2px solid var(--primary);
             font-weight: 600;
+            text-align: left;
         }
 
         .dark-mode .section-title {
             color: #90CAF9;
         }
 
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
         .question {
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: rgba(33, 150, 243, 0.05);
-            border-radius: 15px;
-            border-right: 4px solid var(--primary);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .question {
-            background: rgba(33, 150, 243, 0.1);
+            background: rgba(33, 150, 243, 0.08);
         }
 
         .options {
@@ -472,25 +236,25 @@
         }
 
         .option {
-            margin: 0.8rem 0;
-            padding: 1rem;
+            margin: 0.6rem 0;
+            padding: 0.8rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
             cursor: pointer;
             transition: var(--transition);
             font-weight: 500;
+            text-align: left;
         }
 
         .dark-mode .option {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .option:hover {
             border-color: var(--primary);
             background: rgba(33, 150, 243, 0.05);
-            transform: translateX(-5px);
         }
 
         .correct {
@@ -506,416 +270,493 @@
         .answer {
             margin-top: 1rem;
             padding: 1rem;
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 600;
-            animation: slideInUp 0.5s ease;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
         }
 
         @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* التصحيح - تم التعديل للوضع الليلي */
         .correct-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
-            border: 2px solid #4CAF50;
-            font-weight: bold;
+            border: 1px solid #4CAF50;
         }
 
         .dark-mode .correct-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
-            border: 2px solid #81C784;
+            border: 1px solid #81C784;
         }
 
         /* النصوص والعناوين */
         .text-content {
-            line-height: 1.7;
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
-            font-size: 1.1rem;
-            transition: var(--transition);
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .text-content {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
+        /* Lesen Teil 1 - تصميم محسن */
         .headings-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1rem;
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .heading-item {
-            padding: 1.2rem;
+            padding: 1rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            text-align: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
             font-weight: 500;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .heading-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .matched {
             border-color: #4CAF50;
             background: rgba(76, 175, 80, 0.1);
-            transform: scale(1.02);
         }
 
-        /* الإعلانات والوضعيات */
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
         .ads-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
         }
 
         .ad-item {
-            padding: 1.5rem;
+            padding: 1.2rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            min-height: 150px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .ad-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .ad-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-hover);
         }
 
-        .situations-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.2rem;
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
         }
 
-        .situation-item {
-            padding: 1.2rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            transition: var(--transition);
+        .dark-mode .ad-letter {
+            color: #90CAF9;
         }
 
-        .dark-mode .situation-item {
-            background: #1a237e;
-            border-color: #37474F;
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
         }
 
-        .situation-item:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.05);
+        .dark-mode .ad-title {
+            color: var(--light);
         }
 
-        /* Sprachbausteine */
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
         .fill-blanks {
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .blank-text {
-            line-height: 2;
-            margin: 1.5rem 0;
-            font-size: 1.2rem;
-            padding: 1.5rem;
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .blank-text {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .blank {
             display: inline-block;
             min-width: 120px;
-            margin: 0 8px;
-            padding: 0.5rem 1rem;
-            border-bottom: 3px solid var(--primary);
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
             text-align: center;
             font-weight: 600;
             background: var(--white);
-            border-radius: 8px;
+            border-radius: 6px;
             transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
         }
 
         .dark-mode .blank {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
         }
 
         .blank-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
             border-color: #4CAF50;
-            font-weight: bold;
         }
 
         .dark-mode .blank-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
             border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
         }
 
         .hidden {
             display: none;
         }
 
-        /* قسم إجابات Sprachbausteine */
-        .answers-section {
-            margin: 2rem 0;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(10px);
-        }
-
-        .dark-mode .answers-section {
-            background: rgba(13, 71, 161, 0.9);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
-
-        .answers-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            margin-top: 1.5rem;
-        }
-
-        .answer-list {
-            padding: 1.5rem;
-            background: var(--white);
-            border-radius: 15px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .dark-mode .answer-list {
-            background: #1a237e;
-            border-color: #37474F;
-        }
-
-        .answer-item {
-            margin: 0.8rem 0;
-            padding: 0.8rem;
-            background: rgba(33, 150, 243, 0.05);
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .dark-mode .answer-item {
-            background: rgba(33, 150, 243, 0.1);
-        }
-
-        /* Floating Elements مثل الصفحة الرئيسية */
-        .floating-elements {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .floating-element {
-            position: absolute;
-            font-size: 3.5rem;
-            opacity: 0.15;
-            animation: float 8s ease-in-out infinite;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
-
-        .floating-book { top: 15%; left: 8%; animation-delay: 0s; }
-        .floating-pen { top: 75%; right: 12%; animation-delay: 1s; }
-        .floating-globe { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
-        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
-        .floating-graduate { top: 65%; left: 5%; animation-delay: 4s; }
-        .floating-notebook { bottom: 15%; right: 10%; animation-delay: 5s; }
-        .floating-pencil { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
-        .floating-calculator { top: 35%; right: 15%; animation-delay: 7s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
-            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
-        }
-
+        /* تحسينات للهواتف */
         @media (max-width: 768px) {
-            .header-controls {
-                top: 15px;
-                left: 15px;
-                right: 15px;
-                gap: 10px;
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
             }
-
-            .premium-badge-header {
-                top: 15px;
-                right: 70px;
-                width: 45px;
-                height: 45px;
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
                 font-size: 1.1rem;
             }
-
-            .home-btn, .tahada-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
-            }
-
-            .container {
-                padding: 2rem;
-                margin: 1rem;
-                margin-top: 5rem;
-            }
-
+            
             .header h1 {
-                font-size: 2rem;
+                font-size: 1.6rem;
             }
-
-            .headings-grid {
-                grid-template-columns: 1fr;
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
             }
-
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
             .ads-grid {
                 grid-template-columns: 1fr;
             }
-
-            .answers-grid {
-                grid-template-columns: 1fr;
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
             }
-
-            .right-controls {
-                gap: 10px;
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
             }
-
-            .answer-controls {
-                top: 70px;
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
             }
         }
 
         @media (max-width: 480px) {
-            .header-controls {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
             }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
 
-            .left-controls, .right-controls {
-                flex-direction: row;
-                justify-content: center;
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
             }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
-            .premium-badge-header {
-                position: relative;
-                top: auto;
-                right: auto;
-                transform: none;
-                margin-top: 10px;
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
             }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Floating Elements مثل الصفحة الرئيسية -->
-    <div class="floating-elements">
-        <div class="floating-element floating-book">📚</div>
-        <div class="floating-element floating-pen">✏️</div>
-        <div class="floating-element floating-globe">🌍</div>
-        <div class="floating-element floating-clock">⏰</div>
-        <div class="floating-element floating-graduate">🎓</div>
-        <div class="floating-element floating-notebook">📓</div>
-        <div class="floating-element floating-pencil">✏️</div>
-        <div class="floating-element floating-calculator">🧮</div>
-    </div>
-
-    <!-- شارة المشترك الذهبية - تم التعديل -->
-    <div class="premium-badge-header" id="premiumBadge">
-        <i class="fas fa-crown"></i>
-    </div>
-
-    <!-- Header Controls -->
-    <div class="header-controls">
-        <div class="left-controls">
-            <button class="home-btn" id="homeBtn">
-                <i class="fas fa-home"></i>
-                <span id="homeText">الرئيسية</span>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
             </button>
-            <div class="language-selector">
-                <button class="lang-btn" id="langBtn">
-                    <span id="langBtnText">العربية</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="lang-dropdown" id="langDropdown">
-                    <div class="lang-option" data-lang="ar">
-                        <span>🇸🇦</span>
-                        <span>العربية</span>
-                    </div>
-                    <div class="lang-option" data-lang="de">
-                        <span>🇩🇪</span>
-                        <span>Deutsch</span>
-                    </div>
-                    <div class="lang-option" data-lang="en">
-                        <span>🇬🇧</span>
-                        <span>English</span>
-                    </div>
-                </div>
-            </div>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
         </div>
         
-        <div class="right-controls">
-            <button class="tahada-btn" id="tahadaBtn">
-                <i class="fas fa-star"></i>
-                <span id="tahadaText">تهادا</span>
-            </button>
-            <button class="control-btn" id="themeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="control-btn" id="userBtn">
-                <i class="fas fa-user"></i>
-            </button>
-        </div>
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">LI9A7 - TELC B2 Training</h1>
-            <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
-        </div>
-
-        <!-- أزرار التحكم -->
-        <div class="answer-controls">
-            <button class="answer-btn show-answers" id="showAnswers">
-                <i class="fas fa-check-circle"></i>
-                <span id="showAnswersText">إظهار التصحيح</span>
-            </button>
-            <button class="answer-btn hide-answers" id="hideAnswers">
-                <i class="fas fa-eye-slash"></i>
-                <span id="hideAnswersText">إخفاء التصحيح</span>
-            </button>
+            <h1 id="pageTitle">BILDER - TELC B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
         </div>
 
         <!-- Lesen Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="teil1Title">Lesen Teil 1</h2>
-            <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
             
             <div class="headings-grid" id="headingsList">
                 <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
@@ -928,8 +769,8 @@
 
         <!-- Lesen Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
-            <div class="text-content" id="longText">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
                 <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
             </div>
 
@@ -938,10 +779,10 @@
             </div>
         </div>
 
-        <!-- Lesen Teil 3 -->
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
         <div class="section">
-            <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
-            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
             
             <div class="situations-grid" id="situationsList">
                 <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
@@ -954,146 +795,82 @@
 
         <!-- Sprachbausteine Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
             <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
                 <div class="blank-text" id="blankText1">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
 
         <!-- Sprachbausteine Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
             <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
                 <div class="blank-text" id="blankText2">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
-                </div>
-            </div>
-        </div>
-
-        <!-- قسم إجابات Sprachbausteine -->
-        <div class="answers-section">
-            <h2 class="section-title">إجابات Sprachbausteine</h2>
-            <div class="answers-grid">
-                <div class="answer-list">
-                    <h3>Sprachbausteine Teil 1 - الإجابات</h3>
-                    <div id="sprach1Answers">
-                        <!-- إجابات Teil 1 سيتم إضافتها بالجافاسكريبت -->
-                    </div>
-                </div>
-                <div class="answer-list">
-                    <h3>Sprachbausteine Teil 2 - الإجابات</h3>
-                    <div id="sprach2Answers">
-                        <!-- إجابات Teil 2 سيتم إضافتها بالجافاسكريبت -->
-                    </div>
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // الترجمات
-        const translations = {
-            ar: {
-                homeText: "الرئيسية",
-                themeText: "الوضع الليلي",
-                langText: "العربية", 
-                userText: "زائر",
-                tahadaText: "تهادا",
-                pageTitle: "LI9A7 - TELC B2 Training",
-                pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
-                showAnswersText: "إظهار التصحيح",
-                hideAnswersText: "إخفاء التصحيح",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2", 
-                teil3Title: "Lesen Teil 3",
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            de: {
-                homeText: "Startseite",
-                themeText: "Nachtmodus", 
-                langText: "Deutsch",
-                userText: "Besucher",
-                tahadaText: "Tahada",
-                pageTitle: "LI9A7 - TELC B2 Training",
-                pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
-                showAnswersText: "Korrektur anzeigen",
-                hideAnswersText: "Korrektur ausblenden",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2",
-                teil3Title: "Lesen Teil 3", 
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            en: {
-                homeText: "Home",
-                themeText: "Dark Mode",
-                langText: "English",
-                userText: "Visitor", 
-                tahadaText: "Tahada",
-                pageTitle: "LI9A7 - TELC B2 Training",
-                pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
-                showAnswersText: "Show Correction",
-                hideAnswersText: "Hide Correction",
-                teil1Title: "Reading Part 1",
-                teil1Description: "First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).",
-                teil2Title: "Reading Part 2",
-                teil3Title: "Reading Part 3",
-                teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
-                sprach1Title: "Language Elements Part 1", 
-                sprach2Title: "Language Elements Part 2"
-            }
-        };
-
-        // بيانات الأسئلة والإجابات من ملف PDF
+        // بيانات الأسئلة والإجابات
         const examData = {
-            // Lesen Teil 1 - العناوين من PDF
             headings: [
-                "WHO gibt neue Empfehlungen für Grippe-Impfung heraus",
-                "NEUE ERKENNTNISSE ÜBER ARTÜBERGREIFENDE KRANKHEITSERREGER",
-                "Kontroverse um den Zugang zu Forschungsergebnissen",
-                "HOFFNUNG AUF EINEN ALLUMFASSENDEN GRIPPESCHUTZ",
-                "HINWEISE AUF EINGESCHRÄNKTEN ERFOLG VON INFLUENZA-IMPFUNGEN",
-                "Gesetz verpflichtet Forscher zur Veröffentlichung ihrer Ergebnisse",
-                "Geschlechtsspezifische Übertragung von Grippeviren",
-                "ENDLICH EINE UNIVERSALE GRIPPE-IMPFUNG AUF DEM MARKT",
-                "Durchschlagender Erfolg der diesjährigen Grippeimpfung",
-                "Die häufigsten Kinderkrankheiten in der Grundschule"
+                {id: "a", text: "WHO gibt neue Empfehlungen für Grippe-Impfung heraus"},
+                {id: "b", text: "NEUE ERKENNTNISSE ÜBER ARTÜBERGREIFENDE KRANKHEITSERREGER"},
+                {id: "c", text: "Kontroverse um den Zugang zu Forschungsergebnissen"},
+                {id: "d", text: "HOFFNUNG AUF EINEN ALLUMFASSENDEN GRIPPESCHUTZ"},
+                {id: "e", text: "HINWEISE AUF EINGESCHRÄNKTEN ERFOLG VON INFLUENZA-IMPFUNGEN"},
+                {id: "f", text: "Gesetz verpflichtet Forscher zur Veröffentlichung ihrer Ergebnisse"},
+                {id: "g", text: "Geschlechtsspezifische Übertragung von Grippeviren"},
+                {id: "h", text: "ENDLICH EINE UNIVERSALE GRIPPE-IMPFUNG AUF DEM MARKT"},
+                {id: "i", text: "Durchschlagender Erfolg der diesjährigen Grippeimpfung"},
+                {id: "j", text: "Die häufigsten Kinderkrankheiten in der Grundschule"}
             ],
             
-            // Lesen Teil 1 - النصوص من PDF
             texts: [
                 {
-                    content: `Immer wieder überspringen Krankheitserreger aus dem Tierreich die Artengrenze und werden auch dem Menschen gefährlich. Allerdings galt die Gruppe Adenoviren bislang als aufgebunden: Manche verursachen beim Menschen verschiedene Probleme, von Schnupfen über Durchfall bis hin zu Lungenentzündung. Andere machen bestimmten Tierarten zu schaffen. Aber noch nie wurde bekannt, dass solche Viren von einer Spezies auf eine andere wechseln. Nun berichten Forscher erstmals von einem solchen Fall: Demnach erlitten in einem kalifornischen Primatenzentrum 23 von insgesamt 65 Roten Springaffen Entzündungen der Atemwege oder der Leber. Nur vier der infizierten Tiere überlebten. Als Ursache identifizierten die Mediziner das bislang unbekannte Adenovirus TMAdV. Dieser Erreger kann auch Menschen befallen: Ein Mitarbeiter des Primatenzentrums, der viel Kontakt zu den erkrankten Affen hatte, bekam Fieber und Husten. Zudem steckte er ein Mitglied seiner Familie an. Die Experten empfehlen, Adenoviren künftig sorgfältiger zu beobachten, um rechtzeitig auf mögliche Gefahren für den Menschen aufmerksam zu werden.`,
-                    correctAnswer: "NEUE ERKENNTNISSE ÜBER ARTÜBERGREIFENDE KRANKHEITSERREGER"
+                    id: "text1",
+                    content: `Immer wieder überspringen Krankheitserreger aus dem Tierreich die Artengrenze und werden auch dem Menschen gefährlich. Allerdings galt die Gruppe Adenoviren bislang als artgebunden: Manche verursachen beim Menschen verschiedene Probleme, von Schnupfen über Durchfall bis hin zu Lungenentzündung. Andere machen bestimmten Tierarten zu schaffen. Aber noch nie wurde bekannt, dass solche Viren von einer Spezies auf eine andere wechseln. Nun berichten Forscher erstmals von einem solchen Fall: Demnach erlitten in einem kalifornischen Primatenzentrum 23 von insgesamt 65 Roten Springaffen Entzündungen der Atemwege oder der Leber. Nur vier der infizierten Tiere überlebten. Als Ursache identifizierten die Mediziner das bislang unbekannte Adenovirus TMAqV. Dieser Erreger kann auch Menschen befallen: Ein Mitarbeiter des Primatenzentrums, der viel Kontakt zu den erkrankten Affen hatte, bekam Fieber und Husten. Zudem steckte er ein Mitglied seiner Familie an. Die Experten empfehlen, Adenoviren künftig sorgfältiger zu beobachten, um rechtzeitig auf mögliche Gefahren für den Menschen aufmerksam zu werden.`,
+                    correctAnswer: "b",
+                    correctAnswerText: "b) NEUE ERKENNTNISSE ÜBER ARTÜBERGREIFENDE KRANKHEITSERREGER"
                 },
                 {
+                    id: "text2",
                     content: `Virologen ist es gelungen, den Vogelgrippe-Erreger hochansteckend zu machen. Nun empfiehlt das US-Gesundheitsministerium Fachzeitschriften, die entsprechenden Daten nicht zu veröffentlichen, weil Terroristen mit ihrer Hilfe Biowaffen basteln könnten. Nur die Ergebnisse der Versuche sollen erscheinen, nicht aber Einzelheiten über die Arbeitsweise der Forscher oder Details über die Beschaffenheit der Viren. Das Ministerium stützt seine Entscheidung auf die Empfehlungen unabhängigen Expertengremius NSABB. Es ist das erste Mal, dass das Gremium eine solche Empfehlung ausgesprochen hat. Ihr vorausgegangen war eine wochenlange Diskussion darüber, wie Forscher mit heiklen Erkenntnissen umgehen sollen: Alles offenlegen oder brisante Versuche unterlassen und erst recht nicht veröffentlichen? Für die betroffenen Forscher steht die Freiheit der Forschung und der Presse auf dem Spiel. Unklar ist noch, inwieweit sie und die Fachjournale den Empfehlungen des NSABB folgen. Es ist für die öffentliche Gesundheit notwendig, dass alle Details jeder wissenschaftlichen Analyse zu Influenzaviren Forschern zugänglich sind.`,
-                    correctAnswer: "Kontroverse um den Zugang zu Forschungsergebnissen"
+                    correctAnswer: "c",
+                    correctAnswerText: "c) Kontroverse um den Zugang zu Forschungsergebnissen"
                 },
                 {
+                    id: "text3",
                     content: `Ein neuer Impfstoff gegen Grippe könnte in Zukunft sämtliche Varianten der Krankheit abdecken und damit die jährliche Spritze überflüssig machen. Der Stoff bekämpft die stets gleichen Proteine im Inneren der Grippeviren statt wie derzeitige Substanzen die sich ständig ändernden an der Außenhülle. Ein Forscherteam der Universität Oxford hat den Impfstoff erstmals an Menschen getestet. Weitere Studien sollen folgen. Es kann Jahre dauern, bis die Substanz eine Zulassung bekommt. Doch die Forscher sind optimistisch. Derzeit müssen jedes Jahr neue Impfstoffe für die Grippesaison entwickelt werden, weil sich Virenhülle so schnell wandelt. Da der neue Stoff an den stabileren inneren Proteinen der Viren ansetze, könnte das in Zukunft überflüssig werden. Es könnte eine Routine Impfung wie gegen andere Krankheiten wie zum Beispiel Tetanus entwickelt werden. Bei der bisherigen Impfung gehe es vor allem darum, den Körper zur Produktion von Antikörpern gegen die Grippeviren zu aktivieren. Der neue Stoff hingegen rege die so genannten T-Zellen an, die ebenfalls ein wichtiger Teil des Immunsystems sind.`,
-                    correctAnswer: "HOFFNUNG AUF EINEN ALLUMFASSENDEN GRIPPESCHUTZ"
+                    correctAnswer: "d",
+                    correctAnswerText: "d) HOFFNUNG AUF EINEN ALLUMFASSENDEN GRIPPESCHUTZ"
                 },
                 {
-                    content: `Breitet sich die Grippe in einer Schule aus, sind es besonders geschlechtshomogene Gruppen, in denen das Virus schnell neue Opfer findet. Denn wie US-Mediziner herausgefunden haben, stecken Buben vor allem Buben und Mädchen in erster Linie Mädchen an. Infektionen. Innerhalb eines Geschlechts passieren dreimal häufiger als über die Geschlechtergrenzen hinweg innerhalb derselben Schulklasse sind Übertragungen fünfmal häufiger als zu einer Parallelklasse und 25 Mal häufiger als zu den Schülern anderer Schulstufen, fanden die Forscher bei Untersuchungen an einer Volksschule heraus. Ein weiterer Interessanter Befund: Ob ein Kind neben einem bereits infizierten Schulkollegen saß oder nicht, machte keinen Unterschied bei der Ausbreitung der Influenza.`,
-                    correctAnswer: "Geschlechtsspezifische Übertragung von Grippeviren"
+                    id: "text4",
+                    content: `Breitet sich die Grippe in einer Schule aus, sind es besonders geschlechtshomogene Gruppen, in denen das Virus schnell neue Opfer findet. Denn wie US-Mediziner herausgefunden haben, stecken Buben vor allem Buben und Mädchen in erster Linie Mädchen an. Infektionen. Innerhalb eines Geschlechts passieren dreimal häufiger als über die Geschlechtergrenzen hinweg Innerhalb derselben Schulklasse sind Übertragungen fünfmal häufiger als zu einer Parallelklasse und 25 Mal häufiger als zu den Schülern anderer Schulstufen, fanden die Forscher bei Untersuchungen an einer Volksschule heraus. Ein weiterer interessanter Befund: Ob ein Kind neben einem bereits infizierten Schulkollegen saß oder not, machte keinen Unterschied bei der Ausbreitung der Influenza.`,
+                    correctAnswer: "g",
+                    correctAnswerText: "g) Geschlechtsspezifische Übertragung von Grippeviren"
                 },
                 {
-                    content: `Da sich Influenzaviren immer wieder verändern, unternimmt die Weltgesundheitsorganisation WHO jedes Jahr große Anstrengungen, um die gerade umlaufenden Grippeviren zu identifizieren, anhand derer Pharmaunternehmen dann gezielt Impfstoffe herstellen können. Die Entwicklung solcher Impfstoffe nimmt allerdings bis zu neun Monate in Anspruch. Daher kann es vorkommen, dass sich gerade aktive Influenza-Viren von denen, die für die Herstellung des Impfstoffes verwendet wurden, etwas unterscheiden. Prinzipiell ist also jedes Jahr eine erneute Impfung notwendig. Eine neue Studie liefert Anhaltspunkte dafür, dass die tatsächliche Wirksamkeit von Grippeimpfstoffen weit niedriger sein soll als bisher angenommen. Denn in der Studie zeigte sich, dass gängige Grippeimpfstoffe nur 59 von 100 Gripperfällen verhindern konnten.`,
-                    correctAnswer: "HINWEISE AUF EINGESCHRÄNKTEN ERFOLG VON INFLUENZA-IMPFUNGEN"
+                    id: "text5",
+                    content: `Das sich Influenzaviren immer wieder verändern, unternimmt die Weltgesundheitsorganisation WHO jedes Jahr große Anstrengungen, um die gerade umlaufenden Grippeviren zu identifizieren, anhand derer Pharmaunternehmen dann gezielt Impfstoffe herstellen können. Die Entwicklung solcher Impfstoffe nimmt allerdings bis zu neun Monate in Anspruch. Daher kann es vorkommen, dass sich gerade aktive Influenza-Viren von denen, die für die Herstellung des Impfstoffes verwendet wurden, etwas unterscheiden. Prinzipiell ist also jedes Jahr eine erneute Impfung notwendig. Eine neue Studie liefert Anhaltspunkte dafür, dass die tatsächliche Wirksamkeit von Grippeimpfstoffen weit niedriger sein soll als bisher angenommen. Denn in der Studie zeigte sich, dass gängine Grippeimpfstoffe nur 59 von 100 Grippefällen verhindern konnten.`,
+                    correctAnswer: "e",
+                    correctAnswerText: "e) HINWEISE AUF EINGESCHRÄNKTEN ERFOLG VON INFLUENZA-IMPFUNGEN"
                 }
             ],
 
-            // Lesen Teil 2 - النص الكامل من PDF
             longText: {
-                content: `Haben Sie schon einmal darüber nachgedacht, warum Sie manche Dinge kaufen und andere nicht? Warum Sie etwas einkaufen, das Sie gar nicht brauchen, obwohl Sie eigentlich aus einem ganz anderen Grund ins Geschäft gegangen sind? Die Ursache dafür liegt in unserem Körper. Er steuert unsere Entscheidungen viel stärker asl bisher gedacht. Neue Forschungen setzen sich mit diesem Zusammenhang zwischen Körper, Kaufverhalten und Umweltbedingungen auseinander.
+                content: `Haben Sie schon einmal darüber nachgedacht, warum Sie manche Dinge kaufen und andere nicht? Warum Sie etwas einkaufen, das Sie gar nicht brauchen, obwohl Sie eigentlich aus einem ganz anderen Grund ins Geschäft gegangen sind? Die Ursache dafür liegt in unserem Körper. Er steuert unsere Entscheidungen viel stärker als bisher gedacht. Neue Forschungen setzen sich mit diesem Zusammenhang zwischen Körper, Kaufverhalten und Umweltbedingungen auseinander.
 
 Nachdem Forscher Studenten über Filme und ihr Fernsehverhalten befragt hatten, fanden Sie Beweise dafür, dass gefühlte Kälte (zum Beispiel im Winter) ein Bedürfnis nach psychologischer Wärme hervorruft. Vorangegangene Studien hatten sich mit der Psychologie der Liebe beschäftigt. Dabei konnte gezeigt werden, dass verliebte Menschen sehr häufig das Gefühl feuchter Hände, gesteigertes Herzklopfen und beschleunigte Atmung wahrnehmen. Das alles sind Anzeichen, die auch mit körperlich erlebter Wärme zusammenhängen. Wenn uns kalt ist, beeinflusst daher unser Bedürfnis nach Wärme zum Beispiel den Kauf von romantischen Filmen auf DVD. Um diesen Zusammenhang zu belegen, manipulierten Forscher in einer Reihe von Experimenten entweder die Temperatur von Tee oder die Raumtemperatur. Kalter Tee oder eine niedrige Raumtemperatur sorgten dafür, dass die Teilnehmer Romantikfilme reizvoller fanden. Dieser Effekt trat unabhängig von Geschlecht und Alter bei allen Menschen auf. Wenn Hersteller also romantische DVDs herausgeben oder Reiseveranstalter "kuschelige Angebote für Zwei" verkaufen wollen, sollten sie damit bis zum Herbst oder Winter warten. Das Bedürfnis der Käufer nach diesen Waren ist dann ungleich größer. Aber wenn die Verkaufsräume eines Kaufhauses kühl klimatisiert sind, werden "wärmende" Angebote wie zum Beispiel Tee auch im Sommer mehr gekauft.
 
@@ -1101,11 +878,12 @@ Andere Forschungen befassen sich mit dem Zusammenhang von Menge und Preis. Beim 
 
 Eine neue Studie untersuchte nun die Reaktionen der Konsumenten auf genau diese Reihenfolge. Die Information über eine große Menge vor die Preisinformation zu setzen scheint deutlich reizvoller auf Konsumenten zu wirken als den Preis vor der Menge zu nennen. Außerdem wurde untersucht, was passiert, wenn die Packungen groß oder klein sind und wenn die Preise pro Stück leicht auszurechnen sind.
 
-Wenn die Packung groß und der Stückpreis schwierig auszurechnen ist, zeigen sich die Konsumenten eher bereit, die Packung zu kaufen, wenn zuerst die Menge genannt wird. Außerdem sind sie dann der Meinung, dass ein solches Angebot einen guten Einkauf darstelle. Wenn allerdings der Preis zuerst dargestellt wird oder er ein Vielfaches der Stückzahl ausmacht und somit leicht auszurechnen ist (z. B. 5 DVDs für 50 €), tritt das genaue Gegenteil ein. Dies liegt unter anderem daran, dass das menschliche Gehirn Schwierigkeiten hat, große Zahlen zu verarbeiten. Unter Zeitdruck ercheinen uns dann sogar vermeintlich einfache Berechnungen als schwierig. Dann nutzen wir hauptsächlich die erste Information, die wir wahrnehmen, um so den Kauf und seine Vorteile oder Nachteile für uns zu bewerten.
+Wenn die Packung groß und der Stückpreis schwierig auszurechnen ist, zeigen sich die Konsumenten eher bereit, die Packung zu kaufen, wenn zuerst die Menge genannt wird. Außerdem sind sie dann der Meinung, dass ein solches Angebot einen guten Einkauf darstellt. Wenn allerdings der Preis zuerst dargestellt wird oder er ein Vielfaches der Stückzahl ausmacht und somit leicht auszurechnen ist (z. B. 5 DVDs für 50 €), tritt das genaue Gegenteil ein. Dies liegt unter anderem daran, dass das menschliche Gehirn Schwierigkeiten hat, große Zahlen zu verarbeiten. Unter Zeitdruck ercheinen uns dann sogar vermeintlich einfache Berechnungen als schwierig. Dann nutzen us hauptsächlich die erste Information, die wir wahrnehmen, um so den Kauf und seine Vorteile oder Nachteile für uns zu bewerten.
 
-Als Kunde begegnen wir also großen Packungen, bei denen zuerst die Menge mitgeteilt wird, und glauben, dass dies ein günstiges Angebot ist. Mit dem neuen Wissen über die Forschungsergebnisse sollten wir aber zumindest ab und zu beim Kauf von größeren Packungen innehalten und noch einmal überlegen, ob es sich wirklich um ein guten Angebot handelt. Aus der Perspektive der Geschäfte muss die Schlussfolgerung allerdings wie folgt lauten: Große Angebote zusammenstellen und erst mit der Menge und dann mit dem Preis werben. Dass diese Strategie funktioniert, lässt sich Tag für Tag im Supermarkt beobachten.`,
+Als Kunde begegnen wir also großen Packungen, bei denen zuerst die Menge mitteilt wird, und glauben, dass dies ein günstiges Angebot ist. Mit dem neuen Wissen über die Forschungsergebnisse sollten wir aber zumindest ab und zu beim Kauf von größeren Packungen innehalten und noch einmal überlegen, ob es sich wirklich um ein guten Angebot handelt. Aus der Perspektive der Geschäfte muss die Schlussfolgerung allerdings wie folgt lauten: Große Angebote zusammenstellen und erst mit der Menge und dann mit dem Preis werben. Dass diese Strategie funktioniert, lässt sich Tag für Tag im Supermarkt beobachten.`,
                 questions: [
                     {
+                        id: "q1",
                         question: "Es liegen Untersuchungen darüber vor,",
                         options: [
                             "wie stark die Entscheidungen den Körper steuern.",
@@ -1115,6 +893,7 @@ Als Kunde begegnen wir also großen Packungen, bei denen zuerst die Menge mitget
                         correctAnswer: "welche Einflüsse bestimmte Faktoren auf das Kaufverhalten haben."
                     },
                     {
+                        id: "q2",
                         question: "Es gibt Hinweise darauf, dass",
                         options: [
                             "man sich im Winter häufiger verliebt als im Sommer.",
@@ -1124,15 +903,17 @@ Als Kunde begegnen wir also großen Packungen, bei denen zuerst die Menge mitget
                         correctAnswer: "das Empfinden von Kälte zum Kauf romantischer Filme animiert."
                     },
                     {
-                        question: "Forscher haben untersucht,", 
+                        id: "q3",
+                        question: "Forscher haben untersucht,",
                         options: [
                             "wie extrem günstige Angebote Konsumenten beeinflussen.",
                             "welche Kunden bei Sonderangeboten größere Mengen kaufen.",
-                            "ob die Reihenfolge von Produktinformationen das Kaufverhalten beeinflusst!"
+                            "ob die Reihenfolge von Produktinformationen das Kaufverhalten beeinflusst."
                         ],
-                        correctAnswer: "ob die Reihenfolge von Produktinformationen das Kaufverhalten beeinflusst!"
+                        correctAnswer: "ob die Reihenfolge von Produktinformationen das Kaufverhalten beeinflusst."
                     },
                     {
+                        id: "q4",
                         question: "Unser Gehirn",
                         options: [
                             "verarbeitet beim Einkaufen hauptsächlich Preisangaben.",
@@ -1142,6 +923,7 @@ Als Kunde begegnen wir also großen Packungen, bei denen zuerst die Menge mitget
                         correctAnswer: "nutzt unter Zeitdruck vor allem die erste Information einer Botschaft."
                     },
                     {
+                        id: "q5",
                         question: "Großpackungen können besser verkauft werden, wenn die",
                         options: [
                             "enthaltene Stückzahl möglichst hoch ist.",
@@ -1153,151 +935,170 @@ Als Kunde begegnen wir also großen Packungen, bei denen zuerst die Menge mitget
                 ]
             },
 
-            // Lesen Teil 3 - من PDF
+            // Lesen Teil 3 - البيانات المحدثة
             situations: [
-                "Ihre Schwägerin erwartet ein Kind. Sie ist nicht sicher, ob Sie in einem Vorstellungsgespräch darauf hinweisen muss.",
-                "Ihr Neffe sucht einen Ausbildungsplatz als Elektriker. Er weiß nicht genau, wie er seine Bewerbung korrekt schreiben soll.",
-                "Eine Freundin, 20 Jahre alt, muss oft vor Arbeitskollegen Referate halten. Ihr Hauptproblem ist ihre Nervosität.",
-                "Eine Freundin sucht einen Ausbildungsplatz. Sie ist zu einem Bewerbungsgespräch eingeladen und weiß nicht, was sie zu diesem Anlass anziehen soll.",
-                "Eine Bekannte sucht Rat bei Ihnen, weil ihr Sohn ständig im Internet surft und dabei die Schule vernachlässigt.",
-                "Eine Bekannte möchte eine Ausbildung machen und vielleicht später einmal studieren.",
-                "Ein Freund surft täglich viele Stunden im Internet. Sie finden das zu viel und wollen ihm einen Rat geben.",
-                "Ein Freund möchte wissen, welche schulischen Leistungen bei der Vergabe von Ausbildungsplätzen im Bankgewerbe besonders wichtig sind.",
-                "Ein Bekannter ist Bankkaufmann und sucht eine Stelle.",
-                "Ein älteres Ehepaar hat Goldene Hochzeit. Die Tochter möchte eine Rede halten und braucht dafür eine Anleitung."
+                {
+                    id: "11",
+                    text: "Ihre Schwägerin erwartet ein Kind. Sie ist nicht sicher, ob Sie in einem Vorstellungsgespräch darauf hinweisen muss.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "12",
+                    text: "Ihr Neffe sucht einen Ausbildungsplatz als Elektriker. Er weiß nicht genau, wie er seine Bewerbung korrekt schreiben soll.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "13",
+                    text: "Eine Freundin, 20 Jahre alt, muss oft vor Arbeitskollegen Referate halten. Ihr Hauptproblem ist ihre Nervosität.",
+                    correctAnswer: "D"
+                },
+                {
+                    id: "14",
+                    text: "Eine Freundin sucht einen Ausbildungsplatz. Sie ist zu einem Bewerbungsgespräch eingeladen und weiß nicht, was sie zu diesem Anlass anziehen soll.",
+                    correctAnswer: "H"
+                },
+                {
+                    id: "15",
+                    text: "Eine Bekannte sucht Rat bei Ihnen, weil ihr Sohn ständig im Internet surft und dabei die Schule vernachlässigt.",
+                    correctAnswer: "L"
+                },
+                {
+                    id: "16",
+                    text: "Eine Bekannte möchte eine Ausbildung machen und vielleicht später einmal studieren.",
+                    correctAnswer: "G"
+                },
+                {
+                    id: "17",
+                    text: "Ein Freund surft täglich viele Stunden im Internet. Sie finden das zu viel und wollen ihm einen Rat geben.",
+                    correctAnswer: "I"
+                },
+                {
+                    id: "18",
+                    text: "Ein Freund möchte wissen, welche schulischen Leistungen bei der Vergabe von Ausbildungsplätzen im Bankgewerbe besonders wichtig sind.",
+                    correctAnswer: "K"
+                },
+                {
+                    id: "19",
+                    text: "Ein Bekannter ist Bankkaufmann und sucht eine Stelle.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "20",
+                    text: "Ein älteres Ehepaar hat Goldene Hochzeit. Die Tochter möchte eine Rede halten und braucht dafür eine Anleitung.",
+                    correctAnswer: "F"
+                }
             ],
 
-            // الإعلانات من PDF
             ads: [
                 {
-                    id: "a",
-                    title: "Vorstellungsgespräch Tipps",
-                    content: "Das Vorstellungsgespräch ist eine wichtige Hürde bei der Suche nach einem Arbeitsplatz. In der Regel fangen sie mit Smalltalk an: Man redet über das Wetter, den Verkehr und Ähnliches. Doch dabei kommt es schon auf das 'Wie?' an. Wer viel kritisiert, hat schon verloren. Bei der Vorstellung ihrer Person sollten Bewerber darauf achten, dass sie ihre Fähigkeit und den Nutzen, den ihr potentiell zukünftiger Arbeitgeber von ihnen hat, in den Vordergrund stellen. Fragen nach Gesundheit, Familienplanung, Schwangerschaft oder Geld gehören nicht ins Bewerbungsgespräch. Sollten Sie dennoch gestellt werden, ist man nicht verpflichtet, diese wahrheitsgemäß zu beantworten."
+                    id: "A",
+                    title: "Das Vorstellungsgespräch",
+                    content: "Das Vorstellungsgespräch ist eine wichtige Hürde bei der Suche nach einem Arbeitsplatz. In der Regelfangen sie mit Smalltalk an: Man redet über das Wetter, den Verkehr und Ähnliches. Doch dabei kommt es schon auf das 'Wie?' an. Wer viel kritisiert, hat schon verloren. Bei der Vorstellung ihrer Person sollten Bewerber darauf achten, dass sie ihre Fähigkeit und den Nutzen, den ihr potentiell zukünftiger Arbeitgeber von ihnen hat, in den Vordergrund stellen. Fragen nach Gesundheit, Familienplanung, Schwangerschaft oder Geld gehören nicht ins Bewerbungsgespräch. Sollten Sie dennoch gestellt werden, ist man nicht verpflichtet, diese wahrheitsgemäß zu beantworten."
                 },
                 {
-                    id: "b", 
-                    title: "Banken Ausbildung",
-                    content: "Die Postbank gibt Bewerbern um einen Ausbildungsplatz ein Thema für ein Projekt, das sie ausarbeiten und dann präsentieren sollen. Nur wer diese Hürde nehmen kann und Engagement beweist, hat Chancen, aufgenommen zu werden. Schließlich sollen die Bewerber zeigen, dass sie belastbar und entscheidungsfäh sind. Der Banker von heute hat ein weit gestecktes Tätigkeitsfeld; Kassierer am Schalter, die nichts als Geld oder Formulare ausgeben oder entgegennehmen, wird es in Zukunft immer weniger geben."
+                    id: "B",
+                    title: "Die Postbank gibt Bewerbern um einen Ausbildungsplatz ein Thema",
+                    content: "Die Postbank gibt Bewerbern um einen Ausbildungsplatz ein Thema für ein Projekt, das sie ausarbeiten und dann präsentieren sollen. Nur wer diese Hürde nehmen kann und Engagement beweist, hat Chancen, aufgenommen zu werden. Schließlich sollen die Bewerber zeigen, dass sie belastbar und entscheidungsfähigen sind. Der Banker von heute hat ein weit gestecktes Tätigkeitsfeld; Kassierer am Schalter, die nichts als Geld oder Formulare ausgeben oder entgegennehmen, wird es in Zukunft immer weniger geben."
                 },
                 {
-                    id: "c",
-                    title: "Referate halten", 
-                    content: "Rhetoriktrainer raten dazu, dem Anfang und dem Schluss eines Referats besonderes Augenmerk zu schenken. In den ersten zwei Minuten eines Vortrags entscheide sich nämlich, ob ein Zuhörer an dem Referat Interesse hat oder nicht. Daher sei ein effektvoll und interessant gestalteter Einstieg äußerst wichtig. Am Schluss soll man den Zuhörern noch einmal mit auf den Weg geben, was dem Vortragenden besonders wichtig erscheint."
+                    id: "C",
+                    title: "Rhetoriktrainer raten dazu",
+                    content: "Rhetoriktrainer raten dazu, dem Anfang und dem Schluss eines Referats besonderes Augenmerk zu schenken. In den ersten zwei Minuten eines Vortrags entscheide sich nämlich, ob ein Zuhörer an dem Referat Interesse hat oder nicht. Daher sei ein effektvoll und interessant gestalteter Einstieg äußerst wichtig. Am Schluss soll man den Zuhörers noch einmal mit auf den Weg geben, was dem Vortragenden besonders wichtig erscheint."
                 },
                 {
-                    id: "d",
-                    title: "Hilfe bei Redeangst",
+                    id: "D",
+                    title: "Hilfe, ich muss reden",
                     content: "Robert Sonntag, Autor des Buches 'Hilfe, ich muss reden' behauptet, die Angst vor einem größeren Publikum zu reden, sei ein Problem für die meisten Menschen. In Deutschland liegt in etwa 60 % der Menschen an diesem Phänomen. Dabei achten Zuhören nur zu 7 % auf das, was jemand sagt, 93 % der Wirkung eines Vortrags erziele man durch Körpersprache und seine Stimme. Der Autor rät zu Entspannungstechniken wie dem Autogenen Training oder Yoga, um gelassener zu werden, und einer gründlichen Vorbereitung des Vortrags. Seminarangebote unter www.rs-rethorik.de."
                 },
                 {
-                    id: "e",
-                    title: "Bewerbungsvorbereitung",
+                    id: "E",
+                    title: "Bereiten Sie sich auf ein Vorstellungsgespräch intensiv vor",
                     content: "Bereiten Sie sich auf ein Vorstellungsgespräch intensiv vor. Überlegen Sie sich genau, was Sie Ihrer zukünftigen Firma an Nutzen bringen können, denn Sie werden danach gefragt werden, warum Sie sich gerade bei dieser und nicht bei einer anderen Firma beworben haben. Analysieren Sie Ihre persönlichen Stärken und Schwächen und überlegen Sie, wie Sie Ihre schwachen Seiten möglichst positiv präsentieren können. Überlegen Sie, was Ihre persönlichen Ziele sind, und sammeln Sie so viele Informationen wie möglich über Ihre zukünftige Arbeit und die Firma, bei der Sie sich beworben haben."
                 },
                 {
-                    id: "f",
-                    title: "Festreden lernen",
-                    content: "Nichts ist auf privaten Feierlichkeiten wie Hochzeiten, runden Geburtstagen oder sonstigen Jubiläen schlimmer als langatmige, nicht enden wollende Ansprachen von Familienmitgliedern. Deshalb bieten viele Volkshochschulen in Deutschland Wochenendseminare an, in denen der Aufbau und der Vortrag einer guten Festansprache trainiert werden. Das Ziel dieser Seminare ist es, die zukünftigen Teilnehmenden in die Lage zu versetzen, spritzige Reden frei halten zu können."
+                    id: "F",
+                    title: "Nichts ist auf privaten Feierlichkeiten schlimmer",
+                    content: "Nichts ist auf privaten Feierlichkeiten wie Hochzeiten, runden Geburtstagen oder sonstigen Jubiläen schlimmer als langatmige, nicht enden wollende Ansprachen von Familienmitgliedern. Deshalb bieten viele Volkshochschulen in Deutschland Weeksendseminare an, in denen der Aufbau und der Vortrag einer guten Festansprache trainiert werden. Das Ziel dieser Seminare ist es, die zukünftigen Teilnehmenden in die Lage zu versetzen, spritzige Reden frei halten zu können."
                 },
                 {
-                    id: "g",
-                    title: "Bankkarriere",
+                    id: "G",
+                    title: "Ein Auszubildender bei einer Bank oder Sparkasse",
                     content: "Ein Auszubildender bei einer Bank oder Sparkasse bekommt 690,- Euro im ersten Ausbildungsjahr. Am Ende seiner Ausbildung steigt die Vergütung auf 800,- Euro. Das Einstiegsgehalt für Bankangestellte liegt bei etwas über 2.000,- Euro monatlich. Aufstiegschancen haben die jungen Banker nur, wenn sie sich intensiv um ihre berufliche Fortbildung kümmern. Dafür bieten die Banken ihren Mitarbeitern viele Möglichkeiten an, wie das BankCollege der Volksbanken oder die Sparkassen-Akademie. Manche Banken geben besonders qualifizierten Mitarbeitern sogar Stipendien für ein Studium."
                 },
                 {
-                    id: "h", 
-                    title: "Kleidung beim Vorstellungsgespräch",
+                    id: "H",
+                    title: "Wer zu seinem Vorstellungsgespräch eingeladen wird",
                     content: "Wer zu seinem Vorstellungsgespräch eingeladen wird, sollte auf korrekte und saubere Kleidung achten. Für viele Firmen ist es wichtig, dass auch Auszubildende die Firma gegenüber den Kunden repräsentieren können. Zerrissene Jeans und selbst gefärbte T-Shirts mögen zwar trendy sein, zu einem Vorstellungsgespräch gehören sie aber nicht. In Zweifelsfällen ist es ratsam, sich bei Eltern oder Bekannten Rat zu holen."
                 },
                 {
-                    id: "i",
-                    title: "Internetsucht",
+                    id: "I",
+                    title: "Für junge Leute kann das Internet zu einer Droge werden",
                     content: "Für junge Leute kann das Internet zu einer Droge werden. Der typische Internet-Süchtige ist ca. 18 Jahre alt, männlich, Single und hat kaum soziale Kontakte. Er surft täglich um die 5 Stunden im World Wide Web und hat schlechte Laune, wenn er nicht vor dem Monitor sitzen kann. Pflichten werden oft vernachlässigt. Psychologen raten, die Surfzeiten schrittweise zu verringern und darüber ein Tagebuch zu führen sowie vor dem Surfen schriftlich zu notieren, was genau man im Internet suchen möchte. Wer diese strengen Regeln einhält, kann aus der Internetsucht aussteigen."
                 },
                 {
-                    id: "j",
-                    title: "Sprachprobleme am Arbeitsplatz", 
+                    id: "J",
+                    title: "Zu einem zunehmend größer werdenden Problem am Arbeitsplatz",
                     content: "Zu einem zunehmend größer werdenden Problem am Arbeitsplatz wird die immer größer werdende Kluft zwischen dem Sprachgebrauch junger und alter Kollegen. Viele junge Leute verstehen laut einer Studie der Universität Kiel traditionelle Redewendungen wie z. B. 'Den Nagel auf den Kopf treffen' oder 'Öl ins Feuer gießen' nicht mehr, während Ältere nichts mit 'keinen Bock haben' anzufangen wissen. Dadurch, dass Jung und Alt heute nicht mehr so lange wie in früheren Zeiten zusammenleben, sondern unter sich bleiben, verstärkt sich das Auseinanderdriften der Jugendsprache und der Sprache der Alten immer mehr auseinander."
                 },
                 {
-                    id: "k",
-                    title: "Sparkassen Ausbildung",
-                    content: "'GRUNDSÄTZLICH HAT JEDER DIE MÖGLICHKEIT, BEI UNS EINE AUSBILDUNG ZU MACHEN', heißt es bei der Sparkassen-Akademie in Bonn. Die Bewerber sollen aber gute bis sehr gute Noten in Deutsch und Mathematik von der Schule mitbringen, und sie müssen in Rollenspielen ihre kommunikativen Fähigkeiten unter Beweis stellen, etwa, wie sie mit einem aggressiven Kunden umgehen würden."
+                    id: "K",
+                    title: "GRUNDSÄTZLICH HAT JEDER DIE MÖGLICHKEIT",
+                    content: "GRUNDSÄTZLICH HAT JEDER DIE MÖGLICHKEIT, BEI UNS EINE AUSBILDUNG ZU MACHEN, heißt es bei der Sparkassen-Akademie in Bonn. Die Bewerber sollen aber gute bis sehr gute Noten in Deutsch und Mathematik von der Schule mitbringen, und sie müssen in Rollenspielen ihre kommunikativen Fähigkeiten unter Beweis stellen, etwa, wie sie mit einem aggressiven Kunden umgehen würden."
                 },
                 {
-                    id: "l",
-                    title: "Jugend und Internet",
+                    id: "L",
+                    title: "Viele junge Leute flüchten sich in die virtuelle Scheinwelt",
                     content: "Viele junge Leute flüchten sich in die virtuelle Scheinwelt, weil ihnen die Realität als eine zu große Belastung erscheint. Insbesondere Chatrooms verführen die Jugendlichen zu langen Sitzungen, die oft als Ersatz für mangelnde zwischenmenschliche Beziehungen herhalten. Häufige Folge: Vernachlässigung von Hausaufgaben und schlechte Zensuren. Eltern, die sich Sorgen um ihre Internetabhängigen Kinder machen, sollten viel mit ihnen sprechen - ohne Vorwürfe zu machen - und versuchen ihren Zöglingen Alternativen in der realen Welt aufzuzeigen."
                 }
             ],
 
-            // الإجابات الصحيحة لـ Lesen Teil 3 من PDF
-            teil3Answers: {
-                11: "a",
-                12: "x", 
-                13: "d",
-                14: "h",
-                15: "l",
-                16: "g",
-                17: "i",
-                18: "k",
-                19: "x", 
-                20: "f"
-            },
-
-            // Sprachbausteine Teil 1 من PDF
+            // Sprachbausteine Teil 1
             blankText1: {
-                content: `Hallo Judith,
-wir habe uns ja lange nicht gesehen. Ich hoffe, du hattest einen richtig schönen Urlaub in Kroatien! Danke auch für deine Urlaubskarteil Die hat mich echt neidisch gemacht; ich habe ja erst im September Urlaub.
+                content: `Hallo Judith, oder lina
 
-**(21)** rufst du heute schon deine E-Mails ab and liest diese Nachricht von mir!
+wir habe uns ja lange nicht gesehen. Ich hoffe, du hattest einen richtig schönen Urlaub in Kroatien! Danke auch für deine Urlaubskarte! Die hat mich echt neidisch gemacht; ich habe ja erst im September Urlaub.
 
-Wir, als das gesamte Team, möchten **(22)** unserer Kollegin Elena zu ihrer Pensionierung gemeinsam etwas zum Abschied schenken. Ihre Abschiedsfeier ist ja **(23)** übermorgen abends im großen Konferenzraum unserer Firma. Bist du **(24)** einverstanden, dass wir ihr zusammen einen Gutschein und einen Blumenstrauß schenken? Jeder zahlt etwas 10 € dazu. Ich denke, das ist angemessen. Du erinnerst dich: **(25)** wir das letzte Mal gesammelt hatten, gab es Beschwerden wegen der Höhe des Betrags. Aber möglicherweise hast du eine bessere Idee.
+________ rufst du heute schon deine E-Mails ab and liest diese Nachricht von mir!
 
-Michael und ich gehen dann nachmittags **(26)** in der Stadt einkaufen. Die Glückwunschkarte für Elena könntest du dann übermorgen noch **(27)** vor der Feier unterschreiben. Wir treffen uns ja alle vorher und gehen gemeinsam hin.
+Wir, als das gesamte Team, möchten ________ unserer Kollegin Elena zu ihrer Pensionierung gemeinsam etwas zum Abschied schenken. Ihre Abschiedsfeier ist ja ________ übermorgen abends im großen Konferenzraum unserer Firma. Bist du ________ einverstanden, dass wir ihr zusammen einen Gutschein und einen Blumenstrauß schenken? Jeder zahlt etwas 10 € dazu. Ich denke, das ist angemessen. Du erinnerst dich: ________ wir das letzte Mal gesammelt hatten, gab es Beschwerden wegen der Höhe des Betrags. Aber möglicherweise hast du eine bessere Idee.
 
-In der Firma war heute nicht viel los. Aber in den letzten 14 Tagen hatten viele Kollegen Urlaub, **(28)** ich sehr viel zu tun hatte. Es gibt übrigens auch **(29)** neue Entwicklungen in der Firma, von denen ich dir dann übermorgen erzählen kann.
+Michael und ich gehen dann nachmittags ________ in der Stadt einkaufen. Die Glückwunschkarte für Elena könntest du dann übermorgen noch ________ vor der Feier unterschreiben. Wir treffen uns ja alle vorher und gehen gemeinsam hin.
 
-Wahrscheinlich bist du nach der langen Fahrt sehr müde. Schlaf dich morgen gut aus; wir sehen uns dann auf Elenas Feier! Ich wünsche dir heute einen **(30)** Tag...
+In der Firma war heute nicht viel los. Aber in den letzten 14 Tagen hatten viele Kollegen Urlaub, ________ ich sehr viel zu tun hatte. Es gibt übrigens auch ________ neue Entwicklungen in der Firma, von denen ich dir dann übermorgen erzählen kann.
 
-Liebe Grüße, Cosima`,
-                answers: {
-                    21: "Hoffentlich",
-                    22: "alle",
-                    23: "schon", 
-                    24: "damit",
-                    25: "Als",
-                    26: "miteinander",
-                    27: "kurz",
-                    28: "weshalb",
-                    29: "einige",
-                    30: "schönen"
-                }
+Wahrscheinlich bist du nach der langen Fahrt sehr müde. Schlaf dich morgen gut aus; wir sehen uns dann auf Elenas Feier! Ich wünsche dir heute einen ________ Tag...
+
+Liebe Grüße,
+
+Cosima`,
+                options: [
+                    ["Zuversichtlich", "Möglichst", "Hoffentlich"],      // 21
+                    ["vermutlich", "nämlich", "bestimmt"],           // 22
+                    ["schon", "fast", "beinahe"],      // 23
+                    ["damit", "dafür", "dadurch"],         // 24
+                    ["Wenn", "Wann", "Als"], // 25
+                    ["zueinander", "voneinander", "miteinander"],          // 26
+                    ["vor Kurzem", "kürzlich", "kurz"], // 27
+                    ["weshalb", "insofern", "deshalb"], // 28
+                    ["vollkommen", "sämtlich", "erschöpfend"],                 // 29
+                    ["passenden", "bequemen", "angenehmen"]                // 30
+                ],
+                answers: ["Hoffentlich", "nämlich", "schon", "dafür", "Als", "miteinander", "kurz", "deshalb", "sämtlich", "angenehmen"]
             },
 
-            // Sprachbausteine Teil 2 من PDF
+            // Sprachbausteine Teil 2
             blankText2: {
                 content: `Ist der Umgang mit Haustieren gesund für Kleinkinder?
 
-Kleine Kinder, die in der Gesellschaft von Haustieren wie Hund und Katze leben, sind einer Studie aus Finnland zufolge seltener krank **(31)** Kinder in Haushalten ohne Tiere.
+Kleine Kinder, die in der Gesellschaft von Haustieren wie Hund und Katze leben, sind einer Studie aus Finnland zufolge seltener krank ________ Kinder in Haushalten ohne Tiere.
 
-Die Studie wurde in der **(32)** Woche in einem amerikanischen Fachmagazin veröffentlicht. Es wurden **(33)** keine Erklärungen für diese Tatsache geliefert, aber die Vermutung wurde geäußert, dass der Kontakt zu Hunden das Immunsystem der Kleinkinder stärke. Hunde haben nämlich **(34)** die täglichen Spaziergänge draußen viel Kontakt zu möglichen Krankheitserregern und trainieren vielleicht so das Immunsystem der Kinder. Auch Katzen, die die Möglichkeit haben, nach draußen zu gehen, haben demnach **(35)** Wirkung auf die Gesundheit der Kinder, wenngleich in geringerem Maße.
+Die Studie wurde in der ________ Woche in einem amerikanischen Fachmagazin veröffentlicht. Es wurden ________ keine Erklärungen für diese Tatsache geliefert, aber die Vermutung wurde geäußert, dass der Kontakt zu Hunden das Immunsystem der Kleinkinder stärke. Hunde haben nämlich ________ die täglichen Spaziergänge draußen viel Kontakt zu möglichen Krankheitserregern und trainieren vielleicht so das Immunsystem der Kinder. Auch Katzen, die die Möglichkeit haben, nach draußen zu gehen, haben demnach ________ Wirkung auf die Gesundheit der Kinder, wenngleich in geringerem Maße.
 
-Für die Studie **(36)** in Finnland 397 Babys über den Zeitraum von der neunten Lebenswoche bis zu ihrem ersten Geburtstag beobachtet. Dabei hatten die mit Hund oder Katze aufwachsenden Kinder ein um 30 % **(37)** Risiko für Erkrankungen der Atemwege. Es fiel auf, dass bei diesen Kindern Ohrenentzündungen **(38)** auftraten.
+Für die Studie ________ in Finnland 397 Babys über den Zeitraum von der neunten Lebenswoche bis zu ihrem ersten Geburtstag beobachtet. Dabei hatten die mit Hund oder Katze aufwachsenden Kinder ein um 30% ________ Risiko für Erkrankungen der Atemwege. Es fiel auf, dass bei diesen Kindern Ohrenentzündungen ________ auftraten.
 
-Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesellschaft von Tieren **(39)** besser sei. Frühere Untersuchungen aus den USA hatten das genaue **(40)** der jetzigen Ergebnisse ergeben. Ob diese Unterschiede mit den unterschiedlichen Lebens- und Umweltbedingungen der beiden Länder zusammenhängen, ist noch unklar.`,
-                answers: {
-                    31: "als",
-                    32: "vergangenen", 
-                    33: "zwar",
-                    34: "durch",
-                    35: "eine",
-                    36: "wurden",
-                    37: "geringeres",
-                    38: "weniger",
-                    39: "deutlich",
-                    40: "Gegenteil"
-                }
+Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesellschaft von Tiere ________ besser sei. Frühere Untersuchungen aus den USA hatten das genaue ________ der jetzigen Ergebnisse ergeben. Ob diese Unterschiede mit den unterschiedlichen Lebens- und Umweltbedingungen der beiden Länder zusammenhängen, ist noch unklar.`,
+                options: ["ZWAR", "WURDEN", "WIE", "WENIGER", "WAREN", "VERGANGENEN", "UM", "GERINGERES", "GEGENTEIL", "GEGENSATZ", "FRÜHEREN", "DURCH", "DIESELBE", "DEUTLICH", "ALS"],
+                answers: ["ALS", "VERGANGENEN", "ZWAR", "DURCH", "DIESELBE", "WURDEN", "GERINGERES", "WENIGER", "DEUTLICH", "GEGENTEIL"]
             }
         };
 
@@ -1307,24 +1108,14 @@ Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesell
             setupEventListeners();
         });
 
-        let currentLang = 'ar';
         let isDarkMode = false;
 
         function initializePage() {
             // تحميل الإعدادات المحفوظة
-            const savedLang = localStorage.getItem('language') || 'ar';
             const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-            const username = localStorage.getItem('username') || 'زائر';
-            const access = localStorage.getItem('access');
             
-            changeLanguage(savedLang);
             if (savedDarkMode) {
                 toggleDarkMode();
-            }
-            
-            // التحقق من حالة المستخدم
-            if (access === 'paid' && username) {
-                document.getElementById('premiumBadge').style.display = 'flex';
             }
             
             // تهيئة الأجزاء
@@ -1332,7 +1123,6 @@ Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesell
             initializeTeil2();  
             initializeTeil3();
             initializeSprachbausteine();
-            initializeSprachbausteineAnswers();
         }
 
         function initializeTeil1() {
@@ -1343,13 +1133,13 @@ Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesell
             textsList.innerHTML = '';
 
             // إضافة العناوين
-            examData.headings.forEach((heading, index) => {
+            examData.headings.forEach((heading) => {
                 const headingItem = document.createElement('div');
                 headingItem.className = 'heading-item';
                 headingItem.innerHTML = `
-                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                    <strong>${heading.id})</strong> ${heading.text}
                 `;
-                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingItem.dataset.letter = heading.id;
                 headingsList.appendChild(headingItem);
             });
 
@@ -1358,10 +1148,10 @@ Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesell
                 const textItem = document.createElement('div');
                 textItem.className = 'question';
                 textItem.innerHTML = `
-                    <h3>Text ${index + 1}</h3>
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
                     <div class="text-content">${text.content}</div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
                     </div>
                 `;
                 textsList.appendChild(textItem);
@@ -1372,14 +1162,14 @@ Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesell
             const longText = document.getElementById('longText');
             const questionsList = document.getElementById('questionsList');
 
-            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
 
             questionsList.innerHTML = '';
             examData.longText.questions.forEach((question, index) => {
                 const questionItem = document.createElement('div');
                 questionItem.className = 'question';
                 questionItem.innerHTML = `
-                    <h3>Frage ${index + 6}</h3>
+                    <h3>Question ${index + 6}</h3>
                     <p><strong>${question.question}</strong></p>
                     <div class="options">
                         ${question.options.map((option, optIndex) => `
@@ -1389,7 +1179,7 @@ Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesell
                         `).join('')}
                     </div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
                     </div>
                 `;
                 questionsList.appendChild(questionItem);
@@ -1401,14 +1191,12 @@ Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesell
             const adsList = document.getElementById('adsList');
 
             situationsList.innerHTML = '';
-            examData.situations.forEach((situation, index) => {
+            examData.situations.forEach((situation) => {
                 const situationItem = document.createElement('div');
                 situationItem.className = 'situation-item';
                 situationItem.innerHTML = `
-                    <strong>${index + 11})</strong> ${situation}
-                    <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11] !== 'x' ? examData.teil3Answers[index + 11].toUpperCase() : 'x'}
-                    </div>
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
                 `;
                 situationsList.appendChild(situationItem);
             });
@@ -1418,53 +1206,89 @@ Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesell
                 const adItem = document.createElement('div');
                 adItem.className = 'ad-item';
                 adItem.innerHTML = `
-                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
-                    <p>${ad.content}</p>
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
                 `;
                 adsList.appendChild(adItem);
             });
         }
 
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
         function initializeSprachbausteine() {
             // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
             const blankText1 = document.getElementById('blankText1');
-            const textWithBlanks1 = examData.blankText1.content.replace(/\((\d+)\)/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber]}</span></span>`;
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText1.innerHTML = textWithBlanks1;
 
             // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
             const blankText2 = document.getElementById('blankText2');
-            const textWithBlanks2 = examData.blankText2.content.replace(/\((\d+)\)/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber]}</span></span>`;
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText2.innerHTML = textWithBlanks2;
-        }
-
-        function initializeSprachbausteineAnswers() {
-            // Teil 1 Answers
-            const sprach1Answers = document.getElementById('sprach1Answers');
-            sprach1Answers.innerHTML = '';
-            
-            Object.keys(examData.blankText1.answers).forEach(key => {
-                const answerItem = document.createElement('div');
-                answerItem.className = 'answer-item';
-                answerItem.innerHTML = `<strong>${key}:</strong> ${examData.blankText1.answers[key]}`;
-                sprach1Answers.appendChild(answerItem);
-            });
-
-            // Teil 2 Answers
-            const sprach2Answers = document.getElementById('sprach2Answers');
-            sprach2Answers.innerHTML = '';
-            
-            Object.keys(examData.blankText2.answers).forEach(key => {
-                const answerItem = document.createElement('div');
-                answerItem.className = 'answer-item';
-                answerItem.innerHTML = `<strong>${key}:</strong> ${examData.blankText2.answers[key]}`;
-                sprach2Answers.appendChild(answerItem);
-            });
         }
 
         function setupEventListeners() {
@@ -1472,40 +1296,8 @@ Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesell
             document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
             document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
             
-            // زر الرئيسية
-            document.getElementById('homeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html';
-            });
-            
-            // زر التهادا
-            document.getElementById('tahadaBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html';
-            });
-            
             // زر الوضع الليلي
             document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-            
-            // زر المستخدم
-            document.getElementById('userBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#profile';
-            });
-            
-            // زر اللغة
-            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
-            document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const lang = option.getAttribute('data-lang');
-                    changeLanguage(lang);
-                    document.getElementById('langDropdown').classList.remove('show');
-                });
-            });
-            
-            // إغلاق القوائم المنسدلة بالنقر خارجها
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.language-selector')) {
-                    document.getElementById('langDropdown').classList.remove('show');
-                }
-            });
         }
 
         function showAllAnswers() {
@@ -1515,10 +1307,10 @@ Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesell
             document.querySelectorAll('.blank-answer').forEach(answer => {
                 answer.classList.remove('hidden');
             });
-            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+            document.querySelectorAll('.heading-item').forEach(heading => {
                 const letter = heading.dataset.letter;
                 examData.texts.forEach(text => {
-                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                    if (text.correctAnswer === letter) {
                         heading.classList.add('matched');
                     }
                 });
@@ -1548,29 +1340,6 @@ Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesell
             } else {
                 themeIcon.className = 'fas fa-moon';
             }
-        }
-
-        function toggleLangDropdown() {
-            document.getElementById('langDropdown').classList.toggle('show');
-        }
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            
-            // تحديث جميع النصوص
-            Object.keys(t).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = t[key];
-                }
-            });
-            
-            localStorage.setItem('language', lang);
-            
-            // إعادة تهيئة المحتوى لترجمة الإجابات
-            initializeTeil1();
-            initializeTeil2();
         }
     </script>
 </body>

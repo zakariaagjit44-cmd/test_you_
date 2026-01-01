@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المخدرات - TELC B2 Training</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DROGEN - TELC B2 Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -20,16 +20,17 @@
             --text: #333;
             --text-light: #546E7A;
             --white: #ffffff;
-            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
-            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
-            --radius: 25px;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -38,8 +39,11 @@
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
             transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
         }
 
         body.dark-mode {
@@ -47,338 +51,71 @@
             color: var(--light);
         }
 
-        /* Header Controls - التعديل هنا */
-        .header-controls {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            right: 20px;
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            z-index: 1000;
-            gap: 15px;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .left-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-start;
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
         }
 
-        .right-controls {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
+        .theme-btn {
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            border: none;
-            background: var(--primary);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .control-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .control-btn:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-
-        .control-btn:hover {
-            transform: scale(1.15) rotate(5deg);
-            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
-        }
-
-        /* شارة المشترك الذهبية - تم التعديل */
-        .premium-badge-header {
-            position: fixed;
-            top: 20px;
-            right: 90px; /* بجانب الأزرار */
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            padding: 0.5rem;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
-        }
-
-        .home-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .home-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .home-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        /* Language Selector */
-        .language-selector {
-            display: flex;
-            position: relative;
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: var(--radius);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .lang-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .lang-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            background: var(--white);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
-            overflow: hidden;
-            min-width: 120px;
-            animation: dropdownSlide 0.3s ease;
-            z-index: 1001;
-        }
-
-        .dark-mode .lang-dropdown {
-            background: #1a237e;
-            color: var(--light);
-        }
-
-        @keyframes dropdownSlide {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .lang-dropdown.show {
-            display: block;
-        }
-
-        .lang-option {
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            color: var(--text);
-        }
-
-        .dark-mode .lang-option {
-            color: var(--light);
-            border-bottom: 1px solid #37474F;
-        }
-
-        .lang-option:hover {
-            background: #f5f5f5;
-            transform: translateX(5px);
-        }
-
-        .dark-mode .lang-option:hover {
-            background: #283593;
-        }
-
-        .lang-option:last-child {
-            border-bottom: none;
-        }
-
-        /* المحتوى الرئيسي */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: var(--radius);
-            padding: 3rem;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(15px);
-            margin-top: 6rem;
-            transition: var(--transition);
-        }
-
-        .dark-mode .container {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: contentSlideUp 0.8s ease;
-        }
-
-        @keyframes contentSlideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .header h1 {
-            font-size: 2.8rem;
-            color: var(--primary-dark);
-            margin-bottom: 1rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .dark-mode .header h1 {
-            color: #90CAF9;
-        }
-
-        .page-subtitle {
             font-size: 1.2rem;
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .dark-mode .page-subtitle {
-            color: #B0BEC5;
-        }
-
-        /* أزرار التحكم */
-        .answer-controls {
-            position: sticky;
-            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1.5rem;
-            border-radius: var(--radius);
+            cursor: pointer;
             box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-            z-index: 100;
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
             display: flex;
             gap: 1rem;
-            justify-content: center;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-        }
-
-        .dark-mode .answer-controls {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            align-items: center;
         }
 
         .answer-btn {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
-            position: relative;
-            overflow: hidden;
             border: none;
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.5rem;
             transition: var(--transition);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .answer-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: right 0.6s;
-        }
-
-        .answer-btn:hover::before {
-            right: 100%;
+            min-width: 180px;
+            justify-content: center;
         }
 
         .answer-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
         }
 
         .show-answers {
@@ -391,47 +128,107 @@
             color: var(--white);
         }
 
-        /* التصميم الخاص بالأسئلة */
-        .section {
-            margin: 2rem 0;
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
             padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
             transition: var(--transition);
         }
 
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
         .dark-mode .section {
-            background: rgba(13, 71, 161, 0.9);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
         }
 
         .section-title {
             color: var(--primary-dark);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
             border-bottom: 2px solid var(--primary);
             font-weight: 600;
+            text-align: left;
         }
 
         .dark-mode .section-title {
             color: #90CAF9;
         }
 
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
         .question {
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: rgba(33, 150, 243, 0.05);
-            border-radius: 15px;
-            border-right: 4px solid var(--primary);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .question {
-            background: rgba(33, 150, 243, 0.1);
+            background: rgba(33, 150, 243, 0.08);
         }
 
         .options {
@@ -439,25 +236,25 @@
         }
 
         .option {
-            margin: 0.8rem 0;
-            padding: 1rem;
+            margin: 0.6rem 0;
+            padding: 0.8rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
             cursor: pointer;
             transition: var(--transition);
             font-weight: 500;
+            text-align: left;
         }
 
         .dark-mode .option {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .option:hover {
             border-color: var(--primary);
             background: rgba(33, 150, 243, 0.05);
-            transform: translateX(-5px);
         }
 
         .correct {
@@ -473,411 +270,493 @@
         .answer {
             margin-top: 1rem;
             padding: 1rem;
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 600;
-            animation: slideInUp 0.5s ease;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
         }
 
         @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* التصحيح - تم التعديل للوضع الليلي */
         .correct-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
-            border: 2px solid #4CAF50;
-            font-weight: bold;
+            border: 1px solid #4CAF50;
         }
 
         .dark-mode .correct-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
-            border: 2px solid #81C784;
+            border: 1px solid #81C784;
         }
 
         /* النصوص والعناوين */
         .text-content {
-            line-height: 1.7;
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
-            font-size: 1.1rem;
-            transition: var(--transition);
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .text-content {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
+        /* Lesen Teil 1 - تصميم محسن */
         .headings-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1rem;
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .heading-item {
-            padding: 1.2rem;
+            padding: 1rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            text-align: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
             font-weight: 500;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .heading-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .matched {
             border-color: #4CAF50;
             background: rgba(76, 175, 80, 0.1);
-            transform: scale(1.02);
         }
 
-        /* الإعلانات والوضعيات */
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
         .ads-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
         }
 
         .ad-item {
-            padding: 1.5rem;
+            padding: 1.2rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            min-height: 150px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .ad-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .ad-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-hover);
         }
 
-        .situations-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.2rem;
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
         }
 
-        .situation-item {
-            padding: 1.2rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            transition: var(--transition);
+        .dark-mode .ad-letter {
+            color: #90CAF9;
         }
 
-        .dark-mode .situation-item {
-            background: #1a237e;
-            border-color: #37474F;
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
         }
 
-        .situation-item:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.05);
+        .dark-mode .ad-title {
+            color: var(--light);
         }
 
-        /* Sprachbausteine */
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
         .fill-blanks {
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .blank-text {
-            line-height: 2;
-            margin: 1.5rem 0;
-            font-size: 1.2rem;
-            padding: 1.5rem;
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .blank-text {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .blank {
             display: inline-block;
             min-width: 120px;
-            margin: 0 8px;
-            padding: 0.5rem 1rem;
-            border-bottom: 3px solid var(--primary);
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
             text-align: center;
             font-weight: 600;
             background: var(--white);
-            border-radius: 8px;
+            border-radius: 6px;
             transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
         }
 
         .dark-mode .blank {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
         }
 
         .blank-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
             border-color: #4CAF50;
-            font-weight: bold;
         }
 
         .dark-mode .blank-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
             border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
         }
 
         .hidden {
             display: none;
         }
 
-        /* قسم كلمات الإجابات */
-        .answers-section {
-            margin: 2rem 0;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(10px);
-        }
-
-        .dark-mode .answers-section {
-            background: rgba(13, 71, 161, 0.9);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
-
-        .answers-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .answer-item {
-            padding: 1.2rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            transition: var(--transition);
-        }
-
-        .dark-mode .answer-item {
-            background: #1a237e;
-            border-color: #37474F;
-        }
-
-        .answer-number {
-            font-weight: bold;
-            color: var(--primary-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .dark-mode .answer-number {
-            color: #90CAF9;
-        }
-
-        /* Floating Elements مثل الصفحة الرئيسية */
-        .floating-elements {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .floating-element {
-            position: absolute;
-            font-size: 3.5rem;
-            opacity: 0.15;
-            animation: float 8s ease-in-out infinite;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
-
-        .floating-book { top: 15%; left: 8%; animation-delay: 0s; }
-        .floating-pen { top: 75%; right: 12%; animation-delay: 1s; }
-        .floating-globe { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
-        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
-        .floating-graduate { top: 65%; left: 5%; animation-delay: 4s; }
-        .floating-notebook { bottom: 15%; right: 10%; animation-delay: 5s; }
-        .floating-pencil { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
-        .floating-calculator { top: 35%; right: 15%; animation-delay: 7s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
-            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
-        }
-
+        /* تحسينات للهواتف */
         @media (max-width: 768px) {
-            .header-controls {
-                top: 15px;
-                left: 15px;
-                right: 15px;
-                gap: 10px;
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
             }
-
-            .premium-badge-header {
-                top: 15px;
-                right: 70px;
-                width: 45px;
-                height: 45px;
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
                 font-size: 1.1rem;
             }
-
-            .home-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
-            }
-
-            .container {
-                padding: 2rem;
-                margin: 1rem;
-                margin-top: 5rem;
-            }
-
+            
             .header h1 {
-                font-size: 2rem;
+                font-size: 1.6rem;
             }
-
-            .headings-grid {
-                grid-template-columns: 1fr;
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
             }
-
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
             .ads-grid {
                 grid-template-columns: 1fr;
             }
-
-            .right-controls {
-                gap: 10px;
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
             }
-
-            .answer-controls {
-                top: 70px;
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
             }
-
-            .answers-grid {
-                grid-template-columns: 1fr;
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
             }
         }
 
         @media (max-width: 480px) {
-            .header-controls {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
             }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
 
-            .left-controls, .right-controls {
-                flex-direction: row;
-                justify-content: center;
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
             }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
-            .premium-badge-header {
-                position: relative;
-                top: auto;
-                right: auto;
-                transform: none;
-                margin-top: 10px;
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
             }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Floating Elements مثل الصفحة الرئيسية -->
-    <div class="floating-elements">
-        <div class="floating-element floating-book">📚</div>
-        <div class="floating-element floating-pen">✏️</div>
-        <div class="floating-element floating-globe">🌍</div>
-        <div class="floating-element floating-clock">⏰</div>
-        <div class="floating-element floating-graduate">🎓</div>
-        <div class="floating-element floating-notebook">📓</div>
-        <div class="floating-element floating-pencil">✏️</div>
-        <div class="floating-element floating-calculator">🧮</div>
-    </div>
-
-    <!-- شارة المشترك الذهبية - تم التعديل -->
-    <div class="premium-badge-header" id="premiumBadge">
-        <i class="fas fa-crown"></i>
-    </div>
-
-    <!-- Header Controls -->
-    <div class="header-controls">
-        <div class="left-controls">
-            <button class="home-btn" id="homeBtn">
-                <i class="fas fa-home"></i>
-                <span id="homeText">الرئيسية</span>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
             </button>
-            <div class="language-selector">
-                <button class="lang-btn" id="langBtn">
-                    <span id="langBtnText">العربية</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="lang-dropdown" id="langDropdown">
-                    <div class="lang-option" data-lang="ar">
-                        <span>🇸🇦</span>
-                        <span>العربية</span>
-                    </div>
-                    <div class="lang-option" data-lang="de">
-                        <span>🇩🇪</span>
-                        <span>Deutsch</span>
-                    </div>
-                    <div class="lang-option" data-lang="en">
-                        <span>🇬🇧</span>
-                        <span>English</span>
-                    </div>
-                </div>
-            </div>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
         </div>
         
-        <div class="right-controls">
-            <button class="control-btn" id="themeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="control-btn" id="userBtn">
-                <i class="fas fa-user"></i>
-            </button>
-        </div>
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">المخدرات - TELC B2 Training</h1>
-            <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
-        </div>
-
-        <!-- أزرار التحكم -->
-        <div class="answer-controls">
-            <button class="answer-btn show-answers" id="showAnswers">
-                <i class="fas fa-check-circle"></i>
-                <span id="showAnswersText">إظهار التصحيح</span>
-            </button>
-            <button class="answer-btn hide-answers" id="hideAnswers">
-                <i class="fas fa-eye-slash"></i>
-                <span id="hideAnswersText">إخفاء التصحيح</span>
-            </button>
+            <h1 id="pageTitle">BILDER - TELC B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
         </div>
 
         <!-- Lesen Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="teil1Title">Lesen Teil 1</h2>
-            <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
             
             <div class="headings-grid" id="headingsList">
                 <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
@@ -890,8 +769,8 @@
 
         <!-- Lesen Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
-            <div class="text-content" id="longText">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
                 <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
             </div>
 
@@ -900,10 +779,10 @@
             </div>
         </div>
 
-        <!-- Lesen Teil 3 -->
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
         <div class="section">
-            <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
-            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
             
             <div class="situations-grid" id="situationsList">
                 <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
@@ -916,178 +795,97 @@
 
         <!-- Sprachbausteine Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
             <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
                 <div class="blank-text" id="blankText1">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
 
         <!-- Sprachbausteine Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
             <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
                 <div class="blank-text" id="blankText2">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
-                </div>
-            </div>
-        </div>
-
-        <!-- قسم كلمات الإجابات لـ Sprachbausteine -->
-        <div class="answers-section">
-            <h2 class="section-title">كلمات الإجابات لـ Sprachbausteine</h2>
-            
-            <div class="answers-grid">
-                <div class="answer-item">
-                    <h3>Sprachbausteine Teil 1</h3>
-                    <div id="sprach1AnswersList">
-                        <!-- كلمات الإجابات لـ Teil 1 سيتم إضافتها بالجافاسكريبت -->
-                    </div>
-                </div>
-                
-                <div class="answer-item">
-                    <h3>Sprachbausteine Teil 2</h3>
-                    <div id="sprach2AnswersList">
-                        <!-- كلمات الإجابات لـ Teil 2 سيتم إضافتها بالجافاسكريبت -->
-                    </div>
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // الترجمات
-        const translations = {
-            ar: {
-                homeText: "الرئيسية",
-                themeText: "الوضع الليلي",
-                langText: "العربية", 
-                userText: "زائر",
-                pageTitle: "المخدرات - TELC B2 Training",
-                pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
-                showAnswersText: "إظهار التصحيح",
-                hideAnswersText: "إخفاء التصحيح",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2", 
-                teil3Title: "Lesen Teil 3",
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            de: {
-                homeText: "Startseite",
-                themeText: "Nachtmodus", 
-                langText: "Deutsch",
-                userText: "Besucher",
-                pageTitle: "Drogen - TELC B2 Training",
-                pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
-                showAnswersText: "Korrektur anzeigen",
-                hideAnswersText: "Korrektur ausblenden",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2",
-                teil3Title: "Lesen Teil 3", 
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            en: {
-                homeText: "Home",
-                themeText: "Dark Mode",
-                langText: "English",
-                userText: "Visitor", 
-                pageTitle: "Drugs - TELC B2 Training",
-                pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
-                showAnswersText: "Show Correction",
-                hideAnswersText: "Hide Correction",
-                teil1Title: "Reading Part 1",
-                teil1Description: "First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).",
-                teil2Title: "Reading Part 2",
-                teil3Title: "Reading Part 3",
-                teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
-                sprach1Title: "Language Elements Part 1", 
-                sprach2Title: "Language Elements Part 2"
-            }
-        };
-
-        // بيانات الأسئلة والإجابات من ملف PDF
+        // بيانات الأسئلة والإجابات - تم نقلها من DROGEN.html
         const examData = {
-            // Lesen Teil 1
             headings: [
-                "Doping für Drogenspürhunde",
-                "Durch den Geruchssinn die Welt neu erfahren",
-                "Elefanten mit dem feinsten Näschen", 
-                "Erst schmecken, dann riechen",
-                "Mit vierbeinigen Spürnasen gegen den Drogenschmuggel",
-                "Nasenkorrektur für jedermann",
-                "Neue Therapie für Allergikernasen",
-                "Schönheitsoperationen nicht um jeden Preis",
-                "Selbstreinigung für unser Riechorgan",
-                "Tierische Riechorgane - unterschiedlich ausgeprägt"
+                {id: "a", text: "Doping für Drogenspürhunde"},
+                {id: "b", text: "Durch den Geruchssinn die Welt neu erfahren"},
+                {id: "c", text: "Elefanten mit dem feinsten Näschen"},
+                {id: "d", text: "Erst schmecken, dann riechen"},
+                {id: "e", text: "Mit vierbeinigen Spürnasen gegen den Drogenschmuggel"},
+                {id: "f", text: "Nasenkorrektur für jedermann"},
+                {id: "g", text: "Neue Therapie für Allergikernasen"},
+                {id: "h", text: "Schönheitsoperationen nicht um jeden Preis"},
+                {id: "i", text: "Selbstreinigung für unser Riechorgan"},
+                {id: "j", text: "Tierische Riechorgane - unterschiedlich ausgeprägt"}
             ],
             
             texts: [
                 {
-                    content: `Wie wollen wir von anderen gesehen werden? Von unserer Schokoladenseite natürlich. Aber es gibt Menschen, die haben keine. Eine Frau mit schiefer Nase mag sich weder im Profil noch frontal zeigen. "Die Nase", so der plastische Chirurg Professor Henrik Menke, "sitzt mitten im Gesicht - so banal das klingt. Zu große Abweichungen von der Norm beeinträchtigen den ganzen Menschen".
-
-Der Chirurg, der an der Wiesbadener Wilhelm-Fresenius-Klinik eine Abeteilung für ästhetische Chirurgie leitet, lehnt es ab, am Mängelwesen Mensch alles chirurgisch Machbare auszuführen. Keinem unter 18 würde er die Nase operieren - es sei denn, sie ist durch einen Unfall oder eine Krankheit verunstaltet.
-
-Menke: "Wenn ich die Probleme nachvollziehen kann, die junge Leute mit ihrer Nase haben, werde ich in allen Details mit den Patienten besprechen, was getan werden kann. Ich nehme es aber ab, mit Videoanimation zu arbeiten. Damit kann ich zwar alles machen, jedes gewünschte Resultat herbeizaubern. Die Realität ist aber eine andere. Aus diesem Grund hat es der Gesetzgeber zurecht untersagt, mit Vorher-nachher-Bildern zu arbeiten".`,
-                    correctAnswer: "Schönheitsoperationen nicht um jeden Preis"
+                    id: "text1",
+                    content: `Wie wollen wir von anderen gesehen werden? Von unserer Schokoladenseite natürlich. Aber es gibt Menschen, die haben keine. Eine Frau mit schiefer Nase mag sich weder im Profil noch frontal zeigen. 'Die Nase', so der plastische Chirurg Professor Henrik Menke, 'sitzt mitten im Gesicht - so banal das klingt. Zu große Abweichungen von der Norm beeinträchtigen den ganzen Menschen'. Der Chirurg, der an der Wiesbadener Wilhelm-Fresenius-Klinik eine Abteilung für ästhetische Chirurgie leitet, lehnt es ab, am Mängelwesen Mensch alles chirurgisch Machbare auszuführen. Keinem unter 18 würde er die Nase operieren - es sei denn, sie ist durch einen Unfall oder eine Krankheit verunstaltet. Menke: 'Wenn ich die Probleme nachvollziehen kann, die junge Leute mit ihrer Nase haben, werde ich in allen Details mit den Patienten besprechen, was getan werden kann. Ich nehme es aber ab, mit Videoanimation zu arbeiten. Damit kann ich zwar alles machen, jedes gewünschte Resultat herbeizaubern. Die Realität ist aber eine andere. Aus diesem Grund hat es der Gesetzgeber zurecht untersagt, mit Vorher-nachher-Bildern zu arbeiten'.`,
+                    correctAnswer: "h",
+                    correctAnswerText: "h) Schönheitsoperationen nicht um jeden Preis"
                 },
                 {
-                    content: `Der Riechsinn ist unser ursprünglichster Sinn - sagt Matthias Schenk vom Schloss Freudenberg. Wer ihn schärfen will, ist im dort unterbrachten "Erfahrungsfeld der Sinne" an der richtigen Adresse: Sieben Stationen befassen sich mit dem Riechvermögen.
-
-Ob klein oder groß, dick oder schmal - auch wenn manch einer die Form seiner Nase schon mal verflucht hat, ohne sie können wir nicht sein.
-
-"Es entsteht eine neue Welt, sogar ein ganz neuer Kosmos, wenn man sich mit der Nase beschäftigt", weiß Matthias Schenk. Sein "Erfahrungsfeld der Sinne" wird täglich von rund 400 Gästen besucht. An 140 Stationen im Gemäuer und im parkähnlichen Außenbereich lässt es sich bewusst fühlen, hören, sehen, riechen und schmecken. Der Nase kommt im "Erfahrungsfeld der Sinne" eine zentrale Rolle zu. Schließlich, so Schenk, sei der Geruchssinn gehirngeschichtlich der älteste Sinn. "Er ist ein Ur-Sinn, der uns mit allen Tieren verbindet". Gestützt wird diese Aussage dadurch, dass beispielsweise Säuglinge ihre Mutter riechen, bevor sie sie sehen und hören.`,
-                    correctAnswer: "Durch den Geruchssinn die Welt neu erfahren"
+                    id: "text2",
+                    content: `Der Riechsinn ist unser ursprünglichster Sinn - sagt Matthias Schenk vom Schloss Freudenberg. Wer ihn schärfen will, ist im dort untergebrachten 'Erfahrungsfeld der Sinne' an der richtigen Adresse: Sieben Stationen befassen sich mit dem Riechvermögen. Ob klein oder groß, dick oder schmal - auch wenn manch einer die Form seiner Nase schon mal verflucht hat, ohne sie können wir nicht sein. 'Es entsteht eine neue Welt, sogar ein ganz neuer Kosmos, wenn man sich mit der Nase beschäftigt', weiß Matthias Schenk. Sein 'Erfahrungsfeld der Sinne' wird täglich von rund 400 Gästen besucht. An 140 Stationen im Gemäuer und im parkähnlichen Außenbereich lässt es sich bewusst fühlen, hören, sehen, riechen und schmecken. Der Nase kommt im 'Erfahrungsfeld der Sinne' eine zentrale Rolle zu. Schließlich, so Schenk, sei der Geruchssinn gehirngeschichtlich der älteste Sinn. 'Er ist ein Ur-Sinn, der uns mit allen Tieren verbindet'. Gestützt wird diese Aussage dadurch, dass beispielsweise Säuglinge ihre Mutter riechen, bevor sie sie sehen und hören.`,
+                    correctAnswer: "b",
+                    correctAnswerText: "b) Durch den Geruchssinn die Welt neu erfahren"
                 },
                 {
-                    content: `Mit Drogen kennt sich Falko aus. Der sechs Jahre alte Schäferhund sucht für den Zoll nach Kokain, Haschisch und Heroin. Bis zu vier Kofferladungen, meist aus Südamerika, Afrika und Südostasien, beschnüffelt der Vierbeiner am Tag. Rund 300 Mal in der Minute atmet er dabei ein und aus - ein wahrer Nasenmarathon.
-
-Hunde riechen bis zu eine Million mal besser als Menschen. Hat der Mensch fünf Millionen Riechzellen, so sind es bei einem Schäferhund 220 Millionen. Grundsätzlich gilt: Je länger die Hundeschnauze, desto besser das Geruchsvermögen. Schnüffler wie Falko können "stereo" riechen, das heißt, ihre Nase kann zwischen rechts und links unterscheiden. Spürhunde erkennen deshalb auch die Richtung eines Geruchs.
-
-Doch die beste Hundenase nutzt nichts, wenn sie nicht geschult wird. So lernen Drogenspürhunde in jungen Jahren, wie sei sogenannte weiche und harte Drogen finden. Werden bei der Ausbildung noch alle Drogen zusammengepackt, so schafft es Falko, sie beim Kofferschmöfeln dann einzeln wahrzunehmen. Bis zu zehn Jahre können Spürhunde des Zolls arbeiten, ehe sie samt ihrer Nase in den verdienten Hunde-Ruhestand gehen dürfen.`,
-                    correctAnswer: "Mit vierbeinigen Spürnasen gegen den Drogenschmuggel"
+                    id: "text3",
+                    content: `Mit Drogen kennt sich Falko aus. Der sechs Jahre alte Schäferhund sucht für den Zoll nach Kokain, Haschisch und Heroin. Bis zu vier Kofferladungen, meist aus Südamerika, Afrika und Südostasien, beschnüffelt der Vierbeiner am Day. Rund 300 Mal in der Minute atmet er dabei ein und aus - ein wahrer Nasenmarathon. Hunde riechen bis zu eine Million mal besser als Menschen. Hat der Mensch fünf Millionen Riechzellen, so sind es bei einem Schäferhund 220 Millionen. Grundsätzlich gilt: Je länger die Hundeschnauze, desto besser das Geruchsvermögen. Schnüffler wie Falko können 'stereo' riechen, das heißt, ihre Nase kann zwischen rechts und links unterscheiden. Spürhunde erkennen deshalb auch die Richtung eines Geruchs. Doch die beste Hundenase nutzt nichts, wenn sie nicht geschult wird. So lernen Drogenspürhunde in jungen Jahren, wie sie sogenannte weiche und harte Drogen finden. Werden bei der Ausbildung noch alle Drogen zusammengepackt, so schafft es Falko, sie beim Kofferschnüffeln dann einzeln wahrzunehmen. Bis zu zehn Jahre können Spürhunde des Zolls arbeiten, ehe sie samt ihrer Nase in den verdienten Hunde-Ruhestand gehen dürfen.`,
+                    correctAnswer: "e",
+                    correctAnswerText: "e) Mit vierbeinigen Spürnasen gegen den Drogenschmuggel"
                 },
                 {
-                    content: `Beim Menschen ist das Sehen der Sinn Nummer eins, gefolgt vom Hören und an dritter Stelle dem Riechen. Ganz anders sieht es bei vielen Tieren aus, zum Beispiel bei Hunden. "Ein Hund, der nicht sehen kann, ist wie ein Mensch ohne Geruch - das ist nicht schön, aber auch nicht dramatisch", sagt Ralf Spangenberg, Tierarzt aus Ingelheim. Zum Vergleich: Während die Riechschleimhaut des Menschen rund fünf Quadratzentimeter misst, bringt es der Hund auf 85 Quadratzentimeter und mehr. "Hunde sind Riechweltmeister", bringt es der Tierarzt auf den Punkt.
-
-Nicht die beste, dafür die längste Nase der Welt hat der Elefant. "Das Riechen ist allerdings Nebensache - beim Elefanten ist die Nase zum Werkzeug geworden". Er kann damit Baumstämme umschlingen und schleppen, die Nase kann als Rüsseldusche genutzt werden - und natürlich als Esswerkzeug.
-
-Interessant sind auch die Nasen der Spinnen. Deren Riechorgane stecken in den Beinen. "Da sind sie ganz nah an den Dingen dran", erklärt Spangenberg. Wiederum anders verhält es sich bei Schlangen: "Sie nehmen über die Zunge Gerüche auf". Und damit nicht genug: Weil die Zunge gespalten ist, können sie auch rechts und links unterscheiden - und genau die Richtung bestimmen, in der sie ihre Beute finden. Auch die scheinbar nasenlosen Fische können riechen. "Hale zum Beispiel riechen und schmecken Blut über Kilometer", so Spangenberg.`,
-                    correctAnswer: "Tierische Riechorgane - unterschiedlich ausgeprägt"
+                    id: "text4",
+                    content: `Beim Menschen ist das Sehen der Sinn Nummer eins, gefolgt vom Hören und an dritter Stelle dem Riechen. Ganz anders sieht es bei vielen Tieren aus, zum Beispiel bei Hunden. 'Ein Hund, der nicht sehen kann, ist wie ein Mensch ohne Geruch - das ist nicht schön, aber auch nicht dramatisch', sagt Ralf Spangenberg, Tierarzt aus Ingelheim. Zum Vergleich: Während die Riechschleimhaut des Menschen rund fünf Quadratzentimeter misst, bringt es der Hund auf 85 Quadratzentimeter und mehr. 'Hunde sind Riechweltmeister', bringt es der Tierarzt auf den Punkt. Nicht die beste, dafür die längste Nase der Welt hat der Elefant. 'Das Riechen ist allerdings Nebensache - beim Elefanten ist die Nase zum Werkzeug geworden'. Er kann damit Baumstämme umschlingen und schleppen, die Nase kann als Rüsseldusche genutzt werden - und natürlich als Esswerkzeug. Interessant sind auch die Nasen der Spinnen. Deren Riechorgane stecken in den Beinen. 'Da sind sie ganz nah an den Dingen dran', erklärt Spangenberg. Wiederum anders verhält es sich bei Schlangen: 'Sie nehmen über die Zunge Gerüche auf'. Und damit nicht genug: Weil die Zunge gespalten ist, können sie auch rechts und links unterscheiden - und genau die Richtung bestimmen, in der sie ihre Beute finden. Auch die scheinbar nasenlosen Fische können riechen. 'Haie zum Beispiel riechen und schmecken Blut über Kilometer', so Spangenberg.`,
+                    correctAnswer: "j",
+                    correctAnswerText: "j) Tierische Riechorgane - unterschiedlich ausgeprägt"
                 },
                 {
-                    content: `Niesen ist eine Reaktion auf die Umwelt. Mal kitzelt Staub die Nase, mal reizt ein chemischer Stoff oder ein anderer Fremdkörper in der Luft unser Riechorgan. Sogar grelles Licht kann durch die Verbindung der Gesichtsnerven zum Niesen führen. Unwillkürlich wird ein Reflex ausgelöst, der die Nase "säubern" soll. Es kommt zu einem explosionsartigen Ausstoßen der Luft durch die Nase - dem Niesen.
-
-Allergiker niesen oft serienweise, bis der letzte Reiz aus der Nase entfernt ist. Auf die Reizmeldung hin holt der Körper tief Luft - bis die Lungen maximal gefüllt sind. Dann wird der Atem kurz angehalten. Und schließlich stößt der Körper in Sekundenschnelle die eingeatmete Luft wieder aus. Dabei kann diese leicht eine Geschwindigkeit von 150 bis 160 Stundenkilometern erreichen.
-
-Lautlos geht das Niesen selten vonstatten. Das "Ha" - oft gleich mehrfach vor dem befreienden "Tschi" hervorgestoßen - entsteht, weil beim Einatmen die Stimmbänder aufgemacht werden. Beim "Tschi" wird die Luft dann wieder ausgestoßen. Der Laut entsteht, weil gleichzeitig die Zunge hinter die Vorderzähne gepresst wird. Denn der Körper will, dass möglichst viel Luft durch die Nase und möglichst wenig durch den Mund entweicht, daher verschließt die Zunge der Luft teilweise den Weg.`,
-                    correctAnswer: "Selbstreinigung für unser Riechorgan"
+                    id: "text5",
+                    content: `Niesen ist eine Reaktion auf die Umwelt. Mal kitzelt Staub die Nase, mal reizt ein chemischer Stoff oder ein anderer Fremdkörper in der Luft unser Riechorgan. Sogar grelles Licht kann durch die Verbindung der Gesichtsnerven zum Niesen führen. Unwillkürlich wird ein Reflex ausgelöst, der die Nase 'säubern' soll. Es kommt zu einem explosionsartigen Ausstoßen der Luft durch die Nase - dem Niesen. Allergiker niesen oft serienweise, bis der letzte Reiz aus der Nase entfernt ist. Auf die Reizmeldung hin holt der Körper tief Luft - bis die Lungen maximal gefüllt sind. Dann wird der Atem kurz angehalten. Und schließlich stößt der Körper in Sekundenschnelle die eingeatmete Luft wieder aus. Dabei kann diese leicht eine Geschwindigkeit von 150 bis 160 Stundenkilometern erreichen. Lautlos geht das Niesen selten vonstatten. Das 'Ha' - oft gleich mehrfach vor dem befreienden 'Tschi' hervorgestoßen - entsteht, weil beim Einatmen die Stimmbänder aufgemacht werden. Beim 'Tschi' wird die Luft dann wieder ausgestoßen. Der Laut entsteht, weil gleichzeitig die Zunge hinter die Vorderzähne gepresst wird. Denn der Körper will, dass möglichst viel Luft durch die Nase und möglichst wenig durch den Mund entweicht, daher verschließt die Zunge der Luft teilweise den Weg.`,
+                    correctAnswer: "i",
+                    correctAnswerText: "i) Selbstreinigung für unser Riechorgan"
                 }
             ],
 
-            // Lesen Teil 2 - النص الكامل
             longText: {
                 content: `Es geschah am 1. Januar 1954. In Duisburg, einer Großstadt am Rhein zwischen Köln und der niederländischen Grenze am Rande des Ruhrgebiets, gab es für die Autofahrer, die in der Straße "Am Buchenbaum" ihre Autos parken wollten, eine Überraschung. 20 etwa 1,5 Meter hohe Metallstangen mit uhrenförmigen Aufsätzen standen am Straßenrand mit der unmissverständlichen Aufschrift: "Einwurf 10 Pfennig für eine Stunde". Die ersten Parkuhren in Deutschland waren aufgestellt.
 
-Nur Basel in der Schweiz und Stockholm in Schweden hatten vor Duisburg Parkuhren installiert, um Dauerparker aus den Stadtzentren zu vertreiben. Das eingenommene Geld wurde in Duisburg anfangs für gemeinnützige Zwecke ausgegeben: für Alte, Kranke Kriegsversehrte, für elternlose Kinder. Und die Stadtverwaltung war sich sicher, dass die Autofahrer Verständnis für die Parkuhren aufbringen würden, dienten sie doch einem guten Zweck.
+Nur Basel in der Schweiz und Stockholm in Schweden hatten vor Duisburg Parkuhren installiert, um Dauerparker aus den Stadtzentren zu vertreiben. Das eingenommene Geld wurde in Duisburg anfangs für gemeinnützige Zwecke ausgegeben: für Alte, Kranke, Kriegsversehrte, für elternlose Kinder. Und die Stadtverwaltung war sich sicher, dass die Autofahrer Verständnis für die Parkuhren aufbringen würden, dienten sie doch einem guten Zweck.
 
-Doch bei den Autofahrenn war man nicht so erfreut über diese neuen Apparate. "Groschengrab" wurden sie dann auch bald überall genannt: ein Apparat, in den man Groschen – wie die 10–Pfennig–Stücke damals genannt wurden – hineinwarf. Dieser schluckte zwar gnadenlos Zehner, gab aber zum Verdruss vieler trotzdem oft keine Parkzeit frei. Tat er dies, dann aber in der Regel nur für höchstens 60 Minuten. Viele Autofahrer waren außerdem verärgert, weil sie immer passendes Kleingeld dabei haben mussten. Die ersten Parkuhren konnten nämlich nicht wechseln.
+Doch bei den Autofahrern war man nicht so erfreut über diese neuen Apparate. "Groschengrab" wurden sie dann auch bald überall genannt: ein Apparat, in den man Groschen - wie die 10-Pfennig-Stücke damals genannt wurden - hineinwarf. Dieser schluckte zwar gnadenlos Zehner, gab aber zum Verdruss vieler trotzdem oft keine Parkzeit frei. Tat er dies, dann aber in der Regel nur für höchstens 60 Minuten. Viele Autofahrer waren außerdem verärgert, weil sie immer passendes Kleingeld dabei haben mussten. Die ersten Parkuhren konnten nämlich nicht wechseln.
 
 Wer parkte, ohne zu zahlen, riskierte damals wie heute einen Strafbescheid, liebevoll "Knöllchen" genannt. In allen anderen deutschen Städten erschienen nach und nach auch Parkuhren. Bald gehörten sie zu den Innenstädten wie das Rad zum Auto. Und das blieb so bis zum Ende der 1980er Jahre.
 
-Dann geschah so etwas wie eine Parkuhren–Revolution. Die guten, alten Parkuhren, die ein im Vergleich zu heute immer noch billiges Parken erlaubten, weil sie nicht beliebig oft auf neue Beträge umgestellt werden konnten, wurden mehr und mehr ersetzt durch die gerade neu entwickelten Parkscheinautomaten. Mit Solarenergie angetrieben, computergesteuert und beliebig programmierbar machten sie es nun möglich, ohne technische Beschränkungen die Preise und Zeiten für das Parken flexibel zu gestalten. Von Vorteil ist auch ihre Kundenfreundlichkeit: Die Zeiten, in denen nur Münzen als Zahlungsmittel akzeptiert wurden, sind passé; jetzt schlucken sie auch problemlos Papier– und Plastikgeld – und Wechselgeld wird ausgespuckt.
+Dann geschah so etwas wie eine Parkuhren-Revolution. Die guten, alten Parkuhren, die ein im Vergleich zu heute immer noch billiges Parken erlaubten, weil sie nicht beliebig oft auf neue Beträge umgestellt werden konnten, wurden mehr und mehr ersetzt durch die gerade neu entwickelten Parkscheinautomaten. Mit Solarenergie angetrieben, computergesteuert und beliebig programmierbar machten sie es nun möglich, ohne technische Beschränkungen die Preise und Zeiten für das Parken flexibel zu gestalten. Von Vorteil ist auch ihre Kundenfreundlichkeit: Die Zeiten, in denen nur Münzen als Zahlungsmittel akzeptiert wurden, sind passé; jetzt schlucken sie auch problemlos Papier- und Plastikgeld - und Wechselgeld wird ausgespuckt.
 
 Das Parken wurde immer teurer. Und längst dienten die eingenommenen Beträge nicht mehr gemeinnützigen Zwecken. Sie wurden vielmehr als Einnahmequelle entdeckt für die leeren Stadtkassen, die nach immer mehr Geld verlangten. Gut 2 Millionen Euro verdient zum Beispiel Duisburg in einem Jahr an den Parkgebühren. In Köln kommen etwa 10 Millionen Euro im Jahr zusammen. Noch einmal so viel Geld verdienen die Städte an den "Knöllchen" für falsches Parken.
 
-Aus 10 Pfennig für eine Stunde im Jahr 1954 – das wären heute etwa 5 Cents – sind inzwischen weit höhere Beträge geworden. Spitzeneriter in Deutschland sind Düsseldorf und Berlin mit mehreren Euro pro Stunde. Tendenz steigend. Doch aus dem Kölner Rathaus heißt es an alle sich beschwerenden Autofahrer gerichtet, das Geld werde selbstverständlich zweckgebunden verwendet: für den Bau neuer Straßen. An denen neue Parkscheinautomaten stehen?`,
+Aus 10 Pfennig für eine Stunde im Jahr 1954 - das wären heute etwa 5 Cents - sind inzwischen weit höhere Beträge geworden. Spitzenreiter in Deutschland sind Düsseldorf und Berlin mit mehreren Euro pro Stunde. Tendenz steigend. Doch aus dem Kölner Rathaus heißt es an alle sich beschwerenden Autofahrer gerichtet, das Geld werde selbstverständlich zweckgebunden verwendet: für den Bau neuer Straßen. An denen neue Parkscheinautomaten stehen?`,
                 questions: [
                     {
+                        id: "q1",
                         question: "Die ersten Parkuhren Europas standen",
                         options: [
                             "in der Schweiz und in Deutschland.",
@@ -1097,6 +895,7 @@ Aus 10 Pfennig für eine Stunde im Jahr 1954 – das wären heute etwa 5 Cents �
                         correctAnswer: "in der Schweiz und in Schweden."
                     },
                     {
+                        id: "q2",
                         question: "Früher wurden in Duisburg die Parkgebühren verwendet, um",
                         options: [
                             "Bedürftige zu unterstützen.",
@@ -1106,7 +905,8 @@ Aus 10 Pfennig für eine Stunde im Jahr 1954 – das wären heute etwa 5 Cents �
                         correctAnswer: "Bedürftige zu unterstützen."
                     },
                     {
-                        question: "Die ersten Parkuhren", 
+                        id: "q3",
+                        question: "Die ersten Parkuhren",
                         options: [
                             "funktionierten problemlos.",
                             "gaben nur Groschen zurück.",
@@ -1115,6 +915,7 @@ Aus 10 Pfennig für eine Stunde im Jahr 1954 – das wären heute etwa 5 Cents �
                         correctAnswer: "konnten nur Münzen annehmen."
                     },
                     {
+                        id: "q4",
                         question: "Die neuen Parkscheinautomaten",
                         options: [
                             "funktionieren nur bargeldlos.",
@@ -1124,6 +925,7 @@ Aus 10 Pfennig für eine Stunde im Jahr 1954 – das wären heute etwa 5 Cents �
                         correctAnswer: "sind flexibel im Hinblick auf die Art der Bezahlung."
                     },
                     {
+                        id: "q5",
                         question: "In Berlin und in Düsseldorf",
                         options: [
                             "fließen die Parkgebühren nur in den Straßenbau.",
@@ -1135,141 +937,169 @@ Aus 10 Pfennig für eine Stunde im Jahr 1954 – das wären heute etwa 5 Cents �
                 ]
             },
 
-            // Lesen Teil 3
+            // Lesen Teil 3 - البيانات المأخوذة من DROGEN.html
             situations: [
-                "Ihre Schwägerin erwartet ein Kind. Sie ist nicht sicher, ob Sie in einem Vorstellungsgespräch darauf hinweisen muss.",
-                "Ihr Neffe sucht einen Ausbildungsplatz als Elektriker. Er weiß nicht genau, wie er seine Bewerbung korrekt schreiben soll.",
-                "Eine Freundin, 20 Jahre alt, muss oft vor Arbeitskollegen Referate halten. Ihr Hauptproblem ist ihre Nervosität.",
-                "Eine Freundin sucht einen Ausbildungsplatz. Sie ist zu einem Bewerbungsgespräch eingeladen und weiß nicht, was sie zu diesem Anlass anziehen soll.",
-                "Eine Bekannte sucht Rat bei Ihnen, weil ihr Sohn ständig im Internet surft und dabei die Schule vernachlässigt.",
-                "Eine Bekannte möchte eine Ausbildung machen und vielleicht später einmal studieren.",
-                "Ein Freund surft täglich viele Stunden im Internet. Sie finden das zu viel und wollen ihm einen Rat geben.",
-                "Ein Freund möchte wissen, welche schulischen Leistungen bei der Vergabe von Ausbildungsplätzen im Bankgewerbe besonders wichtig sind.",
-                "Ein Bekannter ist Bankkaufmann und sucht eine Stelle.",
-                "Ein älteres Ehepaar hat Goldene Hochzeit. Die Tochter möchte eine Rede halten und braucht dafür eine Anleitung."
+                {
+                    id: "11",
+                    text: "Ihre Schwägerin erwartet ein Kind. Sie ist nicht sicher, ob Sie in einem Vorstellungsgespräch darauf hinweisen muss.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "12",
+                    text: "Ihr Neffe sucht einen Ausbildungsplatz als Elektriker. Er weiß nicht genau, wie er seine Bewerbung korrekt schreiben soll.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "13",
+                    text: "Eine Freundin, 20 Jahre alt, muss oft vor Arbeitskollegen Referate halten. Ihr Hauptproblem ist ihre Nervosität.",
+                    correctAnswer: "D"
+                },
+                {
+                    id: "14",
+                    text: "Eine Freundin sucht einen Ausbildungsplatz. Sie ist zu einem Bewerbungsgespräch eingeladen und weiß nicht, was sie zu diesem Anlass anziehen soll.",
+                    correctAnswer: "H"
+                },
+                {
+                    id: "15",
+                    text: "Eine Bekannte sucht Rat bei Ihnen, weil ihr Sohn ständig im Internet surft und dabei die Schule vernachlässigt.",
+                    correctAnswer: "L"
+                },
+                {
+                    id: "16",
+                    text: "Eine Bekannte möchte eine Ausbildung machen und vielleicht später einmal studieren.",
+                    correctAnswer: "G"
+                },
+                {
+                    id: "17",
+                    text: "Ein Freund surft täglich viele Stunden im Internet. Sie finden das zu viel und wollen ihm einen Rat geben.",
+                    correctAnswer: "J"
+                },
+                {
+                    id: "18",
+                    text: "Ein Freund möchte wissen, welche schulischen Leistungen bei der Vergabe von Ausbildungsplätzen im Bankgewerbe besonders wichtig sind.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "19",
+                    text: "Ein Bekannter ist Bankkaufmann und sucht eine Stelle.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "20",
+                    text: "Ein älteres Ehepaar hat Goldene Hochzeit. Die Tochter möchte eine Rede halten und braucht dafür eine Anleitung.",
+                    correctAnswer: "F"
+                }
             ],
 
             ads: [
                 {
-                    id: "a",
+                    id: "A",
                     title: "Das Vorstellungsgespräch",
                     content: "Das Vorstellungsgespräch ist eine wichtige Hürde bei der Suche nach einem Arbeitsplatz. In der Regel fangen sie mit Smalltalk an: Man redet über das Wetter, den Verkehr und Ähnliches. Doch dabei kommt es schon auf das 'Wie?' an. Wer viel kritisiert, hat schon verloren. Bei der Vorstellung ihrer Person sollten Bewerber darauf achten, dass sie ihre Fähigkeit und den Nutzen, den ihr potentiell zukünftiger Arbeitgeber von ihnen hat, in den Vordergrund stellen. Fragen nach Gesundheit, Familienplanung, Schwangerschaft oder Geld gehören nicht ins Bewerbungsgespräch. Sollten Sie dennoch gestellt werden, ist man nicht verpflichtet, diese wahrheitsgemäß zu beantworten."
                 },
                 {
-                    id: "b", 
-                    title: "Die Postbank",
-                    content: "Die Postbank gibt Bewerbern um einen Ausbildungsplatz ein Thema für ein Projekt, das sie ausarbeiten und dann präsentieren sollen. Nur wer diese Hürde nehmen kann und Engagement beweist, hat Chancen, aufgenommen zu werden. Schließlich sollen die Bewerber zeigen, dass sie belastbar und entscheidungsfähig sind. Der Banker von heute hat ein weit gestecktes Tätigkeitsfeld: Kassierer am Schalter, die nichts als Geld oder Formulare ausgeben oder entgegennehmen, wird es in Zukunft immer weniger geben."
+                    id: "B",
+                    title: "Bankausbildung heute",
+                    content: "Die Postbank gibt Bewerbern um einen Ausbildungsplatz ein Thema für ein Projekt, das sie ausarbeiten und dann präsentieren sollen. Nur wer diese Hürde nehmen kann und Engagement beweist, hat Chancen, aufgenommen zu werden. Schließlich sollen die Bewerber zeigen, dass sie belastbar und entscheidungsfähig sind. Der Banker von heute hat ein weit gestrecktes Tätigkeitsfeld: Kassierer am Schalter, die nichts als Geld oder Formulare ausgeben oder entgegennehmen, wird es in Zukunft immer weniger geben."
                 },
                 {
-                    id: "c",
-                    title: "Rhetoriktipps", 
+                    id: "C",
+                    title: "Rhetoriktrainer raten",
                     content: "Rhetoriktrainer raten dazu, dem Anfang und dem Schluss eines Referats besonderes Augenmerk zu schenken. In den ersten zwei Minuten eines Vortrags entscheide sich nämlich, ob ein Zuhörer an dem Referat Interesse hat oder nicht. Daher sei ein effektvoll und interessant gestalteter Einstieg äußerst wichtig. Am Schluss soll man den Zuhörern noch einmal mit auf den Weg geben, was dem Vortragenden besonders wichtig erscheint."
                 },
                 {
-                    id: "d",
+                    id: "D",
                     title: "Hilfe, ich muss reden",
-                    content: "Robert Sonntag, Autor des Buches 'Hilfe, ich muss reden' behauptet, die Angst vor einem größeren Publikum zu reden, sei ein Problem für die meisten Menschen. In Deutschland liegt in etwa 60 % der Menschen an diesem Phänomen. Dabei achten Zuhören nur zu 7 % auf das, was jemand sagt, 93 % der Wirkung eines Vortrags erziele man durch Körpersprache und seine Stimme. Der Autor rät zu Entspannungstechniken wie dem Autogenen Training oder Yoga, um gelassener zu werden, und einer gründlichen Vorbereitung des Vortrags. Seminarangebote unter www.rs-rethorik.de."
+                    content: "Robert Sonntag, Autor des Buches 'Hilfe, ich muss reden' behauptet, die Angst vor einem größeren Publikum zu reden, sei ein Problem für die meisten Menschen. In Deutschland liegt in etwa 60 % der Menschen an diesem Phänomen. Dabei achten Zuhörer nur zu 7 % auf das, was jemand sagt, 93 % der Wirkung eines Vortrags erziele man durch Körpersprache und seine Stimme. Der Autor rät zu Entspannungstechniken wie dem Autogenen Training oder Yoga, um gelassener zu werden, und einer gründlichen Vorbereitung des Vortrags. Seminarangebote unter www.rs-rethorik.de."
                 },
                 {
-                    id: "e",
-                    title: "Vorbereitung auf Vorstellungsgespräche",
+                    id: "E",
+                    title: "Bereiten Sie sich vor",
                     content: "Bereiten Sie sich auf ein Vorstellungsgespräch intensiv vor. Überlegen Sie sich genau, was Sie Ihrer zukünftigen Firma an Nutzen bringen können, denn Sie werden danach gefragt werden, warum Sie sich gerade bei dieser und nicht bei einer anderen Firma beworben haben. Analysieren Sie Ihre persönlichen Stärken und Schwächen und überlegen Sie, wie Sie Ihre schwachen Seiten möglichst positiv präsentieren können. Überlegen Sie, was Ihre persönlichen Ziele sind, und sammeln Sie so viele Informationen wie möglich über Ihre zukünftige Arbeit und die Firma, bei der Sie sich beworben haben."
                 },
                 {
-                    id: "f",
-                    title: "Festansprache lernen",
+                    id: "F",
+                    title: "Festansprache halten",
                     content: "Nichts ist auf privaten Feierlichkeiten wie Hochzeiten, runden Geburtstagen oder sonstigen Jubiläen schlimmer als langatmige, nicht enden wollende Ansprachen von Familienmitgliedern. Deshalb bieten viele Volkshochschulen in Deutschland Wochenendseminare an, in denen der Aufbau und der Vortrag einer guten Festansprache trainiert werden. Das Ziel dieser Seminare ist es, die zukünftigen Teilnehmenden in die Lage zu versetzen, spritzige Reden frei halten zu können."
                 },
                 {
-                    id: "g",
+                    id: "G",
                     title: "Ausbildung bei der Bank",
                     content: "Ein Auszubildender bei einer Bank oder Sparkasse bekommt 690,- Euro im ersten Ausbildungsjahr. Am Ende seiner Ausbildung steigt die Vergütung auf 800,- Euro. Das Einstiegsgehalt für Bankangestellte liegt bei etwas über 2.000,- Euro monatlich. Aufstiegschancen haben die jungen Banker nur, wenn sie sich intensiv um ihre berufliche Fortbildung kümmern. Dafür bieten die Banken ihren Mitarbeitern viele Möglichkeiten an, wie das BankCollege der Volksbanken oder die Sparkassen-Akademie. Manche Banken geben besonders qualifizierten Mitarbeitern sogar Stipendien für ein Studium."
                 },
                 {
-                    id: "h", 
+                    id: "H",
                     title: "Kleidung beim Vorstellungsgespräch",
                     content: "Wer zu seinem Vorstellungsgespräch eingeladen wird, sollte auf korrekte und saubere Kleidung achten. Für viele Firmen ist es wichtig, dass auch Auszubildende die Firma gegenüber den Kunden repräsentieren können. Zerrissene Jeans und selbst gefärbte T-Shirts mögen zwar trendy sein, zu einem Vorstellungsgespräch gehören sie aber nicht. In Zweifelsfällen ist es ratsam, sich bei Eltern oder Bekannten Rat zu holen."
                 },
                 {
-                    id: "i",
-                    title: "Internetsucht",
-                    content: "Für junge Leute kann das Internet zu einer Droge werden. Der typische Internet-Süchtige ist ca. 18 Jahre alt, männlich. Single und hat kaum soziale Kontakte. Er surft täglich um die 5 Stunden im World Wide Web und hat schlechte Laune, wenn er nicht vor dem Monitor sitzen kann. Pflichten werden oft vernachlässigt. Psychologen raten, die Surfzeiten schrittweise zu verringern und darüber ein Tagebuch zu führen sowie vor dem Surfen schriftlich zu notieren, was genau man im Internet suchen möchte. Wer diese strengen Regeln einhält, kann aus der Internetsucht aussteigen."
+                    id: "I",
+                    title: "",
+                    content: ""
                 },
                 {
-                    id: "j",
-                    title: "Sprachprobleme am Arbeitsplatz", 
-                    content: "Zu einem zunehmend größer werdenden Problem am Arbeitsplatz wird die immer größer werdende Kluft zwischen dem Sprachgebrauch junger und alter Kollegen. Viele junge Leute verstehen laut einer Studie der Universität Kiel traditionelle Redewendungen wie z. B. 'Den Nagel auf den Kopf treffen' oder 'Öl ins Feuer gießen' nicht mehr, während Ältere nichts mit 'keinen Bock haben' anzufangen wissen. Dadurch, dass Jung und Alt heute nicht mehr so lange wie in früheren Zeiten zusammenleben, sondern unter sich bleiben, verstärkt sich das Auseinanderdriften der Jugendsprache und der Sprache der Alten immer mehr auseinander."
+                    id: "J",
+                    title: "Internetsucht bei Jugendlichen",
+                    content: "Für junge Leute kann das Internet zu einer Droge werden. Der typische Internet-Süchtige ist ca. 18 Jahre alt, männlich, Single und hat kaum soziale Kontakte. Er surft täglich um die 5 Stunden im World Wide Web und hat schlechte Laune, wenn er nicht vor dem Monitor sitzen kann. Pflichten werden oft vernachlässigt. Psychologen raten, die Surfzeiten schrittweise zu verringern und darüber ein Tagebuch zu führen sowie vor dem Surfen schriftlich zu notieren, was genau man im Internet suchen möchte. Wer diese strengen Regeln einhält, kann aus der Internetsucht aussteigen."
                 },
                 {
-                    id: "k",
-                    title: "Ausbildung bei der Sparkasse",
-                    content: "'GRUNDSÄTZLICH HAT JEDER DIE MÖGLICHKEIT, BEI UNS EINE AUSBILDUNG ZU MACHEN', heißt es bei der Sparkassen-Akademie in Bonn. Die Bewerber sollen aber gute bis sehr gute Noten in Deutsch und Mathematik von der Schule mibbringen, und sie müssen in Rollenspielen ihre kommunikativen Fähigkeiten unter Beweis stellen, etwa, wie sie mit einem aggressiven Kunden umgehen würden."
+                    id: "K",
+                    title: "Sprachprobleme am Arbeitsplatz",
+                    content: "Zu einem zunehmend größer werdenden Problem am Arbeitsplatz wird die immer größer werdende Kluft zwischen dem Sprachgebrauch junger und alter Kollegen. Viele junge Leute verstehen laut einer Studie der Universität Kiel traditionelle Redewendungen wie z. B. 'Den Nagel auf den Kopf treffen' oder 'Öl ins Feuer gießen' nicht mehr, während Ältere nichts mit 'keinen Bock haben' anzufangen wissen. Dadurch, dass Jung und Alt heute nicht mehr so lange wie in früheren Zeiten zusammenleben, sondern unter sich bleiben, verstärkt sich das Auseinanderdriften der Jugendsprache und der Sprache der Alten immer mehr."
                 },
                 {
-                    id: "l",
-                    title: "Internetabhängigkeit bei Jugendlichen",
-                    content: "Viele junge Leute flüchten sich in die virtuelle Scheinwelt, weil ihnen die Realität als eine zu große Belastung erscheint. Insbesondere Chatrooms verführen die Jugendlichen zu langen Sitzungen, die oft als Ersatz für mangelnde zwischenmenschliche Beziehungen herhalten. Häufige Folge: Vernachlässigung von Hausaufgaben und schlechte Zensuren. Eltern, die sich Sorgen um ihre Internetabhängigen Kinder machen, sollten viel mit ihnen sprechen - ohne Vorwürfe zu machen - und versuchen ihren Zöglingen Alternativen in der realen Welt aufzuzeigen."
+                    id: "L",
+                    title: "Sparkassen-Akademie Bonn",
+                    content: "'GRUNDSÄTZLICH HAT JEDER DIE MÖGLICHKEIT, BEI UNS EINE AUSBILDUNG ZU MACHEN', heißt es bei der Sparkassen-Akademie in Bonn. Die Bewerber sollen aber gute bis sehr gute Noten in Deutsch und Mathematik von der Schule mitbringen, und sie müssen in Rollenspielen ihre kommunikativen Fähigkeiten unter Beweis stellen, etwa, wie sie mit einem aggressiven Kunden umgehen würden. Viele junge Leute flüchten sich in die virtuelle Scheinwelt, weil ihnen die Realität als eine zu große Belastung erscheint. Insbesondere Chatrooms verführen die Jugendlichen zu langen Sitzungen, die oft als Ersatz für mangelnde zwischenmenschliche Beziehungen herhalten. Häufige Folge: Vernachlässigung von Hausaufgaben und schlechte Zensuren. Eltern, die sich Sorgen um ihre Internetabhängigen Kinder machen, sollten viel mit ihnen sprechen - ohne Vorwürfe zu machen - und versuchen ihren Zöglingen Alternativen in der realen Welt aufzuzeigen."
                 }
             ],
 
-            // الإجابات الصحيحة لـ Lesen Teil 3
-            teil3Answers: {
-                11: "a",
-                12: "x", 
-                13: "d",
-                14: "h",
-                15: "l",
-                16: "g",
-                17: "i",
-                18: "k",
-                19: "x", 
-                20: "f"
-            },
-
-            // Sprachbausteine Teil 1
+            // Sprachbausteine Teil 1 - من DROGEN.html
             blankText1: {
                 content: `Hallo Maria,
-Bevor Wieder der Arbeitsalltag beginnt, schicke ich dir __(21)__ rasch einige Zeilen um dir von unserem Wochenende zu erzählen. Es ist so schade, dass du __(22)__ deiner Grippe nicht dabei sein konntest! Wir haben dich alle sehr vermisst.
-__(23)__ auf Mikro sind Alle mit dem Zug angereist und wir haben uns schon am Bahnhof getroffen.
+
+Bevor wieder der Arbeitsalltag beginnt, schicke ich dir ________ (21) rasch einige Zeilen, um dir von unserem Wochenende zu erzählen. Es ist so schade, dass du ________ (22) deiner Grippe nicht dabei sein konntest! Wir haben dich alle sehr vermisst.
+
+________ (23) auf Mikro sind Alle mit dem Zug angereist und wir haben uns schon am Bahnhof getroffen.
+
 Von dort sind wir dann los in die Ferienwohnung, die Lilo für uns reserviert hatte.
-Nachdem wir unser Gepäck abgestellt __(24)__ haben wir gleich einen rundgang durch den Ort gemacht. Lilo wusste viel Interessantes zu erzählen. Sie lebt ja schon einige Jahre dort und hat sich __(25)__ ausgezeichnete Fremdenführerin erwiesen. Besonders beeindruckt hat uns der Wunderschöne Park, in dem gerade die rhododendren blühten . Eine Wahre Pracht. Das hätte dir auch gefallen! später sind wir zum Amselsee gewandert, den man in kurzer Zeit vom Ort aus erreicht. Dort haben wir eine Bootsfahrt über den See gemacht. vom Boot aus hat man einen Wunderbaren Blick auf die beeindruckende Felsenlandschaft. Am Abend stand dann die Felsentbühne __(26)__ dem Programm.
-Die Wanderung am nächsten Tag war __(27)__ schön anstrengend. aber Wunderbar .
-__(28)__ alle ziemlich erschöpft waren, haben wir nach dem Abendessen noch lange zusammen gegessen. Und über alte Zeiten geplaudert. Am nächsten morgen nach unserem gemeinsam frühzeitlich waren uns einig, dass wir bald wieder zusammen einen Ausflug machen. __(29)__ Und nächste Mal musst du unbedingt dabei sein. Im Anhang schicke ich dir einige. Wie du siehst , war unser treffen wirklich lustig !. Ich hoffe , dass es dir __(30)__ schon wieder besser geht.
-Liebe Grüße von uns allem
+
+Nachdem wir unser Gepäck abgestellt ________ (24) haben wir gleich einen Rundgang durch den Ort gemacht. Lilo wusste viel Interessantes zu erzählen. Sie lebt ja schon einige Jahre dort und hat sich ________ (25) ausgezeichnete Fremdenführerin erwiesen. Besonders beeindruckt hat uns der wunderschöne Park, in dem gerade die Rhododendren blühten . Eine wahre Pracht. Das hätte dir auch gefallen! Später sind wir zum Amselsee gewandert, den man in kurzer Zeit vom Ort aus erreicht. Dort haben wir eine Bootsfahrt über den See gemacht. Vom Boot aus hat man einen wunderbaren Blick auf die beeindruckende Felsenlandschaft. Am Abend stand dann die Felsenbühne ________ (26) dem Programm.
+
+Die Wanderung am nächsten Tag war ________ (27) schön anstrengend. Aber wunderbar .
+
+________ (28) alle ziemlich erschöpft waren, haben wir nach dem Abendessen noch lange zusammen gegessen. Und über alte Zeiten geplaudert. Am nächsten Morgen nach unserem gemeinsamen Frühstück waren wir uns einig, dass wir bald wieder zusammen einen Ausflug machen. ________ (29) Und nächste Mal musst du unbedingt dabei sein. Im Anhang schicke ich dir einige Fotos. Wie du siehst , war unser Treffen wirklich lustig ! Ich hoffe , dass es dir ________ (30) schon wieder besser geht.
+
+Liebe Grüße von uns allen
 Cem`,
-                answers: {
-                    21: "noch",
-                    22: "wegen", 
-                    23: "Bis",
-                    24: "hatten",
-                    25: "als",
-                    26: "auf",
-                    27: "zwar",
-                    28: "Obwohl",
-                    29: "Das",
-                    30: "inzwischen"
-                }
+                options: [
+                    ["momentan", "noch", "weiterhin"],      // 21
+                    ["deswegen", "wegen", "weil"],         // 22
+                    ["abgesehen", "außer", "bis"],         // 23
+                    ["haben", "hatten", "hätten"],         // 24
+                    ["als", "für", "zur"],                 // 25
+                    ["auf", "in", "zu"],                   // 26
+                    ["absolut", "ganz", "vollkommen"],     // 27
+                    ["obwohl", "trotzdem", "ungeachtet"],  // 28
+                    ["durften", "konnten", "sollten"],     // 29
+                    ["inzwischen", "während", "zwischen"]  // 30
+                ],
+                answers: ["noch", "wegen", "außer", "haben", "als", "auf", "ganz", "obwohl", "sollten", "inzwischen"]
             },
 
-            // Sprachbausteine Teil 2
+            // Sprachbausteine Teil 2 - من DROGEN.html
             blankText2: {
                 content: `Ausbildung mit über 30
-Die gelernte Krankenschwester Jaqueline Delgado drückt mit 38 Jahren noch einmal die Schulbank. __(31)__ sie hat sich für einen beruflichen Neustart entschieden. Da ihr früherer Beruf ihr keinen Spaß mehr machte, begann sie eine Berufsausbildung bei der Polizei. Ihr Ziel: Sie __(32)__ in den Streifendienst gehen.
-Mit über 30 noch einmal einen ganz neuen Job zu erlernen – lange Zeit war das kaum möglich. Arbeitgeber sought nur junge Berufseinsteiger. __(33)__ es heute in vielen Branchen aber an Nachwuchs fehlt, geben sie öfter auch Älteren eine __(34)__ .
-Thomas Neuendorfer, der stellvertretende Sprecher der Polizei Berlin, erklärt, __(35)__ sein Arbeitgeber gerne Ältere ausbildet: "Sie haben in ihrem Berufsleben Erfahrungen gesammelt, die der Polizei und auch den Bürgern der Stadt zu Gute kommen". Sie seien häufig emotional reifer, außerdem bereit, Verantwortung zu __(36)__ und motiviert, die Ausbildung erfolgreich abzuschließen. Zudem __(37)__ sie die Jüngeren unterstützen und ihnen als Vorbild dienen. Davon profitierten dann auch die Arbeitgeber. Gegen die Einstellung von Älteren spreche nur, dass sie dem Unternehmen kürzer vor __(38)__ stehen. __(39)__ haben ältere Azubis in vielen Bereichen Möglichkeiten: in kaufmännischen oder in gewerblich-technischen Berufen, im Gesundheitswesen oder vor allem in der Gastronomie.
-Wenn das Azubi–Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeitsagentur. Der Betrag wird dabei nicht nach dem Alter festgelegt, __(40)__ es wird der individuelle, konkrete Bedarf ermittelt. Im August schließt Delgado ihre Ausbildung ab. In dem künftigen Polizei–Job wird sie ihr medizinisches Wissen, ihre Menschenkenntnis sowie ihre spanischen und englischen Sprachkenntnisse wohlt gut gebrauchen können.`,
-                answers: {
-                    31: "Denn",
-                    32: "möchte", 
-                    33: "Da",
-                    34: "Chance",
-                    35: "warum",
-                    36: "übernehmen",
-                    37: "können",
-                    38: "Verfügung",
-                    39: "Trotzdem",
-                    40: "sondern"
-                }
+
+Die gelernte Krankenschwester Jaqueline Delgado drückt mit 38 Jahren noch einmal die Schulbank. ________ (31) sie hat sich für einen beruflichen Neustart entschieden. Da ihr früherer Beruf ihr keinen Spaß mehr machte, begann sie eine Berufsausbildung bei der Polizei. Ihr Ziel: Sie ________ (32) in den Streifendienst gehen.
+
+Mit über 30 noch einmal einen ganz neuen Job zu erlernen - lange Zeit war das kaum möglich. Arbeitgeber suchten nur junge Berufseinsteiger. ________ (33) es heute in vielen Branchen aber an Nachwuchs fehlt, geben sie öfter auch Älteren eine ________ (34) .
+
+Thomas Neuendorfer, der stellvertretende Sprecher der Polizei Berlin, erklärt, ________ (35) sein Arbeitgeber gerne Ältere ausbildet: "Sie haben in ihrem Berufsleben Erfahrungen gesammelt, die der Polizei und auch den Bürgern der Stadt zu Gute kommen". Sie seien häufig emotional reifer, außerdem bereit, Verantwortung zu ________ (36) und motiviert, die Ausbildung erfolgreich abzuschließen. Zudem ________ (37) sie die Jüngeren unterstützen und ihnen als Vorbild dienen. Davon profitierten dann auch die Arbeitgeber. Gegen die Einstellung von Älteren spreche nur, dass sie dem Unternehmen kürzer vor ________ (38) stehen. ________ (39) haben ältere Azubis in vielen Bereichen Möglichkeiten: in kaufmännischen oder in gewerblich-technischen Berufen, im Gesundheitswesen oder vor allem in der Gastronomie.
+
+Wenn das Azubi-Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeitsagentur. Der Betrag wird dabei nicht nach dem Alter festgelegt, ________ (40) es wird der individuelle, konkrete Bedarf ermittelt. Im August schließt Delgado ihre Ausbildung ab. In dem künftigen Polizei-Job wird sie ihr medizinisches Wissen, ihre Menschenkenntnis sowie ihre spanischen und englischen Sprachkenntnisse wohl gut gebrauchen können.`,
+                options: ["DURFTEN", "CHANCE", "DA", "DAGEGEN", "DENN", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"],
+                answers: ["DENN", "MÖCHTE", "DA", "CHANCE", "WARUM", "ÜBERNEHMEN", "KÖNNTEN", "VERFÜGUNG", "TROTZDEM", "SONDERN"]
             }
         };
 
@@ -1279,24 +1109,14 @@ Wenn das Azubi–Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeits
             setupEventListeners();
         });
 
-        let currentLang = 'ar';
         let isDarkMode = false;
 
         function initializePage() {
             // تحميل الإعدادات المحفوظة
-            const savedLang = localStorage.getItem('language') || 'ar';
             const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-            const username = localStorage.getItem('username') || 'زائر';
-            const access = localStorage.getItem('access');
             
-            changeLanguage(savedLang);
             if (savedDarkMode) {
                 toggleDarkMode();
-            }
-            
-            // التحقق من حالة المستخدم
-            if (access === 'paid' && username) {
-                document.getElementById('premiumBadge').style.display = 'flex';
             }
             
             // تهيئة الأجزاء
@@ -1304,7 +1124,6 @@ Wenn das Azubi–Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeits
             initializeTeil2();  
             initializeTeil3();
             initializeSprachbausteine();
-            initializeAnswersSection();
         }
 
         function initializeTeil1() {
@@ -1315,13 +1134,13 @@ Wenn das Azubi–Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeits
             textsList.innerHTML = '';
 
             // إضافة العناوين
-            examData.headings.forEach((heading, index) => {
+            examData.headings.forEach((heading) => {
                 const headingItem = document.createElement('div');
                 headingItem.className = 'heading-item';
                 headingItem.innerHTML = `
-                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                    <strong>${heading.id})</strong> ${heading.text}
                 `;
-                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingItem.dataset.letter = heading.id;
                 headingsList.appendChild(headingItem);
             });
 
@@ -1330,10 +1149,10 @@ Wenn das Azubi–Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeits
                 const textItem = document.createElement('div');
                 textItem.className = 'question';
                 textItem.innerHTML = `
-                    <h3>Text ${index + 1}</h3>
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
                     <div class="text-content">${text.content}</div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
                     </div>
                 `;
                 textsList.appendChild(textItem);
@@ -1344,14 +1163,14 @@ Wenn das Azubi–Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeits
             const longText = document.getElementById('longText');
             const questionsList = document.getElementById('questionsList');
 
-            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
 
             questionsList.innerHTML = '';
             examData.longText.questions.forEach((question, index) => {
                 const questionItem = document.createElement('div');
                 questionItem.className = 'question';
                 questionItem.innerHTML = `
-                    <h3>Frage ${index + 6}</h3>
+                    <h3>Question ${index + 6}</h3>
                     <p><strong>${question.question}</strong></p>
                     <div class="options">
                         ${question.options.map((option, optIndex) => `
@@ -1361,7 +1180,7 @@ Wenn das Azubi–Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeits
                         `).join('')}
                     </div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
                     </div>
                 `;
                 questionsList.appendChild(questionItem);
@@ -1373,14 +1192,12 @@ Wenn das Azubi–Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeits
             const adsList = document.getElementById('adsList');
 
             situationsList.innerHTML = '';
-            examData.situations.forEach((situation, index) => {
+            examData.situations.forEach((situation) => {
                 const situationItem = document.createElement('div');
                 situationItem.className = 'situation-item';
                 situationItem.innerHTML = `
-                    <strong>${index + 11})</strong> ${situation}
-                    <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11] === 'x' ? 'x (keine Lösung)' : examData.teil3Answers[index + 11].toUpperCase()}
-                    </div>
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
                 `;
                 situationsList.appendChild(situationItem);
             });
@@ -1390,58 +1207,89 @@ Wenn das Azubi–Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeits
                 const adItem = document.createElement('div');
                 adItem.className = 'ad-item';
                 adItem.innerHTML = `
-                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
-                    <p>${ad.content}</p>
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
                 `;
                 adsList.appendChild(adItem);
             });
         }
 
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
         function initializeSprachbausteine() {
             // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
             const blankText1 = document.getElementById('blankText1');
-            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber]}</span></span>`;
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText1.innerHTML = textWithBlanks1;
 
             // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
             const blankText2 = document.getElementById('blankText2');
-            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber]}</span></span>`;
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText2.innerHTML = textWithBlanks2;
-        }
-
-        function initializeAnswersSection() {
-            const sprach1AnswersList = document.getElementById('sprach1AnswersList');
-            const sprach2AnswersList = document.getElementById('sprach2AnswersList');
-
-            // إضافة كلمات الإجابات لـ Teil 1
-            sprach1AnswersList.innerHTML = '';
-            Object.keys(examData.blankText1.answers).forEach(key => {
-                const answerItem = document.createElement('div');
-                answerItem.className = 'answer-item';
-                answerItem.innerHTML = `
-                    <div class="answer-number">${key}</div>
-                    <div>${examData.blankText1.answers[key]}</div>
-                `;
-                sprach1AnswersList.appendChild(answerItem);
-            });
-
-            // إضافة كلمات الإجابات لـ Teil 2
-            sprach2AnswersList.innerHTML = '';
-            Object.keys(examData.blankText2.answers).forEach(key => {
-                const answerItem = document.createElement('div');
-                answerItem.className = 'answer-item';
-                answerItem.innerHTML = `
-                    <div class="answer-number">${key}</div>
-                    <div>${examData.blankText2.answers[key]}</div>
-                `;
-                sprach2AnswersList.appendChild(answerItem);
-            });
         }
 
         function setupEventListeners() {
@@ -1449,35 +1297,8 @@ Wenn das Azubi–Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeits
             document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
             document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
             
-            // زر الرئيسية
-            document.getElementById('homeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html';
-            });
-            
             // زر الوضع الليلي
             document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-            
-            // زر المستخدم
-            document.getElementById('userBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#profile';
-            });
-            
-            // زر اللغة
-            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
-            document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const lang = option.getAttribute('data-lang');
-                    changeLanguage(lang);
-                    document.getElementById('langDropdown').classList.remove('show');
-                });
-            });
-            
-            // إغلاق القوائم المنسدلة بالنقر خارجها
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.language-selector')) {
-                    document.getElementById('langDropdown').classList.remove('show');
-                }
-            });
         }
 
         function showAllAnswers() {
@@ -1487,10 +1308,10 @@ Wenn das Azubi–Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeits
             document.querySelectorAll('.blank-answer').forEach(answer => {
                 answer.classList.remove('hidden');
             });
-            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+            document.querySelectorAll('.heading-item').forEach(heading => {
                 const letter = heading.dataset.letter;
                 examData.texts.forEach(text => {
-                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                    if (text.correctAnswer === letter) {
                         heading.classList.add('matched');
                     }
                 });
@@ -1520,30 +1341,6 @@ Wenn das Azubi–Gehalt nicht für den Lebensunterhalt reicht, hilft die Arbeits
             } else {
                 themeIcon.className = 'fas fa-moon';
             }
-        }
-
-        function toggleLangDropdown() {
-            document.getElementById('langDropdown').classList.toggle('show');
-        }
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            
-            // تحديث جميع النصوص
-            Object.keys(t).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = t[key];
-                }
-            });
-            
-            localStorage.setItem('language', lang);
-            
-            // إعادة تهيئة المحتوى لترجمة الإجابات
-            initializeTeil1();
-            initializeTeil2();
-            initializeTeil3();
         }
     </script>
 </body>

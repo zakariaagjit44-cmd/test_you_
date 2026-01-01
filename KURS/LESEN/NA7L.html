@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iTeIC Leseverstehen - TELC B2 Training</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NA7L - TELC B2 Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -20,16 +20,17 @@
             --text: #333;
             --text-light: #546E7A;
             --white: #ffffff;
-            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
-            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
-            --radius: 25px;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -38,8 +39,11 @@
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
             transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
         }
 
         body.dark-mode {
@@ -47,360 +51,71 @@
             color: var(--light);
         }
 
-        /* Header Controls - التعديل هنا */
-        .header-controls {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            right: 20px;
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            z-index: 1000;
-            gap: 15px;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .left-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-start;
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
         }
 
-        .right-controls {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
+        .theme-btn {
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            border: none;
-            background: var(--primary);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .control-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .control-btn:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-
-        .control-btn:hover {
-            transform: scale(1.15) rotate(5deg);
-            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
-        }
-
-        /* شارة المشترك الذهبية - تم التعديل */
-        .premium-badge-header {
-            position: fixed;
-            top: 20px;
-            right: 90px; /* بجانب الأزرار */
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            padding: 0.5rem;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
-        }
-
-        .home-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .home-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .home-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        /* Language Selector */
-        .language-selector {
-            display: flex;
-            position: relative;
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: var(--radius);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .lang-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .lang-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            background: var(--white);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
-            overflow: hidden;
-            min-width: 120px;
-            animation: dropdownSlide 0.3s ease;
-            z-index: 1001;
-        }
-
-        .dark-mode .lang-dropdown {
-            background: #1a237e;
-            color: var(--light);
-        }
-
-        @keyframes dropdownSlide {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .lang-dropdown.show {
-            display: block;
-        }
-
-        .lang-option {
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            color: var(--text);
-        }
-
-        .dark-mode .lang-option {
-            color: var(--light);
-            border-bottom: 1px solid #37474F;
-        }
-
-        .lang-option:hover {
-            background: #f5f5f5;
-            transform: translateX(5px);
-        }
-
-        .dark-mode .lang-option:hover {
-            background: #283593;
-        }
-
-        .lang-option:last-child {
-            border-bottom: none;
-        }
-
-        /* زر الاشتراك */
-        .subscribe-btn {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            border: none;
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-        }
-
-        .subscribe-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
-        }
-
-        /* المحتوى الرئيسي */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: var(--radius);
-            padding: 3rem;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(15px);
-            margin-top: 6rem;
-            transition: var(--transition);
-        }
-
-        .dark-mode .container {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: contentSlideUp 0.8s ease;
-        }
-
-        @keyframes contentSlideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .header h1 {
-            font-size: 2.8rem;
-            color: var(--primary-dark);
-            margin-bottom: 1rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .dark-mode .header h1 {
-            color: #90CAF9;
-        }
-
-        .page-subtitle {
             font-size: 1.2rem;
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .dark-mode .page-subtitle {
-            color: #B0BEC5;
-        }
-
-        /* أزرار التحكم */
-        .answer-controls {
-            position: sticky;
-            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1.5rem;
-            border-radius: var(--radius);
+            cursor: pointer;
             box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-            z-index: 100;
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
             display: flex;
             gap: 1rem;
-            justify-content: center;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-        }
-
-        .dark-mode .answer-controls {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            align-items: center;
         }
 
         .answer-btn {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
-            position: relative;
-            overflow: hidden;
             border: none;
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.5rem;
             transition: var(--transition);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .answer-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: right 0.6s;
-        }
-
-        .answer-btn:hover::before {
-            right: 100%;
+            min-width: 180px;
+            justify-content: center;
         }
 
         .answer-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
         }
 
         .show-answers {
@@ -413,47 +128,107 @@
             color: var(--white);
         }
 
-        /* التصميم الخاص بالأسئلة */
-        .section {
-            margin: 2rem 0;
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
             padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
             transition: var(--transition);
         }
 
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
         .dark-mode .section {
-            background: rgba(13, 71, 161, 0.9);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
         }
 
         .section-title {
             color: var(--primary-dark);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
             border-bottom: 2px solid var(--primary);
             font-weight: 600;
+            text-align: left;
         }
 
         .dark-mode .section-title {
             color: #90CAF9;
         }
 
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
         .question {
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: rgba(33, 150, 243, 0.05);
-            border-radius: 15px;
-            border-right: 4px solid var(--primary);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .question {
-            background: rgba(33, 150, 243, 0.1);
+            background: rgba(33, 150, 243, 0.08);
         }
 
         .options {
@@ -461,25 +236,25 @@
         }
 
         .option {
-            margin: 0.8rem 0;
-            padding: 1rem;
+            margin: 0.6rem 0;
+            padding: 0.8rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
             cursor: pointer;
             transition: var(--transition);
             font-weight: 500;
+            text-align: left;
         }
 
         .dark-mode .option {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .option:hover {
             border-color: var(--primary);
             background: rgba(33, 150, 243, 0.05);
-            transform: translateX(-5px);
         }
 
         .correct {
@@ -495,365 +270,493 @@
         .answer {
             margin-top: 1rem;
             padding: 1rem;
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 600;
-            animation: slideInUp 0.5s ease;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
         }
 
         @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* التصحيح - تم التعديل للوضع الليلي */
         .correct-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
-            border: 2px solid #4CAF50;
-            font-weight: bold;
+            border: 1px solid #4CAF50;
         }
 
         .dark-mode .correct-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
-            border: 2px solid #81C784;
+            border: 1px solid #81C784;
         }
 
         /* النصوص والعناوين */
         .text-content {
-            line-height: 1.7;
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
-            font-size: 1.1rem;
-            transition: var(--transition);
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .text-content {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
+        /* Lesen Teil 1 - تصميم محسن */
         .headings-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1rem;
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .heading-item {
-            padding: 1.2rem;
+            padding: 1rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            text-align: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
             font-weight: 500;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .heading-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .matched {
             border-color: #4CAF50;
             background: rgba(76, 175, 80, 0.1);
-            transform: scale(1.02);
         }
 
-        /* الإعلانات والوضعيات */
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
         .ads-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
         }
 
         .ad-item {
-            padding: 1.5rem;
+            padding: 1.2rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            min-height: 150px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .ad-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .ad-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-hover);
         }
 
-        .situations-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.2rem;
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
         }
 
-        .situation-item {
-            padding: 1.2rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            transition: var(--transition);
+        .dark-mode .ad-letter {
+            color: #90CAF9;
         }
 
-        .dark-mode .situation-item {
-            background: #1a237e;
-            border-color: #37474F;
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
         }
 
-        .situation-item:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.05);
+        .dark-mode .ad-title {
+            color: var(--light);
         }
 
-        /* Sprachbausteine */
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
         .fill-blanks {
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .blank-text {
-            line-height: 2;
-            margin: 1.5rem 0;
-            font-size: 1.2rem;
-            padding: 1.5rem;
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .blank-text {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .blank {
             display: inline-block;
             min-width: 120px;
-            margin: 0 8px;
-            padding: 0.5rem 1rem;
-            border-bottom: 3px solid var(--primary);
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
             text-align: center;
             font-weight: 600;
             background: var(--white);
-            border-radius: 8px;
+            border-radius: 6px;
             transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
         }
 
         .dark-mode .blank {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
         }
 
         .blank-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
             border-color: #4CAF50;
-            font-weight: bold;
         }
 
         .dark-mode .blank-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
             border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
         }
 
         .hidden {
             display: none;
         }
 
-        /* Floating Elements مثل الصفحة الرئيسية */
-        .floating-elements {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .floating-element {
-            position: absolute;
-            font-size: 3.5rem;
-            opacity: 0.15;
-            animation: float 8s ease-in-out infinite;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
-
-        .floating-book { top: 15%; left: 8%; animation-delay: 0s; }
-        .floating-pen { top: 75%; right: 12%; animation-delay: 1s; }
-        .floating-globe { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
-        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
-        .floating-graduate { top: 65%; left: 5%; animation-delay: 4s; }
-        .floating-notebook { bottom: 15%; right: 10%; animation-delay: 5s; }
-        .floating-pencil { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
-        .floating-calculator { top: 35%; right: 15%; animation-delay: 7s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
-            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
-        }
-
+        /* تحسينات للهواتف */
         @media (max-width: 768px) {
-            .header-controls {
-                top: 15px;
-                left: 15px;
-                right: 15px;
-                gap: 10px;
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
             }
-
-            .premium-badge-header {
-                top: 15px;
-                right: 70px;
-                width: 45px;
-                height: 45px;
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
                 font-size: 1.1rem;
             }
-
-            .home-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
-            }
-
-            .container {
-                padding: 2rem;
-                margin: 1rem;
-                margin-top: 5rem;
-            }
-
+            
             .header h1 {
-                font-size: 2rem;
+                font-size: 1.6rem;
             }
-
-            .headings-grid {
-                grid-template-columns: 1fr;
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
             }
-
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
             .ads-grid {
                 grid-template-columns: 1fr;
             }
-
-            .right-controls {
-                gap: 10px;
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
             }
-
-            .answer-controls {
-                top: 70px;
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
             }
         }
 
         @media (max-width: 480px) {
-            .header-controls {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
             }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
 
-            .left-controls, .right-controls {
-                flex-direction: row;
-                justify-content: center;
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
             }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
-            .premium-badge-header {
-                position: relative;
-                top: auto;
-                right: auto;
-                transform: none;
-                margin-top: 10px;
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
             }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Floating Elements مثل الصفحة الرئيسية -->
-    <div class="floating-elements">
-        <div class="floating-element floating-book">📚</div>
-        <div class="floating-element floating-pen">✏️</div>
-        <div class="floating-element floating-globe">🌍</div>
-        <div class="floating-element floating-clock">⏰</div>
-        <div class="floating-element floating-graduate">🎓</div>
-        <div class="floating-element floating-notebook">📓</div>
-        <div class="floating-element floating-pencil">✏️</div>
-        <div class="floating-element floating-calculator">🧮</div>
-    </div>
-
-    <!-- شارة المشترك الذهبية - تم التعديل -->
-    <div class="premium-badge-header" id="premiumBadge">
-        <i class="fas fa-crown"></i>
-    </div>
-
-    <!-- Header Controls -->
-    <div class="header-controls">
-        <div class="left-controls">
-            <button class="home-btn" id="homeBtn">
-                <i class="fas fa-home"></i>
-                <span id="homeText">الرئيسية</span>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
             </button>
-            <div class="language-selector">
-                <button class="lang-btn" id="langBtn">
-                    <span id="langBtnText">العربية</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="lang-dropdown" id="langDropdown">
-                    <div class="lang-option" data-lang="ar">
-                        <span>🇸🇦</span>
-                        <span>العربية</span>
-                    </div>
-                    <div class="lang-option" data-lang="de">
-                        <span>🇩🇪</span>
-                        <span>Deutsch</span>
-                    </div>
-                    <div class="lang-option" data-lang="en">
-                        <span>🇬🇧</span>
-                        <span>English</span>
-                    </div>
-                </div>
-            </div>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
         </div>
         
-        <div class="right-controls">
-            <button class="control-btn" id="themeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="subscribe-btn" id="subscribeBtn">
-                <i class="fas fa-crown"></i>
-                <span id="subscribeText">اشتراك</span>
-            </button>
-            <button class="control-btn" id="userBtn">
-                <i class="fas fa-user"></i>
-            </button>
-        </div>
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">iTeIC Leseverstehen - TELC B2 Training</h1>
-            <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
-        </div>
-
-        <!-- أزرار التحكم -->
-        <div class="answer-controls">
-            <button class="answer-btn show-answers" id="showAnswers">
-                <i class="fas fa-check-circle"></i>
-                <span id="showAnswersText">إظهار التصحيح</span>
-            </button>
-            <button class="answer-btn hide-answers" id="hideAnswers">
-                <i class="fas fa-eye-slash"></i>
-                <span id="hideAnswersText">إخفاء التصحيح</span>
-            </button>
+            <h1 id="pageTitle">BILDER - TELC B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
         </div>
 
         <!-- Lesen Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="teil1Title">Lesen Teil 1</h2>
-            <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
             
             <div class="headings-grid" id="headingsList">
                 <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
@@ -866,8 +769,8 @@
 
         <!-- Lesen Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
-            <div class="text-content" id="longText">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
                 <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
             </div>
 
@@ -876,10 +779,10 @@
             </div>
         </div>
 
-        <!-- Lesen Teil 3 -->
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
         <div class="section">
-            <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
-            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
             
             <div class="situations-grid" id="situationsList">
                 <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
@@ -892,304 +795,308 @@
 
         <!-- Sprachbausteine Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
             <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
                 <div class="blank-text" id="blankText1">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
 
         <!-- Sprachbausteine Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
             <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
                 <div class="blank-text" id="blankText2">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // الترجمات
-        const translations = {
-            ar: {
-                homeText: "الرئيسية",
-                themeText: "الوضع الليلي",
-                langText: "العربية", 
-                userText: "زائر",
-                subscribeText: "اشتراك",
-                pageTitle: "iTeIC Leseverstehen - TELC B2 Training",
-                pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
-                showAnswersText: "إظهار التصحيح",
-                hideAnswersText: "إخفاء التصحيح",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2", 
-                teil3Title: "Lesen Teil 3",
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            de: {
-                homeText: "Startseite",
-                themeText: "Nachtmodus", 
-                langText: "Deutsch",
-                userText: "Besucher",
-                subscribeText: "Abonnieren",
-                pageTitle: "iTeIC Leseverstehen - TELC B2 Training",
-                pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
-                showAnswersText: "Korrektur anzeigen",
-                hideAnswersText: "Korrektur ausblenden",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2",
-                teil3Title: "Lesen Teil 3", 
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            en: {
-                homeText: "Home",
-                themeText: "Dark Mode",
-                langText: "English",
-                userText: "Visitor", 
-                subscribeText: "Subscribe",
-                pageTitle: "iTeIC Leseverstehen - TELC B2 Training",
-                pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
-                showAnswersText: "Show Correction",
-                hideAnswersText: "Hide Correction",
-                teil1Title: "Reading Part 1",
-                teil1Description: "First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).",
-                teil2Title: "Reading Part 2",
-                teil3Title: "Reading Part 3",
-                teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
-                sprach1Title: "Language Elements Part 1", 
-                sprach2Title: "Language Elements Part 2"
-            }
-        };
-
-        // بيانات الأسئلة والإجابات من ملف PDF
+        // بيانات الأسئلة والإجابات
         const examData = {
-            // Lesen Teil 1
             headings: [
-                "Wie aus Tieren Frostschutzmittel gewonnen werden",
-                "Genussmittel erhöht die Wahrnehmung bestimmter Wörter",
-                "Insektensterben in der kalten Jahreszeit",
-                "Pflanzen und Insekten - eine gemeinsame Entwicklung",
-                "Koffeinrückstände in landwirtschaftlichen Erzeugnissen",
-                "Koffein im Blütennektar verbessert die Gedächtnisleistung",
-                "Die bisher ältesten Pflanzensamen entdeckt",
-                "Neue Erkenntnisse über das weltweite Bienensterben",
-                "Methoden zum Überleben in der kalten Jahreszeit",
-                "wie Kaffee unser Sprachvermögen beeinflusst"
+                {id: "a", text: "Wie aus Tieren Frostschutzmittel gewonnen werden"},
+                {id: "b", text: "Genussmittel erhöht die Wahrnehmung bestimmter Wörter"},
+                {id: "c", text: "Insektensterben in der kalten Jahreszeit"},
+                {id: "d", text: "Pflanzen und Insekten - eine gemeinsene Entwicklung"},
+                {id: "e", text: "Koffeinrückstände in landwirtschaftlichen Erzeugnissen"},
+                {id: "f", text: "Koffein im Blütennektar verbessert die Gedächtnisleistung"},
+                {id: "g", text: "Die bisher ältesten Pflanzensamen entdeckt"},
+                {id: "h", text: "Neue Erkenntnisse über das weltweite Bienensterben"},
+                {id: "i", text: "Methoden zum Überleben in der kalten Jahreszeit"},
+                {id: "j", text: "Wie Kaffee unser Sprachvermögen beeinträchtigt"}
             ],
             
             texts: [
                 {
-                    content: `Koffein macht nicht nur Menschen munter, sondern auch Bienen. Das haben Forscher der Universität Halle-Wittenberg herausgefunden. Sie haben den Tieren koffeinhaltigen Zuckerwasser angeboten. Die Bienen, die Koffein bekommen hatten, konnten sich dreimal besser an den Duft einer bestimmten Blüte erinnern als die Bienen ohne Koffein. Das Koffein aktiviert einen Bereich im Gehirn der Bienen, der mit dem Lernen und dem Gedächtnis zu tun hat. So finden die Bienen besser zu den Blüten zurück, die sie schon einmal besucht haben.`,
-                    correctAnswer: "Koffein im Blütennektar verbessert die Gedächtnisleistung"
+                    id: "text1",
+                    content: `Kaffee verleiht neuen Schwung und hebt die Stimmung. Viele Kaffeetinker schätzen diesen Effekt des Koffeins. Forscher der Ruhr-Universität Bochum haben das Phänomen untersucht und herausgefunden, dass Koffein selektiv das Erkennungsvermögen für positive Begriffe schärft. Die Wahrnehmung von negativen oder neutralen Wörtern verändert der Muntermacher dagegen nicht. Es war bereits vorher bekannt, dass der Mensch beim Lesen emotional positiv besetzte Begriffe besser und schneller erfasst als negative oder neutrale Wörter. Die anregende Wirkung von Koffein auf das Denkvermögen und die Aufmerksamkeit ist durch Studien ebenfalls gut belegt. Psychologen wollten nun durch ihre Untersuchungen herausfinden, ob es eine Kombinationswirkung dieser beiden Effekte gibt. Dazu führten sie Tests mit 66 Teilnehmern durch. Die Kontrollgruppe bekam ein wirkstofffreies Präparat, die Versuchsgruppe dagegen 200 Milligramm Koffein, was etwa zwei bis drei Tassen Kaffee entspricht. Die Teilnehmer in beiden Gruppen konnten positiv besetzte Begriffe deutlich besser und schneller erkennen. Das Koffein hat allerdings diesen Effekt überproportional verstärkt. Das könnte daran liegen, dass Koffein Hirnfunktionen beeinflusst, die auf dem Neurotransmitter Dopamin beruhen.`,
+                    correctAnswer: "b",
+                    correctAnswerText: "b) Genussmittel erhöht die Wahrnehmung bestimmter Wörter"
                 },
                 {
-                    content: `Viele Pflanzen und Insekten haben sich im Laufe der Evolution gemeinsam entwickelt. Das zeigt eine Studie der Universitäten Bonn und Halle-Wittenberg. Die Forscher haben die Entwicklung von Pflanzen und Insekten über 80 Millionen Jahre zurückverfolgt. Sie fanden heraus, dass sich bestimmte Pflanzenfamilien und Insektengruppen parallel entwickelt haben. Wenn eine Pflanzengruppe neue Arten bildete, entstanden auch bei den bestäubenden Insekten neue Arten. Diese gemeinsame Entwicklung hat dazu beigetragen, dass es heute so eine große Vielfalt an Pflanzen und Insekten gibt.`,
-                    correctAnswer: "Pflanzen und Insekten - eine gemeinsame Entwicklung"
+                    id: "text2",
+                    content: `Ihr Gehirn ist gerade ein Millionstel so groß wie unseres, und doch haben sie ein Verhalten inklusive Sozialleben und Kommunikation entwickelt, über das wir nur staunen können. Sie bestäuben nicht nur viele Pflanzen, sondern haben die Entwicklung dieser Pflanzen erst ermöglicht sowie gegenseitig ihre Evolution vorangetrieben: In Amerika wurde die bisher älteste Biene entdeckt. Sie lag seit 100 Millionen Jahren in Bernstein in Burma, und sie war winzig - 2,95 Millimeter lang, so winzig wie die Blüten, die sie damals bestäubte. Dann wuchsen beide auf ihre heutigen Größen. Fast gleichzeitig wurde das Genom der Honigbiene publiziert. Das zeigt, dass Bienen für die Blütensuche bestens gerüstet sind. Sie haben 170 Gene für Geruchs-Rezeptoren. Dafür ist ihr Geschmacks-Repertoire extrem schmal. Die Forscher führen das darauf zurück, dass Bienen zum gegenseitigen Wohl mit Pflanzen zusammenleben. Sie müssen nicht mit Gift-Gegenwehr der Pflanzen rechnen und deshalb nicht abschmecken.`,
+                    correctAnswer: "d",
+                    correctAnswerText: "d) Pflanzen und Insekten - eine gemeinsene Entwicklung"
                 },
                 {
-                    content: `Im Winter sterben viele Insekten, aber nicht alle. Manche überleben die kalte Jahreszeit als Ei, Larve oder Puppe. Andere suchen sich geschützte Orte wie hohle Bäume oder Erdlöcher. Wieder andere produzieren ein körpereigenes Frostschutzmittel, das verhindert, dass ihre Körperflüssigkeiten gefrieren. Dieses Frostschutzmittel besteht aus Zucker und Alkohol. Einige Insektenarten können sogar Temperaturen von minus 30 Grad Celsius überleben.`,
-                    correctAnswer: "Methoden zum Überleben in der kalten Jahreszeit"
+                    id: "text3",
+                    content: `Nicht nur bei Menschen bringt Koffein die kleinen grauen Zellen in Schwung - auch Bienen, die Pollen von Kaffee oder anderen koffeinhaltigen Pflanzen sammeln, kommen dabei so richtig in Fahrt. Wie die amerikanische Fachzeitschrift 'Science' berichtet, erinnern sich Bienen mit der richtigen Dosis Koffein bis zu dreimal länger an den Duft einer Futterpflanze. Das hilft nicht nur den Bienen bei ihrer Suche, sondern auch den Pflanzen. In hoher Konzentration ist Koffein bitter und schreckt Insekten ab. In geringen Dosen scheint er die Bienen aber nicht zu stören, sondern ihnen eher auf die Sprünge zu helfen. Koffein stärke offensichtlich das Langzeitgedächtnis der Bienen, schlussfolgerten die Forscher aus ihrem Versuch. Sie konnten diese Wirkung auch im Gehirn der Insekten nachweisen: Koffein veränderte dort die Erregbarkeit von Neuronen, die mit dem Geruchslernen in Verbindung stehen. Dadurch wird wahrscheinlich die Sammelleistung der Bienen gesteigert. Gleichzeitig erhalten die Pflanzen treue Bestäuber.`,
+                    correctAnswer: "f",
+                    correctAnswerText: "f) Koffein im Blütennektar verbessert die Gedächtnisleistung"
                 },
                 {
-                    content: `Wissenschaftler der Universität in Israel haben herausgefunden, dass Koffeinrückstände in landwirtschaftlichen Erzeugnissen ein großes Problem darstellen können. Die Forscher untersuchten Honig und fanden darin Koffein. Das Koffein stammt von Pflanzen, die Koffein produzieren, um Bestäuber anzulocken. Wenn Bienen den Nektar dieser Pflanzen sammeln, gelangt das Koffein in den Honig. Die Wissenschaftler fordern jetzt, dass der Koffeingehalt in Honig überwacht wird, da zu viel Koffein gesundheitsschädlich sein kann.`,
-                    correctAnswer: "Koffeinrückstände in landwirtschaftlichen Erzeugnissen"
+                    id: "text4",
+                    content: `Es ist ein schwerer Gang im Leben jedes Imkers. Die paar Schritte hin zu seinen Völkern im Frühjahr, wenn an den Fluglöchern eigentlich schon seit Tagen emsiges Treiben herrschen sollte - aber stattdessen nur Stille von einer Tragödie kündet. Ein paar Schritte, bevor der Imker den Deckel von der 'Beute', wie ein Stock in der Fachsprache heißt, nimmt und schließlich Gewissheit über das erlangt, was er längst befürchtet hat: Das ganze Volk - tot. Es ist frustierend, wenn ein Imker Ende Februar Handvoll um Handvoll vertrockneter Insekten wegschaufeln muss - aber völlig ungewöhnlich ist es nicht. Jahr für Jahr überstehen zwischen zehn und 15 Prozent aller Bienenvölker die Winterruhe zwischen November und Februar nicht. Verluste, auf die die heimischen Bienenzüchter eingestellt sind: Nicht umsonst wird dem zuletzt wieder zahlreicher gewordenen Imkernachwuchs empfohlen, ihre Karriere mit mindestens drei Völkern zu beginnen - so hält sich die Frustation über Verluste in Grenzen, der Betrieb kann ungestört weitergehen.`,
+                    correctAnswer: "h",
+                    correctAnswerText: "h) Neue Erkenntnisse über das weltweite Bienensterben"
                 },
                 {
-                    content: `Forscher der Universität in Alaska haben entdeckt, wie man aus Tieren Frostschutzmittel gewinnen kann. Sie untersuchten Fische, die in extrem kalten Gewässern leben. Diese Fische produzieren ein Protein, das verhindert, dass ihr Blut gefriert. Die Wissenschaftler ist es gelungen, dieses Protein künstlich herzustellen. Es könnte in Zukunft als Frostschutzmittel in der Lebensmittelindustrie verwendet werden, zum Beispiel bei der Herstellung von Eiscreme.`,
-                    correctAnswer: "Wie aus Tieren Frostschutzmittel gewonnen werden"
+                    id: "text5",
+                    content: `Viele Insekten überwintern als Puppe oder Larve. Doch auch 'erwachsene' Fliegen, Bienen und Käfer überleben die eisige time. Wichtig ist die Wahl von geschützten Orten wie Baumritzen, Laubstreu, Höhlen, Dachböden oder Kellern. Honigbienen bilden im Nest eine Traube und wärmen sich gegenseitig durch Muskelzittern. Bei Wespen und Hummeln überwintern nur die Königinnen in Erdlöchern. Sie bauen dann im Frühling neue Staaten auf. Maikäfer überdauern als Engerlinge den Winter, Marienkäfer suchen geschützte Bereiche auf. Viele Insekten unserer Regionen sind 'gefriertolerant'. Sie stellen im Herbst ihren Organismus um und versetzen ihr Blut mit einem Cocktail aus Gefrierschutzmitteln. Andere Insekten erleben im Herbst ebenfalls enorme Umbauarbeiten in ihrem Körper. Die Organe werden kleiner, Herz- und Atemfrequenz sowie Körpertemperatur sind im Winter gesenkt. Egal, ob mit oder ohne Winterschlaf: Es heißt Energie sparen, um die time der Minusgrade, des Schnees und Nahrungsmangels aushalten zu können.`,
+                    correctAnswer: "i",
+                    correctAnswerText: "i) Methoden zum Überleben in der kalten Jahreszeit"
                 }
             ],
 
-            // Lesen Teil 2 - النص الكامل
             longText: {
-                content: `Die Digitalisierung hat in den letzten Jahren viele Bereiche unseres Lebens verändert. Besonders deutlich wird dies im Bereich der Bildung. Immer mehr Schulen setzen auf digitale Lernmethoden. Tablets und Laptops ersetzen zunehmend Schulbücher und Hefte. Doch ist diese Entwicklung wirklich nur positiv?
-Viele Lehrer und Eltern sind skeptisch. Sie befürchten, dass die Schüler durch die ständige Nutzung von digitalen Geräten abgelenkt werden. Außerdem könnte die Handschrift der Schüler leiden, wenn sie kaum noch mit der Hand schreiben. Studien zeigen tatsächlich, dass Schüler, die viel mit der Tastatur schreiben, schlechtere Handschriften haben als Schüler, die regelmäßig mit der Hand schreiben.
-Dennoch gibt es auch viele Vorteile. Digitale Lernmethoden ermöglichen eine individuellere Förderung der Schüler. Lernprogramme können sich dem Leistungsniveau des einzelnen Schülers anpassen. Schwächere Schüler bekommen so die Möglichkeit, in ihrem eigenen Tempo zu lernen. Stärkere Schüler können sich dagegen mit anspruchsvolleren Aufgaben beschäftigen.
-Ein weiterer Vorteil ist die Aktualität der Lerninhalte. Während Schulbücher oft Jahre alt sind, können digitale Inhalte ständig aktualisiert werden. So können Schüler immer mit den neuesten Informationen lernen. Das ist besonders in Fächern wie Geschichte oder Politik wichtig, wo sich die Inhalte schnell ändern können.
-Trotz aller Vorteile sollte die Digitalisierung nicht überstürzt werden. Es ist wichtig, dass Lehrer und Schüler gut auf die neuen Technologien vorbereitet werden. Dazu gehören auch Fortbildungen für Lehrer, damit sie die digitalen Werkzeuge optimal im Unterricht einsetzen können.
-Letztendlich kommt es auf die richtige Mischung an. Digitale und analoge Lernmethoden sollten sich ergänzen. Die Digitalisierung kann den Unterricht bereichern, aber sie sollte die traditionellen Lernmethoden nicht vollständig ersetzen.`,
+                content: `Melanie Hoffmann ist Gedächtnistrainerin. Seit fast zehn Jahren bietet sie nun schon Seminare an Volkshochschulen, in Altenheimen, in Banken und Industriebetrieben an, in denen die Seminarteilnehmer lernen sollen, wie sie Informationen besser im Gedächtnis behalten. Suma Hartmann ist 30 Jahre alt, Bürokauffrau und eine von Melanie Hoffmanns Seminarteilnehmerinnen. "An meinem Arbeitsplatz bekomme ich ständig Massen von neuen Informationen: Texte, die zu lesen sind, Termine, Anrufe, Anfragen von Kunden, Kurzinfos von Kollegen: Diese Informationsflut zu bewältigen und möglichst nichts zu vergessen, ist fast ausgeschlossen", so Hartmann. Wie ihr geht es vielen Menschen in unserer Informationsgesellschaft – und das quer durch alle Altersstufen: vom Schüler bis zum Rentner. Sie fühlen sich den Anforderungen an ihr Gedächtnis nicht mehr gewachsen, und darum besuchen sie Trainingskurse wie die von Melanie Hoffmann.
+
+Während jeder Sekunde, die Suma Hartmann im Trainingsseminar, am Arbeitsplatz oder zu Hause verbringt, nimmt sie über ihre "Eingangskanäle" – die Augen, die Ohren, die Nase, den Mund, die Haut – um die zwei Millionen kleinste Informationen unbewusst auf. Jede kleinste Schwankung in der Licht- oder Farbintensität, Formen und Farben, Licht und Schatten, alle nur erdenklichen Geräusche von der Stimme der Seminarleiterin oder Kollegin bis zum draußen vorbeifahrenden Motorrad, verschiedenste Gerüche vom Schweiß bis zum teuren Parfüm, das Kratzen des Pullovers auf der Haut: All dies nimmt sie unbewusst wahr. Würde sie sich all diese Informationen bewusst merken wollen, wäre – wenn man die Sprache der Computerwelt zu Hilfe nimmt – innerhalb kürzester time ihr Speicher voll.
+
+Damit dies nicht passiert, vergisst man fast alle Informationseinheiten innerhalb der nächsten 20 Sekunden wieder – und schafft damit Platz für neue Informationen. Erst nach etwa 20 Minuten behalten wir etwas auf lange time. Dann haben die Nervenzellen im Gehirn eine neue Verbindung hergestellt, eine Synapse gebildet – und wir behalten etwas, statt es gleich wieder zu vergessen.
+
+Die Trainerin Melanie Hoffmann sagt: "Starke Sinneseindrücke, die mit Emotionen behaftet sind, behält man ebenso wie das, was interessant ist oder lebensnotwendig. Ein Kind, das einmal eine heiße Herdplatte angefasst hat, vergisst nie mehr, was 'heiß' bedeutet. Ein Hobbyastronom, dem seine Freizeitbeschäftigung großen Spaß bereitet, kennt im Nu alle möglichen Namen von Sternen. Und ich habe noch keinen Seminarteilnehmer gehabt, der sich nicht mehr daran erinnern könnte, was am 11. September 2001 in New York passiert ist".
+
+In unserer heutigen Informationsgesellschaft ist es wichtig, die auf uns einströmende Informationsflut zu bündeln. Daten und Begriffe zu gruppieren oder an Bildern oder Gegenständen festzumachen und sich so "Eselsbrücken" zu bauen, die dabei helfen, mehr im Gedächtnis zu behalten.
+
+Suma Hartmann "sortiert" jetzt im Geiste alle wichtigen Informationen in bestimmte Schubladen ihres Aktenschrankes in ihrem Büro: "Ich habe mir Zahlensymbole ausgedacht, mit denen ich die neuen Informationen bildlich verknüpfe: Die Eins wird zur Kerze, die Zwei zum Schwan usw. Wenn ich nun nicht vergessen möchte, um zwei Uhr eine bestimmte Konferenz vorzubereiten, denke ich mir meine Konferenzmappe im Schnabel des Schwans. Und es funktioniert: Ich vergesse viel weniger".`,
                 questions: [
                     {
-                        question: "Was befürchten viele Lehrer und Eltern?",
+                        id: "q1",
+                        question: "Melanie Hoffmanns Seminare besuchen",
                         options: [
-                            "dass die Schüler zu viel mit der Hand schreiben",
-                            "dass die Schüler durch digitale Geräte abgelenkt werden",
-                            "dass die Schüler zu wenig digitale Geräte nutzen"
+                            "ausschließlich Frauen, die im Büro arbeiten",
+                            "junge und alte Menschen gleichermaßen",
+                            "überwiegend alte Menschen"
                         ],
-                        correctAnswer: "dass die Schüler durch digitale Geräte abgelenkt werden"
+                        correctAnswer: "junge und alte Menschen gleichermaßen"
                     },
                     {
-                        question: "Welchen Vorteil haben digitale Lernmethoden?",
+                        id: "q2",
+                        question: "Die Teilnehmer besuchen Frau Hoffmanns Seminar, weil sie",
                         options: [
-                            "Sie sind billiger als traditionelle Lernmethoden",
-                            "Sie ermöglichen eine individuellere Förderung",
-                            "Sie erfordern keine Fortbildungen für Lehrer"
+                            "das Gefühl haben, dass Ihr Gedächtnis schlechter wird",
+                            "immer mehr vergessen",
+                            "sich von den vielen Informationen überfordert fühlen"
                         ],
-                        correctAnswer: "Sie ermöglichen eine individuellere Förderung"
+                        correctAnswer: "sich von den vielen Informationen überfordert fühlen"
                     },
                     {
-                        question: "Warum sind digitale Inhalte oft besser als Schulbücher?", 
+                        id: "q3",
+                        question: "Jeder Mensch",
                         options: [
-                            "weil sie bessere Bilder haben",
-                            "weil sie ständig aktualisiert werden können",
-                            "weil sie leichter zu transportieren sind"
+                            "kann sich alle erdenklichen Geräusche und Gerüche merken",
+                            "kann über einen timeraum von 20 Minuten alles behalten",
+                            "vergisst die meisten Informationen innerhalb kürzester time"
                         ],
-                        correctAnswer: "weil sie ständig aktualisiert werden können"
+                        correctAnswer: "vergisst die meisten Informationen innerhalb kürzester time"
                     },
                     {
-                        question: "Was ist laut dem Text wichtig für eine erfolgreiche Digitalisierung?",
+                        id: "q4",
+                        question: "Besonders gut kann man sich",
                         options: [
-                            "dass alle Schüler ein Tablet bekommen",
-                            "dass Lehrer und Schüler gut vorbereitet werden",
-                            "dass traditionelle Lernmethoden vollständig ersetzt werden"
+                            "als Kind etwas merken",
+                            "an Daten und Begriffe erinnern",
+                            "emotional aufgeladene Situationen merken"
                         ],
-                        correctAnswer: "dass Lehrer und Schüler gut vorbereitet werden"
+                        correctAnswer: "emotional aufgeladene Situationen merken"
                     },
                     {
-                        question: "Was sollte laut dem Text die richtige Herangehensweise sein?",
+                        id: "q5",
+                        question: "Suma Hartmann",
                         options: [
-                            "vollständige Digitalisierung des Unterrichts",
-                            "Verzicht auf digitale Lernmethoden",
-                            "eine Mischung aus digitalen und analogen Methoden"
+                            "lehrt andere, wie man sich 'Eselsbrücken' ausdenkt",
+                            "verbindet Informationen mit Bildern",
+                            "verwendet für ihre Aktenablage nur Tiersymbole"
                         ],
-                        correctAnswer: "eine Mischung aus digitalen und analogen Methoden"
+                        correctAnswer: "verbindet Informationen mit Bildern"
                     }
                 ]
             },
 
-            // Lesen Teil 3
+            // Lesen Teil 3 - البيانات المحدثة
             situations: [
-                "Sie möchten einen Sprachkurs in Deutschland besuchen.",
-                "Sie suchen eine günstige Unterkunft für Ihren Urlaub.",
-                "Sie interessieren sich für deutsche Literatur.",
-                "Sie möchten in Deutschland studieren.",
-                "Sie brauchen Informationen über das deutsche Gesundheitssystem.",
-                "Sie wollen deutsche Filme im Original sehen.", 
-                "Sie suchen einen Job in Deutschland.",
-                "Sie möchten mehr über deutsche Traditionen erfahren.",
-                "Sie planen eine Reise durch Deutschland.",
-                "Sie wollen Ihr Deutsch verbessern."
+                {
+                    id: "11",
+                    text: "Sie suchen Informationen zu den gesundheitlichen Auswirkungen von Sport.",
+                    correctAnswer: "C"
+                },
+                {
+                    id: "12",
+                    text: "Sie suchen Informationen über eine Versicherung gegen Sportverletzungen.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "13",
+                    text: "Sie interessieren sich für Videos von besonderen Rettungseinsätzen.",
+                    correctAnswer: "G"
+                },
+                {
+                    id: "14",
+                    text: "Sie möchten mehr über die psychischen Aspekte von Klettersport erfahren.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "15",
+                    text: "Sie möchten einem Freund ein besonderes Sporterlebnis schenken.",
+                    correctAnswer: "E"
+                },
+                {
+                    id: "16",
+                    text: "Sie möchten dazu beitragen, Ihre Stadt schöner zu machen.",
+                    correctAnswer: "J"
+                },
+                {
+                    id: "17",
+                    text: "Ihre sechzehnjährige Cousine beschäftigt sich gerne mit kleinen Kindern.",
+                    correctAnswer: "K"
+                },
+                {
+                    id: "18",
+                    text: "Ihr Vater plant, eine Familienchronik zu schreiben.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "19",
+                    text: "Ihr kleiner Bruder möchte einmal ein Feuerwehrauto aus der Nähe sehen.",
+                    correctAnswer: "L"
+                },
+                {
+                    id: "20",
+                    text: "Ein Freund von Ihnen möchte gerne bei einer Sportveranstaltung mitarbeiten.",
+                    correctAnswer: "H"
+                }
             ],
 
             ads: [
                 {
-                    id: "a",
-                    title: "Deutsch intensiv",
-                    content: "Möchten Sie schnell Deutsch lernen? Unser Intensivkurs ist genau das Richtige für Sie. Vier Wochen lang lernen Sie täglich vier Stunden Deutsch. Der Kurs findet in kleinen Gruppen statt, sodass Sie optimal gefördert werden. Am Ende des Kurses erhalten Sie ein Zertifikat. Start: jeden ersten Montag im Monat."
+                    id: "A",
+                    title: "Gerlinde Kaltenbrunner",
+                    content: "Die Österreicherin Gerlinde Kaltenbrunner zählt zu den bekanntesten Bergsteigerinnen der Welt. Als erste Frau hat sie aus eigener Kraft, das heißt ohne Träger und ohne Sauerstoff alle 14 Achttausender bestiegen. Schon sehr früh entdeckte sie ihre Begeisterung für die Berge ihrer oberösterreichischen Heimat. Ihren ersten Achttausender bestieg sie mit 23 Jahren und seit mehr als zehn Jahren ist sie Profibergsteigerin. In ihrem Vortrag spricht Gerlinde Kaltenbrunner über ihre Erlebnisse und ihre Pläne, über Leidenschaft, Willensstärke, Disziplin und Geduld. Höhenbergsteigerin Gerlinde Kaltenbrunner, 14. Mai, Kulturzentrum, 20.00 Uhr"
                 },
                 {
-                    id: "b", 
-                    title: "Jugendherberge Berlin",
-                    content: "Suchen Sie eine günstige Unterkunft in Berlin? In unserer Jugendherberge zahlen Sie nur 25 Euro pro Nacht inklusive Frühstück. Wir bieten Mehrbettzimmer und Einzelzimmer an. Die Herberge liegt zentral und ist gut mit öffentlichen Verkehrsmitteln erreichbar. Kostenloses WLAN inklusive."
+                    id: "B",
+                    title: "Seniorenwohnhaus Zur alten Linde",
+                    content: "Sie möchten sich gerne ehrenamtlich im sozialen Bereich engagieren? Wir bieten Ihnen eine ganze Reihe von Möglichkeiten dazu: Besuchsdienste, Begleitung und Hilfestellung bei Behördenwegen, Spazierengehen und vieles mehr. Wenn Sie sich für alte Menschen und ihre Geschichten interessieren, wenn Sie Einfühlungsvermögen haben und gerne zuhören, dann füllen Sie doch einfach den Fragebogen aus. Anschließend vereinbaren wir einen Termin für ein Erstgespräch. Wir freuen uns auf Ihre Nachricht."
                 },
                 {
-                    id: "c",
-                    title: "Bücherflohmarkt", 
-                    content: "Am Samstag, den 15. Juni, findet in der Stadtbibliothek ein großer Bücherflohmarkt statt. Von 10 bis 18 Uhr können Sie Bücher aller Genres kaufen - von Romanen über Sachbücher bis zu Kinderbüchern. Alle Bücher kosten zwischen 1 und 5 Euro. Der Erlös kommt der Bibliothek zugute."
+                    id: "C",
+                    title: "Neue Studie erschienen",
+                    content: "Eine neue Studie stellt intensiv betriebenen körperlichem Training kein gutes Zeugnis aus. Dabei hatte die Studie den Aspekt des hohen Gefahrenpotentials und die damit verbundenen Unfallverletzungen bewusst ausgeklammert. Es ging lediglich um die Fragestellung, ob ein Mehr an körperlichem Training auch gesünder sei. Dass regelmäßige Bewegung gesund ist, steht außer Frage. Wer sich täglich körperlich betätigt, senkt sein Risiko für viele Krankheiten wie zum Beispiel Diabetes und Herzerkrankungen. Der Studie zufolge soll extremes Training dieses Risiko allerdings wieder erhöhen. Zu den ausführlichen Ergebnissen der Studie gelangen Sie hier."
                 },
                 {
-                    id: "d",
-                    title: "Studieren in Deutschland",
-                    content: "Informationsveranstaltung für internationale Studierende. Wir beraten Sie zu Studienmöglichkeiten, Zulassungsvoraussetzungen und Finanzierung. Die Veranstaltung findet am 20. Juni um 18 Uhr im International Office der Universität statt. Anmeldung nicht erforderlich."
+                    id: "D",
+                    title: "Historische Fotos für das Stadtjubiläum",
+                    content: "Für die geplante Ausstellung zum bevorstehenden Stadtjubiläum sucht das Kulturamt noch historische Aufnahmen. Dazu werden alle Bürgerinnen und Bürger ganz herzlich gebeten, alte Bilder und Fotos zur Verfügung zu stellen. Von Interesse sind nicht nur geschichtlich relevante Aufnahmen, sondern auch private Bilder, die vom Leben in unserer Stadt erzählen. Weil in diesem Jahr auch der Städtische Sportclub sein 100-jähriges Bestehen feiert, soll es eine eigene Bilderabteilung geben, die historischen Sportveranstaltungen gewidmet ist. Der Termin und der Ort, zu dem Sie Ihre Erinnerungsstücke zur Sichtung bringen können, werden noch bekannt gegeben."
                 },
                 {
-                    id: "e",
-                    title: "Gesundheitswegweiser",
-                    content: "Neu in Deutschland und unsicher beim Arztbesuch? Unser Gesundheitswegweiser erklärt das deutsche Gesundheitssystem in einfacher Sprache. Er hilft Ihnen bei der Arztwahl, bei der Terminvereinbarung und beim Verstehen von Arztbriefen. Kostenlos erhältlich im Bürgeramt."
+                    id: "E",
+                    title: "Nervenkitzel pur: Bungee-Jumping",
+                    content: "Wir bieten euch unvergessliche Erlebnisse rund um die Extremsportart Bungee-Jumping. In einer traumhaften Landschaft, mehr als 100 Meter über dem Wasser, verschaffen wir euch den ultimativen Kick! Im Sommer haben wir wieder täglich von Dienstag bis Sonntag jeweils ab Mittag geöffnet – geeignetes Wetter voraussetzt. Für Sprünge am Tag ist eine Reservierung nicht zwingend notwendig, aber besonders bei Schönwetter empfehlenswert. Im August bieten wir auch zwei Nachtsprungtermine an. Für diese müsst Ihr mindestens sechs Personen sein und euch auch verbindlich anmelden. Hier geht es zur Terminreservierung. Weitere Infos zu Preisen, Lage und Anfahrt gibt es hier."
                 },
                 {
-                    id: "f",
-                    title: "Deutsche Filmabende",
-                    content: "Jeden Donnerstag zeigen wir deutsche Filme im Original mit Untertiteln. Im Anschluss an den Film gibt es die Möglichkeit, über den Film zu diskutieren. Eine gute Gelegenheit, Ihr Hörverstehen zu verbessern und andere Deutschlerner kennenzulernen. Eintritt: 5 Euro."
+                    id: "F",
+                    title: "Freiwillige Feuerwehr",
+                    content: "Die Freiwilligen Feuerwehren rücken nicht nur an, wenn es brennt, sondern vermitteln auch Wissenswertes zum Thema Brandschutz. Gemeinsam mit Pädagogen hat unsere Freiwillige Feuerwehr ein Programm entwickelt, mit dem sie das Bewusstsein der Kinder und Jugendlichen für das Thema Sicherheit und Gefahrenvermeidung schärfen möchte. Im Rahmen dieses Projektes wurden gemeinsam mit Pädagogen und Pädagoginnen besondere Arbeitsunterlagen für Trainingseinheiten an Bildungsstätten vorbereitet. Interessierte Schulen und Kindergärten haben noch bis Ende April die Möglichkeit, sich zu dem Training anzumelden. Tel.: 0677-4567489."
                 },
                 {
-                    id: "g",
-                    title: "Stellenangebote",
-                    content: "Wir vermitteln Jobs für Deutschlerner. Ob in der Gastronomie, im Einzelhandel oder in der Produktion - wir haben passende Angebote. Voraussetzung: Deutschkenntnisse mindestens auf Niveau A2. Kommen Sie vorbei oder schicken Sie Ihre Bewerbung per E-Mail."
+                    id: "G",
+                    title: "Spektakuläre Feuerwehrübung",
+                    content: "Übung für den Ernstfall: Gemeinsam mit anderen Einsatzorganisationen veranstaltete die örtliche Feuerwehr eine besonders eindrucksvolle Einsatzübung. Dabei wurde simuliert, dass sich bei einer Führung durch das Rathaus ein Unfall im Turm ereignet und mehrere schwerverletzte Menschen geborgen werden müssen. Nach der Erstversorgung durch einen Notarzt in schwindelnder Höhe gelang es, die angeblichen Schwerverletzten über die Drehleiter zu bergen. Hier der Film des spektakulären Einsatzes."
                 },
                 {
-                    id: "h", 
-                    title: "Traditionen entdecken",
-                    content: "Was feiern die Deutschen eigentlich an Ostern? Warum gibt es den Maibaum? In unserem Kurs 'Deutsche Traditionen' lernen Sie die wichtigsten Feste und Bräuche kennen. Der Kurs findet samstags von 10-12 Uhr statt und kostet 60 Euro für 6 Termine."
+                    id: "H",
+                    title: "Helfer und Helferinnen gesucht",
+                    content: "Für unseren Halbmarathon am 20. Juli suchen wir noch Freiwillige, die uns bei der Benefizveranstaltung unterstützen möchten. Es gibt viele Bereiche, in denen ihr uns helfen könnt: vom Aufbau von Zuschauerbarrieren über Streckensicherung und Startnummernausgabe bis zum Einsatz an den Verpflegungsposten - jede helfende Hand ist uns herzlich willkommen. Die Veranstaltung dient einem guten Zweck. Die Startgelder und 10 Prozent der Einnahmen aus der Gastronomie gehen an gemeinnützige Vereine unserer Stadt. Anmelden könnt ihr euch auf der Webseite der Stadtverwaltung unter Veranstaltungen / Halbmarathon / Freiwillige."
                 },
                 {
-                    id: "i",
-                    title: "Deutschlandreise",
-                    content: "Planen Sie eine Reise durch Deutschland? Unser Reiseführer 'Deutschland für Entdecker' zeigt Ihnen die schönsten Orte abseits der Touristenpfade. Mit praktischen Tipps zu Unterkünften, Restaurants und Sehenswürdigkeiten. Jetzt für nur 14,99 Euro im Buchhandel erhältlich."
+                    id: "I",
+                    title: "Märchenwanderung für Kinder von 8 bis 12 Jahren",
+                    content: "Wir wandern entlang des Märchenwanderwegs, der durch eine abwechslungsreiche Landschaft führt, mit herrlicher Aussicht auf die Berge. Am Ende des Weges gelangen wir zu einem Wildgehege. Was ihr braucht: feste Schuhe, bei unbeständigen Wetter einen Regenschutz (bitte keine Schirme) und Kleidung, die ruhig schmutzig werden darf. Treffpunkt: vor der Kirche, um 10.00 Uhr. Dauer: 4 Stunden (Wander- und Erzählzeit). Teilnahmegebühr: 17 Euro inklusive Mittagessen. Leitung: Märchentante Gerlinde, unterstützt von zwei freiwilligen Helferinnen. Wir wandern ohne Eltern oder Begleitpersonen."
                 },
                 {
-                    id: "j",
-                    title: "Konversationskurs", 
-                    content: "Sie können schon gut Deutsch, aber trauen sich nicht zu sprechen? In unserem Konversationskurs üben Sie das freie Sprechen in entspannter Atmosphäre. Themen: Alltag, Beruf, Kultur, Reisen. Der Kurs findet dienstags von 18-20 Uhr statt. Kosten: 80 Euro für 8 Wochen."
+                    id: "J",
+                    title: "Aktion Sauberes Grün",
+                    content: "Die Aktion Sauberes Grün findet dieses Jahr nicht wie bisher an einem einzigen Tag statt, sondern dauert gleich drei Tage. Wir rufen Kindergärten, Schulen und Vereine dazu auf, sich auch dieses Jahr wieder zahlreich an unserer gemeinnützigen Putzaktion zu beteiligen. Ausgerüstet mit Handschuhen und Säcken, werden die Teilnehmerinnen und Teilnehmer Grünflächen, Parks und Spielplätze in der Stadt säubern. Auch Einzelpersonen sind herzlich willkommen! Am Samstag gibt es dann wieder das große Abschlussfest. Unsere jährliche Aktion für eine saubere Stadt, dieses Jahr vom 2. bis 4. Mai. Anmeldungen bei den städtischen Reinigungsbetrieben: 0240-191980."
                 },
                 {
-                    id: "k",
-                    title: "Museumsnacht",
-                    content: "Am 25. August öffnen die Museen der Stadt bis Mitternacht ihre Türen. Mit einem Ticket können Sie alle teilnehmenden Museen besuchen. Dazu gibt es Führungen, Workshops und besondere Ausstellungen. Tickets gibt es im Vorverkauf für 15 Euro, an der Abendkasse für 18 Euro."
+                    id: "K",
+                    title: "Tag der offenen Tür in der städtischen Bücherei",
+                    content: "Zum Anlass des Welttags des Buches am 23. April möchten wir uns ganz den jungen Lesern widmen. Unser Kinderprogramm umfasst auch spannende Lesungen, für die wir noch Freiwillige unter achtzehn suchen. Nicht Lehrer oder Eltern, sondern junge Menschen sollen den ganz Kleinen aus alten und neuen Kinderbüchern vorlesen. Wenn du gerne (vor)liest, dann bist du am 23. April bei uns genau richtig! Schick uns einfach deine Daten und einen Lesevorschlag per Mail an: info@buecherei-stadt.com. Übrigens: Als kleine Belohnung darfst du dich bei unserem Bücher-Flohmarkt bedienen!"
                 },
                 {
-                    id: "l",
-                    title: "Volkshochschule Programm",
-                    content: "Das neue Programm der Volkshochschule ist da! Über 500 Kurse in den Bereichen Sprachen, Beruf, Gesundheit, Kultur und Gesellschaft. Anmeldung ab sofort möglich. Das Programmheft liegt an allen öffentlichen Einrichtungen aus oder kann online eingesehen werden."
+                    id: "L",
+                    title: "150 Jahre Stadtfeuerwehr",
+                    content: "Zum Jubiläum 150 Jahre Stadtfeuerwehr laden die Feuerwehr und Katastrophenschutz zu einer Leistungsschau. Zu besichtigen: das brandneue Löschfahrzeug, das auch dank der großzügigen Unterstützung von Sponsoren angeschafft werden konnte. Weiter: einige abenteuerliche Bergungen durch aktive Mitglieder der Freiwilligen Feuerwehr. Dann eine spektakuläre Löschaktion. Und zum Schluss: Grillfeuer für alle! Wann? Samstag 23. Juli ab 16.00 Uhr, am alten Messegelände. Die Freiwillige Feuerwehr hoffet auf großes Interesse!"
                 }
             ],
 
-            // الإجابات الصحيحة لـ Lesen Teil 3
-            teil3Answers: {
-                11: "Deutsch intensiv",
-                12: "Jugendherberge Berlin", 
-                13: "Bücherflohmarkt",
-                14: "Studieren in Deutschland",
-                15: "Gesundheitswegweiser",
-                16: "Deutsche Filmabende",
-                17: "Stellenangebote",
-                18: "Traditionen entdecken",
-                19: "Deutschlandreise", 
-                20: "Konversationskurs"
-            },
-
             // Sprachbausteine Teil 1
             blankText1: {
-                content: `Sehr geehrte Damen und Herren,
+                content: `Hallo Ferdinand,
 
-hiermit bewerbe ich mich __(21)__ die ausgeschriebene Stelle als Werkstudent im Bereich Marketing.
+nun habe ich mich schon so lange nicht bei dir gemeldet - das tut mir wirklich leid! Ich hatte in den vergangenen Monaten viel Stress, weil ich ja nun studiere und nebenbei noch arbeiten muss, (21) ________ meine Miete und alles andere bezahlen zu können. Zum Glück macht mir mein Nebenjob wenigstens Spaß. Ich weiß nicht, (22) ________ ich das sonst durchhalten würde. Vielleicht habe ich dir schon erzählt, dass ich abends und am Wochenende in einer Kneipe in der Küche helfe. Das ist zwar oft sehr anstrengend, (23) ________ anderseits ist dauernd was los, es wird nicht langweilig, und meine Kollegen sind total nett. Erinnerst du dich noch an unsere time in der Grundschule? Mit acht Jahren wollte ich ja (24) ________ Kellnerin werden, weil man da Trinkgeld bekommt. Naja, jetzt bin ich in der Küche gelandet, knapp daneben ist auch vorbei ;)
 
-Ich __(22)__ derzeit BWL im fünften Semester an der Universität Köln. In meinem Studium __(23)__ ich mich auf Marketing spezialisiert. Die Stelle in Ihrem Unternehmen interessiert mich besonders, __(24)__ ich bereits praktische Erfahrungen in diesem Bereich sammeln konnte.
+Was macht denn deine Ausbildung? Wenn ich (25) ________ nicht täusche, bist du ja in einem halben Jahr schon fertig, oder? Das ist ja nicht mehr lang!
 
-Während meines Praktikums bei der ABC GmbH __(25)__ ich an der Entwicklung von Marketingkampagnen mit. Dabei __(26)__ ich unter anderem für die Social-Media-Präsenz des Unternehmens verantwortlich. Diese Erfahrung __(27)__ mir gezeigt, dass ich meine theoretischen Kenntnisse aus dem Studium in der Praxis anwenden kann.
+Neulich habe ich übrigens Tina und Kevin hier in der Nähe der Uni getroffen - die waren ja schon ein Paar, (26) ________ wir noch in der Schule gegangen sind, und jetzt will sie tatsächlich verheiratet!
 
-In Ihrem Unternehmen __(28)__ ich die Möglichkeit, mein Wissen weiter zu vertiefen und neue Fähigkeiten zu erlernen. Ich bin überzeugt, dass ich __(29)__ meinen Fähigkeiten und meiner Motivation einen wertvollen Beitrag zu Ihrem Team leisten kann.
+Wie sehen denn deine Pläne für die (27) ________ Wochenenden aus? Wir könnten uns ja vielleicht mal wieder treffen und in Ruhe quatschen - hättest du Lust (28) ________ ?
 
-Über eine Einladung __(30)__ ein Vorstellungsgespräch freue ich mich sehr.
+In meiner Straße hat vor einem Monat ein nettes kleines Café aufgemacht, die haben nicht nur sehr leckere Kuchen, (29) ________ auch einige kleine Gerichte zu wirklich günstigen Preisen. Wäre das was für dich? Mail wir doch (30) ________ , wenn du magst, ich würde mich freuen.
 
-Mit freundlichen Grüßen
-Anna Müller`,
-                answers: ["auf", "studiere", "habe", "weil", "arbeitete", "war", "hat", "sehe", "mit", "zu"]
+Viele Grüße,
+
+Nadine`,
+                options: [
+                    ["damit", "für", "um"],      // 21
+                    ["wann", "wie", "wo"],       // 22
+                    ["damit", "denn", "doch"],   // 23
+                    ["bestimmt", "unbedingt", "völlig"], // 24
+                    ["dich", "mich", "sich"],    // 25
+                    ["als", "da", "wenn"],       // 26
+                    ["jetzigen", "kommenden", "letzten"], // 27
+                    ["danach", "darüber", "dazu"], // 28
+                    ["als", "ebenso", "oder"],   // 29
+                    ["einen", "einfach", "einzig"] // 30
+                ],
+                answers: ["um", "wie", "doch", "unbedingt", "mich", "als", "kommenden", "dazu", "oder", "einfach"]
             },
 
             // Sprachbausteine Teil 2
             blankText2: {
-                content: `Die Digitalisierung __(31)__ in den letzten Jahren viele Bereiche unseres Lebens verändert. Besonders deutlich wird dies im Bereich der Bildung. Immer mehr Schulen setzen __(32)__ digitale Lernmethoden. Tablets und Laptops ersetzen zunehmend Schulbücher und Hefte. Doch ist diese Entwicklung wirklich nur positiv?
+                content: `Ist der Umgang mit Haustieren gesund für Kleinkinder?
 
-Viele Lehrer und Eltern sind skeptisch. Sie befürchten, __(33)__ die Schüler durch die ständige Nutzung von digitalen Geräten abgelenkt werden. Außerdem könnte die Handschrift der Schüler leiden, __(34)__ sie kaum noch mit der Hand schreiben. Studien zeigen tatsächlich, dass Schüler, die viel mit der Tastatur schreiben, schlechtere Handschriften haben __(35)__ Schüler, die regelmäßig mit der Hand schreiben.
+Kleine Kinder, die in der Gesellschaft von Haustieren wie Hund und Katze leben, sind einer Studie aus Finnland zufolge seltener krank ________ Kinder in Haushalten ohne Tiere.
 
-Dennoch gibt es __(36)__ viele Vorteile. Digitale Lernmethoden ermöglichen eine individuellere Förderung der Schüler. Lernprogramme können sich dem Leistungsniveau des einzelnen Schülers anpassen. Schwächere Schüler bekommen __(37)__ die Möglichkeit, in ihrem eigenen Tempo zu lernen. Stärkere Schüler können sich dagegen mit anspruchsvolleren Aufgaben beschäftigen.
+Die Studie wurde in der ________ Woche in einem amerikanischen Fachmagazin veröffentlicht. Es wurden ________ keine Erklärungen für diese Tatsache geliefert, aber die Vermutung wurde geäußert, dass der Kontakt zu Hunden das Immunsystem der Kleinkinder stärke. Hunde haben nämlich ________ die täglichen Spaziergänge draußen viel Kontakt zu möglichen Krankheitserregern und trainieren vielleicht so das Immunsystem der Kinder. Auch Katzen, die die Möglichkeit haben, nach draußen zu gehen, haben demnach ________ Wirkung auf die Gesundheit der Kinder, wenngleich in geringerem Maße.
 
-Ein weiterer Vorteil ist die Aktualität der Lerninhalte. Während Schulbücher oft Jahre alt sind, können digitale Inhalte ständig aktualisiert werden. So können Schüler immer mit den neuesten Informationen lernen. Das ist besonders in Fächern __(38)__ Geschichte oder Politik wichtig, wo sich die Inhalte schnell ändern können.
+Für die Studie ________ in Finnland 397 Babys über den timerraum von der neunten Lebenswoche bis zu ihrem ersten Geburtstag beobachtet. Dabei hatten die mit Hund oder Katze aufwachsenden Kinder ein um 30% ________ Risiko für Erkrankungen der Atemwege. Es fiel auf, dass bei diesen Kindern Ohrenentzündungen ________ auftraten.
 
-Trotz aller Vorteile sollte die Digitalisierung nicht überstürzt werden. Es ist wichtig, __(39)__ Lehrer und Schüler gut auf die neuen Technologien vorbereitet werden. Dazu gehören auch Fortbildungen für Lehrer, __(40)__ sie die digitalen Werkzeuge optimal im Unterricht einsetzen können.
-
-Letztendlich kommt es auf die richtige Mischung an. Digitale und analoge Lernmethoden sollten sich ergänzen. Die Digitalisierung kann den Unterricht bereichern, aber sie sollte die traditionellen Lernmethoden nicht vollständig ersetzen.`,
-                answers: ["hat", "auf", "dass", "wenn", "als", "auch", "so", "wie", "dass", "damit"]
+Die Studie kommt daher zu dem Schluss, dass die Gesundheit von Kindern in Gesellschaft von Tiere ________ besser sei. Frühere Untersuchungen aus den USA hatten das genaue ________ der jetzigen Ergebnisse ergeben. Ob diese Unterschiede mit den unterschiedlichen Lebens- und Umweltbedingungen der beiden Länder zusammenhängen, ist noch unklar.`,
+                options: ["ALS", "WIE", "ZWAR", "WURDEN", "WENIGER", "WAREN", "VERGANGENEN", "FRÜHEREN", "UM", "DURCH", "GERINGERES", "DIESELBE", "GEGENTEIL", "GEGENSATZ", "DEUTLICH"],
+                answers: ["ALS", "VERGANGENEN", "WENIGER", "DURCH", "ZWAR", "WURDEN", "GERINGERES", "WENIGER", "DEUTLICH", "GEGENTEIL"]
             }
         };
 
@@ -1199,24 +1106,14 @@ Letztendlich kommt es auf die richtige Mischung an. Digitale und analoge Lernmet
             setupEventListeners();
         });
 
-        let currentLang = 'ar';
         let isDarkMode = false;
 
         function initializePage() {
             // تحميل الإعدادات المحفوظة
-            const savedLang = localStorage.getItem('language') || 'ar';
             const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-            const username = localStorage.getItem('username') || 'زائر';
-            const access = localStorage.getItem('access');
             
-            changeLanguage(savedLang);
             if (savedDarkMode) {
                 toggleDarkMode();
-            }
-            
-            // التحقق من حالة المستخدم
-            if (access === 'paid' && username) {
-                document.getElementById('premiumBadge').style.display = 'flex';
             }
             
             // تهيئة الأجزاء
@@ -1234,13 +1131,13 @@ Letztendlich kommt es auf die richtige Mischung an. Digitale und analoge Lernmet
             textsList.innerHTML = '';
 
             // إضافة العناوين
-            examData.headings.forEach((heading, index) => {
+            examData.headings.forEach((heading) => {
                 const headingItem = document.createElement('div');
                 headingItem.className = 'heading-item';
                 headingItem.innerHTML = `
-                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                    <strong>${heading.id})</strong> ${heading.text}
                 `;
-                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingItem.dataset.letter = heading.id;
                 headingsList.appendChild(headingItem);
             });
 
@@ -1249,10 +1146,10 @@ Letztendlich kommt es auf die richtige Mischung an. Digitale und analoge Lernmet
                 const textItem = document.createElement('div');
                 textItem.className = 'question';
                 textItem.innerHTML = `
-                    <h3>Text ${index + 1}</h3>
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
                     <div class="text-content">${text.content}</div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
                     </div>
                 `;
                 textsList.appendChild(textItem);
@@ -1263,14 +1160,14 @@ Letztendlich kommt es auf die richtige Mischung an. Digitale und analoge Lernmet
             const longText = document.getElementById('longText');
             const questionsList = document.getElementById('questionsList');
 
-            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
 
             questionsList.innerHTML = '';
             examData.longText.questions.forEach((question, index) => {
                 const questionItem = document.createElement('div');
                 questionItem.className = 'question';
                 questionItem.innerHTML = `
-                    <h3>Frage ${index + 6}</h3>
+                    <h3>Question ${index + 6}</h3>
                     <p><strong>${question.question}</strong></p>
                     <div class="options">
                         ${question.options.map((option, optIndex) => `
@@ -1280,7 +1177,7 @@ Letztendlich kommt es auf die richtige Mischung an. Digitale und analoge Lernmet
                         `).join('')}
                     </div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
                     </div>
                 `;
                 questionsList.appendChild(questionItem);
@@ -1292,14 +1189,12 @@ Letztendlich kommt es auf die richtige Mischung an. Digitale und analoge Lernmet
             const adsList = document.getElementById('adsList');
 
             situationsList.innerHTML = '';
-            examData.situations.forEach((situation, index) => {
+            examData.situations.forEach((situation) => {
                 const situationItem = document.createElement('div');
                 situationItem.className = 'situation-item';
                 situationItem.innerHTML = `
-                    <strong>${index + 11})</strong> ${situation}
-                    <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
-                    </div>
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
                 `;
                 situationsList.appendChild(situationItem);
             });
@@ -1309,27 +1204,87 @@ Letztendlich kommt es auf die richtige Mischung an. Digitale und analoge Lernmet
                 const adItem = document.createElement('div');
                 adItem.className = 'ad-item';
                 adItem.innerHTML = `
-                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
-                    <p>${ad.content}</p>
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
                 `;
                 adsList.appendChild(adItem);
             });
         }
 
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
         function initializeSprachbausteine() {
             // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
             const blankText1 = document.getElementById('blankText1');
-            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText1.innerHTML = textWithBlanks1;
 
             // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
             const blankText2 = document.getElementById('blankText2');
-            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 31]}</span></span>`;
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText2.innerHTML = textWithBlanks2;
         }
@@ -1339,40 +1294,8 @@ Letztendlich kommt es auf die richtige Mischung an. Digitale und analoge Lernmet
             document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
             document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
             
-            // زر الرئيسية
-            document.getElementById('homeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html';
-            });
-            
             // زر الوضع الليلي
             document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-            
-            // زر الاشتراك
-            document.getElementById('subscribeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#subscribe';
-            });
-            
-            // زر المستخدم
-            document.getElementById('userBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#profile';
-            });
-            
-            // زر اللغة
-            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
-            document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const lang = option.getAttribute('data-lang');
-                    changeLanguage(lang);
-                    document.getElementById('langDropdown').classList.remove('show');
-                });
-            });
-            
-            // إغلاق القوائم المنسدلة بالنقر خارجها
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.language-selector')) {
-                    document.getElementById('langDropdown').classList.remove('show');
-                }
-            });
         }
 
         function showAllAnswers() {
@@ -1382,10 +1305,10 @@ Letztendlich kommt es auf die richtige Mischung an. Digitale und analoge Lernmet
             document.querySelectorAll('.blank-answer').forEach(answer => {
                 answer.classList.remove('hidden');
             });
-            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+            document.querySelectorAll('.heading-item').forEach(heading => {
                 const letter = heading.dataset.letter;
                 examData.texts.forEach(text => {
-                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                    if (text.correctAnswer === letter) {
                         heading.classList.add('matched');
                     }
                 });
@@ -1415,29 +1338,6 @@ Letztendlich kommt es auf die richtige Mischung an. Digitale und analoge Lernmet
             } else {
                 themeIcon.className = 'fas fa-moon';
             }
-        }
-
-        function toggleLangDropdown() {
-            document.getElementById('langDropdown').classList.toggle('show');
-        }
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            
-            // تحديث جميع النصوص
-            Object.keys(t).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = t[key];
-                }
-            });
-            
-            localStorage.setItem('language', lang);
-            
-            // إعادة تهيئة المحتوى لترجمة الإجابات
-            initializeTeil1();
-            initializeTeil2();
         }
     </script>
 </body>

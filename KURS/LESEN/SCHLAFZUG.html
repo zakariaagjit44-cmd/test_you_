@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCHLAFZUG - TELC B2 Training</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SCHLAF ZUG - TELC B2 Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -20,16 +20,17 @@
             --text: #333;
             --text-light: #546E7A;
             --white: #ffffff;
-            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
-            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
-            --radius: 25px;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -38,8 +39,11 @@
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
             transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
         }
 
         body.dark-mode {
@@ -47,371 +51,71 @@
             color: var(--light);
         }
 
-        /* Header Controls - التعديل هنا */
-        .header-controls {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            right: 20px;
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            z-index: 1000;
-            gap: 15px;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .left-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-start;
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
         }
 
-        .right-controls {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
+        .theme-btn {
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            border: none;
-            background: var(--primary);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .control-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .control-btn:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-
-        .control-btn:hover {
-            transform: scale(1.15) rotate(5deg);
-            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
-        }
-
-        /* شارة المشترك الذهبية - تم التعديل */
-        .premium-badge-header {
-            position: fixed;
-            top: 20px;
-            right: 90px; /* بجانب الأزرار */
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            padding: 0.5rem;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
-        }
-
-        .home-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .home-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .home-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        /* Language Selector */
-        .language-selector {
-            display: flex;
-            position: relative;
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: var(--radius);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .lang-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .lang-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            background: var(--white);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
-            overflow: hidden;
-            min-width: 120px;
-            animation: dropdownSlide 0.3s ease;
-            z-index: 1001;
-        }
-
-        .dark-mode .lang-dropdown {
-            background: #1a237e;
-            color: var(--light);
-        }
-
-        @keyframes dropdownSlide {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .lang-dropdown.show {
-            display: block;
-        }
-
-        .lang-option {
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            color: var(--text);
-        }
-
-        .dark-mode .lang-option {
-            color: var(--light);
-            border-bottom: 1px solid #37474F;
-        }
-
-        .lang-option:hover {
-            background: #f5f5f5;
-            transform: translateX(5px);
-        }
-
-        .dark-mode .lang-option:hover {
-            background: #283593;
-        }
-
-        .lang-option:last-child {
-            border-bottom: none;
-        }
-
-        /* زر الاشتراك الجديد */
-        .subscribe-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .subscribe-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .subscribe-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        /* المحتوى الرئيسي */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: var(--radius);
-            padding: 3rem;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(15px);
-            margin-top: 6rem;
-            transition: var(--transition);
-        }
-
-        .dark-mode .container {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: contentSlideUp 0.8s ease;
-        }
-
-        @keyframes contentSlideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .header h1 {
-            font-size: 2.8rem;
-            color: var(--primary-dark);
-            margin-bottom: 1rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .dark-mode .header h1 {
-            color: #90CAF9;
-        }
-
-        .page-subtitle {
             font-size: 1.2rem;
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .dark-mode .page-subtitle {
-            color: #B0BEC5;
-        }
-
-        /* أزرار التحكم */
-        .answer-controls {
-            position: sticky;
-            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1.5rem;
-            border-radius: var(--radius);
+            cursor: pointer;
             box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-            z-index: 100;
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
             display: flex;
             gap: 1rem;
-            justify-content: center;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-        }
-
-        .dark-mode .answer-controls {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            align-items: center;
         }
 
         .answer-btn {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
-            position: relative;
-            overflow: hidden;
             border: none;
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.5rem;
             transition: var(--transition);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .answer-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: right 0.6s;
-        }
-
-        .answer-btn:hover::before {
-            right: 100%;
+            min-width: 180px;
+            justify-content: center;
         }
 
         .answer-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
         }
 
         .show-answers {
@@ -424,47 +128,107 @@
             color: var(--white);
         }
 
-        /* التصميم الخاص بالأسئلة */
-        .section {
-            margin: 2rem 0;
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
             padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
             transition: var(--transition);
         }
 
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
         .dark-mode .section {
-            background: rgba(13, 71, 161, 0.9);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
         }
 
         .section-title {
             color: var(--primary-dark);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
             border-bottom: 2px solid var(--primary);
             font-weight: 600;
+            text-align: left;
         }
 
         .dark-mode .section-title {
             color: #90CAF9;
         }
 
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
         .question {
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: rgba(33, 150, 243, 0.05);
-            border-radius: 15px;
-            border-right: 4px solid var(--primary);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .question {
-            background: rgba(33, 150, 243, 0.1);
+            background: rgba(33, 150, 243, 0.08);
         }
 
         .options {
@@ -472,25 +236,25 @@
         }
 
         .option {
-            margin: 0.8rem 0;
-            padding: 1rem;
+            margin: 0.6rem 0;
+            padding: 0.8rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
             cursor: pointer;
             transition: var(--transition);
             font-weight: 500;
+            text-align: left;
         }
 
         .dark-mode .option {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .option:hover {
             border-color: var(--primary);
             background: rgba(33, 150, 243, 0.05);
-            transform: translateX(-5px);
         }
 
         .correct {
@@ -506,365 +270,493 @@
         .answer {
             margin-top: 1rem;
             padding: 1rem;
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 600;
-            animation: slideInUp 0.5s ease;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
         }
 
         @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* التصحيح - تم التعديل للوضع الليلي */
         .correct-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
-            border: 2px solid #4CAF50;
-            font-weight: bold;
+            border: 1px solid #4CAF50;
         }
 
         .dark-mode .correct-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
-            border: 2px solid #81C784;
+            border: 1px solid #81C784;
         }
 
         /* النصوص والعناوين */
         .text-content {
-            line-height: 1.7;
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
-            font-size: 1.1rem;
-            transition: var(--transition);
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .text-content {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
+        /* Lesen Teil 1 - تصميم محسن */
         .headings-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1rem;
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .heading-item {
-            padding: 1.2rem;
+            padding: 1rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            text-align: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
             font-weight: 500;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .heading-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .matched {
             border-color: #4CAF50;
             background: rgba(76, 175, 80, 0.1);
-            transform: scale(1.02);
         }
 
-        /* الإعلانات والوضعيات */
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
         .ads-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
         }
 
         .ad-item {
-            padding: 1.5rem;
+            padding: 1.2rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            min-height: 150px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .ad-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .ad-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-hover);
         }
 
-        .situations-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.2rem;
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
         }
 
-        .situation-item {
-            padding: 1.2rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            transition: var(--transition);
+        .dark-mode .ad-letter {
+            color: #90CAF9;
         }
 
-        .dark-mode .situation-item {
-            background: #1a237e;
-            border-color: #37474F;
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
         }
 
-        .situation-item:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.05);
+        .dark-mode .ad-title {
+            color: var(--light);
         }
 
-        /* Sprachbausteine */
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
         .fill-blanks {
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .blank-text {
-            line-height: 2;
-            margin: 1.5rem 0;
-            font-size: 1.2rem;
-            padding: 1.5rem;
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .blank-text {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .blank {
             display: inline-block;
             min-width: 120px;
-            margin: 0 8px;
-            padding: 0.5rem 1rem;
-            border-bottom: 3px solid var(--primary);
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
             text-align: center;
             font-weight: 600;
             background: var(--white);
-            border-radius: 8px;
+            border-radius: 6px;
             transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
         }
 
         .dark-mode .blank {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
         }
 
         .blank-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
             border-color: #4CAF50;
-            font-weight: bold;
         }
 
         .dark-mode .blank-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
             border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
         }
 
         .hidden {
             display: none;
         }
 
-        /* Floating Elements مثل الصفحة الرئيسية */
-        .floating-elements {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .floating-element {
-            position: absolute;
-            font-size: 3.5rem;
-            opacity: 0.15;
-            animation: float 8s ease-in-out infinite;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
-
-        .floating-book { top: 15%; left: 8%; animation-delay: 0s; }
-        .floating-pen { top: 75%; right: 12%; animation-delay: 1s; }
-        .floating-globe { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
-        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
-        .floating-graduate { top: 65%; left: 5%; animation-delay: 4s; }
-        .floating-notebook { bottom: 15%; right: 10%; animation-delay: 5s; }
-        .floating-pencil { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
-        .floating-calculator { top: 35%; right: 15%; animation-delay: 7s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
-            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
-        }
-
+        /* تحسينات للهواتف */
         @media (max-width: 768px) {
-            .header-controls {
-                top: 15px;
-                left: 15px;
-                right: 15px;
-                gap: 10px;
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
             }
-
-            .premium-badge-header {
-                top: 15px;
-                right: 70px;
-                width: 45px;
-                height: 45px;
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
                 font-size: 1.1rem;
             }
-
-            .home-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
-            }
-
-            .container {
-                padding: 2rem;
-                margin: 1rem;
-                margin-top: 5rem;
-            }
-
+            
             .header h1 {
-                font-size: 2rem;
+                font-size: 1.6rem;
             }
-
-            .headings-grid {
-                grid-template-columns: 1fr;
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
             }
-
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
             .ads-grid {
                 grid-template-columns: 1fr;
             }
-
-            .right-controls {
-                gap: 10px;
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
             }
-
-            .answer-controls {
-                top: 70px;
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
             }
         }
 
         @media (max-width: 480px) {
-            .header-controls {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
             }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
 
-            .left-controls, .right-controls {
-                flex-direction: row;
-                justify-content: center;
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
             }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
-            .premium-badge-header {
-                position: relative;
-                top: auto;
-                right: auto;
-                transform: none;
-                margin-top: 10px;
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
             }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Floating Elements مثل الصفحة الرئيسية -->
-    <div class="floating-elements">
-        <div class="floating-element floating-book">📚</div>
-        <div class="floating-element floating-pen">✏️</div>
-        <div class="floating-element floating-globe">🌍</div>
-        <div class="floating-element floating-clock">⏰</div>
-        <div class="floating-element floating-graduate">🎓</div>
-        <div class="floating-element floating-notebook">📓</div>
-        <div class="floating-element floating-pencil">✏️</div>
-        <div class="floating-element floating-calculator">🧮</div>
-    </div>
-
-    <!-- شارة المشترك الذهبية - تم التعديل -->
-    <div class="premium-badge-header" id="premiumBadge">
-        <i class="fas fa-crown"></i>
-    </div>
-
-    <!-- Header Controls -->
-    <div class="header-controls">
-        <div class="left-controls">
-            <button class="home-btn" id="homeBtn">
-                <i class="fas fa-home"></i>
-                <span id="homeText">الرئيسية</span>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
             </button>
-            <div class="language-selector">
-                <button class="lang-btn" id="langBtn">
-                    <span id="langBtnText">العربية</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="lang-dropdown" id="langDropdown">
-                    <div class="lang-option" data-lang="ar">
-                        <span>🇸🇦</span>
-                        <span>العربية</span>
-                    </div>
-                    <div class="lang-option" data-lang="de">
-                        <span>🇩🇪</span>
-                        <span>Deutsch</span>
-                    </div>
-                    <div class="lang-option" data-lang="en">
-                        <span>🇬🇧</span>
-                        <span>English</span>
-                    </div>
-                </div>
-            </div>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
         </div>
         
-        <div class="right-controls">
-            <button class="control-btn" id="themeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="subscribe-btn" id="subscribeBtn">
-                <i class="fas fa-star"></i>
-                <span id="subscribeText">اشتراك</span>
-            </button>
-            <button class="control-btn" id="userBtn">
-                <i class="fas fa-user"></i>
-            </button>
-        </div>
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">SCHLAFZUG - TELC B2 Training</h1>
-            <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - القطار النوم</p>
-        </div>
-
-        <!-- أزرار التحكم -->
-        <div class="answer-controls">
-            <button class="answer-btn show-answers" id="showAnswers">
-                <i class="fas fa-check-circle"></i>
-                <span id="showAnswersText">إظهار التصحيح</span>
-            </button>
-            <button class="answer-btn hide-answers" id="hideAnswers">
-                <i class="fas fa-eye-slash"></i>
-                <span id="hideAnswersText">إخفاء التصحيح</span>
-            </button>
+            <h1 id="pageTitle">BILDER - TELC B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
         </div>
 
         <!-- Lesen Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="teil1Title">Lesen Teil 1</h2>
-            <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
             
             <div class="headings-grid" id="headingsList">
                 <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
@@ -877,8 +769,8 @@
 
         <!-- Lesen Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
-            <div class="text-content" id="longText">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
                 <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
             </div>
 
@@ -887,10 +779,10 @@
             </div>
         </div>
 
-        <!-- Lesen Teil 3 -->
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
         <div class="section">
-            <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
-            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
             
             <div class="situations-grid" id="situationsList">
                 <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
@@ -903,308 +795,290 @@
 
         <!-- Sprachbausteine Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
             <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
                 <div class="blank-text" id="blankText1">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
 
         <!-- Sprachbausteine Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
             <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
                 <div class="blank-text" id="blankText2">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // الترجمات
-        const translations = {
-            ar: {
-                homeText: "الرئيسية",
-                themeText: "الوضع الليلي",
-                langText: "العربية", 
-                userText: "زائر",
-                subscribeText: "اشتراك",
-                pageTitle: "SCHLAFZUG - TELC B2 Training",
-                pageSubtitle: "تمرين القراءة والفهم - القطار النوم",
-                showAnswersText: "إظهار التصحيح",
-                hideAnswersText: "إخفاء التصحيح",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2", 
-                teil3Title: "Lesen Teil 3",
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            de: {
-                homeText: "Startseite",
-                themeText: "Nachtmodus", 
-                langText: "Deutsch",
-                userText: "Besucher",
-                subscribeText: "Abonnieren",
-                pageTitle: "SCHLAFZUG - TELC B2 Training",
-                pageSubtitle: "Leseverstehen - Schlafzug",
-                showAnswersText: "Korrektur anzeigen",
-                hideAnswersText: "Korrektur ausblenden",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2",
-                teil3Title: "Lesen Teil 3", 
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            en: {
-                homeText: "Home",
-                themeText: "Dark Mode",
-                langText: "English",
-                userText: "Visitor", 
-                subscribeText: "Subscribe",
-                pageTitle: "SCHLAFZUG - TELC B2 Training",
-                pageSubtitle: "Reading Comprehension - Sleep Train",
-                showAnswersText: "Show Correction",
-                hideAnswersText: "Hide Correction",
-                teil1Title: "Reading Part 1",
-                teil1Description: "First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).",
-                teil2Title: "Reading Part 2",
-                teil3Title: "Reading Part 3",
-                teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
-                sprach1Title: "Language Elements Part 1", 
-                sprach2Title: "Language Elements Part 2"
-            }
-        };
-
-        // بيانات الأسئلة والإجابات من ملف PDF
+        // بيانات الأسئلة والإجابات - مأخوذة من SCHLAFZUG.html
         const examData = {
-            // Lesen Teil 1
             headings: [
-                "tiere energies parmodus",
-                "leicht aus klass zimmer", 
-                "klug durch schlafen",
-                "in wandering macht gute laune",
-                "forscher erfordert weniger zeit arbeit",
-                "Überschrift f",
-                "Überschrift g",
-                "Überschrift h",
-                "Überschrift i",
-                "Überschrift j"
+                {id: "a", text: "Für unterwegs: Leckereien im Zugrestaurant In der"},
+                {id: "b", text: "Stadt der warmen Quellen"},
+                {id: "c", text: "Eine Wanderung macht gute Laune"},
+                {id: "d", text: "„Die Arbeit von Forschern erfordert weniger Zeit\""},
+                {id: "e", text: "Naschen statt wegwerfen"},
+                {id: "f", text: "Neues Thermalbad in Rom"},
+                {id: "g", text: "Reisen: Die beliebtesten Thermalbäder"},
+                {id: "h", text: "Klug durch Schlafen"},
+                {id: "i", text: "Tiere Energiesparmodus"},
+                {id: "j", text: "Licht aus dem Klassenzimmer"}
             ],
             
             texts: [
                 {
-                    content: `Im Winter ziehen sich viele Tiere in den Winterschlaf zurück, um Energie zu sparen. Während dieser Zeit wird ihr Stoffwechsel langsamer, und ihre Körpertemperatur sinkt. Dies hilft ihnen, über einen längeren Zeitraum ohne Nahrung auszukommen.`,
-                    correctAnswer: "tiere energies parmodus"
+                    id: "text1",
+                    content: `Im Winter gehen Tiere in den Winterschlaf, um Energie zu sparen. Während des Winterschlafs verlangsamt sich ihr Stoffwechsel, und ihre Körpertemperatur sinkt. Dies ermöglicht es ihnen, über längere Zeiträume ohne Nahrung auszukommen. Zu den Tieren, die Winterschlaf halten, gehören Igel, Fledermäuse und Murmeltiere.`,
+                    correctAnswer: "i",
+                    correctAnswerText: "i) Tiere Energiesparmodus"
                 },
                 {
-                    content: `Ein leichter Auszug aus dem Klassenzimmer kann die Konzentration der Schüler verbessern. Kurze Pausen an der frischen Luft fördern die Durchblutung und helfen, neue Energie zu tanken.`,
-                    correctAnswer: "leicht aus klass zimmer"
+                    id: "text2", 
+                    content: `Laut einer Studie der Universität Leipzig verbessert natürliches Licht die Lernfähigkeit von Schülern. Klassenzimmer mit viel Tageslicht tragen dazu bei, dass die Schüler wacher und aufmerksamer sind.`,
+                    correctAnswer: "j",
+                    correctAnswerText: "j) Licht aus dem Klassenzimmer"
                 },
                 {
-                    content: `Schlaf ist entscheidend für die geistige Leistungsfähigkeit. Während des Schlafs verarbeitet das Gehirn die Informationen des Tages und festigt das Gelernte. Ausreichend Schlaf macht also klug.`,
-                    correctAnswer: "klug durch schlafen"
+                    id: "text3",
+                    content: `Ein regelmäßiger Schlafrhythmus ist entscheidend für die Gesundheit. Unser Körper produziert während des Schlafs das Hormon Melatonin, das für die Regulierung des Schlaf-Wach-Rhythmus verantwortlich ist. Melatonin hilft dem Körper, sich zu entspannen und sorgt für eine erholsame Nacht. Ein gestörter Schlafrhythmus kann zu Gesundheitsproblemen führen.`,
+                    correctAnswer: "h",
+                    correctAnswerText: "h) Klug durch Schlafen"
                 },
                 {
-                    content: `Wandern in der Natur kann die Stimmung deutlich verbessern. Die Bewegung an der frischen Luft und die schöne Umgebung sorgen für gute Laune und reduzieren Stress.`,
-                    correctAnswer: "in wandering macht gute laune"
+                    id: "text4",
+                    content: `In den letzten Jahren hat sich das nächtliche Wandern in der Natur zu einer beliebten Freizeitaktivität entwickelt. Gesundheitsexperten raten davon ab, diese Praxis zu verbieten, da sie positive Auswirkungen auf die körperliche und geistige Gesundheit hat. Das Wandern bei Nacht hilft, Stress abzubauen, die Sinne zu schärfen und die Verbindung zur Natur zu stärken. Darüber hinaus fördert es die Produktion von Melatonin, einem Hormon, das den Schlaf-Wach-Rhythmus reguliert, und hilft somit bei Schlafproblemen. Experten betonen, dass diese Art von Bewegung besonders wohltuend ist, solange sie sicher und in geeigneten Gebieten durchgeführt wird.`,
+                    correctAnswer: "c",
+                    correctAnswerText: "c) Eine Wanderung macht gute Laune"
                 },
                 {
-                    content: `Moderne Forschungsmethoden erfordern heute weniger Zeit und Arbeit als früher. Durch den Einsatz von Technologie und Automatisierung können Wissenschaftler effizienter arbeiten und schneller zu Ergebnissen kommen.`,
-                    correctAnswer: "forscher erfordert weniger zeit arbeit"
+                    id: "text5",
+                    content: `Professor Dr. Thomas Münch von der Universität Freiburg führte eine Studie durch, die den Zusammenhang zwischen Arbeitszeiten, Tageslicht und der Gesundheit von Arbeitnehmern untersuchte. Die Studie zeigte, dass Menschen, die ihre Arbeitszeiten besser an den natürlichen Sonnenrhythmus anpassen, seltener an Schlafstörungen und chronischer Müdigkeit leiden. Zudem fördert der tägliche Fußweg zur Arbeit, besonders bei Tageslicht, nicht nur die körperliche Gesundheit, sondern verbessert auch die psychische Verfassung. Der Kontakt mit natürlichem Licht reguliert den Hormonhaushalt, insbesondere die Produktion von Melatonin und Serotonin, was für das Wohlbefinden entscheidend ist.`,
+                    correctAnswer: "d",
+                    correctAnswerText: "d) „Die Arbeit von Forschern erfordert weniger Zeit\""
                 }
             ],
 
-            // Lesen Teil 2 - النص الكامل
             longText: {
-                content: `Der Schlafwagen, auch Nachtzug oder Schlafzug genannt, ist eine besondere Art des Reisens. Er verbindet die Vorteile des Zugfahrens mit der Möglichkeit, während der Fahrt zu schlafen. So kann man lange Strecken zurücklegen, ohne wertvolle Tageszeit zu verlieren.
-
-Die Geschichte des Schlafwagens reicht bis ins 19. Jahrhundert zurück. Der Amerikaner George Pullman war einer der Pioniere auf diesem Gebiet. Seine Pullman-Wagen wurden berühmt für ihren Komfort und Luxus. In Europa verbreiteten sich Schlafwagen vor allem durch die Compagnie Internationale des Wagons-Lits, die 1872 gegründet wurde.
-
-Ein großer Vorteil des Schlafwagens ist die Zeitersparnis. Statt einen ganzen Tag mit Reisen zu verbringen, kann man abends einsteigen, sich hinlegen und am nächsten Morgen am Zielort ausgeschlafen ankommen. Das ist besonders für Geschäftsreisende attraktiv, die am Zielort sofort fit für Meetings sein müssen.
-
-Moderne Schlafwagen bieten verschiedene Komfortklassen an. Es gibt Einzelabteile, Doppelabteile und sogar Abteile für Familien. Die Betten sind oft in Sitze umwandelbar, so dass das Abteil tagsüber als Sitzbereich genutzt werden kann. Zu den Annehmlichkeiten gehören meist ein Waschbecken, Steckdosen und manchmal sogar eine Dusche.
-
-Trotz des Komforts hat der Schlafwagen in den letzten Jahren an Beliebtheit verloren. Der Hauptgrund dafür ist der Aufstieg der Billigfluglinien. Flugreisen sind oft günstiger und schneller als Nachtzüge. Allerdings hat das Flugzeug auch Nachteile: Flughäfen sind oft weit außerhalb der Stadt, und die Anreise dauert zusätzlich Zeit.
-
-Aus ökologischer Sicht ist der Schlafzug dem Flugzeug überlegen. Zugreisen verursachen deutlich weniger CO2-Emissionen pro Person. Zudem ist der Energieverbrauch eines Zuges pro Kilometer niedriger als der eines Flugzeugs.
-
-In jüngster Zeit erlebt der Schlafwagen eine Renaissance. Immer mehr Menschen sind sich der Umweltauswirkungen des Fliegens bewusst und suchen nach nachhaltigeren Reisemöglichkeiten. Auch die Bahnunternehmen haben reagiert und investieren in neue, komfortablere Schlafwagen.
-
-Die Zukunft des Schlafwagens sieht vielversprechend aus. Neue Nachtzugverbindungen werden eingerichtet, und die Nachfrage steigt. Besonders in Europa, wo viele Städte gut mit dem Zug erreichbar sind, bietet der Schlafzug eine attraktive Alternative zum Flugzeug.
-
-Für viele Reisende ist die Fahrt im Schlafwagen mehr als nur Transport - sie ist ein Erlebnis. Das sanfte Schaukeln des Zuges, das Geräusch der Räder auf den Schienen und die vorbeiziehende Landschaft im Mondlicht schaffen eine besondere Atmosphäre, die man im Flugzeug nicht findet.
-
-Insgesamt bietet der Schlafwagen eine einzigartige Kombination aus Komfort, Zeitersparnis und Nachhaltigkeit. Er ist nicht nur ein praktisches Verkehrsmittel, sondern auch eine besondere Art des Reisens, die an Romantik und Abenteuerlust appelliert.`,
+                content: `Nachtzüge wecken heute oft nostalgische Vorstellungen. Man denkt etwa an den Luxus des Orient Express, der seine meist gut betuchte Kundschaft innerhalb weniger Tage von Paris nach Istanbul brachte, an Landschaften, die an den Zugfenstern vorbeirauschen, und das sanfte Rattern eines Zuges, das einen in den Schlaf wiegt. Doch hält die Realität, was solche Bilder versprechen? Teilweise', meint die Studentin Sofia Osterhasen. Sie ist schon im Nachtzug von München nach Florenz, von Oslo nach Bergen und von Stockholm nach Kiruna gereist. Bei ihrer ersten Fahrt habe sie vor Aufregung nicht geschlafen, erzählt sie. Und auch sonst seien die Nächte im Zug oft unruhig, dafür sorgten etwa schnarchende Passagiere. Natürlich wäre Fliegen schneller und auf vielen Strecken sogar günstiger. Doch die lange Anreise gebe ihre Zeit, sich mit Mitreisenden zu unterhalten. „Die Leute erzählen während einer Zugfahrt viel aus ihrem Leben, man erfährt mehr als es bei Zufallsbekanntschaften oft der Fall ist. Das fasziniert mich", erklärt sie. Zutun und kamen völlig übermüdet am Zielort an Doch als sein jüngster Sohn die Augen öffnete, rief er: Das war meine beste Reise! Ein fahrendes Bett! Ich will jetzt immer nur noch Nachtzug fahren. Vor allem der Kinder wegen haben die Schneiders auch für den diesjährigen Urlaub eine Fahrt im Nachtzug gebucht. Dass die Nachtzüge, die durch Europa fahren, nicht immer sonderlich bequem sind, darüber wird häufig geklagt. Fahrgäste bemängeln, dass die Waggons teilweise sehr in die Jahre gekommen sind und nur wenige Annehmlichkeiten bieten. Ist vielleicht auch dies ein Grund, warum Geschäftsreisende diese Transportmöglichkeit nur selten in Betracht ziehen? „Das würde für mich keine große Rolle spielen", meint Florian Kirsch, Vertriebsleiter eines mittelständischen Unternehmens. Viel wichtiger sei der Faktor Zeit: Wer will schon zwei Nächte im Zug verbringen, bloß weil er einen Termin in einer anderen Stadt hat? Wenn Nachtzüge konkurrenzfähig sein wollen, müssen sie mehr Schnelligkeit bieten, erklärt Florian Kirsch. Er selbst nimmt für längere Geschäftsreisen ausschließlich das Flugzeug.`,
                 questions: [
                     {
-                        question: "Wer war ein Pionier des Schlafwagens?",
+                        id: "q1",
+                        question: "Sofia Osterhagen fährt gerne mit dem Nachtzug, weil",
                         options: [
-                            "Die Compagnie Internationale des Wagons-Lits",
-                            "George Pullman", 
-                            "Europäische Bahnunternehmen"
+                            "dieser im Vergleich zu Flugreisen oft billiger ist",
+                            "man dort leicht mit anderen Fahrgästen ins Gespräch kommt",
+                            "sie während der Fahrt meist gut schlafen kann"
                         ],
-                        correctAnswer: "George Pullman"
+                        correctAnswer: "man dort leicht mit anderen Fahrgästen ins Gespräch kommt"
                     },
                     {
-                        question: "Was ist ein Vorteil des Schlafwagens?",
+                        id: "q2",
+                        question: "Die Deutsche Bahn",
                         options: [
-                            "Er ist immer günstiger als das Flugzeug.",
-                            "Man spart Tagesreisezeit.",
-                            "Er ist schneller als das Flugzeug."
+                            "hat der Österreichischen Bundesbahn einige Züge abgekauft",
+                            "möchte mehr Fahrten über Nacht anbieten",
+                            "verzichtete aus ökonomischen Gründen auf eigene Nachtzüge"
                         ],
-                        correctAnswer: "Man spart Tagesreisezeit."
+                        correctAnswer: "verzichtete aus ökonomischen Gründen auf eigene Nachtzüge"
                     },
                     {
-                        question: "Warum haben Schlafwagen an Beliebtheit verloren?", 
+                        id: "q3",
+                        question: "Die Reise mit dem Nachtzug",
                         options: [
-                            "Weil sie unbequem geworden sind.",
-                            "Wegen der Billigfluglinien.",
-                            "Weil sie nicht umweltfreundlich sind."
+                            "empfand Tom Schneider insgesamt als erholsam",
+                            "hat Tom Schneiders Sohn begeistert",
+                            "möchte Tom Schneider nicht wiederholen"
                         ],
-                        correctAnswer: "Wegen der Billigfluglinien."
+                        correctAnswer: "hat Tom Schneiders Sohn begeistert"
                     },
                     {
-                        question: "Was ist ein ökologischer Vorteil des Schlafwagens?",
+                        id: "q4",
+                        question: "Florian Kirsch verzichtet auf längere Zugreisen, weil",
                         options: [
-                            "Er verbraucht mehr Energie pro Kilometer.",
-                            "Er verursacht weniger CO2-Emissionen.",
-                            "Er ist lauter als das Flugzeug."
+                            "er im Zug ungern arbeitet",
+                            "er mit dem Flugzeug Zeit spart",
+                            "es ihm an Bequemlichkeit fehlt"
                         ],
-                        correctAnswer: "Er verursacht weniger CO2-Emissionen."
+                        correctAnswer: "er mit dem Flugzeug Zeit spart"
                     },
                     {
-                        question: "Warum erlebt der Schlafwagen eine Renaissance?",
+                        id: "q5", 
+                        question: "Die Züge des französischen Start-ups sollen",
                         options: [
-                            "Weil die Menschen umweltbewusster werden.",
-                            "Weil Flugreisen verboten wurden.", 
-                            "Weil Züge schneller geworden sind."
+                            "den Fahrgästen viel Privatsphäre bieten",
+                            "vor allem eine finanzkräftige Zielgruppe ansprechen",
+                            "zunächst Zielorte nördlich von Frankreich anfahren"
                         ],
-                        correctAnswer: "Weil die Menschen umweltbewusster werden."
+                        correctAnswer: "den Fahrgästen viel Privatsphäre bieten"
                     }
                 ]
             },
 
-            // Lesen Teil 3
+            // Lesen Teil 3 - البيانات المحدثة
             situations: [
-                "Sie möchten umweltfreundlich reisen und dabei Zeit sparen.",
-                "Sie interessieren sich für die Geschichte der Eisenbahn.",
-                "Sie planen eine Geschäftsreise und wollen am Zielort ausgeruht sein.",
-                "Sie suchen ein besonderes Reiseerlebnis mit Romantik.",
-                "Sie wollen eine lange Strecke zurücklegen, aber nicht fliegen.",
-                "Sie möchten nachts reisen und tagsüber Zeit haben.", 
-                "Sie bevorzugen Komfort und Privatsphäre während der Reise.",
-                "Sie reisen mit der Familie und benötigen ausreichend Platz.",
-                "Sie sind Geschäftsmann und haben wichtige Meetings.",
-                "Sie möchten die Landschaft genießen während der Reise."
+                {
+                    id: "11",
+                    text: "Ein Bekannter ist ein paar Tage in Berlin und würde sich gerne verschiedene Kunstausstellungen ansehen.",
+                    correctAnswer: "F"
+                },
+                {
+                    id: "12",
+                    text: "Eine Bekannte träumt davon, selbst einmal bei einem Film mitzuspielen.",
+                    correctAnswer: "D"
+                },
+                {
+                    id: "13",
+                    text: "Ein Freund würde sich gerne einen Dokumentarfilm über Tiere ansehen.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "14",
+                    text: "Eine Freundin sucht einen Nebenjob. Sie würde dabei gerne viel Zeit draußen verbringen.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "15",
+                    text: "hr Cousin ist Student und sucht für die Sommermonate einen Nebenjob.",
+                    correctAnswer: "K"
+                },
+                {
+                    id: "16",
+                    text: "Ihre achtjährige Nichte interessiert sich für Tiere und Natur. Sie möchten ihr zum Geburtstag ein Buch schenken.",
+                    correctAnswer: "L"
+                },
+                {
+                    id: "17",
+                    text: "Sie möchten eine besondere Stadtführung in Berlin buchen.",
+                    correctAnswer: "J"
+                },
+                {
+                    id: "18",
+                    text: "Sie möchten mit Freunden einen unterhaltsamen Film anschauen.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "19",
+                    text: "Sie sind zu einer Kostüm-Party eingeladen und brauchen dafür etwas zum Anziehen.",
+                    correctAnswer: "I"
+                },
+                {
+                    id: "20",
+                    text: "Sie würden gerne mit Freunden eine mehrtägige Stadttour machen und suchen ein Angebot.",
+                    correctAnswer: "C"
+                }
             ],
 
             ads: [
                 {
-                    id: "a",
-                    title: "Nachtzug nach Wien",
-                    content: "Genießen Sie eine komfortable Nachtfahrt von Zürich nach Wien. Steigen Sie abends ein und kommen Sie morgens ausgeruht in der österreichischen Hauptstadt an. Inklusive Frühstück und Zeitung."
+                    id: "A",
+                    title: "Das Comedy Filmfest tourt auch dieses Jahr durch Deutschland",
+                    content: "In Berlin startet es am 14. August mit der belgischen Produktion „Schokolade und Pommes frites\". In dieser romantischen Komödie treffen zwei Charaktere aufeinander, die unterschiedlicher kaum sein könnten: Die zielstrebige, doch ein wenig schüchterne Marie hat sich mit einem Schokoladengeschäft ihren großen Traum verwirklicht. Alles läuft gut, bis auf der anderen Straßenseite der chaotische Lebenskünstler Michel einen Schnellimbiss eröffnet und Maries Leben reichlich durcheinanderwirbelt. „Schokolade und Pommes frites\": 14. August, 20 Uhr, Filmtheater Friedrichshain"
                 },
                 {
-                    id: "b", 
-                    title: "Eisenbahnmuseum",
-                    content: "Besuchen Sie unser Eisenbahnmuseum und erleben Sie die Geschichte des Schienenverkehrs. Von den ersten Dampfloks bis zu modernen Hochgeschwindigkeitszügen - hier sehen Sie alles."
+                    id: "B",
+                    title: "Als die Bilder laufen lernten",
+                    content: "Dieser Band lädt Sie ein, eine bewegte Kinoepoche zu entdecken. In den Jahren von 1895 bis 1930 entwickelte sich das Kino in atemberaubendem Tempo zum Unterhaltungsmedium schlechthin. Autorin Greta Valentino geht zurück bis zu den ersten Filmen der Brüder Lumière und den Anfängen des Westerns und taucht anschließend ein in die schillernden 1920er Jahre, als der Stummfilm seine goldene Ära feierte und Filmpaläste wie Pilze aus dem Boden schossen. Die Autorin studierte Kunstgeschichte in Paris und Amsterdam. Sie veröffentlichte Bücher sowie zahlreiche Artikel über Kunst und Kino."
                 },
                 {
-                    id: "c",
-                    title: "Business Class Schlafwagen", 
-                    content: "Unsere Business Class Abteile bieten maximale Privatsphäre und Komfort. Mit eigenem Waschbecken, Steckdosen und WiFi. Ideal für Geschäftsreisende, die erholt ankommen wollen."
+                    id: "C",
+                    title: "Berlin erleben",
+                    content: "Unsere Reise führt Sie in eine der abwechslungsreichsten Städte Deutschlands: Berlin. Mit historischen Bauwerken und Museen, breiten Prachtstraßen und Einkaufsmeilen sowie weitläufigen Parks und Gärten hat die Hauptstadt für jeden etwas zu bieten. Reisen Sie bequem mit der Deutschen Bahn und verbringen Sie aufregende Tage in Berlin. Übernachtung mit Frühstück im Hotel. Dauer: ab 4 Tage (Verlängerung möglich) Preis: ab 437 Euro pro Person im Doppelzimmer inklusive An- und Abreise mit der Deutschen Bahn Mehr Infos unter: www.bergmann-reisen.info."
                 },
                 {
-                    id: "d",
-                    title: "Romantik im Nachtzug",
-                    content: "Erleben Sie die Romantik des Reisens im historischen Schlafwagen. Kerzenlicht, klassische Einrichtung und besonderer Service sorgen für unvergessliche Stunden."
+                    id: "D",
+                    title: "Berlin Gendarmenmarkt",
+                    content: "Im März beginnen die Dreharbeiten für den Film „Berlin Gendarmenmarkt\". Erzählt wird die Geschichte der sechzehnjährigen Ida, die Jugend und Erwachsenwerten im Berlin der Goldenen Zwanziger erlebt und von einer großen Karriere auf der Theaterbühne träumt. Die Romanvorlage für den Film lieferte die Schriftstellerin Marie Franck. Für kleinere Filmrollen oder als Komparsen werden noch Mitwirkende jeden Alters gesucht. Die Gage beträgt 75 € pro Drehtag. Bewerbungsschluss ist der 16. November. Infos und Bewerbung unter: www.film-gendarmenmarkt.info/casting"
                 },
                 {
-                    id: "e",
-                    title: "Ökologisch reisen",
-                    content: "Mit unseren Nachtzügen reisen Sie umweltfreundlich. Bis zu 80% weniger CO2-Ausstoß im Vergleich zum Flugzeug. Gut für Sie, gut für die Umwelt."
+                    id: "E",
+                    title: "Berlin in den Zwanziger Jahren",
+                    content: "Dreigroschenoper, Bubikopf, Dada, Bauhausarchitektur. Dieser Bildband erweckt das Berlin in den 1920ern wieder zum Leben. In dieser Dekade war Berlin eine moderne, von Fortschritt und Freiheit berauschte Weltstadt, die für Künstler und Intellektuelle zum Sehnsuchtsort wurde. Autor Gereon Kutscher nimmt Sie mit auf einen Streifzug durch eine Epoche der kulturellen Blüte und der Lebenslust. Gereon Kutscher: Berlin in den Zwanziger Jahren, Hardcover, 126 Seiten, 28 €"
                 },
                 {
-                    id: "f",
-                    title: "Familienabteile",
-                    content: "Spezielle Abteile für Familien mit bis zu 4 Personen. Extra Platz für Gepäck, Spielecken für Kinder und familienfreundlicher Service. Machen Sie die Reise zum Erlebnis für die ganze Familie."
+                    id: "F",
+                    title: "Eine Karte, 30 Häuser",
+                    content: "Ob Meisterwerke der Kunst, archäologische Schätze aus sechs Jahrtausenden oder technische Errungenschaften – das alles finden Sie in den Berliner Museen. Mit dem Museumspass öffnen sich Ihnen die Türen von über 30 Häusern, darunter die Alte Nationalgalerie, das Pergamonmuseum, das Museum für Naturkunde und die Neue Nationalgalerie. An drei aufeinanderfolgenden Tagen haben Sie damit freien Eintritt. Preis: 29 €, ermäßigt 14,50 € Ticket hier online kaufen: https://shop.nmg.museum"
                 },
                 {
-                    id: "g",
-                    title: "Strecken ohne Flugzeug",
-                    content: "Von Berlin nach Paris, von München nach Rom - mit unseren Nachtzügen erreichen Sie europäische Metropolen bequem ohne Flugzeug. Einsteigen, schlafen, ankommen."
+                    id: "G",
+                    title: "Feiern wie in den Goldenen Zwanzigern",
+                    content: "Ein ausgelassenes Lebensgefühl und rauschende Nächte. So stellt man sich die 1920er Jahre vor, an die Filme wie „Der große Gatsby\" und Serien wie „Babylon Berlin\" immer wieder erinnern. Gehen Sie auf eine glamouröse Zeitreise und lassen Sie diese Ära wiederauferstehen. Wir haben dafür die passende Kleidung für Sie. In unserem Online-Shop finden Sie alles, was Sie für einen glänzenden Auftritt auf einer Motroparty brauchen. Paillettenkleider und Kopfschmuck für Damen, Westen und Anzüge für Herren und Accessoires sowie Dekoartikel. www.golden20.com"
                 },
                 {
-                    id: "h", 
-                    title: "Zeit sparen mit Nachtzug",
-                    content: "Warum Tageszeit mit Reisen verbringen? Steigen Sie abends in den Zug und nutzen Sie die Nacht zum Schlafen. Morgens sind Sie am Ziel - fit und bereit für den Tag."
+                    id: "H",
+                    title: "Das etwas gemütlichere Berlin",
+                    content: "Der wenig bekannte Berliner Stadtteil Friedenau ist bis heute eher ein Geheimtipp. Das Viertel besticht durch prächtig geschmückte Wohnhäuser, kleine Villen und eine bunt gemischte Gastronomie. Kommen Sie mit auf eine kulinarisch-kulturelle Führung durch das charmante, ruhige Friedenau. Erfahren Sie mehr über die berühmten Gesichter dieses Stadtviertels, entdecken Sie wunderschöne Altbauten und lernen Sie die beeindruckenden Goerz-Höfe kennen. Unsere erfahrenen Stadtführer zeigen Ihnen außerdem spannende Orte zum Genießen, zum Beispiel ein italienisches Café, eine koreanische Snack-Bar und ein marokkanisches Bistro. 3 Stunden, ca. 3 km zu Fuß Preis: 39 €, ermäßigt 20 € Anmeldung unter: www.friedenau-touren.net"
                 },
                 {
-                    id: "i",
-                    title: "Panorama-Nachtzug",
-                    content: "Genießen Sie atemberaubende Ausblicke während Ihrer Nachtfahrt. Große Fenster, bequeme Betten und spezielle Routen durch malerische Landschaften."
+                    id: "I",
+                    title: "Feiern wie in den Goldenen Zwanzigern",
+                    content: "Ein ausgelassenes Lebensgefühl und rauschende Nächte. So stellt man sich die 1920er Jahre vor, an die Filme wie „Der große Gatsby\" und Serien wie „Babylon Berlin\" immer wieder erinnern. Gehen Sie auf eine glamourösoe Zeitreise und lassen Sie diese Ära wiederauferstehen. Wir haben dafür die passende Kleidung für Sie. In unserem Online-Shop finden Sie alles, was Sie für einen glänzenden Auftritt auf einer Mottoparty brauchen. Paillettenkleider und Kopfschmuck für Damen, Westen und Anzüge für Herren und Accessoires sowie Dekoartikel. www.golden20.com"
                 },
                 {
-                    id: "j",
-                    title: "Luxus Schlafwagen", 
-                    content: "Erleben Sie Reiseluxus pur. Suite-Abteile mit eigenem Bad, Gourmet-Menü an Bord und persönlichem Service. Für anspruchsvolle Reisende, die das Besondere suchen."
+                    id: "J",
+                    title: "Das etwas gemütlichere Berlin",
+                    content: "Der wenig bekannte Berliner Stadtteil Friedenau ist bis heute eher ein Geheimtipp. Das Viertel besticht durch prächtig geschmückte Wohnhäuser, kleine Villen und eine bunt gemischte Gastronomie. Kommen Sie mit auf eine kulinarisch-kulturelle Führung durch das charmante, ruhige Friedenau. Erfahren Sie mehr über die berühmten Gesichter dieses Stadtviertels, entdecken Sie wunderschöne Altbauten und lernen Sie die beeindruckenden Goerz Höfe kennen. Unsere erfahrenen Stadtführer zeigen Ihnen außerdem spannende Orte zum Genießen, zum Beispiel ein italienisches Café, eine koreanische Snack-Bar und ein marokkanisches Bistro. 3 Stunden, ca. 3 km zu Fuß Preis: 39 €, ermäßigt 20 € Anmeldung unter: www.friedenau-touren.net"
                 },
                 {
-                    id: "k",
-                    title: "Gruppenreisen im Nachtzug",
-                    content: "Planen Sie eine Gruppenreise? Wir bieten spezielle Konditionen für Gruppen ab 10 Personen. Geeignet für Schulklassen, Vereine oder Firmen."
+                    id: "K",
+                    title: "Sie lieben Filme?",
+                    content: "Dann machen Sie doch das Kino zu Ihrem Arbeitsplatz und werden Sie Teil unseres Teams! Das Metropolis Filmtheater Altenberg sucht eine Aushilfe als Urlaubsvertretung für die Monate Juli und August, 25 Stunden pro Woche. Zu Ihren Aufgaben gehören u. a. der Verkauf von Kinokarten, Popcorn und Getränken sowie die Einlasskontrolle und die Vorbereitung der Säle. Sie sind volljährig, zuverlässig und bereit, auch am Abend oder Wochenende zu arbeiten? Dann freuen wir uns auf Ihre Bewerbung mit kurzem Anschreiben und Lebenslauf per E-Mail. Metropolis Kino Altenberg info@metropolis-altenberg.net"
                 },
                 {
-                    id: "l",
-                    title: "Kurzreisen im Schlafwagen",
-                    content: "Auch für kurze Strecken lohnt sich der Nachtzug. Von Hamburg nach München, von Köln nach Berlin - arrive rested and ready for your day."
+                    id: "L",
+                    title: "Wer hat die Kokosnuss geklaut?",
+                    content: "Bei dieser Tour geht es ins Affenhaus! Beobachte Gorillas, Paviane und Co. bei der Futtersuche und finde heraus, was sie am liebsten fressen. Natürlich bleibt noch Zeit, bei anderen Zoo-Bewohnern vorbeizuschauen. Geh zusammen mit einem Guide auf eine besondere Entdeckungstour durch den Zoo Berlin. Spannende Tier- Fakten und exklusive Einblicke in den Zoo-Alltag warten auf dich! Führung für Kinder ab 8 Jahren. Zoologischer Garten Berlin Hardenbergplatz 8, 10787 Berlin Eintritt: Erwachsene 17,50 €, Kinder 9 €"
                 }
             ],
 
-            // الإجابات الصحيحة لـ Lesen Teil 3
-            teil3Answers: {
-                11: "Ökologisch reisen",
-                12: "Eisenbahnmuseum", 
-                13: "Business Class Schlafwagen",
-                14: "Romantik im Nachtzug",
-                15: "Strecken ohne Flugzeug",
-                16: "Zeit sparen mit Nachtzug",
-                17: "Luxus Schlafwagen",
-                18: "Familienabteile",
-                19: "Business Class Schlafwagen", 
-                20: "Panorama-Nachtzug"
-            },
-
-            // Sprachbausteine Teil 1
+            // Sprachbausteine Teil 1 - من SCHLAFZUG.html
             blankText1: {
-                content: `Hallo Leon,
-vielen Dank für deine letzte Mail __(21)__ Peking! Du arbeitest ja jetzt schon seit einem halben Jahr in China – unglaublich, wie schnell die Zeit vergeht.
-Leider hatte ich in den letzten drei Wochen keine Zeit, dir zu antworten, __(22)__ ich viel zu tun hatte. Aber jetzt berichte ich dir, __(23)__ alles los war.
-Also, im Büro haben wir derzeit viel Stress, __(24)__ drei Kollegen im Urlaub sind und eine weitere Kollegin seit zwei Wochen krank ist. Jetzt müssen wir mit fünf Leuten die Arbeit erledigen, die sonst neun Leute machen. Ich weiß wirklich nicht, wer diese Urlaubsplanung gemacht hat. Hoffentlich __(25)__ das in Zukunft besser organisiert.
-Abends waren Carmen und ich dann ein paarmal aus. Wir waren zum Beispiel bei einem Konzert von "Belasco". Kennst du die Band? Eigentlich war ich an dem Abend ganz schön kaputt und __(26)__ am liebsten zuhause geblieben, aber ich hatte Carmen die Karten zum Geburtstag geschenkt. Da __(27)__ ich ja schlecht auf dem Sofa sitzen bleiben! Im Nachhinein muss ich sagen: Ein Glück, dass wir zu dem Konzert gegangen sind, __(28)__ es war einfach nur super!
-An den letzten beiden Wochenenden hatten wir dann auch noch Familienfeiern: Erst hatte meine ältere Schwester Geburtstag und hat groß gefeiert, dann hat ein Cousin geheiratet und uns eingeladen, __(29)__ war zwar schön, aber auch anstrengend. Ich bin froh, dass wir für die kommenden Wochenenden __(30)__ keine Pläne haben.
-Das war's erst mal von mir. Melde dich doch wieder, ich freue mich __(31)__ deine nächste E-Mail!
+                content: `Lieber Julian,
 
-Viele Grüße sendet dir
-Fabian`,
-                answers: ["aus", "weil", "was", "da", "wird", "wäre", "konnte", "denn", "Beides", "noch", "auf"]
+wie geht es dir? Ich hoffe, du hattest eine schöne Reise und ________ dir gut erholen.
+
+Ich ________ ja auch gerne mal wieder ans Meer fahren, aber im Moment habe ich leider keine Zeit ________ Urlaub. Wie du dir bestimmt vorstellen kannst, war ich in den letzten Wochen vor allem mit meinem Umzug beschäftigt. Du weißt ja, dass ich zuerst ziemlich skeptisch war. Nach so ________ Jahren in Berlin konnte ich mir gar nicht mehr vorstellen, mich in einer kleinen Stadt wie Bamberg niederzulassen. Bamberg hat nur rund 77.000 Einwohner, aber langweilig ist es hier trotzdem nicht, wie ich inzwischen festgestellt habe. Mittlerweile fühle ich mich hier sogar richtig wohl. Die Stadt hat wirklich viel zu bieten. Es gibt jahrhundertealte Sehenswürdigkeiten in Hülle und Fülle, und in der Altstadt ________ mir besonders die schönen Fachwerkhäuser, die überwiegend aus dem Mittelalter stammen. Ich gehe oft durch die Fußgängerzone, ________ dort gibt es viele kleine Läden, Cafés und Restaurants mit typisch fränkischen Spezialitäten. Ich glaube, dir würde es hier auch gefallen.
+
+________ du willst, zeige ich dir gerne mal die Stadt. Hättest du vielleicht Lust, mich im nächsten Monat zu besuchen? ________ ist bei mir auch der Umzugsstress vorbei. Im Moment steht noch eine große Anzahl nicht ________ Kisten in meinem Wohnzimmer, die ausgepackt werden müssen. Mit meiner neuen Wohnung habe ich übrigens auch Glück gehabt, ________ sie geräumig und zentral gelegen ist. Wir können ja mal telefonieren, dann erzähle ich dir mehr.
+
+Liebe Grüße,
+
+Anna`,
+                options: [
+                    ["konntest", "musstest", "solltest"],      // 21
+                    ["sollte", "würde", "wurde"],           // 22
+                    ["für", "nach", "um"],         // 23
+                    ["lange", "vielen", "wenige"], // 24
+                    ["gefällt", "schaut", "finde"], // 25
+                    ["denn", "obwohl", "weil"],          // 26
+                    ["Als", "Dass", "Wenn"], // 27
+                    ["Dann", "Wann", "Während"],                 // 28
+                    ["ausgeräumt", "geschlossen", "vergessen"], // 29
+                    ["aber", "denn", "weil"]                // 30
+                ],
+                answers: ["konntest", "würde", "für", "vielen", "gefällt", "denn", "Wenn", "Dann", "ausgeräumt", "weil"]
             },
 
-            // Sprachbausteine Teil 2
+            // Sprachbausteine Teil 2 - من SCHLAFZUG.html
             blankText2: {
-                content: `Es gibt inzwischen zahlreiche Online-Sprachkurse und __(32)__ mit Smartphones kann man Sprachen lernen. Eine weitere Lernmöglichkeit ist zum Beispiel eine Tandem-Partnerschaft __(33)__ einem Muttersprachler. Welche Vorteile und Nachteile haben die unterschiedlichen Methoden?
-Es gibt inzwischen zahlreiche Online-Lernportale, die leicht zu überblicken und zu bedienen sind. Der Vorteil: Man kann die Wörter nicht nur lesen, __(34)__ gleichzeitig auch hören. Außerdem kann man Wörter nachsprechen, __(35)__ dass ein ganzer Kurs zuhört.
-Auch Lerntipps bekommt man bei Online-Portalen, bespielsweise diesen: Vokabeln sollte man lieber mehrmals täglich in Fünf-Minuten-Blöcken wiederholen, __(36)__ sie in einer Stunde alle auf einmal zu lernen.
-Wer auch unterwegs lernen möchte, kann es mit einer Smartphone-App versuchen, einem kleinen Programm, das auf dem Handy läuft. Viele Programme gibt es kostenlos, andere kosten zwischen einem und mehreren Euro. Die kleinen Helfer sind __(37)__ gut zum Vokabellernen geeignet – mehr aber meist nicht. Das spielerische Vokabeltraining macht zwar Spaß, __(38)__ Satzbau oder andere Grammatikthemen werden allenfalls kurz angesprochen. Ein richtiges Gespräch kann man mit dieser Methode erst recht nicht üben. Dafür __(39)__ man besser in einen Kurs gehen oder einen Tandem-Partner suchen.
-Ein Tandem-Partner ist ein Muttersprachler, der die Grammatik erklärt, die Aussprache verbessert und seinerseits die Muttersprache des anderen lernen möchte.
-Der schnellste Weg, __(40)__ einen passenden Tandem-Partner zu finden, ist die Online-Suche: Muttersprache, Zielsprache und Wohnort eingeben, __(41)__ werden alle Treffer angezeigt. Man trifft sich beispielsweise in einem Restaurant, schickt sich Nachrichten oder E-Mails und erklärt sich gegenseitig die eigene Sprache.`,
-                answers: ["sogar", "mit", "sondern", "ohne", "anstatt", "besonders", "aber", "sollte", "um", "schon"]
+                content: `Es ist erst 6 Uhr morgens, und draußen herrscht noch Dunkelheit... ________ in der riesigen, hell erleuchteten Halle, in der sich Kisten mit Obst und Gemüse meterhoch stapeln, wird schon lange gearbeitet. Vor ein paar Stunden war hier noch viel mehr Betrieb », sagt Jens Rogall. Er ________ einen Berliner Großmarkt, auf dem Einkäufer von Supermärkten, Geschäften oder Restaurants frisches Obst und Gemüse besorgen.
+
+Die Ware hat oft schon eine lange Reise zurückgelegt, bis sie auf dem Großmarkt ________. Die meisten Früchte werden ________ auf dem Land-, Luft- oder Seeweg aus wärmeren Ländern nach Deutschland transportiert. Wenn die Ware per Schiff nach Europa gebracht wird, kommt sie in großen Seehäfen wie Rotterdam oder Hamburg an. Von dort aus geht es mit dem Lastwagen weiter. Auf seinem Weg ________ das empfindliche Obst und Gemüse keinesfalls Schaden nehmen.,, Nichts ist schlimmer ________ verdorbene Ware >>>, sagt Rogall.
+
+Auf dem Großmarkt schauen sich die Käufer alles ________ an. Für makellose Salatköpfe, Beeren und Kräuter zahlen sie höhere Preise, krumme Gurken oder verwachsene Kartoffeln ________ sie dagegen günstiger. Diese werden später nicht in Geschäften zum Verkauf angeboten, ________ direkt verarbeitet. „Es ist egal, wie Gurken aussehen, die ohnehin im Fertigsalat landen », erklärt Rogall. Wenn die Preisverhandlungen erfolgreich ________ sind, werden die Paletten voller Obst und Gemüse hinaus zu den Lieferwagen gebracht. Die Fahrer müssen dann zügig zu den Geschäften und Restaurants fahren, um die Ware abzuliefern.`,
+                options: ["doch", "Als", "SICHER", "Leitet", "Genau", "SONDERN", "Ankommt", "Erwerben", "MVON", "Nämlich", "Sondern", "WIE", "Darf", "Abgeschlossen", "ZU"],
+                answers: ["doch", "Leitet", "Ankommt", "Nämlich", "Darf", "Als", "Genau", "Erwerben", "Sondern", "Abgeschlossen"]
             }
         };
 
@@ -1214,24 +1088,14 @@ Der schnellste Weg, __(40)__ einen passenden Tandem-Partner zu finden, ist die O
             setupEventListeners();
         });
 
-        let currentLang = 'ar';
         let isDarkMode = false;
 
         function initializePage() {
             // تحميل الإعدادات المحفوظة
-            const savedLang = localStorage.getItem('language') || 'ar';
             const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-            const username = localStorage.getItem('username') || 'زائر';
-            const access = localStorage.getItem('access');
             
-            changeLanguage(savedLang);
             if (savedDarkMode) {
                 toggleDarkMode();
-            }
-            
-            // التحقق من حالة المستخدم
-            if (access === 'paid' && username) {
-                document.getElementById('premiumBadge').style.display = 'flex';
             }
             
             // تهيئة الأجزاء
@@ -1249,13 +1113,13 @@ Der schnellste Weg, __(40)__ einen passenden Tandem-Partner zu finden, ist die O
             textsList.innerHTML = '';
 
             // إضافة العناوين
-            examData.headings.forEach((heading, index) => {
+            examData.headings.forEach((heading) => {
                 const headingItem = document.createElement('div');
                 headingItem.className = 'heading-item';
                 headingItem.innerHTML = `
-                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                    <strong>${heading.id})</strong> ${heading.text}
                 `;
-                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingItem.dataset.letter = heading.id;
                 headingsList.appendChild(headingItem);
             });
 
@@ -1264,10 +1128,10 @@ Der schnellste Weg, __(40)__ einen passenden Tandem-Partner zu finden, ist die O
                 const textItem = document.createElement('div');
                 textItem.className = 'question';
                 textItem.innerHTML = `
-                    <h3>Text ${index + 1}</h3>
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
                     <div class="text-content">${text.content}</div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
                     </div>
                 `;
                 textsList.appendChild(textItem);
@@ -1278,14 +1142,14 @@ Der schnellste Weg, __(40)__ einen passenden Tandem-Partner zu finden, ist die O
             const longText = document.getElementById('longText');
             const questionsList = document.getElementById('questionsList');
 
-            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
 
             questionsList.innerHTML = '';
             examData.longText.questions.forEach((question, index) => {
                 const questionItem = document.createElement('div');
                 questionItem.className = 'question';
                 questionItem.innerHTML = `
-                    <h3>Frage ${index + 6}</h3>
+                    <h3>Question ${index + 6}</h3>
                     <p><strong>${question.question}</strong></p>
                     <div class="options">
                         ${question.options.map((option, optIndex) => `
@@ -1295,7 +1159,7 @@ Der schnellste Weg, __(40)__ einen passenden Tandem-Partner zu finden, ist die O
                         `).join('')}
                     </div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
                     </div>
                 `;
                 questionsList.appendChild(questionItem);
@@ -1307,14 +1171,12 @@ Der schnellste Weg, __(40)__ einen passenden Tandem-Partner zu finden, ist die O
             const adsList = document.getElementById('adsList');
 
             situationsList.innerHTML = '';
-            examData.situations.forEach((situation, index) => {
+            examData.situations.forEach((situation) => {
                 const situationItem = document.createElement('div');
                 situationItem.className = 'situation-item';
                 situationItem.innerHTML = `
-                    <strong>${index + 11})</strong> ${situation}
-                    <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
-                    </div>
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
                 `;
                 situationsList.appendChild(situationItem);
             });
@@ -1324,27 +1186,87 @@ Der schnellste Weg, __(40)__ einen passenden Tandem-Partner zu finden, ist die O
                 const adItem = document.createElement('div');
                 adItem.className = 'ad-item';
                 adItem.innerHTML = `
-                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
-                    <p>${ad.content}</p>
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
                 `;
                 adsList.appendChild(adItem);
             });
         }
 
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
         function initializeSprachbausteine() {
             // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
             const blankText1 = document.getElementById('blankText1');
-            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText1.innerHTML = textWithBlanks1;
 
             // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
             const blankText2 = document.getElementById('blankText2');
-            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 32]}</span></span>`;
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText2.innerHTML = textWithBlanks2;
         }
@@ -1354,40 +1276,8 @@ Der schnellste Weg, __(40)__ einen passenden Tandem-Partner zu finden, ist die O
             document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
             document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
             
-            // زر الرئيسية
-            document.getElementById('homeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html';
-            });
-            
             // زر الوضع الليلي
             document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-            
-            // زر الاشتراك
-            document.getElementById('subscribeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#subscribe';
-            });
-            
-            // زر المستخدم
-            document.getElementById('userBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#profile';
-            });
-            
-            // زر اللغة
-            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
-            document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const lang = option.getAttribute('data-lang');
-                    changeLanguage(lang);
-                    document.getElementById('langDropdown').classList.remove('show');
-                });
-            });
-            
-            // إغلاق القوائم المنسدلة بالنقر خارجها
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.language-selector')) {
-                    document.getElementById('langDropdown').classList.remove('show');
-                }
-            });
         }
 
         function showAllAnswers() {
@@ -1397,10 +1287,10 @@ Der schnellste Weg, __(40)__ einen passenden Tandem-Partner zu finden, ist die O
             document.querySelectorAll('.blank-answer').forEach(answer => {
                 answer.classList.remove('hidden');
             });
-            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+            document.querySelectorAll('.heading-item').forEach(heading => {
                 const letter = heading.dataset.letter;
                 examData.texts.forEach(text => {
-                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                    if (text.correctAnswer === letter) {
                         heading.classList.add('matched');
                     }
                 });
@@ -1430,29 +1320,6 @@ Der schnellste Weg, __(40)__ einen passenden Tandem-Partner zu finden, ist die O
             } else {
                 themeIcon.className = 'fas fa-moon';
             }
-        }
-
-        function toggleLangDropdown() {
-            document.getElementById('langDropdown').classList.toggle('show');
-        }
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            
-            // تحديث جميع النصوص
-            Object.keys(t).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = t[key];
-                }
-            });
-            
-            localStorage.setItem('language', lang);
-            
-            // إعادة تهيئة المحتوى لترجمة الإجابات
-            initializeTeil1();
-            initializeTeil2();
         }
     </script>
 </body>

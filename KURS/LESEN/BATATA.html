@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BATATA - TELC B2 Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -20,16 +20,17 @@
             --text: #333;
             --text-light: #546E7A;
             --white: #ffffff;
-            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
-            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
-            --radius: 25px;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -38,8 +39,11 @@
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
             transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
         }
 
         body.dark-mode {
@@ -47,338 +51,71 @@
             color: var(--light);
         }
 
-        /* Header Controls - التعديل هنا */
-        .header-controls {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            right: 20px;
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            z-index: 1000;
-            gap: 15px;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .left-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-start;
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
         }
 
-        .right-controls {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
+        .theme-btn {
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            border: none;
-            background: var(--primary);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .control-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .control-btn:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-
-        .control-btn:hover {
-            transform: scale(1.15) rotate(5deg);
-            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
-        }
-
-        /* شارة المشترك الذهبية - تم التعديل */
-        .premium-badge-header {
-            position: fixed;
-            top: 20px;
-            right: 90px; /* بجانب الأزرار */
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            padding: 0.5rem;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
-        }
-
-        .home-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .home-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .home-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        /* Language Selector */
-        .language-selector {
-            display: flex;
-            position: relative;
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: var(--radius);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .lang-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .lang-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            background: var(--white);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
-            overflow: hidden;
-            min-width: 120px;
-            animation: dropdownSlide 0.3s ease;
-            z-index: 1001;
-        }
-
-        .dark-mode .lang-dropdown {
-            background: #1a237e;
-            color: var(--light);
-        }
-
-        @keyframes dropdownSlide {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .lang-dropdown.show {
-            display: block;
-        }
-
-        .lang-option {
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            color: var(--text);
-        }
-
-        .dark-mode .lang-option {
-            color: var(--light);
-            border-bottom: 1px solid #37474F;
-        }
-
-        .lang-option:hover {
-            background: #f5f5f5;
-            transform: translateX(5px);
-        }
-
-        .dark-mode .lang-option:hover {
-            background: #283593;
-        }
-
-        .lang-option:last-child {
-            border-bottom: none;
-        }
-
-        /* المحتوى الرئيسي */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: var(--radius);
-            padding: 3rem;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(15px);
-            margin-top: 6rem;
-            transition: var(--transition);
-        }
-
-        .dark-mode .container {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: contentSlideUp 0.8s ease;
-        }
-
-        @keyframes contentSlideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .header h1 {
-            font-size: 2.8rem;
-            color: var(--primary-dark);
-            margin-bottom: 1rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .dark-mode .header h1 {
-            color: #90CAF9;
-        }
-
-        .page-subtitle {
             font-size: 1.2rem;
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .dark-mode .page-subtitle {
-            color: #B0BEC5;
-        }
-
-        /* أزرار التحكم */
-        .answer-controls {
-            position: sticky;
-            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1.5rem;
-            border-radius: var(--radius);
+            cursor: pointer;
             box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-            z-index: 100;
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
             display: flex;
             gap: 1rem;
-            justify-content: center;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-        }
-
-        .dark-mode .answer-controls {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            align-items: center;
         }
 
         .answer-btn {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
-            position: relative;
-            overflow: hidden;
             border: none;
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.5rem;
             transition: var(--transition);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .answer-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: right 0.6s;
-        }
-
-        .answer-btn:hover::before {
-            right: 100%;
+            min-width: 180px;
+            justify-content: center;
         }
 
         .answer-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
         }
 
         .show-answers {
@@ -391,47 +128,107 @@
             color: var(--white);
         }
 
-        /* التصميم الخاص بالأسئلة */
-        .section {
-            margin: 2rem 0;
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
             padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
             transition: var(--transition);
         }
 
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
         .dark-mode .section {
-            background: rgba(13, 71, 161, 0.9);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
         }
 
         .section-title {
             color: var(--primary-dark);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
             border-bottom: 2px solid var(--primary);
             font-weight: 600;
+            text-align: left;
         }
 
         .dark-mode .section-title {
             color: #90CAF9;
         }
 
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
         .question {
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: rgba(33, 150, 243, 0.05);
-            border-radius: 15px;
-            border-right: 4px solid var(--primary);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .question {
-            background: rgba(33, 150, 243, 0.1);
+            background: rgba(33, 150, 243, 0.08);
         }
 
         .options {
@@ -439,25 +236,25 @@
         }
 
         .option {
-            margin: 0.8rem 0;
-            padding: 1rem;
+            margin: 0.6rem 0;
+            padding: 0.8rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
             cursor: pointer;
             transition: var(--transition);
             font-weight: 500;
+            text-align: left;
         }
 
         .dark-mode .option {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .option:hover {
             border-color: var(--primary);
             background: rgba(33, 150, 243, 0.05);
-            transform: translateX(-5px);
         }
 
         .correct {
@@ -473,361 +270,493 @@
         .answer {
             margin-top: 1rem;
             padding: 1rem;
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 600;
-            animation: slideInUp 0.5s ease;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
         }
 
         @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* التصحيح - تم التعديل للوضع الليلي */
         .correct-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
-            border: 2px solid #4CAF50;
-            font-weight: bold;
+            border: 1px solid #4CAF50;
         }
 
         .dark-mode .correct-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
-            border: 2px solid #81C784;
+            border: 1px solid #81C784;
         }
 
         /* النصوص والعناوين */
         .text-content {
-            line-height: 1.7;
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
-            font-size: 1.1rem;
-            transition: var(--transition);
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .text-content {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
+        /* Lesen Teil 1 - تصميم محسن */
         .headings-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1rem;
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .heading-item {
-            padding: 1.2rem;
+            padding: 1rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            text-align: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
             font-weight: 500;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .heading-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .matched {
             border-color: #4CAF50;
             background: rgba(76, 175, 80, 0.1);
-            transform: scale(1.02);
         }
 
-        /* الإعلانات والوضعيات */
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
         .ads-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
         }
 
         .ad-item {
-            padding: 1.5rem;
+            padding: 1.2rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            min-height: 150px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .ad-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .ad-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-hover);
         }
 
-        .situations-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.2rem;
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
         }
 
-        .situation-item {
-            padding: 1.2rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            transition: var(--transition);
+        .dark-mode .ad-letter {
+            color: #90CAF9;
         }
 
-        .dark-mode .situation-item {
-            background: #1a237e;
-            border-color: #37474F;
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
         }
 
-        .situation-item:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.05);
+        .dark-mode .ad-title {
+            color: var(--light);
         }
 
-        /* Sprachbausteine */
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
         .fill-blanks {
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .blank-text {
-            line-height: 2;
-            margin: 1.5rem 0;
-            font-size: 1.2rem;
-            padding: 1.5rem;
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .blank-text {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .blank {
             display: inline-block;
             min-width: 120px;
-            margin: 0 8px;
-            padding: 0.5rem 1rem;
-            border-bottom: 3px solid var(--primary);
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
             text-align: center;
             font-weight: 600;
             background: var(--white);
-            border-radius: 8px;
+            border-radius: 6px;
             transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
         }
 
         .dark-mode .blank {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
         }
 
         .blank-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
             border-color: #4CAF50;
-            font-weight: bold;
         }
 
         .dark-mode .blank-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
             border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
         }
 
         .hidden {
             display: none;
         }
 
-        /* Floating Elements مثل الصفحة الرئيسية */
-        .floating-elements {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .floating-element {
-            position: absolute;
-            font-size: 3.5rem;
-            opacity: 0.15;
-            animation: float 8s ease-in-out infinite;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
-
-        .floating-book { top: 15%; left: 8%; animation-delay: 0s; }
-        .floating-pen { top: 75%; right: 12%; animation-delay: 1s; }
-        .floating-globe { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
-        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
-        .floating-graduate { top: 65%; left: 5%; animation-delay: 4s; }
-        .floating-notebook { bottom: 15%; right: 10%; animation-delay: 5s; }
-        .floating-pencil { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
-        .floating-calculator { top: 35%; right: 15%; animation-delay: 7s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
-            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
-        }
-
+        /* تحسينات للهواتف */
         @media (max-width: 768px) {
-            .header-controls {
-                top: 15px;
-                left: 15px;
-                right: 15px;
-                gap: 10px;
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
             }
-
-            .premium-badge-header {
-                top: 15px;
-                right: 70px;
-                width: 45px;
-                height: 45px;
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
                 font-size: 1.1rem;
             }
-
-            .home-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
-            }
-
-            .container {
-                padding: 2rem;
-                margin: 1rem;
-                margin-top: 5rem;
-            }
-
+            
             .header h1 {
-                font-size: 2rem;
+                font-size: 1.6rem;
             }
-
-            .headings-grid {
-                grid-template-columns: 1fr;
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
             }
-
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
             .ads-grid {
                 grid-template-columns: 1fr;
             }
-
-            .right-controls {
-                gap: 10px;
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
             }
-
-            .answer-controls {
-                top: 70px;
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
             }
         }
 
         @media (max-width: 480px) {
-            .header-controls {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
             }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
 
-            .left-controls, .right-controls {
-                flex-direction: row;
-                justify-content: center;
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
             }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
-            .premium-badge-header {
-                position: relative;
-                top: auto;
-                right: auto;
-                transform: none;
-                margin-top: 10px;
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
             }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Floating Elements مثل الصفحة الرئيسية -->
-    <div class="floating-elements">
-        <div class="floating-element floating-book">📚</div>
-        <div class="floating-element floating-pen">✏️</div>
-        <div class="floating-element floating-globe">🌍</div>
-        <div class="floating-element floating-clock">⏰</div>
-        <div class="floating-element floating-graduate">🎓</div>
-        <div class="floating-element floating-notebook">📓</div>
-        <div class="floating-element floating-pencil">✏️</div>
-        <div class="floating-element floating-calculator">🧮</div>
-    </div>
-
-    <!-- شارة المشترك الذهبية - تم التعديل -->
-    <div class="premium-badge-header" id="premiumBadge">
-        <i class="fas fa-crown"></i>
-    </div>
-
-    <!-- Header Controls -->
-    <div class="header-controls">
-        <div class="left-controls">
-            <button class="home-btn" id="homeBtn">
-                <i class="fas fa-home"></i>
-                <span id="homeText">الرئيسية</span>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
             </button>
-            <div class="language-selector">
-                <button class="lang-btn" id="langBtn">
-                    <span id="langBtnText">العربية</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="lang-dropdown" id="langDropdown">
-                    <div class="lang-option" data-lang="ar">
-                        <span>🇸🇦</span>
-                        <span>العربية</span>
-                    </div>
-                    <div class="lang-option" data-lang="de">
-                        <span>🇩🇪</span>
-                        <span>Deutsch</span>
-                    </div>
-                    <div class="lang-option" data-lang="en">
-                        <span>🇬🇧</span>
-                        <span>English</span>
-                    </div>
-                </div>
-            </div>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
         </div>
         
-        <div class="right-controls">
-            <button class="control-btn" id="themeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="control-btn" id="userBtn">
-                <i class="fas fa-user"></i>
-            </button>
-        </div>
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">BATATA - TELC B2 Training</h1>
-            <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
-        </div>
-
-        <!-- أزرار التحكم -->
-        <div class="answer-controls">
-            <button class="answer-btn show-answers" id="showAnswers">
-                <i class="fas fa-check-circle"></i>
-                <span id="showAnswersText">إظهار التصحيح</span>
-            </button>
-            <button class="answer-btn hide-answers" id="hideAnswers">
-                <i class="fas fa-eye-slash"></i>
-                <span id="hideAnswersText">إخفاء التصحيح</span>
-            </button>
+            <h1 id="pageTitle">BILDER - TELC B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
         </div>
 
         <!-- Lesen Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="teil1Title">Lesen Teil 1</h2>
-            <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
             
             <div class="headings-grid" id="headingsList">
                 <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
@@ -840,8 +769,8 @@
 
         <!-- Lesen Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
-            <div class="text-content" id="longText">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
                 <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
             </div>
 
@@ -850,10 +779,10 @@
             </div>
         </div>
 
-        <!-- Lesen Teil 3 -->
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
         <div class="section">
-            <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
-            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
             
             <div class="situations-grid" id="situationsList">
                 <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
@@ -866,126 +795,81 @@
 
         <!-- Sprachbausteine Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
             <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
                 <div class="blank-text" id="blankText1">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
 
         <!-- Sprachbausteine Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
             <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
                 <div class="blank-text" id="blankText2">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // الترجمات
-        const translations = {
-            ar: {
-                homeText: "الرئيسية",
-                themeText: "الوضع الليلي",
-                langText: "العربية", 
-                userText: "زائر",
-                pageTitle: "BATATA - TELC B2 Training",
-                pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
-                showAnswersText: "إظهار التصحيح",
-                hideAnswersText: "إخفاء التصحيح",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2", 
-                teil3Title: "Lesen Teil 3",
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            de: {
-                homeText: "Startseite",
-                themeText: "Nachtmodus", 
-                langText: "Deutsch",
-                userText: "Besucher",
-                pageTitle: "BATATA - TELC B2 Training",
-                pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
-                showAnswersText: "Korrektur anzeigen",
-                hideAnswersText: "Korrektur ausblenden",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2",
-                teil3Title: "Lesen Teil 3", 
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            en: {
-                homeText: "Home",
-                themeText: "Dark Mode",
-                langText: "English",
-                userText: "Visitor", 
-                pageTitle: "BATATA - TELC B2 Training",
-                pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
-                showAnswersText: "Show Correction",
-                hideAnswersText: "Hide Correction",
-                teil1Title: "Reading Part 1",
-                teil1Description: "First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).",
-                teil2Title: "Reading Part 2",
-                teil3Title: "Reading Part 3",
-                teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
-                sprach1Title: "Language Elements Part 1", 
-                sprach2Title: "Language Elements Part 2"
-            }
-        };
-
-        // بيانات الأسئلة والإجابات من ملف PDF
+        // بيانات الأسئلة والإجابات - تم تحديثها من BATATA.html
         const examData = {
-            // Lesen Teil 1
             headings: [
-                "Das ideale Gemüse für schwer Arbeitende",
-                "Ein schlankes Gemüse für schlanke Leute", 
-                "Gesunde Ernährung mit Aloe Vera",
-                "Gesundes Leben schützt vor Zivilisationskrankheiten",
-                "Gesundheitsrisiken durch fettreiche Ernährung",
-                "Kartoffelrezepte als Zeitungsbeilage",
-                "Pflanzliche Kosmetik für gesunde Haut",
-                "Tolle Figur durch ausgewogene Ernährung",
-                "Von der Wildpflanze zum international geschätzten Nahrungsmittel",
-                "WHO untersucht Zusammenhang von Krebs und Herzinfarkt"
+                {id: "a", text: "Das ideale Gemüse für schwer Arbeitende"},
+                {id: "b", text: "Ein schlankes Gemüse für schlanke Leute"},
+                {id: "c", text: "Gesundes Leben schützt vor Zivilisationskrankheiten"},
+                {id: "d", text: "Gesundheitsrisiken durch fettreiche Ernährung"},
+                {id: "e", text: "Kartoffelrezepte als Zeitungsbeilage"},
+                {id: "f", text: "Pflanzliche Kosmetik für gesunde Haut"},
+                {id: "g", text: "Tolle Figur durch ausgewogene Ernährung"},
+                {id: "h", text: "Von der Wildpflanze zum international geschätzten Nahrungsmittel"},
+                {id: "i", text: "WHO untersucht Zusammenhang von Krebs und Herzinfarkt"}
             ],
             
             texts: [
                 {
+                    id: "text1",
                     content: `Über zehntausend wissenschaftliche Studien wurden in den vergangenen Jahren im Auftrag der Weltgesundheitsorganisation WHO durchgeführt, um herauszubekommen, warum manche Menschen erheblich seltener an lebensgefährlichen Krankheiten wie Krebs oder Herzinfarkt erkranken als andere. Die Zahl dieser Erkrankungen hat nämlich in den Industriestaaten inzwischen einen traurigen Höhepunkt erreicht. Die Forscher fanden heraus, dass mit wenigen Tricks viele Menschen gesünder leben und damit ihr Leben verlängern könnten. Das Risiko eines Herzinfarkts kann man zum Beispiel durch den täglichen Verzehr eines Apfels und tägliches zwanzigminütiges Radfahren erheblich reduzieren. Die Entstehung von Krebs herumt zum Beispiel der tägliche Genuss eines Löffels reinen Olivenöls oder eine große Tasse grünen Tees. Gegen Stress hilft Vitamin-C-reiche Ernährung und regelmäßiges Schwimmen.`,
-                    correctAnswer: "Gesundes Leben schützt vor Zivilisationskrankheiten"
+                    correctAnswer: "c",
+                    correctAnswerText: "c) Gesundes Leben schützt vor Zivilisationskrankheiten"
                 },
                 {
-                    content: `Am Mittelmeer und in Mexico wächst die Aloe-Vera-Pflanze, der in der heutigen Naturmedizin eine wachsende Rolle zukommt. Durch die dickfleischigen Blätter dieser Pflanze ist für Schädlinge kein Hindurchkommen, deshalb kann sie in Plantagen ohne chemische Schutzmittel angebaut werden. Unter der dicken Haut der Pflanze befindet sich eine gelartige Flüssigkeit, deren Aufgabe darin besteht, Wasser möglichst lange zu speichern - schließlich ist die Pflanze in extrem trockenen Landschaften beheimatet. Dieses Gel ist sehr vitamin- und mineralstoffreich. In der Wundheilung ist Aloegel sehr effektiv. Kosmetisch wird es für Cremes benutzt, die Haterkrankungen und leichte Verbrennungen wie zum Beispiel Sonnenbrand lindern, Feuchtigkeit spenden und die Haut straffen.`,
-                    correctAnswer: "Pflanzliche Kosmetik für gesunde Haut"
+                    id: "text2",
+                    content: `Am Mittelmeer und in Mexico wächst die Aloe-Vera-Pflanze, der in der heutigen Naturmedizin eine wachsende Rolle zukommt. Durch die dickfleischigen Blätter dieser Pflanze ist für Schädlinge kein Hindurchkommen, deshalb kann sie in Plantagen ohne chemische Schutzmittel angebaut werden. Unter der dicken Haut der Pflanze befindet sich eine gelartige Flüssigkeit, deren Aufgabe darin besteht, Wasser möglichst lange zu speichern - schließlich ist die Pflanze in extrem trockenen Landschaftsstätten beheimatet. Dieses Gel ist sehr vitamin- und mineralstoffreich. In der Wundheilung ist Aloegel sehr effektiv. Kosmetisch wird es für Cremes benutzt, die Hauterkrankungen und leichte Verbrennungen wie zum Beispiel Sonnenbrand lindern, Feuchtigkeit spenden und die Haut straffen.`,
+                    correctAnswer: "f",
+                    correctAnswerText: "f) Pflanzliche Kosmetik für gesunde Haut"
                 },
                 {
+                    id: "text3",
                     content: `Eine der ältesten bekannten Gemüsesorten ist der Spargel. Schon vor 5000 Jahren war er bei den Chinesen bekannt. Geschätzt wurde er vor allem in der Medizin als Herzschutzmittel und zur Stärkung der körpereigenen Abwehrkräfte: Spargel hält gesund. Heute schätzen wir am Spargel besonders, dass er nicht dick macht. Die körperlich hart arbeitende Bevölkerung früherer Zeiten schätzte ihn deshalb nicht sehr, weil er kaum Energie lieferte. Im Südwesten Deutschlands wächst der Spargel von Mitte April bis zum Johannistag, dem 24. Juni. Besonders rund um Mainz, Darmstadt, Heidelberg, Bruchsal und in der Pfalz erntet man das stangenförmige Gemüse. In Deutschland ist allerdings der weiße Spargel, der unter der Erde wächst, populärer als sein oberirdisch wachsender Bruder, der grüne Spargel.`,
-                    correctAnswer: "Ein schlankes Gemüse für schlanke Leute"
+                    correctAnswer: "b",
+                    correctAnswerText: "b) Ein schlankes Gemüse für schlanke Leute"
                 },
                 {
-                    content: `Schlank sein ist "in". Deshalb versuchen Millionen Menschen nicht nur in Deutschland immer wieder ihre Pfunde loszuwerden. Und so purzeln sie von einer Diät zur nächsten, immer mit dem gleichen Erfolg: Nach dem Abnehmen nehmen sie genauso schnell wieder zu. Und bei vielen kommt mit dem Gewichtsverlust die Krankheit, denn die meisten Diäten sind sehr einseitig und entziehen dem Körper viele für sein Wohlbefinden wichtige Nährstoffe. Hier setzt eine neue Theorie an: Sie unterscheidet Nahrungsmittel in Fetthorter, die Fett im Körper speichern, und Fettburner, die dem Körper helfen, zu viel Fett und damit Kilos zu verwerten. Frisches Gemüse, Obst, Fisch und Geflügel versorgen den Körper mit Energie und helfen ihm dabei, die Nahrungsstoffe optimal zu verwerten. Iss dich schlank, lautet das Motto der Fatburnertheorie. Aber ist es nur eine neue Theorie oder hilft sie uns wirklich schlank zu werden?`,
-                    correctAnswer: "Tolle Figur durch ausgewogene Ernährung"
+                    id: "text4",
+                    content: `Schlank sein ist 'in'. Deshalb versuchen Millionen Menschen nicht nur in Deutschland immer wieder ihre Pfunde loszuwerden. Und so purzeln sie von einer Diät zur nächsten, immer mit dem gleichen Erfolg: Nach dem Abnehmen nehmen sie genauso schnell wieder zu. Und bei vielen kommt mit dem Gewichtsverlust die Krankheit, denn die meisten Diäten sind sehr einseitig und entziehen dem Körper viele für sein Wohlbefinden wichtige Nährstoffe. Hier setzt eine neue Theorie an: Sie unterscheidet Nahrungsmittel in Fetthorter, die Fett im Körper speichern, und Fettburner, die dem Körper helfen, zu viel Fett und damit Kilos zu verwerten. Frisches Gemüse, Obst, Fisch und Geflügel versorgen den Körper mit Energie und helfen ihm dabei, die Nahrungsstoffe optimal zu verwerten. Iss dich schlank, lautet das Motto der Fatburnertheorie. Aber ist es nur eine neue Theorie oder hilft sie uns wirklich schlank zu werden?`,
+                    correctAnswer: "g",
+                    correctAnswerText: "g) Tolle Figur durch ausgewogene Ernährung"
                 },
                 {
-                    content: `Als typisch deutsch gilt sie, doch rund um den Globus ist sie eines der Basislebensmittel schlechthin. In Österreich nennt man sie Erdapfel, an der Mosel heißt sie Grumbeere. Gemeint ist die überaus populäre Kartoffel. Hunderte verschiedener Sorten gibt es auf der Welt, doch ihr Ursprung liegt in Südamerika. Präkolumbianische Kulturen begannen damit, die bis dahin wild wachsende Urform der Kartoffel systematisch anzubauen. Die englischen Seehelden Sir Francis Drake und Sir Walter Raleigh sollen sie im 16. Jahrhundert nach Europa mitgebracht haben. Etwa zur gleichen Zeit wurde sie in Spanien und Portugal bekannt. Dennoch ist das Klischee von der "deutschen" Kartoffel nicht ganz falsch, denn zu vielen traditionellen Gerichten wird die Knolle gekocht oder in der Form von Bratkartoffeln, Kartoffelknödeln oder Pommes frites als Beilage gereicht.`,
-                    correctAnswer: "Von der Wildpflanze zum international geschätzten Nahrungsmittel"
+                    id: "text5",
+                    content: `Als typisch deutsch gilt sie, doch rund um den Globus ist sie eines der Basislebensmittel schlechthin. In Österreich nennt man sie Erdapfel, an der Mosel heißt sie Grumbeere. Gemeint ist die überaus populäre Kartoffel. Hunderte verschiedener Sorten gibt es auf der Welt, doch ihr Ursprung liegt in Südamerika. Präkolumbianische Kulturen begannen damit, die bis dahin wild wachsende Urform der Kartoffel systematisch anzubauen. Die englischen Seehelden Sir Francis Drake und Sir Walter Raleigh sollen sie im 16. Jahrhundert nach Europa mitgebracht haben. Etwa zur gleichen Zeit wurde sie in Spanien und Portugal bekannt. Dennoch ist das Klischee von der 'deutschen' Kartoffel nicht ganz falsch, denn zu vielen traditionellen Gerichten wird die Knolle gekocht oder in der Form von Bratkartoffeln, Kartoffelknödeln oder Pommes frites als Beilage gereicht.`,
+                    correctAnswer: "h",
+                    correctAnswerText: "h) Von der Wildpflanze zum international geschätzten Nahrungsmittel"
                 }
             ],
 
-            // Lesen Teil 2 - النص الكامل
             longText: {
-                content: `Ein Leben für den Kaffee
-Bremer Kaffeerösterei Münchhausen eine der letzten traditionellen Röstereien
-
-Vor 50 Jahren gab es in der Hansestadt Bremen ungefähr 300 traditionelle Kaffeeröstereien. Diese importierten die Kaffeebohnen selbst, stellten den Kaffee tagefrisch her und verkauften ihn im eigenen Geschäft. Heute, da der Kaffee zumeist von internationalen Kaffeegesellschaften produziert und in Supermärkten verkauft wird, sind in Deutschland nur noch eine Handvoll Kleinröstereien übrig geblieben. Eine davon ist die Kaffeeröstereie Münchhausen.
+                content: `Vor 50 Jahren gab es in der Hansestadt Bremen ungefähr 300 traditionelle Kaffeeröstereien. Diese importierten die Kaffeebohnen selbst, stellten den Kaffee tagefrisch her und verkauften ihn im eigenen Geschäft. Heute, da der Kaffee zumeist von internationalen Kaffeegesellschaften produziert und in Supermärkten verkauft wird, sind in Deutschland nur noch eine Handvoll Kleinröstereien übrig geblieben. Eine davon ist die Kaffeerösterei Münchhausen.
 
 Münchhausen importiert seinen Kaffee direkt von Kleinbauern in Lateinamerika. Dabei wird streng auf fairen Handel geachtet, das heißt, die Kaffeebauern werden für ihre anstrengende Arbeit angemessen entlohnt. Damit unterstützt der Importeur zugleich den Kaffeeanbau nach ökologischen Gesichtspunkten. Kaffee aus Großplantagen, oft mit Pestiziden und Insektiziden belastet, ist zwar billiger, aber Qualität und Reinheit des Kaffees werden bei der Kaffeerösterei Münchhausen ganz großgeschrieben.
 
@@ -995,184 +879,231 @@ Zuerst werden die Kaffeebohnen in der in den 50er Jahren angeschafften Rösttrom
 
 Danach erst werden aus den gerösteten Kaffeebohnen verschiedene Mischungen hergestellt, die dann im Kontor, dem Geschäftsraum der Rösterei, fast ausschließlich an langjährige Stammkunden verkauft werden. Aber auch über das Internet vertreibt die Kaffeerösterei Münchhausen ihr Kaffeeangebot deutschlandweit.
 
-Bis zu seinem Tod kurz vor seinem dreiundneunzigsten Geburtstag führte August Münchhausen seinen Familienbetrieb, dann übernahm seine Tochter die Firma, inzwischen ist auch die Enkelin beteiligt. Die Frauen planen, aus der Kaffeerösterei ein Museum zu machen, um der Nachwelt die традиции Kunst des Kaffeeröstens zeigen zu können.
+Bis zu seinem Tod kurz vor seinem dreiundneunzigsten Geburtstag führte August Münchhausen seinen Familienbetrieb, dann übernahm seine Tochter die Firma, inzwischen ist auch die Enkelin beteiligt. Die Frauen planen, aus der Kaffeerösterei ein Museum zu machen, um der Nachwelt die traditionelle Kunst des Kaffeeröstens zeigen zu können.
 
 Dann hätte diese Institution eine reelle Chance, in Zukunft fortzubestehen und zukünftigen Generationen den Charme und die Technik der traditionellen Kaffeeherstellung zu erhalten. Selbstverständlich wird es auch in Zukunft möglich sein, im Museums-Bistro den Kaffee zu genießen oder für den häuslichen Bedarf zu erwerben.`,
                 questions: [
                     {
+                        id: "q1",
                         question: "In Deutschland",
                         options: [
-                            "existiert eine Vielzahl von Kaffeeröstereien.",
-                            "gibt es nur noch wenige traditionelle Kaffeeröstereien.", 
-                            "handeln nur noch internationale Gesellschaften mit Kaffee."
+                            "existiert eine Vielzahl von Kaffeeröstereien",
+                            "gibt es nur noch wenige traditionelle Kaffeeröstereien",
+                            "handeln nur noch internationale Gesellschaften mit Kaffee"
                         ],
-                        correctAnswer: "gibt es nur noch wenige traditionelle Kaffeeröstereien."
+                        correctAnswer: "gibt es nur noch wenige traditionelle Kaffeeröstereien"
                     },
                     {
+                        id: "q2",
                         question: "Für die Kaffeerösterei Münchhausen",
                         options: [
-                            "ist es nicht von Bedeutung, ob der Kaffee von Kleinbauern oder Großplantagen kommt.",
-                            "spielt der günstige Einkaufspreis eine wichtige Rolle.",
-                            "steht eher die Qualität des Kaffees als der Preis im Vordergrund."
+                            "ist es nicht von Bedeutung, ob der Kaffee von Kleinbauern oder Großplantagen kommt",
+                            "spielt der günstige Einkaufspreis eine wichtige Rolle",
+                            "steht aber die Qualität des Kaffees als der Preis im Vordergrund"
                         ],
-                        correctAnswer: "steht eher die Qualität des Kaffees als der Preis im Vordergrund."
+                        correctAnswer: "steht aber die Qualität des Kaffees als der Preis im Vordergrund"
                     },
                     {
-                        question: "Kaffeebohnen", 
+                        id: "q3",
+                        question: "Kaffeebohnen",
                         options: [
-                            "dürfen nach dem Rösten zwar zu dunklen sein, aber nicht zu hell.",
-                            "können nach der Röstung ohne Geschmacksverlust lange Zeit gelagert werden.",
-                            "müssen nach dem Rösten handverlesen werden, um eine gleichbleibend hohe Qualität zu gewährleisten."
+                            "dürfen nach dem Rösten zwar zu dunklen sein, aber nicht zu hell",
+                            "können nach der Röstung ohne Geschmacksverlust lange Zeit gelagert werden",
+                            "müssen nach dem Rösten handverlesen werden, um eine gleichbleibend hohe Qualität zu gewährleisten"
                         ],
-                        correctAnswer: "müssen nach dem Rösten handverlesen werden, um eine gleichbleibend hohe Qualität zu gewährleisten."
+                        correctAnswer: "müssen nach dem Rösten handverlesen werden, um eine gleichbleibend hohe Qualität zu gewährleisten"
                     },
                     {
+                        id: "q4",
                         question: "Die gerösteten Kaffeebohnen werden",
                         options: [
-                            "im Kontor nur an Stammkunden angegeben.",
-                            "in Handarbeit gemischt.",
-                            "zusätzlich online vermarktet."
+                            "im Kontor nur an Stammkunden angegeben",
+                            "in Handarbeit gemischt",
+                            "zusätzlich online vermarktet"
                         ],
-                        correctAnswer: "zusätzlich online vermarktet."
+                        correctAnswer: "zusätzlich online vermarktet"
                     },
                     {
+                        id: "q5",
                         question: "In Zukunft wollen die Besitzer",
                         options: [
-                            "die Kaffeerösterei in ein Museum umwandeln.",
-                            "ein Museum über den Kaffeeanbau eröffnen.", 
-                            "keinen Röstkaffee mehr verkaufen."
+                            "die Kaffeerösterei in ein Museum umwandeln",
+                            "ein Museum über den Kaffeeanbau eröffnen",
+                            "keinen Röstkaffee mehr verkaufen"
                         ],
-                        correctAnswer: "die Kaffeerösterei in ein Museum umwandeln."
+                        correctAnswer: "die Kaffeerösterei in ein Museum umwandeln"
                     }
                 ]
             },
 
-            // Lesen Teil 3
+            // Lesen Teil 3 - البيانات المحدثة من BATATA.html
             situations: [
-                "Ein Bekannter möchte miterleben, wie spektakuläre Filmszenen gedreht werden.",
-                "Eine Bekannte interessiert sich für CDs mit klassischer Musik.",
-                "Eine Bekannte möchte eine mehrtägige Fußwanderung machen und dabei etwas über die kulturelle Vergangenheit der Region erfahren.",
-                "Eine Bekannte möchte sich in einem Kurort von der Hektik des Alltags erholen.",
-                "Ein Bekannter möchte im Urlaub auf einem See Boot fahren.",
-                "Eine Familie möchte mit ihren Kindern einen aktiven und lustigen Tag verbringen.",
-                "Ein Bekannter hat ein neues Kniegelenk bekommen und sucht eine geeignete Kur.",
-                "Eine Bekannte ist Hobbyzoologin und interessiert sich für den Lebensraum 'Küste'.",
-                "Ein Bekannter liebt die Bergwelt, kann aber keine steilen und anstrengenden Wege mehr gehen.",
-                "Eine Bekannte möchte Geschichten über Ritter und Burgen lesen."
+                {
+                    id: "11",
+                    text: "Ein Bekannter möchte miterleben, wie spektakuläre Filmszenen gedreht werden.",
+                    correctAnswer: "G"
+                },
+                {
+                    id: "12",
+                    text: "Eine Bekannte interessiert sich für CDs mit klassischer Musik.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "13",
+                    text: "Eine Bekannte möchte eine mehrtägige Fußwanderung machen und dabei etwas über die kulturelle Vergangenheit der Region erfahren.",
+                    correctAnswer: "D"
+                },
+                {
+                    id: "14",
+                    text: "Eine Bekannte möchte sich in einem Kurort von der Hektik des Alltags erholen.",
+                    correctAnswer: "L"
+                },
+                {
+                    id: "15",
+                    text: "Ein Bekannter möchte im Urlaub auf einem See Boot fahren.",
+                    correctAnswer: "C"
+                },
+                {
+                    id: "16",
+                    text: "Eine Familie möchte mit ihren Kindern einen aktiven und lustigen Tag verbringen.",
+                    correctAnswer: "I"
+                },
+                {
+                    id: "17",
+                    text: "Ein Bekannter hat ein neue Kniegelenk bekommen und sucht eine geeignete Kur.",
+                    correctAnswer: "J"
+                },
+                {
+                    id: "18",
+                    text: "Eine Bekannte ist Hobbyzoologin und interessiert sich für den Lebensraum Küste",
+                    correctAnswer: "F"
+                },
+                {
+                    id: "19",
+                    text: "Ein Bekannter liebt die Bergwelt, kann aber keine steilen und anstrengenden Wege mehr gehen.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "20",
+                    text: "Eine Bekannte möchte Geschichten über Ritter und Burgen lesen.",
+                    correctAnswer: "X"
+                }
             ],
 
             ads: [
                 {
-                    id: "a",
+                    id: "A",
                     title: "Urlaubsregion Allgäuer Alpen",
-                    content: "Die Urlaubsregion Allgäuer Alpen ist mit eine der schönsten Deutschlands. Mit Bussen und Bahnen gelangt man zu Burgen, Schlössern, Kirchen und Klöstern. Das kulinarische Angebot bietet für jeden Geschmack genügend Auswahl. Bergwanderer schätzen - vor allem im Spätsommer - Hüttenwanderungen auf den gut ausgebauten Höhenwegen. Bergbahnen und Sessellilfe nehmen viel von der Mühe des Aufstiegs ab. Auch für die Wassersportler ist ausreichend gesorgt."
+                    content: "Die Urlaubsregion Allgäuer Alpen ist mit eine der schönsten Deutschlands. Mit Bussen und Bahnen gelangt man zu Burgen, Schlössern, Kirchen und Klöstern. Das kulinarische Angebot bietet für jeden Geschmack genügend Auswahl. Bergwanderer schätzen - vor allem im Spätsommer - Hüttenwanderungen auf den gut ausgebauten Höhenwegen. Bergbahnen und Sessellifte nehmen viel von der Mühe des Aufstiegs ab. Auch für die Wassersportler ist ausreichend gesorgt."
                 },
                 {
-                    id: "b", 
+                    id: "B",
                     title: "Ritter und Burgfräulein für ein Wochenende",
                     content: "Seit vielen Jahrhunderten gibt es in Deutschland Burgen. Hoch über mittelalterlichen Städten und oft in romantischer Landschaft ragen sie als touristische Attraktionen empor. Für Geschichtsinteressierte inszeniert man im alten Gemäuer bunte Feste, die das Mittelalter originaltreu zum Leben erwecken. Hier erleben Sie Ritterturniere, Minnesang und zünftige Gelage. Beliebt sind auch Bauernmärkte mit traditionsreicher Handwerkskunst, Maskentreiben und Volkstheater, deren Stücke an die Sagen und Märchen anknüpfen, die sich um jede Burg ranken. Anmeldung unter info@mittelalter.com"
                 },
                 {
-                    id: "c",
-                    title: "Entspannung am Wasser", 
-                    content: "Von März bis September (bei schönem Wetter auch länger) können Sie bei unserem Bootsverleih 'Wasserfall' das Gefährt Ihrer Wahl ausleihen, um einen unvergesslichen Tag am und auf dem Baldeneysee zu verbringen. Mit einem Ruderboot oder Tretboot können Sie ein wenig Sport treiben und gleichzeitig die Natur genießen. Wenn Ihnen das zu anstrengend ist, können Sie auch ein Motorboot ausleihen. Voraussetzung ist der entsprechende Führerschein. Ausleihfristen: zwischen zwei und zwölf Stunden. Wir bieten auch Rabatte für Gruppen oder regelmäßige Besucher an. Fragen Sie uns einfach! Telefon 0201/185790"
+                    id: "C",
+                    title: "Ferien im Harz",
+                    content: "Der Harz erhebt sich inselartig über der Norddeutschen Tiefebene und verbindet die Länder Sachsen-Anhalt, Niedersachsen und Thüringen. Er ist zugleich das höchste Mittelgebirge nördlich des Mains, im Brockenmassiv auf 1.142 Meter ansteigend. Der Romkerhaller Wasserfall, der aus großer Höhe in die Tiefe stürzt, ist im Obertal neben der Obertalsperre ein beliebtes Fotomotiv. Fast jede Form von Wassersport ist hier möglich – Surfen, Paddeln, Rudern etc"
                 },
                 {
-                    id: "d",
-                    title: "Wanderung durch die Jahrhunderte",
-                    content: "Erleben Sie Geschichte hautnah! Auf unserer viertägigen Wanderung durch das Moseltal folgen Sie den Spuren der Römer, Kelten und mittelalterlichen Handelsleute. Unterwegs übernachten Sie in gemütlichen Gasthöfen und lernen die regionale Küche kennen. Unsere erfahrenen Reiseleiter erzählen spannende Geschichten über die kulturelle Entwicklung dieser einzigartigen Region. Die Wanderstrecken sind moderat und für Normalwanderer gut zu bewältigen. Informationen und Buchung: www.wanderzeit.de"
+                    id: "D",
+                    title: "Auf den Spuren des römischen Dichters Ausonius",
+                    content: "Von Bingen am Rhein bis nach Trier an der Mosel führt dieser nach dem römischen Dichter Ausonius benannte Wanderweg. Auf der ehemaligen römischen Heerstraße geht es stets über die Höhenrücken des Hunsrück. Durch Wälder und vorbei an Hunsrücker Dörfern ist die römische Vergangenheit an der Strecke und in Museen allgegenwärtig. Der 110 Kilometer lange Weg, den auch Ausonius bereiste, führt über die Höhen und durchschneidet die Bachtäler in stetem Auf und Ab, um dann ab Neumagen die Mosel bis nach Trier zu begleiten."
                 },
                 {
-                    id: "e",
-                    title: "Wellness für Körper und Seele",
-                    content: "Unser Kurhotel 'Seeblick' bietet Ihnen die perfekte Auszeit vom stressigen Alltag. Genießen Sie entspannende Massagen, erfrischende Saunagänge und heilsame Thermalbäder. In unserem hauseigenen Restaurant servieren wir Ihnen gesunde, ausgewogene Mahlzeiten mit regionalen Zutaten. Nutzen Sie auch unsere Yoga- und Meditationskurse, um zur inneren Balance zu finden. Spezielle Arrangements für Alleinreisende und Paare. Jetzt Termin vereinbaren unter 06541/789012."
+                    id: "E",
+                    title: "Extra für Musicalfans",
+                    content: "MAMMA MIA! ist eine mitreißende Musical-Komödie mit den 22 größten Hits von ABBA – und keine langweilige Biografie. Alle Songs werden auf Deutsch gesungen, so ist ein schwungvoller und unterhaltsamer Abend garantiert. Die mitreißende Musical-Komödie von Benny Andersson und Björn Ulvaeus hat weltweit schon über 24 Millionen Zuschauer begeistert. MAMMA MIA! – ein grandioses Stück über Liebe, Familie und Freundschaft. Vorstellungen jeder Abend um 18 und 20.30 Uhr. Hamburg Operettenhaus Hamburg Spielbudenplatz 1 D-20369 Hamburg"
                 },
                 {
-                    id: "f",
-                    title: "Lebensraum Küste",
-                    content: "Die Nordseeküste ist ein einzigartiges Ökosystem mit einer faszinierenden Tier- und Pflanzenwelt. In unserem zweitägigen Seminar für Hobbyzoologen erkunden wir Watt, Dünen und Salzwiesen. Sie lernen die typischen Vogelarten kennen, beobachten Seehunde in ihrem natürlichen Lebensraum und erfahren mehr über die Anpassungsstrategien der Küstenbewohner. Das Seminar wird von erfahrenen Biologen geleitet und ist auch für Einsteiger geeignet. Anmeldung: Institut für Küstenforschung, Tel. 04731/456789."
+                    id: "F",
+                    title: "Es gibt eine Steigerung zum normalen Strandspaziergang: die Wattwanderung.",
+                    content: "An der Nordsee finden Sie die größte zusammenhängende Wattlandschaft der Welt. Hier gibt es viel zu entdecken: gleich drei Nationalparks im Wattenmeer mit faszinierenden Landschaften und Tausenden von Tierarten. Ein Höhepunkt sind bestimmt die Seehunde im Nationalpark Hamburgisches Wattenmeer. Eine weitere Spezialität für fortgeschrittene Wattfans sind die Halligen, kleine Reste ehemals großer Marschinseln, die während der winterlichen Sturmfluten mehrmals landunter gehen."
                 },
                 {
-                    id: "g",
-                    title: "Filmset live erleben",
-                    content: "Haben Sie sich schon immer gefragt, wie actionreiche Filmszenen entstehen? Bei unseren exklusiven Studio-Touren erhalten Sie Einblick hinter die Kulissen einer großen Filmproduktion. Erleben Sie Spezialeffekte live, sehen Sie original Filmsets und treffen Sie Mitglieder des Stunt-Teams. An ausgewählten Terminen können Sie sogar als Statist bei einer echten Produktion mitwirken. Buchung nur über unsere Website: www.filmset-experience.de"
+                    id: "G",
+                    title: "Aktion, Kamera läuft!",
+                    content: "Und Action! Besucher des Movie Park Deutschland sollten sich nicht wundern, wenn sie sich plötzlich an einem Set befinden und den Anweisungen des Regisseurs folgen oder spektakulare Stunts hautnah erleben. In Bottrop, mitten im Ruhrgebiet, dreht sich alles um Filme mit viel Action und Spannung. Gehen auch Sie den Geheimnissen des Bermuda-Dreiecks auf den Grund, wagen Sie selbst eine aufregende Verfolgung im Flugsimulator oder testen Sie Ihre Nerven auf einer der größten Achterbahnen Deutschlands! Aus Sicherheitsgründen Zutritt nur für Erwachsene."
                 },
                 {
-                    id: "h", 
-                    title: "Klassik für Genießer",
-                    content: "Tauchen Sie ein in die Welt der klassischen Musik! Unsere neu produzierte CD-Serie 'Meisterwerke der Klassik' präsentiert die schönsten Kompositionen von Bach, Beethoven und Mozart in erstklassiger Klangqualität. Jede CD enthält ausführliche Booklets mit Hintergrundinformationen zu den Werken und Komponisten. Perfekt für entspannte Stunden zu Hause oder als Geschenk für Musikliebhaber. Erhältlich in allen gut sortierten Musikgeschäften oder direkt bei uns: www.klassik-genuss.de"
+                    id: "H",
+                    title: "Wiesbaden – Internationaler Treffpunkt Gesundheit",
+                    content: "Das Mineralheilbad Wiesbaden liegt in einer milden, gemäßigten Klimazone. Bereits 1836 wurde hier die erste Orthopädische Heilanstalt eröffnet. Die Kurstadt mit ihrem historischen Charme ist unter anderem für ihre natriumchloridhaltigen Thermalquellen berühmt, die für vielfältige Kuren genutzt werden. In erster Linie werden sie bei rheumatischen Erkrankungen und Katarrhen der Atmungsorgane, aber auch bei Erkrankungen des Nervensystems und psychosomatischen Leiden eingesetzt."
                 },
                 {
-                    id: "i",
-                    title: "Abenteuertag für die ganze Familie",
-                    content: "Action, Spaß und Spannung erwarten Sie in unserem Freizeitpark 'Abenteuerland'! Über 40 Attraktionen für Groß und Klein, darunter eine Wildwasserbahn, Achterbahnen und ein riesiger Indoor-Spielplatz. Besonders beliebt ist unsere neue interaktive Schatzsuche, bei der die ganze Familie gemeinsam Rätsel lösen muss. Täglich Shows und Mitmach-Aktionen. Gruppenermäßigungen und Jahreskarten erhältlich. Öffnungszeiten: Mo-So 9-18 Uhr. Weitere Infos: www.abenteuerland-park.de"
+                    id: "I",
+                    title: "Spiel und Spaß am Bodensee",
+                    content: "Auf die Plätze – die kleinen grauen Zellen anknipsen – und los geht's auf eine Erlebnisreise durch das Ravensburger Spieleland. In dem Freizeitpark am Bodensee spielt die ganze Familie mit Pumuckl beim Fensterherstellungsspiel um die Wette. Rasen mit dem Fix & Foxi-Raketenblitz und sagen Ahoi Blaubär Guten Tag. Bekannte Ravensburger Brettspiele wie das Verrückte Labyrinth sind riesengroß. Und wo sonst kann man Memory-Kärtchen vom Hubschrauber aus bedienen? Das geht nur im Freizeitpark Ravensburger Spieleland. Mitten in der schönsten Natur und ganz in der Nähe des Bodensees warten 50 Attraktionen auf 25 Hektar darauf, entdeckt zu werden."
                 },
                 {
-                    id: "j",
-                    title: "Reha nach Knie-OP", 
-                    content: "Unsere spezielle Rehabilitation für Patienten nach Kniegelenksoperationen kombiniert modernste Therapiemethoden mit erfahrener Betreuung. Unter ärztlicher Aufsicht entwickeln wir Ihr persönliches Trainingsprogramm zur Wiederherstellung der Beweglichkeit und Stärkung der Muskulatur. Wassergymnastik, Gangtraining und physikalische Therapie unterstützen Ihren Heilungsprozess. Wir beraten Sie auch zu Hilfsmitteln für den Alltag. Kostenübernahme durch alle Krankenkassen möglich. Kontakt: Reha-Zentrum Bewegungsfreude, Tel. 089/12345678."
+                    id: "J",
+                    title: "Bad Elster – heilendes Wasser aus sprudelnden Quellen",
+                    content: "In Bad Elster sprudeln gleich drei Trinkquellen unterschiedlicher Zusammensetzung und Heilwirkung. Das Herzstück einer Trink- und Badekur sind die Moritz- und die Marienquelle, die sich in der Nähe des Badehauses befinden. Bereits 1858 wurde den Quellen eine heilende Kraft bestätigt. Mineral- und Sprudelbäder beugen Herz- und Kreislauferkrankungen vor. Natriumchloridbäder und Packungen helfen gegen Rheuma, Arthritis, bei Frauenleiden, dem Ausheilen von Sport- und Unfallverletzungen sowie bei der operativen Nachsorge und Reha-Maßnahmen. Und Trinkkuren unterstützen die Heilung bei Stoffwechsel-, Nieren- und Harnwegserkrankungen."
                 },
                 {
-                    id: "k",
-                    title: "Berggenuss ohne Anstrengung",
-                    content: "Die Schönheit der Bergwelt muss nicht mühsam erklommen werden! Unsere geführten Bergtouren mit dem E-Bike oder per Bergbahn bringen Sie bequem zu den schönsten Aussichtspunkten der Alpen. Genießen Sie atemberaubende Panoramen ohne schweißtreibende Aufstiege. Unsere erfahrenen Guides zeigen Ihnen versteckte Juwelen abseits der Touristenströme. Auch für Senioren und Menschen mit eingeschränkter Mobilität geeignet. Touren von Mai bis Oktober buchbar: www.berg-genuss.com"
+                    id: "K",
+                    title: "Ein besonderer Weihnachtsmarkt",
+                    content: "Willkommen auf dem Striezelmarkt, dem ältesten Weihnachtsmarkt Deutschlands. Gegründet 1434, verdankt er seinen Namen dem Hefestriezel, längst berühmt als Original Dresdner Christstollen. Alljährlich ist ihm zum Stollenfest, am Samstag vor dem 2. Advent, ein riesiger Festumzug gewidmet. Bestaunen Sie im Mittelpunkt des Marktes die mit 14 Metern höchste Weihnachtspyramide der Welt. Traditionelle Handwerksarbeiten vom Feinsten aus Dresden und Umgebung wie Pyramiden, Räuchermänner, Schwibbögen, Töpferwaren und Herrnhuter Adventssterne werden auch Sie verzaubern."
                 },
                 {
-                    id: "l",
-                    title: "Rittersagen und Burglegenden",
-                    content: "Dieses reich bebilderte Buch entführt Sie in die Welt der Ritter, Burgen und mittelalterlichen Abenteuer. Spannend erzählte Geschichten über tapfere Ritter, edle Burgfräulein und geheimnisvolle Burgen werden durch historische Hintergrundinformationen ergänzt. Perfekt für alle, die sich für das Mittelalter begeistern. Mit Übersichtskarte der schönsten Burgen Deutschlands. Erhältlich im Buchhandel oder direkt beim Verlag unter ISBN 978-3-865-12345-6."
+                    id: "L",
+                    title: "Bad Homburg – in einzigartiger Badekultur entspannen wie Könige",
+                    content: "In Bad Homburg steht das heilsame und wohltuende Thermalwasser von höchster Qualität als heilendes Element im Vordergrund. Es enthält für den Körper wichtige Mineralstoffe. Gleich sechs kalte, kohlensäurehaltige Kochsalzquellen, ein Solenebelbad und zwei Galliaquellen werden für Trinkkuren und Mineralbäder genutzt. Man findet aktive Entspannung mit Gesundheits-, Fitness- und Sportprogramm. Individuelle Therapien und Verfahren helfen bei Bewältigung von Stressproblemen. Moderne medizinische und therapeutische Erkenntnisse haben das Kurangebot Bad Homburgs in den letzten hundert Jahren wesentlich beeinflusst."
                 }
             ],
 
-            // الإجابات الصحيحة لـ Lesen Teil 3
-            teil3Answers: {
-                11: "Filmset live erleben",
-                12: "Klassik für Genießer", 
-                13: "Wanderung durch die Jahrhunderte",
-                14: "Wellness für Körper und Seele",
-                15: "Entspannung am Wasser",
-                16: "Abenteuertag für die ganze Familie",
-                17: "Reha nach Knie-OP",
-                18: "Lebensraum Küste",
-                19: "Berggenuss ohne Anstrengung", 
-                20: "Rittersagen und Burglegenden"
-            },
-
-            // Sprachbausteine Teil 1
+            // Sprachbausteine Teil 1 - من BATATA.html
             blankText1: {
                 content: `Liebe Corinna,
-es tut mir wirklich Leid, __(21)__ ich dir seit Ewigkeiten nicht mehr geschrieben habe. Aber du weißt ja: Ich habe seit drei Monaten eine neue Arbeit. Und da hatte ich gar keine Zeit, mich mit etwas Anderem zu __(22)__ als mit der neuen Arbeit.
 
-Es hat mich wirklich überrascht, wie schnell ich nach dem Abschluss meiner Ausbildung etwas gefunden habe. Dabei haben alle immer nur gesagt: "Gärtner? Die gibt es __(23)__ wie Sand am Meer, wie willst du da so schnell einen Job finden?".
+es tut mir wirklich Leid, ________ ich dir seit Ewigkeiten nicht mehr geschrieben habe. Aber du weißt ja: Ich habe seit drei Monaten eine neue Arbeit. Und da hatte ich gar keine Zeit, mich mit etwas Anderem zu ________ als mit der neuen Arbeit.
 
-Ich arbeite jetzt in einer Baumschule. Wir kultivieren und verkaufen Obstbäume, __(24)__ an die Obstbauern der näheren Umgebung. Die Arbeit macht mir großen Spaß, es ist andererseits aber ein bisschen anstrengend, acht Stunden am Tag körperlich – __(25)__ im Freien – zu arbeiten. Und leider __(26)__ ich fast eine dreiviertel Stunde mit dem Zug fahren, um an meinen Arbeitsplatz zu kommen.
+Es hat mich wirklich überrascht, wie schnell ich nach dem Abschluss meiner Ausbildung etwas gefunden habe. Dabei haben alle immer nur gesagt: "Gärtner? Die gibt es ________ wie Sand am Meer, wie willst du da so schnell einen Job finden?".
 
-Wenn ich dann am Abend nach Hause komme, bin ich so müde, dass ich eigentlich nur noch fernsehen oder Musik hören kann. Ich habe im Moment nur __(27)__ Lust, etwas zu unternehmen, aber ich bin mir sicher: Sie __(28)__ wieder.
+Ich arbeite jetzt in einer Baumschule. Wir kultivieren und verkaufen Obstbäume, ________ an die Obstbauern der näheren Umgebung. Die Arbeit macht mir großen Spaß, es ist andererseits aber ein bisschen anstrengend, acht Stunden am Tag körperlich ________ im Freien - zu arbeiten. Und leider muss ich ________ eine dreiviertel Stunde mit dem Zug fahren, um an meinen Arbeitsplatz zu kommen.
 
-Wie geht es dir denn? Du müsstest doch jetzt auch bald mit deiner Ausbildung fertig sein, oder? Hast du schon damit angefangen, dich bei verschiedenen Arbeitgebern zu bewerben? Oder __(29)__ du dir noch ein bisschen Zeit damit? Ich würde dir in jedem Fall raten: Fang so früh wie __(30)__ mit den Bewerbungen an, je früher, desto besser. Du weißt ja, was unser Klassenlehrer in der Realschule immer gesagt hat: Gut Ding will Weile haben.
+Wenn ich dann am Abend nach Hause komme, bin ich so müde, dass ich eigentlich nur noch fernsehen oder Musik hören kann. Ich habe im Moment nur ________ Lust, etwas zu unternehmen, aber ich bin mir sicher: Sie ________ wieder.
+
+Wie geht es dir denn? Du müsstest doch jetzt auch bald mit deiner Ausbildung fertig sein, oder? Hast du schon damit angefangen, dich bei verschiedenen Arbeitgebern zu bewerben? Oder ________ du dir noch ein bisschen Zeit damit? Ich würde dir in jedem Fall raten: Fang so früh wie ________ mit den Bewerbungen an, je früher, desto besser. Du weißt ja, was unser Klassenlehrer in der Realschule immer gesagt hat: Gut Ding will Weile haben.
 
 So, jetzt muss ich aufhören und ins Bett gehen, damit ich morgen wieder fit bin. Mach's gut, bis bald,
 
-dein Richard`,
-                answers: ["dass", "beschäftigen", "doch", "insbesondere", "überwiegend", "muss", "wenig", "kommt", "lässt", "möglich"]
+dein
+
+Richard`,
+                options: [
+                    ["dass", "ob", "weil"],          // 21
+                    ["bedienen", "beeilen", "beschäftigen"], // 22
+                    ["bloß", "doch", "nur"],         // 23
+                    ["außerdem", "insbesondere", "jedoch"], // 24
+                    ["übermächtig", "übermäßig", "überwiegend"], // 25
+                    ["fast", "nahe", "ziemlich"],     // 26
+                    ["gering", "knapp", "wenig"],     // 27
+                    ["kommt", "läuft", "steht"],      // 28
+                    ["brauchst", "hast", "willst"],   // 29
+                    ["kürzlich", "möglich", "üblich"] // 30
+                ],
+                answers: ["dass", "beschäftigen", "doch", "insbesondere", "überwiegend", "fast", "wenig", "kommt", "willst", "möglich"]
             },
 
-            // Sprachbausteine Teil 2
+            // Sprachbausteine Teil 2 - من BATATA.html
             blankText2: {
                 content: `Schwarzarbeit kann teuer werden
 
-Schnäppchen machen, um Rabatte feilschen: Wer billig einkauft, gilt als clever. Vorsicht ist jedoch bei Aufträgen an Schwarzarbeiter geboten. Denn schnell zahlt der Kunde drauf, __(31)__ – wie durch das illegale Arbeitsverhältnis erhofft – Geld zu sparen.
+Schnäppchen machen, um Rabatte feilschen: Wer billig einkauft, gilt als clever. Vorsicht ist jedoch bei Aufträgen an Schwarzarbeiter geboten. Denn schnell zahlt der Kunde drauf, ________ wie durch das illegale Arbeitsverhältnis erhofft - Geld zu sparen. Rund ums Haus ist nicht ________ Gelegenheit so günstig, wie sie anfangs scheint:
 
-Rund ums Haus ist nicht __(32)__. Gelegenheit so günstig, wie sie anfangs scheint: Schwarzarbeit etwa ist nicht nur verboten, sondern es gibt auch ein finanzielles Argument __(33)__ illegale Arbeiter: Oftmals rechnet sich der Dienst gegen Barzahlung gar nicht. "Abgesehen __(34)__, dass es strafbar ist, Schwarzarbeiter zu beschäftigen, nimmt der Auftraggeber handfeste steuerliche Nachteile in Kauf", warnt Dirk Witte, Steuerberater aus Wildeshausen in Niedersachsen. Wer eine Putzhilfe beschäftigt, kann die Steuerlast auch auf legalem Weg spürbar senken.
+Schwarzarbeit etwa ist nicht nur verboten, sondern es gibt auch ein finanzielles Argument ________ illegale Arbeiter: Oftmals rechnet sich der Dienst gegen Barzahlung gar nicht. "Abgesehen ________, dass es strafbar ist, Schwarzarbeiter zu beschäftigen, nimmt der Auftraggeber handfeste steuerliche Nachteile in Kauf", warnt Dirk Witte, Steuerberater aus Wildeshausen in Niedersachsen. Wer eine Putzhilfe beschäftigt, kann die Steuerlast auch auf legalem Weg spürbar senken.
 
-Auch für die Modernisierung, Renovierung und Sanierung der Wohnung gibt es einen Steuernachlass, allerdings nur für legale Arbeiten. "Das Finanzamt __(35)__ eine ordentliche Rechnung und einen Überweisungsbeleg sehen". Barzahler können daher nichts von der Steuer absetzen. Noch schwerer fällt ins Gewicht, dass ein Kunde seine Haftungsansprüche aufs Spiel setzt, wenn er vordergründig ein paar Euro sparen möchte. Denn mängelfreie Bauten __(36)__ eher die Ausnahme.
+Auch für die Modernisierung, Renovierung und Sanierung der Wohnung gibt es einen Steuernachlass, allerdings nur für legale Arbeiten. "Das Finanzamt ________ eine ordentliche Rechnung und einen Überweisungsbeleg sehen". Barzahler können daher nichts von der Steuer absetzen. Noch schwerer fällt ins Gewicht, dass ein Kunde seine Haftungsansprüche aufs Spiel setzt, wenn er vordergründig ein paar Euro sparen möchte. Denn mängelfreie Bauten ________ eher die Ausnahme.
 
-Und ob ein Kunde die Beseitigung von Mängeln gerichtlich gegen einen Schwarzarbeiter durchsetzen kann, ist von Fall zu Fall zu prüfen. Im Prinzip muss man aber damit rechnen, die Ansprüche zu verlieren. Ebenso dürften Verbraucher leer __(37)__, wenn beim Bauen etwas zu Bruch geht. Ein ordentlicher Handwerker hat für __(38)__ Fälle eine Haftpflichtversicherung.
+Und ob ein Kunde die Beseitigung von Mängeln gerichtlich gegen einen Schwarzarbeiter durchsetzen kann, ist von Fall zu Fall zu prüfen. Im Prinzip muss man aber damit rechnen, die Ansprüche zu verlieren. Ebenso dürften Verbraucher leer ________, wenn beim Bauen etwas zu Bruch geht. Ein orderntlicher Handwerker hat für ________ Fälle eine Haftpflichtversicherung.
 
-Richtig teuer werden können auch Unfälle, bei denen sich der illegale Helfer verletzt. Dann zahlen weder Krankenversicherung noch Unfallkasse. Fällt etwa ein Arbeiter vom Gerüst und ist danach dauerhaft querschnittsgelähmt, dann wird der Kunde dafür sein Leben lang zahlen.
+Richtig teuer werden können auch Unfälle, bei denen sich der illegale Helfer verletzt. Dann zahlen weder Krankenversicherung noch Unfallkasse. Fälit etwa ein Arbeiter vom Gerüst und ist danach dauerhaft querschnittsgelähmt, dann wird der Kunde dafür sein Leben lang zahlen.
 
-Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Fliegt die illegale Beschäftigung auf, dann __(39)__ es gleich mehrere Behörden mit. Post gibt es dann vom Finanzamt, der Staatsanwaltschaft und den Sozialversicherungsträgern. Dann braucht der Auftraggeber __(40)__ einen Anwalt. Und der kostet natürlich auch wieder Geld.`,
-                answers: ["anstatt", "jede", "gegen", "davon", "will", "bilden", "ausgehen", "solche", "bekommt", "meistens"]
+Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Fliegt die illegale Beschäftigung auf, dann ________ es gleich mehrere Behörden mit. Post gibt es dann vom Finanzamt, der Staatsanwaltschaft und den Sozialversicherungsträgern. Dann braucht der Auftraggeber ________ einen Anwalt. Und der kostet natürlich auch wieder Geld.`,
+                options: ["ALLES", "ANSTATT", "AUSGEHEN", "BEKOMMEN", "BILDEN", "DAGEGEN", "DAVON", "GEGEN", "HÖCHSTENS", "JEDE", "MEISTENS", "SOLCHE", "UM", "WILL", "WÜNSCHT"],
+                answers: ["ANSTATT", "JEDE", "GEGEN", "DAVON", "WILL", "BILDEN", "AUSGEHEN", "SOLCHE", "BEKOMMEN", "MEISTENS"]
             }
         };
 
@@ -1182,24 +1113,14 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
             setupEventListeners();
         });
 
-        let currentLang = 'ar';
         let isDarkMode = false;
 
         function initializePage() {
             // تحميل الإعدادات المحفوظة
-            const savedLang = localStorage.getItem('language') || 'ar';
             const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-            const username = localStorage.getItem('username') || 'زائر';
-            const access = localStorage.getItem('access');
             
-            changeLanguage(savedLang);
             if (savedDarkMode) {
                 toggleDarkMode();
-            }
-            
-            // التحقق من حالة المستخدم
-            if (access === 'paid' && username) {
-                document.getElementById('premiumBadge').style.display = 'flex';
             }
             
             // تهيئة الأجزاء
@@ -1217,13 +1138,13 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
             textsList.innerHTML = '';
 
             // إضافة العناوين
-            examData.headings.forEach((heading, index) => {
+            examData.headings.forEach((heading) => {
                 const headingItem = document.createElement('div');
                 headingItem.className = 'heading-item';
                 headingItem.innerHTML = `
-                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                    <strong>${heading.id})</strong> ${heading.text}
                 `;
-                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingItem.dataset.letter = heading.id;
                 headingsList.appendChild(headingItem);
             });
 
@@ -1232,10 +1153,10 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
                 const textItem = document.createElement('div');
                 textItem.className = 'question';
                 textItem.innerHTML = `
-                    <h3>Text ${index + 1}</h3>
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
                     <div class="text-content">${text.content}</div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
                     </div>
                 `;
                 textsList.appendChild(textItem);
@@ -1246,14 +1167,14 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
             const longText = document.getElementById('longText');
             const questionsList = document.getElementById('questionsList');
 
-            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
 
             questionsList.innerHTML = '';
             examData.longText.questions.forEach((question, index) => {
                 const questionItem = document.createElement('div');
                 questionItem.className = 'question';
                 questionItem.innerHTML = `
-                    <h3>Frage ${index + 6}</h3>
+                    <h3>Question ${index + 6}</h3>
                     <p><strong>${question.question}</strong></p>
                     <div class="options">
                         ${question.options.map((option, optIndex) => `
@@ -1263,7 +1184,7 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
                         `).join('')}
                     </div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
                     </div>
                 `;
                 questionsList.appendChild(questionItem);
@@ -1275,14 +1196,12 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
             const adsList = document.getElementById('adsList');
 
             situationsList.innerHTML = '';
-            examData.situations.forEach((situation, index) => {
+            examData.situations.forEach((situation) => {
                 const situationItem = document.createElement('div');
                 situationItem.className = 'situation-item';
                 situationItem.innerHTML = `
-                    <strong>${index + 11})</strong> ${situation}
-                    <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
-                    </div>
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
                 `;
                 situationsList.appendChild(situationItem);
             });
@@ -1292,27 +1211,87 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
                 const adItem = document.createElement('div');
                 adItem.className = 'ad-item';
                 adItem.innerHTML = `
-                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
-                    <p>${ad.content}</p>
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
                 `;
                 adsList.appendChild(adItem);
             });
         }
 
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
         function initializeSprachbausteine() {
             // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
             const blankText1 = document.getElementById('blankText1');
-            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText1.innerHTML = textWithBlanks1;
 
             // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
             const blankText2 = document.getElementById('blankText2');
-            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 31]}</span></span>`;
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText2.innerHTML = textWithBlanks2;
         }
@@ -1322,35 +1301,8 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
             document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
             document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
             
-            // زر الرئيسية
-            document.getElementById('homeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html';
-            });
-            
             // زر الوضع الليلي
             document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-            
-            // زر المستخدم
-            document.getElementById('userBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#profile';
-            });
-            
-            // زر اللغة
-            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
-            document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const lang = option.getAttribute('data-lang');
-                    changeLanguage(lang);
-                    document.getElementById('langDropdown').classList.remove('show');
-                });
-            });
-            
-            // إغلاق القوائم المنسدلة بالنقر خارجها
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.language-selector')) {
-                    document.getElementById('langDropdown').classList.remove('show');
-                }
-            });
         }
 
         function showAllAnswers() {
@@ -1360,10 +1312,10 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
             document.querySelectorAll('.blank-answer').forEach(answer => {
                 answer.classList.remove('hidden');
             });
-            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+            document.querySelectorAll('.heading-item').forEach(heading => {
                 const letter = heading.dataset.letter;
                 examData.texts.forEach(text => {
-                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                    if (text.correctAnswer === letter) {
                         heading.classList.add('matched');
                     }
                 });
@@ -1393,29 +1345,6 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
             } else {
                 themeIcon.className = 'fas fa-moon';
             }
-        }
-
-        function toggleLangDropdown() {
-            document.getElementById('langDropdown').classList.toggle('show');
-        }
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            
-            // تحديث جميع النصوص
-            Object.keys(t).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = t[key];
-                }
-            });
-            
-            localStorage.setItem('language', lang);
-            
-            // إعادة تهيئة المحتوى لترجمة الإجابات
-            initializeTeil1();
-            initializeTeil2();
         }
     </script>
 </body>

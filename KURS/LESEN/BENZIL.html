@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BENZIL - TELC B2 Training</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BINZIL - TELC B2 Training</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -20,16 +20,17 @@
             --text: #333;
             --text-light: #546E7A;
             --white: #ffffff;
-            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
-            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
-            --radius: 25px;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 4px 8px rgba(33, 150, 243, 0.15);
+            --shadow-hover: 0 6px 12px rgba(33, 150, 243, 0.25);
+            --radius: 16px;
+            --transition: all 0.3s ease;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -38,8 +39,11 @@
             color: var(--text);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
             transition: var(--transition);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: left;
+            direction: ltr;
         }
 
         body.dark-mode {
@@ -47,362 +51,71 @@
             color: var(--light);
         }
 
-        /* Header Controls - التعديل هنا */
-        .header-controls {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            right: 20px;
+        /* Header Controls - في سطر واحد مع أزرار التحكم */
+        .controls-container {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 1rem 2rem;
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
-            z-index: 1000;
-            gap: 15px;
+            align-items: center;
+            box-shadow: var(--shadow);
+            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .left-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: flex-start;
+        .dark-mode .controls-container {
+            background: rgba(13, 71, 161, 0.98);
+            border-bottom: 1px solid rgba(227, 242, 253, 0.1);
         }
 
-        .right-controls {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-        }
-
-        .control-btn {
-            width: 50px;
-            height: 50px;
+        .theme-btn {
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.3rem;
-            cursor: pointer;
-            box-shadow: var(--shadow);
-            border: none;
-            background: var(--primary);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .control-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .control-btn:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-
-        .control-btn:hover {
-            transform: scale(1.15) rotate(5deg);
-            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
-        }
-
-        /* شارة المشترك الذهبية - تم التعديل */
-        .premium-badge-header {
-            position: fixed;
-            top: 20px;
-            right: 90px; /* بجانب الأزرار */
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            color: #000;
-            padding: 0.5rem;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3); }
-            to { box-shadow: 0 4px 20px rgba(255, 215, 0, 0.6); }
-        }
-
-        .home-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .home-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .home-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        /* Language Selector */
-        .language-selector {
-            display: flex;
-            position: relative;
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: var(--radius);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .lang-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .lang-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            background: var(--white);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
-            overflow: hidden;
-            min-width: 120px;
-            animation: dropdownSlide 0.3s ease;
-            z-index: 1001;
-        }
-
-        .dark-mode .lang-dropdown {
-            background: #1a237e;
-            color: var(--light);
-        }
-
-        @keyframes dropdownSlide {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .lang-dropdown.show {
-            display: block;
-        }
-
-        .lang-option {
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            color: var(--text);
-        }
-
-        .dark-mode .lang-option {
-            color: var(--light);
-            border-bottom: 1px solid #37474F;
-        }
-
-        .lang-option:hover {
-            background: #f5f5f5;
-            transform: translateX(5px);
-        }
-
-        .dark-mode .lang-option:hover {
-            background: #283593;
-        }
-
-        .lang-option:last-child {
-            border-bottom: none;
-        }
-
-        /* زر الاشتراك - تمت إضافته */
-        .subscribe-btn {
-            background: linear-gradient(135deg, #FFD700, #FFA500);
-            border: 2px solid #FFA500;
-            border-radius: 50px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: #000;
-            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        .subscribe-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
-        }
-
-        /* المحتوى الرئيسي */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: var(--radius);
-            padding: 3rem;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(15px);
-            margin-top: 6rem;
-            transition: var(--transition);
-        }
-
-        .dark-mode .container {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 3rem;
-            animation: contentSlideUp 0.8s ease;
-        }
-
-        @keyframes contentSlideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .header h1 {
-            font-size: 2.8rem;
-            color: var(--primary-dark);
-            margin-bottom: 1rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .dark-mode .header h1 {
-            color: #90CAF9;
-        }
-
-        .page-subtitle {
             font-size: 1.2rem;
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        .dark-mode .page-subtitle {
-            color: #B0BEC5;
-        }
-
-        /* أزرار التحكم */
-        .answer-controls {
-            position: sticky;
-            top: 80px; /* أعلى قليلاً لتجنب التداخل مع الشارة */
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1.5rem;
-            border-radius: var(--radius);
+            cursor: pointer;
             box-shadow: var(--shadow);
-            margin-bottom: 2rem;
-            z-index: 100;
+            border: none;
+            background: var(--primary);
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .answer-controls {
             display: flex;
             gap: 1rem;
-            justify-content: center;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-        }
-
-        .dark-mode .answer-controls {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            align-items: center;
         }
 
         .answer-btn {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
-            position: relative;
-            overflow: hidden;
             border: none;
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 0.5rem;
             transition: var(--transition);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        .answer-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: right 0.6s;
-        }
-
-        .answer-btn:hover::before {
-            right: 100%;
+            min-width: 180px;
+            justify-content: center;
         }
 
         .answer-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
         }
 
         .show-answers {
@@ -415,47 +128,107 @@
             color: var(--white);
         }
 
-        /* التصميم الخاص بالأسئلة */
-        .section {
-            margin: 2rem 0;
+        /* المحتوى الرئيسي */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: var(--radius);
             padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            margin-top: 1rem;
             transition: var(--transition);
         }
 
+        .dark-mode .container {
+            background: rgba(13, 71, 161, 0.98);
+            border: 1px solid rgba(227, 242, 253, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            color: var(--primary-dark);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .dark-mode .header h1 {
+            color: #90CAF9;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .dark-mode .page-subtitle {
+            color: #B0BEC5;
+        }
+
+        /* التصميم الخاص بالأسئلة */
+        .section {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            direction: ltr;
+        }
+
         .dark-mode .section {
-            background: rgba(13, 71, 161, 0.9);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+            background: rgba(13, 71, 161, 0.95);
+            border: 1px solid rgba(227, 242, 253, 0.1);
         }
 
         .section-title {
             color: var(--primary-dark);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+            padding-bottom: 0.6rem;
             border-bottom: 2px solid var(--primary);
             font-weight: 600;
+            text-align: left;
         }
 
         .dark-mode .section-title {
             color: #90CAF9;
         }
 
+        .description {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .dark-mode .description {
+            color: #B0BEC5;
+        }
+
         .question {
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: rgba(33, 150, 243, 0.05);
-            border-radius: 15px;
-            border-right: 4px solid var(--primary);
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .question {
-            background: rgba(33, 150, 243, 0.1);
+            background: rgba(33, 150, 243, 0.08);
         }
 
         .options {
@@ -463,25 +236,25 @@
         }
 
         .option {
-            margin: 0.8rem 0;
-            padding: 1rem;
+            margin: 0.6rem 0;
+            padding: 0.8rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
             cursor: pointer;
             transition: var(--transition);
             font-weight: 500;
+            text-align: left;
         }
 
         .dark-mode .option {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .option:hover {
             border-color: var(--primary);
             background: rgba(33, 150, 243, 0.05);
-            transform: translateX(-5px);
         }
 
         .correct {
@@ -497,366 +270,493 @@
         .answer {
             margin-top: 1rem;
             padding: 1rem;
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: 600;
-            animation: slideInUp 0.5s ease;
+            animation: slideInUp 0.3s ease;
+            text-align: left;
         }
 
         @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* التصحيح - تم التعديل للوضع الليلي */
         .correct-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
-            border: 2px solid #4CAF50;
-            font-weight: bold;
+            border: 1px solid #4CAF50;
         }
 
         .dark-mode .correct-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
-            border: 2px solid #81C784;
+            border: 1px solid #81C784;
         }
 
         /* النصوص والعناوين */
         .text-content {
-            line-height: 1.7;
-            margin: 1.5rem 0;
-            padding: 1.5rem;
+            line-height: 1.6;
+            margin: 1.2rem 0;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
-            font-size: 1.1rem;
-            transition: var(--transition);
+            font-size: 1rem;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .text-content {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
+        /* Lesen Teil 1 - تصميم محسن */
         .headings-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1rem;
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .heading-item {
-            padding: 1.2rem;
+            padding: 1rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            text-align: center;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
             font-weight: 500;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .heading-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .matched {
             border-color: #4CAF50;
             background: rgba(76, 175, 80, 0.1);
-            transform: scale(1.02);
         }
 
-        /* الإعلانات والوضعيات */
+        /* Lesen Teil 3 - تصميم عرضي */
+        .situations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
+        }
+
+        .situation-item {
+            padding: 1rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            transition: var(--transition);
+            text-align: left;
+        }
+
+        .dark-mode .situation-item {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .situation-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .dark-mode .situation-number {
+            color: #90CAF9;
+        }
+
+        /* Teil 3 Ads - تصميم عرضي */
         .ads-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1rem;
+            margin: 1.2rem 0;
         }
 
         .ad-item {
-            padding: 1.5rem;
+            padding: 1.2rem;
             background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            min-height: 150px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
             transition: var(--transition);
+            text-align: left;
         }
 
         .dark-mode .ad-item {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .ad-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
             box-shadow: var(--shadow-hover);
         }
 
-        .situations-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.2rem;
+        .ad-letter {
+            font-weight: bold;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            display: block;
+            font-size: 1.2rem;
         }
 
-        .situation-item {
-            padding: 1.2rem;
-            background: var(--white);
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            transition: var(--transition);
+        .dark-mode .ad-letter {
+            color: #90CAF9;
         }
 
-        .dark-mode .situation-item {
-            background: #1a237e;
-            border-color: #37474F;
+        .ad-title {
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text);
         }
 
-        .situation-item:hover {
-            border-color: var(--primary);
-            background: rgba(33, 150, 243, 0.05);
+        .dark-mode .ad-title {
+            color: var(--light);
         }
 
-        /* Sprachbausteine */
+        /* Sprachbausteine Teil 1 - مع الاقتراحات */
         .fill-blanks {
-            margin: 1.5rem 0;
+            margin: 1.2rem 0;
         }
 
         .blank-text {
-            line-height: 2;
-            margin: 1.5rem 0;
-            font-size: 1.2rem;
-            padding: 1.5rem;
+            line-height: 1.8;
+            margin: 1.2rem 0;
+            font-size: 1.1rem;
+            padding: 1.2rem;
             background: var(--white);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
         }
 
         .dark-mode .blank-text {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
             border-color: #37474F;
         }
 
         .blank {
             display: inline-block;
             min-width: 120px;
-            margin: 0 8px;
-            padding: 0.5rem 1rem;
-            border-bottom: 3px solid var(--primary);
+            margin: 0 5px;
+            padding: 0.4rem 0.8rem;
+            border-bottom: 2px solid var(--primary);
             text-align: center;
             font-weight: 600;
             background: var(--white);
-            border-radius: 8px;
+            border-radius: 6px;
             transition: var(--transition);
+            position: relative;
+            vertical-align: middle;
         }
 
         .dark-mode .blank {
-            background: #1a237e;
+            background: rgba(26, 35, 126, 0.8);
         }
 
         .blank-answer {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #2E7D32;
             border-color: #4CAF50;
-            font-weight: bold;
         }
 
         .dark-mode .blank-answer {
-            background: rgba(76, 175, 80, 0.3);
+            background: rgba(76, 175, 80, 0.25);
             color: #A5D6A7;
             border-color: #81C784;
+        }
+
+        /* اقتراحات Sprachbausteine Teil 1 */
+        .blank-options {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .blank-options {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .blank-option-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+            padding: 0.5rem;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .dark-mode .blank-option-row {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+        }
+
+        .blank-number {
+            font-weight: bold;
+            color: var(--primary-dark);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .dark-mode .blank-number {
+            color: #90CAF9;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.4rem 0.8rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .dark-mode .option-btn {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .option-btn:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
+        }
+
+        /* Sprachbausteine Teil 2 - بنك الكلمات */
+        .word-bank {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(33, 150, 243, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+        }
+
+        .dark-mode .word-bank {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: rgba(227, 242, 253, 0.2);
+        }
+
+        .bank-word {
+            padding: 0.6rem;
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .dark-mode .bank-word {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: #37474F;
+            color: var(--light);
+        }
+
+        .bank-word:hover {
+            background: rgba(33, 150, 243, 0.1);
+            border-color: var(--primary);
         }
 
         .hidden {
             display: none;
         }
 
-        /* Floating Elements مثل الصفحة الرئيسية */
-        .floating-elements {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .floating-element {
-            position: absolute;
-            font-size: 3.5rem;
-            opacity: 0.15;
-            animation: float 8s ease-in-out infinite;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
-
-        .floating-book { top: 15%; left: 8%; animation-delay: 0s; }
-        .floating-pen { top: 75%; right: 12%; animation-delay: 1s; }
-        .floating-globe { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
-        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
-        .floating-graduate { top: 65%; left: 5%; animation-delay: 4s; }
-        .floating-notebook { bottom: 15%; right: 10%; animation-delay: 5s; }
-        .floating-pencil { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
-        .floating-calculator { top: 35%; right: 15%; animation-delay: 7s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
-            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
-        }
-
+        /* تحسينات للهواتف */
         @media (max-width: 768px) {
-            .header-controls {
-                top: 15px;
-                left: 15px;
-                right: 15px;
-                gap: 10px;
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 0.5rem;
             }
-
-            .premium-badge-header {
-                top: 15px;
-                right: 70px;
-                width: 45px;
-                height: 45px;
+            
+            .controls-container {
+                padding: 0.8rem 1rem;
+                flex-direction: column;
+                gap: 0.8rem;
+            }
+            
+            .answer-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .answer-btn {
+                min-width: 140px;
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .theme-btn {
+                width: 40px;
+                height: 40px;
                 font-size: 1.1rem;
             }
-
-            .home-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
-            }
-
-            .container {
-                padding: 2rem;
-                margin: 1rem;
-                margin-top: 5rem;
-            }
-
+            
             .header h1 {
-                font-size: 2rem;
+                font-size: 1.6rem;
             }
-
-            .headings-grid {
-                grid-template-columns: 1fr;
+            
+            .section {
+                padding: 1rem;
+                margin: 1rem 0;
             }
-
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+            
+            .headings-grid,
+            .situations-grid,
             .ads-grid {
                 grid-template-columns: 1fr;
             }
-
-            .right-controls {
-                gap: 10px;
+            
+            .blank {
+                min-width: 80px;
+                margin: 0 3px;
+                padding: 0.3rem 0.6rem;
+                font-size: 0.9rem;
             }
-
-            .answer-controls {
-                top: 70px;
+            
+            .word-bank {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+                gap: 0.6rem;
+                padding: 0.8rem;
+            }
+            
+            .option-buttons {
+                gap: 0.3rem;
+            }
+            
+            .option-btn {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.85rem;
             }
         }
 
         @media (max-width: 480px) {
-            .header-controls {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
+            .container {
+                padding: 0.8rem;
+                border-radius: 12px;
             }
+            
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.95rem;
+            }
+            
+            .section {
+                padding: 0.8rem;
+            }
+            
+            .question {
+                padding: 1rem;
+            }
+            
+            .blank-text {
+                padding: 1rem;
+                font-size: 1rem;
+                line-height: 1.6;
+            }
+            
+            .answer-btn {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+        }
 
-            .left-controls, .right-controls {
-                flex-direction: row;
-                justify-content: center;
+        /* تحسينات للأجهزة اللوحية */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                padding: 1.5rem;
             }
+            
+            .headings-grid,
+            .situations-grid,
+            .ads-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
-            .premium-badge-header {
-                position: relative;
-                top: auto;
-                right: auto;
-                transform: none;
-                margin-top: 10px;
+        /* تحسينات للأجهزة الكبيرة */
+        @media (min-width: 1200px) {
+            .container {
+                padding: 2rem;
             }
+        }
+
+        /* تحسين قابلية القراءة للنصوص الطويلة */
+        .long-text {
+            line-height: 1.7;
+            text-align: justify;
+            hyphens: auto;
+        }
+
+        /* إزالة العناصر غير الضرورية لتحسين الأداء */
+        .floating-elements,
+        .premium-badge-header {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <!-- Floating Elements مثل الصفحة الرئيسية -->
-    <div class="floating-elements">
-        <div class="floating-element floating-book">📚</div>
-        <div class="floating-element floating-pen">✏️</div>
-        <div class="floating-element floating-globe">🌍</div>
-        <div class="floating-element floating-clock">⏰</div>
-        <div class="floating-element floating-graduate">🎓</div>
-        <div class="floating-element floating-notebook">📓</div>
-        <div class="floating-element floating-pencil">✏️</div>
-        <div class="floating-element floating-calculator">🧮</div>
-    </div>
-
-    <!-- شارة المشترك الذهبية - تم التعديل -->
-    <div class="premium-badge-header" id="premiumBadge">
-        <i class="fas fa-crown"></i>
-    </div>
-
-    <!-- Header Controls -->
-    <div class="header-controls">
-        <div class="left-controls">
-            <button class="home-btn" id="homeBtn">
-                <i class="fas fa-home"></i>
-                <span id="homeText">الرئيسية</span>
+    <!-- Header Controls - في سطر واحد -->
+    <div class="controls-container">
+        <div class="answer-controls">
+            <button class="answer-btn show-answers" id="showAnswers">
+                <i class="fas fa-check-circle"></i>
+                <span id="showAnswersText">Show Answers</span>
             </button>
-            <div class="language-selector">
-                <button class="lang-btn" id="langBtn">
-                    <span id="langBtnText">العربية</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="lang-dropdown" id="langDropdown">
-                    <div class="lang-option" data-lang="ar">
-                        <span>🇸🇦</span>
-                        <span>العربية</span>
-                    </div>
-                    <div class="lang-option" data-lang="de">
-                        <span>🇩🇪</span>
-                        <span>Deutsch</span>
-                    </div>
-                    <div class="lang-option" data-lang="en">
-                        <span>🇬🇧</span>
-                        <span>English</span>
-                    </div>
-                </div>
-            </div>
+            <button class="answer-btn hide-answers" id="hideAnswers">
+                <i class="fas fa-eye-slash"></i>
+                <span id="hideAnswersText">Hide Answers</span>
+            </button>
         </div>
         
-        <div class="right-controls">
-            <!-- زر الاشتراك تم نقله هنا -->
-            <button class="subscribe-btn" id="subscribeBtn">
-                <i class="fas fa-crown"></i>
-                <span id="subscribeText">اشتراك</span>
-            </button>
-            <button class="control-btn" id="themeToggle">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="control-btn" id="userBtn">
-                <i class="fas fa-user"></i>
-            </button>
-        </div>
+        <button class="theme-btn" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
     </div>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">BENZIL - TELC B2 Training</h1>
-            <p class="page-subtitle" id="pageSubtitle">تمرين القراءة والفهم - الجزء الأول والثاني والثالث</p>
-        </div>
-
-        <!-- أزرار التحكم -->
-        <div class="answer-controls">
-            <button class="answer-btn show-answers" id="showAnswers">
-                <i class="fas fa-check-circle"></i>
-                <span id="showAnswersText">إظهار التصحيح</span>
-            </button>
-            <button class="answer-btn hide-answers" id="hideAnswers">
-                <i class="fas fa-eye-slash"></i>
-                <span id="hideAnswersText">إخفاء التصحيح</span>
-            </button>
+            <h1 id="pageTitle">BILDER - TELC B2 Training</h1>
+            <p class="page-subtitle" id="pageSubtitle">Reading Comprehension - Part 1, 2 and 3</p>
         </div>
 
         <!-- Lesen Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="teil1Title">Lesen Teil 1</h2>
-            <p id="teil1Description">Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.</p>
+            <h2 class="section-title" id="teil1Title">Reading Part 1</h2>
+            <p class="description" id="teil1Description">First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).</p>
             
             <div class="headings-grid" id="headingsList">
                 <!-- العناوين سيتم إضافتها بالجافاسكريبت -->
@@ -869,8 +769,8 @@
 
         <!-- Lesen Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="teil2Title">Lesen Teil 2</h2>
-            <div class="text-content" id="longText">
+            <h2 class="section-title" id="teil2Title">Reading Part 2</h2>
+            <div class="text-content long-text" id="longText">
                 <!-- النص الطويل سيتم إضافته بالجافاسكريبت -->
             </div>
 
@@ -879,10 +779,10 @@
             </div>
         </div>
 
-        <!-- Lesen Teil 3 -->
+        <!-- Lesen Teil 3 - تصميم عرضي محسن -->
         <div class="section">
-            <h2 class="section-title" id="teil3Title">Lesen Teil 3</h2>
-            <p id="teil3Description">Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?</p>
+            <h2 class="section-title" id="teil3Title">Reading Part 3</h2>
+            <p class="description" id="teil3Description">First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?</p>
             
             <div class="situations-grid" id="situationsList">
                 <!-- الوضعيات سيتم إضافتها بالجافاسكريبت -->
@@ -895,303 +795,310 @@
 
         <!-- Sprachbausteine Teil 1 -->
         <div class="section">
-            <h2 class="section-title" id="sprach1Title">Sprachbausteine Teil 1</h2>
+            <h2 class="section-title" id="sprach1Title">Language Elements Part 1</h2>
             <div class="fill-blanks">
+                <div class="blank-options" id="blankOptions1">
+                    <!-- اقتراحات لكل فراغ -->
+                </div>
                 <div class="blank-text" id="blankText1">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
 
         <!-- Sprachbausteine Teil 2 -->
         <div class="section">
-            <h2 class="section-title" id="sprach2Title">Sprachbausteine Teil 2</h2>
+            <h2 class="section-title" id="sprach2Title">Language Elements Part 2</h2>
             <div class="fill-blanks">
+                <div class="word-bank" id="wordBank2">
+                    <!-- بنك الكلمات -->
+                </div>
                 <div class="blank-text" id="blankText2">
-                    <!-- النص بالفراغات سيتم إضافته بالجافاسكريبت -->
+                    <!-- النص بالفراغات -->
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // الترجمات
-        const translations = {
-            ar: {
-                homeText: "الرئيسية",
-                themeText: "الوضع الليلي",
-                langText: "العربية", 
-                userText: "زائر",
-                subscribeText: "اشتراك",
-                pageTitle: "BENZIL - TELC B2 Training",
-                pageSubtitle: "تمرين القراءة والفهم - الجزء الأول والثاني والثالث",
-                showAnswersText: "إظهار التصحيح",
-                hideAnswersText: "إخفاء التصحيح",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2", 
-                teil3Title: "Lesen Teil 3",
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölف Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            de: {
-                homeText: "Startseite",
-                themeText: "Nachtmodus", 
-                langText: "Deutsch",
-                userText: "Besucher",
-                subscribeText: "Abonnieren",
-                pageTitle: "BENZIL - TELC B2 Training",
-                pageSubtitle: "Leseverstehen - Teil 1, 2 und 3",
-                showAnswersText: "Korrektur anzeigen",
-                hideAnswersText: "Korrektur ausblenden",
-                teil1Title: "Lesen Teil 1",
-                teil1Description: "Lesen Sie zuerst die zehn Überschriften. Lesen Sie dann die fünf Texte und entscheiden Sie, welche Überschrift (a-j) am besten zu welchem Text (1–5) passt.",
-                teil2Title: "Lesen Teil 2",
-                teil3Title: "Lesen Teil 3", 
-                teil3Description: "Lesen Sie zuerst die zehn Situationen (11–20) und dann die zwölf Info-Texte (a–l). Welcher Info-Text passt zu welcher Situation?",
-                sprach1Title: "Sprachbausteine Teil 1",
-                sprach2Title: "Sprachbausteine Teil 2"
-            },
-            en: {
-                homeText: "Home",
-                themeText: "Dark Mode",
-                langText: "English",
-                userText: "Visitor", 
-                subscribeText: "Subscribe",
-                pageTitle: "BENZIL - TELC B2 Training",
-                pageSubtitle: "Reading Comprehension - Part 1, 2 and 3",
-                showAnswersText: "Show Correction",
-                hideAnswersText: "Hide Correction",
-                teil1Title: "Reading Part 1",
-                teil1Description: "First read the ten headings. Then read the five texts and decide which heading (a-j) best matches which text (1-5).",
-                teil2Title: "Reading Part 2",
-                teil3Title: "Reading Part 3",
-                teil3Description: "First read the ten situations (11-20) and then the twelve info texts (a-l). Which info text matches which situation?",
-                sprach1Title: "Language Elements Part 1", 
-                sprach2Title: "Language Elements Part 2"
-            }
-        };
-
-        // بيانات الأسئلة والإجابات من ملف PDF
+        // بيانات الأسئلة والإجابات (مأخوذة من BINZIL.html)
         const examData = {
-            // Lesen Teil 1
             headings: [
-                "a) Benzingeld sparen: Tipp vom Tankwart",
-                "b) Die wichtigsten Erste-Hilfe-Ratschläge", 
-                "c) Einmal die Welt als Ganzes sehen",
-                "d) Einmal um die Welt ohne einen Tropfen Benzin",
-                "e) Fliegen statt fahren",
-                "f) Innerdeutsche Reisen besonders beliebt",
-                "g) Kein Benzin mehr? So kommen Sie sicher an Ihr Ziel",
-                "h) Mit dem Fahrrad auf Weltreise",
-                "i) Neue Benzinsorte: Weniger Verbrauch, mehr Leistung",
-                "j) Reisen mit dem Flugzeug: Tipps für Sparfüchse"
+                {id: "a", text: "Benzingeld sparen: Tipp vom Tankwart"},
+                {id: "b", text: "Die wichtigsten Erste-Hilfe-Ratschläge"},
+                {id: "c", text: "Einmal die Welt als Ganzes sehen"},
+                {id: "d", text: "Einmal um die Welt ohne einen Tropfen Benzin"},
+                {id: "e", text: "Fliegen statt fahren"},
+                {id: "f", text: "Innerdeutsche Reisen besonders beliebt"},
+                {id: "g", text: "Frau im All"},
+                {id: "h", text: "Schweizer nutzen Solartaxis"},
+                {id: "i", text: "Steigende Spritpreise: die Tricks der Autofahrer"},
+                {id: "j", text: "Die richtige Unfallversicherung"}
             ],
             
             texts: [
                 {
-                    content: `Wer mit dem Flugzeug verreist, sollte sich vorher gut informieren. Es gibt viele Möglichkeiten, Geld zu sparen. So ist es zum Beispiel günstiger, am Mittwoch oder Donnerstag zu fliegen als am Freitag oder Samstag. Auch die Wahl des Abflughafens kann sich auf den Preis auswirken. Wer flexibel ist, sollte auch alternative Flughäfen in Betracht ziehen. Frühbucher können oft von günstigeren Tarifen profitieren.`,
-                    correctAnswer: "j) Reisen mit dem Flugzeug: Tipps für Sparfüchse"
+                    id: "text1",
+                    content: `Aussteigen, tanken, wegfahren: Wenn die Benzinpreise steigen, ist wieder Hochsaison bei den Benzindieben. Früh morgens und abends schlagen Sie besonders gerne zu. Viele setzen auf den Schutz der Dunkelheit. Vor Weihnachten und im Januar und Februar häufen sich die Fälle. Auch am Monatsende, wenn das Geld knapp wird, steigt die Zahl der Benzindiebstähle. Doch sparen lässt sich durch Benzinklau nicht. Fast alle Täter werden von der Polizei gefasst. Schließlich gibt es an jeder Tankstelle eine Kamera, die das Autokennzeichen aufgenommen hat. Tankwart Kurt Jochimsen aus Emden zeig uns einen Fall aus seiner großen Videosammlung. Ein Wagen mit zwei Insassen fährt an die Zapfsäule. Der Fahrer tankt, seine Frau geht in den Shop. Sie kauft dort zwei Cola und bezahlt. Aber nicht das Benzin. Der Mann hat inzwischen voll getankt und wartet im Wagen. 'Hier Sehen Sie: Die Frau kommt raussteigt ein und das Fahrzeug fährt davon. Hinterher heißt es dann, ich habe doch glatt vergessen, das Benzin zu bezahlen', erklärt Kurt Jochimsen. Bei der Polizei kennt man diese Ausreden. Polizeihauptkommissar Werner Knips: 'Vergessen gilt nicht, es gibt immer eine Anzeige. Und dann wird es richtig teuer.'`,
+                    correctAnswer: "i",
+                    correctAnswerText: "i) Steigende Spritpreise: die Tricks der Autofahrer"
                 },
                 {
-                    content: `Eine Panne mitten auf der Autobahn - was tun? Zuerst: Ruhe bewahren! Schalten Sie die Warnblinkanlage ein und fahren Sie möglichst auf den Standstreifen. Ziehen Sie die Warnweste an, bevor Sie aussteigen. Stellen Sie das Warndreieck in ausreichender Entfernung auf. Verlassen Sie die Fahrbahn und warten Sie hinter der Leitplanke auf Hilfe. Nutzen Sie das Notruftelefon oder Ihr Handy, um die Pannenhilfe zu rufen.`,
-                    correctAnswer: "g) Kein Benzin mehr? So kommen Sie sicher an Ihr Ziel"
+                    id: "text2",
+                    content: `Viele Autofahrer, die in einen Unfall verwickelt sind, sind so aufgeregt, dass sie vergessen, what zu tun ist. Der Versicherungsexperte Klaus Lenhoff gibt die wichtigsten Tipps: 1. Unfallstelle absichern: Warnblinkanlage einschalten und Warndreieck in 100 Metern Entfernung aufstellen. 2. Rettung aus dem Gefahrenbereich: alle Unfallbeteiligten aus dem Gefahrenbereich retten. Eingeschlossene befreien und Brände sofort bekämpfen. 3. Rettungskräfte informieren: bei schweren Unfällen und wenn es Verletzte gibt, die Polizei (Ruf 110) oder die Rettungsleitstelle (Ruf 112) informieren. Dabei an 'die fünf W's' denken: Wo ist es passiert? Was ist passiert? Wie viele Verletzte? Welche Verletzungen? Warten sie auf Rückfragen. 4. Verletzten Hilfe leisten, zum Beispiel: Kontrolle von Atmung und Puls, Atemspende, stabile Seitenlage, Erkennen und Behandeln eines Schocks, Stillen von Blutungen. 5. Lokalisierung auf der Autobahn: Wo hat sich der Unfall ereignet? 6. Beweismittel sichern: am besten Fotos oder eine Skizze von der Unfallstelle machen. 7. Verkehrsfluß wiederherstellen, also schnell die Fahrbahn räumen. 8. Name, Anschrift und Telefonnummern von Zeugen notieren. 9. Vorsicht bei Aussagen: die Aufregung am Unfallort verleitet zu missverständlichen Äußerungen. Keine Aussagen under Druck machen. 10. Versicherung des Unfallgegners ermitteln.`,
+                    correctAnswer: "b",
+                    correctAnswerText: "b) Die wichtigsten Erste-Hilfe-Ratschläge"
                 },
                 {
-                    content: `Die neue Super-Plus-Benzinsorte "UltraDrive" verspricht bis zu 15% weniger Verbrauch bei gleichzeitig höherer Motorleistung. Durch eine spezielle Additiv-Mischung soll der Kraftstoff effizienter verbrennen und den Motor vor Ablagerungen schützen. Erste Tests zeigen vielversprechende Ergebnisse. Allerdings ist der neue Sprit auch entsprechend teurer als herkömmliche Kraftstoffe.`,
-                    correctAnswer: "i) Neue Benzinsorte: Weniger Verbrauch, mehr Leistung"
+                    id: "text3",
+                    content: `Hast du schon mal mit dem Gedanken gespielt, Pilotin zu werden? Nicht? Dann geht es euch wahrscheinlich wie den meisten Mädchen oder Frauen. Warum wollen eigentlich so wenige Frauen Pilotinnen werden? Nur weil der Beruf angeblich ein typischer Männerberuf ist? Wir haben eine Pilotin getroffen: Monique Bellin ist 39 Jahre alt, wohnt im Süden Frankfurts und ist Pilotin. 'Schon seit früher Kindheit habe ich mich für die Fliegerei interessiert. Es hat mich schon immer fasziniert, dass es mit Hilfe technischer Mittel möglich ist, die Schwerkraft zu überwinden und die Welt aus der Vogelperspektive zu betrachten. Und irgendwann wollte ich diese Technik dann auch selbst beherrschen', so Belling. Seit sie in diesem Beruf arbeite, habe sich ihre Einstellung zu vielen Dingen verändert: 'Ich bin toleranter als vor meinem 'Fliegerleben' - vielleicht weil ich versuche, mein Umfeld aus anderen Perspektiven zu betrachten. Auch meine Freizeit und meine Familie sind mir noch kostbarer geworden, seit ich in diesem Beruf tätig bin', erklärt sie. Hat sie noch Träume? 'Aber ja!', sagt Monique Belling: 'Mit einem Shuttle ins Weltall fliegen, um die Erde als Kugel zu sehen und das Gefühl absoluter Schwerelosigkeit zu erleben'.`,
+                    correctAnswer: "c",
+                    correctAnswerText: "c) Einmal die Welt als Ganzes sehen"
                 },
                 {
-                    content: `Laut einer aktuellen Umfrage planen dieses Jahr besonders viele Deutsche Reisen innerhalb Deutschlands. Die beliebtesten Ziele sind die Nordsee, das Allgäu und der Schwarzwald. Als Gründe werden die kurzen Anreisewege, die vertraute Sprache und die zuverlässige Infrastruktur genannt. Viele schätzen auch die Möglichkeit, spontan zu verreisen, ohne lange Planungszeit.`,
-                    correctAnswer: "f) Innerdeutsche Reisen besonders beliebt"
+                    id: "text4",
+                    content: `Der Schweizer Louis Palmer hat eine Weltumrundung mit seinem 'Solartaxi' fast abgeschlossen. Er habe bereits 47000 km mit seinem Solarauto zurückgelegt, sagte Palmer bei einem Stopp in Paris. 'Nun habe ich fast den ganzen Planeten umrundet, ohne einen Tropfen Benzin zu brauchen'. Die Batterien des bis zu 90 Stundenkilometer schnelle Solarmobils können Energie für eine Reichweite von 400 km speichern. 'Das Wetter spielt keine Rolle', sagte Palmer. 'Es kann mehrere Tage in Folge regnen, ich fahre ohne Probleme weiter'. Palmer war mit seinem dreirädrigen 'Taxi' im Juli in Luzern gestartet. Seitdem hat er Europa, Asien, Australien, Neuseeland und Nordamerika durchquert. Er zieht einen Anhänger mit sechs Quadratmetern Solarzellen hinter sich her und die Sonnenenergie treibst das Gefährt an. Seit dem Start ist das Solartaxi nur zwei Tage ausgefallen, weil ein Kabel beschädigt war. Gebaut wurde das innovative Fahrzeug von four Schweizer Ingenieurschulen. Palmer has auch Platz für Beifahrer: Neben ihm saßen schon berühmte Persönlichkeiten aus Politik, Wirtschaft und Showgeschäft im 'Solartaxi'.`,
+                    correctAnswer: "d",
+                    correctAnswerText: "d) Einmal um die Welt ohne einen Tropfen Benzin"
                 },
                 {
-                    content: `Tanken Sie immer morgens, wenn es noch kühl ist! Dann ist die Benzin-Dichte höher und Sie bekommen mehr Kraftstoff für Ihr Geld. Füllen Sie den Tank langsam, um das Aufschäumen zu vermeiden. Fahren Sie mit Reifendruck im oberen Bereich der Empfehlung - das spart ebenfalls Sprit. Und: Vermeiden Sie unnötiges Gewicht im Kofferraum. Jedes zusätzliche Kilo erhöht den Verbrauch.`,
-                    correctAnswer: "a) Benzingeld sparen: Tipp vom Tankwart"
+                    id: "text5",
+                    content: `Die Bundesregierung und ihre Spitzenbeamten sind auf Dienstreisen gern mit dem Flugzeug unterwegs - aber nicht nur, wenn es um Fernreisen geht, sondern auch bei kurzen Inlandsreisen. Wie aus der Antwort des Innenministeriums auf eine Frage eines Abgeordneten hervorgeht, gab die Bundesregierung im letzten Jahr 7,7 Millionen Euro für innendeutsche Flugreisen aus. Fahrkarten der Bahn hingegen schlugen lediglich mit 3,2 Millionen zu Buche. Der Vergleich mit anderen Jahren zeigt aber, dass sich die meisten Politiker bemühen, immer häufiger vom Flugzeug auf die Bahn umzusteigen. Eine Ausnahme bildet das Kanzleramt (Flugkosten um 30% erhöht gegenüber dem Vorjahr) sowie ausgerechnet das Ressort des Bundesumweltministers (plus 7%). Vergleichszahlen für den erhöhten und gesenkten Benzinverbrauch für die Dienstwagen der Bundesregierung liegen noch nicht vor.`,
+                    correctAnswer: "e",
+                    correctAnswerText: "e) Fliegen statt fahren"
                 }
             ],
 
-            // Lesen Teil 2 - النص الكامل
             longText: {
-                content: `Die Geschichte des Automobils begann im Jahr 1886, als Carl Benz das Patent für sein "Fahrzeug mit Gasmotorenbetrieb" erhielt. Dieses dreirädrige Gefährt gilt als das erste Automobil der Welt. Es hatte einen Einzylinder-Viertaktmotor mit 0,9 PS und erreichte eine Höchstgeschwindigkeit von 16 km/h.
+                content: `Wer sich under dem zweimal pro Woche stattfindenden Training auf dem Wiesbadener Hofgut Adamstal eine Art 'Kuschehrunde' vorgestellt hatte, der wird schnell eines Besseren belehrt, und der neugierige Betrachter fühlt sich eher auf einen Fußballplatz als in eine Reithalle versetzt. Die festliegenden Spielzüge, die es einzustudieren gilt, sind Bestandteil einer Sportart, die hierzulande allenfalls eine Randerscheinung ist: Horse–Ball.
 
-In den folgenden Jahren entwickelte sich die Automobiltechnik rasant. Gottlieb Daimler und Wilhelm Maybach verbesserten die Motoren, während andere Erfinder wie Rudolf Diesel alternative Antriebskonzepte entwickelten. Die Serienproduktion von Automobilen begann Anfang des 20. Jahrhunderts und machte das Auto allmählich für breitere Bevölkerungsschichten erschwinglich.
+'Es kommen immer mehr Aktive dazu', versichert jedoch Hans–Jürgen Faust (59), Hausherr auf Hofgut Adamstal und Präsident des Deutschen Horse–Ball–Verbandes. Irgendwo in Hagen, Düsseldorf, München oder Heidelberg soll es noch ein paar vereinzelte Akteure geben, das eigentliche Geschehen aber spielt sich hier ab, wo einer der wohl kleinsten Sportverbände Deutschlands vor 15 Jahren aus der Taufe gehoben wurde und wo die erste Mannschaft der Reitergruppe Wiesbaden (RGW) identisch ist mit der National–Auswahl. Aber diesen Sport betreiben nicht nur Erwachsene: Die jüngsten Spieler sind nicht älter als acht. Horse–Ball ist –vereinfacht gesagt – eine Art Basketball zu Pferde.
 
-Die Massenproduktion wurde durch Henry Ford revolutioniert, der 1913 die Fließbandproduktion einführte. Dadurch sanken die Produktionskosten erheblich, und das Auto wurde zum Massenprodukt. In den 1920er Jahren gehörte das Automobil bereits zum Alltag in den USA und begann sich auch in Europa zu verbreiten.
+An den beiden Enden des zirka 25 mal 70 Meter großen Spielfeldes sind die Korbringe nicht waagerecht, sondern senkrecht ausgerichtet und mit Fangnetzen versehen, in denen die Bälle nach einem gelungenen Spielzug landen. Keine leichte Aufgabe, wie die bereits erwähnten ersten Trainingseindrücke zeigen, aber Übung macht eben auch hier den Meister. Zumindest auf nationaler, sprich: Wiesbadener Ebene.
 
-Die technische Entwicklung verlief in mehreren Phasen: Zuerst stand die Zuverlässigkeit im Vordergrund, dann der Komfort und schließlich die Sicherheit. In den 1950er Jahren kamen erste Sicherheitsgurte auf, in den 1970er Jahren Airbags und in den 1990er Jahren elektronische Stabilitätsprogramme.
+Darüber hinaus gilt es, immer wieder Lehrgeld zu zahlen, vor allem bei Gastspielen im Heimatland Frankreich, wo Horse–Ball vor rund 25 Jahren erfunden wurde und einen viel höheren Stellenwert als hierzulande genießt. Sogar eine eigene Profiliga gibt es bei unseren südwestlichen Nachbarn, die bei den Mitte August anstehenden Europameisterschafts einmal mehr nicht nur Gastgeber, sondern auch wieder Anwärter auf den Titel sind.
 
-Heute steht die Automobilindustrie vor großen Herausforderungen: Die Elektromobilität gewinnt an Bedeutung, autonomes Fahren wird entwickelt, und Umweltschutzauflagen werden strenger. Die Zukunft des Automobils wird wahrscheinlich von alternativen Antrieben, vernetzten Systemen und neuen Mobilitätskonzepten geprägt sein.
+Wer es übrigens selbst einmal ausprobieren möchte: Im kommenden Monat bieten die Wiesbaden Buffalos für maximal zwölf Teilnehmer einen Einstiegs–Lehrgang an. Dabei mitzubringen sind reiterliche Grundkenntnisse und ein so genannter Dreipunkt– Helm. Alles andere wird – inklusive Vierbeiner – bei Bedarf gestellt. 'Natürlich können auch eigene Pferde mitgebracht werden', sagt Faust.
 
-Trotz aller technischen Fortschritte bleibt die grundlegende Funktion des Automobils gleich: Es gibt Menschen die Freiheit, flexibel und unabhängig zu reisen. Diese Freiheit war der ursprüngliche Traum der Automobilpioniere und ist bis heute der Hauptgrund, warum Menschen Autos besitzen und nutzen.`,
+Die Tiere müssen 'sozialverträglich' sein, erläutert der 59–Jährige, und das nicht nur im Umgang mit dem Reiter, sondern vor allem andereinander. 'Im richtigen Wettkampf kann es auch schon mal zu Zusammenstößen kommen', weiß Faust, für den Horse–Ball zu einem ganz persönlichen 'Steckenpferd' geworden ist, das in der vielfältigen Angebotspalette des riesigen Hofguts eine Art Sonderstatus einnimmt.
+
+Damit es trotz unvermeidlichen Körperkontakts kaum einmal zu ernsthaften Verletzungen kommt, tragen nicht nur die Pferde vorgeschriebene Bandagen an den Beinen, sondern auch für die Reiter gibt es eine speielle Vorrichtung: Ein Gurt, der under dem Bauch der Tiere die beiden Steigbügel miteinander verbindet, gewährt selbst dann noch sicheren Halt, wenn sich der Spieler aus vollem Galopp heraus aus dem Sattel fallen lässt, um den Ball vom Boden aufnehmen zu können. Um die Handhabung dabei ein wenig zu vereinfachen, ist das runde Leder mit Fangriemen versehen, die ein sicheres Zugreifen auch mit einer Hand ermöglichen.
+
+Aber noch eine Besonderheit weist Horse–Ball auf: Es ist die einzige Pferdesportart, bei der der gebraucht einer Gerte (das ist ein kleiner Stock, mit dem das Pferd leicht geschlagen wird) ausdrücklich verboten ist, wie Faust betont. Damit tritt er auch etwaigen Befürchtungen entgegen, dass es zu Tierquälerei kommen könnte. Der Chef des Hofgut Adamstal: 'Das Gegenteil ist der Fall. Die Tiere können beim Horse–Ball ihre natürlichen Verhaltensweisen ausleben und haben sogar Spaß dabei'. Zumindest mehr als der eine oder andere Reiter, wie es angesichts des strengen Trainings den Eindruck macht.`,
                 questions: [
                     {
-                        question: "Wann begann die Geschichte des Automobils?",
+                        id: "q1",
+                        question: "Aktive der Wiesbadener Reitergruppe",
                         options: [
-                            "Als Henry Ford die Fließbandproduktion einführte",
-                            "Mit der Erfindung des Dieselmotors", 
-                            "Mit dem Patent von Carl Benz im Jahr 1886"
+                            "bilden die deutsche Nationalmannschaft.",
+                            "spielen schon als Achtjährige in der deutschen Nationalmannschaft mit.",
+                            "unterstützen die deutsche Nationalmannschaft."
                         ],
-                        correctAnswer: "Mit dem Patent von Carl Benz im Jahr 1886"
+                        correctAnswer: "bilden die deutsche Nationalmannschaft."
                     },
                     {
-                        question: "Was revolutionierte die Automobilproduktion?",
+                        id: "q2",
+                        question: "Die Basketball-Körbe",
                         options: [
-                            "Die Erfindung des Sicherheitsgurts",
-                            "Die Einführung der Fließbandproduktion durch Henry Ford",
-                            "Die Entwicklung des Elektromotors"
+                            "hängen wie beim normalen Basketball.",
+                            "sind mit dem Netz nach oben aufgehängt.",
+                            "sind so gedreht, dass ihre Öffnungen nach der Seite zeigen."
                         ],
-                        correctAnswer: "Die Einführung der Fließbandproduktion durch Henry Ford"
+                        correctAnswer: "sind so gedreht, dass ihre Öffnungen nach der Seite zeigen."
                     },
                     {
-                        question: "Welche Entwicklung steht im Mittelpunkt der heutigen Automobilindustrie?", 
+                        id: "q3",
+                        question: "Wer an einem Horse-Ball-Lehrgang teilnimmt,",
                         options: [
-                            "Die Verbesserung von Benzinmotoren",
-                            "Die Erhöhung der Höchstgeschwindigkeiten",
-                            "Elektromobilität und autonomes Fahren"
+                            "braucht ein eigenes Pferd.",
+                            "kann sein eigenes Pferd einsetzen.",
+                            "muss sein Pferd jedes Mal mitbringen."
                         ],
-                        correctAnswer: "Elektromobilität und autonomes Fahren"
+                        correctAnswer: "kann sein eigenes Pferd einsetzen."
                     },
                     {
-                        question: "Was war der ursprüngliche Traum der Automobilpioniere?",
+                        id: "q4",
+                        question: "Beim Horse-Ball-Spiel",
                         options: [
-                            "Die Schaffung von Arbeitsplätzen in der Industrie",
-                            "Die Entwicklung immer schnellerer Fahrzeuge",
-                            "Die Freiheit, flexibel und unabhängig zu reisen"
+                            "wird ein Fußball verwendet.",
+                            "darf der Ball in die Hand genommen werden.",
+                            "darf der Ball nicht auf den Boden fallen."
                         ],
-                        correctAnswer: "Die Freiheit, flexibel und unabhängig zu reisen"
+                        correctAnswer: "darf der Ball in die Hand genommen werden."
                     },
                     {
-                        question: "Welche Sicherheitseinrichtung wurde zuerst eingeführt?",
+                        id: "q5",
+                        question: "Das Training ist so streng, dass",
                         options: [
-                            "Airbags",
-                            "Sicherheitsgurte", 
-                            "Elektronische Stabilitätsprogramme"
+                            "die Reiter often mehr Stress zu empfinden scheinen als die Tiere.",
+                            "die Tiere ihre naturgegebenen Anlagen nicht ausleben können.",
+                            "es Pferden und Reitern often kein Vergnügen macht."
                         ],
-                        correctAnswer: "Sicherheitsgurte"
+                        correctAnswer: "die Reiter often mehr Stress zu empfinden scheinen als die Tiere."
                     }
                 ]
             },
 
-            // Lesen Teil 3
+            // Lesen Teil 3 - البيانات المحدثة
             situations: [
-                "Sie möchten eine Reise buchen und suchen nach günstigen Flugtickets.",
-                "Ihr Auto hat eine Panne auf der Autobahn.",
-                "Sie interessieren sich für die neuesten Entwicklungen bei Kraftstoffen.",
-                "Sie planen einen Urlaub in Deutschland.",
-                "Sie möchten Benzin sparen und suchen praktische Tipps.",
-                "Sie wollen wissen, wie das erste Auto aussah.", 
-                "Sie interessieren sich für die Geschichte der Automobilproduktion.",
-                "Sie möchten mehr über die Zukunft der Mobilität erfahren.",
-                "Sie suchen Informationen über Sicherheitseinrichtungen im Auto.",
-                "Sie wollen verstehen, warum Menschen überhaupt Autos besitzen."
+                {
+                    id: "11",
+                    text: "Ein Kollege hat seit ein paar Tagen Hautprobleme und weiß nicht, was die Ursache sein könnte.",
+                    correctAnswer: "J"
+                },
+                {
+                    id: "12",
+                    text: "Sie möchten etwas mit ihrer 7-jährigen Tochter Unternehmen.",
+                    correctAnswer: "K"
+                },
+                {
+                    id: "13",
+                    text: "Ihre Bekannte hat Fieber, möchte aber keine Tabletten nehmen.",
+                    correctAnswer: "A"
+                },
+                {
+                    id: "14",
+                    text: "Das Ehepaar, das under Ihnen wohnt, möchte etwas über Computer lernen.",
+                    correctAnswer: "E"
+                },
+                {
+                    id: "15",
+                    text: "Sie wollen Informationen über eine Zahnversicherung, ohne telefonieren zu müssen.",
+                    correctAnswer: "L"
+                },
+                {
+                    id: "16",
+                    text: "Ihre Nachbarin ist seit einer Woche erkältet. Natürliche Heilmittel haben nicht geholfen.",
+                    correctAnswer: "I"
+                },
+                {
+                    id: "17",
+                    text: "Sie bekommen Besuch und möchten am Sonntagvormittag etwas Interessantes Unternehmen.",
+                    correctAnswer: "C"
+                },
+                {
+                    id: "18",
+                    text: "Ihre Freundin interessiert sich für japanische Medizin. Sie suchen als Geburtstagsgeschenk ein Buch zu diesem Thema.",
+                    correctAnswer: "X"
+                },
+                {
+                    id: "19",
+                    text: "Sie haben ein Haustier, das im letzten Jahr viel Geld für den Tierarzt gekostet hat. Sie suchen eine Möglichkeit, Kosten zu sparen.",
+                    correctAnswer: "G"
+                },
+                {
+                    id: "20",
+                    text: "Sie möchten eine Versicherung für Ihren Neuwagen abschließen und sofort wissen, was es kostet.",
+                    correctAnswer: "F"
+                }
             ],
 
             ads: [
                 {
-                    id: "a",
-                    title: "Benzinsparen leicht gemacht",
-                    content: "Unsere Experten verraten Ihnen die besten Tricks, um Ihren Benzinverbrauch zu reduzieren. Von der richtigen Fahrweise über die optimale Reifenwahl bis hin zur regelmäßigen Wartung - wir zeigen Ihnen, wie Sie bares Geld sparen können. Besuchen Sie unseren Workshop oder laden Sie unseren kostenlosen Ratgeber herunter."
+                    id: "A",
+                    title: "Ratgeber 'Was bei Erkältung hilft'",
+                    content: "Erkältungen gehören leider zum Leben. Sie kommen immer wieder wie Frühling, Sommer, Herbst und Winter. Jetzt ist wieder Erkältungssaison. Hier sind einige wichtige Tipps. Bei Fieber: mindestens 2-3 Liter Tee oder Wasser pro Day trinken. Feuchte Wadenwickel können helfen. Ist das Fieber nach zwei Tagen nicht weg, unbedingt zum Arzt gehen. Bei Halsweh mit Salzwasser gurgeln (1 Glas Wasser ein Teelöffel Salze) oder Salbeitee trinken."
                 },
                 {
-                    id: "b", 
-                    title: "Erste Hilfe bei Autopannen",
-                    content: "Was tun, wenn das Auto streikt? Unser praktischer Leitfaden erklärt Schritt für Schritt das richtige Verhalten bei einer Panne. Von der Absicherung der Unfallstelle über den Notruf bis zur Kommunikation mit dem Pannendienst. Jetzt als PDF downloaden oder als praktische Broschüre bestellen."
+                    id: "B",
+                    title: "Wir zeigen den kosten die Zähne!",
+                    content: "Für alle, die noch viel vorhaben: Sichern Sie sich Top-Leistung zu Top-Konditionen! Genießen Sie den maßgeschneiderten privaten Versicherungsschutz für Zähne und die zuverlässige Sicherheit der WORMSER. Da lohnt sich der Wechsel: bis zum 31.12. handeln und dauerhaft von Beitrags-Vorteil profitieren. Ein Leben lang! Mehr Informationen kostenfrei under 0700/4332000."
                 },
                 {
-                    id: "c",
-                    title: "Die Geschichte des Automobils", 
-                    content: "Erleben Sie die faszinierende Entwicklung des Automobils von den Anfängen bis heute. In unserem Museum zeigen wir originale Fahrzeuge aus verschiedenen Epochen, technische Innovationen und die gesellschaftlichen Auswirkungen der Mobilität. Öffnungszeiten: Di-So 10-18 Uhr."
+                    id: "C",
+                    title: "Kochen und waschen um 1900",
+                    content: "Kochen und waschen um 1900 lautet das Thema, wenn Anita Krämer am kommenden Sonntag durch das Museum für Stadtgeschichte führt. Wie wurde damals gekocht und gewaschen? Wie haben unsere Ur- Ur- Großeltern damals gelebt? Kühlschrank, Mikrowelle und andere moderne Geräte gab es ja in jener Zeit noch nicht. Wie hat man Speisen haltbar gemacht? Wie wurde gebügelt? Auf all diese Fragen hat Frau Krämer eine Antwort. Auch Kinder sind herzlich willkommen. Sie werden auch erfahren, wie often Kinder damals gewaschen wurden. Wie sah es mit der Zahnpflege aus? Eine spannende und unterhaltsame Reise in die Zeit von vor 100 Jahren. Der Eintritt ist frei. Die Führung findet immer in Gruppen von 10 Personen ab 10 Uhr zu jeder vollen Stunde statt. Museum für Stadtgeschichte, Alte Waldstraße 11."
                 },
                 {
-                    id: "d",
-                    title: "Zukunft der Mobilität",
-                    content: "Elektroautos, autonomes Fahren, Carsharing - die Mobilität verändert sich rasant. Unser Forschungsinstitut untersucht die Trends von morgen. In unserer Vortragsreihe erfahren Sie, was uns in den nächsten Jahren erwartet. Nächster Termin: 15. November, 19 Uhr."
+                    id: "D",
+                    title: "Lesen, was gesund macht",
+                    content: "Jetzt in der neuen Apotheken-Revue: - Ohrprobleme: endlich wieder gut hören!- Hautpflege: gut geschützt durch jede Jahreszeit- Kampo: heilen mit traditioneller japanischer Medizin Diese und noch viele weitere interessante Themen rund um Ihre Gesundheit, plus Rätselspaß und tollen Gewinnspiel. Alle 14 Tage neu in Ihrer Apotheke. Kostenlos!."
                 },
                 {
-                    id: "e",
-                    title: "Sicherheit im Auto",
-                    content: "Von Airbags über ESP bis zu modernsten Assistenzsystemen - die Sicherheitstechnik im Auto hat sich rasant entwickelt. Unser Spezialist erklärt die verschiedenen Systeme und ihre Funktionen. Kostenlose Beratung jeden Donnerstag von 14-18 Uhr."
+                    id: "E",
+                    title: "Nachhilfe",
+                    content: "Wenn es um den Computer geht, wissen viele Kinder längst besser Bescheid als Erwachsene. Fast die Hälfte (47%) der 10- bis 19-Jährigen, in deren Haushalt ein Computer steht, wird vom Vater, Mutter, aber auch von Oma und Opa um Rat gefragt. In der Heinrich-Mann-Schule geben computerbegeisterte Schüler jetzt jeden Samstag von 10-12 Uhr sogar extra Nachhilfekurse für Erwachsene. Start ist am kommenden Samstag, der Schülerservice ist kostenlos! Interessierte Schülerinnen und Schüler, die ihre Erfahrungen weitergeben möchten, können auch gern vorbeikommen und mitmachen."
                 },
                 {
-                    id: "f",
-                    title: "Flugreisen günstig buchen",
-                    content: "Suchen Sie nach preiswerten Flugtickets? Unser Vergleichsportal durchsucht täglich Millionen Angebote von über 100 Airlines. Flexible Suchoptionen, Preisalarme und Experten-Tipps helfen Ihnen, das beste Angebot zu finden. Jetzt kostenlos registrieren und sparen!"
+                    id: "F",
+                    title: "Vienna CONEKT",
+                    content: "Versichern Sie Ihr Auto ab 35 Cent am Tag. Sparen Sie zusätzlich mit dem Bonusprogramm und bleiben Sie flexibel: Sie können jederzeit monatlich kündigen. Jetzt Beitrag direkt berechnen: vienna- conekt.de 018084-33556474 Mit der Vienna Conekt haben sie direkt mehr Vorteile: immer günstig, immer erreichbar (24-Stunden-Schaden-hotline), Ersatzwagengarantie!"
                 },
                 {
-                    id: "g",
-                    title: "Deutschland entdecken",
-                    content: "Planen Sie einen Urlaub in Deutschland? Unser Reiseführer präsentiert die schönsten Regionen, Städte und Sehenswürdigkeiten. Von der Nordsee bis zu den Alpen, von historischen Städten bis zu modernen Metropolen. Mit praktischen Tipps für Anreise, Unterkunft und Aktivitäten."
+                    id: "G",
+                    title: "Sofort-Versicherung",
+                    content: "Die Behandlung kommt vom Arzt. Die Fürsorge von ihnen. Die Finanzspritze von uns. Der umfassende Schutz bei Krankheit und Unfall. Auch liebe kann nicht verhindern, dass Ihr Haustier mal krank wird oder einen Unfall hat. Die dadurch notwendige Behandlung oder Operation kann schnell bis zu 1000 Euro kosten. Die neue care-securitas Tierschutzversicherung schützt Sie vor diesem Risiko. Kümmern Sie sich also um Ihren vierbeinigen Patienten - wir kümmern uns um die Kosten. Weitere Informationen under www.care-securitas.de."
                 },
                 {
-                    id: "h", 
-                    title: "Kraftstoffe der Zukunft",
-                    content: "Was kommt nach Benzin und Diesel? Unser Forschungszentrum testet alternative Kraftstoffe und Antriebskonzepte. Erfahren Sie mehr über Biokraftstoffe, Wasserstoff und synthetische Kraftstoffe. Besuchen Sie unsere Informationsveranstaltung am 20. November."
+                    id: "H",
+                    title: "Kindertheater: warum teilen schwer und betteln grausam ist",
+                    content: "Dass es viel einfacher ist, egoistisch zu sein als mitfühlend, weiß fast jeder. Dass aber auch Menschen, die Hilfe brauchen, der egoistisch sein können, zeig das Stück 'Der gute Mensch von Sezuan' von Bertolt Brecht. Und er erzählt es so, dass auch Kinder es verstehen können. Im Theater an der Parkaue wir das Stück am Sonntag um 14 Uhr in der Originalfassung gezeigt. Regisseurin Claudia Kipfel: 'Dieses Stück kann man so lassen, wie es ist. Kinder verstehen es sofort.' Karten: 0179-666453110, für Kinder ab 8 Jahren. Preise: 12 Euro, Kinder bis 12 Jahre: 7 Euro."
                 },
                 {
-                    id: "i",
-                    title: "Automobilproduktion im Wandel",
-                    content: "Von der Handarbeit zur vollautomatisierten Fertigung - die Produktion von Automobilen hat sich grundlegend verändert. Unsere Dokumentation zeigt die Meilensteine dieser Entwicklung. Mit exklusiven Einblicken in moderne Fabriken und Interviews mit Produktionsexperten."
+                    id: "I",
+                    title: "Omnitamol 500 Tabletten",
+                    content: "Wann nehmen Sie Omnitamol? Bei leichten bis mäßig starken Schmerzen. Bei Fieber und Erkältungen. Wichtig: Nehmen Sie Omnitamol nur 3-4 Tage ein, danach gehen Sie bitte unbedingt zu Ihrem Arzt oder Zahnarzt, wenn ihre Beschwerden sich nicht gebessert haben. What ist bei Kindern zu berücksichtigen? Omnitamol 500 Tabletten sind nicht geeignet für Kinder under 6 Jahren. Für Kinder bieten wir Ihnen gesonderte Präparate an. Fragen Sie Ihren Arzt oder Apotheker."
                 },
                 {
-                    id: "j",
-                    title: "Warum wir Auto fahren", 
-                    content: "Mobilität bedeutet Freiheit - diese These untersucht unsere soziologische Studie. Wir befragten tausende Autobesitzer zu ihren Motiven und Einstellungen. Die Ergebnisse zeigen faszinierende Einblicke in die psychologischen und gesellschaftlichen Aspekte des Autofahrens."
+                    id: "J",
+                    title: "Neue Kleidung kann krank machen",
+                    content: "Das neue Hemd passt prima zu Lieblingsjeans. Warum also nicht gleich anziehen? Doch Vorsicht: Neue Textilien können Allergien und Hautreizungen auslösen, vor allem bei Kindern und Menschen mit empfindlicher Haut. Grund: Viele Textilien enthalten Farbstoffe oder andere Chemikalien. Tipp: neue Kleidungsstücke vor dem ersten Tragen waschen. Für Babys und Kleinkinder ist Second-Hand-Kleidung eine gute Alternative, da die Schadstoffe schon ausgewaschen sind."
                 },
                 {
-                    id: "k",
-                    title: "Das erste Automobil",
-                    content: "Carl Benz' Patent-Motorwagen Nummer 1 revolutionierte die Welt. In unserer Sonderausstellung zeigen wir eine originalgetreue Nachbildung dieses historischen Fahrzeugs. Erfahren Sie mehr über die technischen Details und die Geschichte dieser bahnbrechenden Erfindung. Bis 30. Dezember im Technikmuseum."
+                    id: "K",
+                    title: "Erkältungszeit = Theaterzeit",
+                    content: "Zu einem hoffentlich husten- und schnupfenfreien Nachmittag für die ganze Familie lädt das Puppentheater Die Langohren am morgigen Sonntag um 15 Uhr ein. Das Ensemble um die professionelle Puppenspielerin Margit Hallmann spielt 'Hätschi, kleine Anna' und verspricht ein Theatererlebnis für Erwachsene und Kinder ab 6 Jahren. Die Veranstaltung ist fast ausverkauft. Es gibt noch Restkarten. Tickets under Telefon (0564) 5404420"
                 },
                 {
-                    id: "l",
-                    title: "Moderne Kraftstofftechnologien",
-                    content: "Die Entwicklung neuer Kraftstoffe schreitet voran. Unser Labor testet aktuell eine innovative Benzinmischung, die Verbrauch und Emissionen deutlich reduziert. Erste Ergebnisse zeigen vielversprechende Werte. Mehr Informationen in unserem Forschungsbericht, erhältlich ab Januar."
+                    id: "L",
+                    title: "Zusatz-Versicherung",
+                    content: "Liebe Leserin, lieber Leser, gepflegte Zähne hängen often von der finanziellen Möglichkeiten des Patienten ab. Mit der Krankenkasse alleine kommt often nicht weit. Mit der DENTAL VERSICHEUNG 100Plus von WarnstädtHyper verdoppeln Sie bei Zahnersatz den Zuschuss Ihrer gesetzlichen Krankenkasse. Keine Altersbegrenzung, günstige Monatsbeiträge. Nutzen Sie noch heute diese wichtigen Vorteile. Rufen sie an: 069-780086753 oder informieren Sie sich im Internet under www.neue-zaehne.eu. Wir schicken Ihnen die Unterlagen zu."
                 }
             ],
 
-            // الإجابات الصحيحة لـ Lesen Teil 3
-            teil3Answers: {
-                11: "f) Flugreisen günstig buchen",
-                12: "b) Erste Hilfe bei Autopannen", 
-                13: "h) Kraftstoffe der Zukunft",
-                14: "g) Deutschland entdecken",
-                15: "a) Benzinsparen leicht gemacht",
-                16: "k) Das erste Automobil",
-                17: "i) Automobilproduktion im Wandel",
-                18: "d) Zukunft der Mobilität",
-                19: "e) Sicherheit im Auto", 
-                20: "j) Warum wir Auto fahren"
-            },
-
             // Sprachbausteine Teil 1
             blankText1: {
-                content: `Sehr geehrte Damen und Herren,
+                content: `Sehr geehrte Frau Goronsksa,
 
-hiermit möchte ich mich __(21)__ die Stelle als Kfz-Mechatroniker bewerben, die Sie in der Frankfurter Allgemeinen Zeitung vom 15. März ausgeschrieben haben.
+vielen Dank für Ihre Anfrage vom 12. September bezüglich unserer Sprachurlaube in Deutschland und Österreich. Unsere Organisation underhält insgesamt zehn Schulen, acht ________ in Deutschland und zwei in Österreich, an ________ Sie ausnahmslos sowohl Ihr Deutsch verbessern als auch an einem anspruchsvollen Kultur- und Freizeitprogramm teilnehmen können.
 
-Ich __(22)__ 24 Jahre alt und habe meine Ausbildung vor einem Jahr erfolgreich abgeschlossen. Seitdem __(23)__ ich in einer freien Werkstatt in Mainz. Dort __(24)__ ich vor allem mit der Reparatur und Wartung von deutschen Automarken.
+Der Sprachunterricht findet in der Regel ________ fünf Tagen pro Woche statt, jeweils in der Zeit von 9 bis 13 und von 15 bis 17 Uhr. ________ ist kein Nachmittagsunterricht. Das Kursangebot umfasst alle Niveaustufen. Die Mindestdauer für einen Kurs beträgt zwei Wochen, Sie können jedoch auch four, six oder acht Wochen bleiben. Zu Beginn ________ wird ein Einstufungstest durchgeführt, mit ________ Hilfe wir herausfinden, welcher Kurs für Sie der geeignete ist. Nach Abschluss Ihres Aufenthaltes erhalten Sie eine Teilnahmebescheinigung. Selbstverständlich können Sie bei uns Tests auf allen Niveaustufen von A1 bis C1 ablegen und erhalten, ________ Sie den Test bestehen, ein international anerkanntes Zertifikat.
 
-Besonders interessiere ich mich __(25)__ die neuesten Entwicklungen in der Automobiltechnik. In meiner Freizeit __(26)__ ich mich regelmäßig über neue Technologien __(27)__ lese Fachzeitschriften und besuche Fortbildungen.
+Hinsichtlich unseres Kultur- und Freizeitprogramms gibt es verschiedene Wahlmöglichkeiten, die ________ vor Ort angeboten werden. Dazu zählen Ausflüge in die nähere Umgebung, Museums- und Theaterbesuche und vieles mehr.
 
-Ich __(28)__ sehr motiviert und teamfähig. In meinem __(29)__ Job habe ich gelernt, selbstständig zu arbeiten, aber auch im Team zu kooperieren.
+Was die Übernachtung am Kursort angeht, können Sie zwischen einer Unterbringung in einer Gastfamilie und der Unterkunft in einfachen Hotels wählen. Im Unterkunftspreis ________ jeweils Halbpension eingeschlossen, das heißt Frühstück und Mittagessen. Bitte teilen Sie uns mit, wenn Sie bestimmte Lebensmittel ausschließen, z. B. vegetarisch essen oder ________. Alles Weitere entnehmen Sie bitte dem beiliegenden Katalog. Bei weiteren Fragen sind wir gerne für Sie da.
 
-Über eine Einladung __(30)__ Vorstellungsgespräch würde ich mich sehr freuen.
-
-Mit freundlichen Grüßen
-Thomas Weber`,
-                answers: ["um", "bin", "arbeite", "befasse", "für", "informiere", "und", "bin", "aktuellen", "zum"]
+Mit freundlichen Grüßen Natalie Spengler`,
+                options: [
+                    ["davon", "dabei", "daraus"],      // 21
+                    ["denen", "die", "den"],           // 22
+                    ["an", "in", "durch"],             // 23
+                    ["Jeder Mittwoch", "Mittwochs", "Zum Mittwoch"], // 24
+                    ["jedem Kurs", "jeden Kurs", "jedes Kurses"], // 25
+                    ["der", "deren", "dessen"],        // 26
+                    ["obwohl", "wobei", "wenn"],       // 27
+                    ["Ihnen", "Sie", "Euch"],          // 28
+                    ["hat", "ist", "wird"],            // 29
+                    ["eine Diät halten müssen", "müssen eine Diät halten", "müssen halten eine Diät"] // 30
+                ],
+                answers: ["davon", "denen", "an", "Mittwochs", "jedes Kurses", "dessen", "wenn", "Ihnen", "ist", "eine Diät halten müssen"]
             },
 
             // Sprachbausteine Teil 2
             blankText2: {
-                content: `Die Wartung eines Autos ist __(31)__ wichtig für seine Langlebigkeit als für seine Sicherheit. Regelmäßige Inspektionen __(32)__ nicht nur teure Reparaturen vermeiden, sondern __(33)__ auch die Verkehrssicherheit erhöhen.
+                content: `Der Hund als intelligentes Wesen
 
-Viele Autobesitzer __(34)__ jedoch die Wartungstermine hinaus oder __(35)__ sie ganz aus. Dies __(36)__ oft zu größeren Schäden, __(37)__ rechtzeitig reagiert worden wäre.
+Hunde sind beliebte Begleiter vieler Menschen. Gerade in den Großstädten Deutschlands und Österreichs gibt es eine große Anzahl an Hundebesitzern, die das Tier als Freund, sometimes even als Helfer schätzen. Bislang galt die Auffassung, Hunde seien zwar treu, aber ________ ihre Intelligenz betrifft, eher mit geringen Begabungen ausgestattet. Doch ________ haben wissenschaftliche Experimente ________ der Universität Wien und am Max-Planck-Institut in Leipzig die Hundeehre gerettet und bewiesen: Der Hund ist ein außerordentlich intelligentes Lebewesen und kommt in einer Vielzahl von Strategien, die er anwendet, an menschliche Denkmuster durchaus heran.
 
-Moderne Fahrzeuge __(38)__ mit Warnsystemen ausgestattet, __(39)__ den Fahrer an anstehende Wartungen erinnern. Dennoch __(40)__ es wichtig, selbst ein Auge auf den Zustand des Fahrzeugs zu haben.`,
-                answers: ["sowohl", "können", "auch", "schieben", "lassen", "führt", "wenn", "sind", "die", "bleibt"]
+Friederike Range von der Universität Wien setzte ihren Hund vor einen Computer. Der Hund sollte ________ verschiedenen Bildern, von denen jeweils zwei auf dem Monitor zu sehen waren, das richtige auswählen und ________ entweder einen Menschen oder eine Landschaft erkennen. Der Monitor war mit einem Touchscreen ausgestattet, ________ der Hund mit der Schnauze auf das jeweils richtige Bild tippen konnte. Lag er richtig, bekam er ein Stück Trockenfutter als Belohnung, lag er falsch, wurde der Bildschirm kurz rot und zeigte gleich im Anschluss das nächste Bilderpaar.
+
+Das Ergebnis war verblüffing. Der Hund hing ________ mit einer ähnlicher Begeisterung und Ausdauer am Bildschirm wir sometimes Jugendlicher an der Playstation, sondern er war auch bei seinen Entscheidungen äußerst treffsicher. Die Leipziger Forscherin Juliane Kaminski setzte ihren Hund vor two Gefäße, von ________ eins Futter enthielt, das andere nicht. Danach schaute sie in die Richtung des Behälters, in dem das Fleischstück lag. Der Hund beobachtete sie dabei und interpretierte die menschliche Mimik richtig.
+
+Dasselbe Experiment mit dem gleichen Ergebnis mit Hundebabys wiederholt. Daraus schließen die Forscher in Leipzig, ________ bestimmte Muster menschlicher Gestik und Mimik von den Hunden very treffsicher interpretiert werden können und diese Fähigkeiten bereits seit langem bei Hunden vorhanden sein müssen. Man kann also mit Recht annehmen, dass die Interpretationsfähigkeit menschlicher Mimik und Gestik bei den Hunden genetisch verankert ist.
+
+Ähnliche Experimente mit Wölfen, die als die Vorfahren des Haushundes gelten, brachten ________ vergleichbaren Resultate. Ein weiterer Beweis also dafür, dass der Hund diese Fähigkeiten gelernt und verinnerlicht haben muss.`,
+                options: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
+                answers: ["KAUM", "DANN", "AN", "AUF", "VORBEI", "SOLLEN", "NICHT NUR", "DENEN", "DASS", "KEINE"]
             }
         };
 
@@ -1201,24 +1108,14 @@ Moderne Fahrzeuge __(38)__ mit Warnsystemen ausgestattet, __(39)__ den Fahrer an
             setupEventListeners();
         });
 
-        let currentLang = 'ar';
         let isDarkMode = false;
 
         function initializePage() {
             // تحميل الإعدادات المحفوظة
-            const savedLang = localStorage.getItem('language') || 'ar';
             const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-            const username = localStorage.getItem('username') || 'زائر';
-            const access = localStorage.getItem('access');
             
-            changeLanguage(savedLang);
             if (savedDarkMode) {
                 toggleDarkMode();
-            }
-            
-            // التحقق من حالة المستخدم
-            if (access === 'paid' && username) {
-                document.getElementById('premiumBadge').style.display = 'flex';
             }
             
             // تهيئة الأجزاء
@@ -1236,13 +1133,13 @@ Moderne Fahrzeuge __(38)__ mit Warnsystemen ausgestattet, __(39)__ den Fahrer an
             textsList.innerHTML = '';
 
             // إضافة العناوين
-            examData.headings.forEach((heading, index) => {
+            examData.headings.forEach((heading) => {
                 const headingItem = document.createElement('div');
                 headingItem.className = 'heading-item';
                 headingItem.innerHTML = `
-                    <strong>${String.fromCharCode(97 + index)})</strong> ${heading}
+                    <strong>${heading.id})</strong> ${heading.text}
                 `;
-                headingItem.dataset.letter = String.fromCharCode(97 + index);
+                headingItem.dataset.letter = heading.id;
                 headingsList.appendChild(headingItem);
             });
 
@@ -1251,10 +1148,10 @@ Moderne Fahrzeuge __(38)__ mit Warnsystemen ausgestattet, __(39)__ den Fahrer an
                 const textItem = document.createElement('div');
                 textItem.className = 'question';
                 textItem.innerHTML = `
-                    <h3>Text ${index + 1}</h3>
+                    <h3>Text ${String.fromCharCode(97 + index).toUpperCase()}</h3>
                     <div class="text-content">${text.content}</div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${text.correctAnswer}
+                        <strong>Correct answer:</strong> ${text.correctAnswerText}
                     </div>
                 `;
                 textsList.appendChild(textItem);
@@ -1265,14 +1162,14 @@ Moderne Fahrzeuge __(38)__ mit Warnsystemen ausgestattet, __(39)__ den Fahrer an
             const longText = document.getElementById('longText');
             const questionsList = document.getElementById('questionsList');
 
-            longText.innerHTML = `<div class="text-content">${examData.longText.content}</div>`;
+            longText.innerHTML = `<div class="text-content long-text">${examData.longText.content}</div>`;
 
             questionsList.innerHTML = '';
             examData.longText.questions.forEach((question, index) => {
                 const questionItem = document.createElement('div');
                 questionItem.className = 'question';
                 questionItem.innerHTML = `
-                    <h3>Frage ${index + 6}</h3>
+                    <h3>Question ${index + 6}</h3>
                     <p><strong>${question.question}</strong></p>
                     <div class="options">
                         ${question.options.map((option, optIndex) => `
@@ -1282,7 +1179,7 @@ Moderne Fahrzeuge __(38)__ mit Warnsystemen ausgestattet, __(39)__ den Fahrer an
                         `).join('')}
                     </div>
                     <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${question.correctAnswer}
+                        <strong>Correct answer:</strong> ${question.correctAnswer}
                     </div>
                 `;
                 questionsList.appendChild(questionItem);
@@ -1294,14 +1191,12 @@ Moderne Fahrzeuge __(38)__ mit Warnsystemen ausgestattet, __(39)__ den Fahrer an
             const adsList = document.getElementById('adsList');
 
             situationsList.innerHTML = '';
-            examData.situations.forEach((situation, index) => {
+            examData.situations.forEach((situation) => {
                 const situationItem = document.createElement('div');
                 situationItem.className = 'situation-item';
                 situationItem.innerHTML = `
-                    <strong>${index + 11})</strong> ${situation}
-                    <div class="answer hidden correct-answer">
-                        ${currentLang === 'ar' ? 'الإجابة الصحيحة:' : currentLang === 'de' ? 'Richtige Antwort:' : 'Correct answer:'} ${examData.teil3Answers[index + 11]}
-                    </div>
+                    <span class="situation-number">${situation.id})</span>
+                    ${situation.text}
                 `;
                 situationsList.appendChild(situationItem);
             });
@@ -1311,27 +1206,87 @@ Moderne Fahrzeuge __(38)__ mit Warnsystemen ausgestattet, __(39)__ den Fahrer an
                 const adItem = document.createElement('div');
                 adItem.className = 'ad-item';
                 adItem.innerHTML = `
-                    <strong>${ad.id.toUpperCase()}) ${ad.title}</strong>
-                    <p>${ad.content}</p>
+                    <span class="ad-letter">${ad.id})</span>
+                    <div class="ad-title">${ad.title}</div>
+                    <div class="text-content">${ad.content}</div>
+                    <div class="answer hidden correct-answer">
+                        <strong>Correct answer for:</strong> ${getSituationsForAd(ad.id)}
+                    </div>
                 `;
                 adsList.appendChild(adItem);
             });
         }
 
+        function getSituationsForAd(adId) {
+            const situations = examData.situations
+                .filter(s => s.correctAnswer === adId)
+                .map(s => s.id);
+            
+            if (situations.length === 0) {
+                return "No matching situation";
+            }
+            return situations.join(", ");
+        }
+
         function initializeSprachbausteine() {
             // Teil 1
+            const blankOptions1 = document.getElementById('blankOptions1');
             const blankText1 = document.getElementById('blankText1');
-            const textWithBlanks1 = examData.blankText1.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText1.answers[blankNumber - 21]}</span></span>`;
+            
+            // إنشاء اقتراحات لكل فراغ
+            blankOptions1.innerHTML = '<strong>Choose the correct word for each gap:</strong>';
+            examData.blankText1.options.forEach((options, index) => {
+                const row = document.createElement('div');
+                row.className = 'blank-option-row';
+                
+                const number = document.createElement('div');
+                number.className = 'blank-number';
+                number.textContent = `${21 + index}:`;
+                
+                const buttons = document.createElement('div');
+                buttons.className = 'option-buttons';
+                
+                options.forEach(option => {
+                    const button = document.createElement('span');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    buttons.appendChild(button);
+                });
+                
+                row.appendChild(number);
+                row.appendChild(buttons);
+                blankOptions1.appendChild(row);
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks1 = examData.blankText1.content;
+            examData.blankText1.answers.forEach((answer, index) => {
+                const blankNumber = 21 + index;
+                textWithBlanks1 = textWithBlanks1.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText1.innerHTML = textWithBlanks1;
 
             // Teil 2
+            const wordBank2 = document.getElementById('wordBank2');
             const blankText2 = document.getElementById('blankText2');
-            const textWithBlanks2 = examData.blankText2.content.replace(/__\(\d+\)__/g, match => {
-                const blankNumber = parseInt(match.match(/\d+/)[0]);
-                return `<span class="blank">______<span class="blank-answer hidden">${examData.blankText2.answers[blankNumber - 31]}</span></span>`;
+            
+            // إنشاء بنك الكلمات
+            wordBank2.innerHTML = '<strong>Words to choose from (each word can be used only once):</strong><br>';
+            examData.blankText2.options.forEach(word => {
+                const wordSpan = document.createElement('span');
+                wordSpan.className = 'bank-word';
+                wordSpan.textContent = word;
+                wordBank2.appendChild(wordSpan);
+                wordBank2.appendChild(document.createTextNode(' '));
+            });
+            
+            // إنشاء النص بالفراغات
+            let textWithBlanks2 = examData.blankText2.content;
+            examData.blankText2.answers.forEach((answer, index) => {
+                const blankNumber = 31 + index;
+                textWithBlanks2 = textWithBlanks2.replace('________', 
+                    `<span class="blank">______<span class="blank-answer hidden">${answer}</span></span>`);
             });
             blankText2.innerHTML = textWithBlanks2;
         }
@@ -1341,40 +1296,8 @@ Moderne Fahrzeuge __(38)__ mit Warnsystemen ausgestattet, __(39)__ den Fahrer an
             document.getElementById('showAnswers').addEventListener('click', showAllAnswers);
             document.getElementById('hideAnswers').addEventListener('click', hideAllAnswers);
             
-            // زر الرئيسية
-            document.getElementById('homeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html';
-            });
-            
             // زر الوضع الليلي
             document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-            
-            // زر المستخدم
-            document.getElementById('userBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#profile';
-            });
-            
-            // زر الاشتراك
-            document.getElementById('subscribeBtn').addEventListener('click', () => {
-                window.location.href = 'tahada.html#subscribe';
-            });
-            
-            // زر اللغة
-            document.getElementById('langBtn').addEventListener('click', toggleLangDropdown);
-            document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', () => {
-                    const lang = option.getAttribute('data-lang');
-                    changeLanguage(lang);
-                    document.getElementById('langDropdown').classList.remove('show');
-                });
-            });
-            
-            // إغلاق القوائم المنسدلة بالنقر خارجها
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.language-selector')) {
-                    document.getElementById('langDropdown').classList.remove('show');
-                }
-            });
         }
 
         function showAllAnswers() {
@@ -1384,10 +1307,10 @@ Moderne Fahrzeuge __(38)__ mit Warnsystemen ausgestattet, __(39)__ den Fahrer an
             document.querySelectorAll('.blank-answer').forEach(answer => {
                 answer.classList.remove('hidden');
             });
-            document.querySelectorAll('.heading-item').forEach((heading, index) => {
+            document.querySelectorAll('.heading-item').forEach(heading => {
                 const letter = heading.dataset.letter;
                 examData.texts.forEach(text => {
-                    if (text.correctAnswer === examData.headings[letter.charCodeAt(0) - 97]) {
+                    if (text.correctAnswer === letter) {
                         heading.classList.add('matched');
                     }
                 });
@@ -1417,29 +1340,6 @@ Moderne Fahrzeuge __(38)__ mit Warnsystemen ausgestattet, __(39)__ den Fahrer an
             } else {
                 themeIcon.className = 'fas fa-moon';
             }
-        }
-
-        function toggleLangDropdown() {
-            document.getElementById('langDropdown').classList.toggle('show');
-        }
-
-        function changeLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
-            
-            // تحديث جميع النصوص
-            Object.keys(t).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.textContent = t[key];
-                }
-            });
-            
-            localStorage.setItem('language', lang);
-            
-            // إعادة تهيئة المحتوى لترجمة الإجابات
-            initializeTeil1();
-            initializeTeil2();
         }
     </script>
 </body>
