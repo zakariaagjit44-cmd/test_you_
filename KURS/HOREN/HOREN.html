@@ -12,18 +12,14 @@
             --primary-dark: #1976D2;
             --secondary: #42A5F5;
             --secondary-dark: #1E88E5;
-            --success: #4CAF50;
-            --danger: #f44336;
-            --warning: #FFC107;
             --light: #E3F2FD;
             --dark: #0D47A1;
             --text: #333;
             --text-light: #546E7A;
             --white: #ffffff;
-            --shadow: 0 10px 30px rgba(33, 150, 243, 0.2);
-            --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
-            --radius: 25px;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow: 0 5px 20px rgba(33, 150, 243, 0.15);
+            --radius: 20px;
+            --transition: all 0.3s ease;
         }
 
         * {
@@ -47,278 +43,49 @@
             color: var(--light);
         }
 
-        /* Header Controls */
-        .header-controls {
+        /* Floating Elements - بسيطة */
+        .floating-elements {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            gap: 15px;
-            z-index: 1000;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .control-btn {
+        .floating-element {
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0.08;
+        }
+
+        .floating-headphones { top: 10%; left: 5%; }
+        .floating-microphone { top: 70%; right: 10%; }
+        .floating-sound { bottom: 15%; left: 10%; font-size: 3rem; }
+        .floating-clock { top: 20%; right: 5%; }
+
+        /* زر الوضع الليلي فقط */
+        .theme-toggle-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
             font-size: 1.3rem;
             cursor: pointer;
             box-shadow: var(--shadow);
-            border: none;
-            background: var(--primary);
-            color: var(--white);
-            position: relative;
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .control-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        .control-btn:hover::before {
-            width: 100%;
-            height: 100%;
-        }
-
-        .control-btn:hover {
-            transform: scale(1.15) rotate(5deg);
-            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.4);
-        }
-
-        /* Language Selector */
-        .language-selector {
-            position: fixed;
-            top: 20px;
-            left: 20px;
             z-index: 1000;
-        }
-
-        .lang-btn {
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid var(--primary);
-            border-radius: var(--radius);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--primary-dark);
-            box-shadow: var(--shadow);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            border: none;
-            width: auto;
-            height: auto;
-        }
-
-        .dark-mode .lang-btn {
-            background: rgba(13, 71, 161, 0.95);
-            color: var(--light);
-            border: 2px solid var(--secondary);
-        }
-
-        .lang-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-3px);
-        }
-
-        .lang-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            background: var(--white);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            display: none;
-            overflow: hidden;
-            min-width: 120px;
-            animation: dropdownSlide 0.3s ease;
-            z-index: 1001;
-        }
-
-        .dark-mode .lang-dropdown {
-            background: #1a237e;
-            color: var(--light);
-        }
-
-        @keyframes dropdownSlide {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .lang-dropdown.show {
-            display: block;
-        }
-
-        .lang-option {
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            color: var(--text);
-        }
-
-        .dark-mode .lang-option {
-            color: var(--light);
-            border-bottom: 1px solid #37474F;
-        }
-
-        .lang-option:hover {
-            background: #f5f5f5;
-            transform: translateX(5px);
-        }
-
-        .dark-mode .lang-option:hover {
-            background: #283593;
-        }
-
-        .lang-option:last-child {
-            border-bottom: none;
-        }
-
-        /* شارة المشترك الذهبية */
-        .premium-badge {
-            position: fixed;
-            top: 85px;
-            left: 20px;
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, #FFD700 0%, #FFA000 100%);
-            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
-            animation: rotate 4s linear infinite;
-            display: none;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* نافذة الدعم */
-        .support-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .support-modal-content {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            max-width: 400px;
-            width: 90%;
-            text-align: center;
-        }
-
-        .dark-mode .support-modal-content {
-            background: #1a237e;
-        }
-
-        .support-info {
-            margin: 1.5rem 0;
-        }
-
-        .support-item {
-            padding: 0.8rem;
-            margin: 0.5rem 0;
-            background: rgba(33, 150, 243, 0.1);
-            border-radius: 10px;
-            font-weight: 500;
-        }
-
-        .close-modal {
-            background: var(--primary);
-            color: var(--white);
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
             transition: var(--transition);
         }
 
-        .close-modal:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        /* نافذة الملاحظات */
-        .notes-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .notes-modal-content {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .dark-mode .notes-modal-content {
-            background: #1a237e;
-        }
-
-        .notes-textarea {
-            width: 100%;
-            height: 200px;
-            padding: 1rem;
-            border: 2px solid var(--primary);
-            border-radius: 10px;
-            font-family: 'Roboto', sans-serif;
-            font-size: 1rem;
-            resize: vertical;
-            margin: 1rem 0;
-        }
-
-        .dark-mode .notes-textarea {
-            background: #1a237e;
-            color: var(--light);
-            border-color: var(--secondary);
+        .theme-toggle-btn:hover {
+            transform: scale(1.1);
         }
 
         /* المحتوى الرئيسي */
@@ -327,199 +94,280 @@
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: var(--radius);
-            padding: 3rem;
+            padding: 2.5rem;
             box-shadow: var(--shadow);
             border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(15px);
-            margin-top: 6rem;
+            margin-top: 5rem;
             transition: var(--transition);
         }
 
-        .dark-mode .container {
+        body.dark-mode .container {
             background: rgba(13, 71, 161, 0.95);
             border: 1px solid rgba(227, 242, 253, 0.2);
         }
 
         .header {
             text-align: center;
-            margin-bottom: 3rem;
-            animation: contentSlideUp 0.8s ease;
-        }
-
-        @keyframes contentSlideUp {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
+            margin-bottom: 2.5rem;
         }
 
         .header h1 {
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             color: var(--primary-dark);
             margin-bottom: 1rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
 
-        .dark-mode .header h1 {
+        body.dark-mode .header h1 {
             color: #90CAF9;
         }
 
         .page-subtitle {
             font-size: 1.2rem;
             color: var(--text-light);
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
             line-height: 1.6;
         }
 
-        .dark-mode .page-subtitle {
+        body.dark-mode .page-subtitle {
             color: #B0BEC5;
         }
 
         /* أزرار التحكم */
-        .answer-controls {
-            position: sticky;
-            top: 0;
+        .controls {
             background: rgba(255, 255, 255, 0.95);
             padding: 1.5rem;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             margin-bottom: 2rem;
-            z-index: 100;
             display: flex;
             gap: 1rem;
             justify-content: center;
-            backdrop-filter: blur(15px);
             border: 1px solid rgba(33, 150, 243, 0.2);
         }
 
-        .dark-mode .answer-controls {
+        body.dark-mode .controls {
             background: rgba(13, 71, 161, 0.95);
             border: 1px solid rgba(227, 242, 253, 0.2);
         }
 
-        .answer-btn {
+        .control-btn {
             padding: 1rem 2rem;
             font-size: 1.1rem;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
-            position: relative;
-            overflow: hidden;
             border: none;
             display: flex;
             align-items: center;
             gap: 0.8rem;
             transition: var(--transition);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .answer-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: right 0.6s;
+        .control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
         }
 
-        .answer-btn:hover::before {
-            right: 100%;
-        }
-
-        .answer-btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-        }
-
-        .show-answers {
-            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+        .show-tips-btn {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
             color: var(--white);
         }
 
-        .hide-answers {
+        .hide-tips-btn {
             background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
             color: var(--white);
         }
 
-        /* التصميم الخاص بالأسئلة */
-        .section {
-            margin: 2rem 0;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(33, 150, 243, 0.2);
-            backdrop-filter: blur(10px);
-            transition: var(--transition);
+        /* قسم النصائح - مرتب وأنيق */
+        .tips-section {
+            margin: 2.5rem 0;
+            padding: 2.5rem;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 248, 255, 0.95) 100%);
+            border-radius: var(--radius);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 2px solid rgba(33, 150, 243, 0.3);
+            display: none;
         }
 
-        .dark-mode .section {
-            background: rgba(13, 71, 161, 0.9);
-            border: 1px solid rgba(227, 242, 253, 0.2);
+        body.dark-mode .tips-section {
+            background: linear-gradient(135deg, rgba(13, 71, 161, 0.95) 0%, rgba(30, 136, 229, 0.95) 100%);
+            border: 2px solid rgba(144, 202, 249, 0.3);
         }
 
-        .section-title {
+        .tips-section.show {
+            display: block;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tips-title {
             color: var(--primary-dark);
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 2px solid var(--primary);
-            font-weight: 600;
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--primary);
+            font-weight: 700;
         }
 
-        .dark-mode .section-title {
+        body.dark-mode .tips-title {
             color: #90CAF9;
         }
 
-        .question {
-            margin: 1.5rem 0;
-            padding: 1.5rem;
-            background: rgba(33, 150, 243, 0.05);
+        /* تصميم النصائح - أنيق ومرتب */
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .tip-card {
+            background: var(--white);
             border-radius: 15px;
-            border-right: 4px solid var(--primary);
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: 2px solid rgba(33, 150, 243, 0.1);
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
         }
 
-        .dark-mode .question {
-            background: rgba(33, 150, 243, 0.1);
+        body.dark-mode .tip-card {
+            background: rgba(26, 35, 126, 0.8);
+            border: 2px solid rgba(144, 202, 249, 0.2);
         }
 
-        /* الجداول */
+        .tip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            border-color: var(--primary);
+        }
+
+        .tip-number {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--primary);
+            color: var(--white);
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .tip-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        body.dark-mode .tip-icon {
+            color: #90CAF9;
+        }
+
+        .tip-card h3 {
+            color: var(--primary-dark);
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        body.dark-mode .tip-card h3 {
+            color: #90CAF9;
+        }
+
+        .tip-content {
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+
+        body.dark-mode .tip-content {
+            color: #E3F2FD;
+        }
+
+        .tip-example {
+            margin-top: 1.5rem;
+            padding: 1.2rem;
+            background: rgba(33, 150, 243, 0.08);
+            border-radius: 10px;
+            border-right: 3px solid var(--primary);
+        }
+
+        body.dark-mode .tip-example {
+            background: rgba(144, 202, 249, 0.15);
+            border-right: 3px solid #90CAF9;
+        }
+
+        .tip-example strong {
+            color: var(--primary-dark);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        body.dark-mode .tip-example strong {
+            color: #90CAF9;
+        }
+
+        /* جداول المحتوى */
         .tables-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
-            margin: 2rem 0;
+            margin: 2.5rem 0;
         }
 
         .table-wrapper {
             background: var(--white);
             border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e0e0e0;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            transition: var(--transition);
         }
 
-        .dark-mode .table-wrapper {
-            background: #1a237e;
-            border-color: #37474F;
+        body.dark-mode .table-wrapper {
+            background: rgba(26, 35, 126, 0.8);
+            border-color: rgba(144, 202, 249, 0.3);
+        }
+
+        .table-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
         }
 
         .table-title {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             color: var(--primary-dark);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             text-align: center;
-            font-weight: 600;
-            padding-bottom: 0.5rem;
+            font-weight: 700;
+            padding-bottom: 1rem;
             border-bottom: 2px solid var(--primary);
         }
 
-        .dark-mode .table-title {
+        body.dark-mode .table-title {
             color: #90CAF9;
         }
 
@@ -531,25 +379,26 @@
 
         .exam-table th,
         .exam-table td {
-            padding: 0.8rem;
+            padding: 1rem;
             text-align: right;
-            border-bottom: 1px solid #e0e0e0;
-            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(33, 150, 243, 0.2);
+            font-size: 1rem;
         }
 
-        .dark-mode .exam-table th,
-        .dark-mode .exam-table td {
-            border-bottom: 1px solid #37474F;
+        body.dark-mode .exam-table th,
+        body.dark-mode .exam-table td {
+            border-bottom: 1px solid rgba(144, 202, 249, 0.3);
         }
 
         .exam-table th {
             background: rgba(33, 150, 243, 0.1);
             font-weight: 600;
             color: var(--primary-dark);
+            font-size: 1.1rem;
         }
 
-        .dark-mode .exam-table th {
-            background: rgba(33, 150, 243, 0.2);
+        body.dark-mode .exam-table th {
+            background: rgba(144, 202, 249, 0.15);
             color: #90CAF9;
         }
 
@@ -557,104 +406,82 @@
             background: rgba(33, 150, 243, 0.05);
         }
 
-        .dark-mode .exam-table tr:hover {
-            background: rgba(33, 150, 243, 0.1);
+        body.dark-mode .exam-table tr:hover {
+            background: rgba(144, 202, 249, 0.1);
         }
 
-        .hidden {
-            display: none;
-        }
-
-        /* Floating Elements */
-        .floating-elements {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .floating-element {
-            position: absolute;
-            font-size: 3.5rem;
-            opacity: 0.15;
-            animation: float 8s ease-in-out infinite;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
-
-        .floating-headphones { top: 15%; left: 8%; animation-delay: 0s; }
-        .floating-microphone { top: 75%; right: 12%; animation-delay: 1s; }
-        .floating-sound { bottom: 20%; left: 15%; font-size: 4.5rem; animation-delay: 2s; }
-        .floating-clock { top: 25%; right: 8%; animation-delay: 3s; }
-        .floating-music { top: 65%; left: 5%; animation-delay: 4s; }
-        .floating-radio { bottom: 15%; right: 10%; animation-delay: 5s; }
-        .floating-volume { top: 45%; left: 12%; font-size: 2.8rem; animation-delay: 6s; }
-        .floating-play { top: 35%; right: 15%; animation-delay: 7s; }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
-            33% { transform: translateY(-30px) rotate(5deg) scale(1.1); }
-            66% { transform: translateY(-15px) rotate(-3deg) scale(0.95); }
-        }
-
+        /* التكيف مع الشاشات الصغيرة */
         @media (max-width: 768px) {
-            .header-controls {
-                top: 15px;
-                right: 15px;
-                gap: 10px;
-            }
-
-            .language-selector {
-                top: 15px;
-                left: 15px;
-            }
-
-            .premium-badge {
-                top: 70px;
-                left: 15px;
-                width: 35px;
-                height: 35px;
-            }
-
             .container {
-                padding: 2rem;
+                padding: 1.5rem;
                 margin: 1rem;
-                margin-top: 5rem;
+                margin-top: 4rem;
             }
 
             .header h1 {
                 font-size: 2rem;
             }
 
-            .tables-container {
-                grid-template-columns: 1fr;
+            .page-subtitle {
+                font-size: 1.1rem;
             }
 
-            .answer-controls {
-                top: 0;
+            .tables-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .tips-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .control-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .theme-toggle-btn {
+                top: 15px;
+                left: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
             }
         }
 
         @media (max-width: 480px) {
-            .header-controls {
-                gap: 8px;
+            .container {
+                padding: 1rem;
+                margin: 0.5rem;
+                margin-top: 3.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .page-subtitle {
+                font-size: 1rem;
+            }
+
+            .tips-section {
+                padding: 1.5rem;
+            }
+
+            .tip-card {
+                padding: 1.5rem;
             }
 
             .control-btn {
-                width: 45px;
-                height: 45px;
-                font-size: 1.1rem;
+                padding: 0.7rem 1.2rem;
+                font-size: 0.95rem;
             }
 
-            .lang-btn {
-                font-size: 0.8rem;
-                padding: 0.4rem 0.8rem;
-            }
-            
-            .exam-table th,
-            .exam-table td {
-                padding: 0.5rem;
-                font-size: 0.8rem;
+            .theme-toggle-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
             }
         }
     </style>
@@ -666,76 +493,101 @@
         <div class="floating-element floating-microphone">🎤</div>
         <div class="floating-element floating-sound">🔊</div>
         <div class="floating-element floating-clock">⏰</div>
-        <div class="floating-element floating-music">🎵</div>
-        <div class="floating-element floating-radio">📻</div>
-        <div class="floating-element floating-volume">🔊</div>
-        <div class="floating-element floating-play">▶️</div>
     </div>
 
-    <!-- أزرار التحكم العلوية -->
-    <div class="header-controls">
-        <button class="control-btn theme-toggle" id="themeToggle">🌙</button>
-        <button class="control-btn support-btn" id="supportBtn">💬</button>
-        <button class="control-btn notes-btn" id="notesBtn">📝</button>
-    </div>
-
-    <!-- محدد اللغة -->
-    <div class="language-selector">
-        <button class="lang-btn" id="langBtn">
-            <span>🇸🇦 العربية</span>
-        </button>
-        <div class="lang-dropdown" id="langDropdown">
-            <div class="lang-option" data-lang="ar">🇸🇦 العربية</div>
-            <div class="lang-option" data-lang="de">🇩🇪 Deutsch</div>
-            <div class="lang-option" data-lang="en">🇬🇧 English</div>
-        </div>
-    </div>
-
-    <!-- شارة المشترك الذهبية -->
-    <div class="premium-badge" id="premiumBadge">
-        <i class="fas fa-crown" style="color: #fff; font-size: 1.2rem;"></i>
-    </div>
-
-    <!-- نافذة الدعم -->
-    <div class="support-modal" id="supportModal">
-        <div class="support-modal-content">
-            <h2 id="supportTitle">اتصال الدعم</h2>
-            <div class="support-info">
-                <div class="support-item">+212 649-661976</div>
-                <div class="support-item">zakariaap.6@gmail.com</div>
-            </div>
-            <button class="close-modal" id="closeSupportModal">إغلاق</button>
-        </div>
-    </div>
-
-    <!-- نافذة الملاحظات -->
-    <div class="notes-modal" id="notesModal">
-        <div class="notes-modal-content">
-            <h2>ملاحظاتي</h2>
-            <textarea class="notes-textarea" id="notesTextarea" placeholder="اكتب ملاحظاتك هنا..."></textarea>
-            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                <button class="close-modal" id="saveNotes">حفظ</button>
-                <button class="close-modal" id="closeNotesModal">إغلاق</button>
-            </div>
-        </div>
-    </div>
+    <!-- زر الوضع الليلي فقط -->
+    <button class="theme-toggle-btn" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
 
     <div class="container">
         <div class="header">
-            <h1 id="pageTitle">Hörverstehen - test B2 Training</h1>
-            <p class="page-subtitle" id="pageSubtitle">تمرين الاستماع - الجزء الأول والثاني والثالث</p>
+            <h1>Hörverstehen - test B2 Training</h1>
+            <p class="page-subtitle">مرجع الأرقام للتدريب على الاستماع - المستوى B2</p>
         </div>
 
         <!-- أزرار التحكم -->
-        <div class="answer-controls">
-            <button class="answer-btn show-answers" id="showAnswers">
-                <i class="fas fa-check-circle"></i>
-                <span id="showAnswersText">إظهار التصحيح</span>
+        <div class="controls">
+            <button class="control-btn show-tips-btn" id="showTips">
+                <i class="fas fa-lightbulb"></i>
+                <span>إظهار النصائح</span>
             </button>
-            <button class="answer-btn hide-answers" id="hideAnswers">
+            <button class="control-btn hide-tips-btn" id="hideTips">
                 <i class="fas fa-eye-slash"></i>
-                <span id="hideAnswersText">إخفاء التصحيح</span>
+                <span>إخفاء النصائح</span>
             </button>
+        </div>
+
+        <!-- قسم النصائح - مرتب وأنيق -->
+        <div class="tips-section" id="tipsSection">
+            <h2 class="tips-title">نصائح ذهبية للتميز في اختبار الاستماع</h2>
+            
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-number">1</div>
+                    <div class="tip-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>تقنية الحفظ بالجمل الذكية</h3>
+                    <div class="tip-content">
+                        <p>بدلاً من حفظ الأرقام المجردة، حولها إلى جمل قصيرة أو قصص مصغرة. العقل البشري يتذكر الصور والقصص بشكل أفضل بكثير من الأرقام المجردة.</p>
+                        
+                        <div class="tip-example">
+                            <strong>مثال عملي:</strong>
+                            <p>لتذكر الرقم 345: تخيل "طائر (3) يحلق في (4) اتجاهات بحثاً عن (5) حبوب"</p>
+                            <p>لتذكر الرقم 1348: "طالب (1) يذاكر (3) مواد في (4) ساعات ويحصل على (8) درجة"</p>
+                        </div>
+                        
+                        <p style="margin-top: 1rem; color: var(--primary-dark); font-weight: 500;">
+                            <i class="fas fa-check-circle"></i> جرب هذه التقنية مع الأرقام الصعبة في الجداول أدناه!
+                        </p>
+                    </div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-number">2</div>
+                    <div class="tip-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>المراجعة الذكية المدروسة</h3>
+                    <div class="tip-content">
+                        <p>ابدأ مراجعة الأرقام قبل الامتحان بـ 10-20 يوماً، مع تطبيق نظام التكرار المتباعد:</p>
+                        
+                        <ul style="margin-right: 1.5rem; margin-top: 1rem; line-height: 1.8;">
+                            <li><strong>اليوم الأول:</strong> مراجعة شاملة لجميع الأرقام</li>
+                            <li><strong>اليوم الثالث:</strong اختبار سريع وتسجيل الأخطاء</li>
+                            <li><strong>اليوم السابع:</strong> مراجعة مركزة على الأرقام الصعبة</li>
+                            <li><strong>اليوم الخامس عشر:</strong> مراجعة نهائية شاملة</li>
+                        </ul>
+                        
+                        <p style="margin-top: 1rem;">هذا النظام العلمي يثبت المعلومات في الذاكرة طويلة المدى ويمنع النسيان تماماً.</p>
+                    </div>
+                </div>
+
+                <div class="tip-card">
+                    <div class="tip-number">3</div>
+                    <div class="tip-icon">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <h3>التدريب العميق قبل الامتحان</h3>
+                    <div class="tip-content">
+                        <p>قبل الامتحان بـ 3-5 أيام، اتبع برنامج تدريب مكثف:</p>
+                        
+                        <ol style="margin-right: 1.5rem; margin-top: 1rem; line-height: 1.8;">
+                            <li>استمع إلى التسجيلات مع النظر إلى الأرقام المقابلة</li>
+                            <li>اخفِ الأرقام وحاول تذكرها أثناء الاستماع</li>
+                            <li>سجل الأخطاء في دفتر خاص وراجعها بتركيز</li>
+                            <li>كرر الأجزاء الصعبة 3 مرات على الأقل</li>
+                            <li>قم بمحاكاة الامتحان في ظروف مشابهة</li>
+                        </ol>
+                        
+                        <div class="tip-example">
+                            <strong>نصيحة ذهبية:</strong>
+                            <p>التدريب تحت ظروف مشابهة للامتحان الحقيقي يقلل القلق بنسبة 60% ويزيد الثقة بالنفس.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- جداول المحتوى -->
@@ -840,403 +692,59 @@
                 </table>
             </div>
         </div>
-
-        <!-- Hörverstehen Teil 1 -->
-        <div class="section">
-            <h2 class="section-title" id="teil1Title">Hörverstehen Teil 1</h2>
-            <p id="teil1Description">Sie hören nun eine Nachrichtensendung. Dazu sollen Sie fünf Aufgaben lösen. Sie hören die Nachrichtensendung nur einmal. Entscheiden Sie beim Hören, ob die Aussagen 41-45 richtig oder falsch sind.</p>
-            
-            <div id="teil1Questions">
-                <!-- جميع أسئلة Teil 1 -->
-            </div>
-        </div>
-
-        <!-- Hörverstehen Teil 2 -->
-        <div class="section">
-            <h2 class="section-title" id="teil2Title">Hörverstehen Teil 2</h2>
-            <p id="teil2Description">Sie hören ein Rundfunk-Interview. Dazu sollen Sie zehn Aufgaben lösen. Sie hören dieses Interview nur einmal.</p>
-            
-            <div id="teil2Questions">
-                <!-- جميع أسئلة Teil 2 -->
-            </div>
-        </div>
-
-        <!-- Hörverstehen Teil 3 -->
-        <div class="section">
-            <h2 class="section-title" id="teil3Title">Hörverstehen Teil 3</h2>
-            <p id="teil3Description">Sie hören jetzt fünf kurze Texte. Dazu sollen Sie fünf Aufgaben lösen. Sie hören diese Ansage nur einmal.</p>
-            
-            <div id="teil3Questions">
-                <!-- جميع أسئلة Teil 3 -->
-            </div>
-        </div>
     </div>
 
     <script>
-        // الترجمات
-        const translations = {
-            ar: {
-                pageTitle: "Hörverstehen - test B2 Training",
-                pageSubtitle: "تمرين الاستماع - الجزء الأول والثاني والثالث",
-                showAnswersText: "إظهار التصحيح",
-                hideAnswersText: "إخفاء التصحيح",
-                teil1Title: "Hörverstehen Teil 1",
-                teil1Description: "Sie hören nun eine Nachrichtensendung. Dazu sollen Sie fünf Aufgaben lösen. Sie hören die Nachrichtensendung nur einmal. Entscheiden Sie beim Hören, ob die Aussagen 41-45 richtig oder falsch sind.",
-                teil2Title: "Hörverstehen Teil 2", 
-                teil2Description: "Sie hören ein Rundfunk-Interview. Dazu sollen Sie zehn Aufgaben lösen. Sie hören dieses Interview nur einmal.",
-                teil3Title: "Hörverstehen Teil 3",
-                teil3Description: "Sie hören jetzt fünf kurze Texte. Dazu sollen Sie fünf Aufgaben lösen. Sie hören هذه Ansage nur einmal.",
-                supportTitle: "اتصال الدعم"
-            },
-            de: {
-                pageTitle: "Hörverstehen - test B2 Training",
-                pageSubtitle: "Hörverstehen - Teil 1, 2 und 3",
-                showAnswersText: "Korrektur anzeigen",
-                hideAnswersText: "Korrektur ausblenden",
-                teil1Title: "Hörverstehen Teil 1",
-                teil1Description: "Sie hören nun eine Nachrichtensendung. Dazu sollen Sie fünf Aufgaben lösen. Sie hören die Nachrichtensendung nur einmal. Entscheiden Sie beim Hören, ob die Aussagen 41-45 richtig oder falsch sind.",
-                teil2Title: "Hörverstehen Teil 2",
-                teil2Description: "Sie hören ein Rundfunk-Interview. Dazu sollen Sie zehn Aufgaben lösen. Sie hören dieses Interview nur einmal.",
-                teil3Title: "Hörverstehen Teil 3",
-                teil3Description: "Sie hören jetzt fünf kurze Texte. Dazu sollen Sie fünf Aufgaben lösen. Sie hören diese Ansage nur einmal.",
-                supportTitle: "Support Kontakt"
-            },
-            en: {
-                pageTitle: "Listening Comprehension - test B2 Training",
-                pageSubtitle: "Listening Comprehension - Part 1, 2 and 3",
-                showAnswersText: "Show Correction",
-                hideAnswersText: "Hide Correction",
-                teil1Title: "Listening Part 1",
-                teil1Description: "You will now hear a news broadcast. You have to solve five tasks. You will hear the news broadcast only once. Decide while listening whether statements 41-45 are true or false.",
-                teil2Title: "Listening Part 2",
-                teil2Description: "You will hear a radio interview. You have to solve ten tasks. You will hear this interview only once.",
-                teil3Title: "Listening Part 3",
-                teil3Description: "You will now hear five short texts. You have to solve five tasks. You will hear this announcement only once.",
-                supportTitle: "Support Contact"
-            }
-        };
-
-        // جميع البيانات من PDF
-        const contentData = {
-            teil1: [
-                {
-                    id: "lufthansa-23",
-                    title: "Lufthansa 23 - الأساسي",
-                    questions: [
-                        { id: 41, text: "Die Deutsche Lufthansa hat ihre Führungsposition verloren." },
-                        { id: 42, text: "Ein Bonner Sportverein zeigt der Öffentlichkeit sein Angebot.", translation: "يعرض نادي رياضي في بون عرضه للجمهور" },
-                        { id: 43, text: "Die Rahmenbedingungen in deutschen Pflegeheimen bedürfen dringend einer Änderung.", translation: "الظروف العامة في دور التمريض الألمانية تحتاج إلى تغيير عاجل" },
-                        { id: 44, text: "Durch moderne Wärmedämmung könnten die Heizkosten deutlich reduziert werden." },
-                        { id: 45, text: "Das Nationale Olympische Komitee hat die Dopingsperre für Tom Sanders aufgehoben." }
-                    ]
-                },
-                {
-                    id: "lufthansa-23-mod",
-                    title: "Lufthansa 23 - المعدل", 
-                    questions: [
-                        { id: 41, text: "Deutsche Lufthansa hat ihre Führungsposition verloren." },
-                        { id: 42, text: "Ein Bonner Sportverein zeigt der Öffentlichkeit sein Angebot.", translation: "يعرض نادي رياضي في بون عرضه للجماهير" },
-                        { id: 43, text: "Die Situation im Pflegesektor ist es noch nicht verbessert.", translation: "لم يتحسن الوضع في قطاع الصحة بعد" },
-                        { id: 44, text: "Durch moderne Warmedämmung konnten die Heizkosten deutlich reduziert werden." },
-                        { id: 45, text: "Das Nationale Olympische Komitee hat die Dopingsperre für Tom Sanders aufgehoben." }
-                    ]
-                },
-                {
-                    id: "erdbeben-15",
-                    title: "Erdbeben 15",
-                    questions: [
-                        { id: 41, text: "Nach dem Erdbeben meldeten viele Bürger Schäden bei Polizei und Feuerwehr.", translation: "بعد الزلزال، أبلغ العديد من المواطنين عن وقوع أضرار عند الشرطة وفرقة الإطفاء" },
-                        { id: 42, text: "Eltern müssen sich neuerdings über den Impfschutz für ihre Kinder beraten lassen." },
-                        { id: 43, text: "Verkehrsbehinderungen drohen in den nächsten Wochen besonders samstags und sonntags." },
-                        { id: 44, text: "Pipelines tragen maßgeblich zur Umweltverschmutzung in Schleswig-Holstein bei." },
-                        { id: 45, text: "Anfang nächster Woche ist mit einer erhöhten Ozonbelastung zu rechnen.", translation: "بداية الأسبوع القادم يتوقع زيادة التلوث بالأوزون" }
-                    ]
-                },
-                {
-                    id: "bierkonsum-24",
-                    title: "Bierkonsum 24 - الأساسي",
-                    questions: [
-                        { id: 41, text: "Der Bierkonsum steigt um 10%." },
-                        { id: 42, text: "Deutsche Einkommen liegen im europäischen Vergleich nur im Mittelfeld.", translation: "في المقارنة الأوروبية - دخل الألمان فقط في الوسط" },
-                        { id: 43, text: "Es ist ein Ende des Bahnstreiks in Sicht." },
-                        { id: 44, text: "Es wird Gewalt von Fußballfans auch in Deutschland befürchtet.", translation: "يخشى العنف من قبل مشجعي كرة القدم في ألمانيا أيضاً" },
-                        { id: 45, text: "Die Leopoldina soll internationale Akademie werden." }
-                    ]
-                },
-                {
-                    id: "bierkonsum-24-mod",
-                    title: "Bierkonsum 24 - المعدل",
-                    questions: [
-                        { id: 41, text: "Der Verbrauch von Bier steigt um 10%." },
-                        { id: 42, text: "Deutsche Einkommen liegen im europäischen Vergleich nur im Mittelfeld.", translation: "في المقارنة الأوروبية دخل ألمانيا فقط في المتوسط" },
-                        { id: 43, text: "Es ist ein Ende des Bahnstreiks in Sicht." },
-                        { id: 44, text: "Man befürchtet auch in Deutschland Gewalt von Fußballfans.", translation: "هناك أيضاً مخاوف من العنف من قبل مشجعي كرة القدم في ألمانيا" },
-                        { id: 45, text: "Die Leopoldina eine internationale Akademie werden." }
-                    ]
-                }
-                // يمكن إضافة المزيد من الأسئلة هنا...
-            ],
-            teil2: [
-                {
-                    id: "mallorca-347",
-                    title: "Mallorca 347 - الأساسي", 
-                    questions: [
-                        { id: 46, text: "Die Zahl der deutschen Mallorca-Urlauber hat nur leicht abgenommen." },
-                        { id: 47, text: "Nach Professor Kirsch achten die Deutschen bei der Wahl ihrer Urlaubsreisen nicht besonders auf die Kosten." },
-                        { id: 48, text: "Einige Einheimische in Mallorca haben begonnen, sich gegen das Vordringen der deutschen Sprache zu wehren.", translation: "بعض السكان المحليين في مايوركا يدافعون عن أنفسهم ضد تقدم اللغة الألمانية" },
-                        { id: 49, text: "In Mallorca wird der Staat wegen der Umweltbelastungen zur Kasse bitten.", translation: "في مايوركا سيطالب الدولة بالمال بسبب التلوث البيئي" },
-                        { id: 50, text: "Viele Deutsche haben jetzt Rumänien und Ungarn als Reiseziel entdeckt." }
-                    ]
-                },
-                {
-                    id: "restaurant-13489", 
-                    title: "Im Restaurant 13489",
-                    questions: [
-                        { id: 46, text: "In dem Restaurant gab es einen Wasserschaden.", translation: "في المطعم كان هناك تلف/ضرر مائي" },
-                        { id: 47, text: "Anton Laurito ist bei seinen Großeltern aufgewachsen." },
-                        { id: 48, text: "Im Haus der Großeltern lebten auch andere Kinder.", translation: "كان أطفال آخرون يعيشون أيضاً في منزل الأجداد" },
-                        { id: 49, text: "Der Stress störte den Studiosus während der Ausbildung nicht.", translation: "الإجهاد لم يزعج ضيف الاستوديو خلال التدريب" },
-                        { id: 50, text: "Bei neuen Mitarbeitern legt Anton Laurito am meisten Wert auf viel Erfahrung." }
-                    ]
-                }
-                // يمكن إضافة المزيد من الأسئلة هنا...
-            ],
-            teil3: [
-                {
-                    id: "telefon",
-                    title: "Deutsch Telefon",
-                    questions: [
-                        { id: 56, text: "Bei der Deutschen Telefon KG bekommen Sie nur Auskunft zu Telefonapparaten dieses Unternehmens.", translation: "تحصل فقط على معلومات عن هواتف الشركة في الهاتف الألماني" },
-                        { id: 57, text: "Im Rahmen des „BR3 Aquarena Weekends\" in Starnberg können Sie jeden Abend ein Feuerwerk betrachten." },
-                        { id: 58, text: "Die Trierer Domorganisten spielen am 6. Juli in Michelstadt." },
-                        { id: 59, text: "Während des Musikfestivals Sound of Frankfurt ist die Benutzung der U- und S-Bahnen gebührenfrei." },
-                        { id: 60, text: "Sie haben eine ungültige Servicenummer gewählt und werden daher automatisch weiterverbunden." }
-                    ]
-                },
-                {
-                    id: "musikfestivals-13",
-                    title: "Musikfestivals 13",
-                    questions: [
-                        { id: 56, text: "Während des Musikfestivals \"Sound of Frankfurt\" gibt es Verbilligte Fahrkarten für alle Öffentlichen Verkehrsmittel.", translation: "خلال مهرجان الموسيقى في فرانكفورت يوجد تذاكر مخفضة للمواصلات" },
-                        { id: 57, text: "Sie gehen am 3. Juli ins Konzert, weil Sie die beiden Leipziger Klavier Virtuosen hören möchten." },
-                        { id: 58, text: "Am Wochenende können Sie sich in Nürnberg über die Bekämpfung von Krankheiten bei Apfelbäumen informieren.", translation: "يمكنك في عطلة نهاية الأسبوع الاستعلام في نورنبرغ عن مكافحة أمراض أشجار التفاح" },
-                        { id: 59, text: "Im Handwerksmuseum werden Kleidungsstücke ausgestellt." },
-                        { id: 60, text: "Die Autobahn \"A5\" ist zwischen Baden-Baden und Rastatt in beiden Richtungen gesperrt." }
-                    ]
-                }
-                // يمكن إضافة المزيد من الأسئلة هنا...
-            ]
-        };
-
-        // متغيرات التطبيق
-        let currentLanguage = 'ar';
-        let isDarkMode = false;
-        let answersVisible = false;
-
-        // تهيئة التطبيق
+        // تهيئة الصفحة
         document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
-            loadAllQuestions();
+            initializePage();
             setupEventListeners();
         });
 
-        // تهيئة التطبيق
-        function initializeApp() {
-            const savedLanguage = localStorage.getItem('language');
-            const savedDarkMode = localStorage.getItem('darkMode');
-            const savedNotes = localStorage.getItem('userNotes');
+        let isDarkMode = false;
+        let tipsVisible = false;
 
-            if (savedLanguage) {
-                currentLanguage = savedLanguage;
-                updateLanguage();
-            }
-
-            if (savedDarkMode === 'true') {
-                isDarkMode = true;
-                document.body.classList.add('dark-mode');
-                document.getElementById('themeToggle').textContent = '☀️';
-            }
-
-            if (savedNotes) {
-                document.getElementById('notesTextarea').value = savedNotes;
+        function initializePage() {
+            // تحميل إعدادات الوضع الليلي
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (savedDarkMode) {
+                toggleDarkMode();
             }
         }
 
-        // تحميل جميع الأسئلة
-        function loadAllQuestions() {
-            loadTeil1Questions();
-            loadTeil2Questions();
-            loadTeil3Questions();
-        }
-
-        // تحميل أسئلة الجزء الأول
-        function loadTeil1Questions() {
-            const container = document.getElementById('teil1Questions');
-            container.innerHTML = '';
-
-            contentData.teil1.forEach(section => {
-                const sectionElement = document.createElement('div');
-                sectionElement.className = 'question';
-                sectionElement.innerHTML = `
-                    <h3>${section.title}</h3>
-                    ${section.questions.map(q => `
-                        <div class="text-content">
-                            <p><strong>${q.id}) ${q.text}</strong></p>
-                            ${q.translation ? `<p style="color: var(--text-light); margin-top: 0.5rem;">${q.translation}</p>` : ''}
-                        </div>
-                    `).join('')}
-                `;
-                container.appendChild(sectionElement);
-            });
-        }
-
-        // تحميل أسئلة الجزء الثاني
-        function loadTeil2Questions() {
-            const container = document.getElementById('teil2Questions');
-            container.innerHTML = '';
-
-            contentData.teil2.forEach(section => {
-                const sectionElement = document.createElement('div');
-                sectionElement.className = 'question';
-                sectionElement.innerHTML = `
-                    <h3>${section.title}</h3>
-                    ${section.questions.map(q => `
-                        <div class="text-content">
-                            <p><strong>${q.id}) ${q.text}</strong></p>
-                            ${q.translation ? `<p style="color: var(--text-light); margin-top: 0.5rem;">${q.translation}</p>` : ''}
-                        </div>
-                    `).join('')}
-                `;
-                container.appendChild(sectionElement);
-            });
-        }
-
-        // تحميل أسئلة الجزء الثالث
-        function loadTeil3Questions() {
-            const container = document.getElementById('teil3Questions');
-            container.innerHTML = '';
-
-            contentData.teil3.forEach(section => {
-                const sectionElement = document.createElement('div');
-                sectionElement.className = 'question';
-                sectionElement.innerHTML = `
-                    <h3>${section.title}</h3>
-                    ${section.questions.map(q => `
-                        <div class="text-content">
-                            <p><strong>${q.id}) ${q.text}</strong></p>
-                            ${q.translation ? `<p style="color: var(--text-light); margin-top: 0.5rem;">${q.translation}</p>` : ''}
-                        </div>
-                    `).join('')}
-                `;
-                container.appendChild(sectionElement);
-            });
-        }
-
-        // إعداد مستمعي الأحداث
         function setupEventListeners() {
+            // زر الوضع الليلي
             document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
-            document.getElementById('langBtn').addEventListener('click', toggleLanguageDropdown);
-            document.querySelectorAll('.lang-option').forEach(option => {
-                option.addEventListener('click', changeLanguage);
-            });
-
-            document.getElementById('showAnswers').addEventListener('click', showAnswers);
-            document.getElementById('hideAnswers').addEventListener('click', hideAnswers);
-
-            document.getElementById('supportBtn').addEventListener('click', showSupportModal);
-            document.getElementById('closeSupportModal').addEventListener('click', hideSupportModal);
-
-            document.getElementById('notesBtn').addEventListener('click', showNotesModal);
-            document.getElementById('closeNotesModal').addEventListener('click', hideNotesModal);
-            document.getElementById('saveNotes').addEventListener('click', saveNotes);
-
-            document.addEventListener('click', function(event) {
-                if (!event.target.closest('.language-selector')) {
-                    document.getElementById('langDropdown').classList.remove('show');
-                }
-            });
+            
+            // أزرار النصائح
+            document.getElementById('showTips').addEventListener('click', showTips);
+            document.getElementById('hideTips').addEventListener('click', hideTips);
         }
 
-        // تبديل الوضع الليلي
         function toggleDarkMode() {
             isDarkMode = !isDarkMode;
-            document.body.classList.toggle('dark-mode');
-            document.getElementById('themeToggle').textContent = isDarkMode ? '☀️' : '🌙';
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            
+            // تغيير الأيقونة
+            const themeIcon = document.querySelector('#themeToggle i');
+            if (isDarkMode) {
+                themeIcon.className = 'fas fa-sun';
+            } else {
+                themeIcon.className = 'fas fa-moon';
+            }
+            
+            // حفظ الإعداد
             localStorage.setItem('darkMode', isDarkMode);
         }
 
-        // تبديل قائمة اللغة
-        function toggleLanguageDropdown() {
-            document.getElementById('langDropdown').classList.toggle('show');
+        function showTips() {
+            tipsVisible = true;
+            document.getElementById('tipsSection').classList.add('show');
         }
 
-        // تغيير اللغة
-        function changeLanguage(event) {
-            const selectedLang = event.target.dataset.lang;
-            if (selectedLang && translations[selectedLang]) {
-                currentLanguage = selectedLang;
-                updateLanguage();
-                document.getElementById('langDropdown').classList.remove('show');
-                localStorage.setItem('language', currentLanguage);
-            }
-        }
-
-        // تحديث اللغة
-        function updateLanguage() {
-            const t = translations[currentLanguage];
-            
-            document.getElementById('pageTitle').textContent = t.pageTitle;
-            document.getElementById('pageSubtitle').textContent = t.pageSubtitle;
-            document.getElementById('showAnswersText').textContent = t.showAnswersText;
-            document.getElementById('hideAnswersText').textContent = t.hideAnswersText;
-            document.getElementById('teil1Title').textContent = t.teil1Title;
-            document.getElementById('teil1Description').textContent = t.teil1Description;
-            document.getElementById('teil2Title').textContent = t.teil2Title;
-            document.getElementById('teil2Description').textContent = t.teil2Description;
-            document.getElementById('teil3Title').textContent = t.teil3Title;
-            document.getElementById('teil3Description').textContent = t.teil3Description;
-            document.getElementById('supportTitle').textContent = t.supportTitle;
-            
-            document.getElementById('langBtn').innerHTML = `<span>${currentLanguage === 'ar' ? '🇸🇦 العربية' : currentLanguage === 'de' ? '🇩🇪 Deutsch' : '🇬🇧 English'}</span>`;
-        }
-
-        // إظهار التصحيح
-        function showAnswers() {
-            answersVisible = true;
-            // تم إخفاء التصحيح حسب الطلب
-        }
-
-        // إخفاء التصحيح
-        function hideAnswers() {
-            answersVisible = false;
-            // تم إخفاء التصحيح حسب الطلب
-        }
-
-        // إظهار نافذة الدعم
-        function showSupportModal() {
-            document.getElementById('supportModal').style.display = 'flex';
-        }
-
-        // إخفاء نافذة الدعم
-        function hideSupportModal() {
-            document.getElementById('supportModal').style.display = 'none';
-        }
-
-        // إظهار نافذة الملاحظات
-        function showNotesModal() {
-            document.getElementById('notesModal').style.display = 'flex';
-        }
-
-        // إخفاء نافذة الملاحظات
-        function hideNotesModal() {
-            document.getElementById('notesModal').style.display = 'none';
-        }
-
-        // حفظ الملاحظات
-        function saveNotes() {
-            const notes = document.getElementById('notesTextarea').value;
-            localStorage.setItem('userNotes', notes);
-            alert('تم حفظ الملاحظات بنجاح!');
+        function hideTips() {
+            tipsVisible = false;
+            document.getElementById('tipsSection').classList.remove('show');
         }
     </script>
 </body>
