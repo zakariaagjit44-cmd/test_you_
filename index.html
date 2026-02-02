@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TEST B2 Training - نظام المصادقة</title>
+    <title>B2 Deutsch Training - نظام المصادقة</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -362,6 +362,29 @@
             color: #90CAF9;
         }
 
+        .whatsapp-activation-btn {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin: 1rem auto;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            width: 100%;
+        }
+
+        .whatsapp-activation-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+        }
+
         .close-modal {
             background: var(--primary);
             color: var(--white);
@@ -371,6 +394,8 @@
             cursor: pointer;
             font-weight: 600;
             transition: var(--transition);
+            width: 100%;
+            margin-top: 1rem;
         }
 
         .close-modal:hover {
@@ -1603,8 +1628,13 @@
     <div class="phone-modal" id="phoneModal">
         <div class="phone-modal-content">
             <h2 id="phoneModalTitle">تفعيل الاشتراك</h2>
-            <p id="phoneModalText">لتفعيل الاشتراك يرجى التواصل على الرقم التالي:</p>
+            <p id="phoneModalText">لتفعيل الاشتراك وإكمال عملية الدفع، يرجى التواصل معنا عبر واتساب:</p>
             <div class="phone-number">+212 649-661976</div>
+            <button class="whatsapp-activation-btn" id="whatsappActivationBtn">
+                <i class="fab fa-whatsapp"></i>
+                <span>التواصل عبر واتساب لتفعيل الاشتراك</span>
+            </button>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-light);">سنقوم بتوجيهك لإكمال عملية الدفع وتفعيل الاشتراك الخاص بك</p>
             <button class="close-modal" id="closePhoneModal">إغلاق</button>
         </div>
     </div>
@@ -1690,7 +1720,7 @@
     <div id="loginPage" class="page active">
         <div class="login-container">
             <div class="login-content">
-                <h1 id="loginTitle">TEST B2 Training - نظام المصادقة</h1>
+                <h1 id="loginTitle">B2 Deutsch Training - نظام المصادقة</h1>
                 <p class="login-subtitle" id="loginSubtitle">سجّل دخولك للبدء في التدريب أو جرّب كضيف</p>
                 
                 <div class="login-form">
@@ -1768,7 +1798,7 @@
     <div id="menuPage" class="page">
         <div class="menu-container">
             <div class="header">
-                <h1 id="menuTitle">TEST B2 Training Portal</h1>
+                <h1 id="menuTitle">B2 Deutsch Training Portal</h1>
                 <p class="page-subtitle" id="menuSubtitle">اختر مجال تعلمك وابدأ التحضير للاختبار</p>
                 <button class="back-btn" id="backToLogin">
                     <i class="fas fa-sign-out-alt"></i>
@@ -1879,7 +1909,7 @@
         <div class="exams-container">
             <button class="back-to-kurs" id="backFromSchreiben">
                 <i class="fas fa-arrow-right"></i>
-                                <span id="backSchreibenText">العودة إلى KURS</span>
+                <span id="backSchreibenText">العودة إلى KURS</span>
             </button>
             <div class="header">
                 <h1 id="schreibenPageTitle">Schreiben - الكتابة</h1>
@@ -2095,7 +2125,7 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script type="module">
-        // تكوين Supabase - استخدم المفاتيح القديمة
+        // تكوين Supabase
         const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
         
@@ -2145,10 +2175,66 @@
             "KINDER HENDY.pdf", "DROGEN.pdf", "GELD.pdf", "teil1.pdf", "teil2.pdf", "teil3.pdf"
         ];
 
+        // قاموس الترجمة المصحح
+        const examTranslations = {
+            "ALBI2A": { de: "Umwelt", ar: "البيئة" },
+            "ALPEN": { de: "Alpen", ar: "جبال الألب" },
+            "BATATA": { de: "Kartoffel", ar: "البطاطا" },
+            "BILDER": { de: "Bilder", ar: "الصور" },
+            "BINZIL": { de: "Benzin", ar: "البنزين" },
+            "GRUND SCHULE": { de: "Grundschule", ar: "المدرسة الابتدائية" },
+            "HACHARAT": { de: "Insekten", ar: "الحشرات" },
+            "KELLNER": { de: "Kellner", ar: "النادل" },
+            "L9AHWA": { de: "Kaffee", ar: "القهوة" },
+            "LHALWA": { de: "Süßigkeiten", ar: "الحلوى" },
+            "LI9A7": { de: "Impfstoff", ar: "اللقاح" },
+            "LICHT": { de: "Licht", ar: "الضوء" },
+            "LIMON": { de: "Limonade", ar: "عصير الليمون" },
+            "MOBARMIJIN": { de: "Programmierer", ar: "المبرمجين" },
+            "NA7L": { de: "Bienen", ar: "النحل" },
+            "NAMSA": { de: "Österreich", ar: "النمسا" },
+            "SCHLAFZUG": { de: "Schlafwagen", ar: "عربة النوم" },
+            "SPORT IST GESUND": { de: "Sport ist gesund", ar: "الرياضة صحية" },
+            "TANZKURZ": { de: "Tanzkurs", ar: "دورة الرقص" },
+            "TRANPOLIN": { de: "Trampolin", ar: "الترامبولين" },
+            "INSEL": { de: "Insel", ar: "الجزيرة" },
+            "L2AL3AB": { de: "Spiele", ar: "الألعاب" },
+            "KINDER HENDY": { de: "Kinderhandy", ar: "هاتف الأطفال" },
+            "DROGEN": { de: "Drogen", ar: "المخدرات" },
+            "GELD": { de: "Geld", ar: "المال" },
+            "AL3AB": { de: "Spiele", ar: "الألعاب" },
+            "BENZIL": { de: "Benzin", ar: "البنزين" },
+            "HATIF L2ATFAL": { de: "Kindertelefon", ar: "هاتف الأطفال" },
+            "INTIKHABAT": { de: "Wahlen", ar: "الانتخابات" },
+            "L7ALWA": { de: "Süßigkeiten", ar: "الحلوى" },
+            "MOKHADIRAT": { de: "Drogen", ar: "المخدرات" },
+            "TRAMPOLIN": { de: "Trampolin", ar: "الترامبولين" },
+            "HOREN": { de: "Hören", ar: "الاستماع" },
+            "HOREN1": { de: "Hören 1", ar: "الاستماع 1" },
+            "SCHREIBEN": { de: "Schreiben", ar: "الكتابة" }
+        };
+
+        // دالة لاستخراج اسم الملف بدون الامتداد
+        function getExamName(filename) {
+            return filename.replace('.html', '').replace('.pdf', '');
+        }
+
+        // دالة للحصول على الترجمة الألمانية للامتحان
+        function getGermanTranslation(filename) {
+            const examName = getExamName(filename);
+            return examTranslations[examName]?.de || examName;
+        }
+
+        // دالة للحصول على الوصف العربي للامتحان
+        function getArabicDescription(filename) {
+            const examName = getExamName(filename);
+            return examTranslations[examName]?.ar || examName;
+        }
+
         // الترجمات
         const translations = {
             ar: {
-                loginTitle: "TEST B2 Training - نظام المصادقة",
+                loginTitle: "B2 Deutsch Training - نظام المصادقة",
                 loginSubtitle: "سجّل دخولك للبدء في التدريب أو جرّب كضيف",
                 loginBtnText: "تسجيل الدخول",
                 signupBtnText: "إنشاء حساب جديد",
@@ -2157,7 +2243,7 @@
                 signupSubtitle: "املأ المعلومات التالية لإنشاء حسابك",
                 createAccountText: "إنشاء الحساب",
                 backToLoginText: "العودة لتسجيل الدخول",
-                menuTitle: "TEST B2 Training Portal",
+                menuTitle: "B2 Deutsch Training Portal",
                 menuSubtitle: "اختر مجال تعلمك وابدأ التحضير للاختبار",
                 kursTitle: "KURS",
                 kursDescription: "الدروس التفاعلية والتدريبات المصنفة حسب المستوى",
@@ -2224,7 +2310,7 @@
                 supportTitle: "اتصال الدعم",
                 supportText: "للأسئلة أو المشاكل أو لشراء النسخة الكاملة يرجى الاتصال بـ:",
                 phoneModalTitle: "تفعيل الاشتراك",
-                phoneModalText: "لتفعيل الاشتراك يرجى التواصل على الرقم التالي:",
+                phoneModalText: "لتفعيل الاشتراك وإكمال عملية الدفع، يرجى التواصل معنا عبر واتساب:",
                 trialBannerText: "النسخة التجريبية - متبقي:",
                 waitingTitle: "بانتظار مراجعة طلبك",
                 waitingText: "تم استقبال طلب التسجيل الخاص بك. نعمل الآن على مراجعة الطلب والتحقق من المعلومات.",
@@ -2233,7 +2319,7 @@
                 editProfileTitle: "تعديل الملف الشخصي"
             },
             en: {
-                loginTitle: "TEST B2 Training - Authentication System",
+                loginTitle: "B2 Deutsch Training - Authentication System",
                 loginSubtitle: "Log in to start training or try as a guest",
                 loginBtnText: "Login",
                 signupBtnText: "Create New Account",
@@ -2242,7 +2328,7 @@
                 signupSubtitle: "Fill in the following information to create your account",
                 createAccountText: "Create Account",
                 backToLoginText: "Back to Login",
-                menuTitle: "TEST B2 Training Portal",
+                menuTitle: "B2 Deutsch Training Portal",
                 menuSubtitle: "Choose your learning area and start preparing for the exam",
                 kursTitle: "KURS",
                 kursDescription: "Interactive lessons and classified exercises by level",
@@ -2309,7 +2395,7 @@
                 supportTitle: "Support Contact",
                 supportText: "For questions, problems, or to purchase the full version, please contact:",
                 phoneModalTitle: "Subscription Activation",
-                phoneModalText: "To activate subscription, please contact the following number:",
+                phoneModalText: "To activate subscription and complete payment, please contact us via WhatsApp:",
                 trialBannerText: "Trial Version - Remaining:",
                 waitingTitle: "Waiting for Review",
                 waitingText: "Your registration request has been received. We are now reviewing the request and verifying the information.",
@@ -2318,7 +2404,7 @@
                 editProfileTitle: "Edit Profile"
             },
             de: {
-                loginTitle: "TEST B2 Training - Authentifizierungssystem",
+                loginTitle: "B2 Deutsch Training - Authentifizierungssystem",
                 loginSubtitle: "Melden Sie sich an, um mit dem Training zu beginnen, oder probieren Sie es als Gast",
                 loginBtnText: "Anmelden",
                 signupBtnText: "Neues Konto erstellen",
@@ -2327,7 +2413,7 @@
                 signupSubtitle: "Füllen Sie die folgenden Informationen aus, um Ihr Konto zu erstellen",
                 createAccountText: "Konto erstellen",
                 backToLoginText: "Zurück zur Anmeldung",
-                menuTitle: "TEST B2 Training Portal",
+                menuTitle: "B2 Deutsch Training Portal",
                 menuSubtitle: "Wählen Sie Ihren Lernbereich und beginnen Sie mit der Prüfungsvorbereitung",
                 kursTitle: "KURS",
                 kursDescription: "Interaktive Lektionen und nach Level klassifizierte Übungen",
@@ -2394,7 +2480,7 @@
                 supportTitle: "Support-Kontakt",
                 supportText: "Bei Fragen, Problemen oder zum Kauf der Vollversion wenden Sie sich bitte an:",
                 phoneModalTitle: "Abo-Aktivierung",
-                phoneModalText: "Um das Abonnement zu aktivieren, wenden Sie sich bitte an die folgende Nummer:",
+                phoneModalText: "Um das Abonnement zu aktivieren und die Zahlung abzuschließen, wenden Sie sich bitte über WhatsApp an uns:",
                 trialBannerText: "Testversion - Verbleibend:",
                 waitingTitle: "Warten auf Überprüfung",
                 waitingText: "Ihre Registrierungsanfrage wurde empfangen. Wir überprüfen nun die Anfrage und die Informationen.",
@@ -2475,6 +2561,7 @@
             const closePhoneModal = document.getElementById('closePhoneModal');
             const closeSupportModal = document.getElementById('closeSupportModal');
             const subscriptionActivation = document.getElementById('subscriptionActivation');
+            const whatsappActivationBtn = document.getElementById('whatsappActivationBtn');
 
             // محدد اللغة
             const langBtn = document.getElementById('langBtn');
@@ -2506,7 +2593,7 @@
             let trialExpiry = new Date();
             let isGuest = false;
             let examDate = new Date();
-            examDate.setMonth(examDate.getMonth() + 1); // افتراضي: بعد شهر من الآن
+            examDate.setMonth(examDate.getMonth() + 1);
             
             // تحميل وقت انتهاء التجربة من localStorage
             const savedTrialExpiry = localStorage.getItem('trialExpiry');
@@ -2525,14 +2612,26 @@
                 localStorage.setItem('examDate', examDate.toISOString());
             }
 
-            // ========== التعديلات الجديدة ==========
-            // دالة لتسجيل الدخول مع تتبع الجلسات والأجهزة
+            // ========== وظيفة تسجيل الدخول محسنة ==========
             async function handleLogin() {
                 const email = emailInput.value.trim();
                 const password = passwordInput.value;
                 
-                if (!email || !password) {
-                    showToast('يرجى إدخال البريد الإلكتروني وكلمة المرور', 'error');
+                // التحقق من صحة الإدخال
+                if (!email) {
+                    showToast('يرجى إدخال البريد الإلكتروني', 'error');
+                    return;
+                }
+                
+                if (!password) {
+                    showToast('يرجى إدخال كلمة المرور', 'error');
+                    return;
+                }
+                
+                // التحقق من صحة تنسيق البريد الإلكتروني
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showToast('البريد الإلكتروني غير صحيح', 'error');
                     return;
                 }
                 
@@ -2542,11 +2641,23 @@
                         password
                     });
 
-                    if (error) throw error;
+                    if (error) {
+                        // رسائل خطأ مخصصة
+                        if (error.message.includes('Invalid login credentials')) {
+                            showToast('كلمة المرور غير صحيحة', 'error');
+                        } else if (error.message.includes('Email not confirmed')) {
+                            showToast('البريد الإلكتروني غير مفعل', 'error');
+                        } else if (error.message.includes('Invalid email')) {
+                            showToast('البريد الإلكتروني غير صحيح', 'error');
+                        } else {
+                            showToast('خطأ في تسجيل الدخول: ' + error.message, 'error');
+                        }
+                        return;
+                    }
 
                     currentUser = data.user;
                     
-                    // 1️⃣ تسجيل جلسة الدخول
+                    // تسجيل جلسة الدخول
                     const { data: sessionData, error: sessionError } = await supabase
                         .rpc('log_user_login', {
                             user_uuid: currentUser.id,
@@ -2556,20 +2667,21 @@
                     if (sessionError) {
                         console.error('Error logging session:', sessionError);
                     } else {
-                        // حفظ معرف الجلسة
                         localStorage.setItem('currentSessionId', sessionData);
                     }
                     
-                    // 2️⃣ التحقق من حد الأجهزة
+                    // التحقق من حد الأجهزة
                     const { data: deviceCheck, error: deviceError } = await supabase
                         .rpc('verify_device_limit', {
                             user_uuid: currentUser.id,
                             device: deviceId
                         });
 
-                    if (deviceError) throw deviceError;
+                    if (deviceError) {
+                        console.error('Device check error:', deviceError);
+                    }
 
-                    if (deviceCheck.status === 'blocked') {
+                    if (deviceCheck && deviceCheck.status === 'blocked') {
                         showToast(deviceCheck.message, 'error');
                         
                         // تسجيل الخروج من الجلسة
@@ -2585,7 +2697,7 @@
                         return;
                     }
                     
-                    // 3️⃣ التحقق من صلاحية المستخدم
+                    // التحقق من صلاحية المستخدم
                     const hasAccess = await checkUserAccess();
                     
                     if (hasAccess) {
@@ -2598,11 +2710,11 @@
                     
                 } catch (error) {
                     console.error('Login error:', error);
-                    showToast('خطأ في تسجيل الدخول: ' + error.message, 'error');
+                    showToast('خطأ في تسجيل الدخول', 'error');
                 }
             }
 
-            // دالة لتسجيل الخروج مع تتبع الوقت
+            // وظيفة تسجيل الخروج
             async function handleSignOut() {
                 try {
                     // تسجيل وقت الخروج إذا كان هناك جلسة نشطة
@@ -2630,7 +2742,7 @@
                 }
             }
 
-            // التحقق من صلاحية المستخدم مع التحقق من انتهاء الاشتراك
+            // التحقق من صلاحية المستخدم
             async function checkUserAccess() {
                 if (!currentUser) return false;
                 
@@ -2683,7 +2795,7 @@
                 }
             }
 
-            // دالة تغيير كلمة المرور الفعلية
+            // دالة تغيير كلمة المرور
             async function changeUserPassword() {
                 if (!currentUser) {
                     showToast('يجب تسجيل الدخول أولاً', 'error');
@@ -2733,7 +2845,6 @@
                     showToast('خطأ في تغيير كلمة المرور: ' + error.message, 'error');
                 }
             }
-            // ========== نهاية التعديلات الجديدة ==========
 
             async function handleSignUp() {
                 const name = signupName.value.trim();
@@ -2741,8 +2852,31 @@
                 const password = signupPassword.value;
                 const confirmPassword = signupConfirmPassword.value;
                 
-                if (!name || !email || !password || !confirmPassword) {
-                    showToast('يرجى ملء جميع الحقول', 'error');
+                // التحقق من الحقول
+                if (!name) {
+                    showToast('يرجى إدخال الاسم الكامل', 'error');
+                    return;
+                }
+                
+                if (!email) {
+                    showToast('يرجى إدخال البريد الإلكتروني', 'error');
+                    return;
+                }
+                
+                // التحقق من صحة البريد الإلكتروني
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showToast('البريد الإلكتروني غير صحيح', 'error');
+                    return;
+                }
+                
+                if (!password) {
+                    showToast('يرجى إدخال كلمة المرور', 'error');
+                    return;
+                }
+                
+                if (!confirmPassword) {
+                    showToast('يرجى تأكيد كلمة المرور', 'error');
                     return;
                 }
                 
@@ -2767,7 +2901,14 @@
                         }
                     });
 
-                    if (error) throw error;
+                    if (error) {
+                        if (error.message.includes('User already registered')) {
+                            showToast('هذا البريد الإلكتروني مسجل مسبقاً', 'error');
+                        } else {
+                            showToast('خطأ في إنشاء الحساب: ' + error.message, 'error');
+                        }
+                        return;
+                    }
 
                     // إضافة المستخدم إلى جدول طلبات التسجيل
                     if (data.user) {
@@ -2810,7 +2951,6 @@
             }
 
             function handleGuestLogin() {
-                // تم تعطيل الدخول كضيف
                 showToast('الدخول كضيف غير متوفر حالياً', 'warning');
                 return;
             }
@@ -2866,13 +3006,15 @@
                 examsGrid.innerHTML = '';
                 
                 themaKompliExams.forEach((exam, index) => {
-                    const examName = exam.replace('.html', '');
+                    const germanName = getGermanTranslation(exam);
+                    const arabicDesc = getArabicDescription(exam);
+                    
                     const examCard = document.createElement('div');
                     examCard.className = 'exam-card';
                     examCard.style.animationDelay = `${index * 0.1}s`;
                     examCard.innerHTML = `
-                        <h3>${examName}</h3>
-                        <p>${currentLanguage === 'ar' ? 'تحضير الامتحان' : 'Exam Preparation'}</p>
+                        <h3>${germanName}</h3>
+                        <p>${arabicDesc}</p>
                     `;
                     examCard.addEventListener('click', () => {
                         if ((currentUser?.guest || isGuest) && isTrialExpired()) {
@@ -2895,13 +3037,15 @@
                 lesenGrid.innerHTML = '';
                 
                 lesenExams.forEach((exam, index) => {
-                    const examName = exam.replace('.html', '');
+                    const germanName = getGermanTranslation(exam);
+                    const arabicDesc = getArabicDescription(exam);
+                    
                     const examCard = document.createElement('div');
                     examCard.className = 'exam-card';
                     examCard.style.animationDelay = `${index * 0.1}s`;
                     examCard.innerHTML = `
-                        <h3>${examName}</h3>
-                        <p>${currentLanguage === 'ar' ? 'تمرين القراءة' : 'Reading Exercise'}</p>
+                        <h3>${germanName}</h3>
+                        <p>${arabicDesc}</p>
                     `;
                     examCard.addEventListener('click', () => {
                         if ((currentUser?.guest || isGuest) && isTrialExpired()) {
@@ -2920,13 +3064,15 @@
                 hoerenGrid.innerHTML = '';
                 
                 hoerenExams.forEach((exam, index) => {
-                    const examName = exam.replace('.html', '');
+                    const germanName = getGermanTranslation(exam);
+                    const arabicDesc = getArabicDescription(exam);
+                    
                     const examCard = document.createElement('div');
                     examCard.className = 'exam-card';
                     examCard.style.animationDelay = `${index * 0.1}s`;
                     examCard.innerHTML = `
-                        <h3>${examName}</h3>
-                        <p>${currentLanguage === 'ar' ? 'تمرين الاستماع' : 'Listening Exercise'}</p>
+                        <h3>${germanName}</h3>
+                        <p>${arabicDesc}</p>
                     `;
                     examCard.addEventListener('click', () => {
                         if ((currentUser?.guest || isGuest) && isTrialExpired()) {
@@ -2945,13 +3091,15 @@
                 schreibenGrid.innerHTML = '';
                 
                 schreibenExams.forEach((exam, index) => {
-                    const examName = exam.replace('.html', '');
+                    const germanName = getGermanTranslation(exam);
+                    const arabicDesc = getArabicDescription(exam);
+                    
                     const examCard = document.createElement('div');
                     examCard.className = 'exam-card';
                     examCard.style.animationDelay = `${index * 0.1}s`;
                     examCard.innerHTML = `
-                        <h3>${examName}</h3>
-                        <p>${currentLanguage === 'ar' ? 'تمرين الكتابة' : 'Writing Exercise'}</p>
+                        <h3>${germanName}</h3>
+                        <p>${arabicDesc}</p>
                     `;
                     examCard.addEventListener('click', () => {
                         if ((currentUser?.guest || isGuest) && isTrialExpired()) {
@@ -2970,13 +3118,15 @@
                 pdfsGrid.innerHTML = '';
                 
                 pdfs.forEach((pdf, index) => {
-                    const pdfName = pdf.replace('.pdf', '');
+                    const germanName = getGermanTranslation(pdf);
+                    const arabicDesc = getArabicDescription(pdf);
+                    
                     const pdfCard = document.createElement('div');
                     pdfCard.className = 'exam-card';
                     pdfCard.style.animationDelay = `${index * 0.1}s`;
                     pdfCard.innerHTML = `
-                        <h3>${pdfName}</h3>
-                        <p>${currentLanguage === 'ar' ? 'تحميل الملف' : 'Download File'}</p>
+                        <h3>${germanName}</h3>
+                        <p>${arabicDesc}</p>
                     `;
                     pdfCard.addEventListener('click', () => {
                         if ((currentUser?.guest || isGuest) && isTrialExpired()) {
@@ -3217,7 +3367,15 @@
                 }
             }
 
-            // وظيفة فتح واتساب
+            // وظيفة فتح واتساب لتفعيل الاشتراك
+            function openWhatsAppActivation() {
+                const phoneNumber = '+212649661976';
+                const message = 'مرحبا، أود تفعيل اشتراكي في تطبيق B2 Deutsch Training وإكمال عملية الدفع';
+                const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                window.open(url, '_blank');
+            }
+
+            // وظيفة فتح واتساب للدعم
             function openWhatsApp() {
                 const phoneNumber = '+212649661976';
                 const message = 'مرحبا، أود الاستفسار عن حالة طلب التسجيل الخاص بي';
@@ -3296,6 +3454,8 @@
                     phoneModal.style.display = 'flex';
                 });
                 
+                whatsappActivationBtn.addEventListener('click', openWhatsAppActivation);
+                
                 closePhoneModal.addEventListener('click', () => {
                     phoneModal.style.display = 'none';
                 });
@@ -3352,7 +3512,6 @@
                 // تعديل الملف الشخصي
                 editProfileBtn.addEventListener('click', openEditProfile);
                 saveProfile.addEventListener('click', saveProfileChanges);
-                // ========== التعديل: استخدام دالة تغيير كلمة المرور الحقيقية ==========
                 changePasswordBtn.addEventListener('click', changeUserPassword);
                 changePassword.addEventListener('click', changeUserPassword);
                 cancelEdit.addEventListener('click', () => {
