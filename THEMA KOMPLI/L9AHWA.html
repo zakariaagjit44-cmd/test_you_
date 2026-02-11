@@ -1806,7 +1806,7 @@ Eine Sprachverwirrung durch die Multilingualität oder gar eine Verzögerung in 
               {
                 id: "24",
                 options: ["nicht nur... sondern", "teils... teils", "zwar... aber"],
-                correctAnswer: "zwar... aber"
+                correctAnswer: "zwar"
               },
               {
                 id: "25",
@@ -1843,7 +1843,7 @@ Eine Sprachverwirrung durch die Multilingualität oder gar eine Verzögerung in 
 
 jetzt ist es schon bald ein halbes Jahr ________, dass ich dir das letzte Mal geschrieben habe. Bitte denke jetzt nicht, dass ich dich vergessen habe. Aber, wie du ja schon weißt, stehe ich vor der Abschlussprüfung in Deutsch und das bedeutet jede Menge Arbeit und Stress.
 
-Stell dir vor, ausgerechnet jetzt, nur zwei Wochen vor der Prüfung, ist unsere Lehrerin, Frau Reuter, ________. Sie liegt sogar im Krankenhaus und kommt erst wieder zurück, ________ unsere Prüfung schon längst vorbei ist. Ihre Vertretung, Frau Eichhorn, ist ________ sehr nett, ________ sie hat gerade erst mit dem Unterrichten angefangen und noch keine Erfahrung. Das macht uns alle ein bisschen unsicher. Aber in zwei Wochen ist hoffentlich alles geschafft. Und dann ________ ich alle Bücher und Hefte in die Ecke legen und erst einmal ein paar Tage gar nichts tun. ________ freue ich mich schon riesig. Wenn du Zeit und Lust hast, kannst du mich doch besuchen kommen und wir können zusammen etwas unternehmen. Wir wollten doch schon lange Bad Homburg besuchen und im Taunus wandern. Was hältst du ________?
+Stell dir vor, ausgerechnet jetzt, nur zwei Wochen vor der Prüfung, ist unsere Lehrerin, Frau Reuter, ________. Sie liegt sogar im Krankenhaus und kommt erst wieder zurück, ________ unsere Prüfung schon längst vorbei ist. Ihre Vertretung, Frau Eichhorn, ist ________ sehr nett, aber sie hat gerade erst mit dem Unterrichten angefangen und noch keine Erfahrung. Das macht uns alle ein bisschen unsicher. Aber in zwei Wochen ist hoffentlich alles geschafft. Und dann ________ ich alle Bücher und Hefte in die Ecke legen und erst einmal ein paar Tage gar nichts tun. ________ freue ich mich schon riesig. Wenn du Zeit und Lust hast, kannst du mich doch besuchen kommen und wir können zusammen etwas unternehmen. Wir wollten doch schon lange Bad Homburg besuchen und im Taunus wandern. Was hältst du ________?
 
 Was macht deine Au-pair-Familie? Musst du immer noch so viel Hausarbeit machen? Hören "deine" Kinder auf dich oder tanzen sie ________ noch immer auf der Nase herum, wie du in deinem letzten Brief geschrieben hast? It ist bestimmt nicht so leicht, einen zweijährigen Jungen und ein vierjähriges Mädchen den ganzen Tag ________. Aber ich kenne dich: Du hast gute Ideen und bestimmt hast du schon einen Weg gefunden, ________ du mit den Kindern zurechtkommst.
 
@@ -2313,10 +2313,45 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         `;
         
         document.querySelectorAll('.blank-word').forEach(blank => {
-          blank.addEventListener('click', (e) => {
-            showOptionsPopup(e.target);
-          });
+  blank.addEventListener('click', (e) => {
+    // للخيارات العادية
+    if (!blank.textContent.includes('...')) {
+      showOptionsPopup(e.target);
+    }
+  });
+});
+
+// معالجة خاصة للخيارات التي تحتوي على "..."
+document.querySelectorAll('.option-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const optionText = this.textContent.trim();
+    
+    // إذا كان الخيار يحتوي على "..."
+    if (optionText.includes('...')) {
+      const blankId = this.closest('.option-row').querySelector('.option-number').textContent;
+      const words = optionText.split('...');
+      
+      if (words.length === 2) {
+        state.answers[blankId] = optionText;
+        
+        // تحديث الفجوات في النص
+        document.querySelectorAll('.blank-word[data-blank-id="' + blankId + '"]').forEach(blank => {
+          blank.textContent = optionText;
+          blank.classList.add('has-answer');
         });
+        
+        // تحديث زر الخيار
+        this.closest('.option-buttons').querySelectorAll('.option-btn').forEach(b => {
+          b.classList.remove('selected');
+        });
+        this.classList.add('selected');
+        
+        // تحديث التايلات
+        renderTopTiles();
+      }
+    }
+  });
+});
         
         let optionsHTML = `<div class="horizontal-options" style="gap: 8px;">`;
         
@@ -2376,9 +2411,41 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       }
 
       function selectSprachbausteine1(blankId, answer){
-        state.answers[blankId] = answer;
-        renderAll();
-      }
+  // إذا كان الجواب يحتوي على "..."
+  if (answer.includes('...')) {
+    const words = answer.split('...');
+    if (words.length === 2) {
+      state.answers[blankId] = answer;
+      
+      // تحديث الفجوات في النص
+      document.querySelectorAll('.blank-word[data-blank-id="' + blankId + '"]').forEach(blank => {
+        blank.textContent = answer;
+        blank.classList.add('has-answer');
+      });
+      
+      // تحديث أزرار الخيارات
+      document.querySelectorAll('.option-row').forEach(row => {
+        const rowBlankId = row.querySelector('.option-number').textContent.trim();
+        if (rowBlankId === blankId) {
+          row.querySelectorAll('.option-btn').forEach(btn => {
+            btn.classList.remove('selected');
+            if (btn.textContent.trim() === answer) {
+              btn.classList.add('selected');
+            }
+          });
+        }
+      });
+      
+      // تحديث التايلات
+      renderTopTiles();
+      return;
+    }
+  }
+  
+  // للخيارات العادية
+  state.answers[blankId] = answer;
+  renderAll();
+}
 
       function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
@@ -3368,7 +3435,7 @@ Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
           "21": "her",
           "22": "erkrankt",
           "23": "wenn",
-          "24": "zwar... aber",
+          "24": "zwar",
           "25": "werde",
           "26": "Darauf",
           "27": "davon",
