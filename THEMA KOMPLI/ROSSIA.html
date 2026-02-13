@@ -615,6 +615,7 @@
       padding: 10px;
       border-radius: 6px;
       background: #f8f9fa;
+      border: 1px solid #e1e8f6;
     }
     
     .instructions {
@@ -877,7 +878,6 @@
       transform: scale(1.2);
     }
 
-    /* Results Page Styles */
     .correct-answer {
       background: #d4edda !important;
       border-left: 4px solid #28a745;
@@ -1011,6 +1011,7 @@
       padding: 16px;
       box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
       border-left: 6px solid #1e3a5f;
+      text-align: center;
     }
     
     .results-tile h3 {
@@ -1396,7 +1397,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-lesen" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-lesen" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn-lesen-footer" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-lesen">Nicht gespeichert</span></div>
     </footer>
@@ -1435,7 +1436,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-hoeren" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-hoeren" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn-hoeren-footer" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-hoeren">Nicht gespeichert</span></div>
     </footer>
@@ -1481,7 +1482,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-schreiben" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-schreiben" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn-schreiben-footer" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-schreiben">Nicht gespeichert</span></div>
     </footer>
@@ -1530,13 +1531,13 @@
       document.getElementById(pageId).style.display = 'block';
       
       // Initialize the page if needed
-      if (pageId === 'lesen-page' && typeof initLesenPage === 'function') {
+      if (pageId === 'lesen-page') {
         initLesenPage();
-      } else if (pageId === 'hoeren-page' && typeof initHoerenPage === 'function') {
+      } else if (pageId === 'hoeren-page') {
         initHoerenPage();
-      } else if (pageId === 'schreiben-page' && typeof initSchreibenPage === 'function') {
+      } else if (pageId === 'schreiben-page') {
         initSchreibenPage();
-      } else if (pageId === 'ergebnisse-page' && typeof initErgebnissePage === 'function') {
+      } else if (pageId === 'ergebnisse-page') {
         initErgebnissePage();
       }
     }
@@ -1544,47 +1545,52 @@
     // ===== START PAGE FUNCTIONALITY =====
     let initialCounter = 30;
     let counter = initialCounter;
-    let countdownInterval;
+    let countdownInterval = null;
     let countdownRunning = false;
     let examStarted = false;
-    const timerEl = document.getElementById("countdown");
-    const timeDisplayEl = document.getElementById("time-display");
-    const progressEl = document.getElementById("progress");
-    const selectEl = document.getElementById("sectionSelect");
-    const startBtn = document.getElementById("startBtn");
-    const cancelBtn = document.getElementById("cancelBtn");
-
+    
     function startCountdown() {
-      // prevent double-starts or starting after exam already began
       if (countdownRunning || examStarted) return;
+      
       countdownRunning = true;
-      // disable start button while counting
-      try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
-      // reset counter & UI
       counter = initialCounter;
+      
+      const timerEl = document.getElementById("countdown");
+      const timeDisplayEl = document.getElementById("time-display");
+      const progressEl = document.getElementById("progress");
+      const startBtn = document.getElementById("startBtn");
+      
+      if (startBtn) startBtn.disabled = true;
+      
       timerEl.textContent = counter;
-      timeDisplayEl.textContent = counter;
-      progressEl.style.transform = "scaleX(0)";
+      if (timeDisplayEl) timeDisplayEl.textContent = counter;
+      if (progressEl) progressEl.style.transform = "scaleX(0)";
       timerEl.style.color = "";
 
       countdownInterval = setInterval(() => {
         counter--;
         timerEl.textContent = counter;
-        timeDisplayEl.textContent = counter;
-        const progressValue = (initialCounter - counter) / initialCounter;
-        progressEl.style.transform = `scaleX(${progressValue})`;
+        if (timeDisplayEl) timeDisplayEl.textContent = counter;
+        if (progressEl) {
+          const progressValue = (initialCounter - counter) / initialCounter;
+          progressEl.style.transform = `scaleX(${progressValue})`;
+        }
+        
         if (counter <= 0) {
           clearInterval(countdownInterval);
           countdownInterval = null;
           countdownRunning = false;
-          progressEl.style.transform = "scaleX(1)";
-          // ensure exam starts only once
+          if (progressEl) progressEl.style.transform = "scaleX(1)";
+          
           if (!examStarted) {
             examStarted = true;
             startExam();
           }
-          // safety: re-enable start button (page usually navigates away)
-          try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
+          
+          if (startBtn) {
+            startBtn.disabled = false;
+            startBtn.removeAttribute('aria-disabled');
+          }
         }
       }, 1000);
     }
@@ -1595,21 +1601,34 @@
         countdownInterval = null;
       }
       countdownRunning = false;
-      try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
-      progressEl.style.transform = "scaleX(0)";
+      
+      const startBtn = document.getElementById("startBtn");
+      const progressEl = document.getElementById("progress");
+      const timerEl = document.getElementById("countdown");
+      const timeDisplayEl = document.getElementById("time-display");
+      
+      if (startBtn) {
+        startBtn.disabled = false;
+        startBtn.removeAttribute('aria-disabled');
+      }
+      
+      if (progressEl) progressEl.style.transform = "scaleX(0)";
+      
       if (reset) {
         counter = initialCounter;
         timerEl.textContent = counter;
-        timeDisplayEl.textContent = counter;
+        if (timeDisplayEl) timeDisplayEl.textContent = counter;
       } else {
         timerEl.textContent = "Gestoppt";
       }
     }
 
     function startExam() {
-      // guard to ensure startExam is triggered once
       if (!examStarted) examStarted = true;
-      const selectedSection = selectEl.value;
+      
+      const selectEl = document.getElementById("sectionSelect");
+      const selectedSection = selectEl ? selectEl.value : 'lesen';
+      
       if (selectedSection === 'lesen') {
         showPage('lesen-page');
       } else if (selectedSection === 'hoeren') {
@@ -1619,18 +1638,34 @@
       }
     }
 
-    // wire buttons: start will now start the countdown (not the exam directly)
-    startBtn.addEventListener('click', startCountdown);
+    // Setup start page event listeners
+    function initStartPage() {
+      const startBtn = document.getElementById("startBtn");
+      const cancelBtn = document.getElementById("cancelBtn");
+      
+      if (startBtn) {
+        startBtn.addEventListener('click', startCountdown);
+      }
+      
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', function() {
+          stopCountdown(true);
+          const timerEl = document.getElementById("countdown");
+          if (timerEl) {
+            timerEl.textContent = "Abgebrochen";
+            timerEl.style.color = "#e53e3e";
+          }
+        });
+      }
+    }
 
-    cancelBtn.addEventListener('click', () => {
-      stopCountdown(true);
-      timerEl.textContent = "Abgebrochen";
-      timerEl.style.color = "#e53e3e";
+    // Call initialization when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      initStartPage();
     });
 
     // ===== LESEN PAGE FUNCTIONALITY =====
     function initLesenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-001",
         durationSec: 90 * 60,
@@ -1645,116 +1680,111 @@
             texts: [
               {
                 id: "text1",
-                content: "Über zehntausend wissenschaftliche Studien wurden in den vergangenen Jahren im Auftrag der Weltgesundheitsorganisation WHO durchgeführt, um herauszubekommen, warum manche Menschen erheblich seltener an lebensgefährlichen Krankheiten wie Krebs oder Herzinfarkt erkranken als andere. Die Zahl dieser Erkrankungen hat nämlich in den Industriestaaten inzwischen einen traurigen Höhepunkt erreicht. Die Forscher fanden heraus, dass mit wenigen Tricks viele Menschen gesünder leben und damit ihr Leben verlängern könnten. Das Risiko eines Herzinfarkts kann man zum Beispiel durch den täglichen Verzehr eines Apfels und tägliches zwanzigminütiges Radfahren erheblich reduzieren. Die Entstehung von Krebs herumt zum Beispiel der tägliche Genuss eines Löffels reinen Olivenöls oder eine große Tasse grünen Tees. Gegen Stress hilft Vitamin-C-reiche Ernährung und regelmäßiges Schwimmen.",
-                correctAnswer: "d"
+                content: "In Russland 1843 als Tochter eines Bauern geboren, schafte es Nadeschda Suslowe ins Gymnasium. Mit 16 Jahren erhielt sie ihr Diplom als Hauslehrerin. Das war der höchste Abschluss, den eine Frau damals in Russland erreichen konnte. Doch Nadeschda wollte mehr. Die junge Frau wollte Ärztin werden. Weil es ihr in Russland aber nicht erlaubt war, eine Hochschule zu besuchen, ging sie ins Ausland. An der Universität Zürich konnten Frauen schon seit einigen Jahren Vorlesungen besuchen. Nadeschda Suslowa war die erste Frau, die sich ordentlich an der Universität einschreiben durfte, und gleichzeitig die erste Russin an der Züricher Universität. Am 14. Dezember 1867 machte die damals 24-Jährige ihr Examen. Sie war die erste promovierte Ärztin in der Schweiz und in Russland. „Ich bin die Erste, aber nicht die Letzte. Nach mir werden Tausende kommen.“ Davon war sie überzeugt, und sie sollte recht behalten. Nach ihrem Abschluss ging sie zurück nach Russland und gründete dort eine eigene Praxis für Frauen- und Kinderheilkunde.",
+                correctAnswer: "c"
               },
               {
                 id: "text2", 
-                content: "Am Mittelmeer und in Mexico wächst die Aloe-Vera-Pflanze, der in der heutigen Naturmedizin eine wachsende Rolle zukommt. Durch die dickfleischigen Blätter dieser Pflanze ist für Schädlinge kein Hindurchkommen, deshalb kann sie in Plantagen ohne chemische Schutzmittel angebaut werden. Unter der dicken Haut der Pflanze befindet sich eine gelartige Flüssigkeit, deren Aufgabe darin besteht, Wasser möglichst lange zu speichern - schließlich ist die Pflanze in extrem trockenen Landschaften beheimatet. Dieses Gel ist sehr vitamin- und mineralstoffreich. In der Wundheilung ist Aloegel sehr effektiv. Kosmetisch wird es für Cremes benutzt, die Haterkrankungen und leichte Verbrennungen wie zum Beispiel Sonnenbrand lindern, Feuchtigkeit spenden und die Haut straffen.",
-                correctAnswer: "g"
+                content: "Dass Frauen wählen und gewählt werden dürfen, ist heutzutage selbstverständlich. Doch das war nicht immer so. Überall auf der Welt mussten sie lange erbittert um ihr Wahlrecht streiten. In Europa war die Französin Olympe de Gouges eine der ersten Frauen die sich aktiv für das Wahlrecht der Bürgerinnen einsetzten. Sie forderte zu Zeiten der Französischen Revolution die rechtliche, politische und soziale Gleichstellung der Frau. Dies wurde zur Grundlage für die Einführung des Frauenwahlrechts in Europa. Frankreich gehörte allerdings nicht zu den ersten Ländern, in denen das Wahlrecht für Frauen realisiert wurde. Das geschah zuerst 1838 in der britischen Kolonie Pitcairn, einer Insel im südlichen Pazifik. Es folgten einzelne nordamerikanische Staaten, Neuseeland und Südaustralien. In Europa erlangten die Frauen das Wahlrecht zuerst in Finnland, zu Beginn des 19. Jahrhunderts? In Frankreich, dem Heimatland von Olympe de Gouges, wurde es erst 1944 eingeführt. Als eines der letzten europäischen Länder führte die Schweiz das Frauenwahlrecht 1971 ein - durch eine Volksabstimmung der männlichen Bevölkerung.",
+                correctAnswer: "d"
               },
               {
                 id: "text3",
-                content: "Eine der ältesten bekannten Gemüsesorten ist der Spargel. Schon vor 5000 Jahren war er bei den Chinesen bekannt. Geschätzt wurde er vor allem in der Medizin als Herzschutzmittel und zur Stärkung der körpereigenen Abwehrkräfte: Spargel hält gesund. Heute schätzen wir am Spargel besonders, dass er nicht dick macht. Die körperlich hart arbeitende Bevölkerung früherer Zeiten schätzte ihn deshalb nicht sehr, weil er kaum Energie lieferte. Im Südwesten Deutschlands wächst der Spargel von Mitte April bis zum Johannistag, dem 24. Juni. Besonders rund um Mainz, Darmstadt, Heidelberg, Bruchsal und in der Pfalz erntet man das stangenförmige Gemüse. In Deutschland ist allerdings der weiße Spargel, der unter der Erde wächst, populärer als sein oberirdisch wachsender Bruder, der grüne Spargel.",
-                correctAnswer: "b"
+                content: "Das Wahlverhalten von Frauen hat sich in den letzten Jahrzehnten verändert: In den 50er Jahren wählten verheiratete Frauen oft noch so wie ihre Männer. Vor allem in der Mittelschicht zeigten sie eine deutliche Vorliebe für konservative Parteien. Die politischen Unruhen von 1968 hingegen hinterließen ihre Spuren im Wahlverhalten der Frauen. Sie wählten nun deutlich weniger konservativ und stimmten für Parteien, die sie in ihrem Anspruch auf Gleichberechtigung und Selbstständigkeit unterstützten.Auch heute wählen Männer und Frauen in vielen Ländern unterschiedlich. Frauen scheinen für radikale Parteien weniger Sympathie aufzubringen als Männer, während ihnen Gleichberechtigung ein großes Anliegen ist. Die Sorge um die Umwelt schlägt sich in einem höheren Anteil an Frauenstimmen für grüne Parteien nieder. Frauen wählen auch gerne Frauen. Deshalb geben sie ihre Stimmen bevorzugt Parteien, die mehr Kandidatinnen auf ihren Listen führen. Insgesamt scheint einiges darauf hinzudeuten, dass Frauen rationaler wählen als Männer.",
+                correctAnswer: "f"
               },
               {
                 id: "text4",
-                content: "Schlank sein ist 'in'. Deshalb versuchen Millionen Menschen nicht nur in Deutschland immer wieder ihre Pfunde loszuwerden. Und so purzeln sie von einer Diät zur nächsten, immer mit dem gleichen Erfolg: Nach dem Abnehmen nehmen sie genauso schnell wieder zu. Und bei vielen kommt mit dem Gewichtsverlust die Krankheit, denn die meisten Diäten sind sehr einseitig und entziehen dem Körper viele für sein Wohlbefinden wichtige Nährstoffe. Hier setzt eine neue Theorie an: Sie unterscheidet Nahrungsmittel in Fetthorter, die Fett im Körper speichern, und Fettburner, die dem Körper helfen, zu viel Fett und damit Kilos zu verwerten. Frisches Gemüse, Obst, Fisch und Geflügel versorgen den Körper mit Energie und helfen ihm dabei, die Nahrungsstoffe optimal zu verwerten. Iss dich schlank, lautet das Motto der Fatburnertheorie. Aber ist es nur eine neue Theorie oder hilft sie uns wirklich schlank zu werden?",
-                correctAnswer: "h"
+                content: "In den vergangenen Jahrzehnten hat sich das Geschlechterverhältnis bei Studierenden stark verändert. Nicht nur bei Studienanfängern sind Frauen in der Mehrzahl, sondern auch unter jenen, die ein Hochschulstudium abschließen. Doch das ist noch nicht alles: Weibliche Studierende absolvieren das Studium schneller als ihre Kommilitonen und schlieBen es auch häufiger erfolgreich ab. Allerdings ist die Erfolgs- und Abschlussquote nicht in allen Studienrichtungen gleich. Am größten ist der Abstand beim Musikstudium: Mehr als 70 Prozent der Frauen schließen es tatsächlich ab, während rund 50 Prozent der männlichen Studienanfänger es abbrechen. Unterschiedliche Erfolgsquoten der Geschlechter lassen sich an den meisten Universitäten beobachten; nur vereinzelt sind sie gleich hoch oder bei Männern sogar etwas höher. Warum das so ist, darüber können Wissenschaftlervorerst nur Vermutungen anstellen. Die höchsten Abschlussquoten erreichen übrigens die Universitäten, für die es eine Zugangsbeschränkung gibt. ",
+                correctAnswer: "g"
               },
               {
                 id: "text5",
-                content: "Als typisch deutsch gilt sie, doch rund um den Globus ist sie eines der Basislebensmittel schlechthin. In Österreich nennt man sie Erdapfel, an der Mosel heißt sie Grumbeere. Gemeint ist die überaus populäre Kartoffel. Hunderte verschiedener Sorten gibt es auf der Welt, doch ihr Ursprung liegt in Südamerika. Präkolumbianische Kulturen begannen damit, die bis dahin wild wachsende Urform der Kartoffel systematisch anzubauen. Die englischen Seehelden Sir Francis Drake und Sir Walter Raleigh sollen sie im 16. Jahrhundert nach Europa mitgebracht haben. Etwa zur gleichen Zeit wurde sie in Spanien und Portugal bekannt. Dennoch ist das Klischee von der 'deutschen' Kartoffel nicht ganz falsch, denn zu vielen traditionellen Gerichten wird die Knolle gekocht oder in der Form von Bratkartoffeln, Kartoffelknödeln oder Pommes frites als Beilage gereicht.",
+                content: "Suffragetten so nannte man Anfang des 19. Jahrhunderts die Frauen, die sich in Großbritannien für das allgemeine Frauenwahlrecht einsetzten. Der Begriff kommt von suffrage, was im Französischen und im Englischen Wahlrecht bedeutet. Emmeline Pånkhurstund ihre Töchter zählen zu den bekanntesten Persönlichkeiten der britischen Frauenbewegung. Sie setzten zunächst auf die Methode des passiven Widerstandes. Als der erhoffte Erfolg ausblieb und Gesetzesänderüngen abgelehnt wurden, griffen sie zu immer härteren Mitteln, bis hin zu Brand- und Bombenanschlägen. Pankhurst wurde immer wieder verhatet und eingesperrt, lhr Kampf für das Wahlrecht der Frauen wurde durch den Ersten Weltkrieg unterbrochen. Nach Kriegsende bekamen Frauen ab 21 Jahren das Recht, zur Parlamentswahl anzutreten. Selbst wählen durften sie allerdings erst ab 30. Dass Frauen dasselbe Wahlrecht Wie die Männer erhielten, erlebte Emmeline Pankhurst nicht mehr. Sie war drei Wochen vor dessen Einführung am 2. Juli 1928 gestorben. ",
                 correctAnswer: "i"
               }
             ],
             headings: [
-              {id: "a", text: "Das ideale Gemüse für schwer Arbeitende"},
-              {id: "b", text: "Ein schlankes Gemüse für schlanke Leute"},
-              {id: "c", text: "Gesunde Ernährung mit Aloe Vera"},
-              {id: "d", text: "Gesundes Leben schützt vor Zivilisationskrankheiten"},
-              {id: "e", text: "Gesundheitsrisiken durch fettreiche Ernährung"},
-              {id: "f", text: "Kartoffelrezepte als Zeitungsbeilage"},
-              {id: "g", text: "Pflanzliche Kosmetik für gesunde Haut"},
-              {id: "h", text: "Tolle Figur durch ausgewogene Ernährung"},
-              {id: "i", text: "Von der Wildpflanze zum international geschätzten Nahrungsmittel"},
-              {id: "j", text: "WHO untersucht Zusammenhang von Krebs und Herzinfarkt"}
+              {id: "a", text: "Der heutige Anteil von Frauen im Medizinstudium"},
+              {id: "b", text: "Die Frauen in der Französischen Revolution"},
+              {id: "c", text: "Eine Pionierin der akademischen Frauenausbildung"},
+              {id: "d", text: "Entwicklung des Frauenstimmrechts"},
+              {id: "e", text: "Frauen erreichen zunehmend bessere Noten im Studium"},
+              {id: "f", text: "Geschlechtsspezifische Entscheidungen an der Wahlurne"},
+              {id: "g", text: "STUDENTINNEN AUF DER ÜBERHOLSPUR"},
+              {id: "h", text: "Umfrage verspricht Erfolg der grünen Wahlkandidatin"},
+              {id: "i", text: "Vorkämpferinnen für das Frauenwahlrecht"},
+              {id: "j", text: "Wieder Demonstrationen für freie Wahlen"}
             ]
           },
           { 
             id: "s2", 
             title: "Leseverstehen, Teil 2", 
             points: 25,
-            passageTitle: "Ein Leben für den Kaffee - Bremer Kaffeerösterei Münchhausen eine der letzten traditionellen Röstereien",
-            passage: `Vor 50 Jahren gab es in der Hansestadt Bremen ungefähr 300 traditionelle Kaffeeröstereien. Diese importierten die Kaffeebohnen selbst, stellten den Kaffee tagefrisch her und verkauften ihn im eigenen Geschäft. Heute, da der Kaffee zumeist von internationalen Kaffeegesellschaften produziert und in Supermärkten verkauft wird, sind in Deutschland nur noch eine Handvoll Kleinröstereien übrig geblieben. Eine davon ist die Kaffeeröstereie Münchhausen.
-
-Münchhausen importiert seinen Kaffee direkt von Kleinbauern in Lateinamerika. Dabei wird streng auf fairen Handel geachtet, das heißt, die Kaffeebauern werden für ihre anstrengende Arbeit angemessen entlohnt. Damit unterstützt der Importeur zugleich den Kaffeeanbau nach ökologischen Gesichtspunkten. Kaffee aus Großplantagen, oft mit Pestiziden und Insektiziden belastet, ist zwar billiger, aber Qualität und Reinheit des Kaffees werden bei der Kaffeerösterei Münchhausen ganz großgeschrieben.
-
-Der Kaffee wird nach alter Familientradition hergestellt. Die Rezeptur ist die gleiche wir vor einem halben Jahrhundert: Täglich werden die Kaffeebohnen in kleinen Mengen frisch geröstet, gerade so viele, wie an einem Tag verkauft werden. Denn nur so behalten sie ihr Aroma und der Kaffee verliert nicht an Geschmack.
-
-Zuerst werden die Kaffeebohnen in der in den 50er Jahren angeschafften Rösttrommel ungefähr zehn Minuten lang bei Temperaturen von über 200 Grad Celsius geröstet. Dabei verlieren die Kaffeebohnen zwar ein Sechsteil ihres Gewichts, ihr Volumen vergrößert sich aber gleichzeitig um etwa ein Drittel. Sind die Bohnen dunkel genug – sie dürfen genauso wenig zu dunkel sein –, werden sie auf den Verlesetisch geschüttet, wo von Hand die guten von den schlechten Kaffeebohnen getrennt werden.
-
-Danach erst werden aus den gerösteten Kaffeebohnen verschiedene Mischungen hergestellt, die dann im Kontor, dem Geschäftsraum der Rösterei, fast ausschließlich an langjährige Stammkunden verkauft werden. Aber auch über das Internet vertreibt die Kaffeerösterei Münchhausen ihr Kaffeeangebot deutschlandweit.
-
-Bis zu seinem Tod kurz vor seinem dreiundneunzigsten Geburtstag führte August Münchhausen seinen Familienbetrieb, dann übernahm seine Tochter die Firma, inzwischen ist auch die Enkelin beteiligt. Die Frauen planen, aus der Kaffeerösterei ein Museum zu machen, um der Nachwelt die traditionelle Kunst des Kaffeeröstens zeigen zu können.
-
-Dann hätte diese Institution eine reelle Chance, in Zukunft fortzubestehen und zukünftigen Generationen den Charme und die Technik der traditionellen Kaffeeherstellung zu erhalten. Selbstverständlich wird es auch in Zukunft möglich sein, im Museums-Bistro den Kaffee zu genießen oder für den häuslichen Bedarf zu erwerben.`,
+            passageTitle: "Wer parkt, muss zahlen Parkuhren in Deutschland",
+            passage: `Es geschah am 1. Januar 1954. In Duisburg, einer Großstadt am Rhein zwischen Köln und der
+niederländischen Grenze am Rande des Ruhrgebiets, gab es für die Autofahrer, die in der Straße “Am Buchenbaum” ihre Autos parken wollten, eine Überraschung. 20 etwa 1,5 Meter hohe Metallstangen mit uhrenförmigen Aufsätzen standen am Straßenrand mit der unmissverständlichen Aufschrift: “Einwurf 10 Pfennig für eine Stunde”. Die ersten Parkuhren in Deutschland waren aufgestellt. 
+Nur Basel in der Schweiz und Stockholm in Schweden hatten vor Duisburg Parkuhren installiert, um Dauerparker aus den Stadtzentren zu vertreiben. Das eingenommene Geld wurde in Duisburg anfangs für gemeinnützige Zwecke ausgegeben: für Alte, Kranke Kriegsversehrte, für elternlose Kinder. Und die Stadtverwaltung war sich sicher, dass die Autofahrer Verständnis für die Parkuhren aufbringen würden, dienten sie doch einem guten Zweck. 
+Doch bei den Autofahrenn war man nicht so erfreut über diese neuen Apparate. “Groschengrab” wurden sie dann auch bald überall genannt: ein Apparat, in den man Groschen - wie die 10-Pfennig-Stücke damals genannt wurden - hineinwarf. Dieser schluckte zwar gnadenlos Zehner, gab aber zum Verdruss vieler trotzdem oft keine Parkzeit frei. Tat er dies, dann aber in der Regel nur für höchstens 60 Minuten. Viele Autofahrer waren außerdem verärgert, weil sie immer passendes Kleingeld dabei haben mussten. Die ersten Parkuhren konnten nämlich nicht wechseln. 
+Wer parkte, ohne zu zahlen, riskierte damals wie heute einen Strafbescheid, liebevoll “Knöllchen” genannt. In allen anderen deutschen Städten erschienen nach und nach auch Parkuhren. Bald gehörten sie zu den Innenstädten wie das Rad zum Auto. Und das blieb so bis zum Ende der 1980er Jahre. 
+Dann geschah so etwas wie eine Parkuhren-Revolution. Die guten, alten Parkuhren, die ein im Vergleich zu heute immer noch billiges Parken erlaubten, weil sie nicht beliebig oft auf neue Beträge umgestellt werden konnten, wurden mehr und mehr ersetzt durch die gerade neu entwickelten Parkscheinautomaten. Mit Solarenergie angetrieben, computergesteuert und beliebig programmierbar machten sie es nun möglich, ohne technische Beschränkungen die Preise und Zeiten für das Parken flexibel zu gestalten. Von Vorteil ist auch ihre Kundenfreundlichkeit: Die Zeiten, in denen nur Münzen als Zahlungsmittel akzeptiert wurden, sind passé; jetzt schlucken sie auch problemlos Papier- und Plastikgeld - und Wechselgeld wird ausgespuckt. 
+Das Parken wurde immer teurer. Und längst dienten die eingenommenen Beträge nicht mehr gemeinnützigen Zwecken. Sie wurden vielmehr als Einnahmequelle entdeckt für die leeren Stadtkassen, die nach immer mehr Geld verlangten. Gut 2 Millionen Euro verdient zum Beispiel Duisburg in einem Jahr an den Parkgebühren. In Köln kommen etwa 10 Millionen Euro im Jahr zusammen. Noch einmal so viel Geld verdienen die Städte an den “Knöllchen” für falsches Parken. 
+Aus 10 Pfennig für eine Stunde im Jahr 1954 - das wären heute etwa 5 Cents - sind inzwischen weit höhere Beträge geworden. Spitzenreiter in Deutschland sind Düsseldorf und Berlin mit mehreren Euro pro Stunde. Tendenz steigend. Doch aus dem Kölner Rathaus heißt es an alle sich beschwerenden Autofahrer gerichtet, das Geld werde selbstverständlich zweckgebunden verwendet: für den Bau neuer Straßen. An denen neue Parkscheinautomaten stehen?.`,
             questions: [
               {
                 id: "s2q1",
                 type: "single",
-                text: "In Deutschland",
+                text: "Die ersten Parkuhren Europas standen",
                 options: [
-                  {id: "s2q1o1", text: "existiert eine Vielzahl von Kaffeeröstereien."},
-                  {id: "s2q1o2", text: "gibt es nur noch wenige traditionelle Kaffeeröstereien."},
-                  {id: "s2q1o3", text: "handeln nur noch internationale Gesellschaften mit Kaffee."}
+                  {id: "s2q1o1", text: "in der Schweiz und in Deutschland."},
+                  {id: "s2q1o2", text: " in der Schweiz und in Schweden. "},
+                  {id: "s2q1o3", text: "in Deutschland und in Schweden."}
                 ],
                 correctAnswer: "s2q1o2"
               },
               {
                 id: "s2q2",
                 type: "single", 
-                text: "Für die Kaffeerösterei Münchhausen",
+                text: "Früher wurden in Duisburg die Parkgebühren verwendet, um ",
                 options: [
-                  {id: "s2q2o1", text: "ist es nicht von Bedeutung, ob der Kaffee von Kleinbauern oder Großplantagen kommt."},
-                  {id: "s2q2o2", text: "spielt der günstige Einkaufspreis eine wichtige Rolle."},
-                  {id: "s2q2o3", text: "steht aber die Qualität des Kaffees als der Preis im Vordergrund."}
+                  {id: "s2q2o1", text: "Bedürftige zu unterstützen"},
+                  {id: "s2q2o2", text: "Dauerparker aus den Stadtzentren zu vertreiben."},
+                  {id: "s2q2o3", text: "Löcher im städtischen Haushalt zu stopfen."}
                 ],
-                correctAnswer: "s2q2o3"
+                correctAnswer: "s2q2o1"
               },
               {
                 id: "s2q3",
                 type: "single",
-                text: "Kaffeebohnen",
+                text: "Die ersten Parkuhren",
                 options: [
-                  {id: "s2q3o1", text: "dürfen nach dem Rösten zwar zu dunklen sein, aber nicht zu hell."},
-                  {id: "s2q3o2", text: "können nach der Röstung ohne Geschmacksverlust lange Zeit gelagert werden."},
-                  {id: "s2q3o3", text: "müssen nach dem Rösten handverlesen werden, um eine gleichbleibend hohe Qualität zu gewährleisten."}
+                  {id: "s2q3o1", text: "funktionierten problemlos."},
+                  {id: "s2q3o2", text: "gaben nur Groschen zurück."},
+                  {id: "s2q3o3", text: "konnten nur Münzen annehmen."}
                 ],
                 correctAnswer: "s2q3o3"
               },
               {
                 id: "s2q4",
                 type: "single",
-                text: "Die gerösteten Kaffeebohnen werden",
+                text: "Die neuen Parkscheinautomaten",
                 options: [
-                  {id: "s2q4o1", text: "im Kontor nur an Stammkunden angegeben."},
-                  {id: "s2q4o2", text: "in Handarbeit gemischt."},
-                  {id: "s2q4o3", text: "zusätzlich online vermarktet."}
+                  {id: "s2q4o1", text: "funktionieren nur bargeldlos."},
+                  {id: "s2q4o2", text: "geben kein Wechselgeld zurück."},
+                  {id: "s2q4o3", text: "sind flexibel im Hinblick auf die Art der Bezahlung."}
                 ],
                 correctAnswer: "s2q4o3"
               },
               {
                 id: "s2q5", 
                 type: "single",
-                text: "In Zukunft wollen die Besitzer",
+                text: "In Berlin und in Düsseldorf",
                 options: [
-                  {id: "s2q5o1", text: "die Kaffeerösterei in ein Museum umwandeln."},
-                  {id: "s2q5o2", text: "ein Museum über den Kaffeeanbau eröffnen."},
-                  {id: "s2q5o3", text: "keinen Röstkaffee mehr verkaufen."}
+                  {id: "s2q5o1", text: "fließen die Parkgebühren nur in den Straßenbau."},
+                  {id: "s2q5o2", text: "nimmt die Zahl der Parkscheinautomaten zu."},
+                  {id: "s2q5o3", text: "werden die höchsten Parkgebühren verlangt."}
                 ],
-                correctAnswer: "s2q5o1"
+                correctAnswer: "s2q5o3"
               }
             ]
           },
@@ -1762,190 +1792,166 @@ Dann hätte diese Institution eine reelle Chance, in Zukunft fortzubestehen und 
             id: "s3", 
             title: "Leseverstehen, Teil 3", 
             points: 25,
-            passageTitle:"Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchmal passt kein Text. Wählen Sie dann 'x'.",
+            passageTitle: "Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchما passt kein Text. Wählen Sie dann 'x'.",
             passage: "",
-            questions:[],
+            questions: [],
             texts: [
-              {id: "A", text: "Urlaubsregion Allgäuer Alpen - Die Urlaubsregion Allgäuer Alpen ist mit eine der schönsten Deutschlands. Mit Bussen und Bahnen gelangt man zu Burgen, Schlössern, Kirchen und Klöstern. Das kulinarische Angebot bietet für jeden Geschmack genügend Auswahl. Bergwanderer schätzen - vor allem im Spätsommer - Hüttenwanderungen auf den gut ausgebauten Höhenwegen. Bergbahnen und Sessellifte nehmen viel von der Mühe des Aufstiegs ab. Auch für die Wassersportler ist ausreichend gesorgt.", correctAnswer: "19"},
-              {id: "B", text: "Ritter und Burgfräulein für ein Wochenende Seit vielen Jahrhunderten gibt es in Deutschland Burgen. Hoch über mittelalterlichen Städten und oft in romantischer Landschaft ragen sie als touristische Attraktionen empor. Für Geschichtsinteressierte inszeniert man im alten Gemäuer bunte Feste, die das Mittelalter originaltreu zum Leben erwecken. Hier erleben Sie Ritterturniere, Minnesang und zünftige Gelage. Beliebt sind auch Bauernmärkte mit traditionsreicher Handwerkskunst, Maskentreiben und Volkstheater, deren Stücke an die Sagen und Märchen anknüpfen, die sich um jede Burg ranken. Anmeldung unter info@mittelalter.com", correctAnswer: ""},
-              {id: "C", text: "Ferien im Harz Der Harz erhebt sich inselartig über der Norddeutschen Tiefebene und verbindet die Länder Sachsen-Anhalt, Niedersachsen und Thüringen. Er ist zugleich das höchste Mittelgebirge nördlich des Mains, im Brockenmassiv auf 1.142 Meter ansteigend. Der Romkerhaller Wasserfall, der aus großer Höhe in die Tiefe stürzt, ist im Obertal neben der Obertalsperre ein beliebtes Fotomotiv. Fast jede Form von Wassersport ist hier möglich – Surfen, Paddeln, Rudern etc", correctAnswer: "15"},
-              {id: "D", text: "Auf den Spuren des römischen Dichters Ausonius Von Bingen am Rhein bis nach Trier an der Mosel führt dieser nach dem römischen Dichter Ausonius benannte Wanderweg. Auf der ehemaligen römischen Heerstraße geht es stets über die Höhenrücken des Hunsrück. Durch Wälder und vorbei an Hunsrücker Dörfern ist die römische Vergangenheit an der Strecke und in Museen allgegenwärtig. Der 110 Kilometer lange Weg, den auch Ausonius bereiste, führt über die Höhen und durchschneidet die Bachtäler in stetem Auf und Ab, um dann ab Neumagen die Mosel bis nach Trier zu begleiten.", correctAnswer: "13"},
-              {id: "E", text: "Extra für Musicalfans MAMMA MIA! ist eine mitreißende Musical-Komödie mit den 22 größten Hits von ABBA – und keine langweilige Biografie. Alle Songs werden auf Deutsch gesungen, so ist ein schwungvoller und unterhaltsamer Abend garantiert. Die mitreißende Musical-Komödie von Benny Andersson und Björn Ulvaeus hat weltweit schon über 24 Millionen Zuschauer begeistert. MAMMA MIA! – ein grandioses Stück über Liebe, Familie und Freundschaft. Vorstellungen jeder Abend um 18 und 20.30 Uhr. Hamburg Operettenhaus Hamburg Spielbudenplatz 1 D-20369 Hamburg", correctAnswer: "14"},
-              {id: "F", text: "Es gibt eine Steigerung zum normalen Strandspaziergang: die Wattwanderung. An der Nordsee finden Sie die größte zusammenhängende Wattlandschaft der Welt. Hier gibt es viel zu entdecken: gleich drei Nationalparks im Wattenmeer mit faszinierenden Landschaften und Tausenden von Tierarten. Ein Höhepunkt sind bestimmt die Seehunde im Nationalpark Hamburgisches Wattenmeer. Eine weitere Spezialität für fortgeschrittene Wattfans sind die Halligen, kleine Reste ehemals großer Marschinseln, die während der winterlichen Sturmfluten mehrmals landunter gehen.", correctAnswer: "18"},
-              {id: "G", text: "Aktion, Kamera läuft! Und Action! Besucher des Movie Park Deutschland sollten sich nicht wundern, wenn sie sich plötzlich an einem Set befinden und den Anweisungen des Regisseurs folgen oder spektakuläre Stunts hautnah erleben. In Bottrop, mitten im Ruhrgebiet, dreht sich alles um Filme mit viel Action und Spannung. Gehen auch Sie den Geheimnissen des Bermuda-Dreiecks auf den Grund, wagen Sie selbst eine aufregende Verfolgung im Flugsimulator oder testen Sie Ihre Nerven auf einer der größten Achterbahnen Deutschlands! Aus Sicherheitsgründen Zutritt nur für Erwachsene.", correctAnswer: "11"},
-              {id: "H", text: "Wiesbaden – Internationaler Treffpunkt Gesundheit Das Mineralheilbad Wiesbaden liegt in einer milden, gemäßigten Klimazone. Bereits 1836 wurde hier die erste Orthopädische Heilanstalt eröffnet. Die Kurstadt mit ihrem historischen Charme ist unter anderem für ihre natriumchloridhaltigen Thermalquellen berühmt, die für vielfältige Kuren genutzt werden. In erster Linie werden sie bei rheumatischen Erkrankungen und Katarrhen der Atmungsorgane, aber auch bei Erkrankungen des Nervensystems und psychosomatischen Leiden eingesetzt.", correctAnswer: "11"},
-              {id: "I", text: "Spiel und Spaß am Bodensee Auf die Plätze – die kleinen grauen Zellen anknipsen – und los geht's auf eine Erlebnisreise durch das Ravensburger Spieleland. In dem Freizeitpark am Bodensee spielt die ganze Familie mit Pumuckl beim Fensterherstellungsspiel um die Wette. Rasen mit dem Fix & Foxi-Raketenblitz und sagen Ahoi Blaubär Guten Tag. Bekannte Ravensburger Brettspiele wie das Verrückte Labyrinth sind riesengroß. Und wo sonst kann man Memory-Kärtchen vom Hubschrauber aus bedienen? Das geht nur im Freizeitpark Ravensburger Spieleland. Mitten in der schönsten Natur und ganz in der Nähe des Bodensees warten 50 Attraktionen auf 25 Hektar darauf, entdeckt zu werden.", correctAnswer: "16"},
-              {id: "J", text: "Bad Elster – heilendes Wasser aus sprudelnden Quellen In Bad Elster sprudeln gleich drei Trinkquellen unterschiedlicher Zusammensetzung und Heilwirkung. Das Herzstück einer Trink- und Badekur sind die Moritz- und die Marienquelle, die sich in der Nähe des Badehauses befinden. Bereits 1858 wurde den Quellen eine heilende Kraft bestätigt. Mineral- und Sprudelbäder beugen Herz- und Kreislauferkrankungen vor. Natriumchloridbäder und Packungen helfen gegen Rheuma, Arthritis, bei Frauenleiden, dem Ausheilen von Sport- und Unfallverletzungen sowie bei der operativen Nachsorge und Reha-Maßnahmen. Und Trinkkuren unterstützen die Heilung bei Stoffwechsel-, Nieren- und Harnwegserkrankungen.", correctAnswer: "17"},
-              {id: "K", text: "Ein besonderer Weihnachtsmarkt Willkommen auf dem Striezelmarkt, dem ältesten Weihnachtsmarkt Deutschlands. Gegründet 1434, verdankt er seinen Namen dem Hefestriezel, längst berühmt als Original Dresdner Christstollen. Alljährlich ist ihm zum Stollenfest, am Samstag vor dem 2. Advent, ein riesiger Festumzug gewidmet. Bestaunen Sie im Mittelpunkt des Marktes die mit 14 Metern höchste Weihnachtspyramide der Welt. Traditionelle Handwerksarbeiten vom Feinsten aus Dresden und Umgebung wie Pyramiden, Räuchermänner, Schwibbögen, Töpferwaren und Herrnhuter Adventssterne werden auch Sie verzaubern.", correctAnswer: null},
-              {id: "L", text: "Bad Homburg – in einzigartiger Badekultur entspannen wie Könige In Bad Homburg steht das heilsame und wohltuende Thermalwasser von höchster Qualität als heilendes Element im Vordergrund. Es enthält für den Körper wichtige Mineralstoffe. Gleich sechs kalte, kohlensäurehaltige Kochsalzquellen, ein Solenebelbad und zwei Galliaquellen werden für Trinkkuren und Mineralbäder genutzt. Man findet aktive Entspannung mit Gesundheits-, Fitness- und Sportprogramm. Individuelle Therapien und Verfahren helfen bei Bewältigung von Stressproblemen. Moderne medizinische und therapeutische Erkenntnisse haben das Kurangebot Bad Homburgs in den letzten hundert Jahren wesentlich beeinflusst.", correctAnswer: "14"}
+              {id: "A", text: "Auf unserer Homepage finden Sie nicht nur aktuelle Wetterberichte für Ihren Wohnort, sondern auch verlässliche Vorhersagen für Ihre Region, für Europa und die ganze Welt. Wir geben laufend zeitnahe Unwetterwarnungen und stündlich aktualisierte Daten zu Schneehöhen und Wasserpegel. Allergiker und wetterfühlige Menschen bekommen bei uns gesundheitsbezogene Informationen zu Biowetter, Pollenflug oder Ozonwerten. Über unsere Seite haben Sie Zugang zu einem dichten Netz von Webcams in ganz Deutschland und den Grenzregionen. Durch eine Mitgliedschaft bei WetAkt.com profitieren Sie von unseren zahlreichen Apps: >>mehr", correctAnswer: "13"},
+              {id: "B", text: "Die beiden letzten Tage waren für die Winzer eine Katastrophe. Nachdem der Frühling überdurchschnittlich warm gewesen war, entfalteten sich die Reben viel früher als sonst. Deshalb traf der jüngste Kälteeinbruch die Blüten und Knospen besonders stark. Im Norden und Osten Frankreichs, in Deutschland und in der Schweiz wurden Temperaturen bis zu minus 8 Grad gemessen. Selbst in Italien, vor allem in der Toskana, wurden Minusgrade verzeichnet. Der Frost hat in der Chianti-Region große Schäden angerichtet. Details zur Entschädigung für Frostschäden im Weinbau finden Sie hier.", correctAnswer: null},
+              {id: "C", text: "Wir bauen seit vier Generationen Wein an und haben vor einigen Jahren auf ökologischen Weinbau umgestellt. Unser Weingut liegt in den sanften Hügeln Apuliens. Für die Weinernte im Oktober suchen wir Helfer im Austausch gegen Verpflegung und Unterkunft. An fünf Tagen pro Woche hilfst du bei allen Tätigkeiten rund um den Wein. An deinen freien Tagen kannst du die wunderschöne Gegend erkunden. Du wohnst in einem eigenen Zimmer und hast auf Wunsch Familienanschluss. Neben Italienisch sprechen wir auch Deutsch und Englisch. Kontaktformular", correctAnswer: "16"},
+              {id: "D", text: "23. November: Vortrag Zeinab Schmidt-Hussain, Dominikanerhaus, Stadtplatz 18. Die Klimaforscherin und Meteorologin Zeinab Schmidt-Hussain ist seit Anfang des Jahres die neue Leiterin des Silberberg-Observatoriums. Die junge Wissenschaftlerin hat bereits viel beachtete Forschungsergebnisse für unterschiedliche Bereiche der Klima- und Wetterkunde vorgelegt. In ihrem Vortrag spricht sie über ihre Zeit an einer Forschungsstation am Südpol, in der sie zwei Jahre verbracht hat. Sie zeigt außergewöhnliche Aufnahmen und berichtet dabei vom Alltag und den Arbeitsbedingungen bei Temperaturen, die auch im Sommer nicht über minus 40 Grad Celsius steigen. Beginn ist um 20:00 Uhr.", correctAnswer: "17"},
+              {id: "E", text: "Sie sind auf der Suche nach dem besten Preis-Leistungs-Verhältnis? Dann sind Sie in unserem Online-Shop genau richtig! Bei uns finden Sie Sonderpreise, ohne auf Qualität verzichten zu müssen. Von Moselweinen bis zu französischem Rotwein wir halten das ganze Jahr über eine große Auswahl an attraktiven Sonderangeboten bereit. Wie das möglich ist? Wir kaufen große Mengen günstig ein und geben den niedrigen Preis an Sie weiter. Bei manchen Sorten sparen Sie bis zu 40 Prozent im Vergleich zum Preis im Geschäft. weiterlesen", correctAnswer: "19"},
+              {id: "F", text: "Die afrikanische Schlafkrankheit wird durch die Tsetsefliege auf Tiere und Menschen übertragen. Die Krankheit, die mit Nervenschädigungen und hohem Fieber verbunden ist, kann zum Tod führen. Ein Forscherteam zeigte nun, wie sich die Schlafkrankheit durch den Klimawandel weiter ausdehnen könnte. Diese Wissenschaftler gingen davon aus, dass sich die Erde in den nächsten Jahrzehnten um mehr als fünf Grad erwärmen wird. Damit könnte die Tsetsefliege in Gebiete vordringen, die bisher zu kalt waren. Hier geht es zu dem Artikel.", correctAnswer: "20"},
+              {id: "G", text: "Mit Temperaturen von bis zu minus 20 Grad und starken Sturmböen herrschen in weiten Teilen Europas extreme Winterbedingungen. Unter dem Einfluss des heftigen Windes wurden in den letzten Tagen Fahrbahnen zugeweht, und stellenweise türmt sich der Schnee meterhoch. Autos blieben liegen, und vielerorts mussten die Rettungskräfte ausrücken, um Menschen aus ihren Fahrzeugen zu befreien. Brücken und Straßen mussten komplett gesperrt, der Fährenverkehr zu den Inseln eingestellt werden. In manchen Gegenden ist die Stromversorgung vollständig zusammengebrochen. Es scheint wie ein Wunder, dass unter diesen Bedingungen noch keine Opfer zu beklagen sind.", correctAnswer: null},
+              {id: "H", text: "Für Liebhaber französischer Weine, die es individuell mögen: Wir planen und organisieren für Sie maßgeschneiderte Urlaubsreisen in die bedeutendsten Weinbaugebiete Frankreichs, zum Beispiel nach Burgund, Bordeaux oder in die Champagne. Zu unseren Partner betrieben gehören nicht nur große Namen, sondern auch kleinere Winzer. Unsere Unterkunftsmöglichkeiten reichen von einfachen Gästehäusern in kleinen Weindörfern bis zum luxuriösen 5-Sterne-Hotel. Besichtigen Sieberühmte Weingüter, erfahren Sie Interessantes rund um den Weinbau verkosten Sie die besten Weine und kaufen Sie Ihren Lieblingswein direkt vom Produzenten. Zu den Reisezielen", correctAnswer: "14"},
+              {id: "I", text: "Das Städtische Museum beherbergt auch eine bedeutende Insektensammlung. Der Hobby-Insektenforscher Rüdiger Wildhaber hat sie seiner Heimatstadt vermacht. In den Schaukästen und auf vergrößerten Fotos können die Besucher die unglaubliche Formen- und Farbenvielfalt der Insekten bewundern. Bei den Jüngsten besonders beliebt sind die beiden übergroßen Modelle einer Biene und eines Marienkäfers. In kindgerechten Vorträgen erzählen unsere Mitarbeiterinnen und Mitarbeiter täglich von 15:00 bis 17:00 Uhr Wissenswertes über die spannende Welt der Insekten, die artenreichste Klasse der Tiere. Themen und Termine finden Sie hier.", correctAnswer: "18"},
+              {id: "J", text: "Der Sturm deckt das Dach Ihres Wohnhauses ab, nach den heftigen Regenfällen steht das Wasser in Ihrem Keller, oder die Schneelawine von Ihrem Dach verletzt Passanten: Unwetterschäden können sehr teuer werden. Wir helfen Ihnen, sich so gut wie möglich dagegen zu schützen. Erfahren Sie hier, welche Versicherungen wir Ihnen anbieten. Das Wetter können Sie nicht ändern, aber Sie können dazu beitragen, Schäden zu vermeiden. Hier lesen Sie, wie Sie Unwetterschäden vorbeugen können. Was tun, wenn doch ein Schaden auftritt? Das Vorgehen im Schadensfall erklären wir hier.", correctAnswer: "12"},
+              {id: "K", text: "Weinverkostung - am 15. November, von 15.00 bis 19.00 Uhr, laden wir Genießer, Weinkenner und Fachleute zu unserer diesjährigen Weinverkostung. Wir freuen uns besonders, unseren Besucherinnen und Besuchern einen Riesling vorzustellen, der bei zwei internationalen Wettbewerben ausgezeichnet wurde. Auf unserem Weingut in dem alten Schloss an der Mosel erwarten Sie neben der Verkostung auch attraktive Sonderangebote, die ausschließlich für Besucherinnen und Besucher am Tag der offenen Tür reserviert sind. Weinverkostungen bieten wir auf Wunsch auch an anderen Tagen an. Für Gruppen ab 20 Personen, 30 bis 45 Minuten.", correctAnswer: "15"},
+              {id: "L", text: "Insektenwelten - der neue Insektenführer - in keiner anderen Tiergruppe gibt es so viele Arten wie bei den Insekten. In rund 1500 Einträgen gibt dieses neue Bestimmungsbuch eine umfassende Übersicht über die Vielfalt der Insekten, die in Europa anzutreffen sind. Es umfasst Fotos und detaillierte Zeichnungen in Farbe, die die charakteristischen Merkmale der einzelnen Arten hervorheben. Eine Fülle von populärwissenschaftlichen Informationen im handlichen Taschenbuchformat - damit ist dieser Führer ein Muss für jeden Insektenliebhaber. Blick ins Buch. Taschenbuch, 395 Seiten, 32,80 EUR. Kaufen.", correctAnswer: "11"}
             ],
             situations: [
-              {id: "11", text: "Ein Bekannter möchte miterleben, wie spektakuläre Filmszenen gedreht werden."},
-              {id: "12", text: "Eine Bekannte interessiert sich für CDs mit klassischer Musik."},
-              {id: "13", text: "Eine Bekannte möchte eine mehrtägige Fußwanderung machen und dabei etwas über die kulturelle Vergangenheit der Region erfahren."},
-              {id: "14", text: "Eine Bekannte möchte sich in einem Kurort von der Hektik des Alltags erholen."},
-              {id: "15", text: "Ein Bekannter möchte im Urlaub auf einem See Boot fahren."},
-              {id: "16", text: "Eine Familie möchte mit ihren Kindern einen aktiven und lustigen Tag verbringen."},
-              {id: "17", text: "Ein Bekannter hat ein neue Kniegelenk bekommen und sucht eine geeignete Kur."},
-              {id: "18", text: "Eine Bekannte ist Hobbyzoologin und interessiert sich für den Lebensraum Küste"},
-              {id: "19", text: "Ein Bekannter liebt die Bergwelt, kann aber keine steilen und anstrengenden Wege mehr gehen."},
-              {id: "20", text: "Eine Bekannte möchte Geschichten über Ritter und Burgen lesen."}
+              {id: "11", text: "Ein Nachbar sucht ein illustriertes Buch, um Insektenarten erkennen zu können."},
+              {id: "12", text: "Ein Sturm hat Ihr Auto beschädigt. Sie möchten wissen, was Sie nun machen sollen."},
+              {id: "13", text: "Eine Bekannte fährt in Urlaub und möchte wissen, wie das Wetter in Italien ist."},
+              {id: "14", text: "Freunde von Ihnen möchten auf einer Reise im Ausland an Weinproben teilnehmen."},
+              {id: "15", text: "Ihr Sohn möchte eine Weinbauschule besuchen."},
+              {id: "16", text: "Ihre Freundin interessiert sich für Bio-Weine und möchte Reisen und Arbeiten verbinden."},
+              {id: "17", text: "Sie möchten gerne mehr über die Lebensbedingungen bei extremer Kälte erfahren."},
+              {id: "18", text: "Sie planen für den Kindergeburtstag Ihrer Tochter einen lehrreichen Nachmittag."},
+              {id: "19", text: "Sie sollen im Internet günstigen Wein für ein Familienfest bestellen."},
+              {id: "20", text: "Sie suchen Informationen über den Klimawandel."}
             ]
           },
           { 
             id: "s4", 
             title: "Sprachbausteine, Teil 1", 
             points: 15,
-            passageTitle:"Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.",
+            passageTitle: "Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.",
             passage: "",
-            questions:[],
+            questions: [],
             fillBlanks: [
               {
-                id: "21",
-                options: ["dass", "ob", "weil"],
-                correctAnswer: "dass"
+               id: "21",
+               options: ["mit", "über", "wegen"],
+               correctAnswer: "über"
+           },
+              {
+              id: "22",
+              options: ["außerdem", "sonst", "weiterhin"],
+              correctAnswer: "außerdem"
               },
               {
-                id: "22",
-                options: ["bedienen", "beeilen", "beschäftigen"],
-                correctAnswer: "beschäftigen"
+              id: "23",
+              options: ["fahren", "kommen", "nehmen"],
+              correctAnswer: "nehmen"
               },
-              {
-                id: "23",
-                options: ["bloß", "doch", "nur"],
-                correctAnswer: "doch"
-              },
-              {
-                id: "24",
-                options: ["außerdem", "insbesondere", "jedoch"],
-                correctAnswer: "insbesondere"
-              },
-              {
-                id: "25",
-                options: ["übermächtig", "übermäßig", "überwiegend"],
-                correctAnswer: "überwiegend"
-              },
-              {
-                id: "26",
-                options: ["fast", "nahe", "ziemlich"],
-                correctAnswer: "fast"
-              },
-              {
-                id: "27",
-                options: ["gering", "knapp", "wenig"],
-                correctAnswer: "wenig"
-              },
-              {
-                id: "28",
-                options: ["kommt", "läuft", "steht"],
-                correctAnswer: "kommt"
-              },
-              {
-                id: "29",
-                options: ["brauchst", "hast", "willst"],
-                correctAnswer: "willst"
-              },
-              {
-                id: "30",
-                options: ["kürzlich", "möglich", "üblich"],
-                correctAnswer: "möglich"
-              }
-            ],
-            fillText: `Liebe Corinna,
-
-es tut mir wirklich Leid, ________ ich dir seit Ewigkeiten nicht mehr geschrieben habe. Aber du weißt ja: Ich habe seit drei Monaten eine neue Arbeit. Und da hatte ich gar keine Zeit, mich mit etwas Anderem zu ________ als mit der neuen Arbeit.
-
-Es hat mich wirklich überrascht, wie schnell ich nach dem Abschluss meiner Ausbildung etwas gefunden habe. Dabei haben alle immer nur gesagt: "Gärtner? Die gibt es ________ wie Sand am Meer, wie willst du da so schnell einen Job finden?".
-
-Ich arbeite jetzt in einer Baumschule. Wir kultivieren und verkaufen Obstbäume, ________ an die Obstbauern der näheren Umgebung. Die Arbeit macht mir großen Spaß, es ist andererseits aber ein bisschen anstrengend, acht Stunden am Tag körperlich ________ im Freien - zu arbeiten. Und leider muss ich ________ eine dreiviertel Stunde mit dem Zug fahren, um an meinen Arbeitsplatz zu kommen.
-
-Wenn ich dann am Abend nach Hause komme, bin ich so müde, dass ich eigentlich nur noch fernsehen oder Musik hören kann. Ich habe im Moment nur ________ Lust, etwas zu unternehmen, aber ich bin mir sicher: Sie ________ wieder.
-
-Wie geht es dir denn? Du müsstest doch jetzt auch bald mit deiner Ausbildung fertig sein, oder? Hast du schon damit angefangen, dich bei verschiedenen Arbeitgebern zu bewerben? Oder ________ du dir noch ein bisschen Zeit damit? Ich würde dir in jedem Fall raten: Fang so früh wie ________ mit den Bewerbungen an, je früher, desto besser. Du weißt ja, was unser Klassenlehrer in der Realschule immer gesagt hat: Gut Ding will Weile haben.
-
-So, jetzt muss ich aufhören und ins Bett gehen, damit ich morgen wieder fit bin. Mach's gut, bis bald,
-
-dein
-
-Richard`
+{
+id: "24",
+options: ["da", "darum", "deshalb"],
+correctAnswer: "da"
+},
+{
+id: "25",
+options: ["dadurch", "damit", "davon"],
+correctAnswer: "davon"
+},
+{
+id: "26",
+options: ["besprochen", "gesprochen", "versprochen"],
+correctAnswer: "gesprochen"
+},
+{
+id: "27",
+options: ["als", "dass", "wenn"],
+correctAnswer: "dass"
+},
+{
+id: "28",
+options: ["euch", "sich", "uns"],
+correctAnswer: "sich"
+},
+{
+id: "29",
+options: ["das", "der", "die"],
+correctAnswer: "die"
+},
+{
+id: "30",
+options: ["bestenfalls", "jedenfalls", "keinesfalls"],
+correctAnswer: "jedenfalls"
+}
+],
+fillText: `Lieber Igor, 
+vielen Dank für deine Nachricht, ________ über ich mich sehr gefreut habe. Es ist echt eine tolle Idee, im Sommer gemeinsam zu verreisen! Aber möchtest du wirklich mit dem Auto fahren? Ich würde lieber die Bahn nehmen, denn das ist umweltfreundlicher und ________ außerdem noch billiger. Momentan bin ich nämlich mal wieder etwas knapp bei Kasse. Wir könnten doch eine Interrail-Tour machen. Mit einem Global Pass können wir in 30 europäischen Ländern Zug ________ nehmen, und zwar wann und wohin auch immer - allerdings nicht bei uns in Deutschland. Hier müssen wir extra zahlen. Aber wir haben es ja von mir aus nicht allzu weit bis zur Grenze. ________ da wir noch keine 26 Jahre alt sind, können wir den Pass ausgesprochen günstig bekommen. Der Preis hängt ________ davon ab, wie lange wir unterwegs sein wollen. Wenn du lieber nur ein einziges Land bereisen möchtest, schlage ich vor, nach Frankreich zu fahren. Dann nämlich würden wir für ein Interrail-Ticket sogar noch weniger zahlen. Ich habe auch schon mit meiner Tante in Marseille ________ gesprochen und sie hat gleich vorgeschlagen, ________ dass wir einige Tage bei ihr verbringen. Meine Cousins Jérôme und Matthieu, die in Paris studieren, haben Semesterferien und werden auch dort sein. Die beiden würden ________ sich freuen, mit uns um die Häuser zu ziehen, und könnten uns sicherlich die angesagtesten Clubs der Stadt zeigen. Wegen ________ der Sprachkenntnisse brauchst du dir nicht den Kopf zu zerbrechen, denn die beiden sprechen ziemlich gut Deutsch. Was hältst du davon? Hast du noch andere Vorschläge? Ich freue mich ________ jedenfalls schon sehr auf unsere gemeinsame Reise. 
+Bis bald,
+ Thomas`
           },
           { 
             id: "s5", 
             title: "Sprachbausteine, Teil 2", 
             points: 15,
-            passageTitle:"Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort nur einmal verwenden. Nicht alle Wörter passen in den Text.",
+            passageTitle: "Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort nur einmal verwenden. Nicht alle Wörter passen in den Text.",
             passage: "",
-            questions:[],
+            questions: [],
             fillBlanks2: [
               {
-                id: "31",
-                options: ["ALLES", "ANSTATT", "AUSGEHEN", "BEKOMMEN", "BILDEN", "DAGEGEN", "DAVON", "GEGEN", "HÖCHSTENS", "JEDE", "MEISTENS", "SOLCHE", "UM", "WILL", "WÜNSCHT"],
-                correctAnswer: "ANSTATT"
-              },
-              {
-                id: "32", 
-                options: ["ALLES", "ANSTATT", "AUSGEHEN", "BEKOMMEN", "BILDEN", "DAGEGEN", "DAVON", "GEGEN", "HÖCHSTENS", "JEDE", "MEISTENS", "SOLCHE", "UM", "WILL", "WÜNSCHT"],
-                correctAnswer: "JEDE"
-              },
-              {
-                id: "33",
-                options: ["ALLES", "ANSTATT", "AUSGEHEN", "BEKOMMEN", "BILDEN", "DAGEGEN", "DAVON", "GEGEN", "HÖCHSTENS", "JEDE", "MEISTENS", "SOLCHE", "UM", "WILL", "WÜNSCHT"],
-                correctAnswer: "GEGEN"
-              },
-              {
-                id: "34",
-                options: ["ALLES", "ANSTATT", "AUSGEHEN", "BEKOMMEN", "BILDEN", "DAGEGEN", "DAVON", "GEGEN", "HÖCHSTENS", "JEDE", "MEISTENS", "SOLCHE", "UM", "WILL", "WÜNSCHT"],
-                correctAnswer: "DAVON"
-              },
-              {
-                id: "35",
-                options: ["ALLES", "ANSTATT", "AUSGEHEN", "BEKOMMEN", "BILDEN", "DAGEGEN", "DAVON", "GEGEN", "HÖCHSTENS", "JEDE", "MEISTENS", "SOLCHE", "UM", "WILL", "WÜNSCHT"],
-                correctAnswer: "WILL"
-              },
-              {
-                id: "36",
-                options: ["ALLES", "ANSTATT", "AUSGEHEN", "BEKOMMEN", "BILDEN", "DAGEGEN", "DAVON", "GEGEN", "HÖCHSTENS", "JEDE", "MEISTENS", "SOLCHE", "UM", "WILL", "WÜNSCHT"],
-                correctAnswer: "BILDEN"
-              },
-              {
-                id: "37",
-                options: ["ALLES", "ANSTATT", "AUSGEHEN", "BEKOMMEN", "BILDEN", "DAGEGEN", "DAVON", "GEGEN", "HÖCHSTENS", "JEDE", "MEISTENS", "SOLCHE", "UM", "WILL", "WÜNSCHT"],
-                correctAnswer: "AUSGEHEN"
-              },
-              {
-                id: "38",
-                options: ["ALLES", "ANSTATT", "AUSGEHEN", "BEKOMMEN", "BILDEN", "DAGEGEN", "DAVON", "GEGEN", "HÖCHSTENS", "JEDE", "MEISTENS", "SOLCHE", "UM", "WILL", "WÜNSCHT"],
-                correctAnswer: "SOLCHE"
-              },
-              {
-                id: "39",
-                options: ["ALLES", "ANSTATT", "AUSGEHEN", "BEKOMMEN", "BILDEN", "DAGEGEN", "DAVON", "GEGEN", "HÖCHSTENS", "JEDE", "MEISTENS", "SOLCHE", "UM", "WILL", "WÜNSCHT"],
-                correctAnswer: "BEKOMMEN"
-              },
-              {
-                id: "40",
-                options: ["ALLES", "ANSTATT", "AUSGEHEN", "BEKOMMEN", "BILDEN", "DAGEGEN", "DAVON", "GEGEN", "HÖCHSTENS", "JEDE", "MEISTENS", "SOLCHE", "UM", "WILL", "WÜNSCHT"],
-                correctAnswer: "MEISTENS"
-              }
+id: "31",
+options: ["Flut", "abgrenzen", "als", "diesen", "aber", "Korrekt", "meisten", "recht", "reisend", "somit", "stellt", "unlogische", "unterscheiden", "verschieden", "zwar"],
+correctAnswer: "Flut"
+},
+{
+id: "32",
+options: ["recht", "abgrenzen", "diesen"],
+correctAnswer: "recht"
+},
+{
+id: "33",
+options: ["aber", "verschieden", "zwar"],
+correctAnswer: "aber"
+},
+{
+id: "34",
+options: ["stellt", "somit", "unlogische"],
+correctAnswer: "stellt"
+},
+{
+id: "35",
+options: ["Diesen", "Korrekt", "zwar"],
+correctAnswer: "Diesen"
+},
+{
+id: "36",
+options: ["meisten", "verschieden", "unterscheiden"],
+correctAnswer: "meisten"
+},
+{
+id: "37",
+options: ["Korrekt", "unlogische", "somit"],
+correctAnswer: "Korrekt"
+},
+{
+id: "38",
+options: ["unlogische", "unterscheiden", "verschieden"],
+correctAnswer: "unlogische"
+},
+{
+id: "39",
+options: ["unterscheiden", "somit", "verschieden"],
+correctAnswer: "unterscheiden"
+},
+{
+id: "40",
+options: ["somit", "verschieden", "abgrenzen"],
+correctAnswer: "somit"
+}
             ],
-            fillText2: `Schwarzarbeit kann teuer werden
+            fillText2: `Manipulierte Bilder?
 
-Schnäppchen machen, um Rabatte feilschen: Wer billig einkauft, gilt als clever. Vorsicht ist jedoch bei Aufträgen an Schwarzarbeiter geboten. Denn schnell zahlt der Kunde drauf, ________ wie durch das illegale Arbeitsverhältnis erhofft - Geld zu sparen. Rund ums Haus ist nicht ________ Gelegenheit so günstig, wie sie anfangs scheint:
-
-Schwarzarbeit etwa ist nicht nur verboten, sondern es gibt auch ein finanzielles Argument ________ illegale Arbeiter: Oftmals rechnet sich der Dienst gegen Barzahlung gar nicht. "Abgesehen ________, dass es strafbar ist, Schwarzarbeiter zu beschäftigen, nimmt der Auftraggeber handfeste steuerliche Nachteile in Kauf, warnt Dirk Witte, Steuerberater aus Wildeshausen in Niedersachsen. Wer eine Putzhilfe beschäftigt, kann die Steuerlast auch auf legalem Weg spürbar senken.
-
-Auch für die Modernisierung, Renovierung und Sanierung der Wohnung gibt es einen Steuernachlass, allerdings nur für legale Arbeiten. "Das Finanzamt ________ eine ordentliche Rechnung und einen Überweisungsbeleg sehen". Barzahler können daher nichts von der Steuer absetzen. Noch schwerer fällt ins Gewicht, dass ein Kunde seine Haftungsansprüche aufs Spiel setzt, wenn er vordergründig ein paar Euro sparen möchte. Denn mängelfreie Bauten ________ eher die Ausnahme.
-
-Und ob ein Kunde die Beseitigung von Mängeln gerichtlich gegen einen Schwarzarbeiter durchsetzen kann, ist von Fall zu Fall zu prüfen. Im Prinzip muss man aber damit rechnen, die Ansprüche zu verlieren. Ebenso dürften Verbraucher leer ________, wenn beim Bauen etwas zu Bruch geht. Ein orderntlicher Handwerker hat für ________ Fälle eine Haftpflichtversicherung.
-
-Richtig teuer werden können auch Unfälle, bei denen sich der illegale Helfer verletzt. Dann zahlen weder Krankenversicherung noch Unfallkasse. Fälit etwa ein Arbeiter vom Gerüst und ist danach dauerhaft querschnittsgelähmt, dann wird der Kunde dafür sein Leben lang zahlen.
-
-Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Fliegt die illegale Beschäftigung auf, dann ________ es gleich mehrere Behörden mit. Post gibt es dann vom Finanzamt, der Staatsanwaltschaft und den Sozialversicherungsträgern. Dann braucht der Auftraggeber ________ einen Anwalt. Und der kostet natürlich auch wieder Geld.`
+'Im Internet, in sozialen Netzwerken und der Werbung werden wir mit einer ________ Flut von Fotos konfrontiert. Klar ist: Viele von ihnen sind keine wirklichen Originale, Bildbearbeitungsprogramme machen es sogar für Laien ________ recht einfach, Fotos zu verändern. Meist sind die Manipulationen harmlos, ________ aber die Möglichkeiten der Bildbearbeitung lassen sich natürlich auch für Betrügereien oder Meinungsmache missbrauchen. In diesem Zusammenhang ________ stellt sich die Frage, inwieweit Betrachtern solche Manipulationen auffallen. Können Sie erkennen, dass an einem Bild etwas merkwürdig ist, oder sogar die manipulierte Stelle finden? ________ Diesen Fragen sind nun Forscher der University of Warwick nachgegangen. Sie entwickelten dazu ein Online-Testsystem, bei dem die Teilnehmer den manipulierten Bereich auf Fotos erkennen sollten. Die Auswertungen ergaben: Die ________ meisten Teilnehmer waren nur eher zufällig in der Lage, ein manipuliertes Bild zu identifizieren. Oft hatten sie das vage Gefühl, dass mit einem der Bilder etwas nicht stimmt. Nur in 45 Prozent der Fälle konnten sie tatsächlich ________ Korrekt bestimmen, wo das Bild verändert worden war. Selbst ein falscher Schattenwurf oder andere ________ unlogische Abweichungen wurden nicht besser erkannt als nachvollziehbare Manipulationen wie beispielsweise künstliche Farbveränderungen. Bilder haben einen starken Einfluss auf unsere Erinnerungen, so die Forscher. Können Menschen also nicht zwischen echten und gefälschten Details auf Fotos ________ unterscheiden, so können manipulierte Bilder entscheidend beeinflussen, woran wir uns zu erinnern glauben. Die Ergebnisse dokumentierten ________ somit: Wir können recht leicht auf Fake-Fotos und damit auch auf ihre manipulierten Botschaften reinfallen. Aufbauend auf ihren Ergebnissen wollen die Forscher nun konkrete Ratschläge erarbeiten, die dem Betrachter helfen sollen, Fotomanipulationen besser zu erkennen.`
           }
         ]
       };
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         questionIndex: 0, 
@@ -1956,6 +1962,7 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
         timerStarted: false,
         timerInterval: null
       };
+      
       const topTiles = document.getElementById('topTiles-lesen');
       const passageTitleEl = document.getElementById('passageTitle-lesen');
       const passageContentEl = document.getElementById('passageContent-lesen');
@@ -1969,17 +1976,16 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
-      /* ===== Timer Functions ===== */
-      function startTimer(){
+      function startTimer() {
         if(state.timerInterval) {
           clearInterval(state.timerInterval);
         }
         
         state.timerStarted = true;
-        state.timerInterval = setInterval(()=>{
-          if(state.remaining <= 0){
+        state.timerInterval = setInterval(() => {
+          if(state.remaining <= 0) {
             clearInterval(state.timerInterval);
-            timerEl.textContent = 'Zeit abgelaufen';
+            if (timerEl) timerEl.textContent = 'Zeit abgelaufen';
             return;
           }
           state.remaining--;
@@ -1987,7 +1993,7 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
         }, 1000);
       }
 
-      function resetTimer(){
+      function resetTimer() {
         if(state.timerInterval) {
           clearInterval(state.timerInterval);
         }
@@ -1997,13 +2003,14 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
         startTimer();
       }
 
-      function updateTimerDisplay(){
+      function updateTimerDisplay() {
         const min = Math.floor(state.remaining / 60);
         const sec = state.remaining % 60;
-        timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+        if (timerEl) {
+          timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+        }
       }
 
-      /* ===== Reset Section Function ===== */
       function resetCurrentSection() {
         const currentSection = exam.sections[state.sectionIndex];
         
@@ -2034,54 +2041,129 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
         }
       }
 
-      /* ===== Render ===== */
-      function renderTopTiles(){ 
-        topTiles.innerHTML=''; 
-        exam.sections.forEach((sec,idx)=>{ 
-          const div=document.createElement('div'); 
-          div.className='tile'+(idx===state.sectionIndex?' active':'')+(isSectionDone(sec)?' done':''); 
-          div.innerHTML=`<div>${sec.title}</div><div class="points">${sec.points} P</div>`; 
-          div.onclick=()=>{state.sectionIndex=idx; state.questionIndex=0; state.showResults=false; renderAll();}; 
+      function renderTopTiles() { 
+        if (!topTiles) return;
+        topTiles.innerHTML = ''; 
+        exam.sections.forEach((sec, idx) => { 
+          const div = document.createElement('div'); 
+          div.className = 'tile' + (idx === state.sectionIndex ? ' active' : '') + (isSectionDone(sec) ? ' done' : ''); 
+          div.innerHTML = `<div>${sec.title}</div><div class="points">${sec.points} P</div>`; 
+          div.onclick = () => {
+            state.sectionIndex = idx; 
+            state.questionIndex = 0; 
+            state.showResults = false; 
+            renderAll();
+          }; 
           topTiles.appendChild(div); 
         }); 
       }
 
-      function isSectionDone(section){
-        if(section.id==='s1') return section.texts.every(t=>state.answers[t.id]);
-        if(section.id==='s2') return section.questions.every(q=>state.answers[q.id]);
-        if(section.id==='s3') return section.situations.every(h=>state.answers[h.id] || state.answers[h.id] === 'X');
-        if(section.id==='s4') return section.fillBlanks.every(b=>state.answers[b.id]);
-        if(section.id==='s5') return section.fillBlanks2.every(b=>state.answers[b.id]);
+      function isSectionDone(section) {
+        if(section.id === 's1') return section.texts.every(t => state.answers[t.id]);
+        if(section.id === 's2') return section.questions.every(q => state.answers[q.id]);
+        if(section.id === 's3') return section.situations.every(h => state.answers[h.id] || state.answers[h.id] === 'X');
+        if(section.id === 's4') return section.fillBlanks.every(b => state.answers[b.id]);
+        if(section.id === 's5') return section.fillBlanks2.every(b => state.answers[b.id]);
         return false;
       }
 
-      function renderAll(){
+      function getHeadingTextById(id) {
+        const section = exam.sections[state.sectionIndex];
+        const heading = section.headings.find(h => h.id === id);
+        return heading ? `${heading.id}) ${heading.text}` : '';
+      }
+
+      function selectOption(questionId, optionId) {
+        state.answers[questionId] = optionId;
+        try { localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); } catch(e) {}
+        renderAll();
+      }
+
+      function markNoMatch(situationId) {
+        Object.keys(state.answers).forEach(key => {
+          if(state.answers[key] === situationId) {
+            delete state.answers[key];
+          }
+        });
+        
+        state.answers[situationId] = 'X';
+        try { localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); } catch(e) {}
+        renderAll();
+      }
+
+      function selectSprachbausteine1(blankId, answer) {
+        state.answers[blankId] = answer;
+        renderAll();
+      }
+
+      function selectSprachbausteine2FromBank(word) {
+        const slot = document.querySelector('.blank-slot.selected-sprach') || 
+                     Array.from(document.querySelectorAll('.blank-slot')).find(s => {
+                       const id = s.dataset.blankId;
+                       return !state.answers[id];
+                     });
+        
+        if (!slot) return;
+        
+        const blankId = slot.dataset.blankId;
+        
+        Object.keys(state.answers).forEach(k => {
+          if(state.answers[k] === word) {
+            delete state.answers[k];
+          }
+        });
+        
+        const prev = state.answers[blankId];
+        if(prev) {
+          const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b => b.dataset.word === prev);
+          if(prevEl) {
+            prevEl.classList.remove('used');
+            prevEl.setAttribute('draggable', 'true');
+          }
+        }
+        
+        const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b => b.dataset.word === word);
+        if(bankEl) {
+          bankEl.classList.add('used');
+          bankEl.setAttribute('draggable', 'false');
+        }
+        
+        state.answers[blankId] = word;
+        try { localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); } catch(e) {}
+        
+        document.querySelectorAll('.blank-slot').forEach(s => s.classList.remove('selected-sprach'));
+        renderAll();
+      }
+
+      function renderAll() {
+        if (!passageTitleEl || !passageContentEl || !sectionNameEl) return;
+        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         sectionNameEl.textContent = section.title;
         passageTitleEl.textContent = section.passageTitle;
         
-        resetSectionBtn.style.display = 'block';
+        if (resetSectionBtn) resetSectionBtn.style.display = 'block';
         
-        if(state.showResults){
+        if(state.showResults) {
           renderResults();
           return;
         }
         
-        if(section.id === 's1'){
+        if(section.id === 's1') {
           renderPart1();
-        } else if(section.id === 's2'){
+        } else if(section.id === 's2') {
           renderPart2();
-        } else if(section.id === 's3'){
+        } else if(section.id === 's3') {
           renderPart3();
-        } else if(section.id === 's4'){
+        } else if(section.id === 's4') {
           renderSprachbausteine1();
-        } else if(section.id === 's5'){
+        } else if(section.id === 's5') {
           renderSprachbausteine2();
         }
       }
 
-      function renderPart1(){
+      function renderPart1() {
         const section = exam.sections[state.sectionIndex];
         
         let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. Sie können jede Überschrift nur einmal verwenden.</div>`;
@@ -2116,21 +2198,21 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
         
         headingsHTML += `</div>`;
         
-        headingsBankContainer.innerHTML = headingsHTML;
+        if (headingsBankContainer) {
+          headingsBankContainer.innerHTML = headingsHTML;
+        }
+        
+        if (questionBodyEl) {
+          questionBodyEl.innerHTML = '';
+        }
+        if (questionTitleEl) {
+          questionTitleEl.textContent = '';
+        }
         
         setupDragAndDrop();
-        
-        questionBodyEl.innerHTML = '';
-        questionTitleEl.textContent = '';
       }
 
-      function getHeadingTextById(id){
-        const section = exam.sections[state.sectionIndex];
-        const heading = section.headings.find(h => h.id === id);
-        return heading ? `${heading.id}) ${heading.text}` : '';
-      }
-
-      function setupDragAndDrop(){
+      function setupDragAndDrop() {
         const headingItems = document.querySelectorAll('.heading-item:not(.used)');
         const titleSlots = document.querySelectorAll('.title-slot');
         
@@ -2167,7 +2249,7 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
         });
       }
 
-      function renderPart2(){
+      function renderPart2() {
         const section = exam.sections[state.sectionIndex];
         
         passageContentEl.innerHTML = `<div class="passage">${section.passage}</div>`;
@@ -2198,10 +2280,10 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
         
         questionBodyEl.innerHTML = questionsHTML;
         questionTitleEl.textContent = '';
-        headingsBankContainer.innerHTML = '';
+        if (headingsBankContainer) headingsBankContainer.innerHTML = '';
       }
 
-      function renderPart3(){
+      function renderPart3() {
         const section = exam.sections[state.sectionIndex];
         
         let textsHTML = `
@@ -2252,25 +2334,12 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
         
         questionBodyEl.innerHTML = situationsHTML;
         questionTitleEl.textContent = '';
-        headingsBankContainer.innerHTML = '';
+        if (headingsBankContainer) headingsBankContainer.innerHTML = '';
         
         setupPart3DragAndDrop();
       }
 
-      function markNoMatch(situationId) {
-        Object.keys(state.answers).forEach(key => {
-          if(state.answers[key] === situationId) {
-            delete state.answers[key];
-          }
-        });
-        
-        state.answers[situationId] = 'X';
-        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
-        
-        renderAll();
-      }
-
-      function setupPart3DragAndDrop(){
+      function setupPart3DragAndDrop() {
         const situationItems = document.querySelectorAll('.situation-item:not(.used)');
         const textSlots = document.querySelectorAll('.text-item .title-slot');
         
@@ -2309,7 +2378,7 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
         });
       }
 
-      function renderSprachbausteine1(){
+      function renderSprachbausteine1() {
         const section = exam.sections[state.sectionIndex];
         
         let textWithBlanks = section.fillText;
@@ -2366,10 +2435,10 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
         
         questionBodyEl.innerHTML = optionsHTML;
         questionTitleEl.textContent = '';
-        headingsBankContainer.innerHTML = '';
+        if (headingsBankContainer) headingsBankContainer.innerHTML = '';
       }
 
-      function showOptionsPopup(blankElement){
+      function showOptionsPopup(blankElement) {
         const existingPopup = document.querySelector('.options-popup');
         if(existingPopup) {
           existingPopup.remove();
@@ -2398,24 +2467,18 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
         blankElement.appendChild(popup);
       }
 
-      function selectSprachbausteine1(blankId, answer){
-        state.answers[blankId] = answer;
-        renderAll();
-      }
-
-      function renderSprachbausteine2(){
+      function renderSprachbausteine2() {
         const section = exam.sections[state.sectionIndex];
-        // Build text but replace blanks with unique placeholders first (prevents ambiguous replacements)
+        
         let textWithPlaceholders = section.fillText2;
         const placeholders = [];
+        
         section.fillBlanks2.forEach(blank => {
           const ph = `BLANK_${blank.id}`;
           placeholders.push({id: blank.id, ph});
-          // replace first occurrence of the visual underline with placeholder
           textWithPlaceholders = textWithPlaceholders.replace('________', ph);
         });
 
-        // Now replace placeholders with actual span elements showing current answer (or underscore)
         placeholders.forEach(item => {
           const userAnswer = state.answers[item.id];
           const displayText = userAnswer ? userAnswer : '________';
@@ -2428,178 +2491,108 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
-        // attach click handlers to slots
         document.querySelectorAll('.blank-slot').forEach(slot => {
           slot.addEventListener('click', (e) => {
-            // use the element itself to open popup
             showSprachbausteine2Options(slot);
           });
         });
 
-        // Build word bank on the right
         let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
         const usedWords = Object.values(state.answers);
-        // Use section.wordBank if present, otherwise derive from fillBlanks2 options
         const bank = section.fillBlanks2[0] ? section.fillBlanks2[0].options : [];
+        
         bank.forEach(word => {
           const isUsed = usedWords.includes(word);
           wordBankHTML += `
             <div class="bank-word-vertical ${isUsed ? 'used' : ''}" 
                  draggable="${!isUsed}" 
                  data-word="${word}"
-                 ${!isUsed ? `onclick="window.lesenApp.selectSprachbausteine2FromBank('${word}')"` : ''}>
+                 onclick="window.lesenApp.selectSprachbausteine2FromBank('${word}')">
               ${word}
             </div>
           `;
         });
         wordBankHTML += `</div>`;
+        
         questionBodyEl.innerHTML = wordBankHTML;
         questionTitleEl.textContent = '';
-        headingsBankContainer.innerHTML = '';
+        if (headingsBankContainer) headingsBankContainer.innerHTML = '';
 
         setupSprachbausteine2DragAndDrop();
       }
 
-      // --- Added functions to handle drag/drop and clicks for Sprachbausteine Teil 2 ---
-      let lastClickedSprachSlot = null;
-
-      function setupSprachbausteine2DragAndDrop(){
-        // bank words: make draggable if not used, attach dragstart
+      function setupSprachbausteine2DragAndDrop() {
         const bankWords = Array.from(document.querySelectorAll('.bank-word-vertical'));
+        
         bankWords.forEach(el => {
           const word = el.dataset.word;
-          if(!el.classList.contains('used')){
-            el.setAttribute('draggable','true');
+          
+          if(!el.classList.contains('used')) {
+            el.setAttribute('draggable', 'true');
           } else {
-            el.setAttribute('draggable','false');
+            el.setAttribute('draggable', 'false');
           }
-          // ensure single attached listener
+          
           el.removeEventListener('dragstart', el._dstart);
           el._dstart = (e) => {
             e.dataTransfer.setData('text/plain', word);
-            // also set an indicator
-            e.dataTransfer.setData('source', 'bank');
           };
           el.addEventListener('dragstart', el._dstart);
-
-          // keep onclick behavior (select into clicked slot)
-          el.removeEventListener('click', el._onclick);
-          el._onclick = () => {
-            if(el.classList.contains('used')) return;
-            selectSprachbausteine2FromBank(word);
-          };
-          el.addEventListener('click', el._onclick);
         });
 
-        // blank slots: allow drop
         const slots = Array.from(document.querySelectorAll('.blank-slot'));
         slots.forEach(slot => {
           slot.addEventListener('dragover', (e) => {
             e.preventDefault();
             slot.classList.add('drag-over');
           });
+          
           slot.addEventListener('dragleave', (e) => {
             slot.classList.remove('drag-over');
           });
+          
           slot.addEventListener('drop', (e) => {
             e.preventDefault();
             slot.classList.remove('drag-over');
-            const word = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/html');
+            const word = e.dataTransfer.getData('text/plain');
             if(!word) return;
-            // Determine blank id
+            
             const blankId = slot.dataset.blankId;
             if(!blankId) return;
-            // If this word is already used in another slot, free it
+            
             Object.keys(state.answers).forEach(k => {
-              if(state.answers[k] === word){
+              if(state.answers[k] === word) {
                 delete state.answers[k];
               }
             });
-            // If slot had a previous answer, free that bank word
+            
             const prev = state.answers[blankId];
-            if(prev){
-              const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
-              if(prevEl){
+            if(prev) {
+              const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b => b.dataset.word === prev);
+              if(prevEl) {
                 prevEl.classList.remove('used');
-                prevEl.setAttribute('draggable','true');
-                prevEl.addEventListener('click', prevEl._onclick);
+                prevEl.setAttribute('draggable', 'true');
               }
             }
-            // mark bank word used
-            const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
-            if(bankEl){
+            
+            const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b => b.dataset.word === word);
+            if(bankEl) {
               bankEl.classList.add('used');
-              bankEl.setAttribute('draggable','false');
-              // remove click to prevent double-placing
-              bankEl.removeEventListener('click', bankEl._onclick);
+              bankEl.setAttribute('draggable', 'false');
             }
-            // assign to state and re-render
+            
             state.answers[blankId] = word;
             renderAll();
           });
         });
       }
 
-      function showSprachbausteine2Options(slot){
-        // highlight selected slot so click from bank knows target
+      function showSprachbausteine2Options(slot) {
         document.querySelectorAll('.blank-slot').forEach(s => s.classList.remove('selected-sprach'));
         slot.classList.add('selected-sprach');
-        lastClickedSprachSlot = slot;
       }
 
-      function selectSprachbausteine2FromBank(word){
-        // choose target slot: prefer lastClicked, otherwise first empty
-        let slot = lastClickedSprachSlot;
-        if(!slot){
-          slot = Array.from(document.querySelectorAll('.blank-slot')).find(s => {
-            const id = s.dataset.blankId;
-            return !state.answers[id];
-          });
-        }
-        if(!slot) {
-          // if none available, do nothing
-          return;
-        }
-        const blankId = slot.dataset.blankId;
-        // free previous occurrence of word
-        Object.keys(state.answers).forEach(k => {
-          if(state.answers[k] === word){
-            delete state.answers[k];
-          }
-        });
-        // free previous word in target slot
-        const prev = state.answers[blankId];
-        if(prev){
-          const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
-          if(prevEl){
-            prevEl.classList.remove('used');
-            prevEl.setAttribute('draggable','true');
-            if(prevEl._onclick) prevEl.addEventListener('click', prevEl._onclick);
-          }
-        }
-        // mark selected bank word as used
-        const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
-        if(bankEl){
-          bankEl.classList.add('used');
-          bankEl.setAttribute('draggable','false');
-          if(bankEl._onclick) try{ bankEl.removeEventListener('click', bankEl._onclick); }catch(e){}
-        }
-        // assign value
-        state.answers[blankId] = word;
-        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
-        
-        lastClickedSprachSlot = null;
-        renderAll();
-      }
-
-      function selectOption(questionId, optionId){
-        state.answers[questionId] = optionId;
-        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
-        
-        renderAll();
-      }
-
-      function renderResults(){
+      function renderResults() {
         let resultsHTML = `<h2>Ergebnisse</h2>`;
         let totalCorrect = 0;
         let totalQuestions = 0;
@@ -2607,7 +2600,7 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
         exam.sections.forEach(section => {
           resultsHTML += `<div class="result-item"><h3>${section.title}</h3>`;
           
-          if(section.id === 's1'){
+          if(section.id === 's1') {
             section.texts.forEach(text => {
               totalQuestions++;
               const userAnswer = state.answers[text.id];
@@ -2620,7 +2613,7 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
                 </div>
               `;
             });
-          } else if(section.id === 's2'){
+          } else if(section.id === 's2') {
             section.questions.forEach(question => {
               totalQuestions++;
               const userAnswer = state.answers[question.id];
@@ -2633,7 +2626,7 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
                 </div>
               `;
             });
-          } else if(section.id === 's3'){
+          } else if(section.id === 's3') {
             section.situations.forEach(situation => {
               totalQuestions++;
               const userAnswer = state.answers[situation.id];
@@ -2647,7 +2640,7 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
                 </div>
               `;
             });
-          } else if(section.id === 's4'){
+          } else if(section.id === 's4') {
             section.fillBlanks.forEach(blank => {
               totalQuestions++;
               const userAnswer = state.answers[blank.id];
@@ -2660,7 +2653,7 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
                 </div>
               `;
             });
-          } else if(section.id === 's5'){
+          } else if(section.id === 's5') {
             section.fillBlanks2.forEach(blank => {
               totalQuestions++;
               const userAnswer = state.answers[blank.id];
@@ -2682,191 +2675,153 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
         resultsHTML += `<div class="result-item"><h3>Gesamtergebnis: ${totalCorrect}/${totalQuestions} (${percentage}%)</h3></div>`;
         
         passageContentEl.innerHTML = resultsHTML;
-        questionBodyEl.innerHTML = '';
-        sectionNameEl.textContent = 'Ergebnisse';
-        questionTitleEl.textContent = '';
+        if (questionBodyEl) questionBodyEl.innerHTML = '';
+        if (sectionNameEl) sectionNameEl.textContent = 'Ergebnisse';
+        if (questionTitleEl) questionTitleEl.textContent = '';
       }
 
-      /* ===== Event Listeners ===== */
-      document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
-        if(state.sectionIndex > 0){
-          state.sectionIndex--;
-          state.questionIndex = 0;
+      // Event Listeners
+      const prevBtn = document.getElementById('prevBtn-lesen');
+      const nextBtn = document.getElementById('nextBtn-lesen-footer');
+      const nextBtnMain = document.getElementById('nextBtn-lesen');
+      const saveBtn = document.getElementById('saveBtn-lesen');
+      const submitBtn = document.getElementById('submitBtn-lesen');
+      
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          if(state.sectionIndex > 0) {
+            state.sectionIndex--;
+            state.questionIndex = 0;
+            renderAll();
+          }
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          if(state.sectionIndex < exam.sections.length - 1) {
+            state.sectionIndex++;
+            state.questionIndex = 0;
+            renderAll();
+          }
+        });
+      }
+
+      if (resultBtn) {
+        resultBtn.addEventListener('click', () => {
+          state.showResults = !state.showResults;
           renderAll();
-        }
-      });
+        });
+      }
 
-      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
-        if(state.sectionIndex < exam.sections.length - 1){
-          state.sectionIndex++;
-          state.questionIndex = 0;
-          renderAll();
-        }
-      });
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          if(confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
+            state.answers = {};
+            state.marked = {};
+            state.showResults = false;
+            resetTimer();
+            renderAll();
+          }
+        });
+      }
 
-      resultBtn.addEventListener('click', ()=>{
-        state.showResults = !state.showResults;
-        renderAll();
-      });
+      if (resetSectionBtn) {
+        resetSectionBtn.addEventListener('click', resetCurrentSection);
+      }
 
-      resetBtn.addEventListener('click', ()=>{
-        if(confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')){
-          state.answers = {};
-          state.marked = {};
-          state.showResults = false;
-          resetTimer();
-          renderAll();
-        }
-      });
+      if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+          statusText.textContent = 'Gespeichert';
+          setTimeout(() => {
+            if (statusText) statusText.textContent = 'Nicht gespeichert';
+          }, 2000);
+        });
+      }
 
-      resetSectionBtn.addEventListener('click', resetCurrentSection);
+      if (submitBtn) {
+        submitBtn.addEventListener('click', () => {
+          if(confirm('Möchten Sie die Prüfung wirklich abgeben?')) {
+            state.showResults = true;
+            renderAll();
+          }
+        });
+      }
 
-      document.getElementById('saveBtn-lesen').addEventListener('click', ()=>{
-        statusText.textContent = 'Gespeichert';
-        setTimeout(()=>{statusText.textContent = 'Nicht gespeichert'}, 2000);
-      });
+      if (nextBtnMain) {
+        nextBtnMain.addEventListener('click', () => {
+          showPage('hoeren-page');
+        });
+      }
 
-      document.getElementById('submitBtn-lesen').addEventListener('click', ()=>{
-        if(confirm('Möchten Sie die Prüfung wirklich abgeben?')){
-          state.showResults = true;
-          renderAll();
-        }
-      });
-
-      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
-        showPage('hoeren-page');
-      });
-
-      /* ===== Initialize ===== */
+      // Initialize
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
+      // Expose functions
       window._lesenState = state;
       window.lesenApp = {
-        selectOption,
-        markNoMatch,
-        selectSprachbausteine1,
-        selectSprachbausteine2FromBank
+        selectOption: selectOption,
+        markNoMatch: markNoMatch,
+        selectSprachbausteine1: selectSprachbausteine1,
+        selectSprachbausteine2FromBank: selectSprachbausteine2FromBank
       };
     }
 
     // ===== HÖREN PAGE FUNCTIONALITY =====
     function initHoerenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-hörverstehen",
-        durationSec: 17 * 60, // 17 minutes in seconds
+        durationSec: 17 * 60,
         sections: [
           { 
             id: "hörverstehen1", 
             title: "Hörverstehen, Teil 1", 
             points: 25,
-            correctAnswers: { "41": "richtig", "42": "richtig", "43": "falsch", "44": "falsch", "45": "falsch" },
+            correctAnswers: { "41": "richtig", "42": "falsch", "43": "falsch", "44": "falsch", "45": "richtig" },
             questions: [
-              {
-                id: "41",
-                text: "In der Europäischen Union verzeichnet man weniger jugendliche Arbeitslose."
-              },
-              {
-                id: "42", 
-                text: "Das Bundesarbeitsministerium bemüht sich um ausländische Arbeitnehmer bestimmter Berufe."
-              },
-              {
-                id: "43",
-                text: "Die 'Lange Nacht der Musik' findet am Odeonsplatz in München statt."
-              },
-              {
-                id: "44",
-                text: "Im 'Tal der goldenen Mumien' wurden bisher fast 10.000 Tote gefunden."
-              },
-              {
-                id: "45",
-                text: "Die Gefahr schwerer Unwetter ist nun vorbei."
-              }
+              { id: "41", text: "die Fluaggeselschaft DL fligt Z. B Rostok nicht mehr an." },
+              { id: "42", text: "Süßwaren warden dieses Jahr angeboten, um Käufer Zurückzugewinnen." },
+              { id: "43", text: "Die Sonnenstürme hatten keine negativen Auswirkungen." },
+              { id: "44", text: "Einer der kandidaten Konnte die Mehrheit der Zuschauer fur sich gewinnen" },
+              { id: "45", text: "Das Tiefdruckgebiet Helena Kann morgen im SüdWesten Deutschlands Verkehrsprobleme Verursachen" }
             ]
           },
           { 
             id: "hörverstehen2", 
             title: "Hörverstehen, Teil 2", 
             points: 25,
-            correctAnswers: { "46": "falsch", "47": "richtig", "48": "falsch", "49": "falsch", "50": "falsch", "51": "falsch", "52": "falsch", "53": "falsch", "54": "richtig", "55": "richtig" },
+            correctAnswers: { "46": "falsch", "47": "richtig", "48": "falsch", "49": "richtig", "50": "richtig", "51": "falsch", "52": "falsch", "53": "richtig", "54": "falsch", "55": "richtig" },
             questions: [
-              {
-                id: "46",
-                text: "Professor Steiner ist heute gar nicht mehr nervös, wenn er moderieren muss."
-              },
-              {
-                id: "47",
-                text: "Steiner vermittelt den Studierenden nicht nur theoretisches Wissen, sondern fordert auch, dass es praktisch angewendet wird."
-              },
-              {
-                id: "48", 
-                text: "Steiners Hobby ist es, experimentelle Filme zu machen."
-              },
-              {
-                id: "49",
-                text: "Journalisten sollten heute auf einzelne Medien spezialisiert sein."
-              },
-              {
-                id: "50",
-                text: "Sportjournalist zu werden, ist nach Steiners Ansicht heute fast ausgeschlossen."
-              },
-              {
-                id: "51",
-                text: "Journalisten sollten Lust haben, etwas zu entdecken."
-              },
-              {
-                id: "52",
-                text: "Steiner musste wegen einer Verletzung mit dem Fußballspielen aufhören."
-              },
-              {
-                id: "53",
-                text: "Steiner hat während seines Journalistik-Studiums für das ZDF Fußballspiele moderiert."
-              },
-              {
-                id: "54",
-                text: "Steiner ist es wichtig, als Moderator den Sportlern gegenüber neutral zu bleiben."
-              },
-              {
-                id: "55",
-                text: "Steiner rät Abiturienten dazu, verschiedene berufliche Möglichkeiten zu."
-              }
+              { id: "46", text: "Markus ist schon während des Studiums an eine amerikanische Universität gegangen." },
+              { id: "47", text: "Markus wollte in einem besonders erfolgreichen Team mitarbeiten." },
+              { id: "48", text: "Um eine Stelle in einer amerikanischen Forschergruppe zu bekommen, muss man viel Glück haben" },
+              { id: "49", text: "Markus befindet sich zwischen Ausbildung und Beruf." },
+              { id: "50", text: "Das Studium in Bonn hat Markus sehr gut auf den Auslandsaufenthalt vorbersitet." },
+              { id: "51", text: "Markus hatte nach der Ankunft in den USA sehr viele Schwierigkeiten." },
+              { id: "52", text: "Markus ist immer noch sehr nervös in der fremden Umgebung." },
+              { id: "53", text: "Markus ist mit den Arbeitsbedingungen zufrieden." },
+              { id: "54", text: "Markus befürwortet es nicht, dass sich Studenten in der USA früh auf ihre zukünftig Beruf festlegen müssen." },
+              { id: "55", text: "für Markus ist Vorteil, dass er in Deutschland die Referat und vortrag halten müsste." }
             ]
           },
           { 
             id: "hörverstehen3", 
             title: "Hörverstehen, Teil 3", 
             points: 25,
-            correctAnswers: { "56": "richtig", "57": "falsch", "58": "falsch", "59": "falsch", "60": "falsch" },
+            correctAnswers: { "56": "richtig", "57": "falsch", "58": "falsch", "59": "falsch", "60": "richtig" },
             questions: [
-              {
-                id: "56",
-                text: "Bei der Deutschen Telefon KG bekommen Sie nur Auskunft zu Telefonapparaten dieses Unternehmens."
-              },
-              {
-                id: "57",
-                text: "Im Rahmen des „BR3 Aquarena Weekends” in Starnberg können Sie jeden Abend ein Feuerwerk betrachten."
-              },
-              {
-                id: "58",
-                text: "Die Trierer Domorganisten spielen am 6. Juli in Michelstadt."
-              },
-              {
-                id: "59",
-                text: "Während des Musikfestivals „Sound of Frankfurt” ist die Benutzung der U- und S-Bahnen gebührenfrei."
-              },
-              {
-                id: "60",
-                text: "Sie haben eine ungültige Serviceaufnummer gewählt und werden daher automatisch weiterverbunden."
-              }
+              { id: "56", text: "Man kann am Tag des Ehrenamts probeweise mithelfen." },
+              { id: "57", text: "Die Skateboard -Vofürung fällt dieses mal aus." },
+              { id: "58", text: "Vor passwort- programmen wird gewarnt." },
+              { id: "59", text: "Es wird empfohlen, mit dem fahrrad zum Volkspark zu fahren." },
+              { id: "60", text: "Wenn man das Training ausprobieren möchte, muss man voher Bescheid sagen" }
             ]
           }
         ]
       };
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
@@ -2881,7 +2836,6 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
       const timerEl = document.getElementById('timer-hoeren');
       const statusText = document.getElementById('statusText-hoeren');
 
-      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -2891,7 +2845,7 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
         state.timerInterval = setInterval(() => {
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
-            timerEl.textContent = 'Zeit abgelaufen';
+            if (timerEl) timerEl.textContent = 'Zeit abgelaufen';
             return;
           }
           state.remaining--;
@@ -2912,17 +2866,23 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
       function updateTimerDisplay() {
         const min = Math.floor(state.remaining / 60);
         const sec = state.remaining % 60;
-        timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+        if (timerEl) {
+          timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+        }
       }
 
-      /* ===== Render ===== */
       function renderTopTiles() { 
+        if (!topTiles) return;
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
           const div = document.createElement('div'); 
           div.className = 'tile' + (idx === state.sectionIndex ? ' active' : '') + (isSectionDone(sec) ? ' done' : ''); 
           div.innerHTML = `<div>${sec.title}</div><div class="points">${sec.points} P</div>`; 
-          div.onclick = () => { state.sectionIndex = idx; state.showResults = false; renderAll(); }; 
+          div.onclick = () => { 
+            state.sectionIndex = idx; 
+            state.showResults = false; 
+            renderAll(); 
+          }; 
           topTiles.appendChild(div); 
         }); 
       }
@@ -2930,12 +2890,7 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
       function isSectionDone(section) {
         const answers = state.answers[section.id];
         if (!answers) return false;
-        
-        // تحقق إذا تمت الإجابة على جميع الأسئلة في هذا القسم
-        const answeredQuestions = Object.keys(answers).length;
-        const totalQuestions = section.questions.length;
-        
-        return answeredQuestions === totalQuestions;
+        return Object.keys(answers).length === section.questions.length;
       }
 
       function renderAll() {
@@ -2972,7 +2927,7 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
               <tbody>
         `;
         
-        section.questions.forEach((question, index) => {
+        section.questions.forEach((question) => {
           const currentAnswer = currentAnswers[question.id] || '';
           contentHTML += `
             <tr>
@@ -3012,7 +2967,9 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
           </div>
         `;
         
-        contentContainer.innerHTML = contentHTML;
+        if (contentContainer) {
+          contentContainer.innerHTML = contentHTML;
+        }
       }
 
       function updateListeningAnswer(sectionId, questionId, answer) {
@@ -3020,10 +2977,7 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
           state.answers[sectionId] = {};
         }
         state.answers[sectionId][questionId] = answer;
-        try{ localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); }catch(e){}
-        
-        
-        // إعادة عرض البلاطات لتحديث حالة "تم"
+        try { localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); } catch(e) {}
         renderTopTiles();
       }
 
@@ -3083,74 +3037,100 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
           `;
         });
         
-        contentContainer.innerHTML = resultsHTML;
+        if (contentContainer) {
+          contentContainer.innerHTML = resultsHTML;
+        }
       }
 
-      /* ===== Event Listeners ===== */
-      document.getElementById('prevBtn-hoeren').addEventListener('click', () => {
-        if (state.sectionIndex > 0) {
-          state.sectionIndex--;
-          state.showResults = false;
+      // Event Listeners
+      const prevBtn = document.getElementById('prevBtn-hoeren');
+      const nextBtn = document.getElementById('nextBtn-hoeren-footer');
+      const resultBtn = document.getElementById('resultBtn-hoeren');
+      const resetBtn = document.getElementById('resetBtn-hoeren');
+      const saveBtn = document.getElementById('saveBtn-hoeren');
+      const submitBtn = document.getElementById('submitBtn-hoeren');
+      const nextBtnMain = document.getElementById('nextBtn-hoeren');
+      
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          if (state.sectionIndex > 0) {
+            state.sectionIndex--;
+            state.showResults = false;
+            renderAll();
+          }
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          if (state.sectionIndex < exam.sections.length - 1) {
+            state.sectionIndex++;
+            state.showResults = false;
+            renderAll();
+          }
+        });
+      }
+
+      if (resultBtn) {
+        resultBtn.addEventListener('click', () => {
+          state.showResults = !state.showResults;
           renderAll();
-        }
-      });
+        });
+      }
 
-      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
-        if (state.sectionIndex < exam.sections.length - 1) {
-          state.sectionIndex++;
-          state.showResults = false;
-          renderAll();
-        }
-      });
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
+            state.answers = {};
+            state.showResults = false;
+            resetTimer();
+            renderAll();
+          }
+        });
+      }
 
-      document.getElementById('resultBtn-hoeren').addEventListener('click', () => {
-        state.showResults = !state.showResults;
-        renderAll();
-      });
+      if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+          if (statusText) {
+            statusText.textContent = 'Gespeichert';
+            setTimeout(() => { 
+              if (statusText) statusText.textContent = 'Nicht gespeichert'; 
+            }, 2000);
+          }
+        });
+      }
 
-      document.getElementById('resetBtn-hoeren').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
-          state.answers = {};
-          state.showResults = false;
-          resetTimer();
-          renderAll();
-        }
-      });
+      if (submitBtn) {
+        submitBtn.addEventListener('click', () => {
+          if (confirm('Möchten Sie die Prüfung wirklich abgeben?')) {
+            state.showResults = true;
+            renderAll();
+          }
+        });
+      }
 
-      document.getElementById('saveBtn-hoeren').addEventListener('click', () => {
-        statusText.textContent = 'Gespeichert';
-        setTimeout(() => { statusText.textContent = 'Nicht gespeichert' }, 2000);
-      });
+      if (nextBtnMain) {
+        nextBtnMain.addEventListener('click', () => {
+          showPage('schreiben-page');
+        });
+      }
 
-      document.getElementById('submitBtn-hoeren').addEventListener('click', () => {
-        if (confirm('Möchten Sie die Prüfung wirklich abgeben?')) {
-          state.showResults = true;
-          renderAll();
-        }
-      });
-
-      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
-        showPage('schreiben-page');
-      });
-
-      /* ===== Initialize ===== */
+      // Initialize
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
-        window._hoerenState = state;
-        window.hoerenApp = {
-        updateListeningAnswer
+      window._hoerenState = state;
+      window.hoerenApp = {
+        updateListeningAnswer: updateListeningAnswer
       };
     }
 
     // ===== SCHREIBEN PAGE FUNCTIONALITY =====
     function initSchreibenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-002",
-        durationSec: 30 * 60, // 30 minutes in seconds
+        durationSec: 30 * 60,
         sections: [
           { 
             id: "s1", 
@@ -3159,16 +3139,39 @@ Die Folgen von Schwarzarbeit lassen sich mit dem Dominoprinzip beschreiben: Flie
             passageTitle: "Aufgabe: Schreiben Sie eine E-Mail",
             passage: "",
             writingTask: {
-              prompt: `Kursbeschreibung
+              prompt: `Schluss mit Schwitzen und Kriechen beim Staubsaugen!
 
-Sie haben an einem zweitägigen Kurs teilgenommen, der 120 Euro kostete. 
-Der Kurs umfasste am ersten Tag eine Schulung, in der Sie lernen, sich professionell vorzustellen 
-und zu kommunizieren sowie Ihre körperliche Leistungsfähigkeit zu verbessern. 
-Am zweiten Tag absolvieren Sie ein Praktikum, um das Gelernte aus der Schulung anzuwenden.`,
+SuperClean-Staubsaugroboter ist Ihr neuer Helfer im Haus.
+
+Darf ich mich vorstellen? Mein Name ist SuperClean-Staubsaugroboter. Ich bin Ihr neuer Staubsaugroboter. 
+Sie haben schon lange nach einem Helfer im Haushalt gesucht? Sie möchten nicht mehr selbst staubsaugen und 
+trotzdem eine saubere Wohnung haben? Dann brauchen Sie meine Hilfe. Während Sie lesen oder kochen, 
+bin ich für Sie in Ihrer Wohnung unterwegs. Ich sauge dort, wo Sie es nicht schaffen: unter den Betten, unter dem Sofa. 
+Staubsaugen ist meine Passion.
+
+SuperClean-Staubsaugroboter arbeitet, während Sie sich vergnügen. Am liebsten arbeite ich für Sie, wenn Sie nicht 
+zu Hause sind – dank App auch ganz einfach von unterwegs zu starten und zu bedienen.
+
+Was kann Ihr neuer Helfer?
+- Leistungsstark auf allen Böden
+- Angenehm leise
+- Sicheres Navigieren mit System
+- Reinigt unter Betten, Sofas, Tischen und einfach überall
+- Geeignet auch für stark verschmutzte Flächen
+- Ob Tierhaare oder Haushaltsmüll – von mir bleibt nichts verschont
+- Rückerstattung des Kaufpreises, wenn Sie unzufrieden sind
+
+Mein Preis: 499,90 Euro. 
+Sie können mich direkt bei SuperClean-Staubsaugroboter GmbH bestellen.
+
+SuperClean-Staubsaugroboter GmbH
+Adenauerstraße 12
+50600 Köln`,
               requirements: [
-                "Welche Erwartungen hatten Sie an den Kurs? Was haben Sie sich von der Teilnahme erhofft?",
-                "Warum waren Sie mit diesem Kurs unzufrieden?",
-                "Schreiben Sie einen Punkt Ihrer Wahl."
+                "Beschreiben Sie, was nicht zu Ihrer Zufriedenheit ausfällt.",
+                "Erklären Sie, warum Sie sich genau für dieses Gerät entschieden hatten.",
+                "Schreiben Sie, welche Schäden Ihnen durch dieses Gerät bereits entstanden sind.",
+                "Legen Sie dar, was Sie nun vom Hersteller verlangen."
               ],
               wordCount: 0
             }
@@ -3176,7 +3179,6 @@ Am zweiten Tag absolvieren Sie ein Praktikum, um das Gelernte aus der Schulung a
         ]
       };
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
@@ -3193,7 +3195,6 @@ Am zweiten Tag absolvieren Sie ein Praktikum, um das Gelernte aus der Schulung a
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
 
-      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3203,7 +3204,7 @@ Am zweiten Tag absolvieren Sie ein Praktikum, um das Gelernte aus der Schulung a
         state.timerInterval = setInterval(() => {
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
-            timerEl.textContent = 'Zeit abgelaufen';
+            if (timerEl) timerEl.textContent = 'Zeit abgelaufen';
             return;
           }
           state.remaining--;
@@ -3224,17 +3225,23 @@ Am zweiten Tag absolvieren Sie ein Praktikum, um das Gelernte aus der Schulung a
       function updateTimerDisplay() {
         const min = Math.floor(state.remaining / 60);
         const sec = state.remaining % 60;
-        timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+        if (timerEl) {
+          timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+        }
       }
 
-      /* ===== Render ===== */
       function renderTopTiles() { 
+        if (!topTiles) return;
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
           const div = document.createElement('div'); 
           div.className = 'tile' + (idx === state.sectionIndex ? ' active' : '') + (isSectionDone(sec) ? ' done' : ''); 
           div.innerHTML = `<div>${sec.title}</div><div class="points">${sec.points} P</div>`; 
-          div.onclick = () => { state.sectionIndex = idx; state.showResults = false; renderAll(); }; 
+          div.onclick = () => { 
+            state.sectionIndex = idx; 
+            state.showResults = false; 
+            renderAll(); 
+          }; 
           topTiles.appendChild(div); 
         }); 
       }
@@ -3243,10 +3250,14 @@ Am zweiten Tag absolvieren Sie ein Praktikum, um das Gelernte aus der Schulung a
         return state.answers[section.id] && state.answers[section.id].length > 0;
       }
 
+      function countWords(text) {
+        return text && text.trim() !== '' ? text.trim().split(/\s+/).length : 0;
+      }
+
       function renderAll() {
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
-        passageTitleEl.textContent = section.passageTitle;
+        if (passageTitleEl) passageTitleEl.textContent = section.passageTitle;
         
         if (state.showResults) {
           renderResults();
@@ -3259,52 +3270,56 @@ Am zweiten Tag absolvieren Sie ein Praktikum, um das Gelernte aus der Schulung a
       function renderWritingSection() {
         const section = exam.sections[state.sectionIndex];
         
-        // Render the prompt in left panel
-        passageContentEl.innerHTML = `
-          <div class="writing-task">
-            <div class="writing-prompt">${section.writingTask.prompt}</div>
-            <div class="instructions" style="border:1px solid #e1e8f6; padding:10px; margin:10px 0; border-radius:6px; background:#ffffff;">Sie haben an einem Kurs teilgenommen, jedoch waren Sie leider nicht zufrieden. 
-Schreiben Sie eine Beschwerde an den Kursanbieter.</div>
-            <div class="writing-requirements">
-              <h4>Schreiben Sie in Ihrer E-Mail:</h4>
-              <ul>
-                ${section.writingTask.requirements.map(req => `<li>${req}</li>`).join('')}
-              </ul>
+        if (passageContentEl) {
+          passageContentEl.innerHTML = `
+            <div class="writing-task">
+              <div class="writing-prompt">${section.writingTask.prompt}</div>
+              <div class="instructions" style="border:1px solid #e1e8f6; padding:10px; margin:10px 0; border-radius:6px; background:#ffffff;">Sie haben den oben genannten Staubsauger erworben. Leider gibt es mehrere Probleme mit diesem Gerät. 
+Schreiben Sie eine Mängelrüge an den Hersteller, ohne gleich mit dem Anwalt zu drohen.</div>
+              <div class="writing-requirements">
+                <h4>Schreiben Sie in Ihrer E-Mail:</h4>
+                <ul>
+                  ${section.writingTask.requirements.map(req => `<li>${req}</li>`).join('')}
+                </ul>
+              </div>
+              <div class="instructions">
+                Schreiben Sie eine E-Mail (ca. 150-200 Wörter). Achten Sie auf den Textaufbau (Anrede, Einleitung, Hauptteil, Schluss) und eine angemessene Formulierung.
+              </div>
             </div>
-            <div class="instructions">
-              Schreiben Sie eine E-Mail (ca. 150-200 Wörter). Achten Sie auf den Textaufbau (Anrede, Einleitung, Hauptteil, Schluss) und eine angemessene Formulierung.
-            </div>
-          </div>
-        `;
+          `;
+        }
         
-        // Render writing area in right panel
         const currentAnswer = state.answers[section.id] || '';
         const wordCount = countWords(currentAnswer);
         
-        writingContainer.innerHTML = `
-          <div class="writing-area">
-            <textarea 
-              class="writing-textarea" 
-              placeholder="Schreiben Sie hier Ihre E-Mail..."
-              oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)"
-            >${currentAnswer}</textarea>
-            <div class="word-counter">
-              Wörter: <span class="count">${wordCount}</span>
+        if (writingContainer) {
+          writingContainer.innerHTML = `
+            <div class="writing-area">
+              <textarea 
+                class="writing-textarea" 
+                placeholder="Schreiben Sie hier Ihre E-Mail..."
+                oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)"
+              >${currentAnswer}</textarea>
+              <div class="word-counter">
+                Wörter: <span class="count">${wordCount}</span>
+              </div>
             </div>
-          </div>
-        `;
-      }
-
-      function countWords(text) {
-        return text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+          `;
+        }
       }
 
       function updateWritingAnswer(sectionId, text) {
         state.answers[sectionId] = text;
-        try{ localStorage.setItem('schreibenAnswers', JSON.stringify({content: state.answers[sectionId], wordCount: (state.answers[sectionId]||'').trim().split(/\s+/).filter(Boolean).length})); }catch(e){}
+        try { 
+          localStorage.setItem('schreibenAnswers', JSON.stringify({
+            content: state.answers[sectionId],
+            wordCount: countWords(state.answers[sectionId])
+          })); 
+        } catch(e) {}
         
         const wordCount = countWords(text);
-        document.querySelector('.word-counter .count').textContent = wordCount;
+        const counter = document.querySelector('.word-counter .count');
+        if (counter) counter.textContent = wordCount;
       }
 
       function renderResults() {
@@ -3326,240 +3341,193 @@ Schreiben Sie eine Beschwerde an den Kursanbieter.</div>
           resultsHTML += `</div>`;
         });
         
-        passageContentEl.innerHTML = resultsHTML;
-        writingContainer.innerHTML = '';
+        if (passageContentEl) passageContentEl.innerHTML = resultsHTML;
+        if (writingContainer) writingContainer.innerHTML = '';
       }
 
-      /* ===== Event Listeners ===== */
-      document.getElementById('prevBtn-schreiben').addEventListener('click', () => {
-        if (state.sectionIndex > 0) {
-          state.sectionIndex--;
-          state.showResults = false;
+      // Event Listeners
+      const prevBtn = document.getElementById('prevBtn-schreiben');
+      const nextBtn = document.getElementById('nextBtn-schreiben-footer');
+      const resultBtn = document.getElementById('resultBtn-schreiben');
+      const resetBtn = document.getElementById('resetBtn-schreiben');
+      const saveBtn = document.getElementById('saveBtn-schreiben');
+      const submitBtn = document.getElementById('submitBtn-schreiben');
+      const nextBtnMain = document.getElementById('nextBtn-schreiben');
+      
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          if (state.sectionIndex > 0) {
+            state.sectionIndex--;
+            state.showResults = false;
+            renderAll();
+          }
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          if (state.sectionIndex < exam.sections.length - 1) {
+            state.sectionIndex++;
+            state.showResults = false;
+            renderAll();
+          }
+        });
+      }
+
+      if (resultBtn) {
+        resultBtn.addEventListener('click', () => {
+          state.showResults = !state.showResults;
           renderAll();
-        }
-      });
+        });
+      }
 
-      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
-        if (state.sectionIndex < exam.sections.length - 1) {
-          state.sectionIndex++;
-          state.showResults = false;
-          renderAll();
-        }
-      });
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
+            state.answers = {};
+            state.showResults = false;
+            resetTimer();
+            renderAll();
+          }
+        });
+      }
 
-      document.getElementById('resultBtn-schreiben').addEventListener('click', () => {
-        state.showResults = !state.showResults;
-        renderAll();
-      });
+      if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+          if (statusText) {
+            statusText.textContent = 'Gespeichert';
+            setTimeout(() => { 
+              if (statusText) statusText.textContent = 'Nicht gespeichert'; 
+            }, 2000);
+          }
+        });
+      }
 
-      document.getElementById('resetBtn-schreiben').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöschت.')) {
-          state.answers = {};
-          state.showResults = false;
-          resetTimer();
-          renderAll();
-        }
-      });
+      if (submitBtn) {
+        submitBtn.addEventListener('click', () => {
+          if (confirm('Möchten Sie die Prüfung wirklich abgeben?')) {
+            state.showResults = true;
+            renderAll();
+          }
+        });
+      }
 
-      document.getElementById('saveBtn-schreiben').addEventListener('click', () => {
-        statusText.textContent = 'Gespeichert';
-        setTimeout(() => { statusText.textContent = 'Nicht gespeichert' }, 2000);
-      });
+      if (nextBtnMain) {
+        nextBtnMain.addEventListener('click', () => {
+          showPage('ergebnisse-page');
+        });
+      }
 
-      document.getElementById('submitBtn-schreiben').addEventListener('click', () => {
-        if (confirm('Möchten Sie die Prüfung wirklich abgeben?')) {
-          state.showResults = true;
-          renderAll();
-        }
-      });
-
-      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
-        showPage('ergebnisse-page');
-      });
-
-      /* ===== Initialize ===== */
+      // Initialize
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
-        window._schreibenState = state;
-        window.schreibenApp = {
-        updateWritingAnswer
+      window._schreibenState = state;
+      window.schreibenApp = {
+        updateWritingAnswer: updateWritingAnswer
       };
     }
 
     // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
-    function initErgebnissePage() {
-      // إجابات صحيحة - سأستخدم الإجابات من الامتحان الأصلي
-      const CORRECT_ANSWERS = {
-        lesen: {
-          // الجزء الأول: Überschriften zuordnen (النصوص 1-5)
-          "text1": "d",
-          "text2": "g", 
-          "text3": "b",
-          "text4": "h",
-          "text5": "i",
-          
-          // الجزء الثاني: Fragen zum Text (الأسئلة s2q1-s2q5)
-          "s2q1": "s2q1o2",
-          "s2q2": "s2q2o3",
-          "s2q3": "s2q3o3",
-          "s2q4": "s2q4o3",
-          "s2q5": "s2q5o1",
-          
-          // الجزء الثالث: Texte zuordnen (المواقف 11-20)
-          "11": "G",
-          "12": "X",
-          "13": "D",
-          "14": "L",
-          "15": "C",
-          "16": "I",
-          "17": "J",
-          "18": "F",
-          "19": "A",
-          "20": "X",
-          
-          // Sprachbausteine Teil 1 (الفراغات 21-30)
-          "21": "dass",
-          "22": "beschäftigen",
-          "23": "doch",
-          "24": "insbesondere",
-          "25": "überwiegend",
-          "26": "fast",
-          "27": "wenig",
-          "28": "kommt",
-          "29": "willst",
-          "30": "möglich",
-          
-          // Sprachbausteine Teil 2 (الفراغات 31-40)
-          "31": "ANSTATT",
-          "32": "JEDE",
-          "33": "GEGEN",
-          "34": "DAVON",
-          "35": "WILL",
-          "36": "BILDEN",
-          "37": "AUSGEHEN",
-          "38": "SOLCHE",
-          "39": "BEKOMMEN",
-          "40": "MEISTENS"
-        },
-        
-        hoeren: {
-          // Hören Teil 1 (الأسئلة 41-45)
-          "41": "richtig",
-          "42": "richtig",
-          "43": "falsch",
-          "44": "falsch",
-          "45": "falsch",
-          
-          // Hören Teil 2 (الأسئلة 46-55)
-          "46": "falsch",
-          "47": "richtig",
-          "48": "falsch",
-          "49": "falsch",
-          "50": "falsch",
-          "51": "falsch",
-          "52": "falsch",
-          "53": "falsch",
-          "54": "richtig",
-          "55": "richtig",
-          
-          // Hören Teil 3 (الأسئلة 56-60)
-          "56": "richtig",
-          "57": "falsch",
-          "58": "falsch",
-          "59": "falsch",
-          "60": "falsch"
-        }
-      };
+    const CORRECT_ANSWERS = {
+      lesen: {
+        "text1": "c",
+        "text2": "d",
+        "text3": "f",
+        "text4": "g",
+        "text5": "i",
+        "s2q1": "s2q1o2",
+        "s2q2": "s2q2o1",
+        "s2q3": "s2q3o3",
+        "s2q4": "s2q4o3",
+        "s2q5": "s2q5o3",
+        "11": "L",
+        "12": "J",
+        "13": "A",
+        "14": "H",
+        "15": "K",
+        "16": "C",
+        "17": "D",
+        "18": "I",
+        "19": "E",
+        "20": "F",
+        "21": "über",
+        "22": "außerdem",
+        "23": "nehmen",
+        "24": "da",
+        "25": "davon",
+        "26": "gesprochen",
+        "27": "dass",
+        "28": "sich",
+        "29": "die",
+        "30": "jedenfalls",
+        "31": "Flut",
+        "32": "recht",
+        "33": "aber",
+        "34": "stellt",
+        "35": "Diesen",
+        "36": "meisten",
+        "37": "Korrekt",
+        "38": "unlogische",
+        "39": "unterscheiden",
+        "40": "somit"
+      },
+      hoeren: {
+        "41": "richtig",
+        "42": "falsch",
+        "43": "falsch",
+        "44": "falsch",
+        "45": "richtig",
+        "46": "falsch",
+        "47": "richtig",
+        "48": "falsch",
+        "49": "richtig",
+        "50": "richtig",
+        "51": "falsch",
+        "52": "falsch",
+        "53": "richtig",
+        "54": "falsch",
+        "55": "richtig",
+        "56": "richtig",
+        "57": "falsch",
+        "58": "falsch",
+        "59": "falsch",
+        "60": "richtig"
+      }
+    };
 
+    function initErgebnissePage() {
       const CONFIG = {
         totals: { 
           lesen: 105, 
           hoeren: 75, 
           schreiben: 45, 
           gesamt: 225 
-        },
-        counts: { 
-          lesen: 40, 
-          hoeren: 20 
         }
       };
 
-      // ===== دوال مساعدة =====
-      function normalizeAnswer(a) {
-        if (a === null || a === undefined || a === '') return '-';
-        let s = String(a).trim();
-        if (s === '' || s === 'undefined') return '-';
-        return s;
-      }
-
-      function escapeHtml(s) {
-        return String(s)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      }
-
-      function getHeadingText(headingId) {
-        if (!headingId || headingId === '-') return '-';
-        const headings = {
-          "a": "Das ideale Gemüse für schwer Arbeitende",
-          "b": "Ein schlankes Gemüse für schlanke Leute",
-          "c": "Gesundes Leben schützt vor Zivilisationskrankheiten",
-          "d": "Gesundheitsrisiken durch fettreiche Ernährung",
-          "e": "Kartoffelrezepte als Zeitungsbeilage",
-          "f": "Pflanzliche Kosmetik für gesunde Haut",
-          "g": "Tolle Figur durch ausgewogene Ernährung",
-          "h": "Von der Wildpflanze zum international geschätzten Nahrungsmittel",
-          "i": "WHO untersucht Zusammenhang von Krebs und Herzinfarkt"
-        };
-        return headings[headingId] || headingId;
-      }
-
-      function getOptionText(optionId) {
-        if (!optionId || optionId === '-') return '-';
-        const options = {
-          "s2q1o1": "existiert eine Vielzahl von Kaffeeröstereien.",
-          "s2q1o2": "gibt es only noch wenige traditionelle Kaffeeröstereien.",
-          "s2q1o3": "handeln nur noch internationale Gesellschaften mit Kaffee.",
-          "s2q2o1": "ist es nicht von Bedeutung, ob der Kaffee von Kleinbauern oder Großplantagen kommt.",
-          "s2q2o2": "spielt der günstige Einkaufspreis eine wichtige Rolle.",
-          "s2q2o3": "steht aber die Qualität des Kaffees als der Preis im Vordergrund.",
-          "s2q3o1": "dürfen nach dem Rösten zwar zu dunklen sein, aber nicht zu hell.",
-          "s2q3o2": "können nach der Röstung ohne Geschmacksverlust lange Zeit gelagert werden.",
-          "s2q3o3": "müssen nach dem Rösten handverlesen werden, um eine gleichbleibend hohe Qualität zu gewährleisten.",
-          "s2q4o1": "im Kontor nur an Stammkunden angegeben.",
-          "s2q4o2": "in Handarbeit gemischt.",
-          "s2q4o3": "zusätzlich online vermarktet.",
-          "s2q5o1": "die Kaffeerösterei in ein Museum umwandeln.",
-          "s2q5o2": "ein Museum über den Kaffeeanbau eröffnen.",
-          "s2q5o3": "keinen Röstkaffee mehr verkaufen."
-        };
-        return options[optionId] || optionId;
-      }
-
-      // ===== قراءة النتائج =====
       function readExamResults() {
         try {
           const lesen = {};
           const hoeren = {};
           const schreiben = { content: '', wordCount: 0 };
 
-          // قراءة من الذاكرة
           try {
             if (window._lesenState && window._lesenState.answers) {
-              Object.assign(lesen, window._lesenState.answers);
+              Object.keys(window._lesenState.answers).forEach(k => {
+                lesen[k] = window._lesenState.answers[k];
+              });
             }
           } catch (e) {}
 
           try {
             if (window._hoerenState && window._hoerenState.answers) {
               Object.keys(window._hoerenState.answers).forEach(sectionId => {
-                Object.assign(hoeren, window._hoerenState.answers[sectionId]);
+                const sec = window._hoerenState.answers[sectionId] || {};
+                Object.keys(sec).forEach(q => {
+                  hoeren[q] = sec[q];
+                });
               });
             }
           } catch (e) {}
@@ -3569,50 +3537,46 @@ Schreiben Sie eine Beschwerde an den Kursanbieter.</div>
               const answers = window._schreibenState.answers;
               if (answers['s1']) {
                 schreiben.content = answers['s1'];
-              } else if (Object.keys(answers).length > 0) {
-                schreiben.content = answers[Object.keys(answers)[0]];
+              } else {
+                const keys = Object.keys(answers);
+                if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
               }
+              schreiben.wordCount = schreiben.content ? schreiben.content.trim().split(/\s+/).filter(Boolean).length : 0;
             }
           } catch (e) {}
 
-          // قراءة من localStorage إذا لزم الأمر
           try {
             if (Object.keys(lesen).length === 0) {
-              const stored = localStorage.getItem('lesenAnswers');
-              if (stored) Object.assign(lesen, JSON.parse(stored));
+              const storedL = localStorage.getItem('lesenAnswers');
+              if (storedL) Object.assign(lesen, JSON.parse(storedL));
             }
           } catch (e) {}
 
           try {
             if (Object.keys(hoeren).length === 0) {
-              const stored = localStorage.getItem('hoerenAnswers');
-              if (stored) {
-                const parsed = JSON.parse(stored);
-                // إذا كانت الإجابات مقسمة حسب الأقسام
-                if (parsed.hörverstehen1 || parsed.hörverstehen2 || parsed.hörverstehen3) {
-                  Object.keys(parsed).forEach(section => {
-                    Object.assign(hoeren, parsed[section]);
+              const storedH = localStorage.getItem('hoerenAnswers');
+              if (storedH) {
+                const parsed = JSON.parse(storedH);
+                Object.keys(parsed).forEach(sectionId => {
+                  const sec = parsed[sectionId] || {};
+                  Object.keys(sec).forEach(q => {
+                    hoeren[q] = sec[q];
                   });
-                } else {
-                  Object.assign(hoeren, parsed);
-                }
+                });
               }
             }
           } catch (e) {}
 
           try {
             if (!schreiben.content) {
-              const stored = localStorage.getItem('schreibenAnswers');
-              if (stored) {
-                const parsed = JSON.parse(stored);
-                schreiben.content = parsed.content || '';
+              const storedS = localStorage.getItem('schreibenAnswers');
+              if (storedS) {
+                const obj = JSON.parse(storedS);
+                schreiben.content = obj.content || '';
+                schreiben.wordCount = obj.wordCount || (schreiben.content ? schreiben.content.trim().split(/\s+/).filter(Boolean).length : 0);
               }
             }
           } catch (e) {}
-
-          // حساب عدد الكلمات
-          schreiben.wordCount = schreiben.content ? 
-            schreiben.content.trim().split(/\s+/).filter(word => word.length > 0).length : 0;
 
           return { hoeren, lesen, schreiben };
         } catch (e) {
@@ -3620,214 +3584,179 @@ Schreiben Sie eine Beschwerde an den Kursanbieter.</div>
         }
       }
 
-      // ===== حساب الدرجات =====
-      function gradeHoeren(answers) {
-        let okCount = 0;
-        const details = [];
-        
-        for (let q = 41; q <= 60; q++) {
-          const id = String(q);
-          const userAnswer = normalizeAnswer(answers[id]);
-          const correctAnswer = CORRECT_ANSWERS.hoeren[id] || '-';
-          const isCorrect = userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase();
-          if (isCorrect) okCount++;
-          
-          details.push({
-            id: id,
-            user: userAnswer,
-            correct: correctAnswer,
-            isCorrect: isCorrect
-          });
-        }
-        
-        const total = (okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2);
-        return { okCount, total: parseFloat(total), details };
-      }
-
-      function gradeLesen(answers) {
-        let okCount = 0;
-        const details = [];
+      function calculateLesenScore(answers) {
+        let correctCount = 0;
+        let totalQuestions = 0;
         
         Object.keys(CORRECT_ANSWERS.lesen).forEach(key => {
-          const userAnswer = normalizeAnswer(answers[key]);
-          const correctAnswer = CORRECT_ANSWERS.lesen[key] || '-';
-          const isCorrect = userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase();
-          if (isCorrect) okCount++;
-          
-          details.push({
-            id: key,
-            user: userAnswer,
-            correct: correctAnswer,
-            isCorrect: isCorrect
-          });
+          totalQuestions++;
+          const userAnswer = answers[key] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[key];
+          if (String(userAnswer).toLowerCase() === String(correctAnswer).toLowerCase()) {
+            correctCount++;
+          }
         });
         
-        const total = (okCount * (CONFIG.totals.lesen / CONFIG.counts.lesen)).toFixed(2);
-        return { okCount, total: parseFloat(total), details };
+        return (correctCount / totalQuestions) * CONFIG.totals.lesen;
       }
 
-      // ===== بناء الجداول =====
-      function buildTable(title, details, total, max) {
-        let html = `<div class="result-item">
-                      <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
-                      <table class="true-false-table">
-                        <thead>
-                          <tr>
-                            <th style="width: 10%">Frage</th>
-                            <th style="width: 40%">Ihre Antwort</th>
-                            <th style="width: 40%">Richtige Antwort</th>
-                            <th style="width: 10%">Ergebnis</th>
-                          </tr>
-                        </thead>
-                        <tbody>`;
+      function calculateHoerenScore(answers) {
+        let correctCount = 0;
+        let totalQuestions = 0;
         
-        details.forEach(item => {
-          const rowClass = item.isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = item.isCorrect ? '✅ Richtig' : '❌ Falsch';
-          let userDisplay = item.user;
-          let correctDisplay = item.correct;
-          
-          // تحويل الرموز إلى نصوص للجزء الأول من القراءة
-          if (item.id.startsWith('text')) {
-            userDisplay = getHeadingText(userDisplay);
-            correctDisplay = getHeadingText(correctDisplay);
+        Object.keys(CORRECT_ANSWERS.hoeren).forEach(key => {
+          totalQuestions++;
+          const userAnswer = String(answers[key] || '-').toLowerCase();
+          const correctAnswer = CORRECT_ANSWERS.hoeren[key].toLowerCase();
+          if (userAnswer === correctAnswer || 
+              (correctAnswer === 'richtig' && ['richtig', 'true', 'ja'].includes(userAnswer)) ||
+              (correctAnswer === 'falsch' && ['falsch', 'false', 'nein'].includes(userAnswer))) {
+            correctCount++;
           }
-          
-          // تحويل الرموز إلى نصوص للجزء الثاني من القراءة
-          else if (item.id.startsWith('s2q')) {
-            userDisplay = getOptionText(userDisplay);
-            correctDisplay = getOptionText(correctDisplay);
-          }
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${item.id}</strong></td>
-                    <td>${escapeHtml(userDisplay)}</td>
-                    <td>${escapeHtml(correctDisplay)}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
         });
         
-        html += `</tbody>
-                </table>
-                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
-                  <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
-                </div>
-              </div>`;
-        return html;
+        return (correctCount / totalQuestions) * CONFIG.totals.hoeren;
       }
 
-      // ===== عرض النتائج =====
       function renderResults() {
-        const results = readExamResults();
-        const h = gradeHoeren(results.hoeren);
-        const l = gradeLesen(results.lesen);
-        
-        const details = document.getElementById('details-ergebnisse');
+        const st = readExamResults();
         const tiles = document.getElementById('topTiles-ergebnisse');
+        const details = document.getElementById('details-ergebnisse');
+        const summary = document.getElementById('finalSummary-ergebnisse');
         
-        // قراءة درجة الكتابة
+        const lesenScore = calculateLesenScore(st.lesen);
+        const hoerenScore = calculateHoerenScore(st.hoeren);
         const sScoreRaw = localStorage.getItem('schreibenScore');
         const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
-
-        // بناء البلاطات العلوية
-        tiles.innerHTML = `
-          <div class="results-tile">
-            <h3>Lesen</h3>
-            <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen}</div>
-            <div class="small-muted">${((l.total / CONFIG.totals.lesen) * 100).toFixed(1)}%</div>
-          </div>
-          <div class="results-tile">
-            <h3>Hören</h3>
-            <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren}</div>
-            <div class="small-muted">${((h.total / CONFIG.totals.hoeren) * 100).toFixed(1)}%</div>
-          </div>
-          <div class="results-tile">
-            <h3>Schreiben</h3>
-            <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben}</div>
-            <div class="small-muted">Manuelle Eingabe</div>
-          </div>
-        `;
-
-        // بناء التفاصيل
-        details.innerHTML = `
-          <div class="result-item">
-            <h2>📊 Detaillierte Ergebnisse</h2>
-            <div class="instructions">Hier sehen Sie einen detaillierten Vergleich Ihrer Antworten mit den korrekten Lösungen.</div>
-          </div>
-          
-          ${buildTable('Leseverstehen', l.details, l.total, CONFIG.totals.lesen)}
-          
-          ${buildTable('Hörverstehen', h.details, h.total, CONFIG.totals.hoeren)}
-          
-          <div class="result-item">
-            <h3>✍️ Schreiben - Ihre Antwort</h3>
-            <div class="small-muted">Wörter: ${results.schreiben.wordCount}</div>
-            <div style="margin-top: 10px; padding: 15px; background: white; border-radius: 6px; border: 1px solid #e1e8f6; min-height: 100px;">
-              ${results.schreiben.content ? escapeHtml(results.schreiben.content) : '<span class="small-muted">Keine Antwort</span>'}
-            </div>
-            <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center;">
-              Punkte eingeben (0–45): 
-              <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}">
-              <button id="saveS" class="results-btn">Speichern</button>
-            </div>
-          </div>
-        `;
-
-        // حساب الإجمالي
-        const totalScore = l.total + h.total + sScore;
-        const totalMax = CONFIG.totals.gesamt;
-        const percentage = ((totalScore / totalMax) * 100).toFixed(2);
         
-        document.getElementById('finalSummary-ergebnisse').innerHTML = `
-          <div class="left">
-            <strong>Gesamtpunktzahl:</strong><br>
-            <span style="font-size: 24px; font-weight: bold;">${totalScore.toFixed(2)} / ${totalMax}</span><br>
-            <span class="small-muted">Lesen + Hören + Schreiben</span>
-          </div>
-          <div class="right">
-            <strong>Prozentsatz:</strong><br>
-            <span style="font-size: 24px; font-weight: bold;">${percentage}%</span><br>
-            <span class="small-muted">von 100%</span>
-          </div>
-        `;
-
-        // حدث حفظ درجة الكتابة
-        document.getElementById('saveS').onclick = function() {
-          const newScore = Number(document.getElementById('sInput').value) || 0;
-          localStorage.setItem('schreibenScore', newScore);
+        if (tiles) {
+          tiles.innerHTML = `
+            <div class="results-tile">
+              <h3>Lesen</h3>
+              <div class="score">${lesenScore.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
+              <div class="small-muted">(${(lesenScore / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
+            </div>
+            <div class="results-tile">
+              <h3>Hören</h3>
+              <div class="score">${hoerenScore.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
+              <div class="small-muted">(${(hoerenScore / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
+            </div>
+            <div class="results-tile">
+              <h3>Schreiben</h3>
+              <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
+              <div class="small-muted">Manuelle Eingabe</div>
+            </div>`;
+        }
+        
+        if (details) {
+          details.innerHTML = `
+            <div class="result-item">
+              <h2>📊 Detaillierte Ergebnisse</h2>
+              <div class="instructions">Hier sehen Sie eine detaillierte Auswertung Ihrer Prüfung. Jede Frage wird mit Ihrer Antwort, der richtigen Antwort und dem Ergebnis angezeigt.</div>
+            </div>`;
           
-          // تحديث العرض
-          document.getElementById('schreibenScoreDisplay').textContent = `${newScore.toFixed(2)} / ${CONFIG.totals.schreiben}`;
+          // Lesen details
+          details.innerHTML += `<div class="result-item"><h3>📖 Leseverstehen</h3>`;
+          let lesenDetails = '';
+          Object.keys(CORRECT_ANSWERS.lesen).forEach(key => {
+            const userAnswer = st.lesen[key] || '-';
+            const correctAnswer = CORRECT_ANSWERS.lesen[key];
+            const isCorrect = String(userAnswer).toLowerCase() === String(correctAnswer).toLowerCase();
+            lesenDetails += `
+              <div>${key}: ${userAnswer} ${isCorrect ? '✅' : '❌'} (richtig: ${correctAnswer})</div>
+            `;
+          });
+          details.innerHTML += lesenDetails + `</div>`;
           
-          // إعادة حساب الإجمالي
-          const newTotalScore = l.total + h.total + newScore;
-          const newPercentage = ((newTotalScore / totalMax) * 100).toFixed(2);
+          // Hoeren details
+          details.innerHTML += `<div class="result-item"><h3>👂 Hörverstehen</h3>`;
+          let hoerenDetails = '';
+          Object.keys(CORRECT_ANSWERS.hoeren).forEach(key => {
+            const userAnswer = st.hoeren[key] || '-';
+            const correctAnswer = CORRECT_ANSWERS.hoeren[key];
+            const userNorm = String(userAnswer).toLowerCase();
+            const correctNorm = correctAnswer.toLowerCase();
+            const isCorrect = userNorm === correctNorm || 
+                             (correctNorm === 'richtig' && ['richtig', 'true', 'ja'].includes(userNorm)) ||
+                             (correctNorm === 'falsch' && ['falsch', 'false', 'nein'].includes(userNorm));
+            hoerenDetails += `
+              <div>${key}: ${userAnswer} ${isCorrect ? '✅' : '❌'} (richtig: ${correctAnswer})</div>
+            `;
+          });
+          details.innerHTML += hoerenDetails + `</div>`;
           
-          document.getElementById('finalSummary-ergebnisse').innerHTML = `
+          // Schreiben
+          const txt = st.schreiben.content ? st.schreiben.content.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '<span class="small-muted">Kein Text gefunden.</span>';
+          const wc = st.schreiben.wordCount || '-';
+          
+          details.innerHTML += `
+            <div class="result-item">
+              <h3>✍️ Schreiben - Ihre Antwort</h3>
+              <div class="small-muted">Wörter: ${wc}</div>
+              <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px; white-space: pre-wrap;">${txt}</div>
+              <div style="margin-top:15px;display:flex;gap:10px;align-items:center">
+                <strong>Punkte (0–45):</strong>
+                <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}" style="width: 100px;">
+                <button id="saveS" class="results-btn">Speichern</button>
+              </div>
+            </div>`;
+        }
+        
+        const total = (lesenScore + hoerenScore + sScore).toFixed(2);
+        const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);
+        
+        if (summary) {
+          summary.innerHTML = `
             <div class="left">
-              <strong>Gesamtpunktzahl:</strong><br>
-              <span style="font-size: 24px; font-weight: bold;">${newTotalScore.toFixed(2)} / ${totalMax}</span><br>
+              <strong>Gesamtpunktzahl:</strong> ${total} / ${CONFIG.totals.gesamt} Punkte<br>
               <span class="small-muted">Lesen + Hören + Schreiben</span>
             </div>
             <div class="right">
-              <strong>Prozentsatz:</strong><br>
-              <span style="font-size: 24px; font-weight: bold;">${newPercentage}%</span><br>
-              <span class="small-muted">von 100%</span>
-            </div>
-          `;
-          
-          alert('Schreiben-Punkte wurden gespeichert!');
-        };
+              <strong>Prozentsatz:</strong> ${percent} %
+            </div>`;
+        }
+
+        const saveS = document.getElementById('saveS');
+        if (saveS) {
+          saveS.onclick = () => {
+            const v = Number(document.getElementById('sInput').value) || 0;
+            localStorage.setItem('schreibenScore', v);
+            const display = document.getElementById('schreibenScoreDisplay');
+            if (display) {
+              display.textContent = `${v.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte`;
+            }
+            
+            const newTotal = (lesenScore + hoerenScore + v).toFixed(2);
+            const newPercent = ((newTotal / CONFIG.totals.gesamt) * 100).toFixed(2);
+            
+            if (summary) {
+              summary.innerHTML = `
+                <div class="left">
+                  <strong>Gesamtpunktzahl:</strong> ${newTotal} / ${CONFIG.totals.gesamt} Punkte<br>
+                  <span class="small-muted">Lesen + Hören + Schreiben</span>
+                </div>
+                <div class="right">
+                  <strong>Prozentsatz:</strong> ${newPercent} %
+                </div>`;
+            }
+          };
+        }
       }
 
-      // ===== تهيئة الصفحة =====
-      document.getElementById('calcBtn-ergebnisse').onclick = renderResults;
-      document.getElementById('backBtn-ergebnisse').onclick = function(e) {
-        e.preventDefault();
-        showPage('start-page');
-      };
+      const calcBtn = document.getElementById('calcBtn-ergebnisse');
+      const backBtn = document.getElementById('backBtn-ergebnisse');
       
-      // تشغيل النتائج تلقائياً
+      if (calcBtn) {
+        calcBtn.onclick = () => renderResults();
+      }
+      
+      if (backBtn) {
+        backBtn.onclick = (e) => {
+          e.preventDefault();
+          showPage('start-page');
+        };
+      }
+      
       renderResults();
     }
   </script>
