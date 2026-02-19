@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Deutsch B2 Prüfung - Komplett</title>
-  <!-- ⬇️⬇️⬇️ SUPABASE LIBRARY (added) ⬇️⬇️⬇️ -->
+  <!-- ⬇️⬇️⬇️ SUPABASE LIBRARY ⬇️⬇️⬇️ -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <!-- ⬆️⬆️⬆️ END SUPABASE LIBRARY ⬆️⬆️⬆️ -->
   <style>
@@ -32,6 +32,47 @@
       background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
       color: var(--white);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    /* Auth message styles - تظهر فقط عند وجود خطأ */
+    .auth-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      z-index: 9999;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      display: none;
+    }
+    
+    .auth-message.error {
+      background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+      display: block;
+    }
+    
+    .auth-message.success {
+      background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+      display: block;
+    }
+    
+    .auth-button {
+      background: white;
+      color: #d32f2f;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      margin-left: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    
+    .auth-button:hover {
+      background: #f0f0f0;
     }
     
     button {
@@ -1314,137 +1355,8 @@
   </style>
 </head>
 <body id="body">
-  <!-- ⬇️⬇️⬇️ SUPABASE AUTH CHECK (full version) ⬇️⬇️⬇️ -->
-  <script type="module">
-    (async function() {
-      const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
-      
-      const { createClient } = window.supabase;
-      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      
-      function redirectToLogin(message) {
-        const errorDiv = document.createElement('div');
-        errorDiv.style.cssText = `
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
-          color: white;
-          text-align: center;
-          padding: 1rem;
-          font-size: 1.1rem;
-          font-weight: bold;
-          z-index: 9999;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        `;
-        errorDiv.textContent = message || 'يجب تسجيل الدخول أولاً للوصول إلى هذا المحتوى';
-        
-        const button = document.createElement('button');
-        button.style.cssText = `
-          background: white;
-          color: #d32f2f;
-          border: none;
-          padding: 0.5rem 1rem;
-          border-radius: 20px;
-          margin-right: 1rem;
-          cursor: pointer;
-          font-weight: bold;
-        `;
-        button.textContent = 'تسجيل الدخول';
-        button.onclick = function() {
-          window.location.href = '../index.html';
-        };
-        
-        errorDiv.appendChild(button);
-        document.body.appendChild(errorDiv);
-        
-        setTimeout(() => {
-          window.location.href = '../index.html';
-        }, 5000);
-      }
-      
-      try {
-        const isLoggedIn = localStorage.getItem('b2_isLoggedIn') === 'true';
-        const userEmail = localStorage.getItem('b2_userEmail');
-        
-        if (!isLoggedIn || !userEmail) {
-          redirectToLogin('❌ لم تقم بتسجيل الدخول. سيتم تحويلك إلى صفحة تسجيل الدخول...');
-          return;
-        }
-        
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
-        if (sessionError || !session) {
-          localStorage.removeItem('b2_isLoggedIn');
-          localStorage.removeItem('b2_userEmail');
-          localStorage.removeItem('b2_userId');
-          localStorage.removeItem('b2_loginTime');
-          redirectToLogin('❌ انتهت جلستك. يرجى تسجيل الدخول مرة أخرى...');
-          return;
-        }
-        
-        const { data: permissions, error: permError } = await supabase
-          .from('user_permissions')
-          .select('can_access, subscription_type, subscription_expiry, trial_expiry')
-          .eq('user_id', session.user.id)
-          .single();
-        
-        if (permError || !permissions) {
-          redirectToLogin('❌ لا يمكن التحقق من صلاحياتك. يرجى التواصل مع المسؤول...');
-          return;
-        }
-        
-        if (!permissions.can_access) {
-          redirectToLogin('❌ ليس لديك صلاحية للوصول إلى هذا المحتوى. يرجى التواصل مع المسؤول...');
-          return;
-        }
-        
-        const now = new Date();
-        
-        if (permissions.subscription_type === 'trial_24h' && permissions.trial_expiry) {
-          const trialExpiry = new Date(permissions.trial_expiry);
-          if (trialExpiry < now) {
-            redirectToLogin('❌ انتهت الفترة التجريبية. يرجى تفعيل الاشتراك للاستمرار...');
-            return;
-          }
-        }
-        
-        if (permissions.subscription_expiry) {
-          const subscriptionExpiry = new Date(permissions.subscription_expiry);
-          if (subscriptionExpiry < now) {
-            redirectToLogin('❌ انتهى اشتراكك. يرجى تجديد الاشتراك للاستمرار...');
-            return;
-          }
-        }
-        
-        console.log('✅ تم التحقق من تسجيل الدخول بنجاح. مرحباً ' + session.user.email);
-        
-        const userBar = document.createElement('div');
-        userBar.style.cssText = `
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
-          color: white;
-          text-align: center;
-          padding: 0.3rem;
-          font-size: 0.8rem;
-          z-index: 9998;
-        `;
-        userBar.innerHTML = `👤 ${session.user.email} | ✅ تم التحقق من الدخول`;
-        document.body.appendChild(userBar);
-        document.body.style.paddingTop = '25px';
-        
-      } catch (error) {
-        console.error('❌ خطأ في التحقق من تسجيل الدخول:', error);
-        redirectToLogin('❌ حدث خطأ في التحقق. يرجى المحاولة مرة أخرى...');
-      }
-    })();
-  </script>
-  <!-- ⬆️⬆️⬆️ END AUTH CHECK ⬆️⬆️⬆️ -->
+  <!-- عنصر الرسالة - يظهر فقط عند وجود خطأ أو نجاح -->
+  <div id="authMessage" class="auth-message"></div>
 
   <!-- Start Page -->
   <div id="start-page" class="start-container">
@@ -1639,6 +1551,138 @@
   </div>
 
   <script>
+    // ===== AUTHENTICATION CHECK - الحل النهائي =====
+    (async function() {
+      const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
+      
+      const { createClient } = window.supabase;
+      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      
+      const authMessage = document.getElementById('authMessage');
+      
+      // دالة لعرض رسالة خطأ وإعادة التوجيه
+      function showAuthError(message) {
+        authMessage.textContent = message;
+        authMessage.className = 'auth-message error';
+        
+        // إضافة زر تسجيل الدخول
+        const button = document.createElement('button');
+        button.className = 'auth-button';
+        button.textContent = 'تسجيل الدخول';
+        button.onclick = function() {
+          window.location.href = '../index.html';
+        };
+        authMessage.appendChild(button);
+        
+        // إخفاء محتوى الصفحة
+        document.getElementById('start-page').style.display = 'none';
+        
+        // إعادة التوجيه بعد 5 ثواني
+        setTimeout(() => {
+          window.location.href = '../index.html';
+        }, 5000);
+        
+        return false;
+      }
+      
+      try {
+        // التحقق من localStorage أولاً - شرط صارم
+        const isLoggedIn = localStorage.getItem('b2_isLoggedIn') === 'true';
+        const userEmail = localStorage.getItem('b2_userEmail');
+        const userId = localStorage.getItem('b2_userId');
+        const loginTime = localStorage.getItem('b2_loginTime');
+        
+        // التحقق من وجود جميع البيانات المطلوبة
+        if (!isLoggedIn || !userEmail || !userId) {
+          console.log('❌ لا توجد بيانات تسجيل دخول كاملة');
+          return showAuthError('❌ يجب تسجيل الدخول أولاً للوصول إلى هذا المحتوى');
+        }
+        
+        // التحقق من انتهاء الجلسة (أكثر من 24 ساعة)
+        if (loginTime) {
+          const now = Date.now();
+          const twentyFourHours = 24 * 60 * 60 * 1000;
+          if (now - parseInt(loginTime) > twentyFourHours) {
+            // مسح البيانات منتهية الصلاحية
+            localStorage.removeItem('b2_isLoggedIn');
+            localStorage.removeItem('b2_userEmail');
+            localStorage.removeItem('b2_userId');
+            localStorage.removeItem('b2_loginTime');
+            
+            console.log('❌ انتهت صلاحية الجلسة');
+            return showAuthError('❌ انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى');
+          }
+        }
+        
+        // التحقق من الجلسة في Supabase
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError || !session) {
+          // مسح البيانات المحفوظة إذا كانت الجلسة غير صالحة
+          localStorage.removeItem('b2_isLoggedIn');
+          localStorage.removeItem('b2_userEmail');
+          localStorage.removeItem('b2_userId');
+          localStorage.removeItem('b2_loginTime');
+          
+          console.log('❌ جلسة Supabase غير صالحة');
+          return showAuthError('❌ انتهت جلستك. يرجى تسجيل الدخول مرة أخرى');
+        }
+        
+        // التحقق من تطابق البريد الإلكتروني
+        if (session.user.email !== userEmail) {
+          localStorage.removeItem('b2_isLoggedIn');
+          localStorage.removeItem('b2_userEmail');
+          localStorage.removeItem('b2_userId');
+          localStorage.removeItem('b2_loginTime');
+          
+          console.log('❌ عدم تطابق البريد الإلكتروني');
+          return showAuthError('❌ بيانات الدخول غير صالحة. يرجى تسجيل الدخول مرة أخرى');
+        }
+        
+        // التحقق من صلاحية المستخدم
+        const { data: permissions, error: permError } = await supabase
+          .from('user_permissions')
+          .select('can_access, subscription_type, subscription_expiry, trial_expiry')
+          .eq('user_id', session.user.id)
+          .single();
+        
+        if (permError || !permissions) {
+          return showAuthError('❌ لا يمكن التحقق من صلاحياتك. يرجى التواصل مع المسؤول');
+        }
+        
+        if (!permissions.can_access) {
+          return showAuthError('❌ ليس لديك صلاحية للوصول إلى هذا المحتوى');
+        }
+        
+        // التحقق من انتهاء الاشتراك
+        const now = new Date();
+        
+        if (permissions.subscription_type === 'trial_24h' && permissions.trial_expiry) {
+          const trialExpiry = new Date(permissions.trial_expiry);
+          if (trialExpiry < now) {
+            return showAuthError('❌ انتهت الفترة التجريبية. يرجى تفعيل الاشتراك للاستمرار');
+          }
+        }
+        
+        if (permissions.subscription_expiry) {
+          const subscriptionExpiry = new Date(permissions.subscription_expiry);
+          if (subscriptionExpiry < now) {
+            return showAuthError('❌ انتهى اشتراكك. يرجى تجديد الاشتراك للاستمرار');
+          }
+        }
+        
+        // ✅ تم التحقق بنجاح - لا نظهر أي رسالة خضراء
+        console.log('✅ تم التحقق من تسجيل الدخول بنجاح');
+        
+        // نسمح بعرض الصفحة بشكل طبيعي - بدون أي شريط علوي
+        
+      } catch (error) {
+        console.error('❌ خطأ في التحقق:', error);
+        return showAuthError('❌ حدث خطأ في التحقق. يرجى المحاولة مرة أخرى');
+      }
+    })();
+
     // تحسين السحب والإفلات للشاشات التي تعمل باللمس
     function setupTouchDragAndDrop() {
       if ('ontouchstart' in window) {
