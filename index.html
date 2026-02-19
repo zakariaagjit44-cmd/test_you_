@@ -25,6 +25,8 @@
             --shadow-hover: 0 20px 40px rgba(33, 150, 243, 0.3);
             --radius: 25px;
             --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --whatsapp: #25D366;
+            --whatsapp-dark: #128C7E;
         }
 
         * {
@@ -222,53 +224,6 @@
             border-bottom: none;
         }
 
-        /* Trial Countdown Banner */
-        .trial-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
-            color: var(--white);
-            padding: 0.8rem;
-            text-align: center;
-            z-index: 999;
-            box-shadow: 0 4px 15px rgba(66, 165, 245, 0.3);
-            animation: slideDown 0.5s ease;
-            display: none;
-        }
-
-        @keyframes slideDown {
-            from { transform: translateY(-100%); }
-            to { transform: translateY(0); }
-        }
-
-        .trial-banner.expired {
-            background: linear-gradient(135deg, var(--danger) 0%, #d32f2f 100%);
-        }
-
-        .trial-banner-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .trial-text {
-            font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .trial-timer {
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            font-size: 1.1rem;
-            background: rgba(0, 0, 0, 0.2);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-        }
-
         /* Premium Crown Badge */
         .premium-badge {
             position: fixed;
@@ -293,26 +248,83 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Subscription Activation Box */
+        /* Subscription Activation Button - محسن */
         .subscription-activation {
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: var(--white);
-            padding: 0.8rem 1rem;
-            border-radius: 12px;
-            margin: 1rem 0;
-            box-shadow: 0 4px 12px rgba(66, 165, 245, 0.3);
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            margin: 1.5rem 0;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
+            gap: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subscription-activation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .subscription-activation:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(66, 165, 245, 0.4);
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.6);
+        }
+
+        .subscription-activation i {
+            font-size: 1.5rem;
+            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
+        }
+
+        /* Forgot Password Link */
+        .forgot-password {
+            text-align: center;
+            margin: 0.5rem 0 1rem;
+        }
+
+        .forgot-password a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .forgot-password a:hover {
+            color: var(--primary-dark);
+            transform: translateX(-5px);
+        }
+
+        .dark-mode .forgot-password a {
+            color: var(--secondary);
+        }
+
+        .dark-mode .forgot-password a:hover {
+            color: var(--secondary-dark);
         }
 
         /* Phone Modal */
@@ -356,6 +368,8 @@
             margin: 1.5rem 0;
             color: var(--primary-dark);
             direction: ltr;
+            display: inline-block;
+            unicode-bidi: embed;
         }
 
         .dark-mode .phone-number {
@@ -363,7 +377,7 @@
         }
 
         .whatsapp-activation-btn {
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            background: linear-gradient(135deg, var(--whatsapp) 0%, var(--whatsapp-dark) 100%);
             color: var(--white);
             border: none;
             padding: 0.8rem 1.5rem;
@@ -563,21 +577,6 @@
         .login-btn {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: var(--white);
-        }
-
-        .guest-btn {
-            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-dark) 100%);
-            color: var(--white);
-        }
-
-        .guest-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .guest-btn:disabled:hover {
-            transform: none;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
         .signup-btn {
@@ -1087,6 +1086,15 @@
         .support-item {
             margin: 1rem 0;
             font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .support-item .phone-number {
+            direction: ltr;
+            unicode-bidi: embed;
         }
 
         /* Profile Page */
@@ -1493,6 +1501,81 @@
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
         }
 
+        /* Forgot Password Modal */
+        .forgot-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .forgot-modal-content {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+            animation: modalAppear 0.3s ease;
+        }
+
+        .dark-mode .forgot-modal-content {
+            background: #1a237e;
+            color: var(--light);
+        }
+
+        .forgot-modal-content h2 {
+            margin-bottom: 1rem;
+            color: var(--primary-dark);
+        }
+
+        .dark-mode .forgot-modal-content h2 {
+            color: #90CAF9;
+        }
+
+        .forgot-modal-content p {
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+
+        /* Auth Divider */
+        .auth-divider {
+            margin: 1.5rem 0;
+            position: relative;
+            text-align: center;
+        }
+
+        .auth-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+
+        .auth-divider span {
+            background: var(--white);
+            padding: 0 1rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .dark-mode .auth-divider span {
+            background: #1a237e;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .login-content, .signup-content, .waiting-content, .profile-card, .edit-modal-content {
@@ -1545,19 +1628,6 @@
                 height: 45px;
                 font-size: 1.1rem;
             }
-
-            .trial-banner-content {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .trial-text {
-                font-size: 0.9rem;
-            }
-
-            .trial-timer {
-                font-size: 1rem;
-            }
         }
 
         /* Page Management */
@@ -1581,14 +1651,6 @@
         <div class="floating-element floating-notebook">📓</div>
         <div class="floating-element floating-pencil">✏️</div>
         <div class="floating-element floating-calculator">🧮</div>
-    </div>
-
-    <!-- Trial Countdown Banner -->
-    <div class="trial-banner" id="trialBanner">
-        <div class="trial-banner-content">
-            <div class="trial-text" id="trialBannerText">النسخة التجريبية - متبقي:</div>
-            <div class="trial-timer" id="trialTimer">24:00:00</div>
-        </div>
     </div>
 
     <!-- Premium Crown Badge -->
@@ -1639,6 +1701,22 @@
         </div>
     </div>
 
+    <!-- Forgot Password Modal -->
+    <div class="forgot-modal" id="forgotModal">
+        <div class="forgot-modal-content">
+            <h2 id="forgotTitle">نسيت كلمة المرور</h2>
+            <p id="forgotText">أدخل بريدك الإلكتروني وسيتم إرسال طلب إلى المسؤول</p>
+            <div class="forgot-form">
+                <input type="email" class="form-input" id="forgotEmail" placeholder="البريد الإلكتروني">
+                <button class="whatsapp-activation-btn" id="forgotWhatsappBtn">
+                    <i class="fab fa-whatsapp"></i>
+                    <span id="forgotBtnText">إرسال الطلب عبر واتساب</span>
+                </button>
+            </div>
+            <button class="close-modal" id="closeForgotModal">إلغاء</button>
+        </div>
+    </div>
+
     <!-- Support Modal -->
     <div class="support-modal" id="supportModal">
         <div class="support-modal-content">
@@ -1647,7 +1725,7 @@
             <div class="support-info">
                 <div class="support-item">
                     <i class="fas fa-phone"></i>
-                    <span>+212 649-661976</span>
+                    <span class="phone-number">+212 649-661976</span>
                 </div>
                 <div class="support-item">
                     <i class="fas fa-envelope"></i>
@@ -1668,7 +1746,7 @@
                     <input type="text" id="editName" class="form-input" placeholder="أدخل اسمك">
                 </div>
                 <div class="form-group">
-                    <label for="editEmail">البريد  الإلكتروني:</label>
+                    <label for="editEmail">البريد الإلكتروني:</label>
                     <input type="email" id="editEmail" class="form-input" placeholder="أدخل بريدك الإلكتروني">
                 </div>
                 <div class="form-group">
@@ -1696,6 +1774,7 @@
                         <option value="بني ملال">بني ملال — Béni Mellal</option>
                         <option value="الناظور">الناظور — Nador</option>
                         <option value="أكادير">أكادير — Agadir</option>
+                        <option value="غير محدد">غير محدد</option>
                     </select>
                 </div>
             </div>
@@ -1721,7 +1800,7 @@
         <div class="login-container">
             <div class="login-content">
                 <h1 id="loginTitle">B2 Deutsch Training - نظام المصادقة</h1>
-                <p class="login-subtitle" id="loginSubtitle">سجّل دخولك للبدء في التدريب أو جرّب كضيف</p>
+                <p class="login-subtitle" id="loginSubtitle">سجّل دخولك للبدء في التدريب</p>
                 
                 <div class="login-form">
                     <input type="email" class="form-input" id="emailInput" placeholder="البريد الإلكتروني">
@@ -1737,20 +1816,28 @@
                     </button>
                 </div>
 
+                <div class="forgot-password">
+                    <a id="forgotPasswordLink">
+                        <i class="fas fa-key"></i>
+                        <span id="forgotPasswordText">نسيت كلمة المرور؟</span>
+                    </a>
+                </div>
+
+                <div class="auth-divider">
+                    <span id="dividerText">أو</span>
+                </div>
+
                 <div class="auth-buttons">
                     <button class="auth-btn signup-btn" id="signupButton">
                         <i class="fas fa-user-plus"></i>
                         <span id="signupBtnText">إنشاء حساب جديد</span>
                     </button>
-                    <button class="auth-btn guest-btn" id="guestButton" disabled style="opacity: 0.5; cursor: not-allowed;">
-                        <i class="fas fa-user"></i>
-                        <span id="guestBtnText">الدخول كضيف</span>
-                    </button>
                 </div>
 
                 <div class="subscription-activation" id="subscriptionActivation">
                     <i class="fas fa-crown"></i>
-                    <span>تفعيل الاشتراك</span>
+                    <span>تفعيل الاشتراك المميز</span>
+                    <i class="fas fa-star" style="font-size: 1rem;"></i>
                 </div>
             </div>
         </div>
@@ -1778,6 +1865,14 @@
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
+                    
+                    <!-- حقل تاريخ الامتحان الجديد -->
+                    <div class="form-group">
+                        <label for="signupExamDate">تاريخ الامتحان (اختياري):</label>
+                        <input type="date" id="signupExamDate" class="form-input" min="2024-01-01" max="2026-12-31">
+                        <small style="color: var(--text-light); margin-top: 0.3rem;">إذا كنت لا تعرف التاريخ، اتركه فارغاً</small>
+                    </div>
+                    
                     <button class="auth-btn signup-btn" id="createAccountButton">
                         <i class="fas fa-user-plus"></i>
                         <span id="createAccountText">إنشاء الحساب</span>
@@ -2045,11 +2140,11 @@
                         <h3 id="examInfoTitle">معلومات الامتحان</h3>
                         <div class="info-item">
                             <span id="examDateLabel">تاريخ الامتحان:</span>
-                            <span id="profileExamDate">01/12/2025</span>
+                            <span id="profileExamDate">غير محدد</span>
                         </div>
                         <div class="info-item">
                             <span id="examLocationLabel">مكان الامتحان:</span>
-                            <span id="profileExamLocation">برلين</span>
+                            <span id="profileExamLocation">غير محدد</span>
                         </div>
                         <div class="info-item">
                             <span id="levelLabel">المستوى:</span>
@@ -2235,10 +2330,9 @@
         const translations = {
             ar: {
                 loginTitle: "B2 Deutsch Training - نظام المصادقة",
-                loginSubtitle: "سجّل دخولك للبدء في التدريب أو جرّب كضيف",
+                loginSubtitle: "سجّل دخولك للبدء في التدريب",
                 loginBtnText: "تسجيل الدخول",
                 signupBtnText: "إنشاء حساب جديد",
-                guestBtnText: "الدخول كضيف",
                 signupTitle: "إنشاء حساب جديد",
                 signupSubtitle: "املأ المعلومات التالية لإنشاء حسابك",
                 createAccountText: "إنشاء الحساب",
@@ -2249,7 +2343,6 @@
                 kursDescription: "الدروس التفاعلية والتدريبات المصنفة حسب المستوى",
                 examsTitle: "Prüfungen",
                 examsDescription: "اختبر معرفتك مع تحضيراتنا الشاملة للامتحانات والمحاكاة",
-                backToLoginText: "تسجيل الخروج",
                 backKursText: "العودة إلى القائمة الرئيسية",
                 kursPageTitle: "KURS - الدروس",
                 kursPageSubtitle: "اختر نوع التدريب الذي ترغب في البدء به",
@@ -2309,21 +2402,24 @@
                 logoutText: "تسجيل الخروج",
                 supportTitle: "اتصال الدعم",
                 supportText: "للأسئلة أو المشاكل أو لشراء النسخة الكاملة يرجى الاتصال بـ:",
-                phoneModalTitle: "تفعيل الاشتراك",
-                phoneModalText: "لتفعيل الاشتراك وإكمال عملية الدفع، يرجى التواصل معنا عبر واتساب:",
-                trialBannerText: "النسخة التجريبية - متبقي:",
+                phoneModalTitle: "تفعيل الاشتراك المميز",
+                phoneModalText: "لتفعيل الاشتراك المميز والحصول على جميع المميزات، يرجى التواصل معنا عبر واتساب:",
                 waitingTitle: "بانتظار مراجعة طلبك",
                 waitingText: "تم استقبال طلب التسجيل الخاص بك. نعمل الآن على مراجعة الطلب والتحقق من المعلومات.",
                 waitingSubtext: "سيتم إبلاغك بالنتيجة في أقرب وقت ممكن. يمكنك التواصل مع المسؤول للمزيد من المعلومات.",
                 signOutWaitingText: "تسجيل الخروج",
-                editProfileTitle: "تعديل الملف الشخصي"
+                editProfileTitle: "تعديل الملف الشخصي",
+                forgotPasswordText: "نسيت كلمة المرور؟",
+                forgotTitle: "نسيت كلمة المرور",
+                forgotText: "أدخل بريدك الإلكتروني وسيتم إرسال طلب إلى المسؤول",
+                forgotBtnText: "إرسال الطلب عبر واتساب",
+                dividerText: "أو"
             },
             en: {
                 loginTitle: "B2 Deutsch Training - Authentication System",
-                loginSubtitle: "Log in to start training or try as a guest",
+                loginSubtitle: "Log in to start training",
                 loginBtnText: "Login",
                 signupBtnText: "Create New Account",
-                guestBtnText: "Login as Guest",
                 signupTitle: "Create New Account",
                 signupSubtitle: "Fill in the following information to create your account",
                 createAccountText: "Create Account",
@@ -2334,7 +2430,6 @@
                 kursDescription: "Interactive lessons and classified exercises by level",
                 examsTitle: "Prüfungen",
                 examsDescription: "Test your knowledge with our comprehensive exam preparations and simulations",
-                backToLoginText: "Logout",
                 backKursText: "Back to Main Menu",
                 kursPageTitle: "KURS - Lessons",
                 kursPageSubtitle: "Choose the type of training you want to start with",
@@ -2394,21 +2489,24 @@
                 logoutText: "Logout",
                 supportTitle: "Support Contact",
                 supportText: "For questions, problems, or to purchase the full version, please contact:",
-                phoneModalTitle: "Subscription Activation",
-                phoneModalText: "To activate subscription and complete payment, please contact us via WhatsApp:",
-                trialBannerText: "Trial Version - Remaining:",
+                phoneModalTitle: "Premium Subscription",
+                phoneModalText: "To activate premium subscription and get all features, please contact us via WhatsApp:",
                 waitingTitle: "Waiting for Review",
                 waitingText: "Your registration request has been received. We are now reviewing the request and verifying the information.",
                 waitingSubtext: "You will be notified of the result as soon as possible. You can contact the administrator for more information.",
                 signOutWaitingText: "Sign Out",
-                editProfileTitle: "Edit Profile"
+                editProfileTitle: "Edit Profile",
+                forgotPasswordText: "Forgot Password?",
+                forgotTitle: "Forgot Password",
+                forgotText: "Enter your email and a request will be sent to the administrator",
+                forgotBtnText: "Send via WhatsApp",
+                dividerText: "Or"
             },
             de: {
                 loginTitle: "B2 Deutsch Training - Authentifizierungssystem",
-                loginSubtitle: "Melden Sie sich an, um mit dem Training zu beginnen, oder probieren Sie es als Gast",
+                loginSubtitle: "Melden Sie sich an, um mit dem Training zu beginnen",
                 loginBtnText: "Anmelden",
                 signupBtnText: "Neues Konto erstellen",
-                guestBtnText: "Als Gast anmelden",
                 signupTitle: "Neues Konto erstellen",
                 signupSubtitle: "Füllen Sie die folgenden Informationen aus, um Ihr Konto zu erstellen",
                 createAccountText: "Konto erstellen",
@@ -2419,7 +2517,6 @@
                 kursDescription: "Interaktive Lektionen und nach Level klassifizierte Übungen",
                 examsTitle: "Prüfungen",
                 examsDescription: "Testen Sie Ihr Wissen mit unseren umfassenden Prüfungsvorbereitungen und Simulationen",
-                backToLoginText: "Abmelden",
                 backKursText: "Zurück zum Hauptmenü",
                 kursPageTitle: "KURS - Lektionen",
                 kursPageSubtitle: "Wählen Sie die Art des Trainings, mit dem Sie beginnen möchten",
@@ -2479,14 +2576,18 @@
                 logoutText: "Abmelden",
                 supportTitle: "Support-Kontakt",
                 supportText: "Bei Fragen, Problemen oder zum Kauf der Vollversion wenden Sie sich bitte an:",
-                phoneModalTitle: "Abo-Aktivierung",
-                phoneModalText: "Um das Abonnement zu aktivieren und die Zahlung abzuschließen, wenden Sie sich bitte über WhatsApp an uns:",
-                trialBannerText: "Testversion - Verbleibend:",
+                phoneModalTitle: "Premium-Abo",
+                phoneModalText: "Um das Premium-Abonnement zu aktivieren und alle Funktionen zu erhalten, wenden Sie sich bitte über WhatsApp an uns:",
                 waitingTitle: "Warten auf Überprüfung",
                 waitingText: "Ihre Registrierungsanfrage wurde empfangen. Wir überprüfen nun die Anfrage und die Informationen.",
                 waitingSubtext: "Sie werden so schnell wie möglich über das Ergebnis informiert. Sie können sich für weitere Informationen an den Administrator wenden.",
                 signOutWaitingText: "Abmelden",
-                editProfileTitle: "Profil bearbeiten"
+                editProfileTitle: "Profil bearbeiten",
+                forgotPasswordText: "Passwort vergessen?",
+                forgotTitle: "Passwort vergessen",
+                forgotText: "Geben Sie Ihre E-Mail ein und eine Anfrage wird an den Administrator gesendet",
+                forgotBtnText: "Über WhatsApp senden",
+                dividerText: "Oder"
             }
         };
 
@@ -2537,14 +2638,21 @@
             const passwordInput = document.getElementById('passwordInput');
             const loginButton = document.getElementById('loginButton');
             const signupButton = document.getElementById('signupButton');
-            const guestButton = document.getElementById('guestButton');
             const passwordToggle = document.getElementById('passwordToggle');
+            const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+
+            // عناصر نسيان كلمة المرور
+            const forgotModal = document.getElementById('forgotModal');
+            const forgotEmail = document.getElementById('forgotEmail');
+            const forgotWhatsappBtn = document.getElementById('forgotWhatsappBtn');
+            const closeForgotModal = document.getElementById('closeForgotModal');
 
             // عناصر إنشاء الحساب
             const signupName = document.getElementById('signupName');
             const signupEmail = document.getElementById('signupEmail');
             const signupPassword = document.getElementById('signupPassword');
             const signupConfirmPassword = document.getElementById('signupConfirmPassword');
+            const signupExamDate = document.getElementById('signupExamDate');
             const createAccountButton = document.getElementById('createAccountButton');
             const signupPasswordToggle = document.getElementById('signupPasswordToggle');
             const signupConfirmPasswordToggle = document.getElementById('signupConfirmPasswordToggle');
@@ -2567,9 +2675,7 @@
             const langBtn = document.getElementById('langBtn');
             const langDropdown = document.getElementById('langDropdown');
 
-            // العداد والشارات
-            const trialBanner = document.getElementById('trialBanner');
-            const trialTimer = document.getElementById('trialTimer');
+            // شارة التاج
             const premiumBadge = document.getElementById('premiumBadge');
 
             // عناصر الملف الشخصي
@@ -2590,26 +2696,25 @@
             // المتغيرات العامة
             let currentUser = null;
             let currentLanguage = 'ar';
-            let trialExpiry = new Date();
-            let isGuest = false;
             let examDate = new Date();
             examDate.setMonth(examDate.getMonth() + 1);
             
-            // تحميل وقت انتهاء التجربة من localStorage
-            const savedTrialExpiry = localStorage.getItem('trialExpiry');
-            if (savedTrialExpiry) {
-                trialExpiry = new Date(savedTrialExpiry);
-            } else {
-                trialExpiry.setHours(trialExpiry.getHours() + 24);
-                localStorage.setItem('trialExpiry', trialExpiry.toISOString());
-            }
-
             // تحميل تاريخ الامتحان من localStorage
             const savedExamDate = localStorage.getItem('examDate');
             if (savedExamDate) {
                 examDate = new Date(savedExamDate);
             } else {
                 localStorage.setItem('examDate', examDate.toISOString());
+            }
+
+            // دالة التحقق من تسجيل الدخول قبل الوصول للمحتوى
+            function checkAuthAndRedirect() {
+                if (!currentUser) {
+                    showToast('يجب تسجيل الدخول أولاً', 'warning');
+                    showPage('login');
+                    return false;
+                }
+                return true;
             }
 
             // ========== وظيفة تسجيل الدخول محسنة ==========
@@ -2730,7 +2835,6 @@
                     if (error) throw error;
                     
                     currentUser = null;
-                    isGuest = false;
                     updateUIForLoggedOutUser();
                     showPage('login');
                     
@@ -2846,11 +2950,41 @@
                 }
             }
 
+            // دالة نسيان كلمة المرور - إرسال عبر واتساب
+            function handleForgotPassword() {
+                const email = forgotEmail.value.trim();
+                
+                if (!email) {
+                    showToast('يرجى إدخال البريد الإلكتروني', 'error');
+                    return;
+                }
+                
+                // التحقق من صحة البريد الإلكتروني
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showToast('البريد الإلكتروني غير صحيح', 'error');
+                    return;
+                }
+                
+                // إرسال رسالة واتساب للمسؤول
+                const phoneNumber = '+212649661976';
+                const message = `مرحباً، لقد نسيت كلمة المرور الخاصة بي. الرجاء مساعدتي في استعادتها. \n\nالبريد الإلكتروني الخاص بي: ${email}\n\nشكراً جزيلاً.`;
+                const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                
+                window.open(url, '_blank');
+                showToast('تم فتح واتساب لإرسال الطلب', 'success');
+                
+                // إغلاق النافذة المنبثقة
+                forgotModal.style.display = 'none';
+                forgotEmail.value = '';
+            }
+
             async function handleSignUp() {
                 const name = signupName.value.trim();
                 const email = signupEmail.value.trim();
                 const password = signupPassword.value;
                 const confirmPassword = signupConfirmPassword.value;
+                const examDateValue = signupExamDate.value;
                 
                 // التحقق من الحقول
                 if (!name) {
@@ -2896,7 +3030,8 @@
                         password,
                         options: {
                             data: {
-                                full_name: name
+                                full_name: name,
+                                exam_date: examDateValue || null
                             }
                         }
                     });
@@ -2912,10 +3047,27 @@
 
                     // إضافة المستخدم إلى جدول طلبات التسجيل
                     if (data.user) {
-                        await addUserToRegistrationRequests(data.user, name);
+                        await addUserToRegistrationRequests(data.user, name, email, examDateValue);
                     }
 
-                    showToast('تم إنشاء الحساب بنجاح! يرجى انتظار مراجعة المسؤول', 'success');
+                    // إرسال إشعار واتساب للمسؤول
+                    const phoneNumber = '+212649661976';
+                    const examDateText = examDateValue ? `\nتاريخ الامتحان: ${examDateValue}` : '\nتاريخ الامتحان: غير محدد (سيتم تحديثه لاحقاً)';
+const message = `مرحباً
+
+أنا قمتُ بالتسجيل في الموقع، وهذه بياناتي:
+
+الاسم: ${name}
+البريد الإلكتروني: ${email}${examDateText}
+
+يرجى تأكيد التسجيل في أقرب وقت.
+شكراً لكم`;
+                    
+                    // فتح واتساب مباشرة
+                    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                    window.open(url, '_blank');
+
+                    showToast('تم إنشاء الحساب بنجاح! سيتم التواصل معك عبر واتساب قريباً', 'success');
                     showPage('waiting');
                     
                     // إعادة تعيين الحقول
@@ -2923,22 +3075,24 @@
                     signupEmail.value = '';
                     signupPassword.value = '';
                     signupConfirmPassword.value = '';
+                    signupExamDate.value = '';
                     
                 } catch (error) {
                     showToast('خطأ في إنشاء الحساب: ' + error.message, 'error');
                 }
             }
 
-            async function addUserToRegistrationRequests(user, name) {
+            async function addUserToRegistrationRequests(user, name, email, examDate) {
                 try {
                     const { data, error } = await supabase
                         .from('registration_requests')
                         .insert([
                             {
                                 user_id: user.id,
-                                email: user.email,
+                                email: email,
                                 full_name: name,
-                                status: 'pending'
+                                status: 'pending',
+                                notes: examDate ? `تاريخ الامتحان: ${examDate}` : 'تاريخ الامتحان: غير محدد'
                             }
                         ]);
 
@@ -2950,27 +3104,14 @@
                 }
             }
 
-            function handleGuestLogin() {
-                showToast('الدخول كضيف غير متوفر حالياً', 'warning');
-                return;
-            }
-
             function updateUIForLoggedInUser() {
                 profileBtn.style.display = 'flex';
                 premiumBadge.style.display = 'flex';
-                trialBanner.style.display = 'none';
             }
 
             function updateUIForLoggedOutUser() {
                 profileBtn.style.display = 'none';
                 premiumBadge.style.display = 'none';
-                trialBanner.style.display = 'none';
-            }
-
-            function updateUIForGuestUser() {
-                profileBtn.style.display = 'none';
-                premiumBadge.style.display = 'none';
-                trialBanner.style.display = 'block';
             }
 
             // وظائف التنقل
@@ -3017,10 +3158,8 @@
                         <p>${arabicDesc}</p>
                     `;
                     examCard.addEventListener('click', () => {
-                        if ((currentUser?.guest || isGuest) && isTrialExpired()) {
-                            showToast('انتهت الفترة التجريبية. يرجى التسجيل للاستمرار.', 'error');
-                            return;
-                        }
+                        if (!checkAuthAndRedirect()) return;
+                        
                         // توجيه المستخدم إلى الملف المناسب
                         if (exam === "INSEL.html") {
                             window.location.href = 'THEMA KOMPLI/INSEL.html';
@@ -3048,10 +3187,8 @@
                         <p>${arabicDesc}</p>
                     `;
                     examCard.addEventListener('click', () => {
-                        if ((currentUser?.guest || isGuest) && isTrialExpired()) {
-                            showToast('انتهت الفترة التجريبية. يرجى التسجيل للاستمرار.', 'error');
-                            return;
-                        }
+                        if (!checkAuthAndRedirect()) return;
+                        
                         // توجيه المستخدم إلى الملف المناسب
                         window.location.href = 'KURS/LESEN/' + exam;
                     });
@@ -3075,11 +3212,9 @@
                         <p>${arabicDesc}</p>
                     `;
                     examCard.addEventListener('click', () => {
-                        if ((currentUser?.guest || isGuest) && isTrialExpired()) {
-                            showToast('انتهت الفترة التجريبية. يرجى التسجيل للاستمرار.', 'error');
-                            return;
-                        }
-                        // توجيه المستخدم إلى الملف المناسب مع تغيير المسار إلى HOREN
+                        if (!checkAuthAndRedirect()) return;
+                        
+                        // توجيه المستخدم إلى الملف المناسب
                         window.location.href = 'KURS/HOREN/' + exam;
                     });
                     hoerenGrid.appendChild(examCard);
@@ -3102,10 +3237,8 @@
                         <p>${arabicDesc}</p>
                     `;
                     examCard.addEventListener('click', () => {
-                        if ((currentUser?.guest || isGuest) && isTrialExpired()) {
-                            showToast('انتهت الفترة التجريبية. يرجى التسجيل للاستمرار.', 'error');
-                            return;
-                        }
+                        if (!checkAuthAndRedirect()) return;
+                        
                         // توجيه المستخدم إلى الملف المناسب
                         window.location.href = 'KURS/SCHREIBEN/' + exam;
                     });
@@ -3129,11 +3262,9 @@
                         <p>${arabicDesc}</p>
                     `;
                     pdfCard.addEventListener('click', () => {
-                        if ((currentUser?.guest || isGuest) && isTrialExpired()) {
-                            showToast('انتهت الفترة التجريبية. يرجى التسجيل للاستمرار.', 'error');
-                            return;
-                        }
-                        // توجيه المستخدم إلى الملف المناسب مع تغيير أسماء ملفات PDF
+                        if (!checkAuthAndRedirect()) return;
+                        
+                        // توجيه المستخدم إلى الملف المناسب
                         if (pdf === "teil1.pdf" || pdf === "teil2.pdf" || pdf === "teil3.pdf") {
                             window.location.href = 'KURS/MUNDLICH/' + pdf;
                         } else {
@@ -3144,17 +3275,13 @@
                 });
             }
 
-            function isTrialExpired() {
-                return new Date() > trialExpiry;
-            }
-
             // تحديث الملف الشخصي
             function updateProfileDisplay() {
                 if (currentUser && !currentUser.guest) {
-                    const userName = currentUser.email ? currentUser.email.split('@')[0] : 'مستخدم';
+                    const userName = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'مستخدم';
                     document.getElementById('userName').textContent = userName;
                     document.getElementById('profileName').textContent = userName;
-                    document.getElementById('userAvatar').textContent = userName.charAt(0);
+                    document.getElementById('userAvatar').textContent = userName.charAt(0).toUpperCase();
                     document.getElementById('profileEmail').textContent = currentUser.email || 'غير متوفر';
                 }
                 
@@ -3177,28 +3304,6 @@
                     
                     document.getElementById('examCountdown').textContent = 
                         `${days} يوم ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                }
-            }
-
-            // تحديث عداد الوقت
-            function updateCountdown() {
-                const now = new Date();
-                const diff = trialExpiry - now;
-                
-                if (diff <= 0) {
-                    trialTimer.textContent = "00:00:00";
-                    trialBanner.classList.add('expired');
-                    if (isGuest) {
-                        showToast('انتهت الفترة التجريبية. يرجى التسجيل للاستمرار.', 'error');
-                        showPage('login');
-                    }
-                } else {
-                    const hours = Math.floor(diff / (1000 * 60 * 60));
-                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                    
-                    trialTimer.textContent = 
-                        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 }
             }
 
@@ -3306,7 +3411,7 @@
                 document.getElementById('profileEmail').textContent = email;
                 document.getElementById('profilePhone').textContent = phone;
                 document.getElementById('profileLocation').textContent = location;
-                document.getElementById('profileExamLocation').textContent = examLocation;
+                document.getElementById('profileExamLocation').textContent = examLocation || 'غير محدد';
                 
                 // تحديث تاريخ الامتحان
                 if (examDateInput) {
@@ -3370,7 +3475,7 @@
             // وظيفة فتح واتساب لتفعيل الاشتراك
             function openWhatsAppActivation() {
                 const phoneNumber = '+212649661976';
-                const message = 'مرحبا، أود تفعيل اشتراكي في تطبيق B2 Deutsch Training وإكمال عملية الدفع';
+                const message = 'مرحباً، أود تفعيل الاشتراك المميز في تطبيق B2 Deutsch Training وإكمال عملية الدفع. الرجاء إعلامي بالخطوات والإجراءات المطلوبة. شكراً جزيلاً.';
                 const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
                 window.open(url, '_blank');
             }
@@ -3378,7 +3483,7 @@
             // وظيفة فتح واتساب للدعم
             function openWhatsApp() {
                 const phoneNumber = '+212649661976';
-                const message = 'مرحبا، أود الاستفسار عن حالة طلب التسجيل الخاص بي';
+                const message = 'مرحباً، أود الاستفسار عن حالة طلب التسجيل الخاص بي. الرجاء مساعدتي. شكراً جزيلاً.';
                 const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
                 window.open(url, '_blank');
             }
@@ -3389,10 +3494,29 @@
                 loginButton.addEventListener('click', handleLogin);
                 signupButton.addEventListener('click', () => showPage('signup'));
                 createAccountButton.addEventListener('click', handleSignUp);
-                guestButton.addEventListener('click', handleGuestLogin);
+                
+                // نسيان كلمة المرور
+                forgotPasswordLink.addEventListener('click', () => {
+                    forgotModal.style.display = 'flex';
+                });
+                
+                forgotWhatsappBtn.addEventListener('click', handleForgotPassword);
+                closeForgotModal.addEventListener('click', () => {
+                    forgotModal.style.display = 'none';
+                    forgotEmail.value = '';
+                });
+                
+                // إغلاق نافذة نسيان كلمة المرور بالنقر خارجها
+                forgotModal.addEventListener('click', (e) => {
+                    if (e.target === forgotModal) {
+                        forgotModal.style.display = 'none';
+                        forgotEmail.value = '';
+                    }
+                });
                 
                 // تبديل رؤية كلمة المرور
                 passwordToggle.addEventListener('click', () => togglePasswordVisibility('passwordInput', passwordToggle));
+                signupPasswordToggle.addEventListener('click', () => togglePasswordVisibility('signupPassword', signupPasswordToggle));
                 signupConfirmPasswordToggle.addEventListener('click', () => togglePasswordVisibility('signupConfirmPassword', signupConfirmPasswordToggle));
                 
                 // التنقل بين الصفحات
@@ -3420,12 +3544,15 @@
                 
                 // القائمة الفرعية لـ Mündlich
                 teil1Card.addEventListener('click', () => {
+                    if (!checkAuthAndRedirect()) return;
                     window.location.href = 'KURS/MUNDLICH/teil1.pdf';
                 });
                 teil2Card.addEventListener('click', () => {
+                    if (!checkAuthAndRedirect()) return;
                     window.location.href = 'KURS/MUNDLICH/teil2.pdf';
                 });
                 teil3Card.addEventListener('click', () => {
+                    if (!checkAuthAndRedirect()) return;
                     window.location.href = 'KURS/MUNDLICH/teil3.pdf';
                 });
                 
@@ -3446,7 +3573,7 @@
                 
                 // زر التاج
                 premiumBadge.addEventListener('click', () => {
-                    showToast('أنت مشترك! شكراً على دعمك 💎', 'info');
+                    showToast('أنت مشترك مميز! شكراً لدعمك 💎', 'info');
                 });
                 
                 // النماذج المنبثقة
@@ -3523,6 +3650,12 @@
                 signOutWaiting.addEventListener('click', handleSignOut);
 
                 // إدخال بالإنتر
+                emailInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        passwordInput.focus();
+                    }
+                });
+                
                 passwordInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
                         handleLogin();
@@ -3531,13 +3664,19 @@
                 
                 signupPassword.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
-                        handleSignUp();
+                        signupConfirmPassword.focus();
                     }
                 });
                 
                 signupConfirmPassword.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
                         handleSignUp();
+                    }
+                });
+                
+                forgotEmail.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        handleForgotPassword();
                     }
                 });
             }
@@ -3561,9 +3700,7 @@
                 await checkLoginStatus();
                 
                 setupEventListeners();
-                updateCountdown();
                 updateExamCountdown();
-                setInterval(updateCountdown, 1000);
                 setInterval(updateExamCountdown, 1000);
             }
 
