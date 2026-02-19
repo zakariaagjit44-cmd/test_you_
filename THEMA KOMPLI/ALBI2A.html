@@ -4,6 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Deutsch B2 Prüfung - Komplett</title>
+  
+  <!-- Supabase Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <style>
     /* ===== GLOBAL STYLES ===== */
     :root {
@@ -1391,7 +1395,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-lesen" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-lesen" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn2-lesen" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-lesen">Nicht gespeichert</span></div>
     </footer>
@@ -1430,7 +1434,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-hoeren" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-hoeren" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn2-hoeren" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-hoeren">Nicht gespeichert</span></div>
     </footer>
@@ -1476,7 +1480,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-schreiben" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-schreiben" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn2-schreiben" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-schreiben">Nicht gespeichert</span></div>
     </footer>
@@ -1503,30 +1507,127 @@
     </div>
   </div>
 
-  <script>
-    // تحسين السحب والإفلات للشاشات التي تعمل باللمس
-    function setupTouchDragAndDrop() {
-      if ('ontouchstart' in window) {
-        // تغيير سلوك العناصر القابلة للسحب
-        document.querySelectorAll('[draggable="true"]').forEach(item => {
-          item.addEventListener('touchstart', handleTouchStart);
-          item.addEventListener('touchend', handleTouchEnd);
-        });
+  <!-- Login Error Modal (يظهر فقط عند رفض الدخول) -->
+  <div id="login-error-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center;">
+    <div style="background: white; border-radius: 16px; padding: 40px; max-width: 400px; text-align: center;">
+      <div style="font-size: 64px; margin-bottom: 20px;">❌</div>
+      <h2 style="color: #d32f2f; margin-bottom: 20px;">Zugriff verweigert</h2>
+      <p id="error-message" style="color: #333; margin-bottom: 30px; font-size: 16px;">Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.</p>
+      <button id="redirect-to-login" style="background: #d32f2f; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;">Zum Login</button>
+    </div>
+  </div>
+
+  <script type="module">
+    // =============================================
+    // التحقق من تسجيل الدخول - نسخة محسنة وآمنة
+    // =============================================
+    
+    (async function() {
+      // تكوين Supabase
+      const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
+      
+      // تهيئة Supabase
+      const { createClient } = window.supabase;
+      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      
+      // عناصر الصفحة
+      const body = document.getElementById('body');
+      const startPage = document.getElementById('start-page');
+      const loginErrorModal = document.getElementById('login-error-modal');
+      const errorMessage = document.getElementById('error-message');
+      
+      // دالة لعرض خطأ تسجيل الدخول
+      function showLoginError(message) {
+        // إخفاء محتوى الصفحة
+        startPage.style.display = 'none';
         
-        document.querySelectorAll('.title-slot, .blank-slot').forEach(slot => {
-          slot.addEventListener('touchmove', handleTouchMove);
-          slot.addEventListener('touchend', handleTouchDrop);
-        });
+        // إظهار نافذة الخطأ
+        errorMessage.textContent = message || 'Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.';
+        loginErrorModal.style.display = 'flex';
       }
-    }
+      
+      // التحقق من تسجيل الدخول
+      try {
+        // التحقق من الجلسة في Supabase
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError || !session) {
+          showLoginError('❌ Keine aktive Sitzung gefunden. Bitte melden Sie sich an.');
+          return;
+        }
+        
+        // التحقق من جدول permissions
+        const { data: permissions, error: permError } = await supabase
+          .from('user_permissions')
+          .select('can_access, subscription_type, subscription_expiry, trial_expiry')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
+        
+        // إذا كان هناك خطأ أو لا يوجد صلاحيات
+        if (permError) {
+          console.error('Permissions error:', permError);
+          showLoginError('❌ Fehler bei der Überprüfung Ihrer Berechtigungen.');
+          return;
+        }
+        
+        // إذا لم يتم العثور على المستخدم في جدول permissions
+        if (!permissions) {
+          // محاولة إدراج المستخدم إذا لم يكن موجوداً
+          const { error: insertError } = await supabase
+            .from('user_permissions')
+            .insert({
+              user_id: session.user.id,
+              email: session.user.email,
+              can_access: true,
+              subscription_type: 'free',
+              created_at: new Date().toISOString()
+            });
+          
+          if (insertError) {
+            console.error('Insert error:', insertError);
+            showLoginError('❌ Fehler beim Erstellen Ihres Benutzerkontos.');
+            return;
+          }
+        } else if (!permissions.can_access) {
+          // إذا كان can_access = false
+          showLoginError('❌ Sie haben keine Berechtigung für den Zugriff auf diese Prüfung.');
+          return;
+        }
+        
+        // التحقق من انتهاء الاشتراك
+        const now = new Date();
+        
+        if (permissions && permissions.subscription_type === 'trial_24h' && permissions.trial_expiry) {
+          const trialExpiry = new Date(permissions.trial_expiry);
+          if (trialExpiry < now) {
+            showLoginError('❌ Ihre Testphase ist abgelaufen. Bitte aktivieren Sie ein Abonnement.');
+            return;
+          }
+        }
+        
+        if (permissions && permissions.subscription_expiry) {
+          const subscriptionExpiry = new Date(permissions.subscription_expiry);
+          if (subscriptionExpiry < now) {
+            showLoginError('❌ Ihr Abonnement ist abgelaufen. Bitte erneuern Sie Ihr Abonnement.');
+            return;
+          }
+        }
+        
+        // إذا وصلنا إلى هنا، المستخدم مصرح له
+        console.log('✅ Zugriff gewährt für:', session.user.email);
+        
+        // إظهار محتوى الصفحة
+        startPage.style.display = 'flex';
+        
+      } catch (error) {
+        console.error('❌ Kritischer Fehler:', error);
+        showLoginError('❌ Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
+      }
+    })();
+  </script>
 
-    function handleTouchStart(e) {
-      // تنفيذ السحب عند اللمس
-    }
-
-    // استدعاء الدالة عند تحميل الصفحة
-    document.addEventListener('DOMContentLoaded', setupTouchDragAndDrop);
-
+  <script>
     // ===== PAGE NAVIGATION =====
     function showPage(pageId) {
       // Hide all pages
@@ -1558,6 +1659,11 @@
         initErgebnissePage();
       }
     }
+
+    // ربط زر التوجيه للـ Login
+    document.getElementById('redirect-to-login').addEventListener('click', function() {
+      window.location.href = '../index.html';
+    });
 
     // ===== START PAGE FUNCTIONALITY =====
     let initialCounter = 30;
@@ -1646,8 +1752,7 @@
       timerEl.style.color = "#e53e3e";
     });
 
-    // NOTE: removed automatic startCountdown() on page load to prevent the timer starting twice
-// ===== LESEN PAGE FUNCTIONALITY =====
+    // ===== LESEN PAGE FUNCTIONALITY =====
     function initLesenPage() {
       /* ===== Self-contained exam (embedded) ===== */
       const exam = {
@@ -2686,7 +2791,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         }
       });
 
-      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
+      document.getElementById('nextBtn2-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex < exam.sections.length - 1){
           state.sectionIndex++;
           state.questionIndex = 0;
@@ -3085,7 +3190,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         }
       });
 
-      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
+      document.getElementById('nextBtn2-hoeren').addEventListener('click', () => {
         if (state.sectionIndex < exam.sections.length - 1) {
           state.sectionIndex++;
           state.showResults = false;
@@ -3333,7 +3438,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         }
       });
 
-      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
+      document.getElementById('nextBtn2-schreiben').addEventListener('click', () => {
         if (state.sectionIndex < exam.sections.length - 1) {
           state.sectionIndex++;
           state.showResults = false;
