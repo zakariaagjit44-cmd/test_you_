@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
+        /* ========== الأنماط كما هي تماماً بدون تغيير ========== */
         :root {
             --primary: #2196F3;
             --primary-dark: #1976D2;
@@ -2717,6 +2718,64 @@
                 return true;
             }
 
+            // ========== دالة للتحقق من صلاحية الوصول إلى المحتوى (للاستخدام في ملفات الامتحانات) ==========
+            async function verifyExamAccess() {
+                // التحقق من وجود بيانات في localStorage أولاً
+                const isLoggedIn = localStorage.getItem('b2_isLoggedIn') === 'true';
+                const userId = localStorage.getItem('b2_userId');
+                
+                if (!isLoggedIn || !userId) {
+                    return { allowed: false, reason: 'not_logged_in' };
+                }
+                
+                try {
+                    // التحقق من الجلسة في Supabase
+                    const { data: { session }, error } = await supabase.auth.getSession();
+                    
+                    if (error || !session) {
+                        return { allowed: false, reason: 'session_expired' };
+                    }
+                    
+                    // التحقق من صلاحية المستخدم
+                    const { data: permissions, error: permError } = await supabase
+                        .from('user_permissions')
+                        .select('can_access, subscription_type, subscription_expiry, trial_expiry')
+                        .eq('user_id', session.user.id)
+                        .single();
+                    
+                    if (permError || !permissions) {
+                        return { allowed: false, reason: 'no_permissions' };
+                    }
+                    
+                    if (!permissions.can_access) {
+                        return { allowed: false, reason: 'access_denied' };
+                    }
+                    
+                    // التحقق من انتهاء الاشتراك
+                    const now = new Date();
+                    
+                    if (permissions.subscription_type === 'trial_24h' && permissions.trial_expiry) {
+                        const trialExpiry = new Date(permissions.trial_expiry);
+                        if (trialExpiry < now) {
+                            return { allowed: false, reason: 'trial_expired' };
+                        }
+                    }
+                    
+                    if (permissions.subscription_expiry) {
+                        const subscriptionExpiry = new Date(permissions.subscription_expiry);
+                        if (subscriptionExpiry < now) {
+                            return { allowed: false, reason: 'subscription_expired' };
+                        }
+                    }
+                    
+                    return { allowed: true, user: session.user };
+                    
+                } catch (error) {
+                    console.error('Error verifying exam access:', error);
+                    return { allowed: false, reason: 'error' };
+                }
+            }
+
             // ========== وظيفة تسجيل الدخول محسنة ==========
             async function handleLogin() {
                 const email = emailInput.value.trim();
@@ -2809,6 +2868,12 @@
                         showToast('تم تسجيل الدخول بنجاح!', 'success');
                         showPage('menu');
                         updateUIForLoggedInUser();
+                        
+                        // تخزين حالة تسجيل الدخول في localStorage
+                        localStorage.setItem('b2_isLoggedIn', 'true');
+                        localStorage.setItem('b2_userEmail', currentUser.email);
+                        localStorage.setItem('b2_userId', currentUser.id);
+                        localStorage.setItem('b2_loginTime', new Date().toISOString());
                     } else {
                         showPage('waiting');
                     }
@@ -2837,6 +2902,12 @@
                     currentUser = null;
                     updateUIForLoggedOutUser();
                     showPage('login');
+                    
+                    // مسح بيانات تسجيل الدخول من localStorage
+                    localStorage.removeItem('b2_isLoggedIn');
+                    localStorage.removeItem('b2_userEmail');
+                    localStorage.removeItem('b2_userId');
+                    localStorage.removeItem('b2_loginTime');
                     
                     showToast('تم تسجيل الخروج بنجاح', 'success');
                     
@@ -3440,6 +3511,13 @@ const message = `مرحباً
                     
                     if (data.session) {
                         currentUser = data.session.user;
+                        
+                        // تحديث localStorage عند استعادة الجلسة
+                        localStorage.setItem('b2_isLoggedIn', 'true');
+                        localStorage.setItem('b2_userEmail', currentUser.email);
+                        localStorage.setItem('b2_userId', currentUser.id);
+                        localStorage.setItem('b2_loginTime', new Date().toISOString());
+                        
                         // التحقق من صلاحية المستخدم
                         const hasAccess = await checkUserAccess();
                         
@@ -3452,7 +3530,12 @@ const message = `مرحباً
                         return;
                     }
                     
-                    // إذا لم يكن هناك جلسة، عرض صفحة تسجيل الدخول
+                    // إذا لم يكن هناك جلسة، تأكد من مسح localStorage
+                    localStorage.removeItem('b2_isLoggedIn');
+                    localStorage.removeItem('b2_userEmail');
+                    localStorage.removeItem('b2_userId');
+                    localStorage.removeItem('b2_loginTime');
+                    
                     showPage('login');
                 } catch (error) {
                     console.error('Error checking auth status:', error);
