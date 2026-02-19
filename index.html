@@ -1501,7 +1501,7 @@
         function getArabicDescription(filename) { const examName = getExamName(filename); return examTranslations[examName]?.ar || examName; }
 
         // ================== الترجمات ==================
-        const translations = { ar: { /* موجودة في الكود الكامل */ } };
+        const translations = { ar: {} };
 
         // ================== تهيئة التطبيق ==================
         document.addEventListener('DOMContentLoaded', function() {
@@ -1626,7 +1626,7 @@
                 return true;
             }
 
-            // ========== دوال عرض القوائم (المصححة) ==========
+            // ========== دوال عرض القوائم ==========
             function populateExamsGrid() {
                 const grid = document.getElementById('examsGrid');
                 if (!grid) return;
@@ -1803,80 +1803,121 @@
             async function updateProfileStats() {
                 if (!currentUser) return;
                 try {
-                    const { data } = await supabase.from('view_user_detailed_stats').select('*').eq('user_id', currentUser.id).single();
-                    if (data) {
-                        document.getElementById('profilePoints').textContent = data.total_points || 0;
-                        document.getElementById('profileCompleted').textContent = `${data.total_attempts || 0} امتحان`;
-                        document.getElementById('profileProgress').textContent = `${Math.round(data.average_score || 0)}%`;
-                        document.getElementById('profileBestScore').textContent = data.best_score || 0;
-                        const hours = Math.floor((data.total_time_seconds || 0) / 3600);
+                    const { data: attempts, error } = await supabase
+                        .from('view_user_attempts')
+                        .select('*')
+                        .eq('user_id', currentUser.id)
+                        .order('completed_at', { ascending: false });
+                    
+                    if (error) throw error;
+                    
+                    if (attempts && attempts.length > 0) {
+                        const totalAttempts = attempts.length;
+                        const passedAttempts = attempts.filter(a => a.passed).length;
+                        const totalScore = attempts.reduce((sum, a) => sum + a.score, 0);
+                        const avgScore = totalScore / totalAttempts;
+                        const bestScore = Math.max(...attempts.map(a => a.score));
+                        
+                        document.getElementById('profilePoints').textContent = totalScore;
+                        document.getElementById('profileCompleted').textContent = `${totalAttempts} امتحان`;
+                        document.getElementById('profileProgress').textContent = `${Math.round(avgScore)}%`;
+                        document.getElementById('profileBestScore').textContent = bestScore;
+                        
+                        const totalSeconds = attempts.reduce((sum, a) => sum + (a.time_spent_seconds || 0), 0);
+                        const hours = Math.floor(totalSeconds / 3600);
                         document.getElementById('profileTimeSpent').textContent = `${hours} ساعة`;
+                        
+                        const lastAttempt = attempts[0];
+                        localStorage.setItem('lastExamResult', JSON.stringify({
+                            score: lastAttempt.score,
+                            percentage: lastAttempt.percentage,
+                            passed: lastAttempt.passed,
+                            examTitle: lastAttempt.exam_title_ar,
+                            date: lastAttempt.completed_at
+                        }));
                     }
                 } catch (error) { console.error('خطأ في تحديث الإحصائيات:', error); }
             }
 
-            async function showExamHistory() {
-                const filters = { category: categoryFilter.value, result: resultFilter.value };
-                const history = await fetchUserExamHistory(filters);
-                const total = history.length; const passed = history.filter(h => h.passed).length;
-                document.getElementById('historyTotalExams').textContent = total;
-                document.getElementById('historyPassedExams').textContent = passed;
-                document.getElementById('historyFailedExams').textContent = total - passed;
-                const tbody = document.getElementById('historyTableBody');
-                tbody.innerHTML = '';
-                if (history.length === 0) tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem;">لا توجد محاولات سابقة</td></tr>';
-                else {
-                    history.forEach(attempt => {
-                        const row = document.createElement('tr'); row.style.borderBottom = '1px solid #ddd';
-                        const date = new Date(attempt.completed_at).toLocaleDateString('ar-EG');
-                        const timeSpent = Math.floor(attempt.time_spent_seconds / 60) + ' دقيقة';
-                        row.innerHTML = `
-                            <td style="padding: 0.8rem;">${attempt.exam_title_ar}</td>
-                            <td style="padding: 0.8rem;">${date}</td>
-                            <td style="padding: 0.8rem; color: ${attempt.passed ? '#4CAF50' : '#f44336'}; font-weight: bold;">${attempt.score}/${attempt.total_points}</td>
-                            <td style="padding: 0.8rem;">${Math.round(attempt.percentage)}%</td>
-                            <td style="padding: 0.8rem;">${timeSpent}</td>
-                            <td style="padding: 0.8rem;"><button class="view-attempt-btn" data-attempt-id="${attempt.attempt_id}" style="background: var(--primary); color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 5px; cursor: pointer;"><i class="fas fa-eye"></i></button></td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                    document.querySelectorAll('.view-attempt-btn').forEach(btn => btn.addEventListener('click', (e) => showAttemptDetails(e.currentTarget.dataset.attemptId)));
-                }
-                historyModal.style.display = 'flex';
+            async function loadExamHistory() {
+                if (!currentUser) return;
+                try {
+                    const { data: history, error } = await supabase
+                        .from('view_user_attempts')
+                        .select('*')
+                        .eq('user_id', currentUser.id)
+                        .order('completed_at', { ascending: false });
+                    
+                    if (error) throw error;
+                    
+                    if (history && history.length > 0) {
+                        const total = history.length;
+                        const passed = history.filter(h => h.passed).length;
+                        
+                        document.getElementById('historyTotalExams').textContent = total;
+                        document.getElementById('historyPassedExams').textContent = passed;
+                        document.getElementById('historyFailedExams').textContent = total - passed;
+                        
+                        const tbody = document.getElementById('historyTableBody');
+                        tbody.innerHTML = '';
+                        
+                        history.forEach(attempt => {
+                            const date = new Date(attempt.completed_at).toLocaleDateString('ar-EG');
+                            const timeSpent = Math.floor((attempt.time_spent_seconds || 0) / 60) + ' دقيقة';
+                            
+                            const row = document.createElement('tr');
+                            row.style.borderBottom = '1px solid #ddd';
+                            row.innerHTML = `
+                                <td style="padding: 0.8rem;">${attempt.exam_title_ar}</td>
+                                <td style="padding: 0.8rem;">${date}</td>
+                                <td style="padding: 0.8rem; color: ${attempt.passed ? '#4CAF50' : '#f44336'}; font-weight: bold;">
+                                    ${attempt.score}/${attempt.total_points}
+                                </td>
+                                <td style="padding: 0.8rem;">${Math.round(attempt.percentage)}%</td>
+                                <td style="padding: 0.8rem;">${timeSpent}</td>
+                                <td style="padding: 0.8rem;">
+                                    <button class="view-attempt-btn" data-attempt-id="${attempt.attempt_id}" 
+                                            style="background: var(--primary); color: white; border: none; padding: 0.3rem 0.8rem; border-radius: 5px; cursor: pointer;">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                        
+                        document.querySelectorAll('.view-attempt-btn').forEach(btn => {
+                            btn.addEventListener('click', (e) => {
+                                const attemptId = e.currentTarget.dataset.attemptId;
+                                const attempt = history.find(h => h.attempt_id === attemptId);
+                                showAttemptDetails(attempt);
+                            });
+                        });
+                    }
+                } catch (error) { console.error('خطأ في تحميل سجل الامتحانات:', error); }
             }
 
-            async function showAttemptDetails(attemptId) {
-                try {
-                    const { data: attempt } = await supabase.from('view_user_attempts').select('*').eq('attempt_id', attemptId).single();
-                    const { data: answers } = await supabase.from('exam_answers').select('*').eq('attempt_id', attemptId).order('question_number');
-                    document.getElementById('attemptDetails').innerHTML = `
-                        <div style="display: grid; grid-template-columns: repeat(2,1fr); gap:0.5rem;">
-                            <div><strong>الامتحان:</strong> ${attempt.exam_title_ar}</div>
-                            <div><strong>التصنيف:</strong> ${attempt.category_ar}</div>
-                            <div><strong>النتيجة:</strong> ${attempt.score}/${attempt.total_points}</div>
-                            <div><strong>النسبة:</strong> ${Math.round(attempt.percentage)}%</div>
-                            <div><strong>الحالة:</strong> <span style="color:${attempt.passed?'#4CAF50':'#f44336'};">${attempt.passed?'ناجح':'راسب'}</span></div>
-                            <div><strong>التاريخ:</strong> ${new Date(attempt.completed_at).toLocaleDateString('ar-EG')}</div>
-                        </div>`;
-                    const answersDiv = document.getElementById('answersList'); answersDiv.innerHTML = '';
-                    if (answers?.length) {
-                        answersDiv.innerHTML = '<h3 style="margin-bottom:0.5rem;">الإجابات:</h3>';
-                        answers.forEach(a => {
-                            const div = document.createElement('div');
-                            div.style.cssText = `padding:0.8rem; margin:0.5rem 0; background:${a.is_correct?'#E8F5E8':'#FFEBEE'}; border-right:4px solid ${a.is_correct?'#4CAF50':'#f44336'}; border-radius:5px;`;
-                            div.innerHTML = `<div><strong>سؤال ${a.question_number}:</strong> ${a.question_text||''}</div>
-                                            <div><strong>إجابتك:</strong> ${a.user_answer||''}</div>
-                                            ${!a.is_correct ? `<div><strong>الإجابة الصحيحة:</strong> ${a.correct_answer||''}</div>` : ''}
-                                            <div><strong>النقاط:</strong> ${a.points_earned}/${a.points_possible}</div>`;
-                            answersDiv.appendChild(div);
-                        });
-                    } else answersDiv.innerHTML = '<p style="text-align:center; padding:1rem;">لا توجد تفاصيل للإجابات</p>';
-                    
-                    if (attempt.feedback) { document.getElementById('feedbackSection').style.display = 'block'; document.getElementById('feedbackText').textContent = attempt.feedback; }
-                    else document.getElementById('feedbackSection').style.display = 'none';
-                    
-                    attemptDetailsModal.style.display = 'flex';
-                } catch (error) { console.error(error); showToast('حدث خطأ في عرض التفاصيل', 'error'); }
+            function showAttemptDetails(attempt) {
+                if (!attempt) return;
+                document.getElementById('attemptDetails').innerHTML = `
+                    <div style="display: grid; grid-template-columns: repeat(2,1fr); gap:1rem;">
+                        <div><strong>الامتحان:</strong> ${attempt.exam_title_ar}</div>
+                        <div><strong>التصنيف:</strong> ${attempt.category_ar}</div>
+                        <div><strong>النتيجة:</strong> ${attempt.score}/${attempt.total_points}</div>
+                        <div><strong>النسبة:</strong> ${Math.round(attempt.percentage)}%</div>
+                        <div><strong>الحالة:</strong> 
+                            <span style="color:${attempt.passed ? '#4CAF50' : '#f44336'};">
+                                ${attempt.passed ? 'ناجح ✓' : 'راسب ✗'}
+                            </span>
+                        </div>
+                        <div><strong>التاريخ:</strong> ${new Date(attempt.completed_at).toLocaleDateString('ar-EG')}</div>
+                    </div>
+                `;
+                attemptDetailsModal.style.display = 'flex';
+            }
+
+            function showExamHistory() {
+                loadExamHistory();
+                historyModal.style.display = 'flex';
             }
 
             function exportExamHistory() {
@@ -1944,7 +1985,7 @@
                 updateTexts();
             }
 
-            function updateTexts() { /* اختصاراً، موجود في الكود الكامل */ }
+            function updateTexts() { /* اختصاراً */ }
 
             function handleImageUpload(e) {
                 const file = e.target.files[0];
@@ -2144,7 +2185,6 @@
                 signupConfirmPassword.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSignUp(); });
                 forgotEmail.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleForgotPassword(); });
 
-                // أحداث جديدة
                 viewHistoryBtn.addEventListener('click', showExamHistory);
                 categoryFilter.addEventListener('change', showExamHistory);
                 resultFilter.addEventListener('change', showExamHistory);
@@ -2154,6 +2194,108 @@
                 historyModal.addEventListener('click', (e) => { if (e.target === historyModal) historyModal.style.display = 'none'; });
                 attemptDetailsModal.addEventListener('click', (e) => { if (e.target === attemptDetailsModal) attemptDetailsModal.style.display = 'none'; });
             }
+
+            // ========== دوال التحديث التلقائي والمؤشرات ==========
+            function setupAutoRefreshStats() {
+                setInterval(async () => {
+                    const activePage = document.querySelector('.page.active')?.id;
+                    if (activePage === 'profilePage' && currentUser) {
+                        await updateProfileStats();
+                        await loadExamHistory();
+                        
+                        const profileCard = document.querySelector('.profile-card');
+                        if (profileCard) {
+                            const refreshMsg = document.createElement('div');
+                            refreshMsg.className = 'toast toast-info';
+                            refreshMsg.style.cssText = 'position: fixed; bottom: 20px; right: 20px; z-index: 9999; animation: slideIn 0.3s;';
+                            refreshMsg.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> جاري تحديث النتائج...';
+                            document.body.appendChild(refreshMsg);
+                            
+                            setTimeout(() => { refreshMsg.remove(); }, 2000);
+                        }
+                    }
+                }, 60000);
+            }
+
+            function addResultIndicators() {
+                const style = document.createElement('style');
+                style.textContent = `
+                    .result-indicator {
+                        position: fixed;
+                        bottom: 20px;
+                        left: 20px;
+                        background: var(--primary);
+                        color: white;
+                        padding: 10px 20px;
+                        border-radius: 50px;
+                        box-shadow: 0 5px 15px rgba(33,150,243,0.3);
+                        z-index: 9999;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        animation: slideUp 0.3s ease;
+                    }
+                    @keyframes slideUp {
+                        from { transform: translateY(100px); opacity: 0; }
+                        to { transform: translateY(0); opacity: 1; }
+                    }
+                    .result-indicator.success { background: linear-gradient(135deg, #4CAF50, #45a049); }
+                    .result-indicator.warning { background: linear-gradient(135deg, #FF9800, #F57C00); }
+                    .result-indicator i { font-size: 1.2rem; }
+                    .live-badge {
+                        background: #ff4444;
+                        color: white;
+                        padding: 2px 8px;
+                        border-radius: 12px;
+                        font-size: 10px;
+                        margin-left: 8px;
+                        animation: pulse 1.5s infinite;
+                    }
+                    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // ========== كود الاختبار ==========
+            window.testSystem = {
+                async checkLastResult() {
+                    if (!currentUser) { console.log('❌ لا يوجد مستخدم مسجل'); return; }
+                    console.log('🔍 جاري فحص آخر النتائج...');
+                    const { data: attempts, error } = await supabase
+                        .from('view_user_attempts')
+                        .select('*')
+                        .eq('user_id', currentUser.id)
+                        .order('completed_at', { ascending: false })
+                        .limit(1);
+                    if (error) { console.error('❌ خطأ:', error); return; }
+                    if (attempts && attempts.length > 0) {
+                        const last = attempts[0];
+                        console.log('✅ آخر نتيجة:', {
+                            الامتحان: last.exam_title_ar,
+                            النتيجة: `${last.score}/${last.total_points}`,
+                            النسبة: `${Math.round(last.percentage)}%`,
+                            الحالة: last.passed ? 'ناجح' : 'راسب',
+                            التاريخ: new Date(last.completed_at).toLocaleString('ar-EG')
+                        });
+                        showToast(`آخر نتيجة: ${last.score}/${last.total_points} (${Math.round(last.percentage)}%)`, last.passed ? 'success' : 'error');
+                    } else { console.log('ℹ️ لا توجد نتائج سابقة'); showToast('لا توجد نتائج سابقة', 'info'); }
+                },
+                async refreshStats() {
+                    if (!currentUser) return;
+                    await updateProfileStats();
+                    await loadExamHistory();
+                    showToast('تم تحديث الإحصائيات', 'success');
+                }
+            };
+
+            document.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.shiftKey && e.key === 'R') { e.preventDefault(); window.testSystem.refreshStats(); }
+                if (e.ctrlKey && e.shiftKey && e.key === 'L') { e.preventDefault(); window.testSystem.checkLastResult(); }
+            });
+
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden && currentUser) { window.testSystem.refreshStats(); }
+            });
 
             // ========== بدء التطبيق ==========
             async function init() {
@@ -2166,6 +2308,10 @@
                 setupEventListeners();
                 updateExamCountdown();
                 setInterval(updateExamCountdown, 1000);
+                
+                // ===== الإضافات الجديدة في نهاية init() =====
+                setupAutoRefreshStats();
+                addResultIndicators();
             }
 
             init();
