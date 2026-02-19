@@ -1411,116 +1411,126 @@
     const userId = localStorage.getItem('b2_userId');
     const userEmail = localStorage.getItem('b2_userEmail');
 
-    // ============================================
-    // 5. نظام الحفظ التلقائي - إضافة جديدة
-    // ============================================
-    let autoSaveInterval;
-    let lastAnswersState = '';
-
-    function startAutoSave() {
-        // حفظ كل 30 ثانية تلقائياً
-        autoSaveInterval = setInterval(async () => {
-            const currentAnswers = JSON.stringify(collectAllAnswers());
-            if (currentAnswers !== lastAnswersState && Object.keys(collectAllAnswers()).length > 0) {
-                console.log('🔄 حفظ تلقائي...');
-                await saveExamResult();
-                lastAnswersState = currentAnswers;
-                
-                // إظهار رسالة للمستخدم
-                const statusEl = document.getElementById('statusText-' + (document.querySelector('.exam-page[style*="block"]')?.id || 'lesen').replace('-page', ''));
-                if (statusEl) {
-                    statusEl.textContent = 'تم الحفظ تلقائياً ✓';
-                    setTimeout(() => {
-                        statusEl.textContent = 'نشط';
-                    }, 2000);
-                }
-            }
-        }, 30000); // كل 30 ثانية
-    }
-
-    // حفظ عند الإجابة على أي سؤال
-    function setupAutoSaveOnAnswer() {
-        // مراقبة التغييرات في الإجابات
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-                    if (mutation.target.classList.contains('selected') || 
-                        mutation.target.classList.contains('has-answer')) {
-                        // حفظ بعد ثانيتين من آخر تغيير
-                        clearTimeout(window.answerTimeout);
-                        window.answerTimeout = setTimeout(async () => {
-                            await saveExamResult();
-                            lastAnswersState = JSON.stringify(collectAllAnswers());
-                        }, 2000);
-                    }
-                }
-            });
-        });
-
-        // مراقبة كل العناصر التي تتغير عند الإجابة
-        observer.observe(document.body, {
-            attributes: true,
-            subtree: true,
-            attributeFilter: ['class']
+    // Warnung, falls nicht eingeloggt
+    if (!isLoggedIn || !userId) {
+        console.warn('⚠️ Benutzer nicht eingeloggt – Ergebnisse werden nicht gespeichert.');
+        window.addEventListener('load', () => {
+            const warn = document.createElement('div');
+            warn.style.cssText = 'position:fixed; top:10px; right:10px; background:#ff9800; color:#fff; padding:10px 20px; border-radius:5px; z-index:9999; font-size:14px; box-shadow:0 2px 10px rgba(0,0,0,0.2);';
+            warn.innerHTML = '⚠️ Nicht eingeloggt. Ergebnis wird nicht gespeichert. <a href="../index.html" style="color:#fff; font-weight:bold;">Login</a>';
+            document.body.prepend(warn);
         });
     }
 
-    // دالة لجلب الإجابات بشكل موحد (محسنة)
+    // ============================================
+    // 5. Zustandsvariablen
+    // ============================================
+    const examStartTime = new Date();
+    let isExamCompleted = false;
+
+    // ============================================
+    // 6. Sammeln aller Antworten
+    // ============================================
     function collectAllAnswers() {
-        const answers = {};
+        const answers = [];
         
-        // من lesen
-        if (window._lesenState?.answers) {
-            answers.lesen = window._lesenState.answers;
+        // 6a) Lesen-Antworten
+        if (window._lesenState && window._lesenState.answers) {
+            const lesenAnswers = window._lesenState.answers;
+            Object.keys(lesenAnswers).forEach(qId => {
+                answers.push({
+                    question_id: qId,
+                    answer: lesenAnswers[qId],
+                    section: 'lesen'
+                });
+            });
         }
         
-        // من hoeren
-        if (window._hoerenState?.answers) {
-            answers.hoeren = window._hoerenState.answers;
+        // 6b) Hören-Antworten
+        if (window._hoerenState && window._hoerenState.answers) {
+            const hoerenSections = window._hoerenState.answers;
+            Object.keys(hoerenSections).forEach(sectionId => {
+                const secAnswers = hoerenSections[sectionId] || {};
+                Object.keys(secAnswers).forEach(qId => {
+                    answers.push({
+                        question_id: qId,
+                        answer: secAnswers[qId],
+                        section: 'hoeren'
+                    });
+                });
+            });
         }
         
-        // من schreiben
-        if (window._schreibenState?.answers) {
-            answers.schreiben = window._schreibenState.answers;
+        // 6c) Schreiben-Antworten
+        if (window._schreibenState && window._schreibenState.answers) {
+            const schreibenAnswers = window._schreibenState.answers;
+            if (schreibenAnswers['s1']) {
+                answers.push({
+                    question_id: 'schreiben',
+                    answer: schreibenAnswers['s1'],
+                    section: 'schreiben'
+                });
+            } else {
+                const keys = Object.keys(schreibenAnswers);
+                if (keys.length > 0) {
+                    answers.push({
+                        question_id: 'schreiben',
+                        answer: schreibenAnswers[keys[0]] || '',
+                        section: 'schreiben'
+                    });
+                }
+            }
         }
         
-        // من localStorage
-        try {
-            const lesenStorage = localStorage.getItem('lesenAnswers');
-            if (lesenStorage && !answers.lesen) {
-                answers.lesen = JSON.parse(lesenStorage);
+        // 6d) Fallback: localStorage
+        if (answers.length === 0) {
+            try {
+                const storedLesen = localStorage.getItem('lesenAnswers');
+                if (storedLesen) {
+                    const lesenObj = JSON.parse(storedLesen);
+                    Object.keys(lesenObj).forEach(qId => {
+                        answers.push({
+                            question_id: qId,
+                            answer: lesenObj[qId],
+                            section: 'lesen'
+                        });
+                    });
+                }
+                
+                const storedHoeren = localStorage.getItem('hoerenAnswers');
+                if (storedHoeren) {
+                    const hoerenObj = JSON.parse(storedHoeren);
+                    Object.keys(hoerenObj).forEach(section => {
+                        const sec = hoerenObj[section] || {};
+                        Object.keys(sec).forEach(qId => {
+                            answers.push({
+                                question_id: qId,
+                                answer: sec[qId],
+                                section: 'hoeren'
+                            });
+                        });
+                    });
+                }
+                
+                const storedSchreiben = localStorage.getItem('schreibenAnswers');
+                if (storedSchreiben) {
+                    const schreibenObj = JSON.parse(storedSchreiben);
+                    answers.push({
+                        question_id: 'schreiben',
+                        answer: schreibenObj.content || '',
+                        section: 'schreiben'
+                    });
+                }
+            } catch (e) {
+                console.error('Fehler beim Lesen von localStorage', e);
             }
-            
-            const hoerenStorage = localStorage.getItem('hoerenAnswers');
-            if (hoerenStorage && !answers.hoeren) {
-                answers.hoeren = JSON.parse(hoerenStorage);
-            }
-            
-            const schreibenStorage = localStorage.getItem('schreibenAnswers');
-            if (schreibenStorage && !answers.schreiben) {
-                answers.schreiben = JSON.parse(schreibenStorage);
-            }
-        } catch (e) {
-            console.error('خطأ في قراءة localStorage', e);
         }
         
         return answers;
     }
 
     // ============================================
-    // 6. Zustandsvariablen
-    // ============================================
-    const examStartTime = new Date();
-    let isExamCompleted = false;
-
-    // ============================================
-    // 7. Sammeln aller Antworten (الدالة الأصلية تبقى كما هي)
-    // ============================================
-    // ملاحظة: الدالة الأصلية collectAllAnswers موجودة في الأسفل
-    // نستخدم الدالة الجديدة collectAllAnswers بدلاً منها
-
-    // ============================================
-    // 8. Berechnung der Punktzahl (تظل كما هي)
+    // 7. Berechnung der Punktzahl
     // ============================================
     function calculateDetailedScore(answers) {
         let correctCount = 0;
@@ -1568,7 +1578,7 @@
     }
 
     // ============================================
-    // 9. Hauptfunktion: Ergebnis speichern (تظل كما هي)
+    // 8. Hauptfunktion: Ergebnis speichern
     // ============================================
     async function saveExamResult() {
         if (isExamCompleted) {
@@ -1581,49 +1591,16 @@
         }
         
         const allAnswers = collectAllAnswers();
-        // تحويل الكائن إلى مصفوفة للتوافق مع الدالة الأصلية
-        const answersArray = [];
-        if (allAnswers.lesen) {
-            Object.keys(allAnswers.lesen).forEach(qId => {
-                answersArray.push({
-                    question_id: qId,
-                    answer: allAnswers.lesen[qId],
-                    section: 'lesen'
-                });
-            });
-        }
-        if (allAnswers.hoeren) {
-            Object.keys(allAnswers.hoeren).forEach(sectionId => {
-                const secAnswers = allAnswers.hoeren[sectionId] || {};
-                Object.keys(secAnswers).forEach(qId => {
-                    answersArray.push({
-                        question_id: qId,
-                        answer: secAnswers[qId],
-                        section: 'hoeren'
-                    });
-                });
-            });
-        }
-        if (allAnswers.schreiben) {
-            if (allAnswers.schreiben.s1) {
-                answersArray.push({
-                    question_id: 'schreiben',
-                    answer: allAnswers.schreiben.s1,
-                    section: 'schreiben'
-                });
-            }
-        }
-        
-        if (answersArray.length === 0) {
+        if (allAnswers.length === 0) {
             alert('Keine Antworten gefunden.');
             return false;
         }
         
-        const result = calculateDetailedScore(answersArray);
+        const result = calculateDetailedScore(allAnswers);
         const timeSpentSeconds = Math.round((new Date() - examStartTime) / 1000);
         
         try {
-            // 9.1 Kategorie-ID ermitteln
+            // 8.1 Kategorie-ID ermitteln
             const { data: cat, error: catErr } = await supabase
                 .from('exam_categories')
                 .select('id')
@@ -1631,7 +1608,7 @@
                 .single();
             if (catErr) throw new Error('Kategorie nicht gefunden: ' + catErr.message);
             
-            // 9.2 exam-Eintrag
+            // 8.2 exam-Eintrag
             let examId;
             const { data: existing, error: findErr } = await supabase
                 .from('exams')
@@ -1659,7 +1636,7 @@
                 examId = existing.id;
             }
             
-            // 9.3 exam_attempts anlegen
+            // 8.3 exam_attempts anlegen
             const { data: attempt, error: attemptErr } = await supabase
                 .from('exam_attempts')
                 .insert({
@@ -1676,7 +1653,7 @@
                 .single();
             if (attemptErr) throw new Error('Fehler beim Speichern des Versuchs: ' + attemptErr.message);
             
-            // 9.4 exam_answers in Blöcken
+            // 8.4 exam_answers in Blöcken
             const answersToInsert = result.answers_detail.map((ans, idx) => ({
                 attempt_id: attempt.id,
                 question_number: idx + 1,
@@ -1717,7 +1694,7 @@
     }
 
     // ============================================
-    // 10. Buttons "Abgabe" mit Speicherfunktion verknüpfen (تظل كما هي)
+    // 9. Buttons "Abgabe" mit Speicherfunktion verknüpfen
     // ============================================
     window.addEventListener('load', () => {
         setTimeout(() => {
@@ -1777,26 +1754,11 @@
                     }
                 });
             }
-
-            // تشغيل نظام الحفظ التلقائي
-            if (isLoggedIn) {
-                startAutoSave();
-                setupAutoSaveOnAnswer();
-            }
         }, 500);
     });
 
-    // إيقاف الحفظ التلقائي عند مغادرة الصفحة
-    window.addEventListener('beforeunload', () => {
-        if (autoSaveInterval) {
-            clearInterval(autoSaveInterval);
-        }
-        // حفظ نهائي قبل المغادرة
-        saveExamResult();
-    });
-
     // ============================================
-    // 11. Globale Hilfsfunktionen
+    // 10. Globale Hilfsfunktionen
     // ============================================
     window.examSaver = {
         saveExamResult,
