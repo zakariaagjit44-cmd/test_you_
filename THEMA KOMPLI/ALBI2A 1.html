@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Deutsch B2 Prüfung - Komplett</title>
   
-  <!-- ✅ Supabase Library für Datenbankanbindung -->
+  <!-- Supabase Library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
   <style>
-    /* ===== ALLE EXISTIERENDEN STYLES BLEIBEN VOLLSTÄNDIG ERHALTEN ===== */
+    /* ===== GLOBAL STYLES ===== */
     :root {
       --primary-color: #1e3a5f;
       --secondary-color: #2c5282;
@@ -39,6 +39,7 @@
       cursor: pointer;
     }
     
+    /* ===== START PAGE STYLES ===== */
     .start-container {
       display: flex;
       align-items: center;
@@ -186,6 +187,7 @@
       background-color: #3399ff;
     }
     
+    /* ===== EXAM PAGE STYLES ===== */
     .exam-body {
       background: #f5f5f5;
       color: #333;
@@ -193,6 +195,7 @@
       -webkit-font-smoothing: antialiased;
     }
     
+    /* Header Styles */
     header.topbar {
       background: #1e3a5f;
       color: #fff;
@@ -329,6 +332,7 @@
       background: #e74c3c;
     }
     
+    /* Top Tiles */
     .top-tiles {
       display: flex;
       justify-content: center;
@@ -393,6 +397,7 @@
       color: #2c3e50;
     }
     
+    /* Container Styles */
     .container {
       display: grid;
       grid-template-columns: 1fr 420px;
@@ -468,6 +473,7 @@
       font-weight: 700;
     }
     
+    /* Question Styles */
     .question-head {
       display: flex;
       justify-content: space-between;
@@ -811,6 +817,7 @@
       color: #333;
     }
     
+    /* Listening Section Styles */
     .listening-task {
       margin-bottom: 10px;
     }
@@ -880,6 +887,7 @@
       border-left: 4px solid #dc3545;
     }
     
+    /* Writing Section Styles */
     .writing-task {
       margin-bottom: 20px;
       padding: 15px;
@@ -954,6 +962,7 @@
       color: #2c3e50;
     }
     
+    /* Results Page Styles */
     .results-body {
       background: #f7fafc;
       color: #0f1724;
@@ -1090,6 +1099,7 @@
       margin-top: 8px;
     }
     
+    /* Footer */
     footer.controls {
       display: flex;
       justify-content: space-between;
@@ -1116,6 +1126,7 @@
       color: white;
     }
 
+    /* Responsive Styles */
     @media (max-width: 980px) {
       .container {
         grid-template-columns: 1fr;
@@ -1184,13 +1195,16 @@
       }
     }
 
+    /* === تحسينات خاصة للهواتف الصغيرة جدا === */
     @media (max-width: 480px) {
+      /* 1. تحسين الحاويات الرئيسية */
       .container, .container-split, .container-full {
         grid-template-columns: 1fr !important;
         padding: 8px !important;
         gap: 10px !important;
       }
       
+      /* 2. جعل اللوحات (panels) تأخذ عرض كامل */
       .left-panel, .right-panel, .main-panel {
         max-height: none !important;
         height: auto !important;
@@ -1198,6 +1212,7 @@
         margin-bottom: 10px;
       }
       
+      /* 3. تحسين الهيدر */
       .topbar {
         flex-direction: column !important;
         align-items: stretch !important;
@@ -1209,6 +1224,7 @@
         margin-bottom: 10px;
       }
       
+      /* 4. تحسين الأزرار في الهيدر */
       .buttons-grid {
         grid-template-columns: 1fr !important;
         width: 100%;
@@ -1221,6 +1237,7 @@
         padding: 12px 8px !important;
       }
       
+      /* 5. تحسين التايلات */
       .top-tiles {
         flex-wrap: wrap;
         justify-content: center;
@@ -1234,27 +1251,32 @@
         padding: 8px 4px !important;
       }
       
+      /* 6. تحسين النصوص */
       .passage, .text-content, .question-text {
         font-size: 15px !important;
         line-height: 1.5 !important;
       }
       
+      /* 7. تحسين الخيارات */
       .option {
         padding: 12px 10px !important;
         margin: 4px 0 !important;
       }
       
+      /* 8. تحسين جداول True/False */
       .true-false-table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
       }
       
+      /* 9. تحسين منطقة الكتابة */
       .writing-textarea {
         min-height: 300px !important;
         font-size: 16px !important;
       }
       
+      /* 10. تحسين الفوتر */
       footer.controls {
         flex-direction: column !important;
         gap: 10px !important;
@@ -1270,6 +1292,7 @@
         flex: 1;
       }
       
+      /* 11. تحسين النتائج */
       .results-tiles {
         flex-direction: column !important;
       }
@@ -1279,6 +1302,7 @@
       }
     }
 
+    /* === تحسينات للهواتف المتوسطة === */
     @media (min-width: 481px) and (max-width: 768px) {
       .container, .container-split {
         grid-template-columns: 1fr !important;
@@ -1291,714 +1315,241 @@
   </style>
 </head>
 <body id="body">
-
-<!-- ============================================================================ -->
-<!-- [NEU] Vollständiges System zum Speichern der Prüfungsergebnisse in Supabase -->
-<!-- Dieser Code speichert automatisch alle Antworten und die erreichte Punktzahl -->
-/* beim Klick auf den "Abgabe"-Button. Die Konfiguration ist auf diese Datei     */
-/* (ALBI2A.html) zugeschnitten.                                                   */
-/* ============================================================================ -->
-
-<script type="module">
-    // ============================================
-    // 1. Supabase Konfiguration
-    // ============================================
-    const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
-    
-    const { createClient } = window.supabase;
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // ============================================
-    // 2. Metadaten dieser Prüfungsdatei
-    // ============================================
-    const EXAM_CONFIG = {
-        category:      'lesen',                // lesen, hoeren, schreiben, mundlich, thema_kompli
-        filename:      'ALBI2A.html',          // exakter Dateiname
-        title_ar:      'اختبار القراءة B2',
-        title_de:      'Lesen B2 Prüfung',
-        title_en:      'Reading B2 Exam',
-        total_points:  105,                    // Summe aller erreichbaren Punkte (Lesen + Hören)
-        time_limit_minutes: 90,
-        passing_percentage: 60
-    };
-
-    // ============================================
-    // 3. Zentrale korrekte Antworten (aus initErgebnissePage)
-    // ============================================
-    const CORRECT_ANSWERS = {
-        // ----- Teil 1: Überschriften (Texte 1-5) -----
-        "text1": "c",
-        "text2": "i", 
-        "text3": "f",
-        "text4": "a",
-        "text5": "j",
-        
-        // ----- Teil 2: Fragen zum Text (s2q1-s2q5) -----
-        "s2q1": "s2q1o3",
-        "s2q2": "s2q2o1",
-        "s2q3": "s2q3o2",
-        "s2q4": "s2q4o2",
-        "s2q5": "s2q5o1",
-        
-        // ----- Teil 3: Situationen zuordnen (11-20) -----
-        "11": "C",
-        "12": "X",
-        "13": "G",
-        "14": "E",
-        "15": "A",
-        "16": "I",
-        "17": "F",
-        "18": "X",
-        "19": "B",
-        "20": "K",
-        
-        // ----- Sprachbausteine Teil 1 (21-30) -----
-        "21": "neuen",
-        "22": "Seit",
-        "23": "darüber",
-        "24": "mich",
-        "25": "Obwohl",
-        "26": "könnte",
-        "27": "wie",
-        "28": "nehmen",
-        "29": "mich",
-        "30": "denen",
-        
-        // ----- Sprachbausteine Teil 2 (31-40) -----
-        "31": "GENAU",
-        "32": "FÄHIG",
-        "33": "ENTWICKELTEN",
-        "34": "BEOBACHTUNG",
-        "35": "NOCH",
-        "36": "ÜBRIGENS",
-        "37": "DOCH",
-        "38": "FÜR",
-        "39": "ALS",
-        "40": "WER",
-        
-        // ----- Hören Teil 1 (41-45) -----
-        "41": "falsch",
-        "42": "falsch",
-        "43": "falsch",
-        "44": "richtig",
-        "45": "richtig",
-        
-        // ----- Hören Teil 2 (46-55) -----
-        "46": "falsch",
-        "47": "richtig",
-        "48": "richtig",
-        "49": "richtig",
-        "50": "falsch",
-        "51": "falsch",
-        "52": "richtig",
-        "53": "falsch",
-        "54": "richtig",
-        "55": "richtig",
-        
-        // ----- Hören Teil 3 (56-60) -----
-        "56": "richtig",
-        "57": "falsch",
-        "58": "falsch",
-        "59": "falsch",
-        "60": "richtig"
-    };
-
-    // ============================================
-    // 4. Benutzer-Login-Status aus localStorage
-    // ============================================
-    const isLoggedIn = localStorage.getItem('b2_isLoggedIn') === 'true';
-    const userId = localStorage.getItem('b2_userId');
-    const userEmail = localStorage.getItem('b2_userEmail');
-
-    // Warnung, falls nicht eingeloggt
-    if (!isLoggedIn || !userId) {
-        console.warn('⚠️ Benutzer nicht eingeloggt – Ergebnisse werden nicht gespeichert.');
-        window.addEventListener('load', () => {
-            const warn = document.createElement('div');
-            warn.style.cssText = 'position:fixed; top:10px; right:10px; background:#ff9800; color:#fff; padding:10px 20px; border-radius:5px; z-index:9999; font-size:14px; box-shadow:0 2px 10px rgba(0,0,0,0.2);';
-            warn.innerHTML = '⚠️ Nicht eingeloggt. Ergebnis wird nicht gespeichert. <a href="../index.html" style="color:#fff; font-weight:bold;">Login</a>';
-            document.body.prepend(warn);
-        });
-    }
-
-    // ============================================
-    // 5. Zustandsvariablen
-    // ============================================
-    const examStartTime = new Date();
-    let isExamCompleted = false;
-
-    // ============================================
-    // 6. Sammeln aller Antworten
-    // ============================================
-    function collectAllAnswers() {
-        const answers = [];
-        
-        // 6a) Lesen-Antworten
-        if (window._lesenState && window._lesenState.answers) {
-            const lesenAnswers = window._lesenState.answers;
-            Object.keys(lesenAnswers).forEach(qId => {
-                answers.push({
-                    question_id: qId,
-                    answer: lesenAnswers[qId],
-                    section: 'lesen'
-                });
-            });
-        }
-        
-        // 6b) Hören-Antworten
-        if (window._hoerenState && window._hoerenState.answers) {
-            const hoerenSections = window._hoerenState.answers;
-            Object.keys(hoerenSections).forEach(sectionId => {
-                const secAnswers = hoerenSections[sectionId] || {};
-                Object.keys(secAnswers).forEach(qId => {
-                    answers.push({
-                        question_id: qId,
-                        answer: secAnswers[qId],
-                        section: 'hoeren'
-                    });
-                });
-            });
-        }
-        
-        // 6c) Schreiben-Antworten
-        if (window._schreibenState && window._schreibenState.answers) {
-            const schreibenAnswers = window._schreibenState.answers;
-            if (schreibenAnswers['s1']) {
-                answers.push({
-                    question_id: 'schreiben',
-                    answer: schreibenAnswers['s1'],
-                    section: 'schreiben'
-                });
-            } else {
-                const keys = Object.keys(schreibenAnswers);
-                if (keys.length > 0) {
-                    answers.push({
-                        question_id: 'schreiben',
-                        answer: schreibenAnswers[keys[0]] || '',
-                        section: 'schreiben'
-                    });
-                }
-            }
-        }
-        
-        // 6d) Fallback: localStorage
-        if (answers.length === 0) {
-            try {
-                const storedLesen = localStorage.getItem('lesenAnswers');
-                if (storedLesen) {
-                    const lesenObj = JSON.parse(storedLesen);
-                    Object.keys(lesenObj).forEach(qId => {
-                        answers.push({
-                            question_id: qId,
-                            answer: lesenObj[qId],
-                            section: 'lesen'
-                        });
-                    });
-                }
-                
-                const storedHoeren = localStorage.getItem('hoerenAnswers');
-                if (storedHoeren) {
-                    const hoerenObj = JSON.parse(storedHoeren);
-                    Object.keys(hoerenObj).forEach(section => {
-                        const sec = hoerenObj[section] || {};
-                        Object.keys(sec).forEach(qId => {
-                            answers.push({
-                                question_id: qId,
-                                answer: sec[qId],
-                                section: 'hoeren'
-                            });
-                        });
-                    });
-                }
-                
-                const storedSchreiben = localStorage.getItem('schreibenAnswers');
-                if (storedSchreiben) {
-                    const schreibenObj = JSON.parse(storedSchreiben);
-                    answers.push({
-                        question_id: 'schreiben',
-                        answer: schreibenObj.content || '',
-                        section: 'schreiben'
-                    });
-                }
-            } catch (e) {
-                console.error('Fehler beim Lesen von localStorage', e);
-            }
-        }
-        
-        return answers;
-    }
-
-    // ============================================
-    // 7. Berechnung der Punktzahl
-    // ============================================
-    function calculateDetailedScore(answers) {
-        let correctCount = 0;
-        const detailed = [];
-        
-        answers.forEach(ans => {
-            if (ans.question_id === 'schreiben') {
-                detailed.push({
-                    ...ans,
-                    is_correct: null,
-                    correct_answer: null,
-                    points_earned: 0
-                });
-                return;
-            }
-            
-            const correct = CORRECT_ANSWERS[ans.question_id];
-            const userNorm = String(ans.answer).trim().toLowerCase();
-            const correctNorm = correct ? String(correct).trim().toLowerCase() : '';
-            
-            const isCorrect = correct && userNorm === correctNorm;
-            if (isCorrect) correctCount++;
-            
-            detailed.push({
-                question_id: ans.question_id,
-                user_answer: ans.answer,
-                correct_answer: correct || null,
-                is_correct: isCorrect || false,
-                section: ans.section,
-                points_earned: isCorrect ? 1 : 0
-            });
-        });
-        
-        const scorable = detailed.filter(a => a.question_id !== 'schreiben').length;
-        const rawScore = scorable > 0 ? (correctCount / scorable) * 105 : 0;
-        const finalScore = Math.round(rawScore * 100) / 100;
-        
-        return {
-            score: finalScore,
-            correct_count: correctCount,
-            total_scorable: scorable,
-            percentage: scorable > 0 ? (correctCount / scorable) * 100 : 0,
-            answers_detail: detailed
-        };
-    }
-
-    // ============================================
-    // 8. Hauptfunktion: Ergebnis speichern
-    // ============================================
-    async function saveExamResult() {
-        if (isExamCompleted) {
-            console.log('Bereits gespeichert.');
-            return true;
-        }
-        if (!userId) {
-            alert('Nicht eingeloggt – Ergebnis kann nicht gespeichert werden.');
-            return false;
-        }
-        
-        const allAnswers = collectAllAnswers();
-        if (allAnswers.length === 0) {
-            alert('Keine Antworten gefunden.');
-            return false;
-        }
-        
-        const result = calculateDetailedScore(allAnswers);
-        const timeSpentSeconds = Math.round((new Date() - examStartTime) / 1000);
-        
-        try {
-            // 8.1 Kategorie-ID ermitteln
-            const { data: cat, error: catErr } = await supabase
-                .from('exam_categories')
-                .select('id')
-                .eq('name', EXAM_CONFIG.category)
-                .single();
-            if (catErr) throw new Error('Kategorie nicht gefunden: ' + catErr.message);
-            
-            // 8.2 exam-Eintrag
-            let examId;
-            const { data: existing, error: findErr } = await supabase
-                .from('exams')
-                .select('id')
-                .eq('filename', EXAM_CONFIG.filename)
-                .maybeSingle();
-            
-            if (!existing) {
-                const { data: newExam, error: insertExamErr } = await supabase
-                    .from('exams')
-                    .insert({
-                        category_id: cat.id,
-                        filename: EXAM_CONFIG.filename,
-                        title_ar: EXAM_CONFIG.title_ar,
-                        title_de: EXAM_CONFIG.title_de,
-                        title_en: EXAM_CONFIG.title_en,
-                        total_points: EXAM_CONFIG.total_points,
-                        time_limit_minutes: EXAM_CONFIG.time_limit_minutes
-                    })
-                    .select('id')
-                    .single();
-                if (insertExamErr) throw new Error('Fehler beim Anlegen der Prüfung: ' + insertExamErr.message);
-                examId = newExam.id;
-            } else {
-                examId = existing.id;
-            }
-            
-            // 8.3 exam_attempts anlegen
-            const { data: attempt, error: attemptErr } = await supabase
-                .from('exam_attempts')
-                .insert({
-                    user_id: userId,
-                    exam_id: examId,
-                    score: result.score,
-                    total_points: EXAM_CONFIG.total_points,
-                    percentage: result.percentage,
-                    passed: result.percentage >= EXAM_CONFIG.passing_percentage,
-                    time_spent_seconds: timeSpentSeconds,
-                    answers_summary: result.answers_detail
-                })
-                .select('id')
-                .single();
-            if (attemptErr) throw new Error('Fehler beim Speichern des Versuchs: ' + attemptErr.message);
-            
-            // 8.4 exam_answers in Blöcken
-            const answersToInsert = result.answers_detail.map((ans, idx) => ({
-                attempt_id: attempt.id,
-                question_number: idx + 1,
-                question_id: ans.question_id,
-                user_answer: String(ans.user_answer || '').substring(0, 1000),
-                correct_answer: ans.correct_answer ? String(ans.correct_answer).substring(0, 500) : null,
-                is_correct: ans.is_correct,
-                points_earned: ans.points_earned || 0,
-                points_possible: ans.question_id === 'schreiben' ? 0 : 1
-            }));
-            
-            const chunkSize = 50;
-            for (let i = 0; i < answersToInsert.length; i += chunkSize) {
-                const chunk = answersToInsert.slice(i, i + chunkSize);
-                const { error: chunkErr } = await supabase
-                    .from('exam_answers')
-                    .insert(chunk);
-                if (chunkErr) console.error('Fehler beim Speichern von Antwort-Chunk', chunkErr);
-            }
-            
-            isExamCompleted = true;
-            localStorage.setItem('lastExamResult', JSON.stringify({
-                score: result.score,
-                percentage: result.percentage,
-                passed: result.percentage >= EXAM_CONFIG.passing_percentage,
-                examTitle: EXAM_CONFIG.title_ar,
-                timestamp: new Date().toISOString()
-            }));
-            
-            console.log('✅ Ergebnis erfolgreich in Supabase gespeichert.');
-            return true;
-            
-        } catch (error) {
-            console.error('❌ Fehler beim Speichern:', error);
-            alert('Fehler beim Speichern: ' + error.message);
-            return false;
-        }
-    }
-
-    // ============================================
-    // 9. Buttons "Abgabe" mit Speicherfunktion verknüpfen
-    // ============================================
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            const submitLesen = document.getElementById('submitBtn-lesen');
-            if (submitLesen) {
-                submitLesen.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const saved = await saveExamResult();
-                    if (saved) {
-                        alert('✅ Ergebnis wurde gespeichert!');
-                        if (window._lesenState) {
-                            window._lesenState.showResults = true;
-                            if (typeof window.lesenApp?.renderAll === 'function') {
-                                window.lesenApp.renderAll();
-                            }
-                        }
-                    }
-                });
-            }
-            
-            const submitHoeren = document.getElementById('submitBtn-hoeren');
-            if (submitHoeren) {
-                submitHoeren.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const saved = await saveExamResult();
-                    if (saved) {
-                        alert('✅ Ergebnis wurde gespeichert!');
-                        if (window._hoerenState) {
-                            window._hoerenState.showResults = true;
-                            if (typeof window.hoerenApp?.renderAll === 'function') {
-                                window.hoerenApp.renderAll();
-                            }
-                        }
-                    }
-                });
-            }
-            
-            const submitSchreiben = document.getElementById('submitBtn-schreiben');
-            if (submitSchreiben) {
-                submitSchreiben.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const saved = await saveExamResult();
-                    if (saved) {
-                        alert('✅ Ergebnis wurde gespeichert!');
-                        if (window._schreibenState) {
-                            window._schreibenState.showResults = true;
-                            if (typeof window.schreibenApp?.renderAll === 'function') {
-                                window.schreibenApp.renderAll();
-                            }
-                        }
-                    }
-                });
-            }
-        }, 500);
-    });
-
-    // ============================================
-    // 10. Globale Hilfsfunktionen
-    // ============================================
-    window.examSaver = {
-        saveExamResult,
-        collectAllAnswers,
-        calculateDetailedScore
-    };
-</script>
-<!-- ============================================================================ -->
-<!-- Ende des Speicher-Systems -->
-<!-- ============================================================================ -->
-
-<!-- ============================================================================ -->
-/* AB HIER STEHT DER VOLLSTÄNDIGE, UNVERÄNDERTE ORIGINAL-INHALT DER DATEI      */
-/* ============================================================================ -->
-
-<!-- Start Page -->
-<div id="start-page" class="start-container">
+  <!-- Start Page -->
+  <div id="start-page" class="start-container">
     <div class="start-content">
-        <div class="logo">
-            <div class="logo-icon">📝</div>
-            <h1>Deutsch B2 Prüfung</h1>
-            <div class="subtitle">Bereiten Sie sich auf Ihre Prüfung vor</div>
+      <div class="logo">
+        <div class="logo-icon">📝</div>
+        <h1>Deutsch B2 Prüfung</h1>
+        <div class="subtitle">Bereiten Sie sich auf Ihre Prüfung vor</div>
+      </div>
+      <div class="card">
+        <h2>Prüfungsbereich auswählen</h2>
+        <p>Wählen Sie bitte den Bereich aus, den Sie üben möchten. Die Prüfung startet automatisch in <span id="time-display">30</span> Sekunden.</p>
+        <select id="sectionSelect">
+          <option value="lesen">Lesen</option>
+          <option value="hoeren">Hören</option>
+          <option value="schreiben">Schreiben</option>
+        </select>
+        <div class="button-container">
+          <button id="cancelBtn" class="btn">Abbrechen</button>
+          <button id="startBtn" class="btn">Jetzt starten</button>
         </div>
-        <div class="card">
-            <h2>Prüfungsbereich auswählen</h2>
-            <p>Wählen Sie bitte den Bereich aus, den Sie üben möchten. Die Prüfung startet automatisch in <span id="time-display">30</span> Sekunden.</p>
-            <select id="sectionSelect">
-                <option value="lesen">Lesen</option>
-                <option value="hoeren">Hören</option>
-                <option value="schreiben">Schreiben</option>
-            </select>
-            <div class="button-container">
-                <button id="cancelBtn" class="btn">Abbrechen</button>
-                <button id="startBtn" class="btn">Jetzt starten</button>
-            </div>
+      </div>
+      <div class="timer-container">
+        <div class="timer-label">Die Prüfung startet in:</div>
+        <div class="timer" id="countdown">30</div>
+        <div class="progress-bar">
+          <div class="progress" id="progress"></div>
         </div>
-        <div class="timer-container">
-            <div class="timer-label">Die Prüfung startet in:</div>
-            <div class="timer" id="countdown">30</div>
-            <div class="progress-bar">
-                <div class="progress" id="progress"></div>
-            </div>
-        </div>
-        <div class="info-text">Stellen Sie sicher, dass Sie in einer ruhigen Umgebung sind und genügend Zeit haben.</div>
+      </div>
+      <div class="info-text">Stellen Sie sicher, dass Sie in einer ruhigen Umgebung sind und genügend Zeit haben.</div>
     </div>
-</div>
+  </div>
 
-<!-- Lesen Page -->
-<div id="lesen-page" class="exam-page" style="display: none;">
+  <!-- Lesen Page -->
+  <div id="lesen-page" class="exam-page" style="display: none;">
     <header class="topbar" role="banner">
-        <div class="brand">
-            <div class="logo">test</div>
-            <div class="meta">
-                <div class="main-title">Deutsch - B2 (Übung)</div>
-                <div class="sub-title">Lesen — Testbeispiel</div>
-            </div>
+      <div class="brand">
+        <div class="logo">test</div>
+        <div class="meta">
+          <div class="main-title">Deutsch - B2 (Übung)</div>
+          <div class="sub-title">Lesen — Testbeispiel</div>
         </div>
+      </div>
 
-        <div id="timer-lesen" class="timer" aria-live="polite">Verbleibende Zeit: 90:00</div>
+      <div id="timer-lesen" class="timer" aria-live="polite">Verbleibende Zeit: 90:00</div>
 
-        <div class="buttons-grid">
-            <button id="resetBtn-lesen" class="exam-btn reset">🔄 Von neu beginnen</button>
-            <button id="saveBtn-lesen" class="exam-btn save">📋 Speichern</button>
-            <button id="resultBtn-lesen" class="exam-btn result">📊 Ergebnis</button>
-            <button id="submitBtn-lesen" class="exam-btn submit">🏁 Abgabe</button>
-            <button class="exam-btn next" id="nextBtn-lesen">➡️ Nächste Prüfung</button>
-        </div>
+      <div class="buttons-grid">
+        <button id="resetBtn-lesen" class="exam-btn reset">🔄 Von neu beginnen</button>
+        <button id="saveBtn-lesen" class="exam-btn save">📋 Speichern</button>
+        <button id="resultBtn-lesen" class="exam-btn result">📊 Ergebnis</button>
+        <button id="submitBtn-lesen" class="exam-btn submit">🏁 Abgabe</button>
+        <button class="exam-btn next" id="nextBtn-lesen">➡️ Nächste Prüfung</button>
+      </div>
     </header>
 
     <div class="top-tiles" id="topTiles-lesen" role="navigation" aria-label="Sections overview"></div>
 
     <div class="container">
-        <main class="left-panel" id="leftPanel-lesen">
-            <div class="passage" id="passage-lesen">
-                <h2 id="passageTitle-lesen">Aufgabe</h2>
-                <div id="passageContent-lesen"></div>
-            </div>
-        </main>
+      <main class="left-panel" id="leftPanel-lesen">
+        <div class="passage" id="passage-lesen">
+          <h2 id="passageTitle-lesen">Aufgabe</h2>
+          <div id="passageContent-lesen"></div>
+        </div>
+      </main>
 
-        <aside class="right-panel" id="rightPanel-lesen" aria-labelledby="questionTitle-lesen">
-            <div class="question-head">
-                <div>
-                    <div id="sectionName-lesen" style="font-weight:800"></div>
-                    <div id="questionTitle-lesen" style="font-size:13px;color:#55607a">Frage</div>
-                </div>
-                <button id="resetSectionBtn-lesen" class="exam-btn reset-section" style="display:none;">Teil zurücksetzen</button>
-            </div>
-            <div class="question-body" id="questionBody-lesen"></div>
-            <div id="headingsBankContainer-lesen"></div>
-        </aside>
+      <aside class="right-panel" id="rightPanel-lesen" aria-labelledby="questionTitle-lesen">
+        <div class="question-head">
+          <div>
+            <div id="sectionName-lesen" style="font-weight:800"></div>
+            <div id="questionTitle-lesen" style="font-size:13px;color:#55607a">Frage</div>
+          </div>
+          <button id="resetSectionBtn-lesen" class="exam-btn reset-section" style="display:none;">Teil zurücksetzen</button>
+        </div>
+        <div class="question-body" id="questionBody-lesen"></div>
+        <div id="headingsBankContainer-lesen"></div>
+      </aside>
     </div>
 
     <footer class="controls">
-        <div class="footer-buttons">
-            <button id="prevBtn-lesen" class="exam-btn ghost">Zurück</button>
-            <button id="nextBtn2-lesen" class="exam-btn ghost">Weiter</button>
-        </div>
-        <div class="status"><span id="statusText-lesen">Nicht gespeichert</span></div>
+      <div class="footer-buttons">
+        <button id="prevBtn-lesen" class="exam-btn ghost">Zurück</button>
+        <button id="nextBtn2-lesen" class="exam-btn ghost">Weiter</button>
+      </div>
+      <div class="status"><span id="statusText-lesen">Nicht gespeichert</span></div>
     </footer>
-</div>
+  </div>
 
-<!-- Hören Page -->
-<div id="hoeren-page" class="exam-page" style="display: none;">
+  <!-- Hören Page -->
+  <div id="hoeren-page" class="exam-page" style="display: none;">
     <header class="topbar" role="banner">
-        <div class="brand">
-            <div class="logo">test</div>
-            <div class="meta">
-                <div class="main-title">Deutsch - B2 (Übung)</div>
-                <div class="sub-title">Hörverstehen — Testbeispiel</div>
-            </div>
+      <div class="brand">
+        <div class="logo">test</div>
+        <div class="meta">
+          <div class="main-title">Deutsch - B2 (Übung)</div>
+          <div class="sub-title">Hörverstehen — Testbeispiel</div>
         </div>
+      </div>
 
-        <div id="timer-hoeren" class="timer" aria-live="polite">Verbleibende Zeit: 17:00</div>
+      <div id="timer-hoeren" class="timer" aria-live="polite">Verbleibende Zeit: 17:00</div>
 
-        <div class="buttons-grid">
-            <button id="resetBtn-hoeren" class="exam-btn reset">🔄 Von neu beginnen</button>
-            <button id="saveBtn-hoeren" class="exam-btn save">📋 Speichern</button>
-            <button id="resultBtn-hoeren" class="exam-btn result">📊 Ergebnis</button>
-            <button id="submitBtn-hoeren" class="exam-btn submit">🏁 Abgabe</button>
-            <button class="exam-btn next" id="nextBtn-hoeren">➡️ Nächste Prüfung</button>
-        </div>
+      <div class="buttons-grid">
+        <button id="resetBtn-hoeren" class="exam-btn reset">🔄 Von neu beginnen</button>
+        <button id="saveBtn-hoeren" class="exam-btn save">📋 Speichern</button>
+        <button id="resultBtn-hoeren" class="exam-btn result">📊 Ergebnis</button>
+        <button id="submitBtn-hoeren" class="exam-btn submit">🏁 Abgabe</button>
+        <button class="exam-btn next" id="nextBtn-hoeren">➡️ Nächste Prüfung</button>
+      </div>
     </header>
 
     <div class="top-tiles" id="topTiles-hoeren" role="navigation" aria-label="Sections overview"></div>
 
     <div class="container-full">
-        <main class="main-panel" id="mainPanel-hoeren">
-            <div id="contentContainer-hoeren"></div>
-        </main>
+      <main class="main-panel" id="mainPanel-hoeren">
+        <div id="contentContainer-hoeren"></div>
+      </main>
     </div>
 
     <footer class="controls">
-        <div class="footer-buttons">
-            <button id="prevBtn-hoeren" class="exam-btn ghost">Zurück</button>
-            <button id="nextBtn2-hoeren" class="exam-btn ghost">Weiter</button>
-        </div>
-        <div class="status"><span id="statusText-hoeren">Nicht gespeichert</span></div>
+      <div class="footer-buttons">
+        <button id="prevBtn-hoeren" class="exam-btn ghost">Zurück</button>
+        <button id="nextBtn2-hoeren" class="exam-btn ghost">Weiter</button>
+      </div>
+      <div class="status"><span id="statusText-hoeren">Nicht gespeichert</span></div>
     </footer>
-</div>
+  </div>
 
-<!-- Schreiben Page -->
-<div id="schreiben-page" class="exam-page" style="display: none;">
+  <!-- Schreiben Page -->
+  <div id="schreiben-page" class="exam-page" style="display: none;">
     <header class="topbar" role="banner">
-        <div class="brand">
-            <div class="logo">test</div>
-            <div class="meta">
-                <div class="main-title">Deutsch - B2 (Übung)</div>
-                <div class="sub-title">Schreiben — Testbeispiel</div>
-            </div>
+      <div class="brand">
+        <div class="logo">test</div>
+        <div class="meta">
+          <div class="main-title">Deutsch - B2 (Übung)</div>
+          <div class="sub-title">Schreiben — Testbeispiel</div>
         </div>
+      </div>
 
-        <div id="timer-schreiben" class="timer" aria-live="polite">Verbleibende Zeit: 30:00</div>
+      <div id="timer-schreiben" class="timer" aria-live="polite">Verbleibende Zeit: 30:00</div>
 
-        <div class="buttons-grid">
-            <button id="resetBtn-schreiben" class="exam-btn reset">🔄 Von neu beginnen</button>
-            <button id="saveBtn-schreiben" class="exam-btn save">📋 Speichern</button>
-            <button id="resultBtn-schreiben" class="exam-btn result">📊 Ergebnis</button>
-            <button id="submitBtn-schreiben" class="exam-btn submit">🏁 Abgabe</button>
-            <button class="exam-btn next" id="nextBtn-schreiben">➡️ Nächste Prüfung</button>
-        </div>
+      <div class="buttons-grid">
+        <button id="resetBtn-schreiben" class="exam-btn reset">🔄 Von neu beginnen</button>
+        <button id="saveBtn-schreiben" class="exam-btn save">📋 Speichern</button>
+        <button id="resultBtn-schreiben" class="exam-btn result">📊 Ergebnis</button>
+        <button id="submitBtn-schreiben" class="exam-btn submit">🏁 Abgabe</button>
+        <button class="exam-btn next" id="nextBtn-schreiben">➡️ Nächste Prüfung</button>
+      </div>
     </header>
 
     <div class="top-tiles" id="topTiles-schreiben" role="navigation" aria-label="Sections overview"></div>
 
     <div class="container-split">
-        <main class="left-panel" id="leftPanel-schreiben">
-            <div class="passage" id="passage-schreiben">
-                <h2 id="passageTitle-schreiben">Aufgabe</h2>
-                <div id="passageContent-schreiben"></div>
-            </div>
-        </main>
+      <main class="left-panel" id="leftPanel-schreiben">
+        <div class="passage" id="passage-schreiben">
+          <h2 id="passageTitle-schreiben">Aufgabe</h2>
+          <div id="passageContent-schreiben"></div>
+        </div>
+      </main>
 
-        <aside class="right-panel" id="rightPanel-schreiben">
-            <div id="writingContainer-schreiben"></div>
-        </aside>
+      <aside class="right-panel" id="rightPanel-schreiben">
+        <div id="writingContainer-schreiben"></div>
+      </aside>
     </div>
 
     <footer class="controls">
-        <div class="footer-buttons">
-            <button id="prevBtn-schreiben" class="exam-btn ghost">Zurück</button>
-            <button id="nextBtn2-schreiben" class="exam-btn ghost">Weiter</button>
-        </div>
-        <div class="status"><span id="statusText-schreiben">Nicht gespeichert</span></div>
+      <div class="footer-buttons">
+        <button id="prevBtn-schreiben" class="exam-btn ghost">Zurück</button>
+        <button id="nextBtn2-schreiben" class="exam-btn ghost">Weiter</button>
+      </div>
+      <div class="status"><span id="statusText-schreiben">Nicht gespeichert</span></div>
     </footer>
-</div>
+  </div>
 
-<!-- Ergebnisse Page -->
-<div id="ergebnisse-page" class="results-page" style="display: none;">
+  <!-- Ergebnisse Page -->
+  <div id="ergebnisse-page" class="results-page" style="display: none;">
     <header class="results-header">
-        <div class="results-logo">test</div>
-        <div class="results-title">Gesamtergebnis — Deutsch B2</div>
+      <div class="results-logo">test</div>
+      <div class="results-title">Gesamtergebnis — Deutsch B2</div>
     </header>
 
     <div class="results-container">
-        <div class="results-tiles" id="topTiles-ergebnisse"></div>
-        <div id="details-ergebnisse"></div>
-        <div class="summary" id="finalSummary-ergebnisse"></div>
-        <div class="controls">
-            <a class="button-like" href="#" id="backBtn-ergebnisse">
-                <button class="results-btn">🔁 Zurück zur Startseite</button>
-            </a>
-            <button id="calcBtn-ergebnisse" class="results-btn">✅ Ergebnisse anzeigen</button>
-        </div>
-        <div class="note">Hinweis: Schreiben (45 Punkte) wird manuell eingegeben, falls nicht automatisch vorhanden.</div>
+      <div class="results-tiles" id="topTiles-ergebnisse"></div>
+      <div id="details-ergebnisse"></div>
+      <div class="summary" id="finalSummary-ergebnisse"></div>
+      <div class="controls">
+        <a class="button-like" href="#" id="backBtn-ergebnisse">
+          <button class="results-btn">🔁 Zurück zur Startseite</button>
+        </a>
+        <button id="calcBtn-ergebnisse" class="results-btn">✅ Ergebnisse anzeigen</button>
+      </div>
+      <div class="note">Hinweis: Schreiben (45 Punkte) wird manuell eingegeben, falls nicht automatisch vorhanden.</div>
     </div>
-</div>
+  </div>
 
-<!-- Login Error Modal -->
-<div id="login-error-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center;">
+  <!-- Login Error Modal (يظهر فقط عند رفض الدخول) -->
+  <div id="login-error-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center;">
     <div style="background: white; border-radius: 16px; padding: 40px; max-width: 400px; text-align: center;">
-        <div style="font-size: 64px; margin-bottom: 20px;">❌</div>
-        <h2 style="color: #d32f2f; margin-bottom: 20px;">Zugriff verweigert</h2>
-        <p id="error-message" style="color: #333; margin-bottom: 30px; font-size: 16px;">Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.</p>
-        <button id="redirect-to-login" style="background: #d32f2f; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;">Zum Login</button>
+      <div style="font-size: 64px; margin-bottom: 20px;">❌</div>
+      <h2 style="color: #d32f2f; margin-bottom: 20px;">Zugriff verweigert</h2>
+      <p id="error-message" style="color: #333; margin-bottom: 30px; font-size: 16px;">Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.</p>
+      <button id="redirect-to-login" style="background: #d32f2f; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;">Zum Login</button>
     </div>
-</div>
+  </div>
 
-<script type="module">
+  <script type="module">
     // =============================================
-    // Login-Prüfung (original, unverändert)
+    // التحقق من تسجيل الدخول - نسخة محسنة وآمنة
     // =============================================
     
     (async function() {
+      // تكوين Supabase
       const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
       const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
       
+      // تهيئة Supabase
       const { createClient } = window.supabase;
       const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       
+      // عناصر الصفحة
+      const body = document.getElementById('body');
       const startPage = document.getElementById('start-page');
       const loginErrorModal = document.getElementById('login-error-modal');
       const errorMessage = document.getElementById('error-message');
       
+      // دالة لعرض خطأ تسجيل الدخول
       function showLoginError(message) {
+        // إخفاء محتوى الصفحة
         startPage.style.display = 'none';
+        
+        // إظهار نافذة الخطأ
         errorMessage.textContent = message || 'Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.';
         loginErrorModal.style.display = 'flex';
       }
       
+      // التحقق من تسجيل الدخول
       try {
+        // التحقق من الجلسة في Supabase
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError || !session) {
@@ -2006,19 +1557,23 @@
           return;
         }
         
+        // التحقق من جدول permissions
         const { data: permissions, error: permError } = await supabase
           .from('user_permissions')
           .select('can_access, subscription_type, subscription_expiry, trial_expiry')
           .eq('user_id', session.user.id)
           .maybeSingle();
         
+        // إذا كان هناك خطأ أو لا يوجد صلاحيات
         if (permError) {
           console.error('Permissions error:', permError);
           showLoginError('❌ Fehler bei der Überprüfung Ihrer Berechtigungen.');
           return;
         }
         
+        // إذا لم يتم العثور على المستخدم في جدول permissions
         if (!permissions) {
+          // محاولة إدراج المستخدم إذا لم يكن موجوداً
           const { error: insertError } = await supabase
             .from('user_permissions')
             .insert({
@@ -2035,10 +1590,12 @@
             return;
           }
         } else if (!permissions.can_access) {
+          // إذا كان can_access = false
           showLoginError('❌ Sie haben keine Berechtigung für den Zugriff auf diese Prüfung.');
           return;
         }
         
+        // التحقق من انتهاء الاشتراك
         const now = new Date();
         
         if (permissions && permissions.subscription_type === 'trial_24h' && permissions.trial_expiry) {
@@ -2057,7 +1614,10 @@
           }
         }
         
+        // إذا وصلنا إلى هنا، المستخدم مصرح له
         console.log('✅ Zugriff gewährt für:', session.user.email);
+        
+        // إظهار محتوى الصفحة
         startPage.style.display = 'flex';
         
       } catch (error) {
@@ -2065,17 +1625,19 @@
         showLoginError('❌ Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
       }
     })();
-</script>
+  </script>
 
-<script>
+  <script>
     // ===== PAGE NAVIGATION =====
     function showPage(pageId) {
+      // Hide all pages
       document.getElementById('start-page').style.display = 'none';
       document.getElementById('lesen-page').style.display = 'none';
       document.getElementById('hoeren-page').style.display = 'none';
       document.getElementById('schreiben-page').style.display = 'none';
       document.getElementById('ergebnisse-page').style.display = 'none';
       
+      // Change body class based on page
       document.getElementById('body').className = '';
       if (pageId === 'ergebnisse-page') {
         document.getElementById('body').className = 'results-body';
@@ -2083,8 +1645,10 @@
         document.getElementById('body').className = 'exam-body';
       }
       
+      // Show selected page
       document.getElementById(pageId).style.display = 'block';
       
+      // Initialize the page if needed
       if (pageId === 'lesen-page' && typeof initLesenPage === 'function') {
         initLesenPage();
       } else if (pageId === 'hoeren-page' && typeof initHoerenPage === 'function') {
@@ -2096,6 +1660,7 @@
       }
     }
 
+    // ربط زر التوجيه للـ Login
     document.getElementById('redirect-to-login').addEventListener('click', function() {
       window.location.href = '../index.html';
     });
@@ -2114,9 +1679,12 @@
     const cancelBtn = document.getElementById("cancelBtn");
 
     function startCountdown() {
+      // prevent double-starts or starting after exam already began
       if (countdownRunning || examStarted) return;
       countdownRunning = true;
+      // disable start button while counting
       try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
+      // reset counter & UI
       counter = initialCounter;
       timerEl.textContent = counter;
       timeDisplayEl.textContent = counter;
@@ -2134,10 +1702,12 @@
           countdownInterval = null;
           countdownRunning = false;
           progressEl.style.transform = "scaleX(1)";
+          // ensure exam starts only once
           if (!examStarted) {
             examStarted = true;
             startExam();
           }
+          // safety: re-enable start button (page usually navigates away)
           try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
         }
       }, 1000);
@@ -2161,6 +1731,7 @@
     }
 
     function startExam() {
+      // guard to ensure startExam is triggered once
       if (!examStarted) examStarted = true;
       const selectedSection = selectEl.value;
       if (selectedSection === 'lesen') {
@@ -2172,15 +1743,18 @@
       }
     }
 
+    // wire buttons: start will now start the countdown (not the exam directly)
     startBtn.addEventListener('click', startCountdown);
+
     cancelBtn.addEventListener('click', () => {
       stopCountdown(true);
       timerEl.textContent = "Abgebrochen";
       timerEl.style.color = "#e53e3e";
     });
 
-    // ===== LESEN PAGE FUNCTIONALITY (vollständig aus Original) =====
+    // ===== LESEN PAGE FUNCTIONALITY =====
     function initLesenPage() {
+      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-001",
         durationSec: 90 * 60,
@@ -2466,6 +2040,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         ]
       };
 
+      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         questionIndex: 0, 
@@ -2476,7 +2051,6 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         timerStarted: false,
         timerInterval: null
       };
-      
       const topTiles = document.getElementById('topTiles-lesen');
       const passageTitleEl = document.getElementById('passageTitle-lesen');
       const passageContentEl = document.getElementById('passageContent-lesen');
@@ -2490,6 +2064,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
+      /* ===== Timer Functions ===== */
       function startTimer(){
         if(state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -2523,6 +2098,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
+      /* ===== Reset Section Function ===== */
       function resetCurrentSection() {
         const currentSection = exam.sections[state.sectionIndex];
         
@@ -2553,6 +2129,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         }
       }
 
+      /* ===== Render ===== */
       function renderTopTiles(){ 
         topTiles.innerHTML=''; 
         exam.sections.forEach((sec,idx)=>{ 
@@ -2923,14 +2500,17 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
 
       function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
+        // Build text but replace blanks with unique placeholders first (prevents ambiguous replacements)
         let textWithPlaceholders = section.fillText2;
         const placeholders = [];
         section.fillBlanks2.forEach(blank => {
           const ph = `BLANK_${blank.id}`;
           placeholders.push({id: blank.id, ph});
+          // replace first occurrence of the visual underline with placeholder
           textWithPlaceholders = textWithPlaceholders.replace('________', ph);
         });
 
+        // Now replace placeholders with actual span elements showing current answer (or underscore)
         placeholders.forEach(item => {
           const userAnswer = state.answers[item.id];
           const displayText = userAnswer ? userAnswer : '________';
@@ -2943,14 +2523,18 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
+        // attach click handlers to slots
         document.querySelectorAll('.blank-slot').forEach(slot => {
           slot.addEventListener('click', (e) => {
+            // use the element itself to open popup
             showSprachbausteine2Options(slot);
           });
         });
 
+        // Build word bank on the right
         let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
         const usedWords = Object.values(state.answers);
+        // Use section.wordBank if present, otherwise derive from fillBlanks2 options
         const bank = section.wordBank && section.wordBank.length ? section.wordBank : (section.fillBlanks2[0] ? section.fillBlanks2[0].options : []);
         bank.forEach(word => {
           const isUsed = usedWords.includes(word);
@@ -2971,9 +2555,11 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         setupSprachbausteine2DragAndDrop();
       }
 
+      // --- Added functions to handle drag/drop and clicks for Sprachbausteine Teil 2 ---
       let lastClickedSprachSlot = null;
 
       function setupSprachbausteine2DragAndDrop(){
+        // bank words: make draggable if not used, attach dragstart
         const bankWords = Array.from(document.querySelectorAll('.bank-word-vertical'));
         bankWords.forEach(el => {
           const word = el.dataset.word;
@@ -2982,13 +2568,16 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
           } else {
             el.setAttribute('draggable','false');
           }
+          // ensure single attached listener
           el.removeEventListener('dragstart', el._dstart);
           el._dstart = (e) => {
             e.dataTransfer.setData('text/plain', word);
+            // also set an indicator
             e.dataTransfer.setData('source', 'bank');
           };
           el.addEventListener('dragstart', el._dstart);
 
+          // keep onclick behavior (select into clicked slot)
           el.removeEventListener('click', el._onclick);
           el._onclick = () => {
             if(el.classList.contains('used')) return;
@@ -2997,6 +2586,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
           el.addEventListener('click', el._onclick);
         });
 
+        // blank slots: allow drop
         const slots = Array.from(document.querySelectorAll('.blank-slot'));
         slots.forEach(slot => {
           slot.addEventListener('dragover', (e) => {
@@ -3011,13 +2601,16 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
             slot.classList.remove('drag-over');
             const word = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/html');
             if(!word) return;
+            // Determine blank id
             const blankId = slot.dataset.blankId;
             if(!blankId) return;
+            // If this word is already used in another slot, free it
             Object.keys(state.answers).forEach(k => {
               if(state.answers[k] === word){
                 delete state.answers[k];
               }
             });
+            // If slot had a previous answer, free that bank word
             const prev = state.answers[blankId];
             if(prev){
               const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
@@ -3027,12 +2620,15 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
                 prevEl.addEventListener('click', prevEl._onclick);
               }
             }
+            // mark bank word used
             const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
             if(bankEl){
               bankEl.classList.add('used');
               bankEl.setAttribute('draggable','false');
+              // remove click to prevent double-placing
               bankEl.removeEventListener('click', bankEl._onclick);
             }
+            // assign to state and re-render
             state.answers[blankId] = word;
             renderAll();
           });
@@ -3040,12 +2636,14 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
       }
 
       function showSprachbausteine2Options(slot){
+        // highlight selected slot so click from bank knows target
         document.querySelectorAll('.blank-slot').forEach(s => s.classList.remove('selected-sprach'));
         slot.classList.add('selected-sprach');
         lastClickedSprachSlot = slot;
       }
 
       function selectSprachbausteine2FromBank(word){
+        // choose target slot: prefer lastClicked, otherwise first empty
         let slot = lastClickedSprachSlot;
         if(!slot){
           slot = Array.from(document.querySelectorAll('.blank-slot')).find(s => {
@@ -3054,14 +2652,17 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
           });
         }
         if(!slot) {
+          // if none available, do nothing
           return;
         }
         const blankId = slot.dataset.blankId;
+        // free previous occurrence of word
         Object.keys(state.answers).forEach(k => {
           if(state.answers[k] === word){
             delete state.answers[k];
           }
         });
+        // free previous word in target slot
         const prev = state.answers[blankId];
         if(prev){
           const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
@@ -3071,12 +2672,14 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
             if(prevEl._onclick) prevEl.addEventListener('click', prevEl._onclick);
           }
         }
+        // mark selected bank word as used
         const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
         if(bankEl){
           bankEl.classList.add('used');
           bankEl.setAttribute('draggable','false');
           if(bankEl._onclick) try{ bankEl.removeEventListener('click', bankEl._onclick); }catch(e){}
         }
+        // assign value
         state.answers[blankId] = word;
         try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
@@ -3179,6 +2782,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         questionTitleEl.textContent = '';
       }
 
+      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex > 0){
           state.sectionIndex--;
@@ -3228,10 +2832,12 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         showPage('hoeren-page');
       });
 
+      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
+      // Expose functions to global scope for event handlers
       window._lesenState = state;
       window.lesenApp = {
         selectOption,
@@ -3241,11 +2847,12 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
       };
     }
 
-    // ===== HÖREN PAGE FUNCTIONALITY (vollständig aus Original) =====
+    // ===== HÖREN PAGE FUNCTIONALITY =====
     function initHoerenPage() {
+      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-hörverstehen",
-        durationSec: 17 * 60,
+        durationSec: 17 * 60, // 17 minutes in seconds
         sections: [
           { 
             id: "hörverstehen1", 
@@ -3253,11 +2860,26 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
             points: 25,
             correctAnswers: { "41": "falsch", "42": "falsch", "43": "falsch", "44": "richtig", "45": "richtig" },
             questions: [
-              { id: "41", text: "Auf der Insel Bali wurden neue Maßnahmen zur Müllentsorgung beschlossen." },
-              { id: "42", text: "In Nordfrankreich wird nach einem entlaufenen Panther gesucht." },
-              { id: "43", text: "Die Mietervereinigung rät Mieterinnen und Mietern, die Betriebskosten nicht zu bezahlen." },
-              { id: "44", text: "Der Sekt-Hersteller hat die Pläne für sein Bauvorhaben geändert." },
-              { id: "45", text: "Die Löscharbeiten sind noch nicht abgeschlossen." }
+              {
+                id: "41",
+                text: "Auf der Insel Bali wurden neue Maßnahmen zur Müllentsorgung beschlossen."
+              },
+              {
+                id: "42", 
+                text: "In Nordfrankreich wird nach einem entlaufenen Panther gesucht."
+              },
+              {
+                id: "43",
+                text: "Die Mietervereinigung rät Mieterinnen und Mietern, die Betriebskosten nicht zu bezahlen."
+              },
+              {
+                id: "44",
+                text: "Der Sekt-Hersteller hat die Pläne für sein Bauvorhaben geändert."
+              },
+              {
+                id: "45",
+                text: "Die Löscharbeiten sind noch nicht abgeschlossen."
+              }
             ]
           },
           { 
@@ -3266,16 +2888,46 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
             points: 25,
             correctAnswers: { "46": "falsch", "47": "richtig", "48": "richtig", "49": "richtig", "50": "falsch", "51": "falsch", "52": "richtig", "53": "falsch", "54": "richtig", "55": "richtig" },
             questions: [
-              { id: "46", text: "Roland Wünschmann arbeitet Vollzeit als Fußballtrainer bei Viktoria Köln." },
-              { id: "47", text: "Viktoria Köln möchte am Ende der Spielsaison aufsteigen." },
-              { id: "48", text: "Zu Beginn dieser Saison hat ein Spieler Viktoria Köln verlassen." },
-              { id: "49", text: "Neue Spieler kommen bei Viktoria Köln immer aus der eigenen Jugendmannschaft." },
-              { id: "50", text: "Die Mannschaft von Viktoria Köln hat Schwächen in der Abwehr." },
-              { id: "51", text: "Roland Wünschmann wagt die Prognose, dass diese Saison der 1. FC Mönchengladbach Meister wird." },
-              { id: "52", text: "Roland Wünschmann kann seinen Beruf und sein Ehrenamt als Fußballtrainer miteinander vereinbaren." },
-              { id: "53", text: "Auch die Frau von Roland Wünschmann engagiert sich im Fußball." },
-              { id: "54", text: "Der Vereinsvorstand schätzt Herrn Wünschmanns Arbeit." },
-              { id: "55", text: "Roland Wünschmann ist mit der bisherigen Nachwuchsförderung des Vereins noch nicht voll zufrieden." }
+              {
+                id: "46",
+                text: "Roland Wünschmann arbeitet Vollzeit als Fußballtrainer bei Viktoria Köln."
+              },
+              {
+                id: "47",
+                text: "Viktoria Köln möchte am Ende der Spielsaison aufsteigen."
+              },
+              {
+                id: "48", 
+                text: "Zu Beginn dieser Saison hat ein Spieler Viktoria Köln verlassen."
+              },
+              {
+                id: "49",
+                text: "Neue Spieler kommen bei Viktoria Köln immer aus der eigenen Jugendmannschaft."
+              },
+              {
+                id: "50",
+                text: "Die Mannschaft von Viktoria Köln hat Schwächen in der Abwehr."
+              },
+              {
+                id: "51",
+                text: "Roland Wünschmann wagt die Prognose, dass diese Saison der 1. FC Mönchengladbach Meister wird."
+              },
+              {
+                id: "52",
+                text: "Roland Wünschmann kann seinen Beruf und sein Ehrenamt als Fußballtrainer miteinander vereinbaren."
+              },
+              {
+                id: "53",
+                text: "Auch die Frau von Roland Wünschmann engagiert sich im Fußball."
+              },
+              {
+                id: "54",
+                text: "Der Vereinsvorstand schätzt Herrn Wünschmanns Arbeit."
+              },
+              {
+                id: "55",
+                text: "Roland Wünschmann ist mit der bisherigen Nachwuchsförderung des Vereins noch nicht voll zufrieden."
+              }
             ]
           },
           { 
@@ -3284,16 +2936,32 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
             points: 25,
             correctAnswers: { "56": "richtig", "57": "falsch", "58": "falsch", "59": "falsch", "60": "richtig" },
             questions: [
-              { id: "56", text: "Sie können im Internet prüfen, ob Ihre aktuelle Bestellung schon unterwegs ist." },
-              { id: "57", text: "Man kann für die Nachtveranstaltung noch Karten im Internet kaufen." },
-              { id: "58", text: "Die Teilnahme an der Party im Burghof kostet nichts." },
-              { id: "59", text: "In Bamberg kann man in der nächsten Woche besonders günstig Mitglied in einem Sportverein werden." },
-              { id: "60", text: "Wer ein wichtiges Anliegen hat, soll eine andere Nummer wählen." }
+              {
+                id: "56",
+                text: "Sie können im Internet prüfen, ob Ihre aktuelle Bestellung schon unterwegs ist."
+              },
+              {
+                id: "57",
+                text: "Man kann für die Nachtveranstaltung noch Karten im Internet kaufen."
+              },
+              {
+                id: "58",
+                text: "Die Teilnahme an der Party im Burghof kostet nichts."
+              },
+              {
+                id: "59",
+                text: "In Bamberg kann man in der nächsten Woche besonders günstig Mitglied in einem Sportverein werden."
+              },
+              {
+                id: "60",
+                text: "Wer ein wichtiges Anliegen hat, soll eine andere Nummer wählen."
+              }
             ]
           }
         ]
       };
 
+      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
@@ -3308,6 +2976,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
       const timerEl = document.getElementById('timer-hoeren');
       const statusText = document.getElementById('statusText-hoeren');
 
+      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3341,6 +3010,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
+      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -3355,8 +3025,11 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
       function isSectionDone(section) {
         const answers = state.answers[section.id];
         if (!answers) return false;
+        
+        // تحقق إذا تمت الإجابة على جميع الأسئلة في هذا القسم
         const answeredQuestions = Object.keys(answers).length;
         const totalQuestions = section.questions.length;
+        
         return answeredQuestions === totalQuestions;
       }
 
@@ -3443,6 +3116,9 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         }
         state.answers[sectionId][questionId] = answer;
         try{ localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); }catch(e){}
+        
+        
+        // إعادة عرض البلاطات لتحديث حالة "تم"
         renderTopTiles();
       }
 
@@ -3469,26 +3145,26 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
                 <tbody>
           `;
           
-          section.questions.forEach((question) => {
-            const userAnswer = userAnswers[question.id] || '-';
-            const correctAnswer = section.correctAnswers[question.id];
-            const gotCorrect = userAnswer === correctAnswer;
-            const points = gotCorrect ? "1" : "0";
-            
-            if (gotCorrect) correctCount++;
-            
-            const rowClass = gotCorrect ? 'correct-answer' : 'incorrect-answer';
-            
-            resultsHTML += `
-              <tr class="${rowClass}">
-                <td><strong>${question.id}</strong></td>
-                <td class="question-text">${question.text}</td>
-                <td>${userAnswer}</td>
-                <td>${correctAnswer}</td>
-                <td><strong>${points}</strong></td>
-              </tr>
-            `;
-          });
+        section.questions.forEach((question) => {
+          const userAnswer = userAnswers[question.id] || '-';
+          const correctAnswer = section.correctAnswers[question.id];
+          const gotCorrect = userAnswer === correctAnswer;
+          const points = gotCorrect ? "1" : "0";
+          
+          if (gotCorrect) correctCount++;
+          
+          const rowClass = gotCorrect ? 'correct-answer' : 'incorrect-answer';
+          
+          resultsHTML += `
+            <tr class="${rowClass}">
+              <td><strong>${question.id}</strong></td>
+              <td class="question-text">${question.text}</td>
+              <td>${userAnswer}</td>
+              <td>${correctAnswer}</td>
+              <td><strong>${points}</strong></td>
+            </tr>
+          `;
+        });
           
           const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
           
@@ -3505,6 +3181,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         contentContainer.innerHTML = resultsHTML;
       }
 
+      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-hoeren').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3551,21 +3228,24 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         showPage('schreiben-page');
       });
 
+      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      window._hoerenState = state;
-      window.hoerenApp = {
+      // Expose functions to global scope for event handlers
+        window._hoerenState = state;
+        window.hoerenApp = {
         updateListeningAnswer
       };
     }
 
-    // ===== SCHREIBEN PAGE FUNCTIONALITY (vollständig aus Original) =====
+    // ===== SCHREIBEN PAGE FUNCTIONALITY =====
     function initSchreibenPage() {
+      /* ===== Self-contained exam (embedded) ===== */
       const exam = {
         id: "exam-002",
-        durationSec: 30 * 60,
+        durationSec: 30 * 60, // 30 minutes in seconds
         sections: [
           { 
             id: "s1", 
@@ -3595,6 +3275,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         ]
       };
 
+      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
@@ -3611,6 +3292,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
 
+      /* ===== Timer Functions ===== */
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3644,6 +3326,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
+      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -3675,6 +3358,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
       function renderWritingSection() {
         const section = exam.sections[state.sectionIndex];
         
+        // Render the prompt in left panel
         passageContentEl.innerHTML = `
           <div class="writing-task">
             <div class="writing-prompt">${section.writingTask.prompt}</div>
@@ -3692,6 +3376,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
           </div>
         `;
         
+        // Render writing area in right panel
         const currentAnswer = state.answers[section.id] || '';
         const wordCount = countWords(currentAnswer);
         
@@ -3744,6 +3429,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         writingContainer.innerHTML = '';
       }
 
+      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-schreiben').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3766,7 +3452,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
       });
 
       document.getElementById('resetBtn-schreiben').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöschت.')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3790,19 +3476,104 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         showPage('ergebnisse-page');
       });
 
+      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      window._schreibenState = state;
-      window.schreibenApp = {
+      // Expose functions to global scope for event handlers
+        window._schreibenState = state;
+        window.schreibenApp = {
         updateWritingAnswer
       };
     }
 
-    // ===== ERGEBNISSE PAGE FUNCTIONALITY (معدلة لإزالة CORRECT_ANSWERS المكرر) =====
+    // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
     function initErgebnissePage() {
-      // ===== الدوال المساعدة (بدون CORRECT_ANSWERS) =====
+      // ===== الإجابات الصحيحة المركزية =====
+      const CORRECT_ANSWERS = {
+        lesen: {
+          // الجزء الأول: Überschriften zuordnen (النصوص 1-5)
+          "text1": "c",
+          "text2": "i", 
+          "text3": "f",
+          "text4": "a",
+          "text5": "j",
+          
+          // الجزء الثاني: Fragen zum Text (الأسئلة s2q1-s2q5)
+          "s2q1": "s2q1o3",
+          "s2q2": "s2q2o1",
+          "s2q3": "s2q3o2",
+          "s2q4": "s2q4o2",
+          "s2q5": "s2q5o1",
+          
+          // الجزء الثالث: Texte zuordnen (المواقف 11-20)
+          "11": "C",
+          "12": "X",
+          "13": "G",
+          "14": "E",
+          "15": "A",
+          "16": "I",
+          "17": "F",
+          "18": "X",
+          "19": "B",
+          "20": "K",
+          
+          // Sprachbausteine Teil 1 (الفراغات 21-30)
+          "21": "neuen",
+          "22": "Seit",
+          "23": "darüber",
+          "24": "mich",
+          "25": "Obwohl",
+          "26": "könnte",
+          "27": "wie",
+          "28": "nehmen",
+          "29": "mich",
+          "30": "denen",
+          
+          // Sprachbausteine Teil 2 (الفراغات 31-40)
+          "31": "GENAU",
+          "32": "FÄHIG",
+          "33": "ENTWICKELTEN",
+          "34": "BEOBACHTUNG",
+          "35": "NOCH",
+          "36": "ÜBRIGENS",
+          "37": "DOCH",
+          "38": "FÜR",
+          "39": "ALS",
+          "40": "WER"
+        },
+        
+        hoeren: {
+          // Hören Teil 1 (الأسئلة 41-45)
+          "41": "falsch",
+          "42": "falsch",
+          "43": "falsch",
+          "44": "richtig",
+          "45": "richtig",
+          
+          // Hören Teil 2 (الأسئلة 46-55)
+          "46": "falsch",
+          "47": "richtig",
+          "48": "richtig",
+          "49": "richtig",
+          "50": "falsch",
+          "51": "falsch",
+          "52": "richtig",
+          "53": "falsch",
+          "54": "richtig",
+          "55": "richtig",
+          
+          // Hören Teil 3 (الأسئلة 56-60)
+          "56": "richtig",
+          "57": "falsch",
+          "58": "falsch",
+          "59": "falsch",
+          "60": "richtig"
+        }
+      };
+
+      // ===== الدوال المساعدة =====
       function getHeadingText(headingId) {
         if (!headingId || headingId === '-' || headingId === 'X') return headingId;
         const headings = {
@@ -3829,7 +3600,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
           "s2q2o1": "darf Herr Bauernfeind keinen normalen Nagellack auftragen",
           "s2q2o2": "können keine Luxusmarken eingesetzt werden",
           "s2q2o3": "verwendet he nur billige Produkte",
-          "s2q3o1": "hat schon als Kind gerne mit Puppen gespielt",
+          "s2q3o1": "hat schon als Child gerne mit Puppen gespielt",
           "s2q3o2": "konnte seine erste Schaufensterpuppe nicht auf einmal zahlen",
           "s2q3o3": "organizierte eine Ausstellung mit Schaufensterpuppen",
           "s2q4o1": "eröffnete die erste Linzer Firma für Schaufensterpuppen",
@@ -3905,17 +3676,15 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         counts: { 
           lesen: 40, 
           hoeren: 20 
-        }
+        },
+        // استخدام الإجابات المركزية
+        hoerenCorrect: CORRECT_ANSWERS.hoeren,
+        lesenCorrect: CORRECT_ANSWERS.lesen
       };
 
+      // ===== دوال التصحيح =====
       function gradeHoeren(u) {
-        const c = window.CORRECT_ANSWERS || {
-          "41": "falsch", "42": "falsch", "43": "falsch", "44": "richtig", "45": "richtig",
-          "46": "falsch", "47": "richtig", "48": "richtig", "49": "richtig", "50": "falsch",
-          "51": "falsch", "52": "richtig", "53": "falsch", "54": "richtig", "55": "richtig",
-          "56": "richtig", "57": "falsch", "58": "falsch", "59": "falsch", "60": "richtig"
-        };
-        
+        const c = CORRECT_ANSWERS.hoeren;
         let okCount = 0;
         const d = [];
         
@@ -3940,14 +3709,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
       }
 
       function gradeLesen(u) {
-        const c = window.CORRECT_ANSWERS || {
-          "text1": "c", "text2": "i", "text3": "f", "text4": "a", "text5": "j",
-          "s2q1": "s2q1o3", "s2q2": "s2q2o1", "s2q3": "s2q3o2", "s2q4": "s2q4o2", "s2q5": "s2q5o1",
-          "11": "C", "12": "X", "13": "G", "14": "E", "15": "A", "16": "I", "17": "F", "18": "X", "19": "B", "20": "K",
-          "21": "neuen", "22": "Seit", "23": "darüber", "24": "mich", "25": "Obwohl", "26": "könnte", "27": "wie", "28": "nehmen", "29": "mich", "30": "denen",
-          "31": "GENAU", "32": "FÄHIG", "33": "ENTWICKELTEN", "34": "BEOBACHTUNG", "35": "NOCH", "36": "ÜBRIGENS", "37": "DOCH", "38": "FÜR", "39": "ALS", "40": "WER"
-        };
-        
+        const c = CORRECT_ANSWERS.lesen;
         let okCount = 0;
         const d = [];
         
@@ -3970,6 +3732,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         return { okCount, total, details: d };
       }
 
+      // ===== دوال العرض المحسنة =====
       function buildTable(title, dets, total, max) {
         let html = `<div class="result-item">
                       <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
@@ -3992,6 +3755,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
           let userDisplay = x.user;
           let correctDisplay = x.correct;
           
+          // تحويل رموز القراءة إلى نصوص مقروءة
           if (title.includes('Lesen')) {
             if (x.frage.startsWith('text')) {
               userDisplay = getHeadingText(x.user);
@@ -4029,6 +3793,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         let html = `<div class="result-item">
                     <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
         
+        // تقسيم التفاصيل إلى أقسام
         const part1 = details.filter(d => d.frage.startsWith('text'));
         const part2 = details.filter(d => d.frage.startsWith('s2q'));
         const part3 = details.filter(d => parseInt(d.frage) >= 11 && parseInt(d.frage) <= 20);
@@ -4221,12 +3986,14 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         return html;
       }
 
+      // ===== الدالة الرئيسية المحسنة =====
       function readExamResults() {
         try {
           const lesen = {};
           const hoeren = {};
           const schreiben = { content: '', wordCount: 0 };
 
+          // 1) Try to read from in-memory states
           try {
             if (window._lesenState && window._lesenState.answers) {
               Object.assign(lesen, window._lesenState.answers);
@@ -4257,6 +4024,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
             }
           } catch (e) {}
 
+          // 2) Fallback to localStorage
           try {
             if (Object.keys(lesen).length === 0) {
               const storedL = localStorage.getItem('lesenAnswers');
@@ -4300,6 +4068,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         details.innerHTML = '';
         tiles.innerHTML = '';
 
+        // عرض البلاطات العلوية
         tiles.innerHTML = `
           <div class="results-tile">
             <h3>Lesen</h3>
@@ -4317,11 +4086,14 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
             <div class="small-muted">Manuelle Eingabe</div>
           </div>`;
 
+        // عرض التفاصيل الكاملة
         details.innerHTML = `<h2>📊 Detaillierte Ergebnisse</h2>
                             <div class="instructions">Hier sehen Sie eine detaillierte Auswertung Ihrer Prüfungsergebnisse mit Vergleich zwischen Ihren Antworten und den richtigen Lösungen.</div>`;
         
+        // قسم القراءة المحسن
         details.innerHTML += renderLesenDetails(st.lesen);
         
+        // قسم الاستماع المحسن
         details.innerHTML += `
           <div class="result-item">
             <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
@@ -4331,6 +4103,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
             </div>
           </div>`;
         
+        // قسم الكتابة
         let sHtml = '<div class="result-item"><h3>✍️ Schreiben - Ihre Antwort</h3>';
         const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
         const wc = st.schreiben.wordCount || '-';
@@ -4346,6 +4119,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         sHtml += '</div>';
         details.innerHTML += sHtml;
 
+        // حساب الإجمالي
         const total = (l.total + h.total + sScore).toFixed(2);
         const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);
         
@@ -4359,6 +4133,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
             <span class="small-muted">Bestanden: ${percent >= 60 ? '✅ Ja' : '❌ Nein'}</span>
           </div>`;
 
+        // حدث حفظ نقاط الكتابة
         document.getElementById('saveS').onclick = () => {
           const v = Number(document.getElementById('sInput').value) || 0;
           localStorage.setItem('schreibenScore', v);
@@ -4379,12 +4154,14 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         };
       }
 
+      // ===== تهيئة الصفحة =====
       document.getElementById('calcBtn-ergebnisse').onclick = () => renderResults();
       document.getElementById('backBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
         showPage('start-page');
       };
       
+      // عرض النتائج تلقائياً عند فتح الصفحة
       renderResults();
     }
   </script>
