@@ -4,9 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Deutsch B2 Prüfung - Komplett</title>
-  <!-- ⬇️⬇️⬇️ SUPABASE LIBRARY ⬇️⬇️⬇️ -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <!-- ⬆️⬆️⬆️ END SUPABASE LIBRARY ⬆️⬆️⬆️ -->
   <style>
     /* ===== GLOBAL STYLES ===== */
     :root {
@@ -32,47 +29,6 @@
       background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
       color: var(--white);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    /* Auth message styles - تظهر فقط عند وجود خطأ */
-    .auth-message {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      font-size: 1.1rem;
-      font-weight: bold;
-      z-index: 9999;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      display: none;
-    }
-    
-    .auth-message.error {
-      background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
-      display: block;
-    }
-    
-    .auth-message.success {
-      background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
-      display: block;
-    }
-    
-    .auth-button {
-      background: white;
-      color: #d32f2f;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      margin-left: 1rem;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    
-    .auth-button:hover {
-      background: #f0f0f0;
     }
     
     button {
@@ -1355,9 +1311,6 @@
   </style>
 </head>
 <body id="body">
-  <!-- عنصر الرسالة - يظهر فقط عند وجود خطأ أو نجاح -->
-  <div id="authMessage" class="auth-message"></div>
-
   <!-- Start Page -->
   <div id="start-page" class="start-container">
     <div class="start-content">
@@ -1551,138 +1504,6 @@
   </div>
 
   <script>
-    // ===== AUTHENTICATION CHECK - الحل النهائي =====
-    (async function() {
-      const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
-      
-      const { createClient } = window.supabase;
-      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      
-      const authMessage = document.getElementById('authMessage');
-      
-      // دالة لعرض رسالة خطأ وإعادة التوجيه
-      function showAuthError(message) {
-        authMessage.textContent = message;
-        authMessage.className = 'auth-message error';
-        
-        // إضافة زر تسجيل الدخول
-        const button = document.createElement('button');
-        button.className = 'auth-button';
-        button.textContent = 'تسجيل الدخول';
-        button.onclick = function() {
-          window.location.href = '../index.html';
-        };
-        authMessage.appendChild(button);
-        
-        // إخفاء محتوى الصفحة
-        document.getElementById('start-page').style.display = 'none';
-        
-        // إعادة التوجيه بعد 5 ثواني
-        setTimeout(() => {
-          window.location.href = '../index.html';
-        }, 5000);
-        
-        return false;
-      }
-      
-      try {
-        // التحقق من localStorage أولاً - شرط صارم
-        const isLoggedIn = localStorage.getItem('b2_isLoggedIn') === 'true';
-        const userEmail = localStorage.getItem('b2_userEmail');
-        const userId = localStorage.getItem('b2_userId');
-        const loginTime = localStorage.getItem('b2_loginTime');
-        
-        // التحقق من وجود جميع البيانات المطلوبة
-        if (!isLoggedIn || !userEmail || !userId) {
-          console.log('❌ لا توجد بيانات تسجيل دخول كاملة');
-          return showAuthError('❌ يجب تسجيل الدخول أولاً للوصول إلى هذا المحتوى');
-        }
-        
-        // التحقق من انتهاء الجلسة (أكثر من 24 ساعة)
-        if (loginTime) {
-          const now = Date.now();
-          const twentyFourHours = 24 * 60 * 60 * 1000;
-          if (now - parseInt(loginTime) > twentyFourHours) {
-            // مسح البيانات منتهية الصلاحية
-            localStorage.removeItem('b2_isLoggedIn');
-            localStorage.removeItem('b2_userEmail');
-            localStorage.removeItem('b2_userId');
-            localStorage.removeItem('b2_loginTime');
-            
-            console.log('❌ انتهت صلاحية الجلسة');
-            return showAuthError('❌ انتهت صلاحية الجلسة. يرجى تسجيل الدخول مرة أخرى');
-          }
-        }
-        
-        // التحقق من الجلسة في Supabase
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
-        if (sessionError || !session) {
-          // مسح البيانات المحفوظة إذا كانت الجلسة غير صالحة
-          localStorage.removeItem('b2_isLoggedIn');
-          localStorage.removeItem('b2_userEmail');
-          localStorage.removeItem('b2_userId');
-          localStorage.removeItem('b2_loginTime');
-          
-          console.log('❌ جلسة Supabase غير صالحة');
-          return showAuthError('❌ انتهت جلستك. يرجى تسجيل الدخول مرة أخرى');
-        }
-        
-        // التحقق من تطابق البريد الإلكتروني
-        if (session.user.email !== userEmail) {
-          localStorage.removeItem('b2_isLoggedIn');
-          localStorage.removeItem('b2_userEmail');
-          localStorage.removeItem('b2_userId');
-          localStorage.removeItem('b2_loginTime');
-          
-          console.log('❌ عدم تطابق البريد الإلكتروني');
-          return showAuthError('❌ بيانات الدخول غير صالحة. يرجى تسجيل الدخول مرة أخرى');
-        }
-        
-        // التحقق من صلاحية المستخدم
-        const { data: permissions, error: permError } = await supabase
-          .from('user_permissions')
-          .select('can_access, subscription_type, subscription_expiry, trial_expiry')
-          .eq('user_id', session.user.id)
-          .single();
-        
-        if (permError || !permissions) {
-          return showAuthError('❌ لا يمكن التحقق من صلاحياتك. يرجى التواصل مع المسؤول');
-        }
-        
-        if (!permissions.can_access) {
-          return showAuthError('❌ ليس لديك صلاحية للوصول إلى هذا المحتوى');
-        }
-        
-        // التحقق من انتهاء الاشتراك
-        const now = new Date();
-        
-        if (permissions.subscription_type === 'trial_24h' && permissions.trial_expiry) {
-          const trialExpiry = new Date(permissions.trial_expiry);
-          if (trialExpiry < now) {
-            return showAuthError('❌ انتهت الفترة التجريبية. يرجى تفعيل الاشتراك للاستمرار');
-          }
-        }
-        
-        if (permissions.subscription_expiry) {
-          const subscriptionExpiry = new Date(permissions.subscription_expiry);
-          if (subscriptionExpiry < now) {
-            return showAuthError('❌ انتهى اشتراكك. يرجى تجديد الاشتراك للاستمرار');
-          }
-        }
-        
-        // ✅ تم التحقق بنجاح - لا نظهر أي رسالة خضراء
-        console.log('✅ تم التحقق من تسجيل الدخول بنجاح');
-        
-        // نسمح بعرض الصفحة بشكل طبيعي - بدون أي شريط علوي
-        
-      } catch (error) {
-        console.error('❌ خطأ في التحقق:', error);
-        return showAuthError('❌ حدث خطأ في التحقق. يرجى المحاولة مرة أخرى');
-      }
-    })();
-
     // تحسين السحب والإفلات للشاشات التي تعمل باللمس
     function setupTouchDragAndDrop() {
       if ('ontouchstart' in window) {
@@ -1863,7 +1684,7 @@
               },
               {
                 id: "text5",
-                content: "Viele Menschen sind erstaunlich großzügig : Sie machen anderen gern Geschenke, spenden Geld für gute Zwecke oder opfern Zeit für ehrenamtliche Tätigkeiten . Aber was motiviert sie dazu ? Die Wissenschaft liefert ganz unterschiedliche Erklärungsansätze. Eine Erklärung lautet, dass großzügige Menschen auf Gegenseitigkeit hoffen : Wer viel gibt , bekommt auch viel zurück. Eine Studie konnten nun aber zeigen, dass die Antwort vielleicht ganz einfach ist : Großzügigkeit mache eben glücklich. Dies fanden Forscher der Universität Lübeck heraus, Dieses enge Verknüpfung zwischen großzügigem Verhalten und Glücksgefühl zeige sich auch in Gehirn. So aktivieren ein solche Verhalten ein Hirnareal, das eng mit unserem Belohnungszentrum verknüpft ist. Das Ergebnis ihrer Studie könne weitreichende Folge für die Gesellschaft haben. Wer glücklicher werden möchte, könne sich diese neuen Erkenntnisse zunutze machen: Denn wer für andere da ist, tut auch etwas für das eigene Wohlbefinden.",
+                content: "Viele Menschen sind erstaunlich großzügig : Sie machen anderen gern Geschenke, spenden Geld für gute Zwecke oder opfern Zeit für ehrenamtliche Tätigkeiten . Aber what motiviert sie dazu ? Die Wissenschaft liefert ganz unterschiedliche Erklärungsansätze. Eine Erklärung lautet, dass großzügige Menschen auf Gegenseitigkeit hoffen : Wer viel gibt , bekommt auch viel zurück. Eine Studie konnten nun aber zeigen, dass die Antwort vielleicht ganz einfach ist : Großzügigkeit mache eben glücklich. Dies fanden Forscher der Universität Lübeck heraus, Dieses enge Verknüpfung zwischen großzügigem Verhalten und Glücksgefühl zeige sich auch in Gehirn. So aktivieren ein solche Verhalten ein Hirnareal, das eng mit unserem Belohnungszentrum verknüpft ist. Das Ergebnis ihrer Studie könne weitreichende Folge für die Gesellschaft haben. Wer glücklicher werden möchte, könne sich diese neuen Erkenntnisse zunutze machen: Denn wer für andere da ist, tut auch etwas für das eigene Wohlbefinden.",
                 correctAnswer: "j"
               }
             ],
@@ -1885,7 +1706,7 @@
             title: "Leseverstehen, Teil 2", 
             points: 25,
             passageTitle: "Der Puppenmacher",
-            passage: `Die Schaufensterpuppe ist eine Pariserin und hatte erstmals 1849 in der Hauptstadt der Mode ihren Auftritt. Der französische Schneider Alexis Lavigne gilt als ihr Erfinder, auch wenn er damals seine Kleiderkreationen noch auf einer Schneiderpuppe vorführte. Bald schon taten es ihm andere Pariser Kollegen gleich. Sie begannen, ihre Modelle vor den Geschäften aufzustellen, um die Passanten in die Verkaufsräume zu locken. Als Anfang des 20. Jahrhunderts die ersten großen Kaufhäuser eröffneten, erlebte die Schaufensterpuppe ihren Durchbruch. Der Puppenmacher Lester Gaba entwickelte in den 1930er Jahren das erste lebensecht wirkende Modell, Cynthia. Sie durfte sogar mit auf Veranstlungen, was beide berühmt machte. Fortan spiegelte die Schaufensterpuppe Zeitgeist und Schönheitsideale. Der Linzer Puppenmacher André Bauernfeind hat als Sammler begonnen, mittlerweile sind Schaufensterpuppen sein Beruf. Der 37-Jährige, der mehr als 1000 Modelle besitzt, ist österreichweit der Einzige, bei dem man sie reparieren lassen, aber auch mieten kann. Wer ihn an seinem Arbeitsplatz aufsucht, muss in den Keller. Die Eisentür steht offen, lädt ein in sein großes Atelier voller Schaufensterpuppen: Kinder, Frauen und Männer, mit Perücke, geschminkt oder farblos, sitzend, liegend, dürr, oder mollig, in Kisten verpackt oder in Einzelteilen von der Decke hängend. Während sich die Puppen in der Welt draußen perfekt präsentieren, wird hier in der Werkstatt mitunter ordentlich an ihrer Oberfläche gekratzt. Der 37-Jährige ist so etwas wie ein Schönheitschirurg für Schaufensterpuppen. Er macht sie wieder heil, verpasst ihnen aber auch Ganzkörper-Liftings, wenn gewünscht. Die bestehende Farbe wird dann entfernt, anschließend eine Grundierung und Farbe aufgetragen. Er klebt ihnen falsche Wimpern an und trägt mit einem Pinsel Schminke auf. Die Kosmetikprodukte kommen meistens aus der Drogerie, tragen aber manchmal auch Luxusnamen wie Armani oder Dior. Nur herkömmlichen Nagellack kann Bauernfeld nicht verwenden, weil dieser die Ölfarbe auflöst. Nicht selten fehlt den Puppen ein Finger, ein Ohr oder eine Nase. Dann greift der Linzer zur Modelliermasse, deren Zusammensetzung streng geheim ist.Weniger geheim sind die Preise: Für 45 Euro fertigt er eine neue Nase, rekonstruiert ein Ohr oder auch ein Kinn. Wer allerdings einen Kopf modellieren lassen möchte, muss mit 2500 Euro und acht Wochen rechnen, für einen gesamten Körper mit 15.000 Euro und Monaten. Obgleich er als Kind am liebsten mit Autos spielte, faszinierten ihn schon früh diese Mannequins in den Schaufenstern. Heute kommt er an keinem Schaufenster vorbei, ohne einen Blick hineinzuwerfen. „Ich erkenne schon an ihrem Standsockel um welchen Hersteller es sich handelt\", sagt der gelernte Dekorateur. Sein erstes Exemplar kaufte er während seiner Ausbildung. 3500 Schilling wollte der Besitzer haben, man einigte sich auf Ratenzahlungen. Ein Jahr lang hat er sie abbezahlt. Die Puppe aus der Serie Ragazza mit der Nummer 9908 bekam bald Gesellschaft, die Sammlung vergrößerte sich sukzessive, zählte schon bald mehr als 100 Exponate. Aus dem Hobby wurde später ein Beruf. Bauernfeind verfeinerte sein Handwerk und übernahm schließlich ein altes Schaufensterpuppen-Unternehmen in Linz. Heute ist er Besitzer 1200 Puppen, vermietet und repariert sie, stellt Sonderanfertigungen her. Bauernfeind verkauft auch für andere Hersteller. Er besitzt exklusiv die Handelsvertretung für eine belgische Schaufensterpuppen-Firma. Alle anderen renommierten Hersteller aus Europa haben irgendwann ihre Produktion nach Asien verlagert. Qualität und Nachhaltigkeit sind ihm wichtig.Gemeinsam mit einem Farblieferanten hat er deshalb eine Farbe für Puppen entwickelt, die nicht nur ökologisch einwandfrei, sondern auch für den Menschen unbedenklich ist. „ Schließlich dringen die Farbstoffe in die Textilien ein. Meine Farbe könnte man sogar essen, und es würde nichts passieren.\"Weltweit gibt es etwa 100 Hersteller von Schaufensterpuppen, die zweimal im Jahr eine neue Kollektion herausbringen. Denn wie die Mode sind auch die Puppen Trends unterworfen: „In Frankreich, England und den USA werden natürliche Modelle immer beliebter, während bei uns noch abstrakte Modelle dominieren. Es lässt aber beobachten, dass man von einer Einheit gar wegkommt und dass immer häufiger vielfarbige Figurtypen gewünscht werden\", sagt der Puppenmacher.`,
+            passage: `Die Schaufensterpuppe ist eine Pariserin und hatte erstmals 1849 in der Hauptstadt der Mode ihren Auftritt. Der französische Schneider Alexis Lavigne gilt als ihr Erfinder, auch wenn er damals seine Kleiderkreationen noch auf einer Schneiderpuppe vorführte. Bald schon taten es ihm andere Pariser Kollegen gleich. Sie begannen, ihre Modelle vor den Geschäften aufzustellen, um die Passanten in die Verkaufsräume zu locken. Als Anfang des 20. Jahrhunderts die ersten großen Kaufhäuser eröffneten, erlebte die Schaufensterpuppe ihren Durchbruch. Der Puppenmacher Lester Gaba entwickelte in den 1930er Jahren das erste lebensecht wirkende Modell, Cynthia. Sie durfte sogar mit auf Veranstlungen, was beide berühmt machte. Fortan spiegelte die Schaufensterpuppe Zeitgeist und Schönheitsideale. Der Linzer Puppenmacher André Bauernfeind hat als Sammler begonnen, mittlerweile sind Schaufensterpuppen sein Beruf. Der 37-Jährige, der mehr als 1000 Modelle besitzt, ist österreichweit der Einzige, bei dem man sie reparieren lassen, aber auch mieten kann. Wer ihn an seinem Arbeitsplatz aufsucht, muss in den Keller. Die Eisentür steht offen, lädt ein in sein großes Atelier voller Schaufensterpuppen: Kinder, Frauen und Männer, mit Perücke, geschminkt oder farblos, sitzend, liegend, dürr, oder mollig, in Kisten verpackt oder in Einzelteilen von der Decke hängend. Während sich die Puppen in der Welt draußen perfekt präsentieren, wird hier in der Werkstatt mitunter ordentlich an ihrer Oberfläche gekratzt. Der 37-Jährige ist so etwas wie ein Schönheitschirurg für Schaufensterpuppen. Er macht sie wieder heil, verpasst ihnen aber auch Ganzkörper-Liftings, wenn gewünscht. Die bestehende Farbe wird dann entfernt, anschließend eine Grundierung und Farbe aufgetragen. Er klebt ihnen falsche Wimpern an und trägt mit einem Pinsel Schminke auf. Die Kosmetikprodukte kommen meistens aus der Drogerie, tragen aber manchmal auch Luxusnamen wie Armani oder Dior. Nur herkömmlichen Nagellack kann Bauernfeld nicht verwenden, weil dieser die Ölfarbe auflöst. Nicht selten fehlt den Puppen ein Finger, ein Ohr oder eine Nase. Dann greift der Linzer zur Modelliermasse, deren Zusammensetzung streng geheim ist.Weniger geheim sind die Preise: Für 45 Euro fertigt er eine neue Nase, rekonstruiert ein Ohr oder auch ein Kinn. Wer allerdings einen Kopf modellieren lassen möchte, muss mit 2500 Euro und acht Wochen rechnen, für einen gesamten Körper mit 15.000 Euro und Monaten. Obgleich er als Kind am liebsten mit Autos spielte, faszinierten ihn schon früh diese Mannequins in den Schaufenstern. Heute kommt er an keinem Schaufenster vorbei, ohne einen Blick hineinzuwerfen. „Ich erkenne schon an ihrem Standsockel um welchen Hersteller es sich handelt\", sagt der gelernte Dekorateur. Sein erstes Exemplar kaufte he während seiner Ausbildung. 3500 Schilling wollte der Besitzer haben, man einigte sich auf Ratenzahlungen. Ein Jahr lang has he sie abbezahlt. Die Puppe aus der Serie Ragazza mit der Nummer 9908 bekam bald Gesellschaft, die Sammlung vergrößerte sich sukzessive, zählte schon bald mehr als 100 Exponate. Aus dem Hobby wurde später ein Beruf. Bauernfeind verfeinerte sein Handwerk und übernahm schließlich ein altes Schaufensterpuppen-Unternehmen in Linz. Heute ist he Besitzer 1200 Puppen, vermietet und repariert sie, stellt Sonderanfertigungen her. Bauernfeind verkauft auch für andere Hersteller. Er besitzt exklusive die Handelsvertretung für eine belgische Schaufensterpuppen-Firma. Alle anderen renommierten Hersteller aus Europa haben irgendwann ihre Produktion nach Asien verlagert. Qualität und Nachhaltigkeit sind ihm wichtig.Gemeinsam mit einem Farblieferanten hat er deshalb eine Farbe für Puppen entwickelt, die nicht nur ökologisch einwandfrei, sondern auch für den Menschen unbedenklich ist. „ Schließlich dringen die Farbstoffe in die Textilien ein. Meine Farbe könnte man sogar essen, und es würde nichts passieren.\"Weltweit gibt es etwa 100 Hersteller von Schaufensterpuppen, die zweimal im Jahr eine neue Kollektion herausbringen. Denn wie die Mode sind auch die Puppen Trends unterworfen: „In Frankreich, England und den USA werden natürliche Modelle immer beliebter, während bei uns noch abstrakte Modelle dominieren. Es lässt aber beobachten, dass man von einer Einheit gar wegkommt und dass immer häufiger vielfarbige Figurtypen gewünscht werden\", sagt der Puppenmacher.`,
             questions: [
               {
                 id: "s2q1",
@@ -1905,7 +1726,7 @@
                 options: [
                   {id: "s2q2o1", text: "darf Herr Bauernfeind keinen normalen Nagellack auftragen"},
                   {id: "s2q2o2", text: "können keine Luxusmarken eingesetzt werden"},
-                  {id: "s2q2o3", text: "verwendet er nur billige Produkte"}
+                  {id: "s2q2o3", text: "verwendet he nur billige Produkte"}
                 ],
                 correctAnswer: "s2q2o1"
               },
@@ -1948,7 +1769,7 @@
             id: "s3", 
             title: "Leseverstehen, Teil 3", 
             points: 25,
-            passageTitle: "Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchmal passt kein Text. Wählen Sie dann 'x'.",
+            passageTitle: "Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchما passt kein Text. Wählen Sie dann 'x'.",
             passage: "",
             questions: [],
             texts: [
@@ -2108,7 +1929,7 @@ Elise`
             wordBank: ["ALS", "BEOBACHTUNG", "BETRACHTUNG", "DENN", "DER", "DEUTLICH", "DOCH", "ENTWARFEN", "ENTWICKELTEN", "FÄHIG", "FÜR", "GENAU", "NOCH", "ÜBRIGENS", "WER"],
             fillText2: `Fische sind dumm, stumm und haben keine Empfindungen - diese Vorurteile halten sich hartnäckig. <span class="blank-slot" data-blank-id="31">________</span> das Gegenteil ist der Fall. Sie sind nämlich zu erstaunlichen kognitiven <span class="blank-slot" data-blank-id="32">________</span> und können sowohl Freude als auch Schmerz empfinden. Die meisten Menschen wüssten so gut wie nichts über Fische, beklagt der Verhaltensbiologe Douglas Allan. Wenn man genauer hinsehe, verändere sich aber die Sicht auf sie.<br><br>
 Denn das Leben im Wasser stellt die etwa 33.000 existierenden Arten vor besondere Herausforderungen. Im Laufe der Zeit <span class="blank-slot" data-blank-id="33">________</span> sie hochspezialisierte Sinnesfähigkeiten und Kommunikationsformen. So verständigen sie sich über Geräusche, Gerüche oder Berührungen. Einige Arten lernen durch <span class="blank-slot" data-blank-id="34">________</span> oder benutzen sogar Werkzeuge.<br><br>
-Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35">________</span> nicht einmal zugetraut, dass sie hören können. Erst dem österreichischen Verhaltensforscher Karl von Frisch gelang der Nachweis: Er brachte seinem blinden Wels Xaverl bei, auf ein akustisches Signal zu reagieren. Wenn er pfiff, kam Xaverl aus seinem Versteck, um Futter in Empfang zu nehmen. Der Forscher bewies <span class="blank-slot" data-blank-id="36">________</span> auch als Erster, dass Fische Farben sehen können.<br><br>
+Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35">________</span> nicht einmal zugetraut, dass sie hören können. Erst dem österreichischen Verhaltensforscher Karl von Frisch gelang der Nachweis: Er brachte seinem blinden Wels Xaverl bei, auf ein akustisches Signal zu reagieren. Wenn he pfiff, kam Xaverl aus seinem Versteck, um Futter in Empfang zu nehmen. Der Forscher bewies <span class="blank-slot" data-blank-id="36">________</span> auch als Erster, dass Fische Farben sehen können.<br><br>
 <span class="blank-slot" data-blank-id="37">________</span> warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Intelligent halten wir oft nur Tiere, die uns ähnlich sind\", erklärt Douglas Allan. Fische hätten daher schlechte Karten. Schließlich müssten sie mit ganz anderen Lebensbedingungen zurechtkommen <span class="blank-slot" data-blank-id="38">________</span> Tiere an Land. Allan rät: <span class="blank-slot" data-blank-id="39">________</span> mehr über Fische herausfinden wolle, solle einfach mal in einem Aquarium im Zoo ein paar Minuten lang einen einzelnen Fisch beobachten. Dann erkenne man <span class="blank-slot" data-blank-id="40">________</span>, dass Fische nicht nur ein Bewusstsein, sondern auch einen eigenen Charakter und Bedürfnisse hätten.`
           }
         ]
@@ -2593,7 +2414,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         });
 
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können jedes Wort nur einmal verwenden.</div>
+          <div class="instructions">Klicken Sie auf jede Lücke و wählen Sie das passende Wort aus. Sie können jedes Wort nur einmal verwenden.</div>
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
@@ -2902,8 +2723,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         }
       });
 
-      /* ===== FIXED: Weiter button now correctly navigates to next exam page ===== */
-      document.getElementById('nextBtn-lesen').addEventListener('click', function() {
+      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
         showPage('hoeren-page');
       });
 
@@ -3299,8 +3119,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         }
       });
 
-      /* ===== FIXED: Weiter button now correctly navigates ===== */
-      document.getElementById('nextBtn-hoeren').addEventListener('click', function() {
+      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
         showPage('schreiben-page');
       });
 
@@ -3528,7 +3347,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
       });
 
       document.getElementById('resetBtn-schreiben').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöschت.')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3548,8 +3367,7 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
         }
       });
 
-      /* ===== FIXED: Weiter button now correctly navigates ===== */
-      document.getElementById('nextBtn-schreiben').addEventListener('click', function() {
+      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
         showPage('ergebnisse-page');
       });
 
@@ -3676,8 +3494,8 @@ Bis in die 1930er Jahre wurde Fischen <span class="blank-slot" data-blank-id="35
           "s2q1o3": "von einem französischen Schneider erfunden",
           "s2q2o1": "darf Herr Bauernfeind keinen normalen Nagellack auftragen",
           "s2q2o2": "können keine Luxusmarken eingesetzt werden",
-          "s2q2o3": "verwendet er nur billige Produkte",
-          "s2q3o1": "hat schon als Kind gerne mit Puppen gespielt",
+          "s2q2o3": "verwendet he nur billige Produkte",
+          "s2q3o1": "hat schon als Child gerne mit Puppen gespielt",
           "s2q3o2": "konnte seine erste Schaufensterpuppe nicht auf einmal zahlen",
           "s2q3o3": "organizierte eine Ausstellung mit Schaufensterpuppen",
           "s2q4o1": "eröffnete die erste Linzer Firma für Schaufensterpuppen",
