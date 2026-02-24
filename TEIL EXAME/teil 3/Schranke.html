@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Deutsch B2 Prüfung - Lesen Teil 3 (Completion Mode)</title>
+  
+  <style>
+    /* ===== GLOBAL STYLES – Professionell, ohne Emojis ===== */
+    :root {
+      --primary-dark: #0b2b4a;        
+      --primary-medium: #1f4b7a; 
+      --accent-soft: #3b8fc2;         
+      --light-bg: #f0f7fe;
+      --text-dark: #1e2b37;
+      --white: #ffffff;
+      --shadow-sm: 0 6px 14px rgba(0, 20, 40, 0.12);
+      --transition: all 0.3s ease; 
+      --success: #2e7d5e;             
+      --danger: #b13e3e;               
+      --neutral: #5f6b7a;
+      --neutral-light: #e9eff5;
+      --bg-results: #f8fafd;
+      --border-light: #d4e2f0;
+      
+      /* Default blue theme */
+      --header-bg: #0b2b4a;
+      --timer-bg: rgba(255, 255, 255, 0.1);
+      --slot-border: #8fb4d1;
+      --slot-bg: #f5fafe;
+      --indicator-bg: #d4e2f0;
+      --indicator-border: #8fb4d1;
+      --indicator-text: #1e3a4e;
+      --glow-effect: none;
+    }
+    
+    /* ===== COMPLETION MODE – Vollständiger visueller Wandel ===== */
+    body.completion-mode {
+      --header-bg: #1f6a4c;                /* Grüner Header */
+      --timer-bg: rgba(255, 255, 255, 0.25);
+      --slot-border: #2e7d5e;
+      --slot-bg: #e2f3e4;
+      --indicator-bg: #d4eed4;              /* Helles Grün für Indikatoren */
+      --indicator-border: #2e7d5e;
+      --indicator-text: #1e5e3a;
+      --glow-effect: 0 0 15px rgba(46, 125, 94, 0.3); /* Grüner Glow */
+    }
+    
+    /* Header und Timer */
+    body.completion-mode .topbar {
+      background: var(--header-bg) !important;
+      box-shadow: var(--glow-effect), 0 4px 12px rgba(0,0,0,0.2) !important;
+      transition: all 0.4s ease;
+    }
+    
+    body.completion-mode .timer-container {
+      background: var(--timer-bg) !important;
+      transition: all 0.4s ease;
+    }
+    
+    /* DROP-ZONEs (Fortschrittsbalken) */
+    body.completion-mode .title-slot:not(.has-title):not(.has-x) {
+      border-color: var(--slot-border) !important;
+      background: var(--slot-bg) !important;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03), 0 0 8px rgba(46, 125, 94, 0.2) !important;
+      transition: all 0.4s ease;
+    }
+    
+    /* Indikatoren (Fragen-Dots) – neu hinzugefügt */
+    .question-indicators {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 15px;
+      background: #ffffff;
+      border-radius: 50px;
+      justify-content: center;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+    }
+    
+    .indicator-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--indicator-bg);
+      border: 2px solid var(--indicator-border);
+      color: var(--indicator-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    /* Im Completion Mode werden alle Dots grün */
+    body.completion-mode .indicator-dot {
+      background: #d4eed4 !important;
+      border-color: #2e7d5e !important;
+      color: #1d5e3a !important;
+      box-shadow: 0 0 10px rgba(46, 125, 94, 0.2);
+    }
+    
+    /* Hintergrund der rechten Panel-Überschrift leicht grünlich im Completion Mode */
+    body.completion-mode .question-head {
+      background: #dff0df;
+      border-left-color: #2e7d5e;
+    }
+    
+    /* Übergänge für alle betroffenen Elemente */
+    .topbar, .timer-container, .title-slot, .indicator-dot, .question-head {
+      transition: all 0.4s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0b2b4a 0%, #1f4b7a 100%);
+      color: var(--white);
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+    
+    .exam-body {
+      background: #f0f7fe;
+      color: var(--text-dark);
+      line-height: 1.45;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    /* Header */
+    header.topbar {
+      background: var(--header-bg);
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      min-height: 80px;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .brand .logo {
+      width: 80px;
+      height: 40px;
+      background: #b13e3e;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .meta .main-title {
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.3px;
+    }
+
+    .meta .sub-title {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    /* Timer */
+    .timer-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--timer-bg);
+      padding: 6px 18px;
+      border-radius: 40px;
+      backdrop-filter: blur(2px);
+    }
+    
+    .timer-icon {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+    
+    .timer-display {
+      font-weight: 600;
+      font-size: 24px;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px 14px;
+      border-radius: 30px;
+      letter-spacing: 2px;
+    }
+
+    /* Buttons */
+    .buttons-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    
+    .exam-btn {
+      padding: 12px 22px;
+      border-radius: 40px;
+      border: none;
+      background: #3b8fc2;        
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 140px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 20, 30, 0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .exam-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 14px rgba(0, 20, 30, 0.3);
+    }
+    
+    .exam-btn.result {
+      background: #1f6a9c;        
+    }
+    
+    .exam-btn.result:hover {
+      background: #15507a;
+    }
+    
+    .exam-btn.reset {
+      background: #4f6f8f;        
+    }
+    
+    .exam-btn.reset:hover {
+      background: #3e5a77;
+    }
+    
+    /* Hauptcontainer */
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 18px;
+      padding: 18px 24px;
+      max-width: 1600px;
+      margin: 0 auto;
+      flex: 1;
+      min-height: 0;
+      height: calc(100vh - 80px);
+    }
+    
+    /* Linke und rechte Panels */
+    .left-panel, .right-panel {
+      background: white;
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      overflow-y: auto;
+      height: 100%;
+    }
+    
+    .left-panel::-webkit-scrollbar, .right-panel::-webkit-scrollbar {
+      width: 8px;
+    }
+    .left-panel::-webkit-scrollbar-track, .right-panel::-webkit-scrollbar-track { background: #e2ecf5; border-radius: 10px; }
+    .left-panel::-webkit-scrollbar-thumb, .right-panel::-webkit-scrollbar-thumb { background: var(--accent-soft); border-radius: 10px; }
+    
+    .left-panel .passage {
+      font-size: 14.5px;
+      color: var(--text-dark);
+      line-height: 1.7;
+    }
+    
+    .left-panel h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: var(--primary-dark);
+      border-bottom: 3px solid var(--accent-soft);
+      padding-bottom: 8px;
+      font-weight: 600;
+    }
+    
+    /* Question head rechts */
+    .question-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #e4f0fa;
+      padding: 12px 18px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+      border-left: 5px solid var(--primary-dark);
+      flex-shrink: 0;
+    }
+    
+    .section-name {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 18px;
+    }
+    
+    .question-subtitle {
+      font-size: 13px;
+      color: #3f5568;
+    }
+    
+    /* Texte Liste (links) */
+    .texts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    
+    .text-item {
+      padding: 16px;
+      border: 1px solid #cbdbe9;
+      border-radius: 16px;
+      background: #ffffff;
+      transition: var(--transition);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    
+    .text-item:hover {
+      border-color: var(--accent-soft);
+      box-shadow: 0 6px 12px rgba(59, 143, 194, 0.12);
+    }
+    
+    .text-letter {
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    
+    .text-content {
+      font-size: 13.5px;
+      color: #1e3a4e;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    
+    /* DROP-ZONE – Farben via Variable */
+    .title-slot {
+      min-height: 52px;
+      padding: 10px 14px;
+      border: 2.5px dashed var(--slot-border);
+      border-radius: 14px;
+      background: var(--slot-bg);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      word-break: break-word;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+      color: #1e3a4e;
+    }
+    
+    .title-slot[draggable="true"] {
+      cursor: grab;
+    }
+    
+    .title-slot[draggable="true"]:active {
+      cursor: grabbing;
+      opacity: 0.8;
+    }
+    
+    .title-slot:hover {
+      background: #e6f2fc;
+      border-color: var(--accent-soft);
+    }
+    
+    .title-slot.has-title {
+      background: #e2f3e4;
+      border-color: var(--success);
+      border-style: solid;
+      font-weight: 500;
+    }
+    
+    .title-slot.has-x {
+      background: #fae1e1;
+      border-color: var(--danger);
+      color: #8b3a3a;
+      font-weight: 500;
+      border-style: solid;
+    }
+    
+    /* Situationen rechts */
+    .situations-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    
+    .situation-item {
+      padding: 16px;
+      border: 2px solid #d4e2f0;
+      border-radius: 16px;
+      background: #ffffff;
+      cursor: grab;
+      transition: all 0.15s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    }
+    
+    .situation-item[draggable="true"]:active {
+      cursor: grabbing;
+      opacity: 0.7;
+    }
+    
+    .situation-item:hover {
+      border-color: var(--accent-soft);
+      background: #f0f8ff;
+      transform: translateX(4px);
+    }
+    
+    .situation-item.used {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #f0f3f6;
+      border-color: #a0b8cc;
+      pointer-events: none;  
+    }
+    
+    .situation-number {
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+    
+    .situation-text {
+      font-size: 13.5px;
+      color: #1e3a4e;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    
+    /* X Button */
+    .no-match-container {
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    .exam-btn.no-match {
+      background: #5f7a93;       
+      font-size: 12px;
+      padding: 8px 18px;
+      min-width: auto;
+      border-radius: 30px;
+      font-weight: 600;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .exam-btn.no-match:hover {
+      background: #4a637b;
+    }
+    
+    .exam-btn.no-match.selected {
+      background: var(--danger);
+    }
+    
+    .exam-btn.no-match.selected:hover {
+      background: #9f3737;
+    }
+    
+    /* ===== DETAILERGEBNISSE (linke Seite) ===== */
+    .results-container {
+      padding: 4px 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      background: var(--primary-dark);
+      color: white;
+      padding: 18px 24px;
+      border-radius: 18px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    
+    .results-header h2 {
+      font-size: 22px;
+      font-weight: 600;
+      border: none;
+      margin: 0;
+      color: white;
+      letter-spacing: 0.3px;
+    }
+    
+    .results-summary-badge {
+      background: rgba(255,255,255,0.18);
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .result-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-bottom: 20px;
+    }
+    
+    .result-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 14px 18px;
+      border-left: 6px solid;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.03);
+      border: 1px solid var(--border-light);
+    }
+    
+    .result-card.correct {
+      border-left-color: var(--success);
+    }
+    
+    .result-card.incorrect {
+      border-left-color: var(--danger);
+    }
+    
+    .result-card-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .situation-tag {
+      background: var(--primary-dark);
+      color: white;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 40px;
+      font-size: 14px;
+      min-width: 50px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .situation-text-short {
+      font-weight: 500;
+      max-width: 300px;
+      font-size: 14px;
+      color: #1e3a4e;
+    }
+    
+    .result-answer-badge {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #f0f6fd;
+      padding: 6px 20px;
+      border-radius: 40px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+    }
+    
+    .user-answer {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 15px;
+      min-width: 40px;
+      text-align: center;
+    }
+    
+    .correct-answer {
+      color: #5f6b7a;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .verdict-badge {
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      min-width: 58px;
+      text-align: center;
+    }
+    
+    .verdict-badge.correct {
+      background: var(--success);
+      color: white;
+    }
+    
+    .verdict-badge.incorrect {
+      background: var(--danger);
+      color: white;
+    }
+    
+    /* ===== GESAMTERGEBNIS (rechte Seite) – nur Summary ===== */
+    .summary-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .summary-card {
+      background: linear-gradient(145deg, #f8fafd, #ffffff);
+      border-radius: 36px;
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 35px rgba(0, 20, 40, 0.2);
+      border: 1px solid rgba(255,255,255,0.6);
+      text-align: center;
+    }
+    
+    .summary-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      letter-spacing: 0.5px;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 12px;
+      display: inline-block;
+    }
+    
+    .summary-score {
+      font-size: 64px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      line-height: 1;
+      margin-bottom: 15px;
+    }
+    
+    .summary-score small {
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--neutral);
+    }
+    
+    .summary-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 25px 0 20px;
+      background: #eef3f9;
+      border-radius: 60px;
+      padding: 16px 10px;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: var(--neutral);
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    
+    .stat-value.correct {
+      color: var(--success);
+    }
+    
+    .stat-value.incorrect {
+      color: var(--danger);
+    }
+    
+    .summary-percent {
+      background: var(--primary-dark);
+      color: white;
+      padding: 16px 12px;
+      border-radius: 60px;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-top: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    .summary-verdict {
+      margin-top: 22px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--neutral);
+      background: #e4f0fa;
+      display: inline-block;
+      padding: 8px 28px;
+      border-radius: 50px;
+    }
+    
+    /* Mobile */
+    @media (max-width: 980px) {
+      .container { grid-template-columns: 1fr; height: auto; }
+      .exam-body { height: auto; overflow: auto; }
+      .question-indicators { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body id="body" class="exam-body">
+  <div id="lesen-page" style="height: 100%; display: flex; flex-direction: column;">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">B2</div>
+        <div class="meta">
+          <div class="main-title">Deutsch B2 Prüfung</div>
+          <div class="sub-title">Lesen Teil 3 — Drag & Drop</div>
+        </div>
+      </div>
+      <div class="timer-container">
+        <span class="timer-icon">⏱</span>
+        <span class="timer-display" id="timer">00:00:00</span>
+      </div>
+      <div class="buttons-group">
+        <button id="resultBtn-lesen" class="exam-btn result">Ergebnis anzeigen</button>
+        <button id="resetBtn-lesen" class="exam-btn reset">Neu beginnen</button>
+      </div>
+    </header>
+
+    <div class="container">
+      <main class="left-panel" id="leftPanel-lesen">
+        <div class="passage" id="passage-lesen">
+          <h2 id="passageTitle-lesen">Texte (A-L) – Ziel ablegen</h2>
+          <div id="passageContent-lesen"></div>
+          <!-- Frage-Indikatoren (Dots) werden hier dynamisch eingefügt -->
+          <div id="indicatorContainer" class="question-indicators"></div>
+        </div>
+      </main>
+      <aside class="right-panel" id="rightPanel-lesen">
+        <div class="question-head">
+          <div>
+            <div class="section-name">Leseverstehen, Teil 3</div>
+            <div class="question-subtitle">Situationen (11-20) – ziehen Sie auf die Texte</div>
+          </div>
+        </div>
+        <div class="question-body" id="questionBody-lesen" style="overflow-y: auto; flex:1;"></div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ===============================
+      // SECTION POUR LES CORRECTIONS (LÖSUNGEN) - AKTUALISIERT
+      // ===============================
+      const correctAnswersMap = {
+        "11": "A",
+        "12": "J",
+        "13": "E",
+        "14": "B",
+        "15": "L",
+        "16": "X",
+        "17": "G",
+        "18": "X",
+        "19": "D",
+        "20": "I"
+      };
+
+      const exam = {
+        id: "exam-teil3",
+        sections: [
+          { 
+            id: "s3", 
+            title: "Leseverstehen, Teil 3", 
+            points: 25,
+            texts: [
+              // === NEUE TEXTE (VOLLSTÄNDIG EINGEFÜGT) ===
+              {id: "A", text: "Das große Aufräumbuch Mit ihrer Aufräummethode hat die aus dem Fernsehen bekannte Wohnberaterin und Best- Seller Autorin Mila Komanek das Leben vieler Menschen verändert. Nun hat sie einen neuen, schön illustrierten Ratgeber erstellt. Ihr Tipp: Be- halten Sie nur Gegenstände, die Ihnen wichtig sind! Ihre Schritt-für-Schritt Anleitungen helfen Ihnen dabei, Dinge, die Sie nicht mehr brauchen, auszusortieren und wegzuwerfen: zum Beispiel alte Kleidung und Schuhe, Bücher und Papiere oder Kochutensilien, die nie benutzt werden. Außerdem zeigt Mila Komanek, wie man perfekt Schubladen und Schränke organisiert."},
+              {id: "B", text: "Einrichtungshaus Unterberg - das exklusive Möbelhaus Im Zentrum der Stadt Hildesheim findet sich auf über 5 Etagen eine exzellente Auswahl erstklassiger moderner Möbel. Wenn Sie Wert auf eine erlesene Wohnungseinrichtung legen, finden Sie bei uns alles nach ihrem Geschmack. Erleben Sie eine der schönsten Möbelausstellungen Niedersachsens und lassen Sie sich inspirieren. Bei unserer Auswahl an neuen Möbeln legen wir großen Wert auf hervorragende Verarbeitung, beste Materialien und überzeugendes Design. Wir verkaufen Polstermöbel, Wohnzimmereinrichtungen, Garten - und Balkonmöbel, Garderoben und mehr. Einrichtungshaus Unterberg Neue Straße 8 31134 Hildesheim."},
+              {id: "C", text: "Geschichten für Kinder neu im Programm Kinderbücher schreiben der Basiskurs Kinder sind besondere Leser. Sie wollen Spaß und Spannung erleben und neue Welten entdecken. Das ist eine große, aber auch schöne Herausforderung für Autoren. Unser Basiskurs vermittelt das notwendige handwerkliche Können dafür Themen - kindgerechte Geschichten erzählen ein Buchkonzept entwickeln Figuren entwerfen Illustrationen für Kinderbücher Veröffentlichung und Verlagssuche Für Einsteiger und Fortgeschrittene, für angehende Kinderbuchautoren und für alle, die nur mal reinschnuppern möchten. Schreibakademie Konstanz. Info und Kontakt: mailschreibakademie-konstanz.de"},
+              {id: "D", text: "Helden der Kindheit Pippi Langstrumpf, der kleine Wassermann und viele andere Helden aus Kinderbüchern sind im Historischen Museum zu Gast! Kommen Sie mit auf eine Entdeckungstour durch die Phantasiewelten der Kinderbuchliteratur des 20. und 21. Jahrhunderts. Ausgestellt werden zahlreiche Originalfiguren und Requisiten aus Verfilmungen und Puppenspielen, unter anderem das Fahrzeug aus, Robbi, Tobbi und das Fliewatuut und einige Möbel aus der Villa Kunterbunt. Die Ausstellung gibt auch Einblicke in die Arbeit von Kinderbuchautoren. Zahlreiche Spiele laden Kinder und Erwachsene zum Mitmachen ein. Historisches Museum Kassel, Konrad-Zuse- Str. 3, 34123 Kassel"},
+              {id: "E", text: "Henrike Derendorf: Das neue Wohnbuch- 1000 Ideen für ein schönes Zuhause Hier werden Wohnträume wahr! Wie plant man das ideale Wohnzimmer oder ein gemütliches Schlafzimmer und wie macht man das Beste aus kleinen Räumen? Passt die gelbe oder die blaue Tapete besser? Dieses Buch liefert die Antworten, führt in die Kunst der optimalen Raumgestaltung ein und erklärt verschiedene Stilrichtungen. Die Texte sind vielfältig, informativ und enthalten zahlreiche Hinweise von Experten. Ausführliche Produktinformationen und eine Hersteller- sowie Shop-Liste runden das Angebot dieses Wohnratgebers ab. Heute schon an morgen denken Welche Trends werden das Wohnen in der Zukunft prägen? Wie werden wir im Alter leben?"},
+              {id: "F", text: "Wohngemeinschaften nicht nur für Studenten, sondern auch für Senioren, Mehrgenerationenhauser oder ganz was anderes? Neue, innovative Wohnkonzepte werden immer wichtiger. In dem Vortrag werden einige gelungene Wohnprojekte vorgestellt, die zeigen, wie man in Zukunft und auch schon heute wohnen und leben kann. Referent Dr. Anton Schroeter, Montag, 15.9. 19:30 Uhr Teilnahmegebühr: 10€, Anmeldung erforderlich vhs-Zentrum Am Marktplatz 8 06108 Halle Infos unter: www.winterwanderwoche-oberstdorf.net"},
+              {id: "G", text: "Katze, Papagei, Meerschweinchen was ist erlaubt? Muss ich den Vermieter fragen, wenn ich mir ein Haustier anschaffen will? Was soll ich tun, wenn die Nachbarn sich beschweren? Solche und ähnliche Fragen stellen sich viele Mieter, die gerne Haustiere hätten. In unserer Vortragsreihe rund um das Mietrecht versuchen wir, sie zu beantworten. Unser nächster Vortrag findet am Dienstag, 7. Juli, um 19 Uhr statt. Die Juristin Dr. Anke Wischnewski spricht über das Thema 'Tiere im Mietrecht', Volkshochschule Bendorf, Hauptstr. 4, 56170 Bendorf."},
+              {id: "H", text: "Kleine Helden gehen in den Büchern des Kinderbuchverlags Maus & Sandmann auf große Reise und erleben spannende Abenteuer. Die liebevoll illustrierten Geschichten vermitteln kindgerechtes und interessantes Wissen. Wir bieten Praktikanten die Möglichkeit, die verschiedenen Aufgaben im Verlagswesen kennenzulernen, z. B. Pressearbeit, Programmplanung, Lektorat, Marketing und Vertrieb. Wir suchen Studenten (m/w), die im Rahmen eines Praktikums unsere Buchprojekte begleiten wollen. Voraussetzung ist, dass Sie mindestens zwei Semester an einer Hochschule studiert haben. Kontakt: Kinderbuchverlag Maus & Sandmann, Schifferstraße 8, 09116 Chemnitz www.maus-und-sandmann.de/praktikum"},
+              {id: "I", text: "Rat mal, wo die Tiere wohnen! Wie schlau sind Bienen? Welche Tiere leben im Garten? Der Zoologe Dirk Gorissen nimmt junge Forscher mit auf eine Entdeckungsreise. Er lädt dazu ein, die Welt der heimischen Tiere zu erkunden und direkt vor der Haus- Tür damit zu beginnen. Er begleitet uns zu den Tieren im Wald, im Garten, am Wasser und im Haus. Vom Glühwürmchen bis zum Fuchs man wird eine Menge Neues über Tiere erfahren! Für alle Kinder und Neugierigen ab 6 Jahren zum Vorlesen und Selberlesen, Gebundenes Buch, 18 EURO."},
+              {id: "J", text: "Tiere hautnah erleben Bei uns finden heimische Wildtiere, aber auch Exoten aus aller Welt ein artgerechtes Zuhause. Für die kleinen und großen Besucher des Wald Zoos gibt es bei einem Rundgang viel zu bestaunen! Gehen Sie auf Tuchfühlung mit unseren Lieblingen! Viele unserer Tiere lassen sich gerne mal streicheln. Auch das Füttern ist hier und da möglich. Sind Sie schon neugierig geworden? Dann nichts wie los! Öffnungszeiten: Dienstag bis Sonntag: 10 bis 18 Uhr Eintritt: Erwachsene 2,50 €, Kinder 2 € Wald Zoo | Montabaur, Waldstr. 12, 56410 Montabaur"},
+              {id: "K", text: "Willst du Tierexperte werden? Dann komm ins Familienzentrum Linz! Bei fünf Treffen lernen wir alles über Tiere in Haus und Hof und beantworten Fragen wie: „Wo schlafen Kühe?“, „Darf ich einen fremden Hund streicheln?“ oder „Was frisst mein Kaninchen am liebsten?“ Außerdem machen wir spannende Ausflüge und am Ende bekommst du sogar ein Diplom. Tierärztin Katja Herbst lädt Kinder zwischen 7 und 12 Jahren ein, mehr über die Bedürfnisse von Tieren zu erfahren. Wir freuen uns auf dich! Familienzentrum Linz in Zusammenarbeit mit dem Tierheim Linz. Teilnahmegebühr: 4 € Anmeldung: info@familienzentrum-linz.net"},
+              {id: "L", text: "Wohnen in der Gründerzeit In einer Ausstellung im Schloss Britz erfahren die Besucher alles über die Wohnungseinrichtung in der Gründerzeit. Die originalen Möbel vermitteln anschaulich und lebendig das Wohn- und Lebensgefühl des ausgehenden 19. Jahrhunderts. In der Gründerzeit (1870 bis 1914) entstand eine besondere Wohnkultur. Das aufstrebende Bürgertum wollte seinen neu errungenen Wohlstand in einer repräsentativen Architektur des Hauses und einer luxuriösen Innenausstattung mit hochwertigem Mobiliar zeigen. Öffnungszeiten: dienstags bis sonntags von 11 bis 18 Uhr Eintritt: 3 Euro, ermäßigt 2 Euro, bis 12 Jahre frei Schloss Britz, Alt-Britz 73, 12359 Berlin"}
+            ],
+            situations: [
+              // === NEUE SITUATIONEN (11-20) ===
+              {id: "11", text: "Ihre Schränke sind voll mit Sachen, und Sie haben kaum mehr Platz in der Wohnung. Sie suchen Ideen, wie Sie das ändern können."},
+              {id: "12", text: "Eine Bekannte möchte mit ihrer Familie einen Ausflug machen und dabei am liebsten Tiere beobachten."},
+              {id: "13", text: "Eine Bekannte zieht um und sucht Tipps zur Einrichtung und Wandfarben."},
+              {id: "14", text: "Ihr Bruder sucht ein hochwertiges neues Sofa."},
+              {id: "15", text: "Ihr Vater interessiert sich für alte, wertvolle Möbel."},
+              {id: "16", text: "Ihre Cousine studiert und würde gern in eine Wohngemeinschaft ziehen."},
+              {id: "17", text: "Ihre Schwester möchte wissen, ob sie in ihrer Mietwohnung einen Hund halten darf."},
+              {id: "18", text: "Ihre Tochter geht zur Schule und sucht einen Praktikumsplatz."},
+              {id: "19", text: "Sie möchten eine Ausstellung besuchen, die auch für Ihre Kinder interessant ist."},
+              {id: "20", text: "Sie suchen ein Kinderbuch für Ihren siebenjährigen Sohn. Er möchte gerne mehr über Tiere erfahren."}
+            ]
+          }
+        ]
+      };
+
+      let state = { sectionIndex: 0, answers: {}, showResults: false };
+      let seconds = 0, timerInterval;
+      const timerEl = document.getElementById('timer');
+      const passageContentEl = document.getElementById('passageContent-lesen');
+      const questionBodyEl = document.getElementById('questionBody-lesen');
+      const resultBtn = document.getElementById('resultBtn-lesen');
+      const resetBtn = document.getElementById('resetBtn-lesen');
+      const bodyEl = document.getElementById('body');
+      const indicatorContainer = document.getElementById('indicatorContainer');
+
+      function startTimer() { timerInterval = setInterval(() => { seconds++; updateTimerDisplay(); }, 1000); }
+      function resetTimer() { seconds = 0; updateTimerDisplay(); }
+      function updateTimerDisplay() { const h = Math.floor(seconds/3600), m = Math.floor((seconds%3600)/60), s = seconds%60; timerEl.textContent = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }
+
+      // --- Prüfen ob alle Fragen beantwortet sind (für Completion Mode) ---
+      function isAllQuestionsAnswered() {
+        const totalSituations = exam.sections[0].situations.length;
+        const answeredCount = Object.keys(state.answers).length;
+        return answeredCount === totalSituations;
+      }
+
+      function updateCompletionMode() {
+        if (!state.showResults && isAllQuestionsAnswered()) {
+          bodyEl.classList.add('completion-mode');
+        } else {
+          bodyEl.classList.remove('completion-mode');
+        }
+      }
+
+      // Indikatoren (Dots) rendern
+      function renderIndicators() {
+        const situations = exam.sections[0].situations;
+        let dotsHtml = '';
+        situations.forEach(sit => {
+          const isAnswered = state.answers[sit.id] !== undefined;
+          dotsHtml += `<div class="indicator-dot" title="Situation ${sit.id}">${sit.id}</div>`;
+        });
+        indicatorContainer.innerHTML = dotsHtml;
+      }
+
+      // --- DRAG & DROP + KLICK + X-TOGGLE ---
+      function handleDragStart(e, type, id) {
+        if (type === 'situation' && state.answers[id] && state.answers[id] !== 'X') { e.preventDefault(); return; } 
+        e.dataTransfer.setData('text/plain', JSON.stringify({ type, id }));
+      }
+
+      function handleDropOnText(e, textId) {
+        e.preventDefault();
+        const raw = e.dataTransfer.getData('text/plain');
+        if (!raw) return;
+        const { type, id } = JSON.parse(raw);
+        
+        if (type === 'situation') {
+          if (state.answers[id] && state.answers[id] !== 'X') return; 
+          const existingForText = Object.entries(state.answers).find(([sit, val]) => val === textId);
+          if (existingForText) return;
+          
+          if (state.answers[id] === 'X') delete state.answers[id];
+          state.answers[id] = textId;
+        } 
+        else if (type === 'slot') {
+          const situationId = id.replace('slot-','');
+          if (state.answers[situationId] && state.answers[situationId] !== 'X') {
+            delete state.answers[situationId];
+          }
+        }
+        updateCompletionMode();
+        renderAll();
+      }
+
+      function allowDrop(e) { e.preventDefault(); }
+
+      function handleSlotClick(situationId) {
+        if (situationId && state.answers[situationId] && state.answers[situationId] !== 'X') {
+          delete state.answers[situationId];
+          updateCompletionMode();
+          renderAll();
+        }
+      }
+
+      function toggleNoMatch(situationId) {
+        if (state.answers[situationId] === 'X') {
+          delete state.answers[situationId];
+        } else {
+          if (state.answers[situationId]) {
+            delete state.answers[situationId];
+          }
+          state.answers[situationId] = 'X';
+        }
+        updateCompletionMode();
+        renderAll();
+      }
+
+      // ===== RENDER =====
+      function renderPart3() {
+        const section = exam.sections[0];
+        let textsHTML = `<div class="texts-list">`;
+        section.texts.forEach(text => {
+          const userSit = Object.keys(state.answers).find(key => state.answers[key] === text.id);
+          const sitObj = userSit ? section.situations.find(s => s.id === userSit) : null;
+          const slotContent = userSit ? `Situation ${sitObj.id}: ${sitObj.text.substring(0,65)}...` : (state.answers[text.id] === 'X' ? '' : 'Hier ablegen');
+          const hasClass = userSit ? 'has-title' : (state.answers[text.id] === 'X' ? 'has-x' : '');
+          const draggable = userSit ? 'true' : 'false';
+          const slotClickAttr = userSit ? `onclick="window.lesenApp.handleSlotClick('${userSit}')"` : '';
+          
+          textsHTML += `
+            <div class="text-item" data-text-id="${text.id}">
+              <div class="text-letter">Text ${text.id}</div>
+              <div class="text-content">${text.text}</div>
+              <div class="title-slot ${hasClass}" 
+                   data-text-id="${text.id}"
+                   draggable="${draggable}"
+                   ondragstart="event.dataTransfer.setData('text/plain', JSON.stringify({type:'slot', id:'slot-${userSit}'}))"
+                   ondrop="window.lesenApp.dropOnText(event, '${text.id}')"
+                   ondragover="event.preventDefault()"
+                   ${slotClickAttr}
+                   title="${userSit ? 'Klicken zum Entfernen' : ''}">
+                ${userSit ? slotContent : (state.answers[text.id] === 'X' ? 'X (kein Text)' : 'Hier ablegen')}
+              </div>
+            </div>`;
+        });
+        textsHTML += `</div>`;
+        passageContentEl.innerHTML = textsHTML;
+
+        let sitHTML = `<div class="situations-list">`;
+        section.situations.forEach(sit => {
+          const used = state.answers[sit.id] && state.answers[sit.id] !== 'X';
+          const isX = state.answers[sit.id] === 'X';
+          sitHTML += `
+            <div class="situation-item ${used ? 'used' : ''}" 
+                 data-situation-id="${sit.id}"
+                 draggable="${!used}"
+                 ondragstart="window.lesenApp.dragStart(event, 'situation', '${sit.id}')">
+              <div class="situation-number">Situation ${sit.id}</div>
+              <div class="situation-text">${sit.text}</div>
+              <div class="no-match-container">
+                <button class="exam-btn no-match ${isX ? 'selected' : ''}" 
+                        onclick="event.stopPropagation(); window.lesenApp.toggleNoMatch('${sit.id}')">
+                  ${isX ? 'X gewählt' : 'X (kein Text)'}
+                </button>
+              </div>
+            </div>`;
+        });
+        sitHTML += `</div>`;
+        questionBodyEl.innerHTML = sitHTML;
+        
+        renderIndicators(); // Dots immer aktuell halten
+      }
+
+      // Ergebnisse Detail (linke Seite) - Utilisation de la carte de correction mise à jour
+      function renderResultsLeft() {
+        const section = exam.sections[0];
+        let totalCorrect = 0;
+        let total = section.situations.length;
+        
+        let html = `
+          <div class="results-container">
+            <div class="results-header">
+              <h2>Prüfungsauswertung</h2>
+              <div class="results-summary-badge">${Object.keys(state.answers).length}/${total} beantwortet</div>
+            </div>
+            <div class="result-grid">
+        `;
+        
+        section.situations.forEach(sit => {
+          const user = state.answers[sit.id];
+          // Correction lue depuis la carte (nouvelle)
+          const correctId = correctAnswersMap[sit.id] || 'X';
+          const isCorrect = (user === correctId);
+          if (isCorrect) totalCorrect++;
+          
+          const userDisplay = user || '—';
+          const correctDisplay = correctId;
+          
+          html += `
+            <div class="result-card ${isCorrect ? 'correct' : 'incorrect'}">
+              <div class="result-card-info">
+                <span class="situation-tag">${sit.id}</span>
+                <span class="situation-text-short">${sit.text.substring(0,70)}…</span>
+              </div>
+              <div class="result-answer-badge">
+                <span class="user-answer">${userDisplay}</span>
+                <span class="correct-answer">soll: ${correctDisplay}</span>
+                <span class="verdict-badge ${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? 'richtig' : 'falsch'}</span>
+              </div>
+            </div>
+          `;
+        });
+        
+        html += `</div></div>`;
+        passageContentEl.innerHTML = html;
+        indicatorContainer.innerHTML = ''; // Dots im Ergebnis-Modus ausblenden
+        return { totalCorrect, total };
+      }
+
+      // Gesamtergebnis (rechte Seite) – nur Summary
+      function renderResultsRight(totalCorrect, total) {
+        const wrong = total - totalCorrect;
+        const percent = Math.round((totalCorrect/total)*100);
+        const stars = '★'.repeat(Math.max(1, Math.floor(percent/20)));
+        const passed = percent >= 60;
+        
+        const rightHTML = `
+          <div class="summary-container">
+            <div class="summary-card">
+              <div class="summary-title">Gesamtergebnis</div>
+              <div class="summary-score">${totalCorrect}<small>/${total}</small></div>
+              <div class="summary-stats">
+                <div class="stat-item">
+                  <div class="stat-label">Richtig</div>
+                  <div class="stat-value correct">${totalCorrect}</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">Falsch</div>
+                  <div class="stat-value incorrect">${wrong}</div>
+                </div>
+              </div>
+              <div class="summary-percent">${percent}%</div>
+              <div class="summary-verdict">${passed ? 'Bestanden' : 'Nicht bestanden'}</div>
+              <div style="margin-top:15px; font-size:22px; color:#ffd966;">${stars}</div>
+            </div>
+          </div>
+        `;
+        questionBodyEl.innerHTML = rightHTML;
+      }
+
+      function renderResults() {
+        const { totalCorrect, total } = renderResultsLeft();
+        renderResultsRight(totalCorrect, total);
+      }
+
+      function renderAll() { 
+        if (state.showResults) {
+          renderResults();
+        } else {
+          renderPart3();
+        }
+        updateCompletionMode();
+      }
+
+      function resetExam() { 
+        if (confirm('Neu beginnen?')) { 
+          state.answers = {}; 
+          state.showResults = false; 
+          resetTimer(); 
+          updateCompletionMode();
+          renderAll(); 
+        } 
+      }
+
+      resultBtn.addEventListener('click', () => { 
+        state.showResults = !state.showResults; 
+        renderAll(); 
+      });
+      
+      resetBtn.addEventListener('click', resetExam);
+
+      window.lesenApp = {
+        dragStart: handleDragStart,
+        dropOnText: handleDropOnText,
+        toggleNoMatch,
+        handleSlotClick,
+      };
+
+      startTimer();
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
