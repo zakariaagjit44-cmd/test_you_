@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* ========== الأنماط كما هي تماماً بدون تغيير ========== */
+        /* ========== الأنماط الأساسية ========== */
         :root {
             --primary: #2196F3;
             --primary-dark: #1976D2;
@@ -30,10 +30,24 @@
             --whatsapp-dark: #128C7E;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* متغيرات الألوان حسب الوضع */
+        :root {
+            --header-color: var(--primary-dark);
+            --subtitle-color: var(--text-light);
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --card-text: var(--text);
+            --card-title: var(--primary-dark);
+            --card-desc: var(--text-light);
+        }
+
+        body.dark-mode {
+            --header-color: var(--white);
+            --subtitle-color: rgba(255, 255, 255, 0.9);
+            --card-bg: rgba(13, 71, 161, 0.95);
+            --card-text: var(--light);
+            --card-title: #90CAF9;
+            --card-desc: var(--light);
+            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
         }
 
         body {
@@ -43,11 +57,13 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            transition: background 0.3s ease;
         }
 
-        body.dark-mode {
-            background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
-            color: var(--light);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         /* Floating Elements */
@@ -249,7 +265,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Subscription Activation Button - محسن */
+        /* Subscription Activation Button */
         .subscription-activation {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: var(--white);
@@ -292,11 +308,6 @@
             box-shadow: 0 15px 35px rgba(102, 126, 234, 0.6);
         }
 
-        .subscription-activation i {
-            font-size: 1.5rem;
-            filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
-        }
-
         /* Forgot Password Link */
         .forgot-password {
             text-align: center;
@@ -322,10 +333,6 @@
 
         .dark-mode .forgot-password a {
             color: var(--secondary);
-        }
-
-        .dark-mode .forgot-password a:hover {
-            color: var(--secondary-dark);
         }
 
         /* Phone Modal */
@@ -432,7 +439,7 @@
             text-align: center;
             padding: 3rem;
             max-width: 800px;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--card-bg);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             border: 1px solid rgba(33, 150, 243, 0.2);
@@ -445,11 +452,6 @@
         @keyframes contentSlideUp {
             from { opacity: 0; transform: translateY(50px); }
             to { opacity: 1; transform: translateY(0); }
-        }
-
-        .dark-mode .signup-content {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
         }
 
         .signup-content h1 {
@@ -493,7 +495,7 @@
             text-align: center;
             padding: 3rem;
             max-width: 800px;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--card-bg);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             border: 1px solid rgba(33, 150, 243, 0.2);
@@ -501,11 +503,6 @@
             position: relative;
             z-index: 2;
             animation: contentSlideUp 0.8s ease;
-        }
-
-        .dark-mode .login-content {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
         }
 
         .login-content h1 {
@@ -655,28 +652,21 @@
 
         .header h1 {
             font-size: 3rem;
-            color: var(--primary-dark);
+            color: var(--header-color);
             margin-bottom: 1rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .dark-mode .header h1 {
-            color: #90CAF9;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: color 0.3s ease;
         }
 
         .page-subtitle {
             font-size: 1.3rem;
-            color: var(--text-light);
+            color: var(--subtitle-color);
             max-width: 600px;
             margin: 0 auto;
             line-height: 1.6;
-        }
-
-        .dark-mode .page-subtitle {
-            color: #B0BEC5;
+            text-shadow: 0 1px 5px rgba(0,0,0,0.1);
+            transition: color 0.3s ease;
         }
 
         .menu-grid {
@@ -688,7 +678,7 @@
         }
 
         .menu-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--card-bg);
             border-radius: var(--radius);
             padding: 3rem 2rem;
             text-align: center;
@@ -731,11 +721,6 @@
             transform: scaleX(1);
         }
 
-        .dark-mode .menu-card {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
-
         .menu-card:hover {
             transform: translateY(-15px) scale(1.05);
             box-shadow: var(--shadow-hover);
@@ -755,22 +740,16 @@
         .menu-card h2 {
             font-size: 2rem;
             margin-bottom: 1.5rem;
-            color: var(--primary-dark);
+            color: var(--card-title);
             font-weight: 600;
-        }
-
-        .dark-mode .menu-card h2 {
-            color: #90CAF9;
+            transition: color 0.3s ease;
         }
 
         .menu-card p {
-            color: var(--text-light);
+            color: var(--card-desc);
             line-height: 1.7;
             font-size: 1.1rem;
-        }
-
-        .dark-mode .menu-card p {
-            color: var(--light);
+            transition: color 0.3s ease;
         }
 
         .back-btn {
@@ -811,13 +790,14 @@
             box-shadow: 0 12px 30px rgba(33, 150, 243, 0.4);
         }
 
-        /* Exams Page */
+        /* Exams Container */
         .exams-container {
             min-height: 100vh;
             padding: 2rem;
             position: relative;
         }
 
+        /* Exam Cards - موحدة لجميع الأقسام */
         .exams-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -827,9 +807,9 @@
         }
 
         .exam-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--card-bg);
             border-radius: 20px;
-            padding: 2.5rem 2rem;
+            padding: 2rem 1.5rem;
             text-align: center;
             box-shadow: var(--shadow);
             cursor: pointer;
@@ -841,15 +821,13 @@
             position: relative;
             overflow: hidden;
             transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
         .exam-card:nth-child(odd) { animation-delay: 0.1s; }
         .exam-card:nth-child(even) { animation-delay: 0.2s; }
-
-        .dark-mode .exam-card {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
 
         .exam-card:hover {
             transform: translateY(-12px) scale(1.08);
@@ -873,26 +851,99 @@
         }
 
         .exam-card h3 {
-            margin-bottom: 1rem;
-            color: var(--primary-dark);
+            color: var(--card-title);
             font-size: 1.4rem;
             font-weight: 600;
             position: relative;
             z-index: 2;
+            margin: 0;
+            transition: color 0.3s ease;
         }
 
-        .dark-mode .exam-card h3 {
-            color: #90CAF9;
-        }
-
-        .exam-card p {
-            color: var(--text-light);
+        .exam-card .arabic-translation {
+            color: var(--card-desc);
+            font-size: 1.1rem;
+            font-weight: 400;
             position: relative;
             z-index: 2;
+            margin: 0;
+            opacity: 0.9;
+            transition: color 0.3s ease;
         }
 
-        .dark-mode .exam-card p {
-            color: var(--light);
+        /* Submenu Cards - موحدة */
+        .exams-submenu,
+        .prüfungsteile-submenu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            max-width: 1200px;
+            margin: 3rem auto 0;
+        }
+
+        .submenu-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 3rem 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            backdrop-filter: blur(15px);
+            transform: translateY(50px);
+            opacity: 0;
+            animation: cardSlideUp 0.8s ease forwards;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .submenu-card:hover {
+            transform: translateY(-15px) scale(1.05);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .submenu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s ease;
+        }
+
+        .submenu-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .submenu-card .menu-card-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 6px 12px rgba(33, 150, 243, 0.3));
+            transition: var(--transition);
+        }
+
+        .submenu-card:hover .menu-card-icon {
+            transform: scale(1.2) rotate(8deg);
+        }
+
+        .submenu-card h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--card-title);
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .submenu-card p {
+            color: var(--card-desc);
+            line-height: 1.7;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
         }
 
         /* KURS Submenu */
@@ -909,7 +960,7 @@
         }
 
         .kurs-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--card-bg);
             border-radius: 20px;
             padding: 2.5rem 2rem;
             text-align: center;
@@ -931,11 +982,6 @@
         .kurs-card:nth-child(4) { animation-delay: 0.4s; }
         .kurs-card:nth-child(5) { animation-delay: 0.5s; }
 
-        .dark-mode .kurs-card {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
-
         .kurs-card:hover {
             transform: translateY(-12px) scale(1.08);
             box-shadow: var(--shadow-hover);
@@ -943,25 +989,19 @@
 
         .kurs-card h3 {
             margin-bottom: 1rem;
-            color: var(--primary-dark);
+            color: var(--card-title);
             font-size: 1.4rem;
             font-weight: 600;
             position: relative;
             z-index: 2;
-        }
-
-        .dark-mode .kurs-card h3 {
-            color: #90CAF9;
+            transition: color 0.3s ease;
         }
 
         .kurs-card p {
-            color: var(--text-light);
+            color: var(--card-desc);
             position: relative;
             z-index: 2;
-        }
-
-        .dark-mode .kurs-card p {
-            color: var(--light);
+            transition: color 0.3s ease;
         }
 
         /* Back Button for KURS */
@@ -1017,7 +1057,7 @@
         }
 
         .mundlich-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--card-bg);
             border-radius: 20px;
             padding: 2.5rem 2rem;
             text-align: center;
@@ -1036,11 +1076,6 @@
         .mundlich-card:nth-child(1) { animation-delay: 0.1s; }
         .mundlich-card:nth-child(2) { animation-delay: 0.2s; }
         .mundlich-card:nth-child(3) { animation-delay: 0.3s; }
-
-        .dark-mode .mundlich-card {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
-        }
 
         .mundlich-card:hover {
             transform: translateY(-12px) scale(1.08);
@@ -1106,7 +1141,7 @@
         }
 
         .profile-card {
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--card-bg);
             border-radius: var(--radius);
             padding: 3rem;
             max-width: 900px;
@@ -1117,11 +1152,6 @@
             transform: translateY(30px);
             opacity: 0;
             animation: cardSlideUp 0.8s ease forwards;
-        }
-
-        .dark-mode .profile-card {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
         }
 
         .profile-header {
@@ -1243,11 +1273,6 @@
             background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
             transform: rotate(45deg);
             animation: shine 4s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
 
         .countdown-section h3 {
@@ -1390,7 +1415,7 @@
             text-align: center;
             padding: 3rem;
             max-width: 600px;
-            background: rgba(255, 255, 255, 0.95);
+            background: var(--card-bg);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             border: 1px solid rgba(33, 150, 243, 0.2);
@@ -1398,11 +1423,6 @@
             position: relative;
             z-index: 2;
             animation: contentSlideUp 0.8s ease;
-        }
-
-        .dark-mode .waiting-content {
-            background: rgba(13, 71, 161, 0.95);
-            border: 1px solid rgba(227, 242, 253, 0.2);
         }
 
         .waiting-icon {
@@ -1591,11 +1611,11 @@
                 font-size: 1.1rem;
             }
 
-            .menu-grid, .exams-grid, .kurs-submenu, .mundlich-submenu {
+            .menu-grid, .exams-grid, .kurs-submenu, .mundlich-submenu, .exams-submenu, .prüfungsteile-submenu {
                 grid-template-columns: 1fr;
             }
 
-            .menu-card, .exam-card, .kurs-card, .mundlich-card {
+            .menu-card, .exam-card, .kurs-card, .mundlich-card, .submenu-card {
                 padding: 2rem 1.5rem;
             }
 
@@ -1867,7 +1887,6 @@
                         </button>
                     </div>
                     
-                    <!-- حقل تاريخ الامتحان الجديد -->
                     <div class="form-group">
                         <label for="signupExamDate">تاريخ الامتحان (اختياري):</label>
                         <input type="date" id="signupExamDate" class="form-input" min="2024-01-01" max="2026-12-31">
@@ -1898,7 +1917,7 @@
                 <p class="page-subtitle" id="menuSubtitle">اختر مجال تعلمك وابدأ التحضير للاختبار</p>
                 <button class="back-btn" id="backToLogin">
                     <i class="fas fa-sign-out-alt"></i>
-                    <span id="backToLoginText">تسجيل الخروج</span>
+                    <span id="backToLoginTextMenu">تسجيل الخروج</span>
                 </button>
             </div>
             
@@ -1976,9 +1995,7 @@
                 <p class="page-subtitle" id="lesenPageSubtitle">اختر تمرين القراءة الذي ترغب في البدء به</p>
             </div>
             
-            <div class="exams-grid" id="lesenGrid">
-                <!-- Lesen exams will be dynamically added here -->
-            </div>
+            <div class="exams-grid" id="lesenGrid"></div>
         </div>
     </div>
 
@@ -1994,9 +2011,7 @@
                 <p class="page-subtitle" id="hoerenPageSubtitle">اختر تمرين الاستماع الذي ترغب في البدء به</p>
             </div>
             
-            <div class="exams-grid" id="hoerenGrid">
-                <!-- Hören exams will be dynamically added here -->
-            </div>
+            <div class="exams-grid" id="hoerenGrid"></div>
         </div>
     </div>
 
@@ -2012,9 +2027,7 @@
                 <p class="page-subtitle" id="schreibenPageSubtitle">اختر تمرين الكتابة الذي ترغب في البدء به</p>
             </div>
             
-            <div class="exams-grid" id="schreibenGrid">
-                <!-- Schreiben exams will be dynamically added here -->
-            </div>
+            <div class="exams-grid" id="schreibenGrid"></div>
         </div>
     </div>
 
@@ -2030,7 +2043,7 @@
                 <p class="page-subtitle" id="mundlichPageSubtitle">اختر تمرين التحدث الذي ترغب في البدء به</p>
             </div>
             
-            <div class="mundlich-submenu active" id="mundlichSubmenu">
+            <div class="mundlich-submenu active">
                 <div class="mundlich-card" id="teil1Card">
                     <div class="menu-card-icon">1️⃣</div>
                     <h3 id="teil1Title">Teil 1</h3>
@@ -2064,13 +2077,11 @@
                 <p class="page-subtitle" id="pdfsPageSubtitle">اختر المادة التي ترغب في تحميلها</p>
             </div>
             
-            <div class="exams-grid" id="pdfsGrid">
-                <!-- PDFs will be dynamically added here -->
-            </div>
+            <div class="exams-grid" id="pdfsGrid"></div>
         </div>
     </div>
 
-    <!-- Exams Page -->
+    <!-- Exams Main Page -->
     <div id="examsPage" class="page">
         <div class="exams-container">
             <button class="back-btn" id="backFromExams">
@@ -2079,12 +2090,120 @@
             </button>
             <div class="header">
                 <h1 id="examsPageTitle">Prüfungen - الامتحانات</h1>
-                <p class="page-subtitle" id="examsPageSubtitle">اختر الامتحان الذي ترغب في التدرب عليه</p>
+                <p class="page-subtitle" id="examsPageSubtitle">اختر نوع الامتحانات التي ترغب في التدرب عليها</p>
             </div>
             
-            <div class="exams-grid" id="examsGrid">
-                <!-- Exams will be dynamically added here -->
+            <div class="exams-submenu">
+                <div class="submenu-card" id="komplettePrüfungenCard">
+                    <div class="menu-card-icon">📋</div>
+                    <h3>Komplette Prüfungen</h3>
+                    <p>الامتحانات الكاملة كما هي</p>
+                </div>
+                
+                <div class="submenu-card" id="prüfungsteileCard">
+                    <div class="menu-card-icon">🔍</div>
+                    <h3>Prüfungsteile</h3>
+                    <p>أجزاء الامتحانات مقسمة حسب الأجزاء</p>
+                </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Komplette Prüfungen Page -->
+    <div id="komplettePrüfungenPage" class="page">
+        <div class="exams-container">
+            <button class="back-btn" id="backFromKomplette">
+                <i class="fas fa-arrow-right"></i>
+                <span>العودة إلى قائمة الامتحانات</span>
+            </button>
+            <div class="header">
+                <h1>Komplette Prüfungen</h1>
+                <p class="page-subtitle">الامتحانات الكاملة للتحضير للاختبار</p>
+            </div>
+            
+            <div class="exams-grid" id="komplettePrüfungenGrid"></div>
+        </div>
+    </div>
+
+    <!-- Prüfungsteile Main Page -->
+    <div id="prüfungsteilePage" class="page">
+        <div class="exams-container">
+            <button class="back-btn" id="backFromPrüfungsteile">
+                <i class="fas fa-arrow-right"></i>
+                <span>العودة إلى قائمة الامتحانات</span>
+            </button>
+            <div class="header">
+                <h1>Prüfungsteile</h1>
+                <p class="page-subtitle">اختر الجزء الذي ترغب في التدرب عليه</p>
+            </div>
+            
+            <div class="prüfungsteile-submenu">
+                <div class="submenu-card" id="lesenTeil1Card">
+                    <div class="menu-card-icon">📖</div>
+                    <h3>Lesen Teil 1</h3>
+                    <p>تمارين القراءة - الجزء الأول</p>
+                </div>
+                
+                <div class="submenu-card" id="lesenTeil2Card">
+                    <div class="menu-card-icon">📖</div>
+                    <h3>Lesen Teil 2</h3>
+                    <p>تمارين القراءة - الجزء الثاني</p>
+                </div>
+                
+                <div class="submenu-card" id="lesenTeil3Card">
+                    <div class="menu-card-icon">📖</div>
+                    <h3>Lesen Teil 3</h3>
+                    <p>تمارين القراءة - الجزء الثالث</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lesen Teil 1 Page -->
+    <div id="lesenTeil1Page" class="page">
+        <div class="exams-container">
+            <button class="back-btn" id="backFromLesenTeil1">
+                <i class="fas fa-arrow-right"></i>
+                <span>العودة إلى أجزاء الامتحانات</span>
+            </button>
+            <div class="header">
+                <h1>Lesen Teil 1</h1>
+                <p class="page-subtitle">تمارين القراءة - الجزء الأول</p>
+            </div>
+            
+            <div class="exams-grid" id="lesenTeil1Grid"></div>
+        </div>
+    </div>
+
+    <!-- Lesen Teil 2 Page -->
+    <div id="lesenTeil2Page" class="page">
+        <div class="exams-container">
+            <button class="back-btn" id="backFromLesenTeil2">
+                <i class="fas fa-arrow-right"></i>
+                <span>العودة إلى أجزاء الامتحانات</span>
+            </button>
+            <div class="header">
+                <h1>Lesen Teil 2</h1>
+                <p class="page-subtitle">تمارين القراءة - الجزء الثاني</p>
+            </div>
+            
+            <div class="exams-grid" id="lesenTeil2Grid"></div>
+        </div>
+    </div>
+
+    <!-- Lesen Teil 3 Page -->
+    <div id="lesenTeil3Page" class="page">
+        <div class="exams-container">
+            <button class="back-btn" id="backFromLesenTeil3">
+                <i class="fas fa-arrow-right"></i>
+                <span>العودة إلى أجزاء الامتحانات</span>
+            </button>
+            <div class="header">
+                <h1>Lesen Teil 3</h1>
+                <p class="page-subtitle">تمارين القراءة - الجزء الثالث</p>
+            </div>
+            
+            <div class="exams-grid" id="lesenTeil3Grid"></div>
         </div>
     </div>
 
@@ -2240,8 +2359,10 @@
         
         const deviceId = getDeviceId();
 
-        // قوائم الامتحانات والدروس
-        const themaKompliExams = [
+        // ========== قوائم الامتحانات ==========
+        
+        // Komplette Prüfungen
+        const komplettePrüfungenExams = [
             "ALBI2A.html", "ALPEN.html", "BATATA.html", "BILDER.html", "BINZIL.html",
             "GRUND SCHULE.html", "HACHARAT.html", "KELLNER.html", "L9AHWA.html", "LHALWA.html",
             "LI9A7.html", "LICHT.html", "LIMON.html", "MOBARMIJIN.html", "NA7L.html",
@@ -2249,6 +2370,7 @@
             "INSEL.html", "L2AL3AB.html", "KINDER HENDY.html", "DROGEN.html", "GELD.html", "ROSSIA.html", "SCHLAFZUG 1.html", "ALPEN 1.html"
         ];
 
+        // Lesen القديم
         const lesenExams = [
             "AL3AB.html", "ALBI2A.html", "ALPEN.html", "BATATA.html", "BENZIL.html",
             "BILDER.html", "GELD.html", "GRUNDSCHULE.html", "HACHARAT.html", "HATIF L2ATFAL.html",
@@ -2260,7 +2382,7 @@
 
         const hoerenExams = ["HOREN.html", "HOREN1.html"];
         const schreibenExams = ["SCHREIBEN.html"];
-        const mundlichExams = ["teil1.pdf", "teil2.pdf", "teil3.pdf"];
+        
         const pdfs = [
             "ALBI2A.pdf", "AL3AB.pdf", "ALPEN.pdf", "BATATA.pdf", "BENZIL.pdf",
             "BILDER.pdf", "GELD.pdf", "GRUNDSCHULE.pdf", "HACHARAT.pdf", "HATIF L2ATFAL.pdf",
@@ -2271,7 +2393,96 @@
             "KINDER HENDY.pdf", "DROGEN.pdf", "GELD.pdf", "teil1.pdf", "teil2.pdf", "teil3.pdf"
         ];
 
-        // قاموس الترجمة المصحح
+        // ========== قوائم Lesen Teile الجديدة - مع المسارات الصحيحة ==========
+        
+        const lesenTeil1Items = [
+            { name: "UMWELT", translation: "البيئة", file: "ALBI2A.html" },
+            { name: "IMPFUNG", translation: "التطعيم", file: "GLI9A7.html" },
+            { name: "KINDER HANDY", translation: "هاتف الأطفال", file: "KINDER HINDY.html" },
+            { name: "DROGEN", translation: "المخدرات", file: "DROGEN.html" },
+            { name: "TANZKURS", translation: "دورة رقص", file: "TANZKURS.html" },
+            { name: "LIMONADE", translation: "ليمونادة", file: "LIMON.html" },
+            { name: "GRUND SCHULE", translation: "المدرسة الابتدائية", file: "GRUND SCHULE.html" },
+            { name: "INSEKTEN", translation: "الحشرات", file: "HACHARAT.html" },
+            { name: "ÖSTERREICH", translation: "النمسا", file: "NAMSA.html" },
+            { name: "KELLNER", translation: "النادل", file: "KELLNER.html" },
+            { name: "SPORT IST GESUND", translation: "الرياضة مفيدة للصحة", file: "SPORT IST GESUND.html" },
+            { name: "INSEL", translation: "جزيرة", file: "INSEL.html" },
+            { name: "ALPEN", translation: "جبال الألب", file: "ALPEN.html" },
+            { name: "KARTOFFEL", translation: "البطاطا", file: "BATATA.html" },
+            { name: "BILDER", translation: "الصور", file: "BILDER.html" },
+            { name: "SPIELE", translation: "ألعاب", file: "SPIELE.html" },
+            { name: "PROGRAMMIEREN", translation: "البرمجة", file: "MOBARMIJIN.html" },
+            { name: "TRAMPOLIN", translation: "ترامبولين", file: "TRNPOLIN.html" },
+            { name: "BENZIN", translation: "البنزين", file: "BENZIN.html" },
+            { name: "KAFFEE", translation: "القهوة", file: "KAFFE.html" },
+            { name: "BONBONS", translation: "الحلوى", file: "LHALWA.html" },
+            { name: "GELD", translation: "المال", file: "GELD.html" },
+            { name: "AUF DEM WEG", translation: "في الطريق", file: "AUF DEM WEG.html" },
+            { name: "SCHLAF ZUG", translation: "قطار النوم", file: "SCHLAF ZUG.html" },
+            { name: "KEINE ZEIT", translation: "لا وقت", file: "KEINE ZEIT.html" },
+            { name: "ALPEN 2", translation: "جبال الألب 2", file: "ALPEN 2.html" },
+            { name: "SCHLAF ZUG 2", translation: "قطار النوم 2", file: "SCHLAFZUG 2.html" },
+            { name: "LICHT NEU", translation: "ضوء جديد", file: "LICHT NEU.html" },
+            { name: "ROSSIA", translation: "روسيا", file: "ROSSIA.html" }
+        ];
+
+        const lesenTeil2Items = [
+            { name: "Weniger Euro", translation: "يورو أقل", file: "Weniger Euro.html" },
+            { name: "Kellner", translation: "نادل", file: "Kellner.html" },
+            { name: "Die ganze Welt", translation: "العالم كله", file: "Die ganze Welt.html" },
+            { name: "Nachtzug", translation: "قطار ليلي", file: "Nachtzug.html" },
+            { name: "Brigitte Vollmer", translation: "بريغيت فولمر", file: "Brigitte Vollmer.html" },
+            { name: "Reitergruppe", translation: "مجموعة فرسان", file: "Reitergruppe.html" },
+            { name: "Dienstmädchen", translation: "خادمة", file: "Dienstmädchen.html" },
+            { name: "Gesundes essen", translation: "طعام صحي", file: "Gesundes essen.html" },
+            { name: "Mehrsprachige", translation: "متعدد اللغات", file: "Mehrsprachige.html" },
+            { name: "Karneval", translation: "كرنفال", file: "Karneval.html" },
+            { name: "Babys", translation: "أطفال رضع", file: "Babys.html" },
+            { name: "Familie", translation: "عائلة", file: "Familie.html" },
+            { name: "Grossraumburos", translation: "مكاتب مفتوحة", file: "Grossraumburos.html" },
+            { name: "Kaffe", translation: "قهوة", file: "Kaffe.html" },
+            { name: "Ernährung", translation: "تغذية", file: "Ernährung.html" },
+            { name: "Krista", translation: "كريستا", file: "Krista.html" },
+            { name: "Kreditkarten", translation: "بطاقات ائتمان", file: "Kreditkarten.html" },
+            { name: "Verpackungen", translation: "تغليف", file: "Verpackungen.html" },
+            { name: "Gehirn", translation: "دماغ", file: "Gehirn.html" },
+            { name: "Millionäre", translation: "مليونيرات", file: "Millionäre.html" },
+            { name: "Kaufentscheidungen", translation: "قرارات الشراء", file: "Kaufentscheidungen.html" },
+            { name: "Traumfrau", translation: "امرأة الأحلام", file: "Traumfrau.html" },
+            { name: "Parkuhren", translation: "عدادات المواقف", file: "Parkuhren.html" },
+            { name: "Österreich", translation: "النمسا", file: "Österreich.html" },
+            { name: "Schaufensterpuppe", translation: "دمية عرض", file: "Schaufensterpuppe.html" }
+        ];
+
+        const lesenTeil3Items = [
+            { name: "ANWALT", translation: "محامٍ", file: "anwalt.html" },
+            { name: "APOTHEKER", translation: "صيدلي", file: "apotheker.html" },
+            { name: "AU-PAIR-MÄDCHEN", translation: "مربية أطفال", file: "au-pair-mädchen.html" },
+            { name: "AUSFLUG", translation: "رحلة", file: "Ausflug.html" },
+            { name: "BONBONS", translation: "حلوى", file: "Bonbons.html" },
+            { name: "DER HUND", translation: "الكلب", file: "der hund.html" },
+            { name: "FERNSEHPROGRAMM", translation: "برنامج تلفزيوني", file: "Fernsehprogramm.html" },
+            { name: "GÄRTEN", translation: "حدائق", file: "gärten.html" },
+            { name: "GRUNDSCHULE", translation: "مدرسة ابتدائية", file: "grundschule.html" },
+            { name: "HAUSHALT", translation: "أعمال منزلية", file: "haushalt.html" },
+            { name: "KEINE ZEIT", translation: "لا وقت", file: "keine zeit.html" },
+            { name: "KELLNER", translation: "نادل", file: "kellner.html" },
+            { name: "MUSIK", translation: "موسيقى", file: "musik.html" },
+            { name: "MUSIKINSTRUMENT", translation: "آلة موسيقية", file: "musikinstrument.html" },
+            { name: "SCHIFFREISE", translation: "رحلة بحرية", file: "schiffreise.html" },
+            { name: "SCHLAFZUG", translation: "قطار النوم", file: "schlafzug.html" },
+            { name: "SCHRÄNKE", translation: "خزائن", file: "Schränke.html" },
+            { name: "SCHWÄGERIN GESUND", translation: "أخت الزوج بصحة جيدة", file: "Schwägerin Gesund.html" },
+            { name: "SCHWÄGERIN", translation: "أخت الزوج", file: "schwägerin.html" },
+            { name: "SPORT IST GESUND", translation: "الرياضة مفيدة للصحة", file: "sport ist gesund.html" },
+            { name: "SPORT", translation: "رياضة", file: "sport.html" },
+            { name: "TIERDOKUMENTATIONEN", translation: "وثائقيات عن الحيوانات", file: "Tierdokumentationen.html" },
+            { name: "URLAUB", translation: "عطلة", file: "urlaub.html" },
+            { name: "WEIN UND INSEKTEN", translation: "النبيذ والحشرات", file: "wein und insekten.html" }
+        ];
+
+        // قاموس الترجمة
         const examTranslations = {
             "ALPEN": { de: "ALPEN", ar: "جبال الألب" },
             "BATATA": { de: "KARTOFFEL", ar: "البطاطا" },
@@ -2310,18 +2521,15 @@
             "SCHREIBEN": { de: "SCHREIBEN", ar: "الكتابة" }
         };
 
-        // دالة لاستخراج اسم الملف بدون الامتداد
         function getExamName(filename) {
             return filename.replace('.html', '').replace('.pdf', '');
         }
 
-        // دالة للحصول على الترجمة الألمانية للامتحان
         function getGermanTranslation(filename) {
             const examName = getExamName(filename);
             return examTranslations[examName]?.de || examName;
         }
 
-        // دالة للحصول على الوصف العربي للامتحان
         function getArabicDescription(filename) {
             const examName = getExamName(filename);
             return examTranslations[examName]?.ar || examName;
@@ -2338,6 +2546,7 @@
                 signupSubtitle: "املأ المعلومات التالية لإنشاء حسابك",
                 createAccountText: "إنشاء الحساب",
                 backToLoginText: "العودة لتسجيل الدخول",
+                backToLoginTextMenu: "تسجيل الخروج",
                 menuTitle: "B2 Deutsch Training Portal",
                 menuSubtitle: "اختر مجال تعلمك وابدأ التحضير للاختبار",
                 kursTitle: "KURS",
@@ -2380,7 +2589,7 @@
                 pdfsPageSubtitle: "اختر المادة التي ترغب في تحميلها",
                 backExamsText: "العودة إلى القائمة الرئيسية",
                 examsPageTitle: "Prüfungen - الامتحانات",
-                examsPageSubtitle: "اختر الامتحان الذي ترغب في التدرب عليه",
+                examsPageSubtitle: "اختر نوع الامتحانات التي ترغب في التدرب عليها",
                 backProfileText: "العودة إلى القائمة الرئيسية",
                 profileTitle: "ملفي الشخصي",
                 profileSubtitle: "إدارة بياناتك الشخصية وتتبع تقدمك التعليمي",
@@ -2425,6 +2634,7 @@
                 signupSubtitle: "Fill in the following information to create your account",
                 createAccountText: "Create Account",
                 backToLoginText: "Back to Login",
+                backToLoginTextMenu: "Logout",
                 menuTitle: "B2 Deutsch Training Portal",
                 menuSubtitle: "Choose your learning area and start preparing for the exam",
                 kursTitle: "KURS",
@@ -2467,7 +2677,7 @@
                 pdfsPageSubtitle: "Choose the material you want to download",
                 backExamsText: "Back to Main Menu",
                 examsPageTitle: "Prüfungen - Exams",
-                examsPageSubtitle: "Choose the exam you want to practice",
+                examsPageSubtitle: "Choose the type of exams you want to practice",
                 backProfileText: "Back to Main Menu",
                 profileTitle: "My Profile",
                 profileSubtitle: "Manage your personal data and track your educational progress",
@@ -2512,6 +2722,7 @@
                 signupSubtitle: "Füllen Sie die folgenden Informationen aus, um Ihr Konto zu erstellen",
                 createAccountText: "Konto erstellen",
                 backToLoginText: "Zurück zur Anmeldung",
+                backToLoginTextMenu: "Abmelden",
                 menuTitle: "B2 Deutsch Training Portal",
                 menuSubtitle: "Wählen Sie Ihren Lernbereich und beginnen Sie mit der Prüfungsvorbereitung",
                 kursTitle: "KURS",
@@ -2554,7 +2765,7 @@
                 pdfsPageSubtitle: "Wählen Sie das Material aus, das Sie herunterladen möchten",
                 backExamsText: "Zurück zum Hauptmenü",
                 examsPageTitle: "Prüfungen - Exams",
-                examsPageSubtitle: "Wählen Sie die Prüfung, die Sie üben möchten",
+                examsPageSubtitle: "Wählen Sie die Art der Prüfungen, die Sie üben möchten",
                 backProfileText: "Zurück zum Hauptmenü",
                 profileTitle: "Mein Profil",
                 profileSubtitle: "Verwalten Sie Ihre persönlichen Daten und verfolgen Sie Ihren Bildungsfortschritt",
@@ -2606,6 +2817,11 @@
                 mundlich: document.getElementById('mundlichPage'),
                 pdfs: document.getElementById('pdfsPage'),
                 exams: document.getElementById('examsPage'),
+                komplettePrüfungen: document.getElementById('komplettePrüfungenPage'),
+                prüfungsteile: document.getElementById('prüfungsteilePage'),
+                lesenTeil1: document.getElementById('lesenTeil1Page'),
+                lesenTeil2: document.getElementById('lesenTeil2Page'),
+                lesenTeil3: document.getElementById('lesenTeil3Page'),
                 profile: document.getElementById('profilePage'),
                 waiting: document.getElementById('waitingPage')
             };
@@ -2619,20 +2835,36 @@
             const backFromMundlich = document.getElementById('backFromMundlich');
             const backFromPdfs = document.getElementById('backFromPdfs');
             const backFromExams = document.getElementById('backFromExams');
+            const backFromKomplette = document.getElementById('backFromKomplette');
+            const backFromPrüfungsteile = document.getElementById('backFromPrüfungsteile');
+            const backFromLesenTeil1 = document.getElementById('backFromLesenTeil1');
+            const backFromLesenTeil2 = document.getElementById('backFromLesenTeil2');
+            const backFromLesenTeil3 = document.getElementById('backFromLesenTeil3');
             const backFromProfile = document.getElementById('backFromProfile');
             const backToLoginFromSignup = document.getElementById('backToLoginFromSignup');
 
-            // أزرار القائمة
+            // أزرار القائمة الرئيسية
             const kursCard = document.getElementById('kursCard');
             const examsCard = document.getElementById('examsCard');
+            
+            // أزرار القائمة الفرعية لـ KURS
             const lesenCard = document.getElementById('lesenCard');
             const hoerenCard = document.getElementById('hoerenCard');
             const schreibenCard = document.getElementById('schreibenCard');
             const mundlichCard = document.getElementById('mundlichCard');
             const pdfsCard = document.getElementById('pdfsCard');
+            
+            // أزرار Mündlich
             const teil1Card = document.getElementById('teil1Card');
             const teil2Card = document.getElementById('teil2Card');
             const teil3Card = document.getElementById('teil3Card');
+            
+            // أزرار القسم الجديد
+            const komplettePrüfungenCard = document.getElementById('komplettePrüfungenCard');
+            const prüfungsteileCard = document.getElementById('prüfungsteileCard');
+            const lesenTeil1Card = document.getElementById('lesenTeil1Card');
+            const lesenTeil2Card = document.getElementById('lesenTeil2Card');
+            const lesenTeil3Card = document.getElementById('lesenTeil3Card');
 
             // عناصر تسجيل الدخول
             const emailInput = document.getElementById('emailInput');
@@ -2700,7 +2932,6 @@
             let examDate = new Date();
             examDate.setMonth(examDate.getMonth() + 1);
             
-            // تحميل تاريخ الامتحان من localStorage
             const savedExamDate = localStorage.getItem('examDate');
             if (savedExamDate) {
                 examDate = new Date(savedExamDate);
@@ -2708,7 +2939,6 @@
                 localStorage.setItem('examDate', examDate.toISOString());
             }
 
-            // دالة التحقق من تسجيل الدخول قبل الوصول للمحتوى
             function checkAuthAndRedirect() {
                 if (!currentUser) {
                     showToast('يجب تسجيل الدخول أولاً', 'warning');
@@ -2718,70 +2948,223 @@
                 return true;
             }
 
-            // ========== دالة للتحقق من صلاحية الوصول إلى المحتوى (للاستخدام في ملفات الامتحانات) ==========
-            async function verifyExamAccess() {
-                // التحقق من وجود بيانات في localStorage أولاً
-                const isLoggedIn = localStorage.getItem('b2_isLoggedIn') === 'true';
-                const userId = localStorage.getItem('b2_userId');
+            // ========== دوال تعبئة المحتوى ==========
+            
+            function populateKomplettePrüfungenGrid() {
+                const grid = document.getElementById('komplettePrüfungenGrid');
+                if (!grid) return;
                 
-                if (!isLoggedIn || !userId) {
-                    return { allowed: false, reason: 'not_logged_in' };
-                }
+                grid.innerHTML = '';
                 
-                try {
-                    // التحقق من الجلسة في Supabase
-                    const { data: { session }, error } = await supabase.auth.getSession();
+                komplettePrüfungenExams.forEach((exam, index) => {
+                    const germanName = getGermanTranslation(exam);
+                    const arabicDesc = getArabicDescription(exam);
                     
-                    if (error || !session) {
-                        return { allowed: false, reason: 'session_expired' };
-                    }
-                    
-                    // التحقق من صلاحية المستخدم
-                    const { data: permissions, error: permError } = await supabase
-                        .from('user_permissions')
-                        .select('can_access, subscription_type, subscription_expiry, trial_expiry')
-                        .eq('user_id', session.user.id)
-                        .single();
-                    
-                    if (permError || !permissions) {
-                        return { allowed: false, reason: 'no_permissions' };
-                    }
-                    
-                    if (!permissions.can_access) {
-                        return { allowed: false, reason: 'access_denied' };
-                    }
-                    
-                    // التحقق من انتهاء الاشتراك
-                    const now = new Date();
-                    
-                    if (permissions.subscription_type === 'trial_24h' && permissions.trial_expiry) {
-                        const trialExpiry = new Date(permissions.trial_expiry);
-                        if (trialExpiry < now) {
-                            return { allowed: false, reason: 'trial_expired' };
+                    const examCard = document.createElement('div');
+                    examCard.className = 'exam-card';
+                    examCard.style.animationDelay = `${index * 0.05}s`;
+                    examCard.innerHTML = `
+                        <h3>${germanName}</h3>
+                        <div class="arabic-translation">${arabicDesc}</div>
+                    `;
+                    examCard.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (!checkAuthAndRedirect()) return;
+                        
+                        if (exam === "INSEL.html") {
+                            window.location.href = 'THEMA KOMPLI/INSEL.html';
+                        } else {
+                            window.location.href = 'THEMA KOMPLI/' + exam;
                         }
-                    }
-                    
-                    if (permissions.subscription_expiry) {
-                        const subscriptionExpiry = new Date(permissions.subscription_expiry);
-                        if (subscriptionExpiry < now) {
-                            return { allowed: false, reason: 'subscription_expired' };
-                        }
-                    }
-                    
-                    return { allowed: true, user: session.user };
-                    
-                } catch (error) {
-                    console.error('Error verifying exam access:', error);
-                    return { allowed: false, reason: 'error' };
-                }
+                    });
+                    grid.appendChild(examCard);
+                });
             }
 
-            // ========== وظيفة تسجيل الدخول محسنة ==========
+            function populateLesenTeil1Grid() {
+                const grid = document.getElementById('lesenTeil1Grid');
+                if (!grid) return;
+                
+                grid.innerHTML = '';
+                
+                lesenTeil1Items.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'exam-card';
+                    card.style.animationDelay = `${index * 0.03}s`;
+                    card.innerHTML = `
+                        <h3>${item.name}</h3>
+                        <div class="arabic-translation">${item.translation}</div>
+                    `;
+                    card.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (!checkAuthAndRedirect()) return;
+                        window.location.href = 'TEIL EXAME/teil 1/' + item.file;
+                    });
+                    grid.appendChild(card);
+                });
+            }
+
+            function populateLesenTeil2Grid() {
+                const grid = document.getElementById('lesenTeil2Grid');
+                if (!grid) return;
+                
+                grid.innerHTML = '';
+                
+                lesenTeil2Items.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'exam-card';
+                    card.style.animationDelay = `${index * 0.03}s`;
+                    card.innerHTML = `
+                        <h3>${item.name}</h3>
+                        <div class="arabic-translation">${item.translation}</div>
+                    `;
+                    card.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (!checkAuthAndRedirect()) return;
+                        window.location.href = 'TEIL EXAME/teil 2/' + item.file;
+                    });
+                    grid.appendChild(card);
+                });
+            }
+
+            function populateLesenTeil3Grid() {
+                const grid = document.getElementById('lesenTeil3Grid');
+                if (!grid) return;
+                
+                grid.innerHTML = '';
+                
+                lesenTeil3Items.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'exam-card';
+                    card.style.animationDelay = `${index * 0.03}s`;
+                    card.innerHTML = `
+                        <h3>${item.name}</h3>
+                        <div class="arabic-translation">${item.translation}</div>
+                    `;
+                    card.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (!checkAuthAndRedirect()) return;
+                        window.location.href = 'TEIL EXAME/teil 3/' + item.file;
+                    });
+                    grid.appendChild(card);
+                });
+            }
+
+            function populateLesenGrid() {
+                const lesenGrid = document.getElementById('lesenGrid');
+                if (!lesenGrid) return;
+                
+                lesenGrid.innerHTML = '';
+                
+                lesenExams.forEach((exam, index) => {
+                    const germanName = getGermanTranslation(exam);
+                    const arabicDesc = getArabicDescription(exam);
+                    
+                    const examCard = document.createElement('div');
+                    examCard.className = 'exam-card';
+                    examCard.style.animationDelay = `${index * 0.05}s`;
+                    examCard.innerHTML = `
+                        <h3>${germanName}</h3>
+                        <div class="arabic-translation">${arabicDesc}</div>
+                    `;
+                    examCard.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (!checkAuthAndRedirect()) return;
+                        window.location.href = 'KURS/LESEN/' + exam;
+                    });
+                    lesenGrid.appendChild(examCard);
+                });
+            }
+
+            function populateHoerenGrid() {
+                const hoerenGrid = document.getElementById('hoerenGrid');
+                if (!hoerenGrid) return;
+                
+                hoerenGrid.innerHTML = '';
+                
+                hoerenExams.forEach((exam, index) => {
+                    const germanName = getGermanTranslation(exam);
+                    const arabicDesc = getArabicDescription(exam);
+                    
+                    const examCard = document.createElement('div');
+                    examCard.className = 'exam-card';
+                    examCard.style.animationDelay = `${index * 0.1}s`;
+                    examCard.innerHTML = `
+                        <h3>${germanName}</h3>
+                        <div class="arabic-translation">${arabicDesc}</div>
+                    `;
+                    examCard.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (!checkAuthAndRedirect()) return;
+                        window.location.href = 'KURS/HOREN/' + exam;
+                    });
+                    hoerenGrid.appendChild(examCard);
+                });
+            }
+
+            function populateSchreibenGrid() {
+                const schreibenGrid = document.getElementById('schreibenGrid');
+                if (!schreibenGrid) return;
+                
+                schreibenGrid.innerHTML = '';
+                
+                schreibenExams.forEach((exam, index) => {
+                    const germanName = getGermanTranslation(exam);
+                    const arabicDesc = getArabicDescription(exam);
+                    
+                    const examCard = document.createElement('div');
+                    examCard.className = 'exam-card';
+                    examCard.style.animationDelay = `${index * 0.1}s`;
+                    examCard.innerHTML = `
+                        <h3>${germanName}</h3>
+                        <div class="arabic-translation">${arabicDesc}</div>
+                    `;
+                    examCard.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (!checkAuthAndRedirect()) return;
+                        window.location.href = 'KURS/SCHREIBEN/' + exam;
+                    });
+                    schreibenGrid.appendChild(examCard);
+                });
+            }
+
+            function populatePdfsGrid() {
+                const pdfsGrid = document.getElementById('pdfsGrid');
+                if (!pdfsGrid) return;
+                
+                pdfsGrid.innerHTML = '';
+                
+                pdfs.forEach((pdf, index) => {
+                    const germanName = getGermanTranslation(pdf);
+                    const arabicDesc = getArabicDescription(pdf);
+                    
+                    const pdfCard = document.createElement('div');
+                    pdfCard.className = 'exam-card';
+                    pdfCard.style.animationDelay = `${index * 0.05}s`;
+                    pdfCard.innerHTML = `
+                        <h3>${germanName}</h3>
+                        <div class="arabic-translation">${arabicDesc}</div>
+                    `;
+                    pdfCard.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (!checkAuthAndRedirect()) return;
+                        
+                        if (pdf === "teil1.pdf" || pdf === "teil2.pdf" || pdf === "teil3.pdf") {
+                            window.location.href = 'KURS/MUNDLICH/' + pdf;
+                        } else {
+                            window.location.href = 'PDFs/' + pdf;
+                        }
+                    });
+                    pdfsGrid.appendChild(pdfCard);
+                });
+            }
+
+            // ========== وظائف تسجيل الدخول والتسجيل ==========
+            
             async function handleLogin() {
                 const email = emailInput.value.trim();
                 const password = passwordInput.value;
                 
-                // التحقق من صحة الإدخال
                 if (!email) {
                     showToast('يرجى إدخال البريد الإلكتروني', 'error');
                     return;
@@ -2792,7 +3175,6 @@
                     return;
                 }
                 
-                // التحقق من صحة تنسيق البريد الإلكتروني
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(email)) {
                     showToast('البريد الإلكتروني غير صحيح', 'error');
@@ -2806,7 +3188,6 @@
                     });
 
                     if (error) {
-                        // رسائل خطأ مخصصة
                         if (error.message.includes('Invalid login credentials')) {
                             showToast('كلمة المرور غير صحيحة', 'error');
                         } else if (error.message.includes('Email not confirmed')) {
@@ -2821,34 +3202,25 @@
 
                     currentUser = data.user;
                     
-                    // تسجيل جلسة الدخول
                     const { data: sessionData, error: sessionError } = await supabase
                         .rpc('log_user_login', {
                             user_uuid: currentUser.id,
                             device: deviceId
                         });
                     
-                    if (sessionError) {
-                        console.error('Error logging session:', sessionError);
-                    } else {
+                    if (!sessionError) {
                         localStorage.setItem('currentSessionId', sessionData);
                     }
                     
-                    // التحقق من حد الأجهزة
                     const { data: deviceCheck, error: deviceError } = await supabase
                         .rpc('verify_device_limit', {
                             user_uuid: currentUser.id,
                             device: deviceId
                         });
 
-                    if (deviceError) {
-                        console.error('Device check error:', deviceError);
-                    }
-
                     if (deviceCheck && deviceCheck.status === 'blocked') {
                         showToast(deviceCheck.message, 'error');
                         
-                        // تسجيل الخروج من الجلسة
                         if (localStorage.getItem('currentSessionId')) {
                             await supabase.rpc('log_user_logout', {
                                 session_uuid: localStorage.getItem('currentSessionId')
@@ -2861,7 +3233,6 @@
                         return;
                     }
                     
-                    // التحقق من صلاحية المستخدم
                     const hasAccess = await checkUserAccess();
                     
                     if (hasAccess) {
@@ -2869,7 +3240,6 @@
                         showPage('menu');
                         updateUIForLoggedInUser();
                         
-                        // تخزين حالة تسجيل الدخول في localStorage
                         localStorage.setItem('b2_isLoggedIn', 'true');
                         localStorage.setItem('b2_userEmail', currentUser.email);
                         localStorage.setItem('b2_userId', currentUser.id);
@@ -2884,10 +3254,8 @@
                 }
             }
 
-            // وظيفة تسجيل الخروج
             async function handleSignOut() {
                 try {
-                    // تسجيل وقت الخروج إذا كان هناك جلسة نشطة
                     const sessionId = localStorage.getItem('currentSessionId');
                     if (sessionId && currentUser) {
                         await supabase.rpc('log_user_logout', {
@@ -2903,7 +3271,6 @@
                     updateUIForLoggedOutUser();
                     showPage('login');
                     
-                    // مسح بيانات تسجيل الدخول من localStorage
                     localStorage.removeItem('b2_isLoggedIn');
                     localStorage.removeItem('b2_userEmail');
                     localStorage.removeItem('b2_userId');
@@ -2917,7 +3284,6 @@
                 }
             }
 
-            // التحقق من صلاحية المستخدم
             async function checkUserAccess() {
                 if (!currentUser) return false;
                 
@@ -2928,19 +3294,15 @@
                         .eq('user_id', currentUser.id)
                         .single();
 
-                    // إذا لم يكن للمستخدم صلاحية
                     if (error || !data || !data.can_access) {
                         return false;
                     }
 
-                    // التحقق من انتهاء الاشتراك
                     const now = new Date();
                     
-                    // إذا كان اشتراك تجريبي وانتهى
                     if (data.subscription_type === 'trial_24h' && data.trial_expiry) {
                         const trialExpiry = new Date(data.trial_expiry);
                         if (trialExpiry < now) {
-                            // تحديث الحالة إلى منتهية
                             await supabase
                                 .from('user_permissions')
                                 .update({ can_access: false })
@@ -2949,11 +3311,9 @@
                         }
                     }
                     
-                    // إذا كان اشتراك عادي وانتهى
                     if (data.subscription_expiry) {
                         const subscriptionExpiry = new Date(data.subscription_expiry);
                         if (subscriptionExpiry < now) {
-                            // تحديث الحالة إلى منتهية
                             await supabase
                                 .from('user_permissions')
                                 .update({ can_access: false })
@@ -2970,7 +3330,6 @@
                 }
             }
 
-            // دالة تغيير كلمة المرور
             async function changeUserPassword() {
                 if (!currentUser) {
                     showToast('يجب تسجيل الدخول أولاً', 'error');
@@ -2980,7 +3339,6 @@
                 const currentPassword = prompt('أدخل كلمة المرور الحالية:');
                 if (!currentPassword) return;
                 
-                // التحقق من كلمة المرور الحالية
                 try {
                     const { error } = await supabase.auth.signInWithPassword({
                         email: currentUser.email,
@@ -3004,7 +3362,6 @@
                         return;
                     }
                     
-                    // تحديث كلمة المرور في Supabase
                     const { error: updateError } = await supabase.auth.updateUser({
                         password: newPassword
                     });
@@ -3021,7 +3378,6 @@
                 }
             }
 
-            // دالة نسيان كلمة المرور - إرسال عبر واتساب
             function handleForgotPassword() {
                 const email = forgotEmail.value.trim();
                 
@@ -3030,14 +3386,12 @@
                     return;
                 }
                 
-                // التحقق من صحة البريد الإلكتروني
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(email)) {
                     showToast('البريد الإلكتروني غير صحيح', 'error');
                     return;
                 }
                 
-                // إرسال رسالة واتساب للمسؤول
                 const phoneNumber = '+212649661976';
                 const message = `مرحباً، لقد نسيت كلمة المرور الخاصة بي. الرجاء مساعدتي في استعادتها. \n\nالبريد الإلكتروني الخاص بي: ${email}\n\nشكراً جزيلاً.`;
                 const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
@@ -3045,7 +3399,6 @@
                 window.open(url, '_blank');
                 showToast('تم فتح واتساب لإرسال الطلب', 'success');
                 
-                // إغلاق النافذة المنبثقة
                 forgotModal.style.display = 'none';
                 forgotEmail.value = '';
             }
@@ -3057,7 +3410,6 @@
                 const confirmPassword = signupConfirmPassword.value;
                 const examDateValue = signupExamDate.value;
                 
-                // التحقق من الحقول
                 if (!name) {
                     showToast('يرجى إدخال الاسم الكامل', 'error');
                     return;
@@ -3068,7 +3420,6 @@
                     return;
                 }
                 
-                // التحقق من صحة البريد الإلكتروني
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailRegex.test(email)) {
                     showToast('البريد الإلكتروني غير صحيح', 'error');
@@ -3116,15 +3467,21 @@
                         return;
                     }
 
-                    // إضافة المستخدم إلى جدول طلبات التسجيل
                     if (data.user) {
                         await addUserToRegistrationRequests(data.user, name, email, examDateValue);
                     }
 
-                    // إرسال إشعار واتساب للمسؤول
+                    const registrationData = {
+                        name: name,
+                        email: email,
+                        examDate: examDateValue || 'غير محدد',
+                        timestamp: new Date().toISOString()
+                    };
+                    localStorage.setItem('lastRegistration', JSON.stringify(registrationData));
+
                     const phoneNumber = '+212649661976';
                     const examDateText = examDateValue ? `\nتاريخ الامتحان: ${examDateValue}` : '\nتاريخ الامتحان: غير محدد (سيتم تحديثه لاحقاً)';
-const message = `مرحباً
+                    const message = `مرحباً
 
 أنا قمتُ بالتسجيل في الموقع، وهذه بياناتي:
 
@@ -3134,14 +3491,12 @@ const message = `مرحباً
 يرجى تأكيد التسجيل في أقرب وقت.
 شكراً لكم`;
                     
-                    // فتح واتساب مباشرة
                     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
                     window.open(url, '_blank');
 
                     showToast('تم إنشاء الحساب بنجاح! سيتم التواصل معك عبر واتساب قريباً', 'success');
                     showPage('waiting');
                     
-                    // إعادة تعيين الحقول
                     signupName.value = '';
                     signupEmail.value = '';
                     signupPassword.value = '';
@@ -3188,167 +3543,40 @@ const message = `مرحباً
             // وظائف التنقل
             function showPage(pageName) {
                 Object.values(pages).forEach(page => {
-                    page.classList.remove('active');
+                    if (page) page.classList.remove('active');
                 });
                 
                 if (pages[pageName]) {
                     pages[pageName].classList.add('active');
-                }
-                
-                if (pageName === 'exams') {
-                    populateExamsGrid();
-                } else if (pageName === 'lesen') {
-                    populateLesenGrid();
-                } else if (pageName === 'hoeren') {
-                    populateHoerenGrid();
-                } else if (pageName === 'schreiben') {
-                    populateSchreibenGrid();
-                } else if (pageName === 'pdfs') {
-                    populatePdfsGrid();
-                } else if (pageName === 'profile') {
-                    updateProfileDisplay();
+                    
+                    // تعبئة المحتوى حسب الصفحة
+                    if (pageName === 'lesen') {
+                        populateLesenGrid();
+                    } else if (pageName === 'hoeren') {
+                        populateHoerenGrid();
+                    } else if (pageName === 'schreiben') {
+                        populateSchreibenGrid();
+                    } else if (pageName === 'pdfs') {
+                        populatePdfsGrid();
+                    } else if (pageName === 'komplettePrüfungen') {
+                        populateKomplettePrüfungenGrid();
+                    } else if (pageName === 'lesenTeil1') {
+                        populateLesenTeil1Grid();
+                    } else if (pageName === 'lesenTeil2') {
+                        populateLesenTeil2Grid();
+                    } else if (pageName === 'lesenTeil3') {
+                        populateLesenTeil3Grid();
+                    } else if (pageName === 'profile') {
+                        updateProfileDisplay();
+                    }
                 }
                 
                 updateTexts();
             }
 
-            // إضافة الامتحانات إلى الشبكات
-            function populateExamsGrid() {
-                const examsGrid = document.getElementById('examsGrid');
-                examsGrid.innerHTML = '';
-                
-                themaKompliExams.forEach((exam, index) => {
-                    const germanName = getGermanTranslation(exam);
-                    const arabicDesc = getArabicDescription(exam);
-                    
-                    const examCard = document.createElement('div');
-                    examCard.className = 'exam-card';
-                    examCard.style.animationDelay = `${index * 0.1}s`;
-                    examCard.innerHTML = `
-                        <h3>${germanName}</h3>
-                        <p>${arabicDesc}</p>
-                    `;
-                    examCard.addEventListener('click', () => {
-                        if (!checkAuthAndRedirect()) return;
-                        
-                        // توجيه المستخدم إلى الملف المناسب
-                        if (exam === "INSEL.html") {
-                            window.location.href = 'THEMA KOMPLI/INSEL.html';
-                        } else {
-                            window.location.href = 'THEMA KOMPLI/' + exam;
-                        }
-                    });
-                    examsGrid.appendChild(examCard);
-                });
-            }
-
-            function populateLesenGrid() {
-                const lesenGrid = document.getElementById('lesenGrid');
-                lesenGrid.innerHTML = '';
-                
-                lesenExams.forEach((exam, index) => {
-                    const germanName = getGermanTranslation(exam);
-                    const arabicDesc = getArabicDescription(exam);
-                    
-                    const examCard = document.createElement('div');
-                    examCard.className = 'exam-card';
-                    examCard.style.animationDelay = `${index * 0.1}s`;
-                    examCard.innerHTML = `
-                        <h3>${germanName}</h3>
-                        <p>${arabicDesc}</p>
-                    `;
-                    examCard.addEventListener('click', () => {
-                        if (!checkAuthAndRedirect()) return;
-                        
-                        // توجيه المستخدم إلى الملف المناسب
-                        window.location.href = 'KURS/LESEN/' + exam;
-                    });
-                    lesenGrid.appendChild(examCard);
-                });
-            }
-
-            function populateHoerenGrid() {
-                const hoerenGrid = document.getElementById('hoerenGrid');
-                hoerenGrid.innerHTML = '';
-                
-                hoerenExams.forEach((exam, index) => {
-                    const germanName = getGermanTranslation(exam);
-                    const arabicDesc = getArabicDescription(exam);
-                    
-                    const examCard = document.createElement('div');
-                    examCard.className = 'exam-card';
-                    examCard.style.animationDelay = `${index * 0.1}s`;
-                    examCard.innerHTML = `
-                        <h3>${germanName}</h3>
-                        <p>${arabicDesc}</p>
-                    `;
-                    examCard.addEventListener('click', () => {
-                        if (!checkAuthAndRedirect()) return;
-                        
-                        // توجيه المستخدم إلى الملف المناسب
-                        window.location.href = 'KURS/HOREN/' + exam;
-                    });
-                    hoerenGrid.appendChild(examCard);
-                });
-            }
-
-            function populateSchreibenGrid() {
-                const schreibenGrid = document.getElementById('schreibenGrid');
-                schreibenGrid.innerHTML = '';
-                
-                schreibenExams.forEach((exam, index) => {
-                    const germanName = getGermanTranslation(exam);
-                    const arabicDesc = getArabicDescription(exam);
-                    
-                    const examCard = document.createElement('div');
-                    examCard.className = 'exam-card';
-                    examCard.style.animationDelay = `${index * 0.1}s`;
-                    examCard.innerHTML = `
-                        <h3>${germanName}</h3>
-                        <p>${arabicDesc}</p>
-                    `;
-                    examCard.addEventListener('click', () => {
-                        if (!checkAuthAndRedirect()) return;
-                        
-                        // توجيه المستخدم إلى الملف المناسب
-                        window.location.href = 'KURS/SCHREIBEN/' + exam;
-                    });
-                    schreibenGrid.appendChild(examCard);
-                });
-            }
-
-            function populatePdfsGrid() {
-                const pdfsGrid = document.getElementById('pdfsGrid');
-                pdfsGrid.innerHTML = '';
-                
-                pdfs.forEach((pdf, index) => {
-                    const germanName = getGermanTranslation(pdf);
-                    const arabicDesc = getArabicDescription(pdf);
-                    
-                    const pdfCard = document.createElement('div');
-                    pdfCard.className = 'exam-card';
-                    pdfCard.style.animationDelay = `${index * 0.1}s`;
-                    pdfCard.innerHTML = `
-                        <h3>${germanName}</h3>
-                        <p>${arabicDesc}</p>
-                    `;
-                    pdfCard.addEventListener('click', () => {
-                        if (!checkAuthAndRedirect()) return;
-                        
-                        // توجيه المستخدم إلى الملف المناسب
-                        if (pdf === "teil1.pdf" || pdf === "teil2.pdf" || pdf === "teil3.pdf") {
-                            window.location.href = 'KURS/MUNDLICH/' + pdf;
-                        } else {
-                            window.location.href = 'PDFs/' + pdf;
-                        }
-                    });
-                    pdfsGrid.appendChild(pdfCard);
-                });
-            }
-
             // تحديث الملف الشخصي
             function updateProfileDisplay() {
-                if (currentUser && !currentUser.guest) {
+                if (currentUser) {
                     const userName = currentUser.user_metadata?.full_name || currentUser.email?.split('@')[0] || 'مستخدم';
                     document.getElementById('userName').textContent = userName;
                     document.getElementById('profileName').textContent = userName;
@@ -3356,7 +3584,6 @@ const message = `مرحباً
                     document.getElementById('profileEmail').textContent = currentUser.email || 'غير متوفر';
                 }
                 
-                // تحديث عداد الامتحان
                 updateExamCountdown();
             }
 
@@ -3456,7 +3683,6 @@ const message = `مرحباً
 
             // فتح نموذج تعديل الملف الشخصي
             function openEditProfile() {
-                // تعبئة النموذج بالبيانات الحالية
                 document.getElementById('editName').value = document.getElementById('profileName').textContent;
                 document.getElementById('editEmail').value = document.getElementById('profileEmail').textContent;
                 document.getElementById('editPhone').value = document.getElementById('profilePhone').textContent;
@@ -3476,7 +3702,6 @@ const message = `مرحباً
                 const examDateInput = document.getElementById('editExamDate').value;
                 const examLocation = document.getElementById('editExamLocation').value;
                 
-                // تحديث البيانات في الواجهة
                 document.getElementById('userName').textContent = name;
                 document.getElementById('profileName').textContent = name;
                 document.getElementById('profileEmail').textContent = email;
@@ -3484,7 +3709,6 @@ const message = `مرحباً
                 document.getElementById('profileLocation').textContent = location;
                 document.getElementById('profileExamLocation').textContent = examLocation || 'غير محدد';
                 
-                // تحديث تاريخ الامتحان
                 if (examDateInput) {
                     examDate = new Date(examDateInput);
                     localStorage.setItem('examDate', examDate.toISOString());
@@ -3495,7 +3719,6 @@ const message = `مرحباً
                 editModal.style.display = 'none';
             }
 
-            // تنسيق التاريخ لحقل الإدخال
             function formatDateForInput(date) {
                 const year = date.getFullYear();
                 const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -3503,7 +3726,6 @@ const message = `مرحباً
                 return `${year}-${month}-${day}`;
             }
 
-            // التحقق من حالة تسجيل الدخول المحفوظة
             async function checkLoginStatus() {
                 try {
                     const { data, error } = await supabase.auth.getSession();
@@ -3512,13 +3734,11 @@ const message = `مرحباً
                     if (data.session) {
                         currentUser = data.session.user;
                         
-                        // تحديث localStorage عند استعادة الجلسة
                         localStorage.setItem('b2_isLoggedIn', 'true');
                         localStorage.setItem('b2_userEmail', currentUser.email);
                         localStorage.setItem('b2_userId', currentUser.id);
                         localStorage.setItem('b2_loginTime', new Date().toISOString());
                         
-                        // التحقق من صلاحية المستخدم
                         const hasAccess = await checkUserAccess();
                         
                         if (hasAccess) {
@@ -3530,7 +3750,6 @@ const message = `مرحباً
                         return;
                     }
                     
-                    // إذا لم يكن هناك جلسة، تأكد من مسح localStorage
                     localStorage.removeItem('b2_isLoggedIn');
                     localStorage.removeItem('b2_userEmail');
                     localStorage.removeItem('b2_userId');
@@ -3555,7 +3774,6 @@ const message = `مرحباً
                 }
             }
 
-            // وظيفة فتح واتساب لتفعيل الاشتراك
             function openWhatsAppActivation() {
                 const phoneNumber = '+212649661976';
                 const message = 'مرحباً، أود تفعيل الاشتراك المميز في تطبيق B2 Deutsch Training وإكمال عملية الدفع. الرجاء إعلامي بالخطوات والإجراءات المطلوبة. شكراً جزيلاً.';
@@ -3563,22 +3781,39 @@ const message = `مرحباً
                 window.open(url, '_blank');
             }
 
-            // وظيفة فتح واتساب للدعم
             function openWhatsApp() {
                 const phoneNumber = '+212649661976';
-                const message = 'مرحباً، أود الاستفسار عن حالة طلب التسجيل الخاص بي. الرجاء مساعدتي. شكراً جزيلاً.';
+                
+                const savedRegistration = localStorage.getItem('lastRegistration');
+                let message = '';
+                
+                if (savedRegistration) {
+                    const data = JSON.parse(savedRegistration);
+                    message = `مرحباً
+
+أنا قمتُ بالتسجيل في الموقع، وهذه بياناتي:
+
+الاسم: ${data.name}
+البريد الإلكتروني: ${data.email}${data.examDate ? `\nتاريخ الامتحان: ${data.examDate}` : ''}
+
+يرجى تأكيد التسجيل في أقرب وقت.
+شكراً لكم`;
+                } else {
+                    message = `مرحباً
+أنا قمتُ بالتسجيل في الموقع، يرجى تأكيد التسجيل في أقرب وقت.
+شكراً لكم`;
+                }
+                
                 const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
                 window.open(url, '_blank');
             }
 
             // إعداد مستمعي الأحداث
             function setupEventListeners() {
-                // تسجيل الدخول والتسجيل
                 loginButton.addEventListener('click', handleLogin);
                 signupButton.addEventListener('click', () => showPage('signup'));
                 createAccountButton.addEventListener('click', handleSignUp);
                 
-                // نسيان كلمة المرور
                 forgotPasswordLink.addEventListener('click', () => {
                     forgotModal.style.display = 'flex';
                 });
@@ -3589,7 +3824,6 @@ const message = `مرحباً
                     forgotEmail.value = '';
                 });
                 
-                // إغلاق نافذة نسيان كلمة المرور بالنقر خارجها
                 forgotModal.addEventListener('click', (e) => {
                     if (e.target === forgotModal) {
                         forgotModal.style.display = 'none';
@@ -3597,12 +3831,10 @@ const message = `مرحباً
                     }
                 });
                 
-                // تبديل رؤية كلمة المرور
                 passwordToggle.addEventListener('click', () => togglePasswordVisibility('passwordInput', passwordToggle));
                 signupPasswordToggle.addEventListener('click', () => togglePasswordVisibility('signupPassword', signupPasswordToggle));
                 signupConfirmPasswordToggle.addEventListener('click', () => togglePasswordVisibility('signupConfirmPassword', signupConfirmPasswordToggle));
                 
-                // التنقل بين الصفحات
                 backToLogin.addEventListener('click', handleSignOut);
                 backToLoginFromSignup.addEventListener('click', () => showPage('login'));
                 backFromKurs.addEventListener('click', () => showPage('menu'));
@@ -3612,20 +3844,22 @@ const message = `مرحباً
                 backFromMundlich.addEventListener('click', () => showPage('kurs'));
                 backFromPdfs.addEventListener('click', () => showPage('kurs'));
                 backFromExams.addEventListener('click', () => showPage('menu'));
+                backFromKomplette.addEventListener('click', () => showPage('exams'));
+                backFromPrüfungsteile.addEventListener('click', () => showPage('exams'));
+                backFromLesenTeil1.addEventListener('click', () => showPage('prüfungsteile'));
+                backFromLesenTeil2.addEventListener('click', () => showPage('prüfungsteile'));
+                backFromLesenTeil3.addEventListener('click', () => showPage('prüfungsteile'));
                 backFromProfile.addEventListener('click', () => showPage('menu'));
                 
-                // القائمة الرئيسية
                 kursCard.addEventListener('click', () => showPage('kurs'));
                 examsCard.addEventListener('click', () => showPage('exams'));
                 
-                // القائمة الفرعية لـ KURS
                 lesenCard.addEventListener('click', () => showPage('lesen'));
                 hoerenCard.addEventListener('click', () => showPage('hoeren'));
                 schreibenCard.addEventListener('click', () => showPage('schreiben'));
                 mundlichCard.addEventListener('click', () => showPage('mundlich'));
                 pdfsCard.addEventListener('click', () => showPage('pdfs'));
                 
-                // القائمة الفرعية لـ Mündlich
                 teil1Card.addEventListener('click', () => {
                     if (!checkAuthAndRedirect()) return;
                     window.location.href = 'KURS/MUNDLICH/teil1.pdf';
@@ -3639,7 +3873,12 @@ const message = `مرحباً
                     window.location.href = 'KURS/MUNDLICH/teil3.pdf';
                 });
                 
-                // عناصر التحكم
+                komplettePrüfungenCard.addEventListener('click', () => showPage('komplettePrüfungen'));
+                prüfungsteileCard.addEventListener('click', () => showPage('prüfungsteile'));
+                lesenTeil1Card.addEventListener('click', () => showPage('lesenTeil1'));
+                lesenTeil2Card.addEventListener('click', () => showPage('lesenTeil2'));
+                lesenTeil3Card.addEventListener('click', () => showPage('lesenTeil3'));
+                
                 themeToggle.addEventListener('click', () => {
                     document.body.classList.toggle('dark-mode');
                     themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
@@ -3654,12 +3893,10 @@ const message = `مرحباً
                     showPage('profile');
                 });
                 
-                // زر التاج
                 premiumBadge.addEventListener('click', () => {
                     showToast('أنت مشترك مميز! شكراً لدعمك 💎', 'info');
                 });
                 
-                // النماذج المنبثقة
                 subscriptionActivation.addEventListener('click', () => {
                     phoneModal.style.display = 'flex';
                 });
@@ -3674,10 +3911,8 @@ const message = `مرحباً
                     supportModal.style.display = 'none';
                 });
                 
-                // زر واتساب
                 whatsappButton.addEventListener('click', openWhatsApp);
                 
-                // إغلاق النماذج بالنقر خارجها
                 phoneModal.addEventListener('click', (e) => {
                     if (e.target === phoneModal) {
                         phoneModal.style.display = 'none';
@@ -3696,7 +3931,6 @@ const message = `مرحباً
                     }
                 });
                 
-                // محدد اللغة
                 langBtn.addEventListener('click', () => {
                     langDropdown.classList.toggle('show');
                 });
@@ -3709,17 +3943,14 @@ const message = `مرحباً
                     });
                 });
                 
-                // إغلاق القوائم المنسدلة بالنقر خارجها
                 document.addEventListener('click', (e) => {
                     if (!e.target.closest('.language-selector')) {
                         langDropdown.classList.remove('show');
                     }
                 });
                 
-                // رفع الصورة
                 document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
                 
-                // تعديل الملف الشخصي
                 editProfileBtn.addEventListener('click', openEditProfile);
                 saveProfile.addEventListener('click', saveProfileChanges);
                 changePasswordBtn.addEventListener('click', changeUserPassword);
@@ -3728,11 +3959,9 @@ const message = `مرحباً
                     editModal.style.display = 'none';
                 });
                 
-                // تسجيل الخروج
                 logoutBtn.addEventListener('click', handleSignOut);
                 signOutWaiting.addEventListener('click', handleSignOut);
 
-                // إدخال بالإنتر
                 emailInput.addEventListener('keypress', (e) => {
                     if (e.key === 'Enter') {
                         passwordInput.focus();
@@ -3766,7 +3995,6 @@ const message = `مرحباً
 
             // بدء التطبيق
             async function init() {
-                // تحميل الإعدادات المحفوظة
                 const savedDarkMode = localStorage.getItem('darkMode') === 'true';
                 if (savedDarkMode) {
                     document.body.classList.add('dark-mode');
@@ -3776,10 +4004,8 @@ const message = `مرحباً
                 const savedLanguage = localStorage.getItem('language') || 'ar';
                 changeLanguage(savedLanguage);
                 
-                // تحميل الصورة المحفوظة
                 loadSavedAvatar();
                 
-                // التحقق من حالة تسجيل الدخول
                 await checkLoginStatus();
                 
                 setupEventListeners();
