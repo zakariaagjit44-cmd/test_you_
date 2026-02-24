@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Deutsch B2 Prüfung - Lesen Teil 3 (Completion Mode)</title>
+  
+  <style>
+    /* ===== GLOBAL STYLES – Professionell, ohne Emojis ===== */
+    :root {
+      --primary-dark: #0b2b4a;        
+      --primary-medium: #1f4b7a; 
+      --accent-soft: #3b8fc2;         
+      --light-bg: #f0f7fe;
+      --text-dark: #1e2b37;
+      --white: #ffffff;
+      --shadow-sm: 0 6px 14px rgba(0, 20, 40, 0.12);
+      --transition: all 0.3s ease; 
+      --success: #2e7d5e;             
+      --danger: #b13e3e;               
+      --neutral: #5f6b7a;
+      --neutral-light: #e9eff5;
+      --bg-results: #f8fafd;
+      --border-light: #d4e2f0;
+      
+      /* Default blue theme */
+      --header-bg: #0b2b4a;
+      --timer-bg: rgba(255, 255, 255, 0.1);
+      --slot-border: #8fb4d1;
+      --slot-bg: #f5fafe;
+      --indicator-bg: #d4e2f0;
+      --indicator-border: #8fb4d1;
+      --indicator-text: #1e3a4e;
+      --glow-effect: none;
+    }
+    
+    /* ===== COMPLETION MODE – Vollständiger visueller Wandel ===== */
+    body.completion-mode {
+      --header-bg: #1f6a4c;                /* Grüner Header */
+      --timer-bg: rgba(255, 255, 255, 0.25);
+      --slot-border: #2e7d5e;
+      --slot-bg: #e2f3e4;
+      --indicator-bg: #d4eed4;              /* Helles Grün für Indikatoren */
+      --indicator-border: #2e7d5e;
+      --indicator-text: #1e5e3a;
+      --glow-effect: 0 0 15px rgba(46, 125, 94, 0.3); /* Grüner Glow */
+    }
+    
+    /* Header und Timer */
+    body.completion-mode .topbar {
+      background: var(--header-bg) !important;
+      box-shadow: var(--glow-effect), 0 4px 12px rgba(0,0,0,0.2) !important;
+      transition: all 0.4s ease;
+    }
+    
+    body.completion-mode .timer-container {
+      background: var(--timer-bg) !important;
+      transition: all 0.4s ease;
+    }
+    
+    /* DROP-ZONEs (Fortschrittsbalken) */
+    body.completion-mode .title-slot:not(.has-title):not(.has-x) {
+      border-color: var(--slot-border) !important;
+      background: var(--slot-bg) !important;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03), 0 0 8px rgba(46, 125, 94, 0.2) !important;
+      transition: all 0.4s ease;
+    }
+    
+    /* Indikatoren (Fragen-Dots) – neu hinzugefügt */
+    .question-indicators {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 15px;
+      background: #ffffff;
+      border-radius: 50px;
+      justify-content: center;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+    }
+    
+    .indicator-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--indicator-bg);
+      border: 2px solid var(--indicator-border);
+      color: var(--indicator-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    /* Im Completion Mode werden alle Dots grün */
+    body.completion-mode .indicator-dot {
+      background: #d4eed4 !important;
+      border-color: #2e7d5e !important;
+      color: #1d5e3a !important;
+      box-shadow: 0 0 10px rgba(46, 125, 94, 0.2);
+    }
+    
+    /* Hintergrund der rechten Panel-Überschrift leicht grünlich im Completion Mode */
+    body.completion-mode .question-head {
+      background: #dff0df;
+      border-left-color: #2e7d5e;
+    }
+    
+    /* Übergänge für alle betroffenen Elemente */
+    .topbar, .timer-container, .title-slot, .indicator-dot, .question-head {
+      transition: all 0.4s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0b2b4a 0%, #1f4b7a 100%);
+      color: var(--white);
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+    
+    .exam-body {
+      background: #f0f7fe;
+      color: var(--text-dark);
+      line-height: 1.45;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    /* Header */
+    header.topbar {
+      background: var(--header-bg);
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      min-height: 80px;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .brand .logo {
+      width: 80px;
+      height: 40px;
+      background: #b13e3e;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .meta .main-title {
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.3px;
+    }
+
+    .meta .sub-title {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    /* Timer */
+    .timer-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--timer-bg);
+      padding: 6px 18px;
+      border-radius: 40px;
+      backdrop-filter: blur(2px);
+    }
+    
+    .timer-icon {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+    
+    .timer-display {
+      font-weight: 600;
+      font-size: 24px;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px 14px;
+      border-radius: 30px;
+      letter-spacing: 2px;
+    }
+
+    /* Buttons */
+    .buttons-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    
+    .exam-btn {
+      padding: 12px 22px;
+      border-radius: 40px;
+      border: none;
+      background: #3b8fc2;        
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 140px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 20, 30, 0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .exam-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 14px rgba(0, 20, 30, 0.3);
+    }
+    
+    .exam-btn.result {
+      background: #1f6a9c;        
+    }
+    
+    .exam-btn.result:hover {
+      background: #15507a;
+    }
+    
+    .exam-btn.reset {
+      background: #4f6f8f;        
+    }
+    
+    .exam-btn.reset:hover {
+      background: #3e5a77;
+    }
+    
+    /* Hauptcontainer */
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 18px;
+      padding: 18px 24px;
+      max-width: 1600px;
+      margin: 0 auto;
+      flex: 1;
+      min-height: 0;
+      height: calc(100vh - 80px);
+    }
+    
+    /* Linke und rechte Panels */
+    .left-panel, .right-panel {
+      background: white;
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      overflow-y: auto;
+      height: 100%;
+    }
+    
+    .left-panel::-webkit-scrollbar, .right-panel::-webkit-scrollbar {
+      width: 8px;
+    }
+    .left-panel::-webkit-scrollbar-track, .right-panel::-webkit-scrollbar-track { background: #e2ecf5; border-radius: 10px; }
+    .left-panel::-webkit-scrollbar-thumb, .right-panel::-webkit-scrollbar-thumb { background: var(--accent-soft); border-radius: 10px; }
+    
+    .left-panel .passage {
+      font-size: 14.5px;
+      color: var(--text-dark);
+      line-height: 1.7;
+    }
+    
+    .left-panel h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: var(--primary-dark);
+      border-bottom: 3px solid var(--accent-soft);
+      padding-bottom: 8px;
+      font-weight: 600;
+    }
+    
+    /* Question head rechts */
+    .question-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #e4f0fa;
+      padding: 12px 18px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+      border-left: 5px solid var(--primary-dark);
+      flex-shrink: 0;
+    }
+    
+    .section-name {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 18px;
+    }
+    
+    .question-subtitle {
+      font-size: 13px;
+      color: #3f5568;
+    }
+    
+    /* Texte Liste (links) */
+    .texts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    
+    .text-item {
+      padding: 16px;
+      border: 1px solid #cbdbe9;
+      border-radius: 16px;
+      background: #ffffff;
+      transition: var(--transition);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    
+    .text-item:hover {
+      border-color: var(--accent-soft);
+      box-shadow: 0 6px 12px rgba(59, 143, 194, 0.12);
+    }
+    
+    .text-letter {
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    
+    .text-content {
+      font-size: 13.5px;
+      color: #1e3a4e;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    
+    /* DROP-ZONE – Farben via Variable */
+    .title-slot {
+      min-height: 52px;
+      padding: 10px 14px;
+      border: 2.5px dashed var(--slot-border);
+      border-radius: 14px;
+      background: var(--slot-bg);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      word-break: break-word;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+      color: #1e3a4e;
+    }
+    
+    .title-slot[draggable="true"] {
+      cursor: grab;
+    }
+    
+    .title-slot[draggable="true"]:active {
+      cursor: grabbing;
+      opacity: 0.8;
+    }
+    
+    .title-slot:hover {
+      background: #e6f2fc;
+      border-color: var(--accent-soft);
+    }
+    
+    .title-slot.has-title {
+      background: #e2f3e4;
+      border-color: var(--success);
+      border-style: solid;
+      font-weight: 500;
+    }
+    
+    .title-slot.has-x {
+      background: #fae1e1;
+      border-color: var(--danger);
+      color: #8b3a3a;
+      font-weight: 500;
+      border-style: solid;
+    }
+    
+    /* Situationen rechts */
+    .situations-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    
+    .situation-item {
+      padding: 16px;
+      border: 2px solid #d4e2f0;
+      border-radius: 16px;
+      background: #ffffff;
+      cursor: grab;
+      transition: all 0.15s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    }
+    
+    .situation-item[draggable="true"]:active {
+      cursor: grabbing;
+      opacity: 0.7;
+    }
+    
+    .situation-item:hover {
+      border-color: var(--accent-soft);
+      background: #f0f8ff;
+      transform: translateX(4px);
+    }
+    
+    .situation-item.used {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #f0f3f6;
+      border-color: #a0b8cc;
+      pointer-events: none;  
+    }
+    
+    .situation-number {
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+    
+    .situation-text {
+      font-size: 13.5px;
+      color: #1e3a4e;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    
+    /* X Button */
+    .no-match-container {
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    .exam-btn.no-match {
+      background: #5f7a93;       
+      font-size: 12px;
+      padding: 8px 18px;
+      min-width: auto;
+      border-radius: 30px;
+      font-weight: 600;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .exam-btn.no-match:hover {
+      background: #4a637b;
+    }
+    
+    .exam-btn.no-match.selected {
+      background: var(--danger);
+    }
+    
+    .exam-btn.no-match.selected:hover {
+      background: #9f3737;
+    }
+    
+    /* ===== DETAILERGEBNISSE (linke Seite) ===== */
+    .results-container {
+      padding: 4px 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      background: var(--primary-dark);
+      color: white;
+      padding: 18px 24px;
+      border-radius: 18px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    
+    .results-header h2 {
+      font-size: 22px;
+      font-weight: 600;
+      border: none;
+      margin: 0;
+      color: white;
+      letter-spacing: 0.3px;
+    }
+    
+    .results-summary-badge {
+      background: rgba(255,255,255,0.18);
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .result-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-bottom: 20px;
+    }
+    
+    .result-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 14px 18px;
+      border-left: 6px solid;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.03);
+      border: 1px solid var(--border-light);
+    }
+    
+    .result-card.correct {
+      border-left-color: var(--success);
+    }
+    
+    .result-card.incorrect {
+      border-left-color: var(--danger);
+    }
+    
+    .result-card-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .situation-tag {
+      background: var(--primary-dark);
+      color: white;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 40px;
+      font-size: 14px;
+      min-width: 50px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .situation-text-short {
+      font-weight: 500;
+      max-width: 300px;
+      font-size: 14px;
+      color: #1e3a4e;
+    }
+    
+    .result-answer-badge {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #f0f6fd;
+      padding: 6px 20px;
+      border-radius: 40px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+    }
+    
+    .user-answer {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 15px;
+      min-width: 40px;
+      text-align: center;
+    }
+    
+    .correct-answer {
+      color: #5f6b7a;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .verdict-badge {
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      min-width: 58px;
+      text-align: center;
+    }
+    
+    .verdict-badge.correct {
+      background: var(--success);
+      color: white;
+    }
+    
+    .verdict-badge.incorrect {
+      background: var(--danger);
+      color: white;
+    }
+    
+    /* ===== GESAMTERGEBNIS (rechte Seite) – nur Summary ===== */
+    .summary-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .summary-card {
+      background: linear-gradient(145deg, #f8fafd, #ffffff);
+      border-radius: 36px;
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 35px rgba(0, 20, 40, 0.2);
+      border: 1px solid rgba(255,255,255,0.6);
+      text-align: center;
+    }
+    
+    .summary-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      letter-spacing: 0.5px;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 12px;
+      display: inline-block;
+    }
+    
+    .summary-score {
+      font-size: 64px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      line-height: 1;
+      margin-bottom: 15px;
+    }
+    
+    .summary-score small {
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--neutral);
+    }
+    
+    .summary-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 25px 0 20px;
+      background: #eef3f9;
+      border-radius: 60px;
+      padding: 16px 10px;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: var(--neutral);
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    
+    .stat-value.correct {
+      color: var(--success);
+    }
+    
+    .stat-value.incorrect {
+      color: var(--danger);
+    }
+    
+    .summary-percent {
+      background: var(--primary-dark);
+      color: white;
+      padding: 16px 12px;
+      border-radius: 60px;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-top: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    .summary-verdict {
+      margin-top: 22px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--neutral);
+      background: #e4f0fa;
+      display: inline-block;
+      padding: 8px 28px;
+      border-radius: 50px;
+    }
+    
+    /* Mobile */
+    @media (max-width: 980px) {
+      .container { grid-template-columns: 1fr; height: auto; }
+      .exam-body { height: auto; overflow: auto; }
+      .question-indicators { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body id="body" class="exam-body">
+  <div id="lesen-page" style="height: 100%; display: flex; flex-direction: column;">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">B2</div>
+        <div class="meta">
+          <div class="main-title">Deutsch B2 Prüfung</div>
+          <div class="sub-title">Lesen Teil 3 — Drag & Drop</div>
+        </div>
+      </div>
+      <div class="timer-container">
+        <span class="timer-icon">⏱</span>
+        <span class="timer-display" id="timer">00:00:00</span>
+      </div>
+      <div class="buttons-group">
+        <button id="resultBtn-lesen" class="exam-btn result">Ergebnis anzeigen</button>
+        <button id="resetBtn-lesen" class="exam-btn reset">Neu beginnen</button>
+      </div>
+    </header>
+
+    <div class="container">
+      <main class="left-panel" id="leftPanel-lesen">
+        <div class="passage" id="passage-lesen">
+          <h2 id="passageTitle-lesen">Texte (A-L) – Ziel ablegen</h2>
+          <div id="passageContent-lesen"></div>
+          <!-- Frage-Indikatoren (Dots) werden hier dynamisch eingefügt -->
+          <div id="indicatorContainer" class="question-indicators"></div>
+        </div>
+      </main>
+      <aside class="right-panel" id="rightPanel-lesen">
+        <div class="question-head">
+          <div>
+            <div class="section-name">Leseverstehen, Teil 3</div>
+            <div class="question-subtitle">Situationen (11-20) – ziehen Sie auf die Texte</div>
+          </div>
+        </div>
+        <div class="question-body" id="questionBody-lesen" style="overflow-y: auto; flex:1;"></div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ===============================
+      // SECTION POUR LES CORRECTIONS (LÖSUNGEN)
+      // Modifiez cette carte pour changer les réponses. (11 → B, etc.)
+      // ===============================
+      const correctAnswersMap = {
+        "11": "B",
+        "12": "L",
+        "13": "F",
+        "14": "C",
+        "15": "X",
+        "16": "G",
+        "17": "H",
+        "18": "X",
+        "19": "I",
+        "20": "A"
+      };
+
+      const exam = {
+        id: "exam-teil3",
+        sections: [
+          { 
+            id: "s3", 
+            title: "Leseverstehen, Teil 3", 
+            points: 25,
+            texts: [
+              // NEUE TEXTE (A-L)
+              {id: "A", text: "Vier herzallerliebste Mopswelpen, drei Weibchen und ein Männchen, in gute Hände abzugeben. Die Hundebabys können uns in ca. sechs Wochen verlassen und in ihr neues Heim einziehen. Unsere Welpen wachsen gemeinsam mit Katzen und Pferden auf. Sie sind an Erwachsene und kleine Kinder gewöhnt und eignen sich deshalb hervorragend als Familienhunde. Bei Abgabe sind die jungen Tiere gechipt und haben alle üblichen Impfungen bekommen. Sie wurden entwurmt und besitzen ein tierärztliches Gesundheitszeugnis. Vereinbaren Sie jetzt einen Besuchstermin. Bitte nur bei ernsthaftem Interesse! karina_mayer@outlook.com"},
+              {id: "B", text: "Herbstzeit ist Lesezeit! Wir veranstalten auch dieses Jahr wieder unseren traditionellen Bücherflohmarkt. Sie finden bei uns spannenden Lesestoff in über 40 Kategorien, von A wie Abenteuerromane bis Z wie Zeitschriften. Außerdem gibt es gebrauchte CDs und Spielesammlungen. Spannendes, Lustiges, Lehrreiches: Lesefutter gibt es schon für 1 Euro. Für Kaffee und Kuchen zur Stärkung ist auch gesorgt. 15. September, 10:00 bis 18:00 Uhr, im Pfarrsaal. Buchspenden werden ab sofort im Pfarrbüro, Riederweg 14, entgegengenommen. Die Einnahmen vom Verkauf sind für soziale Zwecke bestimmt. Auenbacher Bach-Verein"},
+              {id: "C", text: "Auf den folgenden Seiten finden Sie Informationen zu unserem Chor. Derzeit zählt unser Chor 30 Mitglieder. Nach vielen Jahren als Chormitglied hat Lisa Akgül im letzten Herbst die Chorleitung übernommen. Wir proben in der Regel jeden Donnerstag von 20:00 bis 22:00 Uhr in der Musikschule Auenbach. Wenn Sie wissen möchten, wie unser Chor klingt - klicken Sie hier auf Hörprobe. Um unserem Chor beizutreten, ist keine Gesangsausbildung erforderlich. Wir freuen uns immer über Verstärkung. Schauen Sie doch einfach bei einer unserer Proben vorbei. Natürlich können Sie auch unser Kontaktformular nutzen."},
+              {id: "D", text: "Hundezubehör günstig abzugeben: Hundekörbchen, schwarz, 60 x 50 x 20 cm. Sehr schönes, fast unbenutztes Lederhalsband, 23 cm. Futter- oder Wasserschüssel aus Keramik, Durchmesser 18 cm. Maulkorb, silberfarbiger Draht, Größe 1. Regenmantel für kleine Hunde, Größe 25M, passend z. B. für Malteser oder Pinscher, für eine Rückenlänge ca. 25 cm. Diverses Hundespielzeug (Ball am Seil, Quietscher, Knotenseil...). Nur als Gesamtpaket abzugeben! Preis nach Vereinbarung. Anfrage telefonisch unter 069-9612 17 22, bitte nur zwischen 18:00 und 19:00 Uhr."},
+              {id: "E", text: "Die Leipziger Buchmesse ist Deutschlands zweitgrößte Buchmesse. Sie findet jedes Jahr Mitte März auf dem Messegelände im Norden Leipzigs statt. Die Verlage präsentieren dort ihre Neuerscheinungen. Die Leipziger Buchmesse richtet sich vor allem an das allgemeine Lesepublikum. Die Begegnung zwischen Autoren und Besuchern soll im Mittelpunkt stehen. Während der vier Messetage haben Leserinnen und Leser im Rahmen des Lesefestivals 'Leipzig liest' die Möglichkeit, aus rund 1.800 Leseveranstaltungen zu wählen. Jedes Jahr bekommt ein anderes Schwerpunktland die Gelegenheit, einem breiten Publikum seine Literatur vorzustellen."},
+              {id: "F", text: "Nach 30 Jahren am Völkerpark schließen wir im Frühjahr unseren Laden und verabschieden uns in die Rente. Wir möchten uns bei allen Kundinnen und Kunden bedanken, die uns über viele Jahre die Treue gehalten haben. Ab sofort der große Bücherausverkauf. -Sachbücher, Bildbände: 30 % Rabatt. -Romane, Lyrik, gebundene Ausgaben: 40% Rabatt. -Taschenbücher: 50% Rabatt. -Kinderbücher: bis zu 70 % Rabatt. Buchhandlung Bücherstand, Am Völkerpark 3, 44388 Dortmund, solange der Vorrat reicht."},
+              {id: "G", text: "Neugründung eines Interkulturellen Vereins. Gemeinsam singen, musizieren, kochen, essen und diskutieren - das hat sich der neugegründete Verein SANNU auf seine Fahnen geschrieben. Zum Angebot zählen auch Lesungen, Konzerte und Vorträge. Der Schwerpunkt liegt aber auf dem gegenseitigen Kennenlernen. Die Gründerinnen und Gründer von SANNU möchten vor allem Familien ansprechen und Menschen aus aller Welt und aller Altersgruppen zusammenbringen. Mehr Infos zum Angebot."},
+              {id: "H", text: "Sie möchten einen Hund kaufen? Ein solcher Schritt sollte gut überlegt sein: Es gibt Vieles zu bedenken: Erlaubt Ihr Mietvertrag einen Hund in Ihrer Wohnung? Wohnen Sie in einer Gegend, die für einen Hund geeignet ist? Auch Ihre Lebenssituation spielt eine wichtige Rolle. Sind Sie berufstätig? Können Sie den Hund mit zur Arbeit nehmen? Reichen Ihre finanziellen Mittel für eine Hundehaltung? Über solche und viele andere Überlegungen vor dem Hundekauf können Sie mit Frau Dr. Ines Sperber diskutieren. Am 12. März, VHS, Raum 101, 18:30 Uhr."},
+              {id: "I", text: "Sportvereine, Musikvereine, Tanzvereine, Anglervereine, die Liste ist lang: In Deutschland sind mehr als eine halbe Million Vereine registriert. Die Organisation von Vereinen ist in Deutschland genau geregelt. Am kommenden Dienstag geht es in der Vortragsreihe 'Bürger Aktiv' um die gesetzlichen Bestimmungen zur Gründung eines Vereins. Interessenten bekommen hier alle nötigen Infos. Das Treffen findet im Haus der Begegnung am Uferweg 22 statt, Beginn um 19:30 Uhr. Die Teilnahme ist kostenlos. Anmeldung unter begegnung@hausder.de"},
+              {id: "J", text: "Günstige Bücher für Studenten. Bei uns können Sie gebrauchte Fachbücher zu diversen Themen kaufen oder verkaufen, z. B.: Architektur, Chemie, Germanistik, Kunst, Mathematik, Pädagogik, u. v. a. Sie brauchen sich nicht zu registrieren. Machen Sie einfach online Ihr Angebot oder erstellen Sie kostenlos Ihr Verkaufsinserat im Kleinanzeiger für Studentinnen und Studenten. Mit Ihrem Text können Sie bis zu drei Bilder hochladen. Angebote. Anzeige aufgeben."},
+              {id: "K", text: "Sie haben erfolgreich einen neuen Verein gegründet und bemühen sich nun um neue Mitglieder? Damit Sie einen großen Kreis von Interessenten ansprechen und Mitglieder für Ihren neuen Verein werben können, brauchen Sie öffentliche Aufmerksamkeit. Dazu können Sie aufwändige Broschüren drucken lassen oder teure Anzeigen aufgeben. Oder Sie kommen zu uns: Bei uns haben Sie die Möglichkeit, Ihren Verein mit einer direkten Verknüpfung zu Ihrer Homepage eintragen zu lassen. Die Registrierung ist für Sie mit keinerlei Kosten verbunden. weiter zur kostenlosen Registrierung."},
+              {id: "L", text: "In unserem Shop finden Sie mehr als 3000 verschiedene Produkte. Sie können aus 30 Marken Hundefutter wählen, von besonders günstigem Futter bis zu hochwertigem Futter ohne chemische Zusatzstoffe und veganem Hundefutter. Im Bereich Hundezubehör finden Sie alles, was Hundehalter brauchen, zum Beispiel Leinen & Halsbänder, Näpfe, Schlafplätze und Spielzeug. Beachten Sie auch unsere Sonderangebote und unsere neuen Produkte. Wir bieten Ihnen einen Neukundenrabatt von fünf Prozent und portofreie Zusendung ab einem Bestellwert von 25 Euro. Viel Spaß beim Einkauf in unserem Online-Hundeshop."}
+            ],
+            situations: [
+              // NEUE SITUATIONEN
+              {id: "11", text: "Ein Bekannter möchte alte Romane verschenken."},
+              {id: "12", text: "Ein Freund braucht nur noch einen Hundekorb für seinen kleinen Hund."},
+              {id: "13", text: "Eine Freundin möchte günstige Bücher für ihre achtjährige Tochter kaufen."},
+              {id: "14", text: "Ihr Mann singt gerne und möchte Mitglied in einem Gesangverein werden."},
+              {id: "15", text: "Ihr Sohn möchte in seiner Freizeit Hunde ausführen."},
+              {id: "16", text: "Ihre Familie möchte sich mit Menschen aus anderen Ländern treffen."},
+              {id: "17", text: "Ihre Tochter wünscht sich einen Hund. Sie möchten sich zuerst informieren."},
+              {id: "18", text: "Sie interessieren sich für die Arbeit in einer Buchhandlung."},
+              {id: "19", text: "Sie möchten einen Kulturverein gründen und sich informieren."},
+              {id: "20", text: "Sie suchen nach einem jungen Hund für Ihre Familie."}
+            ]
+          }
+        ]
+      };
+
+      let state = { sectionIndex: 0, answers: {}, showResults: false };
+      let seconds = 0, timerInterval;
+      const timerEl = document.getElementById('timer');
+      const passageContentEl = document.getElementById('passageContent-lesen');
+      const questionBodyEl = document.getElementById('questionBody-lesen');
+      const resultBtn = document.getElementById('resultBtn-lesen');
+      const resetBtn = document.getElementById('resetBtn-lesen');
+      const bodyEl = document.getElementById('body');
+      const indicatorContainer = document.getElementById('indicatorContainer');
+
+      function startTimer() { timerInterval = setInterval(() => { seconds++; updateTimerDisplay(); }, 1000); }
+      function resetTimer() { seconds = 0; updateTimerDisplay(); }
+      function updateTimerDisplay() { const h = Math.floor(seconds/3600), m = Math.floor((seconds%3600)/60), s = seconds%60; timerEl.textContent = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }
+
+      // --- Prüfen ob alle Fragen beantwortet sind (für Completion Mode) ---
+      function isAllQuestionsAnswered() {
+        const totalSituations = exam.sections[0].situations.length;
+        const answeredCount = Object.keys(state.answers).length;
+        return answeredCount === totalSituations;
+      }
+
+      function updateCompletionMode() {
+        if (!state.showResults && isAllQuestionsAnswered()) {
+          bodyEl.classList.add('completion-mode');
+        } else {
+          bodyEl.classList.remove('completion-mode');
+        }
+      }
+
+      // Indikatoren (Dots) rendern
+      function renderIndicators() {
+        const situations = exam.sections[0].situations;
+        let dotsHtml = '';
+        situations.forEach(sit => {
+          const isAnswered = state.answers[sit.id] !== undefined;
+          dotsHtml += `<div class="indicator-dot" title="Situation ${sit.id}">${sit.id}</div>`;
+        });
+        indicatorContainer.innerHTML = dotsHtml;
+      }
+
+      // --- DRAG & DROP + KLICK + X-TOGGLE ---
+      function handleDragStart(e, type, id) {
+        if (type === 'situation' && state.answers[id] && state.answers[id] !== 'X') { e.preventDefault(); return; } 
+        e.dataTransfer.setData('text/plain', JSON.stringify({ type, id }));
+      }
+
+      function handleDropOnText(e, textId) {
+        e.preventDefault();
+        const raw = e.dataTransfer.getData('text/plain');
+        if (!raw) return;
+        const { type, id } = JSON.parse(raw);
+        
+        if (type === 'situation') {
+          if (state.answers[id] && state.answers[id] !== 'X') return; 
+          const existingForText = Object.entries(state.answers).find(([sit, val]) => val === textId);
+          if (existingForText) return;
+          
+          if (state.answers[id] === 'X') delete state.answers[id];
+          state.answers[id] = textId;
+        } 
+        else if (type === 'slot') {
+          const situationId = id.replace('slot-','');
+          if (state.answers[situationId] && state.answers[situationId] !== 'X') {
+            delete state.answers[situationId];
+          }
+        }
+        updateCompletionMode();
+        renderAll();
+      }
+
+      function allowDrop(e) { e.preventDefault(); }
+
+      function handleSlotClick(situationId) {
+        if (situationId && state.answers[situationId] && state.answers[situationId] !== 'X') {
+          delete state.answers[situationId];
+          updateCompletionMode();
+          renderAll();
+        }
+      }
+
+      function toggleNoMatch(situationId) {
+        if (state.answers[situationId] === 'X') {
+          delete state.answers[situationId];
+        } else {
+          if (state.answers[situationId]) {
+            delete state.answers[situationId];
+          }
+          state.answers[situationId] = 'X';
+        }
+        updateCompletionMode();
+        renderAll();
+      }
+
+      // ===== RENDER =====
+      function renderPart3() {
+        const section = exam.sections[0];
+        let textsHTML = `<div class="texts-list">`;
+        section.texts.forEach(text => {
+          const userSit = Object.keys(state.answers).find(key => state.answers[key] === text.id);
+          const sitObj = userSit ? section.situations.find(s => s.id === userSit) : null;
+          const slotContent = userSit ? `Situation ${sitObj.id}: ${sitObj.text.substring(0,65)}...` : (state.answers[text.id] === 'X' ? '' : 'Hier ablegen');
+          const hasClass = userSit ? 'has-title' : (state.answers[text.id] === 'X' ? 'has-x' : '');
+          const draggable = userSit ? 'true' : 'false';
+          const slotClickAttr = userSit ? `onclick="window.lesenApp.handleSlotClick('${userSit}')"` : '';
+          
+          textsHTML += `
+            <div class="text-item" data-text-id="${text.id}">
+              <div class="text-letter">Text ${text.id}</div>
+              <div class="text-content">${text.text}</div>
+              <div class="title-slot ${hasClass}" 
+                   data-text-id="${text.id}"
+                   draggable="${draggable}"
+                   ondragstart="event.dataTransfer.setData('text/plain', JSON.stringify({type:'slot', id:'slot-${userSit}'}))"
+                   ondrop="window.lesenApp.dropOnText(event, '${text.id}')"
+                   ondragover="event.preventDefault()"
+                   ${slotClickAttr}
+                   title="${userSit ? 'Klicken zum Entfernen' : ''}">
+                ${userSit ? slotContent : (state.answers[text.id] === 'X' ? 'X (kein Text)' : 'Hier ablegen')}
+              </div>
+            </div>`;
+        });
+        textsHTML += `</div>`;
+        passageContentEl.innerHTML = textsHTML;
+
+        let sitHTML = `<div class="situations-list">`;
+        section.situations.forEach(sit => {
+          const used = state.answers[sit.id] && state.answers[sit.id] !== 'X';
+          const isX = state.answers[sit.id] === 'X';
+          sitHTML += `
+            <div class="situation-item ${used ? 'used' : ''}" 
+                 data-situation-id="${sit.id}"
+                 draggable="${!used}"
+                 ondragstart="window.lesenApp.dragStart(event, 'situation', '${sit.id}')">
+              <div class="situation-number">Situation ${sit.id}</div>
+              <div class="situation-text">${sit.text}</div>
+              <div class="no-match-container">
+                <button class="exam-btn no-match ${isX ? 'selected' : ''}" 
+                        onclick="event.stopPropagation(); window.lesenApp.toggleNoMatch('${sit.id}')">
+                  ${isX ? 'X gewählt' : 'X (kein Text)'}
+                </button>
+              </div>
+            </div>`;
+        });
+        sitHTML += `</div>`;
+        questionBodyEl.innerHTML = sitHTML;
+        
+        renderIndicators(); // Dots immer aktuell halten
+      }
+
+      // Ergebnisse Detail (linke Seite) - Utilisation de la carte de correction
+      function renderResultsLeft() {
+        const section = exam.sections[0];
+        let totalCorrect = 0;
+        let total = section.situations.length;
+        
+        let html = `
+          <div class="results-container">
+            <div class="results-header">
+              <h2>Prüfungsauswertung</h2>
+              <div class="results-summary-badge">${Object.keys(state.answers).length}/${total} beantwortet</div>
+            </div>
+            <div class="result-grid">
+        `;
+        
+        section.situations.forEach(sit => {
+          const user = state.answers[sit.id];
+          // Correction lue depuis la carte
+          const correctId = correctAnswersMap[sit.id] || 'X';
+          const isCorrect = (user === correctId);
+          if (isCorrect) totalCorrect++;
+          
+          const userDisplay = user || '—';
+          const correctDisplay = correctId;
+          
+          html += `
+            <div class="result-card ${isCorrect ? 'correct' : 'incorrect'}">
+              <div class="result-card-info">
+                <span class="situation-tag">${sit.id}</span>
+                <span class="situation-text-short">${sit.text.substring(0,70)}…</span>
+              </div>
+              <div class="result-answer-badge">
+                <span class="user-answer">${userDisplay}</span>
+                <span class="correct-answer">soll: ${correctDisplay}</span>
+                <span class="verdict-badge ${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? 'richtig' : 'falsch'}</span>
+              </div>
+            </div>
+          `;
+        });
+        
+        html += `</div></div>`;
+        passageContentEl.innerHTML = html;
+        indicatorContainer.innerHTML = ''; // Dots im Ergebnis-Modus ausblenden
+        return { totalCorrect, total };
+      }
+
+      // Gesamtergebnis (rechte Seite) – nur Summary
+      function renderResultsRight(totalCorrect, total) {
+        const wrong = total - totalCorrect;
+        const percent = Math.round((totalCorrect/total)*100);
+        const stars = '★'.repeat(Math.max(1, Math.floor(percent/20)));
+        const passed = percent >= 60;
+        
+        const rightHTML = `
+          <div class="summary-container">
+            <div class="summary-card">
+              <div class="summary-title">Gesamtergebnis</div>
+              <div class="summary-score">${totalCorrect}<small>/${total}</small></div>
+              <div class="summary-stats">
+                <div class="stat-item">
+                  <div class="stat-label">Richtig</div>
+                  <div class="stat-value correct">${totalCorrect}</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">Falsch</div>
+                  <div class="stat-value incorrect">${wrong}</div>
+                </div>
+              </div>
+              <div class="summary-percent">${percent}%</div>
+              <div class="summary-verdict">${passed ? 'Bestanden' : 'Nicht bestanden'}</div>
+              <div style="margin-top:15px; font-size:22px; color:#ffd966;">${stars}</div>
+            </div>
+          </div>
+        `;
+        questionBodyEl.innerHTML = rightHTML;
+      }
+
+      function renderResults() {
+        const { totalCorrect, total } = renderResultsLeft();
+        renderResultsRight(totalCorrect, total);
+      }
+
+      function renderAll() { 
+        if (state.showResults) {
+          renderResults();
+        } else {
+          renderPart3();
+        }
+        updateCompletionMode();
+      }
+
+      function resetExam() { 
+        if (confirm('Neu beginnen?')) { 
+          state.answers = {}; 
+          state.showResults = false; 
+          resetTimer(); 
+          updateCompletionMode();
+          renderAll(); 
+        } 
+      }
+
+      resultBtn.addEventListener('click', () => { 
+        state.showResults = !state.showResults; 
+        renderAll(); 
+      });
+      
+      resetBtn.addEventListener('click', resetExam);
+
+      window.lesenApp = {
+        dragStart: handleDragStart,
+        dropOnText: handleDropOnText,
+        toggleNoMatch,
+        handleSlotClick,
+      };
+
+      startTimer();
+      renderAll();
+    })();
+  </script>
+</body>
+</html>

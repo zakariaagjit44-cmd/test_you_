@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Deutsch B2 Prüfung - Lesen Teil 1</title>
+  
+  <style>
+    /* ===== GLOBAL STYLES – Professionell, ohne Emojis ===== */
+    :root {
+      --primary-dark: #0b2b4a;        
+      --primary-medium: #1f4b7a; 
+      --accent-soft: #3b8fc2;         
+      --light-bg: #f0f7fe;
+      --text-dark: #1e2b37;
+      --white: #ffffff;
+      --shadow-sm: 0 6px 14px rgba(0, 20, 40, 0.12);
+      --transition: all 0.3s ease; 
+      --success: #2e7d5e;             
+      --danger: #b13e3e;               
+      --neutral: #5f6b7a;
+      --neutral-light: #e9eff5;
+      --bg-results: #f8fafd;
+      --border-light: #d4e2f0;
+      
+      /* Default blue theme */
+      --header-bg: #0b2b4a;
+      --timer-bg: rgba(255, 255, 255, 0.1);
+      --slot-border: #8fb4d1;
+      --slot-bg: #f5fafe;
+      --indicator-bg: #d4e2f0;
+      --indicator-border: #8fb4d1;
+      --indicator-text: #1e3a4e;
+      --glow-effect: none;
+    }
+    
+    /* ===== COMPLETION MODE – Vollständiger visueller Wandel ===== */
+    body.completion-mode {
+      --header-bg: #1f6a4c;                /* Grüner Header */
+      --timer-bg: rgba(255, 255, 255, 0.25);
+      --slot-border: #2e7d5e;
+      --slot-bg: #e2f3e4;
+      --indicator-bg: #d4eed4;              /* Helles Grün für Indikatoren */
+      --indicator-border: #2e7d5e;
+      --indicator-text: #1e5e3a;
+      --glow-effect: 0 0 15px rgba(46, 125, 94, 0.3); /* Grüner Glow */
+    }
+    
+    /* Header und Timer */
+    body.completion-mode .topbar {
+      background: var(--header-bg) !important;
+      box-shadow: var(--glow-effect), 0 4px 12px rgba(0,0,0,0.2) !important;
+      transition: all 0.4s ease;
+    }
+    
+    body.completion-mode .timer-container {
+      background: var(--timer-bg) !important;
+      transition: all 0.4s ease;
+    }
+    
+    /* DROP-ZONEs (Fortschrittsbalken) */
+    body.completion-mode .title-slot:not(.has-title):not(.has-x) {
+      border-color: var(--slot-border) !important;
+      background: var(--slot-bg) !important;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03), 0 0 8px rgba(46, 125, 94, 0.2) !important;
+      transition: all 0.4s ease;
+    }
+    
+    /* Indikatoren (Fragen-Dots) – jetzt mit grüner Füllung bei Antwort */
+    .question-indicators {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 15px;
+      background: #ffffff;
+      border-radius: 50px;
+      justify-content: center;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+    }
+    
+    .indicator-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--indicator-bg);
+      border: 2px solid var(--indicator-border);
+      color: var(--indicator-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    /* NEU: Indikator wird grün, wenn der Text beantwortet ist */
+    .indicator-dot.answered {
+      background: #2ecc71 !important;
+      border-color: #27ae60 !important;
+      color: white !important;
+      box-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
+    }
+    
+    /* Im Completion Mode werden alle Dots grün (das ist optional, wir lassen es für den Effekt) */
+    body.completion-mode .indicator-dot {
+      background: #d4eed4 !important;
+      border-color: #2e7d5e !important;
+      color: #1d5e3a !important;
+      box-shadow: 0 0 10px rgba(46, 125, 94, 0.2);
+    }
+    
+    /* Hintergrund der rechten Panel-Überschrift leicht grünlich im Completion Mode */
+    body.completion-mode .question-head {
+      background: #dff0df;
+      border-left-color: #2e7d5e;
+    }
+    
+    /* Übergänge für alle betroffenen Elemente */
+    .topbar, .timer-container, .title-slot, .indicator-dot, .question-head {
+      transition: all 0.4s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0b2b4a 0%, #1f4b7a 100%);
+      color: var(--white);
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+    
+    .exam-body {
+      background: #f0f7fe;
+      color: var(--text-dark);
+      line-height: 1.45;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    /* Header */
+    header.topbar {
+      background: var(--header-bg);
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      min-height: 80px;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .brand .logo {
+      width: 80px;
+      height: 40px;
+      background: #b13e3e;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .meta .main-title {
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.3px;
+    }
+
+    .meta .sub-title {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    /* Timer */
+    .timer-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--timer-bg);
+      padding: 6px 18px;
+      border-radius: 40px;
+      backdrop-filter: blur(2px);
+    }
+    
+    .timer-icon {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+    
+    .timer-display {
+      font-weight: 600;
+      font-size: 24px;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px 14px;
+      border-radius: 30px;
+      letter-spacing: 2px;
+    }
+
+    /* Buttons */
+    .buttons-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    
+    .exam-btn {
+      padding: 12px 22px;
+      border-radius: 40px;
+      border: none;
+      background: #3b8fc2;        
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 140px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 20, 30, 0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .exam-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 14px rgba(0, 20, 30, 0.3);
+    }
+    
+    .exam-btn.result {
+      background: #1f6a9c;        
+    }
+    
+    .exam-btn.result:hover {
+      background: #15507a;
+    }
+    
+    .exam-btn.reset {
+      background: #4f6f8f;        
+    }
+    
+    .exam-btn.reset:hover {
+      background: #3e5a77;
+    }
+    
+    /* Hauptcontainer */
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 18px;
+      padding: 18px 24px;
+      max-width: 1600px;
+      margin: 0 auto;
+      flex: 1;
+      min-height: 0;
+      height: calc(100vh - 80px);
+    }
+    
+    /* Linke und rechte Panels */
+    .left-panel, .right-panel {
+      background: white;
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      overflow-y: auto;
+      height: 100%;
+    }
+    
+    .left-panel::-webkit-scrollbar, .right-panel::-webkit-scrollbar {
+      width: 8px;
+    }
+    .left-panel::-webkit-scrollbar-track, .right-panel::-webkit-scrollbar-track { background: #e2ecf5; border-radius: 10px; }
+    .left-panel::-webkit-scrollbar-thumb, .right-panel::-webkit-scrollbar-thumb { background: var(--accent-soft); border-radius: 10px; }
+    
+    .left-panel .passage {
+      font-size: 14.5px;
+      color: var(--text-dark);
+      line-height: 1.7;
+    }
+    
+    .left-panel h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: var(--primary-dark);
+      border-bottom: 3px solid var(--accent-soft);
+      padding-bottom: 8px;
+      font-weight: 600;
+    }
+    
+    /* Question head rechts */
+    .question-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #e4f0fa;
+      padding: 12px 18px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+      border-left: 5px solid var(--primary-dark);
+      flex-shrink: 0;
+    }
+    
+    .section-name {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 18px;
+    }
+    
+    .question-subtitle {
+      font-size: 13px;
+      color: #3f5568;
+    }
+    
+    /* Texte Liste (links) */
+    .texts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    
+    .text-item {
+      padding: 16px;
+      border: 1px solid #cbdbe9;
+      border-radius: 16px;
+      background: #ffffff;
+      transition: var(--transition);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    
+    .text-item:hover {
+      border-color: var(--accent-soft);
+      box-shadow: 0 6px 12px rgba(59, 143, 194, 0.12);
+    }
+    
+    .text-letter {
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    
+    .text-content {
+      font-size: 13.5px;
+      color: #1e3a4e;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    
+    /* DROP-ZONE – Farben via Variable */
+    .title-slot {
+      min-height: 52px;
+      padding: 10px 14px;
+      border: 2.5px dashed var(--slot-border);
+      border-radius: 14px;
+      background: var(--slot-bg);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      word-break: break-word;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+      color: #1e3a4e;
+    }
+    
+    .title-slot[draggable="true"] {
+      cursor: grab;
+    }
+    
+    .title-slot[draggable="true"]:active {
+      cursor: grabbing;
+      opacity: 0.8;
+    }
+    
+    .title-slot:hover {
+      background: #e6f2fc;
+      border-color: var(--accent-soft);
+    }
+    
+    .title-slot.has-title {
+      background: #e2f3e4;
+      border-color: var(--success);
+      border-style: solid;
+      font-weight: 500;
+    }
+    
+    .title-slot.has-x {
+      background: #fae1e1;
+      border-color: var(--danger);
+      color: #8b3a3a;
+      font-weight: 500;
+      border-style: solid;
+    }
+    
+    /* Überschriften rechts (Headings) – VERGRÖSSERT und mit nur einem Buchstaben */
+    .headings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    
+    .heading-item {
+      padding: 18px 16px;  /* Mehr Innenabstand für bessere Sichtbarkeit */
+      border: 2px solid #d4e2f0;
+      border-radius: 16px;
+      background: #ffffff;
+      cursor: pointer;  /* Zeigt an, dass es klickbar ist */
+      transition: all 0.15s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+      font-size: 16px;   /* Deutlich größer */
+      font-weight: 600;  /* Fetter für bessere Lesbarkeit */
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .heading-item:hover {
+      border-color: var(--accent-soft);
+      background: #f0f8ff;
+      transform: translateX(4px);
+    }
+    
+    .heading-item.used {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #f0f3f6;
+      border-color: #a0b8cc;
+      pointer-events: none;  
+    }
+    
+    .heading-item.selected-heading {
+      border-color: var(--primary-dark);
+      background: #e1f0fa;
+      box-shadow: 0 0 0 3px rgba(11, 43, 74, 0.2);
+    }
+    
+    .heading-letter {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 18px;   /* Größer */
+      min-width: 30px;
+      text-align: center;
+    }
+    
+    .heading-text {
+      font-size: 15px;    /* Größer */
+      color: #1e3a4e;
+      line-height: 1.6;
+      font-weight: 500;
+      flex: 1;
+    }
+    
+    /* ===== DETAILERGEBNISSE (linke Seite) ===== */
+    .results-container {
+      padding: 4px 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      background: var(--primary-dark);
+      color: white;
+      padding: 18px 24px;
+      border-radius: 18px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    
+    .results-header h2 {
+      font-size: 22px;
+      font-weight: 600;
+      border: none;
+      margin: 0;
+      color: white;
+      letter-spacing: 0.3px;
+    }
+    
+    .results-summary-badge {
+      background: rgba(255,255,255,0.18);
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .result-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-bottom: 20px;
+    }
+    
+    .result-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 14px 18px;
+      border-left: 6px solid;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.03);
+      border: 1px solid var(--border-light);
+    }
+    
+    .result-card.correct {
+      border-left-color: var(--success);
+    }
+    
+    .result-card.incorrect {
+      border-left-color: var(--danger);
+    }
+    
+    .result-card-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .text-tag {
+      background: var(--primary-dark);
+      color: white;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 40px;
+      font-size: 14px;
+      min-width: 50px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .result-answer-badge {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #f0f6fd;
+      padding: 6px 20px;
+      border-radius: 40px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+    }
+    
+    .user-answer {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 15px;
+      min-width: 40px;
+      text-align: center;
+    }
+    
+    .correct-answer {
+      color: #5f6b7a;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .verdict-badge {
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      min-width: 58px;
+      text-align: center;
+    }
+    
+    .verdict-badge.correct {
+      background: var(--success);
+      color: white;
+    }
+    
+    .verdict-badge.incorrect {
+      background: var(--danger);
+      color: white;
+    }
+    
+    /* ===== GESAMTERGEBNIS (rechte Seite) – nur Summary ===== */
+    .summary-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .summary-card {
+      background: linear-gradient(145deg, #f8fafd, #ffffff);
+      border-radius: 36px;
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 35px rgba(0, 20, 40, 0.2);
+      border: 1px solid rgba(255,255,255,0.6);
+      text-align: center;
+    }
+    
+    .summary-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      letter-spacing: 0.5px;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 12px;
+      display: inline-block;
+    }
+    
+    .summary-score {
+      font-size: 64px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      line-height: 1;
+      margin-bottom: 15px;
+    }
+    
+    .summary-score small {
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--neutral);
+    }
+    
+    .summary-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 25px 0 20px;
+      background: #eef3f9;
+      border-radius: 60px;
+      padding: 16px 10px;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: var(--neutral);
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    
+    .stat-value.correct {
+      color: var(--success);
+    }
+    
+    .stat-value.incorrect {
+      color: var(--danger);
+    }
+    
+    .summary-percent {
+      background: var(--primary-dark);
+      color: white;
+      padding: 16px 12px;
+      border-radius: 60px;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-top: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    .summary-verdict {
+      margin-top: 22px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--neutral);
+      background: #e4f0fa;
+      display: inline-block;
+      padding: 8px 28px;
+      border-radius: 50px;
+    }
+    
+    /* Mobile */
+    @media (max-width: 980px) {
+      .container { grid-template-columns: 1fr; height: auto; }
+      .exam-body { height: auto; overflow: auto; }
+      .question-indicators { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body id="body" class="exam-body">
+  <div id="lesen-page" style="height: 100%; display: flex; flex-direction: column;">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">B2</div>
+        <div class="meta">
+          <div class="main-title">Deutsch B2 Prüfung</div>
+          <div class="sub-title">Lesen Teil 1 — Überschriften zuordnen</div>
+        </div>
+      </div>
+      <div class="timer-container">
+        <span class="timer-icon">⏱</span>
+        <span class="timer-display" id="timer">00:00:00</span>
+      </div>
+      <div class="buttons-group">
+        <button id="resultBtn-lesen" class="exam-btn result">Ergebnis anzeigen</button>
+        <button id="resetBtn-lesen" class="exam-btn reset">Neu beginnen</button>
+      </div>
+    </header>
+
+    <div class="container">
+      <main class="left-panel" id="leftPanel-lesen">
+        <div class="passage" id="passage-lesen">
+          <h2 id="passageTitle-lesen">Texte (Text 1 – Text 5) – Überschrift ablegen</h2>
+          <div id="passageContent-lesen"></div>
+          <!-- Frage-Indikatoren (Dots) werden hier dynamisch eingefügt -->
+          <div id="indicatorContainer" class="question-indicators"></div>
+        </div>
+      </main>
+      <aside class="right-panel" id="rightPanel-lesen">
+        <div class="question-head">
+          <div>
+            <div class="section-name">Leseverstehen, Teil 1</div>
+            <div class="question-subtitle">Überschriften (a-j) – ziehen oder klicken</div>
+          </div>
+        </div>
+        <div class="question-body" id="questionBody-lesen" style="overflow-y: auto; flex:1;"></div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ===== DATEN AUS DEM ORIGINAL (ALBI2A.html) FÜR TEIL 1 =====
+      const exam = {
+        id: "exam-teil1",
+        sections: [
+          { 
+            id: "s1", 
+            title: "Leseverstehen, Teil 1", 
+            points: 25,
+            texts: [
+              {
+                id: "text1",
+                content: "Sie sind eine gut funktionierende Gemeinschaft mit einer Vision: Schon seit den 80er Jahren leben Mitglieder des „Tauschrings Harmelsdorf e.V; vor, wie man nachhaltig mit Ressourcen umgehen kann und dadurch die Umwelt schont, Tauschen, nicht wegwerfen\" ist das Motto dieser Initiative – die damals als eine der ersten dieser Art in Deutschland noch belächelt wurde, heute aber viel Lob und Anerkennung bekommt. Ob Küchengeräte, Bücher oder auch Kleidungsstücke, die man nicht mehr anzieht: Was ungenutzt, findet bei jemandem Verwendung, der noch etwas damit anfangen kann. Getauscht werden nicht nur Güter, sondern auch Dienstleistungen. Eine der Voraussetzungen für das Gelingen: „Die Dienstleistungen dürfen nicht in Konkurrenz zum Handwerk stehen\", erklärt Tauschring- Mitglied Kati Jago. Besonders gefragt seien Fahrdienste, etwa zum Arzt. Ihre monatlichen Zusammenhührte an der Rathausstraße sind für die derzeit 30 Vereinsmitglieder viel mehr als bloße Tauschterfs: „Man darf den Faktor Mensch nicht unterschätzen\", sagt Kati Jago. Denn beim Tauschen zählte auch das soziale Miteinander.",
+                correctAnswer: "c"
+              },
+              {
+                id: "text2", 
+                content: "„Man gönnt sich ja sonst nicht.\" Und schon ist die Einkaufstüte voll und das Konto leer. Macht das glücklich ? Oder wieso sonst kauft man mehr, als man eigentlich geplant hat?. Ein Einkauf kann sich ähnlich anfühlen wie eine Belohnung\", sagt der Psychologe Daniel Stüber.Denn dabei würden Glückshormone ausgeschüttet.Manchmal könne das sogar in einem Kaufrausch enden. Denn das Glücksgefühl, das Konsumenten beim Kaufen erleben, könne sie dazu anregen immer mehr Geld auszugeben . Doch die Ernüchterung folge oft schnell, warnter: Denn wer später merke, wie teuer das alles gewesenes, schüttete Stresshormone aus . Dies könne zu Schlafstörungen und schlechter Laune führen Langfristig lässt sich so die eigene Lebenszufriedenheit also gewesen nicht steigern.",
+                correctAnswer: "i"
+              },
+              {
+                id: "text3",
+                content: "Geklickt gekauft,zurückgeschickt :Kunden nutzen im Online-Handel gerne die Möglichkeit, waren innerhalb einer bestimmten Frist Kostenlos zurückzusenden.Vor allem im Modehandel steigt die Zahl der Rücksendungen immer weiter an .Oft bestellen Kunden gleich mehrere Modelle in unterschiedlichen Grüßen.um sie zu Hause in Ruhe anzuprobieren.Die Kosten für die Retouren trägt der Anbieter.Dennoch lohnt sich für die Online Händler das Geschäft.Die zurückgegebene Kleidung kann zum Beispiel oft so aufbereitet werden,dass sie erneut zum Verkauft angeboten werden kann.Rücksendungen werden sich im Online -Handel nie ganz vermeiden lassen.erklärt Birgit Steinköhler vom Bundesverband Online-Handel.Dennoch ist es möglich,dass sich ihre Anzahl in Zukunft senken lässt .Dies wünschen natürlich auch die Online -Verkäufer und suchen nach neuen Möglichkeiten:etwa detailliertere Produktinformationen oder neue Technologien,die die individuellen Maße der Kunden ermitteln .Dennoch :Rücksendungen werden im Online-Handel wohl immer zum Geschäftsmodell gehören.",
+                correctAnswer: "f"
+              },
+              {
+                id: "text4",
+                content: "Keine Lust mehr auf die Konsum-Gesellschaft? Dann könnte es ein erster Schritt sein, den Lieblingspulli zu stopfen statt zu entsorgen oder den alten Wecker von Oma noch mal zum Laufen zu bringen. Ob Fahrrad, Fernseher oder Smartphone - man muss bei Defekten nicht gleich alles wegwerfen. In sogenannten Repair-Cafés können defekte Gegenstände unter fachkundiger Anleitung wieder instandgesetzt werden... Damit schonen wir die Umwelt und den Geldbeutel\". erklärt Thomas Rederitz, Inhaber eines solchen Reparaturcafés. Repair-Cafés verstehen sich als Initiative gegen die Wegwerf-mentalität. Da viele Firmen keinen Reparaturservice mehr anbieten, muss vieles aufwendig entsorgt werden, sagt Rederitz. Das sie nicht immer nötig... Manchmal ist ja auch nur eine Schraube locker, oder es fehlt ein kleines Bauteil, das leicht ersetzt werden kann.\" Im Reparaturcafé wir gemeinsam gewerkelt, geschraubt, genäht, gebastelt - und auch gelacht und geredet. Die Reparatur wird in jedem Fall sachgerecht durchgeführt; Denn zu den freiwilligen Mitarbeiter von Repair-Cafés gehört Handwerksmeister der unterschiedlichsten Fachrichtungen.",
+                correctAnswer: "a"
+              },
+              {
+                id: "text5",
+                content: "Viele Menschen sind erstaunlich großzügig : Sie machen anderen gern Geschenke, spenden Geld für gute Zwecke oder opfern Zeit für ehrenamtliche Tätigkeiten . Aber was motiviert sie dazu ? Die Wissenschaft liefert ganz unterschiedliche Erklärungsansätze. Eine Erklärung lautet, dass großzügige Menschen auf Gegenseitigkeit hoffen : Wer viel gibt , bekommt auch viel zurück. Eine Studie konnten nun aber zeigen, dass die Antwort vielleicht ganz einfach ist : Großzügigkeit mache eben glücklich. Dies fanden Forscher der Universität Lübeck heraus, Dieses enge Verknüpfung zwischen großzügigem Verhalten und Glücksgefühl zeige sich auch in Gehirn. So aktivieren ein solche Verhalten ein Hirnareal, das eng mit unserem Belohnungszentrum verknüpft ist. Das Ergebnis ihrer Studie könne weitreichende Folge für die Gesellschaft haben. Wer glücklicher werden möchte, könne sich diese neuen Erkenntnisse zunutze machen: Denn wer für andere da ist, tut auch etwas für das eigene Wohlbefinden.",
+                correctAnswer: "j"
+              }
+            ],
+            headings: [
+              {id: "a", text: "Gemeinsam kaputte Geräte retten"},
+              {id: "b", text: "Kaufsucht überwinden - diese Möglichkeiten gibt es"},
+              {id: "c", text: "Neue Besitzer für nicht mehr gebrauchte Gegenstände"},
+              {id: "d", text: "Reparatur alter Haushaltsgeräte lohnt oft nicht"},
+              {id: "e", text: "Rücksendungen verderben Online-Händlern das Geschäft"},
+              {id: "f", text: "Rücksendungen verringern: Händler hoffen auf Lösungen"},
+              {id: "g", text: "Studie zeigt, welche Geschenke glücklich machen"},
+              {id: "h", text: "Verein mit Preis für Umweltschutz ausgezeichnet"},
+              {id: "i", text: "Volle Einkaufstütten machen nur kurze Zeit Freude"},
+              {id: "j", text: "wer Engagement zeigt, steigert sein Glücksgefühl"}
+            ]
+          }
+        ]
+      };
+
+      let state = { sectionIndex: 0, answers: {}, showResults: false, selectedHeadingId: null }; // NEU: selectedHeadingId für Klick-Auswahl
+      let seconds = 0, timerInterval;
+      const timerEl = document.getElementById('timer');
+      const passageContentEl = document.getElementById('passageContent-lesen');
+      const questionBodyEl = document.getElementById('questionBody-lesen');
+      const resultBtn = document.getElementById('resultBtn-lesen');
+      const resetBtn = document.getElementById('resetBtn-lesen');
+      const bodyEl = document.getElementById('body');
+      const indicatorContainer = document.getElementById('indicatorContainer');
+
+      function startTimer() { timerInterval = setInterval(() => { seconds++; updateTimerDisplay(); }, 1000); }
+      function resetTimer() { seconds = 0; updateTimerDisplay(); }
+      function updateTimerDisplay() { const h = Math.floor(seconds/3600), m = Math.floor((seconds%3600)/60), s = seconds%60; timerEl.textContent = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }
+
+      // --- Prüfen ob alle Fragen beantwortet sind (für Completion Mode) ---
+      function isAllQuestionsAnswered() {
+        const totalTexts = exam.sections[0].texts.length;
+        const answeredCount = Object.keys(state.answers).length;
+        return answeredCount === totalTexts;
+      }
+
+      function updateCompletionMode() {
+        if (!state.showResults && isAllQuestionsAnswered()) {
+          bodyEl.classList.add('completion-mode');
+        } else {
+          bodyEl.classList.remove('completion-mode');
+        }
+      }
+
+      // Indikatoren (Dots) rendern – mit grüner Klasse wenn beantwortet
+      function renderIndicators() {
+        const texts = exam.sections[0].texts;
+        let dotsHtml = '';
+        texts.forEach((text, idx) => {
+          // Prüfen ob dieser Text beantwortet wurde (irgendeine Überschrift zeigt auf diesen Text)
+          const isAnswered = Object.values(state.answers).includes(text.id);
+          const answeredClass = isAnswered ? 'answered' : '';
+          dotsHtml += `<div class="indicator-dot ${answeredClass}" title="Text ${idx+1}">${idx+1}</div>`;
+        });
+        indicatorContainer.innerHTML = dotsHtml;
+      }
+
+      // --- DRAG & DROP + KLICK (zum Entfernen) + NEU: Klick-Auswahl ---
+      function handleDragStart(e, type, id) {
+        if (type === 'heading' && state.answers[id]) { e.preventDefault(); return; } 
+        e.dataTransfer.setData('text/plain', JSON.stringify({ type, id }));
+      }
+
+      function handleDropOnText(e, textId) {
+        e.preventDefault();
+        const raw = e.dataTransfer.getData('text/plain');
+        if (!raw) return;
+        const { type, id } = JSON.parse(raw);
+        
+        if (type === 'heading') {
+          if (state.answers[id] && state.answers[id] !== 'X') return; 
+          const existingForText = Object.entries(state.answers).find(([head, val]) => val === textId);
+          if (existingForText) return;
+          
+          if (state.answers[id] === 'X') delete state.answers[id];
+          state.answers[id] = textId;
+        } 
+        else if (type === 'slot') {
+          const headingId = id.replace('slot-','');
+          if (state.answers[headingId] && state.answers[headingId] !== 'X') {
+            delete state.answers[headingId];
+          }
+        }
+        state.selectedHeadingId = null; // Auswahl zurücksetzen nach Drop
+        updateCompletionMode();
+        renderAll();
+      }
+
+      function allowDrop(e) { e.preventDefault(); }
+
+      function handleSlotClick(headingId) {
+        if (headingId && state.answers[headingId] && state.answers[headingId] !== 'X') {
+          delete state.answers[headingId];
+          updateCompletionMode();
+          renderAll();
+        }
+      }
+
+      // NEUE FUNKTION: Klick auf eine Überschrift – speichert die ausgewählte ID
+      function handleHeadingClick(headingId) {
+        if (state.answers[headingId]) return; // Bereits verwendet
+        state.selectedHeadingId = headingId;
+        renderAll(); // Re-rendern um Hervorhebung zu zeigen
+      }
+
+      // NEUE FUNKTION: Klick auf eine Drop-Zone – setzt die vorher ausgewählte Überschrift
+      function handleSlotSelectClick(textId) {
+        if (!state.selectedHeadingId) return; // Keine Überschrift ausgewählt
+        
+        const headingId = state.selectedHeadingId;
+        if (state.answers[headingId]) {
+          state.selectedHeadingId = null;
+          renderAll();
+          return; // Überschrift bereits verwendet
+        }
+        
+        // Prüfen ob dieser Text bereits eine andere Überschrift hat
+        const existingForText = Object.entries(state.answers).find(([head, val]) => val === textId);
+        if (existingForText) {
+          // Text ist bereits belegt, wir ersetzen die alte Zuordnung
+          const oldHeading = existingForText[0];
+          delete state.answers[oldHeading];
+        }
+        
+        // Neue Zuordnung
+        state.answers[headingId] = textId;
+        state.selectedHeadingId = null; // Auswahl zurücksetzen
+        
+        updateCompletionMode();
+        renderAll();
+      }
+
+      // ===== RENDER =====
+      function renderPart1() {
+        const section = exam.sections[0];
+        let textsHTML = `<div class="texts-list">`;
+        section.texts.forEach((text, idx) => {
+          const userHeadingId = Object.keys(state.answers).find(key => state.answers[key] === text.id);
+          const headingObj = userHeadingId ? section.headings.find(h => h.id === userHeadingId) : null;
+          // Anzeige: den vollständigen Text der Überschrift, nicht nur den Buchstaben
+          const slotContent = userHeadingId && headingObj ? `${headingObj.id}) ${headingObj.text}` : (state.selectedHeadingId ? 'Klicken zum Einfügen' : 'Hier ablegen');
+          const hasClass = userHeadingId ? 'has-title' : '';
+          const draggable = userHeadingId ? 'true' : 'false';
+          const slotClickAttr = userHeadingId ? `onclick="window.lesenApp.handleSlotClick('${userHeadingId}')"` : `onclick="window.lesenApp.handleSlotSelectClick('${text.id}')"`;
+          
+          textsHTML += `
+            <div class="text-item" data-text-id="${text.id}">
+              <div class="text-letter">Text ${idx+1}</div>
+              <div class="text-content">${text.content}</div>
+              <div class="title-slot ${hasClass}" 
+                   data-text-id="${text.id}"
+                   draggable="${draggable}"
+                   ondragstart="event.dataTransfer.setData('text/plain', JSON.stringify({type:'slot', id:'slot-${userHeadingId}'}))"
+                   ondrop="window.lesenApp.dropOnText(event, '${text.id}')"
+                   ondragover="event.preventDefault()"
+                   ${slotClickAttr}
+                   title="${userHeadingId ? 'Klicken zum Entfernen' : (state.selectedHeadingId ? 'Klicken zum Einfügen' : 'Hier ablegen oder zuerst Überschrift anklicken')}">
+                ${slotContent}
+              </div>
+            </div>`;
+        });
+        textsHTML += `</div>`;
+        passageContentEl.innerHTML = textsHTML;
+
+        let headingsHTML = `<div class="headings-list">`;
+        section.headings.forEach(heading => {
+          const used = state.answers[heading.id] && state.answers[heading.id] !== 'X';
+          // Hervorheben, wenn diese Überschrift gerade ausgewählt ist
+          const selectedClass = (state.selectedHeadingId === heading.id) ? 'selected-heading' : '';
+          headingsHTML += `
+            <div class="heading-item ${used ? 'used' : ''} ${selectedClass}" 
+                 data-heading-id="${heading.id}"
+                 draggable="${!used}"
+                 ondragstart="window.lesenApp.dragStart(event, 'heading', '${heading.id}')"
+                 onclick="window.lesenApp.handleHeadingClick('${heading.id}')">
+              <div class="heading-letter">${heading.id})</div>
+              <div class="heading-text">${heading.text}</div>
+            </div>`;
+        });
+        headingsHTML += `</div>`;
+        questionBodyEl.innerHTML = headingsHTML;
+        
+        renderIndicators(); // Dots immer aktuell halten
+      }
+
+      // Ergebnisse Detail (linke Seite)
+      function renderResultsLeft() {
+        const section = exam.sections[0];
+        let totalCorrect = 0;
+        let total = section.texts.length;
+        
+        let html = `
+          <div class="results-container">
+            <div class="results-header">
+              <h2>Prüfungsauswertung</h2>
+              <div class="results-summary-badge">${Object.keys(state.answers).length}/${total} beantwortet</div>
+            </div>
+            <div class="result-grid">
+        `;
+        
+        section.texts.forEach((text, idx) => {
+          const userHeadingId = Object.keys(state.answers).find(key => state.answers[key] === text.id);
+          const user = userHeadingId ? userHeadingId : '—';
+          const correct = text.correctAnswer;
+          const isCorrect = (user === correct);
+          if (isCorrect) totalCorrect++;
+          
+          const userDisplay = user;
+          const correctDisplay = correct;
+          
+          html += `
+            <div class="result-card ${isCorrect ? 'correct' : 'incorrect'}">
+              <div class="result-card-info">
+                <span class="text-tag">Text ${idx+1}</span>
+              </div>
+              <div class="result-answer-badge">
+                <span class="user-answer">${userDisplay}</span>
+                <span class="correct-answer">soll: ${correctDisplay}</span>
+                <span class="verdict-badge ${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? 'richtig' : 'falsch'}</span>
+              </div>
+            </div>
+          `;
+        });
+        
+        html += `</div></div>`;
+        passageContentEl.innerHTML = html;
+        indicatorContainer.innerHTML = ''; // Dots im Ergebnis-Modus ausblenden
+        return { totalCorrect, total };
+      }
+
+      // Gesamtergebnis (rechte Seite) – nur Summary
+      function renderResultsRight(totalCorrect, total) {
+        const wrong = total - totalCorrect;
+        const percent = Math.round((totalCorrect/total)*100);
+        const stars = '★'.repeat(Math.max(1, Math.floor(percent/20)));
+        const passed = percent >= 60;
+        
+        const rightHTML = `
+          <div class="summary-container">
+            <div class="summary-card">
+              <div class="summary-title">Gesamtergebnis</div>
+              <div class="summary-score">${totalCorrect}<small>/${total}</small></div>
+              <div class="summary-stats">
+                <div class="stat-item">
+                  <div class="stat-label">Richtig</div>
+                  <div class="stat-value correct">${totalCorrect}</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">Falsch</div>
+                  <div class="stat-value incorrect">${wrong}</div>
+                </div>
+              </div>
+              <div class="summary-percent">${percent}%</div>
+              <div class="summary-verdict">${passed ? 'Bestanden' : 'Nicht bestanden'}</div>
+              <div style="margin-top:15px; font-size:22px; color:#ffd966;">${stars}</div>
+            </div>
+          </div>
+        `;
+        questionBodyEl.innerHTML = rightHTML;
+      }
+
+      function renderResults() {
+        const { totalCorrect, total } = renderResultsLeft();
+        renderResultsRight(totalCorrect, total);
+      }
+
+      function renderAll() { 
+        if (state.showResults) {
+          renderResults();
+        } else {
+          renderPart1();
+        }
+        updateCompletionMode();
+      }
+
+      function resetExam() { 
+        if (confirm('Neu beginnen?')) { 
+          state.answers = {}; 
+          state.showResults = false; 
+          state.selectedHeadingId = null;
+          resetTimer(); 
+          updateCompletionMode();
+          renderAll(); 
+        } 
+      }
+
+      resultBtn.addEventListener('click', () => { 
+        state.showResults = !state.showResults; 
+        renderAll(); 
+      });
+      
+      resetBtn.addEventListener('click', resetExam);
+
+      window.lesenApp = {
+        dragStart: handleDragStart,
+        dropOnText: handleDropOnText,
+        handleSlotClick,
+        handleHeadingClick,
+        handleSlotSelectClick,
+      };
+
+      startTimer();
+      renderAll();
+    })();
+  </script>
+</body>
+</html>

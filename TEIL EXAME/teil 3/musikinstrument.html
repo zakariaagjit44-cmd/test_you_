@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Deutsch B2 Prüfung - Lesen Teil 3 (Completion Mode)</title>
+  
+  <style>
+    /* ===== GLOBAL STYLES – Professionell, ohne Emojis ===== */
+    :root {
+      --primary-dark: #0b2b4a;        
+      --primary-medium: #1f4b7a; 
+      --accent-soft: #3b8fc2;         
+      --light-bg: #f0f7fe;
+      --text-dark: #1e2b37;
+      --white: #ffffff;
+      --shadow-sm: 0 6px 14px rgba(0, 20, 40, 0.12);
+      --transition: all 0.3s ease; 
+      --success: #2e7d5e;             
+      --danger: #b13e3e;               
+      --neutral: #5f6b7a;
+      --neutral-light: #e9eff5;
+      --bg-results: #f8fafd;
+      --border-light: #d4e2f0;
+      
+      /* Default blue theme */
+      --header-bg: #0b2b4a;
+      --timer-bg: rgba(255, 255, 255, 0.1);
+      --slot-border: #8fb4d1;
+      --slot-bg: #f5fafe;
+      --indicator-bg: #d4e2f0;
+      --indicator-border: #8fb4d1;
+      --indicator-text: #1e3a4e;
+      --glow-effect: none;
+    }
+    
+    /* ===== COMPLETION MODE – Vollständiger visueller Wandel ===== */
+    body.completion-mode {
+      --header-bg: #1f6a4c;                /* Grüner Header */
+      --timer-bg: rgba(255, 255, 255, 0.25);
+      --slot-border: #2e7d5e;
+      --slot-bg: #e2f3e4;
+      --indicator-bg: #d4eed4;              /* Helles Grün für Indikatoren */
+      --indicator-border: #2e7d5e;
+      --indicator-text: #1e5e3a;
+      --glow-effect: 0 0 15px rgba(46, 125, 94, 0.3); /* Grüner Glow */
+    }
+    
+    /* Header und Timer */
+    body.completion-mode .topbar {
+      background: var(--header-bg) !important;
+      box-shadow: var(--glow-effect), 0 4px 12px rgba(0,0,0,0.2) !important;
+      transition: all 0.4s ease;
+    }
+    
+    body.completion-mode .timer-container {
+      background: var(--timer-bg) !important;
+      transition: all 0.4s ease;
+    }
+    
+    /* DROP-ZONEs (Fortschrittsbalken) */
+    body.completion-mode .title-slot:not(.has-title):not(.has-x) {
+      border-color: var(--slot-border) !important;
+      background: var(--slot-bg) !important;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03), 0 0 8px rgba(46, 125, 94, 0.2) !important;
+      transition: all 0.4s ease;
+    }
+    
+    /* Indikatoren (Fragen-Dots) – neu hinzugefügt */
+    .question-indicators {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 15px;
+      background: #ffffff;
+      border-radius: 50px;
+      justify-content: center;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+    }
+    
+    .indicator-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--indicator-bg);
+      border: 2px solid var(--indicator-border);
+      color: var(--indicator-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    /* Im Completion Mode werden alle Dots grün */
+    body.completion-mode .indicator-dot {
+      background: #d4eed4 !important;
+      border-color: #2e7d5e !important;
+      color: #1d5e3a !important;
+      box-shadow: 0 0 10px rgba(46, 125, 94, 0.2);
+    }
+    
+    /* Hintergrund der rechten Panel-Überschrift leicht grünlich im Completion Mode */
+    body.completion-mode .question-head {
+      background: #dff0df;
+      border-left-color: #2e7d5e;
+    }
+    
+    /* Übergänge für alle betroffenen Elemente */
+    .topbar, .timer-container, .title-slot, .indicator-dot, .question-head {
+      transition: all 0.4s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0b2b4a 0%, #1f4b7a 100%);
+      color: var(--white);
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+    
+    .exam-body {
+      background: #f0f7fe;
+      color: var(--text-dark);
+      line-height: 1.45;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    /* Header */
+    header.topbar {
+      background: var(--header-bg);
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      min-height: 80px;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .brand .logo {
+      width: 80px;
+      height: 40px;
+      background: #b13e3e;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .meta .main-title {
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.3px;
+    }
+
+    .meta .sub-title {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    /* Timer */
+    .timer-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--timer-bg);
+      padding: 6px 18px;
+      border-radius: 40px;
+      backdrop-filter: blur(2px);
+    }
+    
+    .timer-icon {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+    
+    .timer-display {
+      font-weight: 600;
+      font-size: 24px;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px 14px;
+      border-radius: 30px;
+      letter-spacing: 2px;
+    }
+
+    /* Buttons */
+    .buttons-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    
+    .exam-btn {
+      padding: 12px 22px;
+      border-radius: 40px;
+      border: none;
+      background: #3b8fc2;        
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 140px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 20, 30, 0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .exam-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 14px rgba(0, 20, 30, 0.3);
+    }
+    
+    .exam-btn.result {
+      background: #1f6a9c;        
+    }
+    
+    .exam-btn.result:hover {
+      background: #15507a;
+    }
+    
+    .exam-btn.reset {
+      background: #4f6f8f;        
+    }
+    
+    .exam-btn.reset:hover {
+      background: #3e5a77;
+    }
+    
+    /* Hauptcontainer */
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 18px;
+      padding: 18px 24px;
+      max-width: 1600px;
+      margin: 0 auto;
+      flex: 1;
+      min-height: 0;
+      height: calc(100vh - 80px);
+    }
+    
+    /* Linke und rechte Panels */
+    .left-panel, .right-panel {
+      background: white;
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      overflow-y: auto;
+      height: 100%;
+    }
+    
+    .left-panel::-webkit-scrollbar, .right-panel::-webkit-scrollbar {
+      width: 8px;
+    }
+    .left-panel::-webkit-scrollbar-track, .right-panel::-webkit-scrollbar-track { background: #e2ecf5; border-radius: 10px; }
+    .left-panel::-webkit-scrollbar-thumb, .right-panel::-webkit-scrollbar-thumb { background: var(--accent-soft); border-radius: 10px; }
+    
+    .left-panel .passage {
+      font-size: 14.5px;
+      color: var(--text-dark);
+      line-height: 1.7;
+    }
+    
+    .left-panel h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: var(--primary-dark);
+      border-bottom: 3px solid var(--accent-soft);
+      padding-bottom: 8px;
+      font-weight: 600;
+    }
+    
+    /* Question head rechts */
+    .question-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #e4f0fa;
+      padding: 12px 18px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+      border-left: 5px solid var(--primary-dark);
+      flex-shrink: 0;
+    }
+    
+    .section-name {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 18px;
+    }
+    
+    .question-subtitle {
+      font-size: 13px;
+      color: #3f5568;
+    }
+    
+    /* Texte Liste (links) */
+    .texts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    
+    .text-item {
+      padding: 16px;
+      border: 1px solid #cbdbe9;
+      border-radius: 16px;
+      background: #ffffff;
+      transition: var(--transition);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    
+    .text-item:hover {
+      border-color: var(--accent-soft);
+      box-shadow: 0 6px 12px rgba(59, 143, 194, 0.12);
+    }
+    
+    .text-letter {
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    
+    .text-content {
+      font-size: 13.5px;
+      color: #1e3a4e;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    
+    /* DROP-ZONE – Farben via Variable */
+    .title-slot {
+      min-height: 52px;
+      padding: 10px 14px;
+      border: 2.5px dashed var(--slot-border);
+      border-radius: 14px;
+      background: var(--slot-bg);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      word-break: break-word;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+      color: #1e3a4e;
+    }
+    
+    .title-slot[draggable="true"] {
+      cursor: grab;
+    }
+    
+    .title-slot[draggable="true"]:active {
+      cursor: grabbing;
+      opacity: 0.8;
+    }
+    
+    .title-slot:hover {
+      background: #e6f2fc;
+      border-color: var(--accent-soft);
+    }
+    
+    .title-slot.has-title {
+      background: #e2f3e4;
+      border-color: var(--success);
+      border-style: solid;
+      font-weight: 500;
+    }
+    
+    .title-slot.has-x {
+      background: #fae1e1;
+      border-color: var(--danger);
+      color: #8b3a3a;
+      font-weight: 500;
+      border-style: solid;
+    }
+    
+    /* Situationen rechts */
+    .situations-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    
+    .situation-item {
+      padding: 16px;
+      border: 2px solid #d4e2f0;
+      border-radius: 16px;
+      background: #ffffff;
+      cursor: grab;
+      transition: all 0.15s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+    }
+    
+    .situation-item[draggable="true"]:active {
+      cursor: grabbing;
+      opacity: 0.7;
+    }
+    
+    .situation-item:hover {
+      border-color: var(--accent-soft);
+      background: #f0f8ff;
+      transform: translateX(4px);
+    }
+    
+    .situation-item.used {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #f0f3f6;
+      border-color: #a0b8cc;
+      pointer-events: none;  
+    }
+    
+    .situation-number {
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+    
+    .situation-text {
+      font-size: 13.5px;
+      color: #1e3a4e;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    
+    /* X Button */
+    .no-match-container {
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    .exam-btn.no-match {
+      background: #5f7a93;       
+      font-size: 12px;
+      padding: 8px 18px;
+      min-width: auto;
+      border-radius: 30px;
+      font-weight: 600;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .exam-btn.no-match:hover {
+      background: #4a637b;
+    }
+    
+    .exam-btn.no-match.selected {
+      background: var(--danger);
+    }
+    
+    .exam-btn.no-match.selected:hover {
+      background: #9f3737;
+    }
+    
+    /* ===== DETAILERGEBNISSE (linke Seite) ===== */
+    .results-container {
+      padding: 4px 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      background: var(--primary-dark);
+      color: white;
+      padding: 18px 24px;
+      border-radius: 18px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    
+    .results-header h2 {
+      font-size: 22px;
+      font-weight: 600;
+      border: none;
+      margin: 0;
+      color: white;
+      letter-spacing: 0.3px;
+    }
+    
+    .results-summary-badge {
+      background: rgba(255,255,255,0.18);
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .result-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-bottom: 20px;
+    }
+    
+    .result-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 14px 18px;
+      border-left: 6px solid;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.03);
+      border: 1px solid var(--border-light);
+    }
+    
+    .result-card.correct {
+      border-left-color: var(--success);
+    }
+    
+    .result-card.incorrect {
+      border-left-color: var(--danger);
+    }
+    
+    .result-card-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .situation-tag {
+      background: var(--primary-dark);
+      color: white;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 40px;
+      font-size: 14px;
+      min-width: 50px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .situation-text-short {
+      font-weight: 500;
+      max-width: 300px;
+      font-size: 14px;
+      color: #1e3a4e;
+    }
+    
+    .result-answer-badge {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #f0f6fd;
+      padding: 6px 20px;
+      border-radius: 40px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+    }
+    
+    .user-answer {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 15px;
+      min-width: 40px;
+      text-align: center;
+    }
+    
+    .correct-answer {
+      color: #5f6b7a;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .verdict-badge {
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      min-width: 58px;
+      text-align: center;
+    }
+    
+    .verdict-badge.correct {
+      background: var(--success);
+      color: white;
+    }
+    
+    .verdict-badge.incorrect {
+      background: var(--danger);
+      color: white;
+    }
+    
+    /* ===== GESAMTERGEBNIS (rechte Seite) – nur Summary ===== */
+    .summary-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .summary-card {
+      background: linear-gradient(145deg, #f8fafd, #ffffff);
+      border-radius: 36px;
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 35px rgba(0, 20, 40, 0.2);
+      border: 1px solid rgba(255,255,255,0.6);
+      text-align: center;
+    }
+    
+    .summary-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      letter-spacing: 0.5px;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 12px;
+      display: inline-block;
+    }
+    
+    .summary-score {
+      font-size: 64px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      line-height: 1;
+      margin-bottom: 15px;
+    }
+    
+    .summary-score small {
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--neutral);
+    }
+    
+    .summary-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 25px 0 20px;
+      background: #eef3f9;
+      border-radius: 60px;
+      padding: 16px 10px;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: var(--neutral);
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    
+    .stat-value.correct {
+      color: var(--success);
+    }
+    
+    .stat-value.incorrect {
+      color: var(--danger);
+    }
+    
+    .summary-percent {
+      background: var(--primary-dark);
+      color: white;
+      padding: 16px 12px;
+      border-radius: 60px;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-top: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    .summary-verdict {
+      margin-top: 22px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--neutral);
+      background: #e4f0fa;
+      display: inline-block;
+      padding: 8px 28px;
+      border-radius: 50px;
+    }
+    
+    /* Mobile */
+    @media (max-width: 980px) {
+      .container { grid-template-columns: 1fr; height: auto; }
+      .exam-body { height: auto; overflow: auto; }
+      .question-indicators { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body id="body" class="exam-body">
+  <div id="lesen-page" style="height: 100%; display: flex; flex-direction: column;">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">B2</div>
+        <div class="meta">
+          <div class="main-title">Deutsch B2 Prüfung</div>
+          <div class="sub-title">Lesen Teil 3 — Drag & Drop</div>
+        </div>
+      </div>
+      <div class="timer-container">
+        <span class="timer-icon">⏱</span>
+        <span class="timer-display" id="timer">00:00:00</span>
+      </div>
+      <div class="buttons-group">
+        <button id="resultBtn-lesen" class="exam-btn result">Ergebnis anzeigen</button>
+        <button id="resetBtn-lesen" class="exam-btn reset">Neu beginnen</button>
+      </div>
+    </header>
+
+    <div class="container">
+      <main class="left-panel" id="leftPanel-lesen">
+        <div class="passage" id="passage-lesen">
+          <h2 id="passageTitle-lesen">Texte (A-L) – Ziel ablegen</h2>
+          <div id="passageContent-lesen"></div>
+          <!-- Frage-Indikatoren (Dots) werden hier dynamisch eingefügt -->
+          <div id="indicatorContainer" class="question-indicators"></div>
+        </div>
+      </main>
+      <aside class="right-panel" id="rightPanel-lesen">
+        <div class="question-head">
+          <div>
+            <div class="section-name">Leseverstehen, Teil 3</div>
+            <div class="question-subtitle">Situationen (11-20) – ziehen Sie auf die Texte</div>
+          </div>
+        </div>
+        <div class="question-body" id="questionBody-lesen" style="overflow-y: auto; flex:1;"></div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ===============================
+      // NEUE LÖSUNGEN (11 → X, 12 → B, 13 → D, 14 → K, 15 → G, 16 → F, 17 → L, 18 → I, 19 → X, 20 → J)
+      // ===============================
+      const correctAnswersMap = {
+        "11": "X",
+        "12": "B",
+        "13": "D",
+        "14": "K",
+        "15": "G",
+        "16": "F",
+        "17": "L",
+        "18": "I",
+        "19": "X",
+        "20": "J"
+      };
+
+      const exam = {
+        id: "exam-teil3",
+        sections: [
+          { 
+            id: "s3", 
+            title: "Leseverstehen, Teil 3", 
+            points: 25,
+            // NEUE TEXTE (Kursbeschreibungen – ersetzt die alten)
+            texts: [
+              {id: "A", text: "Didgeridoo - der klingende Stock Australiens (Samstag 9.30 - 19.30 Uhr) Erlernt werden die Herstellung und das Spiel auf diesem wahrscheinlich ältesten Blasinstrument der Welt. Von den Aborigines - den Ureinwohnern Australiens - zur Begleitung von Tanz und Gesang und bei Heilungsritualen verwendet, wird es heute als Musikinstrument in der Therapie sowie in Musikgruppen und Orchestern auf der ganzen Welt eingesetzt. Die heilende Wirkung des Didgeridoo-Spiels beruht darauf, dass durch die besondere Klangcharakteristik und die Zirkulär Atmung, die es ermöglicht, den Ton beliebig lange ohne Unterbrechung zu halten, der Zugang zu einer gesteigerten Wahrnehmung erleichtert wird und man so einen Zustand tiefer Entspannung erreicht."},
+              {id: "B", text: "Deutsch im Beruf (Samstag 9:00 - 17.30 Uhr) Wie schreibt man heute richtig? Welche Regeln sind beim Telefonieren zu beachten? Worauf muss ich beim Schreiben von E-Mails achten? Wie gestalte ich Briefe am besten? Und wo hole ich mir Hilfe, wenn ich mir nicht sicher bin? Der Tageskurs soll kurz und bündig das Wichtigste bieten, worauf man aufpassen muss. Damit lassen sich sicher 80-90% der häufigsten Fehler vermeiden, was den Eindruck ihrer Firma nach außen wesentlich verbessert. Ihr Chef wird bemerken, dass sie hinzugelernt haben."},
+              {id: "C", text: "Xpert - Europäischer Computerpass (Dienstag, 18.15-21-15 Uhr, Dauer: 10 Wochen) In diesem Semester bitte die FAFA zum Einstieg in das Lehrgangssystem von Xpert das neue Pflichtmodul Win@internet 1 an. Im nächsten Halbjahr werden dann das Pflichtmodul Textverarbeitung Basics und das Wahlmodul Präsentation folgen. Wenn sie sich prüfen lassen: • wissen Sie, woraus ein einfaches Computersystem besteht, • können Sie Windows bedienen und Ordner verwalten, • haben sie die Fähigkeit, die wichtigsten Internetdienste und E-Mail-Dienste anzuwenden und haben Einblick in die Gefahren, die sich aus der Nutzung ergeben."},
+              {id: "D", text: "Grundlagen der Pressearbeit für Vereine (Samstag, 10.00 - 12.00 Uhr) Nach welchen Kriterien haben Themen eine Chance, in die Medien zu gelangen? In diesem Seminar lernen Sie Grundlagen effektiver Pressearbeit kennen. Es wird aber nicht nur theoretisches Wissen vermittelt. Sie haben Gelegenheit zu praktischen Übungen und können lernen, eine aktuelle Pressemitteilung für Ihren Verein zu formulieren. Das Angebot richtet sich vor allem an Aktive in Vereinen und Initiativen, die neu in die Pressearbeit einsteigen wollen. Den Teilnehmenden wird ein zusätzliches späteres Treffen angeboten, um die Erfahrungen aus der ersten Anwendung der im Seminar erworbenen Kenntnisse auszutauschen."},
+              {id: "E", text: "Glücklich miteinander - wie Partnerschaft gelingt (Dienstag, 19.30 - 21.00 Uhr) Am Anfang der Partnerschaft sind wir verliebt und glücklich. Sehr bald allerdings gerät die Liebe in Gefahr - sowohl durch die Belastungen des Alltags als auch durch die beiderseitigen Fehler. Der Vortrag zeigt, worauf es in einer guten Partnerschaft ankommt, und stellt dazu die neuesten Forschungsergebnisse aus der Paarforschung vor. Außerdem berichtet die Referentin aus ihrer Praxis als Paar- und Familientherapeutin und gibt Hinweise, was die Partner selbst aktiv für ihre Liebe tun können. Die Veranstaltung findet in Kooperation mit dem Psychologischen Institut der Universität statt."},
+              {id: "F", text: "Entscheidungen leichter fällen (Samstag, 10.00 - 13.00 Uhr) “Diese oder jene Wohnung nehmen und nach welchen Kriterien entscheiden?”, “Trotz schlechter Arbeitsmarktlage den Job wechseln oder lieber auf Nummer sicher gehen?”. Oder einfach nur: “Was soll ich heute kochen?”. Entscheidungen müssen wir täglich treffen - einige fallen uns leichter, andere schwerer. Nicht selten ist man aber hinterher mit der Entscheidung unzufrieden und fragt sich, ob man nicht alles hätte anders machen sollen. Das muss nicht sein. Eine optimale Entscheidung zu treffen, lässt sich lernen. Unterschiedliche Techniken werden vorgestellt, gezielt geübt und man lernt, diese auf die individuelle Situation anzuwenden, so dass man in Zukunft jede Entscheidung leichter fällen kann."},
+              {id: "G", text: "Physiotherapie (Beginn: 1. September, 9.00 Uhr, Dauer: 4 Semester) Physiotherapie ist ein wichtiger Bestandteil der modernen Medizin. Die Physiotherapeutin, der Physiotherapeut kann mit vielen Behandlungskonzepten und Techniken zum Erhalt oder zur Wiederbereitstellung aller Funktionen der Patienten beitragen. Die Ausbildung endet mit einer staatlichen Prüfung. Nach bestandener Prüfung wird gemäß § 2 des “Gesetzes über die Berufe in der Physiotherapie” die Erlaubnis zur Führung der Berufsbezeichnung “Physiotherapeut/in” von den zuständigen Behörden erteilt. Um an der Ausbildung teilnehmen zu können, müssen Sie mindestens einen Realschulabschluss haben. Außerdem müssen Sie einen Eingangstest bei uns machen."},
+              {id: "H", text: "Außenwirtschaft- und länderkundliche Beraterin: (täglich, 8.00 - 12.10 Uhr, Dauer: 10 Monate) Ziel ist es, an einer Tätigkeit im kaufmännischen Bereich interessierte Frauen mit Migrationshintergrund und zumindest guten Grundkenntnissen der deutschen Sprache auf eine Tätigkeit im Import/Exportbereich vorzubereiten und in eine feste Anstellung zu vermitteln. Durch die Aneignung der dafür erforderlichen sprachlichen und fachlichen Kompetenzen ist es möglich, den Migrantinnen. • einen beruflichen Einstieg in den Bereich Außenwirtschaft. • eine Anknüpfung an eine bereits im Herkunftsland ausgeübte oder erlernte Tätigkeit. • eine anschließende Regelausbildung im Außenhandel oder Import-Export-Bereich. • eine Existenzgründung im Consultingbereich (als länderkundliche Beraterin) zu ermöglichen."},
+              {id: "I", text: "Referate und Hausarbeiten erfolgreich meistern (Mittwoch und Freitag, 18.30 - 21.00 Uhr, Dauer: 10 Wochen) Wie kann ich mich optimal an Lehrveranstaltungen beteiligen? Wie halte ich mündliche Referate? Was erwartet mich in einer mündlichen Prüfung? Wie soll eine E-Mail an Dozentinnen und Dozenten aussehen? Wie fertige ich Mitschriften und Exzerpte an? Wie schreibe ich eine Hausarbeit, wie zitiere ich? Wie schreibe ich schriftliche Klausuren? - Besonders in den ersten Semestern haben Anfänger ihre liebe Not mit den universitären Textsorten und Aufgabenstellungen. Mit den Schwerpunkten Referat und Hausarbeit bietet der Kurs Übungen, um Routine für schriftliche und mündliche Leistungsnachweise zu entwickeln. Das Lehrmaterial wird zu Kursbeginn bekannt gegeben. Kopierkosten werden mit dem Dozenten abgerechnet."},
+              {id: "J", text: "Souverän in Vorstellungsgesprächen (Freitag-Sonntag, 10.30 - 17.00 Uhr) Im Vorstellungsgespräch müssen Sie Ihren zukünftigen Arbeitgeber von Ihren Fähigkeiten und Ihrer Persönlichkeit überzeugen. Dieses Seminar vermittelt Ihnen, was im Vorstellungsgespräch von Ihnen erwartet wird, was Sie sagen oder nicht sagen sollten und wie Sie Ihr Profil darstellen. Mithilfe von Rollenspielen und Videoaufzeichnungen sehen Sie ein Bild von sich selbst. Sofort-Tipps und Feedback unterstützen eine Verhaltensänderung, die den Erfolg Ihres Vorstellungsgespräches unterstützt. Nachdem Sie viel geübt haben, werden Sie in Zukunft ohne Bauchschmerzen zum Vorstellungsgespräch gehen können."},
+              {id: "K", text: "Zeichnen für Anfänger (Samstag und Sonntag, 10.30 - 17.00 Uhr) Sind Sie auch der Meinung, dass Sie nicht zeichnen können? Dann sind Sie in diesem Kurs genau richtig! An verschiedenen Alltagsgegenständen schulen wir unsere Wahrnehmung und lernen, Proportionen, Licht und Schatten richtig zu erfassen und zeichnerisch wiederzugeben. Ihnen schwirrt der Kopf, wenn Sie Begriffe wie Horizontlinie oder Fluchtpunkt hören und leichte Verzweiflung erfasst Sie? Was es damit auf sich hat, erfahren Sie in zeichnerischen Übungen und lernen eckige Gegenstände, Innenräume und Hausansichten perspektivisch richtig darzustellen. Wir arbeiten mit Bleistift. Bitte mitbringen: Bleistifte HB, 2B, 4B, 6B, 8B, Radiergummi, Spitzer und Zeichenblock DIN A3."},
+              {id: "L", text: "Traditionelle thailändische Speisen (Samstag und Sonntag, 10.30 - 17.00 Uhr) Thailändische Gerichte sind dafür berühmt, viel Geschmack, gleichzeitig jedoch weniger Kalorien zu liefern. Die thailändische Küche bietet genussvolle und köstliche Speisen. Vorspeisen, Hauptgerichte und die berühmten Suppen und Salate werden gemeinsam zubereitet. Der Kurs soll ein Einstieg in die Feinheiten der thailändischen Küche sein. An jedem Kursabend wird ein vielseitiges und köstliches Menü zusammengestellt und anschließend gemeinsam gegessen. Angerichtet wird der Kurs durch landestypische Dekorationsideen. Bitte bringen Sie zwei Geschirrtücher, Vorratsdosen für Reste und Ihr eigenes Getränk mit. Die Lebensmittelkosten in Höhe von ca. 8 EUR pro Abend werden direkt mit den Dozenten abgerechnet."}
+            ],
+            // NEUE SITUATIONEN (wie angefordert)
+            situations: [
+              {id: "11", text: "Ein Freund interessiert sich für Musikinstrumente des europäischen Mittelalters."},
+              {id: "12", text: "An Ihrem Arbeitsplatz müssen Sie viele deutsche Geschäftsbriefe schreiben, sind aber oft unsicher und suchen einen entsprechenden Kurs."},
+              {id: "13", text: "Ihr Freund ist Vorsitzender eines Golfclubs und muss immer wieder Informationen an die Medien geben. Er möchte diese Aufgabe professionell erledigen."},
+              {id: "14", text: "Eine Bekannte wird zur Erzieherin ausgebildet. Sie sucht einen Kurs, indem sie die Fähigkeit zu bildlicher Darstellung entwickeln kann."},
+              {id: "15", text: "Sie suchen eine Berufsausbildung, bei der Sie viel mit Menschen zu tun haben. Und Sie interessieren sich für alles, was mit Gesundheit zu tun hat."},
+              {id: "16", text: "Ihre Freundin zögert häufig, sich auf eine Sache festzulegen. Hat sie schließlich einen Entschluss gefasst, bereut sie diesen bisweilen."},
+              {id: "17", text: "Sie wollen Rezepte aus der fernöstlichen Küche kennen lernen."},
+              {id: "18", text: "Sie beginnen gerade mit Ihrem Studium, beherrschen die wissenschaftlichen Arbeitstechniken noch nicht."},
+              {id: "19", text: "Sie sollen in Kürze eine PowerPoint-Präsentation machen und suchen einen geeigneten Kurs."},
+              {id: "20", text: "Sie haben sich auf eine Arbeitsstelle beworben und wollen sich gut vorbereiten, falls man Sie persönlich kennen lernen möchte."}
+            ]
+          }
+        ]
+      };
+
+      let state = { sectionIndex: 0, answers: {}, showResults: false };
+      let seconds = 0, timerInterval;
+      const timerEl = document.getElementById('timer');
+      const passageContentEl = document.getElementById('passageContent-lesen');
+      const questionBodyEl = document.getElementById('questionBody-lesen');
+      const resultBtn = document.getElementById('resultBtn-lesen');
+      const resetBtn = document.getElementById('resetBtn-lesen');
+      const bodyEl = document.getElementById('body');
+      const indicatorContainer = document.getElementById('indicatorContainer');
+
+      function startTimer() { timerInterval = setInterval(() => { seconds++; updateTimerDisplay(); }, 1000); }
+      function resetTimer() { seconds = 0; updateTimerDisplay(); }
+      function updateTimerDisplay() { const h = Math.floor(seconds/3600), m = Math.floor((seconds%3600)/60), s = seconds%60; timerEl.textContent = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }
+
+      // --- Prüfen ob alle Fragen beantwortet sind (für Completion Mode) ---
+      function isAllQuestionsAnswered() {
+        const totalSituations = exam.sections[0].situations.length;
+        const answeredCount = Object.keys(state.answers).length;
+        return answeredCount === totalSituations;
+      }
+
+      function updateCompletionMode() {
+        if (!state.showResults && isAllQuestionsAnswered()) {
+          bodyEl.classList.add('completion-mode');
+        } else {
+          bodyEl.classList.remove('completion-mode');
+        }
+      }
+
+      // Indikatoren (Dots) rendern
+      function renderIndicators() {
+        const situations = exam.sections[0].situations;
+        let dotsHtml = '';
+        situations.forEach(sit => {
+          const isAnswered = state.answers[sit.id] !== undefined;
+          dotsHtml += `<div class="indicator-dot" title="Situation ${sit.id}">${sit.id}</div>`;
+        });
+        indicatorContainer.innerHTML = dotsHtml;
+      }
+
+      // --- DRAG & DROP + KLICK + X-TOGGLE ---
+      function handleDragStart(e, type, id) {
+        if (type === 'situation' && state.answers[id] && state.answers[id] !== 'X') { e.preventDefault(); return; } 
+        e.dataTransfer.setData('text/plain', JSON.stringify({ type, id }));
+      }
+
+      function handleDropOnText(e, textId) {
+        e.preventDefault();
+        const raw = e.dataTransfer.getData('text/plain');
+        if (!raw) return;
+        const { type, id } = JSON.parse(raw);
+        
+        if (type === 'situation') {
+          if (state.answers[id] && state.answers[id] !== 'X') return; 
+          const existingForText = Object.entries(state.answers).find(([sit, val]) => val === textId);
+          if (existingForText) return;
+          
+          if (state.answers[id] === 'X') delete state.answers[id];
+          state.answers[id] = textId;
+        } 
+        else if (type === 'slot') {
+          const situationId = id.replace('slot-','');
+          if (state.answers[situationId] && state.answers[situationId] !== 'X') {
+            delete state.answers[situationId];
+          }
+        }
+        updateCompletionMode();
+        renderAll();
+      }
+
+      function allowDrop(e) { e.preventDefault(); }
+
+      function handleSlotClick(situationId) {
+        if (situationId && state.answers[situationId] && state.answers[situationId] !== 'X') {
+          delete state.answers[situationId];
+          updateCompletionMode();
+          renderAll();
+        }
+      }
+
+      function toggleNoMatch(situationId) {
+        if (state.answers[situationId] === 'X') {
+          delete state.answers[situationId];
+        } else {
+          if (state.answers[situationId]) {
+            delete state.answers[situationId];
+          }
+          state.answers[situationId] = 'X';
+        }
+        updateCompletionMode();
+        renderAll();
+      }
+
+      // ===== RENDER =====
+      function renderPart3() {
+        const section = exam.sections[0];
+        let textsHTML = `<div class="texts-list">`;
+        section.texts.forEach(text => {
+          const userSit = Object.keys(state.answers).find(key => state.answers[key] === text.id);
+          const sitObj = userSit ? section.situations.find(s => s.id === userSit) : null;
+          const slotContent = userSit ? `Situation ${sitObj.id}: ${sitObj.text.substring(0,65)}...` : (state.answers[text.id] === 'X' ? '' : 'Hier ablegen');
+          const hasClass = userSit ? 'has-title' : (state.answers[text.id] === 'X' ? 'has-x' : '');
+          const draggable = userSit ? 'true' : 'false';
+          const slotClickAttr = userSit ? `onclick="window.lesenApp.handleSlotClick('${userSit}')"` : '';
+          
+          textsHTML += `
+            <div class="text-item" data-text-id="${text.id}">
+              <div class="text-letter">Text ${text.id}</div>
+              <div class="text-content">${text.text}</div>
+              <div class="title-slot ${hasClass}" 
+                   data-text-id="${text.id}"
+                   draggable="${draggable}"
+                   ondragstart="event.dataTransfer.setData('text/plain', JSON.stringify({type:'slot', id:'slot-${userSit}'}))"
+                   ondrop="window.lesenApp.dropOnText(event, '${text.id}')"
+                   ondragover="event.preventDefault()"
+                   ${slotClickAttr}
+                   title="${userSit ? 'Klicken zum Entfernen' : ''}">
+                ${userSit ? slotContent : (state.answers[text.id] === 'X' ? 'X (kein Text)' : 'Hier ablegen')}
+              </div>
+            </div>`;
+        });
+        textsHTML += `</div>`;
+        passageContentEl.innerHTML = textsHTML;
+
+        let sitHTML = `<div class="situations-list">`;
+        section.situations.forEach(sit => {
+          const used = state.answers[sit.id] && state.answers[sit.id] !== 'X';
+          const isX = state.answers[sit.id] === 'X';
+          sitHTML += `
+            <div class="situation-item ${used ? 'used' : ''}" 
+                 data-situation-id="${sit.id}"
+                 draggable="${!used}"
+                 ondragstart="window.lesenApp.dragStart(event, 'situation', '${sit.id}')">
+              <div class="situation-number">Situation ${sit.id}</div>
+              <div class="situation-text">${sit.text}</div>
+              <div class="no-match-container">
+                <button class="exam-btn no-match ${isX ? 'selected' : ''}" 
+                        onclick="event.stopPropagation(); window.lesenApp.toggleNoMatch('${sit.id}')">
+                  ${isX ? 'X gewählt' : 'X (kein Text)'}
+                </button>
+              </div>
+            </div>`;
+        });
+        sitHTML += `</div>`;
+        questionBodyEl.innerHTML = sitHTML;
+        
+        renderIndicators(); // Dots immer aktuell halten
+      }
+
+      // Ergebnisse Detail (linke Seite) - Utilisation de la nouvelle carte de correction
+      function renderResultsLeft() {
+        const section = exam.sections[0];
+        let totalCorrect = 0;
+        let total = section.situations.length;
+        
+        let html = `
+          <div class="results-container">
+            <div class="results-header">
+              <h2>Prüfungsauswertung</h2>
+              <div class="results-summary-badge">${Object.keys(state.answers).length}/${total} beantwortet</div>
+            </div>
+            <div class="result-grid">
+        `;
+        
+        section.situations.forEach(sit => {
+          const user = state.answers[sit.id];
+          // NEUE Korrektur (correctAnswersMap wurde oben aktualisiert)
+          const correctId = correctAnswersMap[sit.id] || 'X';
+          const isCorrect = (user === correctId);
+          if (isCorrect) totalCorrect++;
+          
+          const userDisplay = user || '—';
+          const correctDisplay = correctId;
+          
+          html += `
+            <div class="result-card ${isCorrect ? 'correct' : 'incorrect'}">
+              <div class="result-card-info">
+                <span class="situation-tag">${sit.id}</span>
+                <span class="situation-text-short">${sit.text.substring(0,70)}…</span>
+              </div>
+              <div class="result-answer-badge">
+                <span class="user-answer">${userDisplay}</span>
+                <span class="correct-answer">soll: ${correctDisplay}</span>
+                <span class="verdict-badge ${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? 'richtig' : 'falsch'}</span>
+              </div>
+            </div>
+          `;
+        });
+        
+        html += `</div></div>`;
+        passageContentEl.innerHTML = html;
+        indicatorContainer.innerHTML = ''; // Dots im Ergebnis-Modus ausblenden
+        return { totalCorrect, total };
+      }
+
+      // Gesamtergebnis (rechte Seite) – nur Summary
+      function renderResultsRight(totalCorrect, total) {
+        const wrong = total - totalCorrect;
+        const percent = Math.round((totalCorrect/total)*100);
+        const stars = '★'.repeat(Math.max(1, Math.floor(percent/20)));
+        const passed = percent >= 60;
+        
+        const rightHTML = `
+          <div class="summary-container">
+            <div class="summary-card">
+              <div class="summary-title">Gesamtergebnis</div>
+              <div class="summary-score">${totalCorrect}<small>/${total}</small></div>
+              <div class="summary-stats">
+                <div class="stat-item">
+                  <div class="stat-label">Richtig</div>
+                  <div class="stat-value correct">${totalCorrect}</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">Falsch</div>
+                  <div class="stat-value incorrect">${wrong}</div>
+                </div>
+              </div>
+              <div class="summary-percent">${percent}%</div>
+              <div class="summary-verdict">${passed ? 'Bestanden' : 'Nicht bestanden'}</div>
+              <div style="margin-top:15px; font-size:22px; color:#ffd966;">${stars}</div>
+            </div>
+          </div>
+        `;
+        questionBodyEl.innerHTML = rightHTML;
+      }
+
+      function renderResults() {
+        const { totalCorrect, total } = renderResultsLeft();
+        renderResultsRight(totalCorrect, total);
+      }
+
+      function renderAll() { 
+        if (state.showResults) {
+          renderResults();
+        } else {
+          renderPart3();
+        }
+        updateCompletionMode();
+      }
+
+      function resetExam() { 
+        if (confirm('Neu beginnen?')) { 
+          state.answers = {}; 
+          state.showResults = false; 
+          resetTimer(); 
+          updateCompletionMode();
+          renderAll(); 
+        } 
+      }
+
+      resultBtn.addEventListener('click', () => { 
+        state.showResults = !state.showResults; 
+        renderAll(); 
+      });
+      
+      resetBtn.addEventListener('click', resetExam);
+
+      window.lesenApp = {
+        dragStart: handleDragStart,
+        dropOnText: handleDropOnText,
+        toggleNoMatch,
+        handleSlotClick,
+      };
+
+      startTimer();
+      renderAll();
+    })();
+  </script>
+</body>
+</html>

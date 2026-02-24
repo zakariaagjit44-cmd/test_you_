@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Deutsch B2 Prüfung - Lesen Teil 2</title>
+  
+  <style>
+    /* ===== GLOBAL STYLES – Professionell ===== */
+    :root {
+      --primary-dark: #0b2b4a;        
+      --primary-medium: #1f4b7a; 
+      --accent-soft: #3b8fc2;         
+      --light-bg: #f0f7fe;
+      --text-dark: #1e2b37;
+      --white: #ffffff;
+      --shadow-sm: 0 6px 14px rgba(0, 20, 40, 0.12);
+      --transition: all 0.3s ease; 
+      --success: #2e7d5e;             
+      --danger: #b13e3e;               
+      --neutral: #5f6b7a;
+      --neutral-light: #e9eff5;
+      --bg-results: #f8fafd;
+      --border-light: #d4e2f0;
+      
+      /* Default blue theme */
+      --header-bg: #0b2b4a;
+      --timer-bg: rgba(255, 255, 255, 0.1);
+      --indicator-bg: #d4e2f0;
+      --indicator-border: #8fb4d1;
+      --indicator-text: #1e3a4e;
+      --glow-effect: none;
+    }
+    
+    /* ===== COMPLETION MODE – Vollständiger visueller Wandel ===== */
+    body.completion-mode {
+      --header-bg: #1f6a4c;
+      --timer-bg: rgba(255, 255, 255, 0.25);
+      --indicator-bg: #d4eed4;
+      --indicator-border: #2e7d5e;
+      --indicator-text: #1e5e3a;
+      --glow-effect: 0 0 15px rgba(46, 125, 94, 0.3);
+    }
+    
+    body.completion-mode .topbar {
+      background: var(--header-bg) !important;
+      box-shadow: var(--glow-effect), 0 4px 12px rgba(0,0,0,0.2) !important;
+    }
+    
+    body.completion-mode .timer-container {
+      background: var(--timer-bg) !important;
+    }
+    
+    body.completion-mode .indicator-dot.answered {
+      background: #2e7d5e !important;
+      border-color: #1e5e3a !important;
+      color: white !important;
+    }
+    
+    body.completion-mode .question-head {
+      background: #dff0df;
+      border-left-color: #2e7d5e;
+    }
+    
+    .topbar, .timer-container, .indicator-dot, .question-head {
+      transition: all 0.4s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0b2b4a 0%, #1f4b7a 100%);
+      color: var(--white);
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+    
+    .exam-body {
+      background: #f0f7fe;
+      color: var(--text-dark);
+      line-height: 1.45;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    header.topbar {
+      background: var(--header-bg);
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      min-height: 80px;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .brand .logo {
+      width: 80px;
+      height: 40px;
+      background: #b13e3e;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .meta .main-title {
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.3px;
+    }
+
+    .meta .sub-title {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .timer-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--timer-bg);
+      padding: 6px 18px;
+      border-radius: 40px;
+      backdrop-filter: blur(2px);
+      margin: 0 auto;
+    }
+    
+    .timer-icon {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+    
+    .timer-display {
+      font-weight: 600;
+      font-size: 24px;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px 14px;
+      border-radius: 30px;
+      letter-spacing: 2px;
+    }
+
+    .buttons-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    
+    .exam-btn {
+      padding: 12px 22px;
+      border-radius: 40px;
+      border: none;
+      background: #3b8fc2;        
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 140px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 20, 30, 0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .exam-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 14px rgba(0, 20, 30, 0.3);
+    }
+    
+    .exam-btn.result {
+      background: #1f6a9c;        
+    }
+    
+    .exam-btn.result:hover {
+      background: #15507a;
+    }
+    
+    .exam-btn.reset {
+      background: #4f6f8f;        
+    }
+    
+    .exam-btn.reset:hover {
+      background: #3e5a77;
+    }
+    
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 18px;
+      padding: 18px 24px;
+      max-width: 1600px;
+      margin: 0 auto;
+      flex: 1;
+      min-height: 0;
+      height: calc(100vh - 80px);
+    }
+    
+    .left-panel, .right-panel {
+      background: white;
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      overflow-y: auto;
+      height: 100%;
+    }
+    
+    .left-panel::-webkit-scrollbar, .right-panel::-webkit-scrollbar {
+      width: 8px;
+    }
+    .left-panel::-webkit-scrollbar-track, .right-panel::-webkit-scrollbar-track { background: #e2ecf5; border-radius: 10px; }
+    .left-panel::-webkit-scrollbar-thumb, .right-panel::-webkit-scrollbar-thumb { background: var(--accent-soft); border-radius: 10px; }
+    
+    .left-panel .passage {
+      font-size: 14.5px;
+      color: var(--text-dark);
+      line-height: 1.7;
+    }
+    
+    .left-panel h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: var(--primary-dark);
+      border-bottom: 3px solid var(--accent-soft);
+      padding-bottom: 8px;
+      font-weight: 600;
+    }
+    
+    .question-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #e4f0fa;
+      padding: 12px 18px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+      border-left: 5px solid var(--primary-dark);
+      flex-shrink: 0;
+    }
+    
+    .section-name {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 18px;
+    }
+    
+    .question-subtitle {
+      font-size: 13px;
+      color: #3f5568;
+    }
+    
+    .passage-text {
+      padding: 18px;
+      background: #fafcff;
+      border-radius: 18px;
+      border: 1px solid var(--border-light);
+      margin-bottom: 20px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #1e2f3b;
+    }
+    
+    .questions-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .question-item {
+      padding: 16px;
+      border: 1px solid var(--border-light);
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    
+    .question-text-right {
+      font-weight: 500;
+      margin-bottom: 15px;
+      color: var(--text-dark);
+      font-size: 14px;
+    }
+    
+    .options-right {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .option-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      background: var(--neutral-light);
+      border-radius: 40px;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 2px solid transparent;
+    }
+    
+    .option-right:hover {
+      background: #dde9f5;
+    }
+    
+    .option-right.selected {
+      background: #d4eed4;
+      border-color: var(--success);
+    }
+    
+    .option-right .radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid var(--primary-dark);
+      background: white;
+      flex-shrink: 0;
+    }
+    
+    .option-right.selected .radio {
+      background: var(--success);
+      border-color: var(--success);
+      box-shadow: inset 0 0 0 4px white;
+    }
+    
+    .question-indicators {
+      display: flex;
+      gap: 12px;
+      margin-top: 25px;
+      padding: 15px;
+      background: #ffffff;
+      border-radius: 50px;
+      justify-content: center;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+    }
+    
+    .indicator-dot {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--indicator-bg);
+      border: 2px solid var(--indicator-border);
+      color: var(--indicator-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+    
+    .indicator-dot.answered {
+      background: #2e7d5e;
+      border-color: #1e5e3a;
+      color: white;
+    }
+    
+    .results-container {
+      padding: 4px 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      background: var(--primary-dark);
+      color: white;
+      padding: 18px 24px;
+      border-radius: 18px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    
+    .results-header h2 {
+      font-size: 22px;
+      font-weight: 600;
+      border: none;
+      margin: 0;
+      color: white;
+      letter-spacing: 0.3px;
+    }
+    
+    .results-summary-badge {
+      background: rgba(255,255,255,0.18);
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .result-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-bottom: 20px;
+    }
+    
+    .result-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 14px 18px;
+      border-left: 6px solid;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.03);
+      border: 1px solid var(--border-light);
+    }
+    
+    .result-card.correct {
+      border-left-color: var(--success);
+    }
+    
+    .result-card.incorrect {
+      border-left-color: var(--danger);
+    }
+    
+    .result-card-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .question-tag {
+      background: var(--primary-dark);
+      color: white;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 40px;
+      font-size: 14px;
+      min-width: 50px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .question-text-short {
+      font-weight: 500;
+      max-width: 300px;
+      font-size: 14px;
+      color: #1e3a4e;
+    }
+    
+    .result-answer-badge {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #f0f6fd;
+      padding: 6px 20px;
+      border-radius: 40px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+    }
+    
+    .user-answer {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 15px;
+      min-width: 40px;
+      text-align: center;
+    }
+    
+    .correct-answer {
+      color: #5f6b7a;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .verdict-badge {
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      min-width: 58px;
+      text-align: center;
+    }
+    
+    .verdict-badge.correct {
+      background: var(--success);
+      color: white;
+    }
+    
+    .verdict-badge.incorrect {
+      background: var(--danger);
+      color: white;
+    }
+    
+    .summary-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .summary-card {
+      background: linear-gradient(145deg, #f8fafd, #ffffff);
+      border-radius: 36px;
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 35px rgba(0, 20, 40, 0.2);
+      border: 1px solid rgba(255,255,255,0.6);
+      text-align: center;
+    }
+    
+    .summary-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      letter-spacing: 0.5px;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 12px;
+      display: inline-block;
+    }
+    
+    .summary-score {
+      font-size: 64px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      line-height: 1;
+      margin-bottom: 15px;
+    }
+    
+    .summary-score small {
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--neutral);
+    }
+    
+    .summary-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 25px 0 20px;
+      background: #eef3f9;
+      border-radius: 60px;
+      padding: 16px 10px;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: var(--neutral);
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    
+    .stat-value.correct {
+      color: var(--success);
+    }
+    
+    .stat-value.incorrect {
+      color: var(--danger);
+    }
+    
+    .summary-percent {
+      background: var(--primary-dark);
+      color: white;
+      padding: 16px 12px;
+      border-radius: 60px;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-top: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    .summary-verdict {
+      margin-top: 22px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--neutral);
+      background: #e4f0fa;
+      display: inline-block;
+      padding: 8px 28px;
+      border-radius: 50px;
+    }
+    
+    @media (max-width: 980px) {
+      .container { grid-template-columns: 1fr; height: auto; }
+      .exam-body { height: auto; overflow: auto; }
+      .question-indicators { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body id="body" class="exam-body">
+  <div id="lesen-page" style="height: 100%; display: flex; flex-direction: column;">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">B2</div>
+        <div class="meta">
+          <div class="main-title">Deutsch B2 Prüfung</div>
+          <div class="sub-title">Lesen Teil 2</div>
+        </div>
+      </div>
+      
+      <div class="timer-container">
+        <span class="timer-icon">⏱</span>
+        <span class="timer-display" id="timer">00:00:00</span>
+      </div>
+      
+      <div class="buttons-group">
+        <button id="resultBtn" class="exam-btn result">Ergebnis anzeigen</button>
+        <button id="resetBtn" class="exam-btn reset">Neu beginnen</button>
+      </div>
+    </header>
+
+    <div class="container" id="mainContainer">
+      <!-- المحتوى سيتم إنشاؤه ديناميكياً بواسطة JavaScript -->
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ===== Richtige Antworten (AKTUALISIERT) =====
+      const correctAnswers = {
+        "q1": "b",
+        "q2": "a",
+        "q3": "c",
+        "q4": "a",
+        "q5": "a"
+      };
+
+      // ===== Fragen und Optionen (AKTUALISIERT) =====
+      const questions = [
+        {
+          id: "q1",
+          text: "Einige Eltern",
+          options: [
+            { id: "a", text: "haben selbst keinen Appetit auf ein Frühstück." },
+            { id: "b", text: "lassen das Frühstück aus Zeitmangel ausfallen." },
+            { id: "c", text: "schaufeln das Frühstück einfach in sich hinein." }
+          ]
+        },
+        {
+          id: "q2",
+          text: "Ein gesundes Frühstück",
+          options: [
+            { id: "a", text: "erhöht auch die Sicherheit des Kindes auf dem Weg zur Schule." },
+            { id: "b", text: "muss mindestens aus einem Glas Kakao oder Milch bestehen." },
+            { id: "c", text: "sollte gemeinsam in der Schule angenommen werden." }
+          ]
+        },
+        {
+          id: "q3",
+          text: "Milch",
+          options: [
+            { id: "a", text: "deckt den täglichen Flüssigkeitsbedarf." },
+            { id: "b", text: "gehört zum Angebot der Schulkantinen." },
+            { id: "c", text: "wird in verschiedenen Geschmacksrichtungen angeboten." }
+          ]
+        },
+        {
+          id: "q4",
+          text: "Kinder",
+          options: [
+            { id: "a", text: "denken von alleine nicht immer daran, genug zu trinken." },
+            { id: "b", text: "dürfen während des Unterrichts nichts trinken." },
+            { id: "c", text: "können sich auch noch gut konzentrieren, wenn sie nicht genug getrunken haben." }
+          ]
+        },
+        {
+          id: "q5",
+          text: "Mittagessen",
+          options: [
+            { id: "a", text: "sollte in der Schule angeboten werden." },
+            { id: "b", text: "sollten die Kinder von zu Hause mitbringen." },
+            { id: "c", text: "sollten Kinder bei den Eltern zu Hause bekommen." }
+          ]
+        }
+      ];
+
+      // ===== State =====
+      let answers = {};
+      let showResults = false;
+      let seconds = 0;
+      let timerInterval;
+      
+      // لتخزين موضع التمرير
+      let scrollPosition = 0;
+
+      // ===== DOM Elemente =====
+      const bodyEl = document.getElementById('body');
+      const timerEl = document.getElementById('timer');
+      const mainContainer = document.getElementById('mainContainer');
+      const resultBtn = document.getElementById('resultBtn');
+      const resetBtn = document.getElementById('resetBtn');
+
+      // ===== Timer Funktionen =====
+      function startTimer() {
+        timerInterval = setInterval(() => {
+          seconds++;
+          updateTimerDisplay();
+        }, 1000);
+      }
+
+      function resetTimer() {
+        seconds = 0;
+        updateTimerDisplay();
+      }
+
+      function updateTimerDisplay() {
+        const h = Math.floor(seconds / 3600);
+        const m = Math.floor((seconds % 3600) / 60);
+        const s = seconds % 60;
+        timerEl.textContent = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+      }
+
+      // ===== حفظ موضع التمرير قبل إعادة الرسم =====
+      function saveScrollPosition() {
+        const rightPanel = document.querySelector('.right-panel');
+        if (rightPanel) scrollPosition = rightPanel.scrollTop;
+      }
+
+      // ===== استعادة موضع التمرير بعد إعادة الرسم =====
+      function restoreScrollPosition() {
+        // نستخدم requestAnimationFrame للتأكد من أن DOM قد تم تحديثه بالكامل
+        requestAnimationFrame(() => {
+          const rightPanel = document.querySelector('.right-panel');
+          if (rightPanel) {
+            rightPanel.scrollTop = scrollPosition;
+          }
+        });
+      }
+
+      // ===== تحديث الإجابة بدون إعادة رسم كامل =====
+      function updateAnswer(questionId, optionId) {
+        // حفظ موضع التمرير
+        saveScrollPosition();
+        
+        // تحديث الإجابة في state
+        answers[questionId] = optionId;
+        
+        // تحديث واجهة المستخدم مباشرة دون إعادة رسم كامل
+        const selectedOption = document.querySelector(`.option-right[data-question="${questionId}"][data-option="${optionId}"]`);
+        if (selectedOption) {
+          // إزالة التحديد من جميع خيارات هذا السؤال
+          const allOptionsForQuestion = document.querySelectorAll(`.option-right[data-question="${questionId}"]`);
+          allOptionsForQuestion.forEach(opt => {
+            opt.classList.remove('selected');
+          });
+          
+          // إضافة التحديد للخيار المختار
+          selectedOption.classList.add('selected');
+        }
+        
+        // تحديث المؤشرات
+        updateIndicators();
+        
+        // تحديث وضع الإكتمال
+        updateCompletionMode();
+        
+        // استعادة موضع التمرير
+        restoreScrollPosition();
+      }
+
+      // ===== Indikatoren aktualisieren =====
+      function updateIndicators() {
+        const dots = document.querySelectorAll('.indicator-dot');
+        dots.forEach((dot, index) => {
+          const questionId = `q${index + 1}`;
+          if (answers[questionId]) {
+            dot.classList.add('answered');
+          } else {
+            dot.classList.remove('answered');
+          }
+        });
+      }
+
+      // ===== Prüfen ob alle Fragen beantwortet sind =====
+      function isAllQuestionsAnswered() {
+        return Object.keys(answers).length === 5;
+      }
+
+      // ===== Completion Mode aktualisieren =====
+      function updateCompletionMode() {
+        if (!showResults && isAllQuestionsAnswered()) {
+          bodyEl.classList.add('completion-mode');
+        } else {
+          bodyEl.classList.remove('completion-mode');
+        }
+      }
+
+      // ===== Exam Mode rendern (مرة واحدة فقط) =====
+      function renderExamMode() {
+        let leftHTML = `
+          <div class="left-panel">
+            <div class="passage">
+              <h2>Gesundes Essen</h2>
+              <div class="passage-text">
+                Für Kinder sind regelmäßige Mahlzeiten wichtig, um volle Konzentrations- und Leistungsfähigkeit zu gewährleisten. Um gut in den Tag zu kommen, sollte jedes Schulkind mit einem ausgewogenen Frühstück starten. Aber eine Umfrage kam zu erschreckenden Ergebnissen: Jedes siebte Kind isst morgens nichts, bevor es in die Schule geht. Die Gründe dafür sind vielfältig: Jeder vierte Befragte gab an, dass sein Kind morgens keinen Appetit habe. Und sogar jede dritte Mutter und jeder dritte Vater sagten, dass morgens keine Zeit für Frühstück sei. Für eine gesunde Morgenmahlzeit sollte man jedoch immer Zeit freischaufeln, rät Ernährungswissenschaftlerin Alexandra Krotz. Mit leerem Magen können Körper und Geist keine Leistung erbringen. Die Folge: Die Kinder sind reizbar, nervös und können sich nicht richtig konzentrieren. Und das ist schon auf dem Schulweg wichtig: Kinder bewegen sich sicherer, wenn sie rechtzeitig aufgestanden sind und entspannt gefrühstückt haben. Zu einem gesunden Frühstück eignen sich an den besten Vollkornbroten mit fettarmer Wurst oder Käse, aber auch Müslis mit Milch oder Joghurt, Nüssen und frisches Obst. Wer morgens keinen Hunger hat, sollte wenigstens eine Kleinigkeit zu sich nehmen - etwa eine Banane essen und dazu einen Kakao trinken - und das ausgiebige Frühstück dann etwas später nachholen. In einigen Schulen wird gemeinsam gefrühstückt. Hier gilt es, je nach Vereinbarung mit Erziehern und Lehrern, ein leckeres Frühstück zusammenzustellen. Wer seinen Kindern ein zweites Frühstück einpackt, sollte auf Abwechslung und die geeignete Verpackung achten. Am besten eignet sich eine Brotdose - die spart Verpackungsmüll und vermeidet zermatschte Brote. Zudem lassen sich darin auch Obst und Gemüse sicher transportieren. Eine gute Ergänzung zu lecken belegten Vollkornbroten ist Rohkost. Dazu eignen sich besonders transportsichere feste Sorten wie Möhren, Kohlrabi, Cherrytomaten, Trauben oder Äpfel. Je nach Jahreszeit und Vorliebe der Kinder können Sie als Eltern hierbei für Abwechslung sorgen. Heutzutage wird Schulmilch leider nicht mehr in allen Schulen angeboten. Schade, denn Milch liefert wichtiges Calcium, Eiweiß und viele B-Vitamine. Wer als Kind die Möglichkeit hat, in der Schule Milch zu trinken, sollte darauf nicht verzichten. Und selbst Milchmuffel dürften zufrieden sein: Da Milch in vielen Varianten angeboten wird - von Erdbeermilch über Kakao zu Vanillemilch -, ist für jedes Kind das Richtige dabei. Generell ist der Wasserbedarf von Kindern im Verhältnis zum Körpergewicht höher als bei Erwachsenen. Trinken Kinder zu wenig, beeinträchtigt dies schneller die körperliche und geistige Leistungsfähigkeit. Kinder sollten deshalb je nach Alter mindestens 0,7 Liter bis 1,2 Liter trinken - Milch nicht mitgerechnet. Wenn das Kind viel Sport treibt oder tobt und bei besonders warmen Tagen brauchen die Kinder entsprechend mehr Flüssigkeit. Viele Kinder trinken zu wenig. Häufig vergessen sie ganz einfach zu trinken, wenn sie konzentriert spielen oder lernen. Ganz wichtig ist es daher, Kinder immer mal wieder zum Trinken aufzufordern und auch zwischen den Mahlzeiten den Durst zu löschen, auch während der Unterrichtsstunden. Am besten sind Wasser, Kräutertees und Saftschorlen geeignet. Übrigens: Fast ein Viertel aller Schüler in Deutschland trinkt vormittags nichts oder fast nichts. Das hat eine Untersuchung der Universität Paderborn zum Trinkverhalten vor und während der Unterrichtszeit ergeben. Die unzureichende Flüssigkeitsaufnahme führte dabei nachweislich zu Einschränkungen der geistigen und körperlichen Leistungsfähigkeit. Kinder mögen Süßes. Schokoriegel und Süßigkeiten sollten allerdings beim Pausenbrot nicht die Regel sein. Eine gute Alternative dazu sind Trockenfrüchte, Fruchtschnitten oder Studentenfutter. Sie liefern wichtige Vitamine und Mineralstoffe und sind als Energieschub zwischendurch geeignet. Aber Vorsicht: Sie enthalten auch viel Energie und sollten gerade von Kindern, die leichtes Übergewicht haben, nur in geringen Mengen gegessen werden. Viele Eltern nehmen sich morgens nicht die Zeit, mit ihren Kindern zu frühstücken, und geben Ihnen lieber Geld mit, damit sie sich auf dem Schulweg ein Frühstück kaufen können. Versuchen Sie, das zu vermeiden. Denn die meisten Kinder legen das Geld in Süßwaren oder Fast Food, Cola oder andere Süßgetränke an. Die Mittagsverpflegung in Schulen kann sehr unterschiedlich sein. Ein weiteres Pausenbrot wäre jedenfalls eine Zumutung für die Kinder. Deshalb gibt es verschiedene Systeme für die Versorgung am Mittag - Catering, kochende Eltern oder Profi-Küchen mit geschultem Personal. Klar ist: Für die Kinder sind Pausen und regelmäßige Mahlzeiten zur Aufrechterhaltung ihrer Leistungsfähigkeit wichtig. Daher sollte es im Interesse aller sein, den Kindern in der Schule eine geeignete Mittagsverpflegung zur Verfügung zu stellen.
+              </div>
+              <div class="question-indicators">
+                <div class="indicator-dot">1</div>
+                <div class="indicator-dot">2</div>
+                <div class="indicator-dot">3</div>
+                <div class="indicator-dot">4</div>
+                <div class="indicator-dot">5</div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        let rightHTML = `
+          <div class="right-panel">
+            <div class="question-head">
+              <div>
+                <div class="section-name">Leseverstehen, Teil 2</div>
+                <div class="question-subtitle">Wählen Sie die richtige Antwort</div>
+              </div>
+            </div>
+            <div class="questions-container">
+        `;
+
+        questions.forEach((q, index) => {
+          const selectedAnswer = answers[q.id];
+          
+          rightHTML += `
+            <div class="question-item">
+              <div class="question-text-right">${index + 1}. ${q.text}</div>
+              <div class="options-right">
+          `;
+          
+          q.options.forEach(opt => {
+            const isSelected = selectedAnswer === opt.id;
+            
+            rightHTML += `
+              <div class="option-right ${isSelected ? 'selected' : ''}" 
+                   data-question="${q.id}" 
+                   data-option="${opt.id}"
+                   onclick="window.lesenApp.updateAnswer('${q.id}', '${opt.id}')">
+                <div class="radio"></div>
+                <span>${opt.text}</span>
+              </div>
+            `;
+          });
+          
+          rightHTML += `</div></div>`;
+        });
+
+        rightHTML += `</div></div>`;
+
+        mainContainer.innerHTML = leftHTML + rightHTML;
+        updateIndicators();
+      }
+
+      // ===== Ergebnisse rendern (صفحة جديدة كاملة) =====
+      function renderResults() {
+        // نتائج في اليسار
+        let totalCorrect = 0;
+        
+        let leftHTML = `
+          <div class="left-panel">
+            <div class="results-container">
+              <div class="results-header">
+                <h2>Prüfungsauswertung</h2>
+                <div class="results-summary-badge">${Object.keys(answers).length}/5 beantwortet</div>
+              </div>
+              <div class="result-grid">
+        `;
+        
+        questions.forEach((q, index) => {
+          const userAnswer = answers[q.id];
+          const correctOptionId = correctAnswers[q.id];
+          const correctOption = q.options.find(opt => opt.id === correctOptionId);
+          const userOption = q.options.find(opt => opt.id === userAnswer);
+          const isCorrect = userAnswer === correctOptionId;
+          
+          if (isCorrect) totalCorrect++;
+          
+          leftHTML += `
+            <div class="result-card ${isCorrect ? 'correct' : 'incorrect'}">
+              <div class="result-card-info">
+                <span class="question-tag">${index + 1}</span>
+                <span class="question-text-short">${q.text.substring(0, 70)}…</span>
+              </div>
+              <div class="result-answer-badge">
+                <span class="user-answer">${userOption ? userOption.id.toUpperCase() : '—'}</span>
+                <span class="correct-answer">soll: ${correctOption.id.toUpperCase()}</span>
+                <span class="verdict-badge ${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? 'richtig' : 'falsch'}</span>
+              </div>
+            </div>
+          `;
+        });
+        
+        leftHTML += `</div></div></div>`;
+        
+        // تقييم في اليمين (كما كان في القالب الأصلي)
+        const wrong = 5 - totalCorrect;
+        const percent = Math.round((totalCorrect / 5) * 100);
+        const stars = '★'.repeat(Math.max(1, Math.floor(percent / 20)));
+        const passed = percent >= 60;
+        
+        const rightHTML = `
+          <div class="right-panel">
+            <div class="summary-container">
+              <div class="summary-card">
+                <div class="summary-title">Gesamtergebnis</div>
+                <div class="summary-score">${totalCorrect}<small>/5</small></div>
+                <div class="summary-stats">
+                  <div class="stat-item">
+                    <div class="stat-label">Richtig</div>
+                    <div class="stat-value correct">${totalCorrect}</div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-label">Falsch</div>
+                    <div class="stat-value incorrect">${wrong}</div>
+                  </div>
+                </div>
+                <div class="summary-percent">${percent}%</div>
+                <div class="summary-verdict">${passed ? 'Bestanden' : 'Nicht bestanden'}</div>
+                <div style="margin-top:15px; font-size:22px; color:#ffd966;">${stars}</div>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        mainContainer.innerHTML = leftHTML + rightHTML;
+      }
+
+      // ===== Haupt-Render Funktion =====
+      function renderAll() {
+        if (showResults) {
+          renderResults();
+        } else {
+          renderExamMode();
+        }
+        updateCompletionMode();
+      }
+
+      // ===== Reset Funktion =====
+      function resetExam() {
+        if (confirm('Neu beginnen?')) {
+          answers = {};
+          showResults = false;
+          resetTimer();
+          bodyEl.classList.remove('completion-mode');
+          scrollPosition = 0;
+          renderExamMode();
+        }
+      }
+
+      // ===== Event Listener =====
+      resultBtn.addEventListener('click', () => {
+        showResults = !showResults;
+        if (showResults) {
+          renderResults();
+        } else {
+          renderExamMode();
+        }
+        updateCompletionMode();
+      });
+      
+      resetBtn.addEventListener('click', resetExam);
+
+      // ===== App Objekt für globale Funktionen =====
+      window.lesenApp = {
+        updateAnswer: updateAnswer
+      };
+
+      // ===== Initialisierung =====
+      startTimer();
+      renderExamMode();
+    })();
+  </script>
+</body>
+</html>
