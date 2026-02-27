@@ -43,6 +43,8 @@
             --info-section-heading: var(--primary-dark);
             --info-item-border: rgba(33, 150, 243, 0.1);
             --info-item-text: var(--text);
+            --divider-bg: var(--white);
+            --divider-text: var(--text-light);
         }
 
         body.dark-mode {
@@ -57,6 +59,8 @@
             --info-section-heading: #90CAF9;
             --info-item-border: rgba(144, 202, 249, 0.2);
             --info-item-text: #E3F2FD;
+            --divider-bg: #1a237e;
+            --divider-text: #E3F2FD;
             background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
         }
 
@@ -1152,7 +1156,35 @@
             unicode-bidi: embed;
         }
 
-        /* Profile Page - تم إصلاح مشكلة الألوان في الوضع الليلي */
+        /* Auth Divider - تم إصلاح مشكلة الألوان */
+        .auth-divider {
+            margin: 1.5rem 0;
+            position: relative;
+            text-align: center;
+        }
+
+        .auth-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(33, 150, 243, 0.2);
+            z-index: 1;
+        }
+
+        .auth-divider span {
+            background: var(--divider-bg);
+            padding: 0 1rem;
+            color: var(--divider-text);
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 2;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Profile Page - تم إصلاح مشكلة تجاوز النص */
         .profile-container {
             min-height: 100vh;
             padding: 2rem;
@@ -1274,6 +1306,7 @@
         .info-item {
             display: flex;
             justify-content: space-between;
+            align-items: flex-start;
             padding: 0.8rem 0;
             border-bottom: 1px solid var(--info-item-border);
             font-size: 1rem;
@@ -1287,6 +1320,25 @@
 
         .info-item span {
             color: inherit;
+        }
+
+        .info-item span:first-child {
+            flex-shrink: 0;
+            margin-left: 0.5rem;
+        }
+
+        .info-item span:last-child {
+            text-align: left;
+            direction: ltr;
+            word-break: break-word;
+            max-width: 60%;
+            font-family: monospace;
+        }
+
+        /* للعربية نعكس الاتجاه */
+        .info-item span:last-child[dir="rtl"] {
+            text-align: right;
+            direction: rtl;
         }
 
         .countdown-section {
@@ -1619,38 +1671,6 @@
             color: #B0BEC5;
         }
 
-        /* Auth Divider */
-        .auth-divider {
-            margin: 1.5rem 0;
-            position: relative;
-            text-align: center;
-        }
-
-        .auth-divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: rgba(33, 150, 243, 0.2);
-            z-index: 1;
-        }
-
-        .auth-divider span {
-            background: var(--white);
-            padding: 0 1rem;
-            color: var(--text-light);
-            font-size: 0.9rem;
-            position: relative;
-            z-index: 2;
-        }
-
-        .dark-mode .auth-divider span {
-            background: #1a237e;
-            color: #B0BEC5;
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             .login-content, .signup-content, .waiting-content, .profile-card, .edit-modal-content {
@@ -1702,6 +1722,17 @@
                 width: 45px;
                 height: 45px;
                 font-size: 1.1rem;
+            }
+
+            .info-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.3rem;
+            }
+
+            .info-item span:last-child {
+                max-width: 100%;
+                text-align: right;
             }
         }
 
@@ -2344,19 +2375,19 @@
                         <h3 id="personalInfoTitle">المعلومات الشخصية</h3>
                         <div class="info-item">
                             <span id="nameLabel">الاسم:</span>
-                            <span id="profileName">زكرياء</span>
+                            <span id="profileName" dir="rtl">زكرياء</span>
                         </div>
                         <div class="info-item">
                             <span id="emailLabel">البريد الإلكتروني:</span>
-                            <span id="profileEmail">zakariaap.6@gmail.com</span>
+                            <span id="profileEmail" dir="ltr">zakariaap.6@gmail.com</span>
                         </div>
                         <div class="info-item">
                             <span id="phoneLabel">الهاتف:</span>
-                            <span id="profilePhone">+212 649-661976</span>
+                            <span id="profilePhone" dir="ltr">+212 649-661976</span>
                         </div>
                         <div class="info-item">
                             <span id="locationLabel">المكان:</span>
-                            <span id="profileLocation">المغرب</span>
+                            <span id="profileLocation" dir="rtl">المغرب</span>
                         </div>
                     </div>
                     
@@ -2364,15 +2395,15 @@
                         <h3 id="examInfoTitle">معلومات الامتحان</h3>
                         <div class="info-item">
                             <span id="examDateLabel">تاريخ الامتحان:</span>
-                            <span id="profileExamDate">غير محدد</span>
+                            <span id="profileExamDate" dir="rtl">غير محدد</span>
                         </div>
                         <div class="info-item">
                             <span id="examLocationLabel">مكان الامتحان:</span>
-                            <span id="profileExamLocation">غير محدد</span>
+                            <span id="profileExamLocation" dir="rtl">غير محدد</span>
                         </div>
                         <div class="info-item">
                             <span id="levelLabel">المستوى:</span>
-                            <span id="profileLevel">B2</span>
+                            <span id="profileLevel" dir="ltr">B2</span>
                         </div>
                     </div>
                     
@@ -2380,15 +2411,15 @@
                         <h3 id="statsTitle">الإحصائيات</h3>
                         <div class="info-item">
                             <span id="pointsLabel">النقاط:</span>
-                            <span id="profilePoints">150</span>
+                            <span id="profilePoints" dir="ltr">150</span>
                         </div>
                         <div class="info-item">
                             <span id="completedLabel">الامتحانات المكتملة:</span>
-                            <span id="profileCompleted">8/20</span>
+                            <span id="profileCompleted" dir="ltr">8/20</span>
                         </div>
                         <div class="info-item">
                             <span id="progressLabel">مستوى التقدم:</span>
-                            <span id="profileProgress">65%</span>
+                            <span id="profileProgress" dir="ltr">65%</span>
                         </div>
                     </div>
                 </div>
@@ -3251,7 +3282,7 @@
                     card.addEventListener('click', (e) => {
                         e.stopPropagation();
                         if (!checkAuthAndRedirect()) return;
-                        window.location.href = 'TEIL EXAME/SPRACHBAUSTEINE/teil1/' + item.file;
+                        window.location.href = 'SPRACHBAUSTEINE/teil1/' + item.file;
                     });
                     grid.appendChild(card);
                 });
@@ -3274,7 +3305,7 @@
                     card.addEventListener('click', (e) => {
                         e.stopPropagation();
                         if (!checkAuthAndRedirect()) return;
-                        window.location.href = 'TEIL EXAME/SPRACHBAUSTEINE/teil2/' + item.file;
+                        window.location.href = 'SPRACHBAUSTEINE/teil2/' + item.file;
                     });
                     grid.appendChild(card);
                 });
