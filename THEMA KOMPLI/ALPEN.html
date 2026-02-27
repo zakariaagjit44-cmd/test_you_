@@ -560,12 +560,6 @@
       border: 2px dashed #c8d9f6;
       border-radius: 6px;
       background: #f8fbff;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    
-    .title-slot:hover {
-      background: #e8f4ff;
     }
     
     .title-slot.has-title {
@@ -593,14 +587,10 @@
       border-radius: 8px;
       background: #f8fbff;
       cursor: grab;
-      transition: all 0.2s;
-      user-select: none;
     }
     
     .heading-item:hover {
       background: #e9f0ff;
-      transform: translateY(-2px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     
     .heading-item.used {
@@ -608,14 +598,6 @@
       cursor: not-allowed;
       background: #f8d7da;
       border-color: #f5c6cb;
-      transform: none;
-      box-shadow: none;
-    }
-    
-    .heading-item.selected-for-click {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
     }
     
     .result-correct {
@@ -669,32 +651,11 @@
       gap: 15px;
     }
     
-    .text-item {
+    .text-item, .situation-item {
       padding: 15px;
       border: 1px solid #e1e8f6;
       border-radius: 8px;
       background: #fbfdff;
-    }
-    
-    .situation-item {
-      padding: 15px;
-      border: 1px solid #e1e8f6;
-      border-radius: 8px;
-      background: #fbfdff;
-      cursor: grab;
-      transition: all 0.2s;
-      user-select: none;
-    }
-    
-    .situation-item:hover {
-      background: #e9f0ff;
-      transform: translateY(-2px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    
-    .situation-item.selected-for-click {
-      background: #3498db;
-      color: white;
     }
     
     .text-letter {
@@ -854,8 +815,6 @@
       background: #f8d7da;
       border-color: #f5c6cb;
       color: #333;
-      transform: none;
-      box-shadow: none;
     }
     
     /* Listening Section Styles */
@@ -1353,69 +1312,9 @@
         max-width: 180px !important;
       }
     }
-    
-    /* Access Denied Modal */
-    #login-error-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.9);
-      z-index: 10000;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    #login-error-modal .modal-content {
-      background: white;
-      padding: 40px;
-      border-radius: 16px;
-      text-align: center;
-      max-width: 400px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    }
-    
-    #login-error-modal h2 {
-      color: #e74c3c;
-      margin-bottom: 15px;
-      font-size: 28px;
-    }
-    
-    #login-error-modal p {
-      color: #2c3e50;
-      margin-bottom: 25px;
-      font-size: 16px;
-    }
-    
-    #login-error-modal button {
-      background: #3498db;
-      color: white;
-      border: none;
-      padding: 12px 30px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    
-    #login-error-modal button:hover {
-      background: #2980b9;
-    }
   </style>
 </head>
-<body style="display:none;">
-  <!-- Access Denied Modal -->
-  <div id="login-error-modal">
-    <div class="modal-content">
-      <h2>Access Denied</h2>
-      <p>You must login first</p>
-      <button onclick="window.location.href='/login.html'">Go to Login</button>
-    </div>
-  </div>
-
+<body id="body">
   <!-- Start Page -->
   <div id="start-page" class="start-container">
     <div class="start-content">
@@ -1496,7 +1395,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-lesen" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-lesen-footer" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn-lesen" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-lesen">Nicht gespeichert</span></div>
     </footer>
@@ -1535,7 +1434,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-hoeren" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-hoeren-footer" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn-hoeren" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-hoeren">Nicht gespeichert</span></div>
     </footer>
@@ -1581,7 +1480,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-schreiben" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-schreiben-footer" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn-schreiben" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-schreiben">Nicht gespeichert</span></div>
     </footer>
@@ -1608,82 +1507,7 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // ===== SUPABASE CONNECTION =====
-    const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
-    
-    const { createClient } = window.supabase;
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    
-    // ===== ACCESS CONTROL =====
-    async function checkUserAccess() {
-      try {
-        const { data: { session }, error } = await supabase.auth.getSession();
-        
-        if (error || !session) {
-          document.getElementById('login-error-modal').style.display = 'flex';
-          return false;
-        }
-        
-        return true;
-      } catch (e) {
-        console.error('Access check error:', e);
-        document.getElementById('login-error-modal').style.display = 'flex';
-        return false;
-      }
-    }
-    
-    async function checkPermissions() {
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (!session) return false;
-        
-        const { data } = await supabase
-          .from('permissions')
-          .select('*')
-          .eq('user_id', session.user.id)
-          .single();
-        
-        if (!data) {
-          document.getElementById('login-error-modal').style.display = 'flex';
-          return false;
-        }
-        
-        return true;
-      } catch (e) {
-        console.error('Permission check error:', e);
-        return true; // Allow access if permissions table doesn't exist
-      }
-    }
-    
-    // ===== SESSION MONITORING =====
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (!session) {
-        window.location.href = '/login.html';
-      }
-    });
-    
-    // ===== INITIALIZE ACCESS CHECK =====
-    (async function() {
-      const hasAccess = await checkUserAccess();
-      if (hasAccess) {
-        const hasPermission = await checkPermissions();
-        if (hasPermission) {
-          document.body.style.display = 'block';
-        }
-      }
-    })();
-    
-    // ===== GLOBAL CLICK MODE STATE =====
-    let clickModeState = {
-      selectedHeadingId: null,
-      selectedSituationId: null,
-      selectedForClick: null
-    };
-    
     // ===== PAGE NAVIGATION =====
     function showPage(pageId) {
       // Hide all pages
@@ -2312,13 +2136,6 @@ Hamburger Str. 112
       const resultBtn = document.getElementById('resultBtn-lesen');
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
-      
-      // Click mode state
-      let clickMode = {
-        active: false,
-        selectedId: null,
-        type: null // 'heading' or 'situation'
-      };
 
       /* ===== Timer Functions ===== */
       function startTimer(){
@@ -2331,39 +2148,11 @@ Hamburger Str. 112
           if(state.remaining <= 0){
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
-            handleTimeOut();
             return;
           }
           state.remaining--;
           updateTimerDisplay();
         }, 1000);
-      }
-      
-      function handleTimeOut() {
-        // Stop the exam immediately
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-        }
-        
-        // Prevent any further modifications
-        state.showResults = true;
-        renderAll();
-        
-        // Check if there's another exam
-        const currentSection = exam.sections[state.sectionIndex];
-        if (state.sectionIndex < exam.sections.length - 1) {
-          // Move to next section automatically
-          setTimeout(() => {
-            state.sectionIndex++;
-            state.showResults = false;
-            renderAll();
-          }, 3000);
-        } else {
-          // Go to results page
-          setTimeout(() => {
-            showPage('ergebnisse-page');
-          }, 3000);
-        }
       }
 
       function resetTimer(){
@@ -2473,7 +2262,7 @@ Hamburger Str. 112
             <div class="text-container">
               <div class="text-title">Text ${letter.toUpperCase()}</div>
               <div class="text-content">${text.content}</div>
-              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}" onclick="window.lesenApp.handleSlotClick('${text.id}', event)">
+              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}">
                 ${selectedHeading ? getHeadingTextById(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
               </div>
             </div>
@@ -2487,10 +2276,7 @@ Hamburger Str. 112
           const isUsed = section.texts.some(text => state.answers[text.id] === heading.id);
           
           headingsHTML += `
-            <div class="heading-item ${isUsed ? 'used' : ''} ${clickMode.active && clickMode.selectedId === heading.id ? 'selected-for-click' : ''}" 
-                 draggable="${!isUsed}" 
-                 data-heading-id="${heading.id}"
-                 onclick="window.lesenApp.handleHeadingClick('${heading.id}')">
+            <div class="heading-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-heading-id="${heading.id}">
               ${heading.id}) ${heading.text}
             </div>
           `;
@@ -2537,7 +2323,6 @@ Hamburger Str. 112
             const headingId = e.dataTransfer.getData('text/plain');
             const textId = slot.dataset.textId;
             
-            // Clear any existing answer with this heading
             Object.keys(state.answers).forEach(key => {
               if(state.answers[key] === headingId) {
                 delete state.answers[key];
@@ -2548,48 +2333,6 @@ Hamburger Str. 112
             renderAll();
           });
         });
-      }
-      
-      function handleHeadingClick(headingId) {
-        const section = exam.sections[state.sectionIndex];
-        const isUsed = section.texts.some(text => state.answers[text.id] === headingId);
-        
-        if (isUsed) return;
-        
-        if (clickMode.active && clickMode.selectedId === headingId) {
-          // Deactivate click mode
-          clickMode.active = false;
-          clickMode.selectedId = null;
-        } else {
-          // Activate click mode with this heading
-          clickMode.active = true;
-          clickMode.selectedId = headingId;
-          clickMode.type = 'heading';
-        }
-        renderAll();
-      }
-      
-      function handleSlotClick(textId, event) {
-        if (clickMode.active && clickMode.selectedId) {
-          // Place the selected heading into this slot
-          const headingId = clickMode.selectedId;
-          
-          // Clear any existing answer with this heading
-          Object.keys(state.answers).forEach(key => {
-            if(state.answers[key] === headingId) {
-              delete state.answers[key];
-            }
-          });
-          
-          state.answers[textId] = headingId;
-          clickMode.active = false;
-          clickMode.selectedId = null;
-          renderAll();
-        } else if (state.answers[textId]) {
-          // Return the heading to the bank
-          delete state.answers[textId];
-          renderAll();
-        }
       }
 
       function renderPart2(){
@@ -2643,7 +2386,7 @@ Hamburger Str. 112
             <div class="text-item" data-text-id="${text.id}">
               <div class="text-letter">${text.id})</div>
               <div class="text-content">${text.text}</div>
-              <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" data-text-id="${text.id}" onclick="window.lesenApp.handleTextSlotClick('${text.id}', event)">
+              <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" data-text-id="${text.id}">
                 ${selectedSituation ? selectedSituation.text : (userAnswer === 'X' ? 'X - Keine passende Situation' : 'Ziehen Sie hier eine Situation hin')}
               </div>
             </div>
@@ -2665,13 +2408,10 @@ Hamburger Str. 112
           const isX = state.answers[situation.id] === 'X';
           
           situationsHTML += `
-            <div class="situation-item ${isUsed ? 'used' : ''} ${clickMode.active && clickMode.selectedId === situation.id ? 'selected-for-click' : ''}" 
-                 draggable="${!isUsed}" 
-                 data-situation-id="${situation.id}"
-                 onclick="window.lesenApp.handleSituationClick('${situation.id}')">
+            <div class="situation-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-situation-id="${situation.id}">
               <div class="situation-number">${situationNumber}.</div>
               <div class="situation-text">${situation.text}</div>
-              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="event.stopPropagation(); window.lesenApp.markNoMatch('${situation.id}')">X - Kein passender Text</button>` : ''}
+              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}')">X - Kein passender Text</button>` : ''}
             </div>
           `;
         });
@@ -2683,53 +2423,6 @@ Hamburger Str. 112
         headingsBankContainer.innerHTML = '';
         
         setupPart3DragAndDrop();
-      }
-      
-      function handleSituationClick(situationId) {
-        const section = exam.sections[state.sectionIndex];
-        const isUsed = state.answers[situationId];
-        
-        if (isUsed) return;
-        
-        if (clickMode.active && clickMode.selectedId === situationId) {
-          // Deactivate click mode
-          clickMode.active = false;
-          clickMode.selectedId = null;
-        } else {
-          // Activate click mode with this situation
-          clickMode.active = true;
-          clickMode.selectedId = situationId;
-          clickMode.type = 'situation';
-        }
-        renderAll();
-      }
-      
-      function handleTextSlotClick(textId, event) {
-        if (clickMode.active && clickMode.selectedId) {
-          // Place the selected situation into this text slot
-          const situationId = clickMode.selectedId;
-          
-          // Clear any existing answer with this situation
-          Object.keys(state.answers).forEach(key => {
-            if(state.answers[key] === situationId) {
-              delete state.answers[key];
-            }
-          });
-          
-          state.answers[situationId] = textId;
-          clickMode.active = false;
-          clickMode.selectedId = null;
-          renderAll();
-        } else {
-          // Check if there's a situation in this slot and return it
-          const section = exam.sections[state.sectionIndex];
-          const situationId = Object.keys(state.answers).find(key => state.answers[key] === textId);
-          
-          if (situationId) {
-            delete state.answers[situationId];
-            renderAll();
-          }
-        }
       }
 
       function markNoMatch(situationId) {
@@ -3116,16 +2809,6 @@ Hamburger Str. 112
           showPage('hoeren-page');
         }
       });
-      
-      document.getElementById('nextBtn-lesen-footer').addEventListener('click', ()=>{
-        if(state.sectionIndex < exam.sections.length - 1){
-          state.sectionIndex++;
-          state.questionIndex = 0;
-          renderAll();
-        } else {
-          showPage('hoeren-page');
-        }
-      });
 
       resultBtn.addEventListener('click', ()=>{
         state.showResults = !state.showResults;
@@ -3156,6 +2839,10 @@ Hamburger Str. 112
         }
       });
 
+      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
+        showPage('hoeren-page');
+      });
+
       /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
@@ -3167,11 +2854,7 @@ Hamburger Str. 112
         markNoMatch,
         selectSprachbausteine1,
         selectSprachbausteine2,
-        selectSprachbausteine2FromBank,
-        handleHeadingClick,
-        handleSlotClick,
-        handleSituationClick,
-        handleTextSlotClick
+        selectSprachbausteine2FromBank
       };
     }
 
@@ -3203,38 +2886,11 @@ Hamburger Str. 112
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
-            handleTimeOut();
             return;
           }
           state.remaining--;
           updateTimerDisplay();
         }, 1000);
-      }
-      
-      function handleTimeOut() {
-        // Stop the exam immediately
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-        }
-        
-        // Prevent any further modifications
-        state.showResults = true;
-        renderAll();
-        
-        // Check if there's another exam
-        if (state.sectionIndex < exam.sections.length - 1) {
-          // Move to next section automatically
-          setTimeout(() => {
-            state.sectionIndex++;
-            state.showResults = false;
-            renderAll();
-          }, 3000);
-        } else {
-          // Go to results page
-          setTimeout(() => {
-            showPage('schreiben-page');
-          }, 3000);
-        }
       }
 
       function resetTimer() {
@@ -3436,16 +3092,6 @@ Hamburger Str. 112
           showPage('schreiben-page');
         }
       });
-      
-      document.getElementById('nextBtn-hoeren-footer').addEventListener('click', () => {
-        if (state.sectionIndex < exam.sections.length - 1) {
-          state.sectionIndex++;
-          state.showResults = false;
-          renderAll();
-        } else {
-          showPage('schreiben-page');
-        }
-      });
 
       document.getElementById('resultBtn-hoeren').addEventListener('click', () => {
         state.showResults = !state.showResults;
@@ -3471,6 +3117,10 @@ Hamburger Str. 112
           state.showResults = true;
           renderAll();
         }
+      });
+
+      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
+        showPage('schreiben-page');
       });
 
       updateTimerDisplay();
@@ -3513,28 +3163,11 @@ Hamburger Str. 112
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
-            handleTimeOut();
             return;
           }
           state.remaining--;
           updateTimerDisplay();
         }, 1000);
-      }
-      
-      function handleTimeOut() {
-        // Stop the exam immediately
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-        }
-        
-        // Prevent any further modifications
-        state.showResults = true;
-        renderAll();
-        
-        // Go to results page
-        setTimeout(() => {
-          showPage('ergebnisse-page');
-        }, 3000);
       }
 
       function resetTimer() {
@@ -3669,16 +3302,6 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
           showPage('ergebnisse-page');
         }
       });
-      
-      document.getElementById('nextBtn-schreiben-footer').addEventListener('click', () => {
-        if (state.sectionIndex < exam.sections.length - 1) {
-          state.sectionIndex++;
-          state.showResults = false;
-          renderAll();
-        } else {
-          showPage('ergebnisse-page');
-        }
-      });
 
       document.getElementById('resultBtn-schreiben').addEventListener('click', () => {
         state.showResults = !state.showResults;
@@ -3704,6 +3327,10 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
           state.showResults = true;
           renderAll();
         }
+      });
+
+      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
+        showPage('ergebnisse-page');
       });
 
       updateTimerDisplay();
