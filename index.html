@@ -38,6 +38,11 @@
             --card-text: var(--text);
             --card-title: var(--primary-dark);
             --card-desc: var(--text-light);
+            --info-section-bg: rgba(33, 150, 243, 0.1);
+            --info-section-text: var(--text);
+            --info-section-heading: var(--primary-dark);
+            --info-item-border: rgba(33, 150, 243, 0.1);
+            --info-item-text: var(--text);
         }
 
         body.dark-mode {
@@ -47,6 +52,11 @@
             --card-text: var(--light);
             --card-title: #90CAF9;
             --card-desc: var(--light);
+            --info-section-bg: rgba(144, 202, 249, 0.15);
+            --info-section-text: #E3F2FD;
+            --info-section-heading: #90CAF9;
+            --info-item-border: rgba(144, 202, 249, 0.2);
+            --info-item-text: #E3F2FD;
             background: linear-gradient(135deg, var(--dark) 0%, var(--primary-dark) 100%);
         }
 
@@ -599,6 +609,7 @@
             transition: var(--transition);
             text-align: right;
             width: 100%;
+            color: var(--text);
         }
 
         .form-input:focus {
@@ -612,6 +623,10 @@
             background: rgba(255, 255, 255, 0.1);
             color: var(--light);
             border: 2px solid var(--secondary);
+        }
+
+        .dark-mode .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
         }
 
         .password-input-container {
@@ -634,6 +649,10 @@
 
         .password-toggle:hover {
             color: var(--primary);
+        }
+
+        .dark-mode .password-toggle {
+            color: var(--light);
         }
 
         /* Menu Page */
@@ -1133,7 +1152,7 @@
             unicode-bidi: embed;
         }
 
-        /* Profile Page */
+        /* Profile Page - تم إصلاح مشكلة الألوان في الوضع الليلي */
         .profile-container {
             min-height: 100vh;
             padding: 2rem;
@@ -1159,6 +1178,16 @@
             margin-bottom: 2.5rem;
         }
 
+        .profile-header h2 {
+            color: var(--card-title);
+            transition: color 0.3s ease;
+        }
+
+        .profile-header p {
+            color: var(--card-desc);
+            transition: color 0.3s ease;
+        }
+
         .profile-avatar-container {
             position: relative;
             display: inline-block;
@@ -1181,6 +1210,10 @@
             animation: avatarPulse 3s ease-in-out infinite;
             background-size: cover;
             background-position: center;
+        }
+
+        .dark-mode .profile-avatar {
+            border-color: #90CAF9;
         }
 
         @keyframes avatarPulse {
@@ -1222,34 +1255,38 @@
         }
 
         .info-section {
-            background: rgba(33, 150, 243, 0.1);
+            background: var(--info-section-bg);
             border-radius: 15px;
             padding: 1.5rem;
             border: 1px solid rgba(33, 150, 243, 0.2);
             backdrop-filter: blur(5px);
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .info-section h3 {
-            color: var(--primary-dark);
+            color: var(--info-section-heading);
             margin-bottom: 1rem;
             font-size: 1.2rem;
             font-weight: 600;
-        }
-
-        .dark-mode .info-section h3 {
-            color: #90CAF9;
+            transition: color 0.3s ease;
         }
 
         .info-item {
             display: flex;
             justify-content: space-between;
             padding: 0.8rem 0;
-            border-bottom: 1px solid rgba(33, 150, 243, 0.1);
+            border-bottom: 1px solid var(--info-item-border);
             font-size: 1rem;
+            color: var(--info-item-text);
+            transition: border-color 0.3s ease, color 0.3s ease;
         }
 
         .info-item:last-child {
             border-bottom: none;
+        }
+
+        .info-item span {
+            color: inherit;
         }
 
         .countdown-section {
@@ -1362,6 +1399,10 @@
             color: var(--light);
         }
 
+        .dark-mode .edit-modal-content .form-group label {
+            color: var(--light);
+        }
+
         .edit-form {
             display: flex;
             flex-direction: column;
@@ -1378,6 +1419,8 @@
         .form-group label {
             margin-bottom: 0.5rem;
             font-weight: 600;
+            color: var(--text);
+            transition: color 0.3s ease;
         }
 
         .form-select {
@@ -1387,6 +1430,7 @@
             border: 2px solid var(--primary);
             background: rgba(255, 255, 255, 0.9);
             transition: var(--transition);
+            color: var(--text);
         }
 
         .form-select:focus {
@@ -1399,6 +1443,11 @@
             background: rgba(255, 255, 255, 0.1);
             color: var(--light);
             border: 2px solid var(--secondary);
+        }
+
+        .dark-mode .form-select option {
+            background: #1a237e;
+            color: var(--light);
         }
 
         /* Waiting Approval Page */
@@ -1566,6 +1615,10 @@
             color: var(--text-light);
         }
 
+        .dark-mode .forgot-modal-content p {
+            color: #B0BEC5;
+        }
+
         /* Auth Divider */
         .auth-divider {
             margin: 1.5rem 0;
@@ -1595,6 +1648,7 @@
 
         .dark-mode .auth-divider span {
             background: #1a237e;
+            color: #B0BEC5;
         }
 
         /* Responsive Design */
@@ -2138,22 +2192,36 @@
             </div>
             
             <div class="prüfungsteile-submenu">
+                <!-- الأجزاء الموجودة مع إيموجيهات منوعة -->
                 <div class="submenu-card" id="lesenTeil1Card">
-                    <div class="menu-card-icon">📖</div>
+                    <div class="menu-card-icon">📖1️⃣</div>
                     <h3>Lesen Teil 1</h3>
                     <p>تمارين القراءة - الجزء الأول</p>
                 </div>
                 
                 <div class="submenu-card" id="lesenTeil2Card">
-                    <div class="menu-card-icon">📖</div>
+                    <div class="menu-card-icon">📖2️⃣</div>
                     <h3>Lesen Teil 2</h3>
                     <p>تمارين القراءة - الجزء الثاني</p>
                 </div>
                 
                 <div class="submenu-card" id="lesenTeil3Card">
-                    <div class="menu-card-icon">📖</div>
+                    <div class="menu-card-icon">📖3️⃣</div>
                     <h3>Lesen Teil 3</h3>
                     <p>تمارين القراءة - الجزء الثالث</p>
+                </div>
+
+                <!-- الأقسام الجديدة: Sprachbausteine مع إيموجيهات منوعة ومعبرة -->
+                <div class="submenu-card" id="sprachbausteineTeil1Card">
+                    <div class="menu-card-icon">🧩🔤</div>
+                    <h3>Sprachbausteine Teil 1</h3>
+                    <p>تمارين تركيب الجمل - الجزء الأول</p>
+                </div>
+                
+                <div class="submenu-card" id="sprachbausteineTeil2Card">
+                    <div class="menu-card-icon">🧩📝</div>
+                    <h3>Sprachbausteine Teil 2</h3>
+                    <p>تمارين تركيب الجمل - الجزء الثاني</p>
                 </div>
             </div>
         </div>
@@ -2204,6 +2272,42 @@
             </div>
             
             <div class="exams-grid" id="lesenTeil3Grid"></div>
+        </div>
+    </div>
+
+    <!-- ================================================== -->
+    <!-- الصفحات الجديدة: Sprachbausteine Teil 1 و Teil 2 -->
+    <!-- ================================================== -->
+    
+    <!-- Sprachbausteine Teil 1 Page -->
+    <div id="sprachbausteineTeil1Page" class="page">
+        <div class="exams-container">
+            <button class="back-btn" id="backFromSprachbausteineTeil1">
+                <i class="fas fa-arrow-right"></i>
+                <span>العودة إلى أجزاء الامتحانات</span>
+            </button>
+            <div class="header">
+                <h1>Sprachbausteine Teil 1</h1>
+                <p class="page-subtitle">تمارين تركيب الجمل - الجزء الأول</p>
+            </div>
+            
+            <div class="exams-grid" id="sprachbausteineTeil1Grid"></div>
+        </div>
+    </div>
+
+    <!-- Sprachbausteine Teil 2 Page -->
+    <div id="sprachbausteineTeil2Page" class="page">
+        <div class="exams-container">
+            <button class="back-btn" id="backFromSprachbausteineTeil2">
+                <i class="fas fa-arrow-right"></i>
+                <span>العودة إلى أجزاء الامتحانات</span>
+            </button>
+            <div class="header">
+                <h1>Sprachbausteine Teil 2</h1>
+                <p class="page-subtitle">تمارين تركيب الجمل - الجزء الثاني</p>
+            </div>
+            
+            <div class="exams-grid" id="sprachbausteineTeil2Grid"></div>
         </div>
     </div>
 
@@ -2393,7 +2497,7 @@
             "KINDER HENDY.pdf", "DROGEN.pdf", "GELD.pdf", "teil1.pdf", "teil2.pdf", "teil3.pdf"
         ];
 
-        // ========== قوائم Lesen Teile الجديدة - مع المسارات الصحيحة ==========
+        // ========== قوائم Lesen Teile ==========
         
         const lesenTeil1Items = [
             { name: "UMWELT", translation: "البيئة", file: "ALBI2A.html" },
@@ -2480,6 +2584,74 @@
             { name: "TIERDOKUMENTATIONEN", translation: "وثائقيات عن الحيوانات", file: "Tierdokumentationen.html" },
             { name: "URLAUB", translation: "عطلة", file: "urlaub.html" },
             { name: "WEIN UND INSEKTEN", translation: "النبيذ والحشرات", file: "wein und insekten.html" }
+        ];
+
+        // ========== القوائم الجديدة: Sprachbausteine ==========
+        
+        // Sprachbausteine Teil 1 Items
+        const sprachbausteineTeil1Items = [
+            { name: "Frau Szabo", translation: "السيدة سابو", file: "Frau Szabo.html" },
+            { name: "Andrea", translation: "أندريا", file: "Andrea.html" },
+            { name: "Autorinnen und Autoren", translation: "الكاتبات والكتاب", file: "Autorinnen und Autoren.html" },
+            { name: "Corinna", translation: "كورينا", file: "Corinna.html" },
+            { name: "Dr. Moosberger", translation: "الدكتور موسبرغر", file: "Dr. Moosberger.html" },
+            { name: "Ferdinand, Phillip, Christophe", translation: "فرديناند، فيليب، كريستوف", file: "Ferdinand, Phillip, Christophe.html" },
+            { name: "Frau Goronsksa", translation: "السيدة غورونسكا", file: "Frau Goronsksa.html" },
+            { name: "Geissler oder Dippold", translation: "غايسلر أو ديبولد", file: "Geissler oder Dippold.html" },
+            { name: "Herr Dr. Dobromil", translation: "الدكتور دوبرو ميل", file: "Herr Dr. Dobromil.html" },
+            { name: "herr Martini", translation: "السيد مارتيني", file: "herr Martini.html" },
+            { name: "Ida", translation: "إيدا", file: "Ida.html" },
+            { name: "Igor", translation: "إيغور", file: "Igor.html" },
+            { name: "Jens", translation: "ينس", file: "Jens.html" },
+            { name: "Judith oder Lina", translation: "يوديت أو لينا", file: "Judith oder Lina.html" },
+            { name: "Justus oder Juhannas", translation: "يوستوس أو يوهاناس", file: "Justus oder Juhannas.html" },
+            { name: "Liebe Agnieszka", translation: "عزيزتي أغنيشكا", file: "Liebe Agnieszka.html" },
+            { name: "Liebe Clara", translation: "عزيزتي كلارا", file: "Liebe Clara.html" },
+            { name: "Liebe Julian", translation: "عزيزي يوليان", file: "Liebe Julian.html" },
+            { name: "Liebe Jutta", translation: "عزيزتي يوتا", file: "Liebe Jutta.html" },
+            { name: "Liebe Karin", translation: "عزيزتي كارين", file: "Liebe Karin.html" },
+            { name: "Liebe Lara", translation: "عزيزتي لارا", file: "Liebe Lara.html" },
+            { name: "Liebe Leon", translation: "عزيزي ليون", file: "Liebe Leon.html" },
+            { name: "Liebe Maria, Lieber Timur", translation: "عزيزتي ماريا، عزيزي تيمور", file: "Liebe Maria, Lieber Timur.html" },
+            { name: "Liebe Meike", translation: "عزيزتي مايكة", file: "Liebe Meike.html" },
+            { name: "Liebe Paola", translation: "عزيزتي باولا", file: "Liebe Paola.html" },
+            { name: "Liebe Vanessa", translation: "عزيزتي فانيسا", file: "Liebe Vanessa.html" },
+            { name: "Lieber David", translation: "عزيزي ديفيد", file: "Lieber David.html" },
+            { name: "Lieber Thomas", translation: "عزيزي توماس", file: "Lieber Thomas.html" },
+            { name: "Lina & Florian", translation: "لينا وفلوريان", file: "Lina & Florian.html" },
+            { name: "Maria", translation: "ماريا", file: "Maria.html" }
+        ];
+
+        // Sprachbausteine Teil 2 Items
+        const sprachbausteineTeil2Items = [
+            { name: "Ausbildung", translation: "التكوين المهني", file: "Ausbildung.html" },
+            { name: "BIO", translation: "أحياء", file: "BIO.html" },
+            { name: "Braunbären", translation: "الدببة البنية", file: "Braunbären.html" },
+            { name: "Das Fahrrad", translation: "الدراجة", file: "Das Fahrrad.html" },
+            { name: "Der Hund", translation: "الكلب", file: "Der Hund.html" },
+            { name: "Deutschland", translation: "ألمانيا", file: "Deutschland.html" },
+            { name: "Erfolg", translation: "النجاح", file: "Erfolg.html" },
+            { name: "Fische", translation: "الأسماك", file: "Fische.html" },
+            { name: "Freund des Menschen", translation: "صديق الإنسان", file: "Freund des Menschen.html" },
+            { name: "Handschrift", translation: "خط اليد", file: "Handschrift.html" },
+            { name: "Haustieren", translation: "الحيوانات الأليفة", file: "Haustieren.html" },
+            { name: "Höflichkeit", translation: "اللباقة", file: "Höflichkeit.html" },
+            { name: "Im Restaurant", translation: "في المطعم", file: "Im Restaurant.html" },
+            { name: "Joggen", translation: "الركض", file: "Joggen.html" },
+            { name: "Jugend diskutiert", translation: "الشباب يناقش", file: "Jugend diskutiert.html" },
+            { name: "Liebesgrüße aus der Kühltruhe", translation: "تحيات حب من المجمّد", file: "Liebesgrüße aus der Kühltruhe.html" },
+            { name: "Man kocht", translation: "الطبخ", file: "Man kocht.html" },
+            { name: "Manipulierte Bilder", translation: "صور معدلة", file: "Manipulierte Bilder.html" },
+            { name: "Massgeschneidert", translation: "مفصل حسب الطلب", file: "Massgeschneidert.html" },
+            { name: "Obst und Gemüse", translation: "فواكه وخضروات", file: "Obst und Gemüse.html" },
+            { name: "Online-Sprachkurse", translation: "دورات لغة أونلاين", file: "Online-Sprachkurse.html" },
+            { name: "Schonschrift", translation: "خط جميل", file: "Schonschrift.html" },
+            { name: "Schönschrift", translation: "الخط المنمق", file: "Schönschrift.html" },
+            { name: "Schulweg", translation: "طريق المدرسة", file: "Schulweg.html" },
+            { name: "Schwarzarbeit", translation: "العمل غير القانوني", file: "Schwarzarbeit.html" },
+            { name: "Skipiste", translation: "منحدر التزلج", file: "Skipiste.html" },
+            { name: "Theater für Kinder und Jugendliche", translation: "مسرح للأطفال والشباب", file: "Theater für Kinder und Jugendliche.html" },
+            { name: "TV-Bilder", translation: "صور تلفزيونية", file: "TV-Bilder.html" }
         ];
 
         // قاموس الترجمة
@@ -2822,6 +2994,9 @@
                 lesenTeil1: document.getElementById('lesenTeil1Page'),
                 lesenTeil2: document.getElementById('lesenTeil2Page'),
                 lesenTeil3: document.getElementById('lesenTeil3Page'),
+                // إضافة الصفحات الجديدة
+                sprachbausteineTeil1: document.getElementById('sprachbausteineTeil1Page'),
+                sprachbausteineTeil2: document.getElementById('sprachbausteineTeil2Page'),
                 profile: document.getElementById('profilePage'),
                 waiting: document.getElementById('waitingPage')
             };
@@ -2840,6 +3015,9 @@
             const backFromLesenTeil1 = document.getElementById('backFromLesenTeil1');
             const backFromLesenTeil2 = document.getElementById('backFromLesenTeil2');
             const backFromLesenTeil3 = document.getElementById('backFromLesenTeil3');
+            // أزرار العودة للصفحات الجديدة
+            const backFromSprachbausteineTeil1 = document.getElementById('backFromSprachbausteineTeil1');
+            const backFromSprachbausteineTeil2 = document.getElementById('backFromSprachbausteineTeil2');
             const backFromProfile = document.getElementById('backFromProfile');
             const backToLoginFromSignup = document.getElementById('backToLoginFromSignup');
 
@@ -2859,12 +3037,16 @@
             const teil2Card = document.getElementById('teil2Card');
             const teil3Card = document.getElementById('teil3Card');
             
-            // أزرار القسم الجديد
+            // أزرار القسم الحالية
             const komplettePrüfungenCard = document.getElementById('komplettePrüfungenCard');
             const prüfungsteileCard = document.getElementById('prüfungsteileCard');
             const lesenTeil1Card = document.getElementById('lesenTeil1Card');
             const lesenTeil2Card = document.getElementById('lesenTeil2Card');
             const lesenTeil3Card = document.getElementById('lesenTeil3Card');
+            
+            // الأزرار الجديدة
+            const sprachbausteineTeil1Card = document.getElementById('sprachbausteineTeil1Card');
+            const sprachbausteineTeil2Card = document.getElementById('sprachbausteineTeil2Card');
 
             // عناصر تسجيل الدخول
             const emailInput = document.getElementById('emailInput');
@@ -3045,6 +3227,54 @@
                         e.stopPropagation();
                         if (!checkAuthAndRedirect()) return;
                         window.location.href = 'TEIL EXAME/teil 3/' + item.file;
+                    });
+                    grid.appendChild(card);
+                });
+            }
+
+            // ========== دوال تعبئة المحتوى للصفحات الجديدة ==========
+            
+            function populateSprachbausteineTeil1Grid() {
+                const grid = document.getElementById('sprachbausteineTeil1Grid');
+                if (!grid) return;
+                
+                grid.innerHTML = '';
+                
+                sprachbausteineTeil1Items.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'exam-card';
+                    card.style.animationDelay = `${index * 0.03}s`;
+                    card.innerHTML = `
+                        <h3>${item.name}</h3>
+                        <div class="arabic-translation">${item.translation}</div>
+                    `;
+                    card.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (!checkAuthAndRedirect()) return;
+                        window.location.href = 'TEIL EXAME/SPRACHBAUSTEINE/teil1/' + item.file;
+                    });
+                    grid.appendChild(card);
+                });
+            }
+
+            function populateSprachbausteineTeil2Grid() {
+                const grid = document.getElementById('sprachbausteineTeil2Grid');
+                if (!grid) return;
+                
+                grid.innerHTML = '';
+                
+                sprachbausteineTeil2Items.forEach((item, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'exam-card';
+                    card.style.animationDelay = `${index * 0.03}s`;
+                    card.innerHTML = `
+                        <h3>${item.name}</h3>
+                        <div class="arabic-translation">${item.translation}</div>
+                    `;
+                    card.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (!checkAuthAndRedirect()) return;
+                        window.location.href = 'TEIL EXAME/SPRACHBAUSTEINE/teil2/' + item.file;
                     });
                     grid.appendChild(card);
                 });
@@ -3566,6 +3796,10 @@
                         populateLesenTeil2Grid();
                     } else if (pageName === 'lesenTeil3') {
                         populateLesenTeil3Grid();
+                    } else if (pageName === 'sprachbausteineTeil1') {
+                        populateSprachbausteineTeil1Grid();
+                    } else if (pageName === 'sprachbausteineTeil2') {
+                        populateSprachbausteineTeil2Grid();
                     } else if (pageName === 'profile') {
                         updateProfileDisplay();
                     }
@@ -3849,6 +4083,8 @@
                 backFromLesenTeil1.addEventListener('click', () => showPage('prüfungsteile'));
                 backFromLesenTeil2.addEventListener('click', () => showPage('prüfungsteile'));
                 backFromLesenTeil3.addEventListener('click', () => showPage('prüfungsteile'));
+                backFromSprachbausteineTeil1.addEventListener('click', () => showPage('prüfungsteile'));
+                backFromSprachbausteineTeil2.addEventListener('click', () => showPage('prüfungsteile'));
                 backFromProfile.addEventListener('click', () => showPage('menu'));
                 
                 kursCard.addEventListener('click', () => showPage('kurs'));
@@ -3878,6 +4114,9 @@
                 lesenTeil1Card.addEventListener('click', () => showPage('lesenTeil1'));
                 lesenTeil2Card.addEventListener('click', () => showPage('lesenTeil2'));
                 lesenTeil3Card.addEventListener('click', () => showPage('lesenTeil3'));
+                // الأحداث الجديدة
+                sprachbausteineTeil1Card.addEventListener('click', () => showPage('sprachbausteineTeil1'));
+                sprachbausteineTeil2Card.addEventListener('click', () => showPage('sprachbausteineTeil2'));
                 
                 themeToggle.addEventListener('click', () => {
                     document.body.classList.toggle('dark-mode');
