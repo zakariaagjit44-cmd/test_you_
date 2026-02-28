@@ -564,6 +564,7 @@
       border: 2px dashed #c8d9f6;
       border-radius: 6px;
       background: #f8fbff;
+      cursor: pointer;
     }
     
     .title-slot.has-title {
@@ -590,11 +591,14 @@
       border: 1px solid #dbe7fb;
       border-radius: 8px;
       background: #f8fbff;
-      cursor: grab;
+      cursor: pointer;
+      transition: all 0.2s;
     }
     
     .heading-item:hover {
       background: #e9f0ff;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .heading-item.used {
@@ -602,6 +606,12 @@
       cursor: not-allowed;
       background: #f8d7da;
       border-color: #f5c6cb;
+    }
+    
+    .heading-item.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
     }
     
     .result-correct {
@@ -2242,6 +2252,10 @@ Hamburger Str. 112
     function initLesenPage() {
       const exam = EXAM_DATA.lesen;
       
+      // Global variables for click selection mode
+      window.selectedHeadingId = null;
+      window.selectedSituationId = null;
+      
       /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
@@ -2251,7 +2265,8 @@ Hamburger Str. 112
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null
+        timerInterval: null,
+        examEnded: false
       };
       const topTiles = document.getElementById('topTiles-lesen');
       const passageTitleEl = document.getElementById('passageTitle-lesen');
@@ -2266,7 +2281,43 @@ Hamburger Str. 112
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
-      /* ===== Timer Functions ===== */
+      /* ===== Timer Functions with Auto-Submit ===== */
+      function handleTimeExpired() {
+        if (state.examEnded) return;
+        state.examEnded = true;
+        
+        // Stop timer
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
+        // Show results
+        state.showResults = true;
+        renderAll();
+        
+        // Check if there's next exam
+        const nextBtn = document.getElementById('nextBtn-lesen');
+        if (nextBtn && !nextBtn.disabled) {
+          // Auto navigate to next exam after 2 seconds
+          setTimeout(() => {
+            if (state.sectionIndex < exam.sections.length - 1) {
+              state.sectionIndex++;
+              state.showResults = false;
+              state.examEnded = false;
+              renderAll();
+            } else {
+              showPage('hoeren-page');
+            }
+          }, 2000);
+        } else {
+          // Go to results page
+          setTimeout(() => {
+            showPage('ergebnisse-page');
+          }, 2000);
+        }
+      }
+
       function startTimer(){
         if(state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -2277,6 +2328,7 @@ Hamburger Str. 112
           if(state.remaining <= 0){
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
+            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -2290,6 +2342,7 @@ Hamburger Str. 112
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
+        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -2353,6 +2406,8 @@ Hamburger Str. 112
       }
 
       function renderAll(){
+        if (state.examEnded) return;
+        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         sectionNameEl.textContent = section.title;
@@ -2381,7 +2436,7 @@ Hamburger Str. 112
       function renderPart1(){
         const section = exam.sections[state.sectionIndex];
         
-        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. Sie können jede Überschrift nur einmal verwenden.</div>`;
+        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. Sie können jede Überschrift nur einmal verwenden. (Klicken: Titel auswählen → auf Text klicken)</div>`;
         
         section.texts.forEach((text, idx) => {
           const letter = String.fromCharCode(97 + idx);
@@ -2391,7 +2446,7 @@ Hamburger Str. 112
             <div class="text-container">
               <div class="text-title">Text ${letter.toUpperCase()}</div>
               <div class="text-content">${text.content}</div>
-              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}">
+              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}" onclick="window.lesenApp.handleSlotClick('${text.id}')">
                 ${selectedHeading ? getHeadingTextById(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
               </div>
             </div>
@@ -2405,7 +2460,10 @@ Hamburger Str. 112
           const isUsed = section.texts.some(text => state.answers[text.id] === heading.id);
           
           headingsHTML += `
-            <div class="heading-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-heading-id="${heading.id}">
+            <div class="heading-item ${isUsed ? 'used' : ''} ${window.selectedHeadingId === heading.id ? 'selected' : ''}" 
+                 draggable="${!isUsed}" 
+                 data-heading-id="${heading.id}"
+                 onclick="window.lesenApp.handleHeadingClick('${heading.id}')">
               ${heading.id}) ${heading.text}
             </div>
           `;
@@ -2419,6 +2477,41 @@ Hamburger Str. 112
         
         questionBodyEl.innerHTML = '';
         questionTitleEl.textContent = '';
+      }
+
+      function handleHeadingClick(headingId) {
+        const section = exam.sections[state.sectionIndex];
+        const isUsed = section.texts.some(text => state.answers[text.id] === headingId);
+        if (isUsed) return;
+        
+        // Deselect if already selected
+        if (window.selectedHeadingId === headingId) {
+          window.selectedHeadingId = null;
+        } else {
+          window.selectedHeadingId = headingId;
+        }
+        renderPart1();
+      }
+
+      function handleSlotClick(textId) {
+        // If a heading is selected, place it in the slot
+        if (window.selectedHeadingId) {
+          // Remove any previous usage of this heading
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === window.selectedHeadingId) {
+              delete state.answers[key];
+            }
+          });
+          
+          state.answers[textId] = window.selectedHeadingId;
+          window.selectedHeadingId = null;
+          renderAll();
+        } 
+        // If slot already has a heading, return it to bank
+        else if (state.answers[textId]) {
+          delete state.answers[textId];
+          renderAll();
+        }
       }
 
       function getHeadingTextById(id){
@@ -2459,6 +2552,7 @@ Hamburger Str. 112
             });
             
             state.answers[textId] = headingId;
+            window.selectedHeadingId = null;
             renderAll();
           });
         });
@@ -2502,7 +2596,7 @@ Hamburger Str. 112
         const section = exam.sections[state.sectionIndex];
         
         let textsHTML = `
-          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. Sie können jede Situation nur einmal verwenden. Manchmal passt keine Situation.</div>
+          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. Sie können jede Situation nur einmal verwenden. Manchmal passt keine Situation. (Klicken: Situation auswählen → auf Text klicken)</div>
           <div class="texts-list">
             <h3>Texte (A-L)</h3>
         `;
@@ -2515,7 +2609,9 @@ Hamburger Str. 112
             <div class="text-item" data-text-id="${text.id}">
               <div class="text-letter">${text.id})</div>
               <div class="text-content">${text.text}</div>
-              <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" data-text-id="${text.id}">
+              <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" 
+                   data-text-id="${text.id}" 
+                   onclick="window.lesenApp.handleSituationSlotClick('${text.id}')">
                 ${selectedSituation ? selectedSituation.text : (userAnswer === 'X' ? 'X - Keine passende Situation' : 'Ziehen Sie hier eine Situation hin')}
               </div>
             </div>
@@ -2537,10 +2633,13 @@ Hamburger Str. 112
           const isX = state.answers[situation.id] === 'X';
           
           situationsHTML += `
-            <div class="situation-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-situation-id="${situation.id}">
+            <div class="situation-item ${isUsed ? 'used' : ''} ${window.selectedSituationId === situation.id ? 'selected' : ''}" 
+                 draggable="${!isUsed}" 
+                 data-situation-id="${situation.id}"
+                 onclick="${!isUsed ? `window.lesenApp.handleSituationClick('${situation.id}')` : ''}">
               <div class="situation-number">${situationNumber}.</div>
               <div class="situation-text">${situation.text}</div>
-              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}')">X - Kein passender Text</button>` : ''}
+              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}'); event.stopPropagation();">X - Kein passender Text</button>` : ''}
             </div>
           `;
         });
@@ -2554,6 +2653,39 @@ Hamburger Str. 112
         setupPart3DragAndDrop();
       }
 
+      function handleSituationClick(situationId) {
+        if (window.selectedSituationId === situationId) {
+          window.selectedSituationId = null;
+        } else {
+          window.selectedSituationId = situationId;
+        }
+        renderPart3();
+      }
+
+      function handleSituationSlotClick(textId) {
+        // If a situation is selected, place it in the slot
+        if (window.selectedSituationId) {
+          // Remove any previous usage of this situation
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === window.selectedSituationId) {
+              delete state.answers[key];
+            }
+          });
+          
+          state.answers[window.selectedSituationId] = textId;
+          window.selectedSituationId = null;
+          renderAll();
+        } 
+        // If slot already has a situation, return it to bank
+        else {
+          const situationId = Object.keys(state.answers).find(key => state.answers[key] === textId);
+          if (situationId) {
+            delete state.answers[situationId];
+            renderAll();
+          }
+        }
+      }
+
       function markNoMatch(situationId) {
         Object.keys(state.answers).forEach(key => {
           if(state.answers[key] === situationId) {
@@ -2562,6 +2694,7 @@ Hamburger Str. 112
         });
         
         state.answers[situationId] = 'X';
+        window.selectedSituationId = null;
         renderAll();
       }
 
@@ -2599,6 +2732,7 @@ Hamburger Str. 112
             });
             
             state.answers[situationId] = textId;
+            window.selectedSituationId = null;
             renderAll();
           });
         });
@@ -2626,7 +2760,7 @@ Hamburger Str. 112
         });
         
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können die Lücken في beliebiger Reihenfolge ausfüllen.</div>
+          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können die Lücken in beliebiger Reihenfolge ausfüllen.</div>
           <div class="fill-blank-container">${tempText}</div>
         `;
         
@@ -2968,10 +3102,6 @@ Hamburger Str. 112
         }
       });
 
-      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
-        showPage('hoeren-page');
-      });
-
       /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
@@ -2983,7 +3113,11 @@ Hamburger Str. 112
         markNoMatch,
         selectSprachbausteine1,
         selectSprachbausteine2,
-        selectSprachbausteine2FromBank
+        selectSprachbausteine2FromBank,
+        handleHeadingClick,
+        handleSlotClick,
+        handleSituationClick,
+        handleSituationSlotClick
       };
     }
 
@@ -2997,13 +3131,45 @@ Hamburger Str. 112
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null
+        timerInterval: null,
+        examEnded: false
       };
       
       const topTiles = document.getElementById('topTiles-hoeren');
       const contentContainer = document.getElementById('contentContainer-hoeren');
       const timerEl = document.getElementById('timer-hoeren');
       const statusText = document.getElementById('statusText-hoeren');
+
+      function handleTimeExpired() {
+        if (state.examEnded) return;
+        state.examEnded = true;
+        
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
+        state.showResults = true;
+        renderAll();
+        
+        const nextBtn = document.getElementById('nextBtn-hoeren');
+        if (nextBtn && !nextBtn.disabled) {
+          setTimeout(() => {
+            if (state.sectionIndex < exam.sections.length - 1) {
+              state.sectionIndex++;
+              state.showResults = false;
+              state.examEnded = false;
+              renderAll();
+            } else {
+              showPage('schreiben-page');
+            }
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            showPage('ergebnisse-page');
+          }, 2000);
+        }
+      }
 
       function startTimer() {
         if (state.timerInterval) {
@@ -3015,6 +3181,7 @@ Hamburger Str. 112
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
+            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -3028,6 +3195,7 @@ Hamburger Str. 112
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
+        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -3060,6 +3228,8 @@ Hamburger Str. 112
       }
 
       function renderAll() {
+        if (state.examEnded) return;
+        
         renderTopTiles();
         
         if (state.showResults) {
@@ -3248,10 +3418,6 @@ Hamburger Str. 112
         }
       });
 
-      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
-        showPage('schreiben-page');
-      });
-
       updateTimerDisplay();
       renderAll();
       startTimer();
@@ -3272,7 +3438,8 @@ Hamburger Str. 112
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null
+        timerInterval: null,
+        examEnded: false
       };
       
       const topTiles = document.getElementById('topTiles-schreiben');
@@ -3281,6 +3448,23 @@ Hamburger Str. 112
       const writingContainer = document.getElementById('writingContainer-schreiben');
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
+
+      function handleTimeExpired() {
+        if (state.examEnded) return;
+        state.examEnded = true;
+        
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
+        state.showResults = true;
+        renderAll();
+        
+        setTimeout(() => {
+          showPage('ergebnisse-page');
+        }, 2000);
+      }
 
       function startTimer() {
         if (state.timerInterval) {
@@ -3292,6 +3476,7 @@ Hamburger Str. 112
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
+            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -3305,6 +3490,7 @@ Hamburger Str. 112
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
+        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -3331,6 +3517,8 @@ Hamburger Str. 112
       }
 
       function renderAll() {
+        if (state.examEnded) return;
+        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         passageTitleEl.textContent = section.passageTitle;
@@ -3456,10 +3644,6 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
           state.showResults = true;
           renderAll();
         }
-      });
-
-      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
-        showPage('ergebnisse-page');
       });
 
       updateTimerDisplay();
@@ -3885,7 +4069,6 @@ Schreiben Sie eine Beschwerde an den Verein.</div>
     // تحسين نظام السحب والإفلات للشاشات التي تعمل باللمس
     function setupTouchDragAndDrop() {
       if ('ontouchstart' in window) {
-        // تغيير سلوك العناصر القابلة للسحب
         document.querySelectorAll('[draggable="true"]').forEach(item => {
           item.addEventListener('touchstart', handleTouchStart);
           item.addEventListener('touchend', handleTouchEnd);
