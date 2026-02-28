@@ -686,23 +686,37 @@
     
     .fill-blank-container {
       margin: 20px 0;
+      line-height: 2.2;
     }
     
     .blank-word {
       display: inline-block;
-      min-width: 120px;
-      padding: 4px 8px;
-      margin: 0 6px;
+      min-width: 100px;
+      padding: 6px 10px;
+      margin: 0 4px;
       background: #fff;
       cursor: pointer;
       position: relative;
-      border: 1px solid #dbe7fb;
-      border-radius: 4px;
+      border: 2px solid #dbe7fb;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .blank-word:hover {
+      background: #e3f2fd;
+      border-color: #3498db;
     }
     
     .blank-word.has-answer {
       background: #e8fbe9;
       border-color: #2ecc71;
+    }
+    
+    .blank-word.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
     }
     
     .options-popup {
@@ -785,12 +799,21 @@
     }
     
     .bank-word-vertical {
-      padding: 10px;
-      border: 1px solid #dbe7fb;
-      border-radius: 6px;
+      padding: 12px;
+      border: 2px solid #dbe7fb;
+      border-radius: 8px;
       background: #f8fbff;
       text-align: center;
-      cursor: grab;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    
+    .bank-word-vertical:hover {
+      background: #e9f0ff;
+      border-color: #3498db;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .bank-word-vertical.used {
@@ -800,22 +823,41 @@
       border-color: #f5c6cb;
     }
     
+    .bank-word-vertical.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
+    }
+    
     .blank-slot {
       display: inline-block;
       min-width: 100px;
-      padding: 4px 8px;
-      margin: 0 6px;
+      padding: 6px 10px;
+      margin: 0 4px;
       background: #fff;
       min-height: 30px;
       vertical-align: middle;
-      border: 1px solid #dbe7fb;
-      border-radius: 4px;
+      border: 2px solid #dbe7fb;
+      border-radius: 6px;
       cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    
+    .blank-slot:hover {
+      background: #e3f2fd;
+      border-color: #3498db;
     }
     
     .blank-slot.has-answer {
       background: #e8fbe9;
       border-color: #2ecc71;
+    }
+    
+    .blank-slot.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
     }
     
     .footer-buttons {
@@ -829,6 +871,12 @@
       background: #f8d7da;
       border-color: #f5c6cb;
       color: #333;
+    }
+    
+    .situation-item.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
     }
     
     /* Listening Section Styles */
@@ -2255,6 +2303,8 @@ Hamburger Str. 112
       // Global variables for click selection mode
       window.selectedHeadingId = null;
       window.selectedSituationId = null;
+      window.selectedWordId = null;
+      window.selectedWord = null;
       
       /* ===== State & DOM refs ===== */
       let state = { 
@@ -2756,19 +2806,13 @@ Hamburger Str. 112
         section.fillBlanks.forEach(blank => {
           const userAnswer = state.answers[blank.id];
           const displayText = userAnswer ? userAnswer : '________';
-          tempText = tempText.replace(`BLANK_${blank.id}`, `<span class="blank-word ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}">${displayText}</span>`);
+          tempText = tempText.replace(`BLANK_${blank.id}`, `<span class="blank-word ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}" onclick="window.lesenApp.handleBlankClick('${blank.id}')">${displayText}</span>`);
         });
         
         passageContentEl.innerHTML = `
           <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können die Lücken in beliebiger Reihenfolge ausfüllen.</div>
           <div class="fill-blank-container">${tempText}</div>
         `;
-        
-        document.querySelectorAll('.blank-word').forEach(blank => {
-          blank.addEventListener('click', (e) => {
-            showOptionsPopup(e.target);
-          });
-        });
         
         let optionsHTML = `<div class="horizontal-options" style="gap: 8px;">`;
         
@@ -2798,17 +2842,10 @@ Hamburger Str. 112
         headingsBankContainer.innerHTML = '';
       }
 
-      function showOptionsPopup(blankElement){
-        const existingPopup = document.querySelector('.options-popup');
-        if(existingPopup) {
-          existingPopup.remove();
-        }
-        
-        const blankId = blankElement.getAttribute('data-blank-id');
-        const section = exam.sections.find(s => s.id === 's4');
+      function handleBlankClick(blankId) {
+        const section = exam.sections[state.sectionIndex];
         const blank = section.fillBlanks.find(b => b.id === blankId);
-        
-        if(!blank) return;
+        if (!blank) return;
         
         const popup = document.createElement('div');
         popup.className = 'options-popup';
@@ -2819,12 +2856,19 @@ Hamburger Str. 112
           optionItem.textContent = opt;
           optionItem.onclick = () => {
             selectSprachbausteine1(blankId, opt);
-            popup.remove();
+            document.querySelectorAll('.options-popup').forEach(p => p.remove());
           };
           popup.appendChild(optionItem);
         });
         
-        blankElement.appendChild(popup);
+        // Remove any existing popup
+        document.querySelectorAll('.options-popup').forEach(p => p.remove());
+        
+        // Find the clicked element and append popup
+        const element = document.querySelector(`[data-blank-id="${blankId}"]`);
+        if (element) {
+          element.appendChild(popup);
+        }
       }
 
       function selectSprachbausteine1(blankId, answer){
@@ -2835,80 +2879,93 @@ Hamburger Str. 112
       function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
         
-        let textWithBlanks = section.fillText2;
-        
+        // Build text with placeholders
+        let textWithPlaceholders = section.fillText2;
+        const placeholders = [];
         section.fillBlanks2.forEach(blank => {
-          const userAnswer = state.answers[blank.id];
+          const ph = `BLANK_${blank.id}`;
+          placeholders.push({id: blank.id, ph});
+          textWithPlaceholders = textWithPlaceholders.replace('________', ph);
+        });
+
+        // Replace placeholders with span elements
+        placeholders.forEach(item => {
+          const userAnswer = state.answers[item.id];
           const displayText = userAnswer ? userAnswer : '________';
-          textWithBlanks = textWithBlanks.replace('________', `<span class="blank-slot ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}">${displayText}</span>`);
+          const span = `<span class="blank-slot ${userAnswer ? 'has-answer' : ''} ${window.selectedWordId === item.id ? 'selected' : ''}" data-blank-id="${item.id}" onclick="window.lesenApp.handleWordSlotClick('${item.id}')">${displayText}</span>`;
+          textWithPlaceholders = textWithPlaceholders.replace(item.ph, span);
         });
-        
+
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können jedes Wort nur einmal verwenden.</div>
-          <div class="fill-blank-container">${textWithBlanks}</div>
+          <div class="instructions">Klicken Sie auf eine Lücke und dann auf ein Wort aus der Liste. (Klicken: Wort auswählen → auf Lücke klicken)</div>
+          <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
-        
-        document.querySelectorAll('.blank-slot').forEach(slot => {
-          slot.addEventListener('click', (e) => {
-            showSprachbausteine2Options(e.target);
-          });
-        });
-        
+
+        // Build word bank on the right
         let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
-        
         const usedWords = Object.values(state.answers);
+        const bank = section.fillBlanks2[0] ? section.fillBlanks2[0].options : [];
         
-        section.fillBlanks2[0].options.forEach(word => {
+        bank.forEach(word => {
           const isUsed = usedWords.includes(word);
+          const isSelected = window.selectedWord === word;
           
           wordBankHTML += `
-            <div class="bank-word-vertical ${isUsed ? 'used' : ''}" 
+            <div class="bank-word-vertical ${isUsed ? 'used' : ''} ${isSelected ? 'selected' : ''}" 
                  draggable="${!isUsed}" 
                  data-word="${word}"
-                 onclick="${!isUsed ? `window.lesenApp.selectSprachbausteine2FromBank('${word}')` : ''}">
+                 onclick="${!isUsed ? `window.lesenApp.handleWordClick('${word}')` : ''}">
               ${word}
             </div>
           `;
         });
-        
         wordBankHTML += `</div>`;
         
         questionBodyEl.innerHTML = wordBankHTML;
         questionTitleEl.textContent = '';
         headingsBankContainer.innerHTML = '';
-        
+
         setupSprachbausteine2DragAndDrop();
       }
 
-      function showSprachbausteine2Options(slotElement){
-        const existingPopup = document.querySelector('.options-popup');
-        if(existingPopup) {
-          existingPopup.remove();
+      function handleWordClick(word) {
+        // Toggle selection
+        if (window.selectedWord === word) {
+          window.selectedWord = null;
+          window.selectedWordId = null;
+        } else {
+          window.selectedWord = word;
+          window.selectedWordId = null;
         }
-        
-        const blankId = slotElement.getAttribute('data-blank-id');
-        const section = exam.sections.find(s => s.id === 's5');
-        
-        const usedWords = Object.values(state.answers);
-        const availableWords = section.fillBlanks2[0].options.filter(word => !usedWords.includes(word));
-        
-        if(availableWords.length === 0) return;
-        
-        const popup = document.createElement('div');
-        popup.className = 'options-popup';
-        
-        availableWords.forEach(word => {
-          const optionItem = document.createElement('div');
-          optionItem.className = 'option-item';
-          optionItem.textContent = word;
-          optionItem.onclick = () => {
-            selectSprachbausteine2(blankId, word);
-            popup.remove();
-          };
-          popup.appendChild(optionItem);
-        });
-        
-        slotElement.appendChild(popup);
+        renderSprachbausteine2();
+      }
+
+      function handleWordSlotClick(blankId) {
+        // If a word is selected, place it in the slot
+        if (window.selectedWord) {
+          const word = window.selectedWord;
+          
+          // Remove this word from any other slot if it exists
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === word) {
+              delete state.answers[key];
+            }
+          });
+          
+          // Remove previous answer from this slot if any
+          if (state.answers[blankId]) {
+            // Word will be freed automatically as it's not in answers anymore
+          }
+          
+          state.answers[blankId] = word;
+          window.selectedWord = null;
+          renderSprachbausteine2();
+        } 
+        // If slot already has a word, return it to bank
+        else if (state.answers[blankId]) {
+          delete state.answers[blankId];
+          renderSprachbausteine2();
+        }
       }
 
       function setupSprachbausteine2DragAndDrop(){
@@ -2941,24 +2998,17 @@ Hamburger Str. 112
         });
       }
 
-      function selectSprachbausteine2FromBank(word){
-        const section = exam.sections.find(s => s.id === 's5');
-        const emptyBlank = section.fillBlanks2.find(blank => !state.answers[blank.id]);
-        
-        if(emptyBlank) {
-          selectSprachbausteine2(emptyBlank.id, word);
-        }
-      }
-
-      function selectSprachbausteine2(blankId, answer){
+      function selectSprachbausteine2(blankId, word){
+        // Remove this word from any other slot
         Object.keys(state.answers).forEach(key => {
-          if(state.answers[key] === answer) {
+          if (state.answers[key] === word) {
             delete state.answers[key];
           }
         });
         
-        state.answers[blankId] = answer;
-        renderAll();
+        state.answers[blankId] = word;
+        window.selectedWord = null;
+        renderSprachbausteine2();
       }
 
       function selectOption(questionId, optionId){
@@ -3113,11 +3163,13 @@ Hamburger Str. 112
         markNoMatch,
         selectSprachbausteine1,
         selectSprachbausteine2,
-        selectSprachbausteine2FromBank,
         handleHeadingClick,
         handleSlotClick,
         handleSituationClick,
-        handleSituationSlotClick
+        handleSituationSlotClick,
+        handleBlankClick,
+        handleWordClick,
+        handleWordSlotClick
       };
     }
 
