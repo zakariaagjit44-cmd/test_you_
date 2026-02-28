@@ -318,18 +318,20 @@
     .exam-btn.no-match.selected {
       background: #e74c3c;
     }
-
-    .exam-btn.retrieve {
-      background: #3498db;
+    
+    .restore-btn {
+      background: #4da6ff;
       color: white;
-      font-size: 12px;
-      padding: 6px 10px;
-      min-width: auto;
-      margin-top: 5px;
+      font-size: 11px;
+      padding: 3px 8px;
+      margin-left: 8px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
     }
     
-    .exam-btn.retrieve:hover {
-      background: #2980b9;
+    .restore-btn:hover {
+      background: #3399ff;
     }
     
     /* Top Tiles */
@@ -727,7 +729,6 @@
       border: 1px solid #e1e8f6;
       border-radius: 8px;
       background: #fbfdff;
-      position: relative;
     }
     
     .text-letter {
@@ -740,33 +741,6 @@
       font-weight: bold;
       color: #2c3e50;
       margin-bottom: 8px;
-    }
-    
-    .situation-item.used {
-      opacity: 0.7;
-      background: #f8d7da;
-      border-color: #f5c6cb;
-    }
-    
-    .situation-item.used .situation-text {
-      color: #333;
-    }
-    
-    .situation-item.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
-    }
-    
-    .situation-item.selected .situation-text,
-    .situation-item.selected .situation-number {
-      color: white;
-    }
-    
-    .situation-buttons {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
     }
     
     .fill-blank-container {
@@ -948,6 +922,20 @@
     .footer-buttons {
       display: flex;
       gap: 10px;
+    }
+    
+    .situation-item.used {
+      opacity: 0.7;
+      cursor: not-allowed;
+      background: #f8d7da;
+      border-color: #f5c6cb;
+      color: #333;
+    }
+    
+    .situation-item.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
     }
     
     /* Listening Section Styles */
@@ -1674,7 +1662,6 @@
       const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       
       // عناصر الصفحة
-      const body = document.getElementById('body');
       const startPage = document.getElementById('start-page');
       const loginErrorModal = document.getElementById('login-error-modal');
       const errorMessage = document.getElementById('error-message');
@@ -1821,9 +1808,12 @@
     const cancelBtn = document.getElementById("cancelBtn");
 
     function startCountdown() {
+      // prevent double-starts or starting after exam already began
       if (countdownRunning || examStarted) return;
       countdownRunning = true;
+      // disable start button while counting
       try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
+      // reset counter & UI
       counter = initialCounter;
       timerEl.textContent = counter;
       timeDisplayEl.textContent = counter;
@@ -1841,10 +1831,12 @@
           countdownInterval = null;
           countdownRunning = false;
           progressEl.style.transform = "scaleX(1)";
+          // ensure exam starts only once
           if (!examStarted) {
             examStarted = true;
             startExam();
           }
+          // safety: re-enable start button (page usually navigates away)
           try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
         }
       }, 1000);
@@ -1868,6 +1860,7 @@
     }
 
     function startExam() {
+      // guard to ensure startExam is triggered once
       if (!examStarted) examStarted = true;
       const selectedSection = selectEl.value;
       if (selectedSection === 'lesen') {
@@ -1879,6 +1872,7 @@
       }
     }
 
+    // wire buttons: start will now start the countdown (not the exam directly)
     startBtn.addEventListener('click', startCountdown);
 
     cancelBtn.addEventListener('click', () => {
@@ -2317,6 +2311,74 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
       }
     };
 
+    // ===== CORRECT ANSWERS FOR RESULTS PAGE =====
+    const CORRECT_ANSWERS = {
+      lesen: {
+        "text1": "c",
+        "text2": "i", 
+        "text3": "f",
+        "text4": "a",
+        "text5": "j",
+        "s2q1": "s2q1o3",
+        "s2q2": "s2q2o1",
+        "s2q3": "s2q3o2",
+        "s2q4": "s2q4o2",
+        "s2q5": "s2q5o1",
+        "11": "C",
+        "12": "X",
+        "13": "G",
+        "14": "E",
+        "15": "A",
+        "16": "I",
+        "17": "F",
+        "18": "X",
+        "19": "B",
+        "20": "K",
+        "21": "neuen",
+        "22": "Seit",
+        "23": "darüber",
+        "24": "mich",
+        "25": "Obwohl",
+        "26": "könnte",
+        "27": "wie",
+        "28": "nehmen",
+        "29": "mich",
+        "30": "denen",
+        "31": "GENAU",
+        "32": "FÄHIG",
+        "33": "ENTWICKELTEN",
+        "34": "BEOBACHTUNG",
+        "35": "NOCH",
+        "36": "ÜBRIGENS",
+        "37": "DOCH",
+        "38": "FÜR",
+        "39": "ALS",
+        "40": "WER"
+      },
+      hoeren: {
+        "41": "falsch",
+        "42": "falsch",
+        "43": "falsch",
+        "44": "richtig",
+        "45": "richtig",
+        "46": "falsch",
+        "47": "richtig",
+        "48": "richtig",
+        "49": "richtig",
+        "50": "falsch",
+        "51": "falsch",
+        "52": "richtig",
+        "53": "falsch",
+        "54": "richtig",
+        "55": "richtig",
+        "56": "richtig",
+        "57": "falsch",
+        "58": "falsch",
+        "59": "falsch",
+        "60": "richtig"
+      }
+    };
+
     // ===== LESEN PAGE FUNCTIONALITY =====
     function initLesenPage() {
       const exam = EXAM_DATA.lesen;
@@ -2624,19 +2686,42 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
         section.questions.forEach((question, idx) => {
           const questionNumber = idx + 1;
           const userAnswer = state.answers[question.id];
+          const correctOption = question.options.find(o => o.id === question.correctAnswer);
+          const isCorrect = userAnswer === question.correctAnswer;
           
           questionsHTML += `
             <div class="question-block">
               <div class="question-text">${questionNumber}. ${question.text}</div>
               <div class="options">
-                ${question.options.map(opt => `
-                  <div class="option ${userAnswer === opt.id ? 'selected' : ''}" 
-                       onclick="window.lesenApp.selectOption('${question.id}', '${opt.id}')">
-                    <div class="radio"></div>
-                    <div>${opt.text}</div>
-                  </div>
-                `).join('')}
+                ${question.options.map(opt => {
+                  const isSelected = userAnswer === opt.id;
+                  const isCorrectOpt = opt.id === question.correctAnswer;
+                  let optionClass = 'option';
+                  if (isSelected) optionClass += ' selected';
+                  if (state.showResults) {
+                    if (isCorrectOpt) optionClass += ' correct-answer';
+                    else if (isSelected && !isCorrect) optionClass += ' incorrect-answer';
+                  }
+                  
+                  return `
+                    <div class="${optionClass}" 
+                         onclick="window.lesenApp.selectOption('${question.id}', '${opt.id}')">
+                      <div class="radio"></div>
+                      <div>${opt.text}</div>
+                    </div>
+                  `;
+                }).join('')}
               </div>
+              ${userAnswer && state.showResults ? `
+                <div style="margin-top:10px; padding:10px; background:#f0f0f0; border-radius:6px;">
+                  <strong>Ihre Antwort:</strong> ${userAnswer ? (question.options.find(o => o.id === userAnswer)?.text || userAnswer) : '-'}<br>
+                  <strong>Richtige Antwort:</strong> ${correctOption ? correctOption.text : '-'}<br>
+                  <strong>Ergebnis:</strong> 
+                  <span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">
+                    ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                  </span>
+                </div>
+              ` : ''}
             </div>
           `;
         });
@@ -2695,10 +2780,8 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
                  onclick="${!isUsed ? `window.lesenApp.handleSituationClick('${situation.id}')` : ''}">
               <div class="situation-number">${situationNumber}.</div>
               <div class="situation-text">${situation.text}</div>
-              <div class="situation-buttons">
-                ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}'); event.stopPropagation();">X - Kein passender Text</button>` : ''}
-                ${isUsed ? `<button class="exam-btn retrieve" onclick="window.lesenApp.retrieveSituation('${situation.id}'); event.stopPropagation();">↩️ Zurücknehmen</button>` : ''}
-              </div>
+              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}'); event.stopPropagation();">X - Kein passender Text</button>` : ''}
+              ${isUsed && isX ? `<button class="restore-btn" onclick="window.lesenApp.restoreSituation('${situation.id}'); event.stopPropagation();">↩️ Restore</button>` : ''}
             </div>
           `;
         });
@@ -2754,11 +2837,8 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
         renderAll();
       }
 
-      function retrieveSituation(situationId) {
-        // إزالة الإجابة من هذه الوضعية
-        if (state.answers[situationId]) {
-          delete state.answers[situationId];
-        }
+      function restoreSituation(situationId) {
+        delete state.answers[situationId];
         renderAll();
       }
 
@@ -2837,14 +2917,29 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
             <div class="option-row" style="padding: 8px; margin-bottom: 5px;">
               <div class="option-number">${blank.id}</div>
               <div class="option-buttons">
-                ${blank.options.map(opt => `
-                  <div class="option-btn ${userAnswer === opt ? 'selected' : ''}" 
-                       onclick="window.lesenApp.selectSprachbausteine1('${blank.id}', '${opt}')" 
-                       style="padding: 6px 12px; font-size: 12px;">
-                    ${opt}
-                  </div>
-                `).join('')}
+                ${blank.options.map(opt => {
+                  const isCorrect = opt === blank.correctAnswer;
+                  const isSelected = userAnswer === opt;
+                  let btnClass = 'option-btn';
+                  if (isSelected) btnClass += ' selected';
+                  if (state.showResults && isCorrect) btnClass += ' correct-answer';
+                  
+                  return `
+                    <div class="${btnClass}" 
+                         onclick="window.lesenApp.selectSprachbausteine1('${blank.id}', '${opt}')" 
+                         style="padding: 6px 12px; font-size: 12px;">
+                      ${opt}
+                    </div>
+                  `;
+                }).join('')}
               </div>
+              ${userAnswer && state.showResults ? `
+                <div style="margin-left:10px;">
+                  <span class="${userAnswer === blank.correctAnswer ? 'result-correct' : 'result-incorrect'}">
+                    ${userAnswer === blank.correctAnswer ? '✔️' : '❌'}
+                  </span>
+                </div>
+              ` : ''}
             </div>
           `;
         });
@@ -3038,11 +3133,16 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
             const resultClass = isCorrect ? 'correct' : 'incorrect';
             const resultIcon = isCorrect ? '✓' : '✗';
             const answerText = userAnswer ? getHeadingTextById(userAnswer) : 'Nicht beantwortet';
+            const correctHeading = section.headings.find(h => h.id === text.correctAnswer);
+            const correctText = correctHeading ? `${correctHeading.id}) ${correctHeading.text}` : '-';
             
             resultsHTML += `
               <div class="result-detail">
                 <div class="result-question">Text ${String.fromCharCode(97 + index).toUpperCase()}</div>
-                <div class="result-answer ${resultClass}">${answerText}</div>
+                <div class="result-answer ${resultClass}">
+                  <strong>Ihre Antwort:</strong> ${answerText}<br>
+                  <strong>Richtig:</strong> ${correctText}
+                </div>
                 <div class="result-icon">${resultIcon}</div>
               </div>
             `;
@@ -3063,10 +3163,16 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
               userAnswerText = option ? option.text : userAnswer;
             }
             
+            const correctOption = question.options.find(o => o.id === question.correctAnswer);
+            const correctText = correctOption ? correctOption.text : '-';
+            
             resultsHTML += `
               <div class="result-detail">
                 <div class="result-question">${index + 1}. ${question.text.substring(0, 50)}...</div>
-                <div class="result-answer ${resultClass}">${userAnswerText}</div>
+                <div class="result-answer ${resultClass}">
+                  <strong>Ihre Antwort:</strong> ${userAnswerText}<br>
+                  <strong>Richtig:</strong> ${correctText}
+                </div>
                 <div class="result-icon">${resultIcon}</div>
               </div>
             `;
@@ -3081,12 +3187,21 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
             
             const resultClass = isCorrect ? 'correct' : 'incorrect';
             const resultIcon = isCorrect ? '✓' : '✗';
-            const userDisplay = userAnswer === 'X' ? 'X - Kein passender Text' : (userAnswer || '-');
+            
+            let userDisplay = userAnswer || '-';
+            let correctDisplay = correctText ? correctText.id : 'X';
+            
+            if (userAnswer === 'X') userDisplay = 'X - Kein passender Text';
+            if (correctText) correctDisplay = `${correctText.id} - ${correctText.text.substring(0, 30)}...`;
+            else correctDisplay = 'X - Kein passender Text';
             
             resultsHTML += `
               <div class="result-detail">
                 <div class="result-question">Situation ${situation.id}</div>
-                <div class="result-answer ${resultClass}">${userDisplay}</div>
+                <div class="result-answer ${resultClass}">
+                  <strong>Ihre Antwort:</strong> ${userDisplay}<br>
+                  <strong>Richtig:</strong> ${correctDisplay}
+                </div>
                 <div class="result-icon">${resultIcon}</div>
               </div>
             `;
@@ -3104,7 +3219,10 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
             resultsHTML += `
               <div class="result-detail">
                 <div class="result-question">Lücke ${blank.id}</div>
-                <div class="result-answer ${resultClass}">${userAnswer || '-'}</div>
+                <div class="result-answer ${resultClass}">
+                  <strong>Ihre Antwort:</strong> ${userAnswer || '-'}<br>
+                  <strong>Richtig:</strong> ${blank.correctAnswer}
+                </div>
                 <div class="result-icon">${resultIcon}</div>
               </div>
             `;
@@ -3122,7 +3240,10 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
             resultsHTML += `
               <div class="result-detail">
                 <div class="result-question">Lücke ${blank.id}</div>
-                <div class="result-answer ${resultClass}">${userAnswer || '-'}</div>
+                <div class="result-answer ${resultClass}">
+                  <strong>Ihre Antwort:</strong> ${userAnswer || '-'}<br>
+                  <strong>Richtig:</strong> ${blank.correctAnswer}
+                </div>
                 <div class="result-icon">${resultIcon}</div>
               </div>
             `;
@@ -3206,7 +3327,7 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
       window.lesenApp = {
         selectOption,
         markNoMatch,
-        retrieveSituation,
+        restoreSituation,
         selectSprachbausteine1,
         selectSprachbausteine2,
         handleHeadingClick,
@@ -3421,7 +3542,7 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
                 <th style="width: 50%">Aussage</th>
                 <th style="width: 15%">Ihre Antwort</th>
                 <th style="width: 15%">Richtige Antwort</th>
-                <th style="width: 10%">Ergebnis</th>
+                <th style="width: 10%">Punkte</th>
               </tr>
             </thead>
             <tbody>
@@ -3431,11 +3552,11 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
           const userAnswer = userAnswers[question.id] || '-';
           const correctAnswer = section.correctAnswers[question.id];
           const gotCorrect = userAnswer === correctAnswer;
+          const points = gotCorrect ? "1" : "0";
           
           if (gotCorrect) correctCount++;
           
           const rowClass = gotCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = gotCorrect ? '✓' : '✗';
           
           resultsHTML += `
             <tr class="${rowClass}">
@@ -3443,16 +3564,18 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
               <td class="question-text">${question.text}</td>
               <td>${userAnswer}</td>
               <td>${correctAnswer}</td>
-              <td><strong>${resultIcon}</strong></td>
+              <td><strong>${points}</strong></td>
             </tr>
           `;
         });
+        
+        const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
         
         resultsHTML += `
             </tbody>
           </table>
           <div style="margin-top: 15px; padding: 15px; background: #1e3a5f; color: white; border-radius: 6px; text-align: center;">
-            <strong>Erreichte Punkte: ${correctCount}/${section.questions.length} richtig = ${Math.round((correctCount / section.questions.length) * section.points)}/${section.points} Punkten</strong>
+            <strong>Erreichte Punkte: ${correctCount}/${section.questions.length} richtig = ${totalPoints}/${section.points} Punkten</strong>
           </div>
         `;
         
@@ -3661,8 +3784,7 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
         state.answers[sectionId] = text;
         
         const wordCount = countWords(text);
-        const counter = document.querySelector('.word-counter .count');
-        if (counter) counter.textContent = wordCount;
+        document.querySelector('.word-counter .count').textContent = wordCount;
       }
 
       function renderResults() {
@@ -3760,15 +3882,75 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
         }
       };
 
-      const CORRECT_ANSWERS = {
-        lesen: {},
-        hoeren: {}
-      };
+      function getHeadingText(headingId) {
+        if (!headingId || headingId === '-' || headingId === 'X') return headingId;
+        const headings = {
+          "a": "Gemeinsam kaputte Geräte retten",
+          "b": "Kaufsucht überwinden - diese Möglichkeiten gibt es",
+          "c": "Neue Besitzer für nicht mehr gebrauchte Gegenstände",
+          "d": "Reparatur alter Haushaltsgeräte lohnt oft nicht",
+          "e": "Rücksendungen verderben Online-Händlern das Geschäft",
+          "f": "Rücksendungen verringern: Händler hoffen auf Lösungen",
+          "g": "Studie zeigt, welche Geschenke glücklich machen",
+          "h": "Verein mit Preis für Umweltschutz ausgezeichnet",
+          "i": "Volle Einkaufstütten machen nur kurze Zeit Freude",
+          "j": "wer Engagement zeigt, steigert sein Glücksgefühl"
+        };
+        return headings[headingId] || headingId;
+      }
+
+      function getOptionText(questionId, optionId) {
+        if (!optionId || optionId === '-') return '-';
+        const options = {
+          "s2q1o1": "Anfang des 20. Jahrhunderts von einem Puppenmacher erschaffen",
+          "s2q1o2": "für die ersten großen Kaufhäuser produziert",
+          "s2q1o3": "von einem französischen Schneider erfunden",
+          "s2q2o1": "darf Herr Bauernfeind keinen normalen Nagellack auftragen",
+          "s2q2o2": "können keine Luxusmarken eingesetzt werden",
+          "s2q2o3": "verwendet he nur billige Produkte",
+          "s2q3o1": "hat schon als Kind gerne mit Puppen gespielt",
+          "s2q3o2": "konnte seine erste Schaufensterpuppe nicht auf einmal zahlen",
+          "s2q3o3": "organizierte eine Ausstellung mit Schaufensterpuppen",
+          "s2q4o1": "eröffnete die erste Linzer Firma für Schaufensterpuppen",
+          "s2q4o2": "handelt mit Schaufensterpuppen anderer Produzenten",
+          "s2q4o3": "stellt heute keine Schaufensterpuppen mehr her",
+          "s2q5o1": "können mit umweltfreundlichen Farben bemalt werden",
+          "s2q5o2": "sind nicht von Tendenzen der Mode abhängig",
+          "s2q5o3": "sollen immer dieselbe Kleidergröße haben"
+        };
+        return options[optionId] || optionId;
+      }
+
+      function getTextLetter(id) {
+        const texts = {
+          "A": "Auf den Spuren der Wildkatze...",
+          "B": "Ausstellung im Park...",
+          "C": "Am 1. August zeigen wir den 90-minütigen Film...",
+          "D": "Entspannte Sommernächte...",
+          "E": "Schon lange lebt Kaninchen Hoppi...",
+          "F": "Du bist gern kreativ...",
+          "G": "Mit einem scharfen Blick fürs Detail...",
+          "H": "Spiel, Spaß, Nervenkitzel...",
+          "I": "Noch nicht lange ist es her...",
+          "J": "In der Dauerausstellung, Wege in die Natur...",
+          "K": "Heiße Rhythmen und kühle Drinks...",
+          "L": "Zeichenschule für Kinder..."
+        };
+        return texts[id] || id;
+      }
 
       function readExamResults() {
         try {
           const lesen = window._lesenState ? window._lesenState.answers : {};
-          const hoeren = window._hoerenState ? window._hoerenState.answers : {};
+          const hoeren = {};
+          if (window._hoerenState && window._hoerenState.answers) {
+            Object.keys(window._hoerenState.answers).forEach(sectionId => {
+              const sec = window._hoerenState.answers[sectionId] || {};
+              Object.keys(sec).forEach(q => {
+                hoeren[q] = sec[q];
+              });
+            });
+          }
           const schreiben = window._schreibenState ? window._schreibenState.answers : {};
 
           return { hoeren, lesen, schreiben };
@@ -3778,38 +3960,12 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
       }
 
       function calculateLesenResults(answers) {
-        const exam = EXAM_DATA.lesen;
         let correct = 0;
         let total = 0;
         
-        exam.sections.forEach(section => {
-          if (section.id === 's1') {
-            section.texts.forEach(text => {
-              total++;
-              if (answers[text.id] === text.correctAnswer) correct++;
-            });
-          } else if (section.id === 's2') {
-            section.questions.forEach(question => {
-              total++;
-              if (answers[question.id] === question.correctAnswer) correct++;
-            });
-          } else if (section.id === 's3') {
-            section.situations.forEach(situation => {
-              total++;
-              const correctText = section.texts.find(t => t.correctAnswer === situation.id);
-              if (answers[situation.id] === (correctText ? correctText.id : null)) correct++;
-            });
-          } else if (section.id === 's4') {
-            section.fillBlanks.forEach(blank => {
-              total++;
-              if (answers[blank.id] === blank.correctAnswer) correct++;
-            });
-          } else if (section.id === 's5') {
-            section.fillBlanks2.forEach(blank => {
-              total++;
-              if (answers[blank.id] === blank.correctAnswer) correct++;
-            });
-          }
+        Object.keys(CORRECT_ANSWERS.lesen).forEach(key => {
+          total++;
+          if (answers[key] === CORRECT_ANSWERS.lesen[key]) correct++;
         });
         
         const points = Math.round((correct / total) * CONFIG.totals.lesen);
@@ -3818,17 +3974,12 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
       }
 
       function calculateHoerenResults(answers) {
-        const exam = EXAM_DATA.hoeren;
         let correct = 0;
         let total = 0;
         
-        exam.sections.forEach(section => {
-          section.questions.forEach(question => {
-            total++;
-            if (answers[section.id] && answers[section.id][question.id] === section.correctAnswers[question.id]) {
-              correct++;
-            }
-          });
+        Object.keys(CORRECT_ANSWERS.hoeren).forEach(key => {
+          total++;
+          if (answers[key] === CORRECT_ANSWERS.hoeren[key]) correct++;
         });
         
         const points = Math.round((correct / total) * CONFIG.totals.hoeren);
@@ -3837,153 +3988,76 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
       }
 
       function renderLesenDetails(answers) {
-        const exam = EXAM_DATA.lesen;
-        let html = '';
+        let html = '<div class="section-table"><h4>Leseverstehen - Detaillierte Auswertung</h4>';
+        html += '<table class="true-false-table">';
+        html += '<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>';
         
-        exam.sections.forEach(section => {
-          if (section.id === 's1') {
-            html += `<h4>Teil 1: Überschriften zuordnen</h4>`;
-            html += `<table class="true-false-table"><thead><tr><th>Text</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
-            section.texts.forEach((text, idx) => {
-              const userAnswer = answers[text.id] || '-';
-              const isCorrect = userAnswer === text.correctAnswer;
-              const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-              const resultIcon = isCorrect ? '✓' : '✗';
-              const letter = String.fromCharCode(97 + idx).toUpperCase();
-              
-              html += `<tr class="${rowClass}">
-                <td>${letter}</td>
-                <td>${userAnswer}</td>
-                <td>${text.correctAnswer}</td>
-                <td><strong>${resultIcon}</strong></td>
-              </tr>`;
-            });
-            html += `</tbody></table>`;
+        Object.keys(CORRECT_ANSWERS.lesen).forEach(key => {
+          const user = answers[key] || '-';
+          const correct = CORRECT_ANSWERS.lesen[key];
+          const isCorrect = user === correct;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          
+          let userDisplay = user;
+          let correctDisplay = correct;
+          
+          if (key.startsWith('text')) {
+            userDisplay = getHeadingText(user);
+            correctDisplay = getHeadingText(correct);
+          } else if (key.startsWith('s2q')) {
+            userDisplay = getOptionText(key, user);
+            correctDisplay = getOptionText(key, correct);
+          } else if (parseInt(key) >= 11 && parseInt(key) <= 20) {
+            userDisplay = user === 'X' ? 'X - Kein passender Text' : getTextLetter(user);
+            correctDisplay = correct === 'X' ? 'X - Kein passender Text' : getTextLetter(correct);
           }
           
-          if (section.id === 's2') {
-            html += `<h4>Teil 2: Fragen zum Text</h4>`;
-            html += `<table class="true-false-table"><thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
-            section.questions.forEach((question, idx) => {
-              const userAnswer = answers[question.id] || '-';
-              const isCorrect = userAnswer === question.correctAnswer;
-              const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-              const resultIcon = isCorrect ? '✓' : '✗';
-              
-              html += `<tr class="${rowClass}">
-                <td>${idx + 1}</td>
-                <td>${userAnswer}</td>
-                <td>${question.correctAnswer}</td>
-                <td><strong>${resultIcon}</strong></td>
-              </tr>`;
-            });
-            html += `</tbody></table>`;
-          }
-          
-          if (section.id === 's3') {
-            html += `<h4>Teil 3: Texte zuordnen</h4>`;
-            html += `<table class="true-false-table"><thead><tr><th>Situation</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
-            section.situations.forEach(situation => {
-              const userAnswer = answers[situation.id] || '-';
-              const correctText = section.texts.find(t => t.correctAnswer === situation.id);
-              const correctAnswer = correctText ? correctText.id : 'X';
-              const isCorrect = userAnswer === correctAnswer;
-              const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-              const resultIcon = isCorrect ? '✓' : '✗';
-              
-              html += `<tr class="${rowClass}">
-                <td>${situation.id}</td>
-                <td>${userAnswer}</td>
-                <td>${correctAnswer}</td>
-                <td><strong>${resultIcon}</strong></td>
-              </tr>`;
-            });
-            html += `</tbody></table>`;
-          }
-          
-          if (section.id === 's4') {
-            html += `<h4>Sprachbausteine Teil 1</h4>`;
-            html += `<table class="true-false-table"><thead><tr><th>Lücke</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
-            section.fillBlanks.forEach(blank => {
-              const userAnswer = answers[blank.id] || '-';
-              const isCorrect = userAnswer === blank.correctAnswer;
-              const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-              const resultIcon = isCorrect ? '✓' : '✗';
-              
-              html += `<tr class="${rowClass}">
-                <td>${blank.id}</td>
-                <td>${userAnswer}</td>
-                <td>${blank.correctAnswer}</td>
-                <td><strong>${resultIcon}</strong></td>
-              </tr>`;
-            });
-            html += `</tbody></table>`;
-          }
-          
-          if (section.id === 's5') {
-            html += `<h4>Sprachbausteine Teil 2</h4>`;
-            html += `<table class="true-false-table"><thead><tr><th>Lücke</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
-            section.fillBlanks2.forEach(blank => {
-              const userAnswer = answers[blank.id] || '-';
-              const isCorrect = userAnswer === blank.correctAnswer;
-              const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-              const resultIcon = isCorrect ? '✓' : '✗';
-              
-              html += `<tr class="${rowClass}">
-                <td>${blank.id}</td>
-                <td>${userAnswer}</td>
-                <td>${blank.correctAnswer}</td>
-                <td><strong>${resultIcon}</strong></td>
-              </tr>`;
-            });
-            html += `</tbody></table>`;
-          }
+          html += `<tr class="${rowClass}">
+            <td><strong>${key}</strong></td>
+            <td>${userDisplay}</td>
+            <td>${correctDisplay}</td>
+            <td>${isCorrect ? '✅' : '❌'}</td>
+          </tr>`;
         });
         
+        html += '</tbody></table></div>';
         return html;
       }
 
       function renderHoerenDetails(answers) {
-        const exam = EXAM_DATA.hoeren;
-        let html = '';
+        let html = '<div class="section-table"><h4>Hörverstehen - Detaillierte Auswertung</h4>';
+        html += '<table class="true-false-table">';
+        html += '<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>';
         
-        exam.sections.forEach(section => {
-          html += `<h4>${section.title}</h4>`;
-          html += `<table class="true-false-table"><thead><tr><th>Nr.</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        Object.keys(CORRECT_ANSWERS.hoeren).forEach(key => {
+          const user = answers[key] || '-';
+          const correct = CORRECT_ANSWERS.hoeren[key];
+          const isCorrect = user === correct;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
           
-          section.questions.forEach(question => {
-            const userAnswer = (answers[section.id] && answers[section.id][question.id]) || '-';
-            const correctAnswer = section.correctAnswers[question.id];
-            const isCorrect = userAnswer === correctAnswer;
-            const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-            const resultIcon = isCorrect ? '✓' : '✗';
-            
-            html += `<tr class="${rowClass}">
-              <td>${question.id}</td>
-              <td>${userAnswer}</td>
-              <td>${correctAnswer}</td>
-              <td><strong>${resultIcon}</strong></td>
-            </tr>`;
-          });
-          
-          html += `</tbody></table>`;
+          html += `<tr class="${rowClass}">
+            <td><strong>${key}</strong></td>
+            <td>${user}</td>
+            <td>${correct}</td>
+            <td>${isCorrect ? '✅' : '❌'}</td>
+          </tr>`;
         });
         
+        html += '</tbody></table></div>';
         return html;
       }
 
       function calculateResults() {
-        const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
+        const st = readExamResults();
         const details = document.getElementById('details-ergebnisse');
         const tiles = document.getElementById('topTiles-ergebnisse');
-        const finalSummary = document.getElementById('finalSummary-ergebnisse');
 
         details.innerHTML = '';
         tiles.innerHTML = '';
-        finalSummary.innerHTML = '';
 
         const lesenResults = calculateLesenResults(st.lesen);
         const hoerenResults = calculateHoerenResults(st.hoeren);
+        const schreibenScore = parseFloat(localStorage.getItem('schreibenPoints')) || 0;
         
         const tL = `<div class="results-tile">
                     <h3>Lesen</h3>
@@ -3999,8 +4073,8 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
                   
         const tS = `<div class="results-tile">
                     <h3>Schreiben</h3>
-                    <div class="score">Manuelle Bewertung</div>
-                    <div class="small-muted">(45 Punkte max.)</div>
+                    <div class="score" id="schreibenScoreDisplay">${schreibenScore}/${CONFIG.totals.schreiben} Punkte</div>
+                    <div class="small-muted">(Manuelle Eingabe)</div>
                   </div>`;
                   
         tiles.innerHTML = tL + tH + tS;
@@ -4010,15 +4084,9 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
           <div class="instructions">
             Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Antworten:
           </div>
-          
-          <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>
         `;
         
         details.innerHTML += renderLesenDetails(st.lesen);
-        
-        details.innerHTML += `
-          <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
-        `;
         details.innerHTML += renderHoerenDetails(st.hoeren);
         
         details.innerHTML += `
@@ -4031,33 +4099,57 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
               </div>
               <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center">
                 Punkte vergeben (0–45): 
-                <input id="schreibenInput" type="number" min="0" max="45" step="1" value="0"> 
+                <input id="schreibenInput" type="number" min="0" max="45" step="1" value="${schreibenScore}"> 
                 <button id="saveSchreiben" class="results-btn">💾 Speichern</button>
               </div>
             </div>
           </div>
         `;
 
-        const totalPoints = lesenResults.points + hoerenResults.points;
-        const maxPoints = CONFIG.totals.lesen + CONFIG.totals.hoeren;
-        const percentage = Math.round((totalPoints / maxPoints) * 100);
+        const totalPoints = lesenResults.points + hoerenResults.points + schreibenScore;
+        const percentage = Math.round((totalPoints / CONFIG.totals.gesamt) * 100);
 
-        finalSummary.innerHTML = `
+        document.getElementById('finalSummary-ergebnisse').innerHTML = `
           <div class="left">
-            Gesamtergebnis (ohne Schreiben)<br>
-            <span class="small-muted">Automatisch korrigierte Bereiche</span>
+            <strong>Gesamtergebnis: ${totalPoints}/${CONFIG.totals.gesamt} Punkte</strong><br>
+            <span class="small-muted">Lesen + Hören + Schreiben</span>
           </div>
           <div class="right">
-            <strong>${totalPoints}/${maxPoints} Punkte (${percentage}%)</strong>
+            <strong>${percentage}%</strong><br>
+            <span class="small-muted">Bestanden: ${percentage >= 60 ? '✅ Ja' : '❌ Nein'}</span>
           </div>`;
 
         document.getElementById('saveSchreiben').onclick = function() {
           const points = parseInt(document.getElementById('schreibenInput').value) || 0;
           localStorage.setItem('schreibenPoints', points);
-          alert('✅ Schreiben-Punkte gespeichert!');
+          document.getElementById('schreibenScoreDisplay').textContent = `${points}/${CONFIG.totals.schreiben} Punkte`;
+          
+          const newTotalPoints = lesenResults.points + hoerenResults.points + points;
+          const newPercentage = Math.round((newTotalPoints / CONFIG.totals.gesamt) * 100);
+          
+          document.getElementById('finalSummary-ergebnisse').innerHTML = `
+            <div class="left">
+              <strong>Gesamtergebnis: ${newTotalPoints}/${CONFIG.totals.gesamt} Punkte</strong><br>
+              <span class="small-muted">Lesen + Hören + Schreiben</span>
+            </div>
+            <div class="right">
+              <strong>${newPercentage}%</strong><br>
+              <span class="small-muted">Bestanden: ${newPercentage >= 60 ? '✅ Ja' : '❌ Nein'}</span>
+            </div>`;
         };
       }
 
+      document.getElementById('backBtn-ergebnisse').onclick = (e) => {
+        e.preventDefault();
+        examStarted = false;
+        counter = initialCounter;
+        timerEl.textContent = counter;
+        timeDisplayEl.textContent = counter;
+        progressEl.style.transform = "scaleX(0)";
+        timerEl.style.color = "";
+        showPage('start-page');
+      };
+      
       document.getElementById('retryBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
         // Reset all exam states
@@ -4087,41 +4179,31 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
           }
         }
         
-        // Reset exam started flag
         examStarted = false;
         
-        // Go to start page directly without countdown
-        showPage('start-page');
+        // Start exam immediately without countdown
+        const selectedSection = document.getElementById("sectionSelect").value;
+        if (selectedSection === 'lesen') {
+          showPage('lesen-page');
+        } else if (selectedSection === 'hoeren') {
+          showPage('hoeren-page');
+        } else if (selectedSection === 'schreiben') {
+          showPage('schreiben-page');
+        }
       };
       
       document.getElementById('continueBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
-        // Return to the last exam page
-        if (window._schreibenState && window._schreibenState.answers && Object.keys(window._schreibenState.answers).length > 0) {
+        // Return to the last exam page with answers preserved
+        if (window._schreibenState && Object.keys(window._schreibenState.answers).length > 0) {
           showPage('schreiben-page');
-        } else if (window._hoerenState && window._hoerenState.answers && Object.keys(window._hoerenState.answers).length > 0) {
+        } else if (window._hoerenState && Object.keys(window._hoerenState.answers).length > 0) {
           showPage('hoeren-page');
-        } else if (window._lesenState && window._lesenState.answers && Object.keys(window._lesenState.answers).length > 0) {
+        } else if (window._lesenState && Object.keys(window._lesenState.answers).length > 0) {
           showPage('lesen-page');
         } else {
-          // If no answers exist, start fresh
-          examStarted = false;
-          showPage('start-page');
+          showPage('lesen-page');
         }
-      };
-      
-      document.getElementById('backBtn-ergebnisse').onclick = (e) => {
-        e.preventDefault();
-        // Reset exam started flag
-        examStarted = false;
-        // Reset countdown
-        counter = initialCounter;
-        timerEl.textContent = counter;
-        timeDisplayEl.textContent = counter;
-        progressEl.style.transform = "scaleX(0)";
-        timerEl.style.color = "";
-        // Go to start page
-        showPage('start-page');
       };
       
       calculateResults();
