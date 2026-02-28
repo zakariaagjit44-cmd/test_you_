@@ -4,17 +4,28 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Deutsch B2 Prüfung - Komplett</title>
+  
+  <!-- Supabase Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <style>
     /* ===== GLOBAL STYLES ===== */
     :root {
       --primary-color: #1e3a5f;
       --secondary-color: #2c5282;
-      --accent-color: #4da6ff;
-      --light-color: #ebf8ff;
-      --text-color: #2d3748;
+      --accent-color: #e74c3c;
+      --accent-hover: #c0392b;
+      --success-color: #27ae60;
+      --danger-color: #e74c3c;
+      --warning-color: #f39c12;
+      --light-bg: #f8fafc;
+      --text-dark: #2d3748;
+      --text-light: #718096;
       --white: #ffffff;
       --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
       --transition: all 0.3s ease;
+      --border-radius: 8px;
     }
     
     * {
@@ -52,7 +63,7 @@
       backdrop-filter: blur(10px);
       border-radius: 16px;
       padding: 40px;
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-lg);
       text-align: center;
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
@@ -83,8 +94,8 @@
       border-radius: 12px;
       padding: 25px;
       margin-bottom: 30px;
-      box-shadow: var(--shadow);
-      color: var(--text-color);
+      box-shadow: var(--shadow-lg);
+      color: var(--text-dark);
     }
     
     .card h2 {
@@ -103,17 +114,17 @@
       padding: 12px 16px;
       font-size: 16px;
       border-radius: 8px;
-      border: 2px solid var(--accent-color);
+      border: 2px solid #e2e8f0;
       outline: none;
       background-color: var(--white);
-      color: var(--text-color);
+      color: var(--text-dark);
       cursor: pointer;
       transition: var(--transition);
     }
     
     select:focus {
-      border-color: var(--secondary-color);
-      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.2);
     }
     
     .timer-container {
@@ -172,7 +183,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: var(--transition);
-      background-color: var(--accent-color);
+      background-color: var(--primary-color);
       color: white;
       text-decoration: none;
       display: inline-block;
@@ -180,7 +191,16 @@
     }
     
     .btn:hover {
-      background-color: #3399ff;
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+    
+    .btn-secondary {
+      background-color: var(--accent-color);
+    }
+    
+    .btn-secondary:hover {
+      background-color: var(--accent-hover);
     }
     
     /* ===== EXAM PAGE STYLES ===== */
@@ -193,7 +213,7 @@
     
     /* Header Styles */
     header.topbar {
-      background: #1e3a5f;
+      background: var(--primary-color);
       color: #fff;
       padding: 12px 20px;
       display: flex;
@@ -212,7 +232,7 @@
     .brand .logo {
       width: 80px;
       height: 40px;
-      background: #e74c3c;
+      background: var(--accent-color);
       border-radius: 4px;
       display: flex;
       align-items: center;
@@ -249,75 +269,93 @@
       padding: 12px 20px;
       border-radius: 6px;
       border: none;
-      background: #4da6ff;
-      color: white;
+      background: #fff;
+      color: var(--primary-color);
       font-weight: 700;
       font-size: 15px;
       cursor: pointer;
-      transition: background 0.2s ease-in-out;
+      transition: var(--transition);
       min-width: 150px;
       text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .exam-btn:hover {
-      background: #336fbf;
+      background: var(--accent-color);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
     }
     
     .exam-btn.save {
-      background: #4da6ff;
-      color: #000;
+      background: #fff;
+      color: var(--primary-color);
     }
     
     .exam-btn.save:hover {
-      background: #3399ff;
+      background: var(--success-color);
+      color: white;
     }
     
     .exam-btn.submit {
-      background: #4da6ff;
+      background: #fff;
+      color: var(--primary-color);
     }
     
     .exam-btn.submit:hover {
-      background: #3399ff;
+      background: var(--danger-color);
+      color: white;
     }
     
     .exam-btn.result {
-      background: #4da6ff;
+      background: #fff;
+      color: var(--primary-color);
     }
     
     .exam-btn.result:hover {
-      background: #3399ff;
+      background: var(--warning-color);
+      color: white;
     }
     
     .exam-btn.next {
-      background: #4da6ff;
-      color: #fff;
+      background: #fff;
+      color: var(--primary-color);
     }
     
     .exam-btn.next:hover {
-      background: #3399ff;
+      background: var(--success-color);
+      color: white;
     }
     
     .exam-btn.reset {
-      background: #4da6ff;
+      background: #fff;
+      color: var(--primary-color);
     }
     
     .exam-btn.reset:hover {
-      background: #3399ff;
+      background: var(--warning-color);
+      color: white;
     }
     
     .exam-btn.reset-section {
-      background: #d35400;
+      background: #fff;
+      color: var(--primary-color);
       font-size: 12px;
       padding: 6px 10px;
       min-width: auto;
     }
     
     .exam-btn.reset-section:hover {
-      background: #e67e22;
+      background: var(--warning-color);
+      color: white;
     }
     
     .exam-btn.no-match {
-      background: #95a5a6;
+      background: #e2e8f0;
+      color: var(--text-dark);
       font-size: 12px;
       padding: 6px 10px;
       min-width: auto;
@@ -325,11 +363,13 @@
     }
     
     .exam-btn.no-match:hover {
-      background: #7f8c8d;
+      background: var(--danger-color);
+      color: white;
     }
     
     .exam-btn.no-match.selected {
-      background: #e74c3c;
+      background: var(--danger-color);
+      color: white;
     }
     
     /* Top Tiles */
@@ -338,8 +378,8 @@
       justify-content: center;
       gap: 8px;
       padding: 8px 12px;
-      background: #1e3a5f;
-      border-bottom: 1px solid #0f223a;
+      background: var(--primary-color);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
     
     .tile {
@@ -348,43 +388,44 @@
       text-align: center;
       padding: 12px;
       border-radius: 6px;
-      border: 1px solid #ccc;
-      background: #3b4a63;
+      border: none;
+      background: rgba(255,255,255,0.1);
       color: #fff;
       font-weight: 600;
       font-size: 13px;
       cursor: pointer;
-      transition: all 0.2s ease-in-out;
+      transition: var(--transition);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       min-height: 60px;
+      backdrop-filter: blur(5px);
     }
     
     .tile:hover {
-      background: #4a5b78;
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
     }
     
     .tile.active {
       background: #ffffff;
-      color: #000;
-      border-color: #bbb;
+      color: var(--primary-color);
+      box-shadow: var(--shadow);
     }
     
     .tile.done {
-      background: #2ecc71;
+      background: var(--success-color);
       color: #fff;
-      border-color: #27ae60;
     }
     
     .tile.done::after {
-      content: " ✅";
-      margin-left: 5px;
+      content: " ✓";
+      font-size: 16px;
     }
     
     .tile .points {
-      background: rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.2);
       padding: 4px 8px;
       border-radius: 12px;
       font-weight: 700;
@@ -393,8 +434,8 @@
     }
     
     .tile.active .points {
-      background: #e9eefc;
-      color: #2c3e50;
+      background: var(--primary-color);
+      color: white;
     }
     
     /* Container Styles */
@@ -429,27 +470,28 @@
       background: white;
       border-radius: 8px;
       padding: 18px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      box-shadow: var(--shadow-lg);
       max-height: 76vh;
       overflow: auto;
     }
     
     .left-panel .passage {
       font-size: 14px;
-      color: #2c3e50;
+      color: var(--text-dark);
       line-height: 1.8;
     }
     
     .left-panel h2 {
       font-size: 16px;
       margin-bottom: 10px;
+      color: var(--primary-color);
     }
     
     .right-panel {
       background: white;
       border-radius: 8px;
       padding: 12px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      box-shadow: var(--shadow-lg);
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -461,7 +503,7 @@
       background: white;
       border-radius: 8px;
       padding: 25px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      box-shadow: var(--shadow-lg);
       max-height: 76vh;
       overflow: auto;
     }
@@ -469,7 +511,7 @@
     .panel-title {
       font-size: 18px;
       margin-bottom: 15px;
-      color: #1e3a5f;
+      color: var(--primary-color);
       font-weight: 700;
     }
     
@@ -500,15 +542,17 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      transition: var(--transition);
     }
     
     .option:hover {
       background: #f0f6ff;
+      border-color: var(--primary-color);
     }
     
     .option.selected {
       background: #e8fbe9;
-      border-color: #2ecc71;
+      border-color: var(--success-color);
     }
     
     .option .radio {
@@ -522,8 +566,8 @@
     }
     
     .option.selected .radio {
-      background: #3498db;
-      border-color: #3498db;
+      background: var(--success-color);
+      border-color: var(--success-color);
       box-shadow: inset 0 -3px 0 rgba(0,0,0,0.05);
     }
     
@@ -535,21 +579,23 @@
       background: #fbfdff;
       position: relative;
       min-height: 120px;
+      transition: var(--transition);
     }
     
     .text-container:hover {
       background: #f0f6ff;
+      border-color: var(--primary-color);
     }
     
     .text-title {
       font-weight: 700;
       margin-bottom: 8px;
-      color: #2c3e50;
+      color: var(--primary-color);
     }
     
     .text-content {
       font-size: 14px;
-      color: #2c3e50;
+      color: var(--text-dark);
       line-height: 1.6;
     }
     
@@ -560,17 +606,24 @@
       border: 2px dashed #c8d9f6;
       border-radius: 6px;
       background: #f8fbff;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    .title-slot:hover {
+      background: #e3f2fd;
+      border-color: var(--primary-color);
     }
     
     .title-slot.has-title {
       background: #e8fbe9;
-      border-color: #2ecc71;
+      border-color: var(--success-color);
     }
     
     .title-slot.has-x {
-      background: #f8d7da;
-      border-color: #e74c3c;
-      color: #c0392b;
+      background: #fee9e9;
+      border-color: var(--danger-color);
+      color: var(--danger-color);
       font-weight: bold;
     }
     
@@ -586,39 +639,136 @@
       border: 1px solid #dbe7fb;
       border-radius: 8px;
       background: #f8fbff;
-      cursor: grab;
+      cursor: pointer;
+      transition: var(--transition);
     }
     
     .heading-item:hover {
       background: #e9f0ff;
+      border-color: var(--primary-color);
+      transform: translateX(4px);
+      box-shadow: var(--shadow);
     }
     
     .heading-item.used {
       opacity: 0.5;
       cursor: not-allowed;
-      background: #f8d7da;
-      border-color: #f5c6cb;
+      background: #f1f3f5;
+      border-color: #dee2e6;
     }
     
-    .result-correct {
-      color: #27ae60;
-      font-weight: bold;
+    .heading-item.selected {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--secondary-color);
     }
     
-    .result-incorrect {
-      color: #c0392b;
-      font-weight: bold;
-    }
-    
+    /* Enhanced Results Styles */
     .result-item {
-      margin: 10px 0;
-      padding: 10px;
-      border-radius: 6px;
-      background: #f8f9fa;
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 12px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+    
+    .result-item h3 {
+      color: var(--primary-color);
+      font-size: 18px;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--primary-color);
+    }
+    
+    .result-detail {
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 8px;
+      background: #f8fafc;
+      transition: var(--transition);
+    }
+    
+    .result-detail:hover {
+      transform: translateX(4px);
+      box-shadow: var(--shadow);
+    }
+    
+    .result-detail.correct {
+      border-left: 4px solid var(--success-color);
+    }
+    
+    .result-detail.incorrect {
+      border-left: 4px solid var(--danger-color);
+    }
+    
+    .result-question {
+      flex: 1;
+      font-weight: 500;
+      color: var(--text-dark);
+    }
+    
+    .result-answer {
+      min-width: 150px;
+      text-align: center;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+    
+    .result-answer.correct {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .result-answer.incorrect {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .result-icon {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-left: 10px;
+    }
+    
+    .result-icon.correct {
+      background: var(--success-color);
+      color: white;
+    }
+    
+    .result-icon.incorrect {
+      background: var(--danger-color);
+      color: white;
+    }
+    
+    .result-summary {
+      background: var(--primary-color);
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 20px;
+      text-align: center;
+    }
+    
+    .result-summary h4 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    
+    .result-summary .percentage {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--accent-color);
     }
     
     .instructions {
-      color: #7f8c8d;
+      color: var(--text-light);
       font-size: 14px;
       line-height: 1.6;
       margin-bottom: 15px;
@@ -628,7 +778,7 @@
       font-weight: 600;
       margin-bottom: 15px;
       font-size: 15px;
-      color: #2c3e50;
+      color: var(--primary-color);
     }
     
     .all-questions {
@@ -660,35 +810,49 @@
     
     .text-letter {
       font-weight: bold;
-      color: #2c3e50;
+      color: var(--primary-color);
       margin-bottom: 8px;
     }
     
     .situation-number {
       font-weight: bold;
-      color: #2c3e50;
+      color: var(--primary-color);
       margin-bottom: 8px;
     }
     
     .fill-blank-container {
       margin: 20px 0;
+      line-height: 2.2;
     }
     
     .blank-word {
       display: inline-block;
-      min-width: 120px;
-      padding: 4px 8px;
-      margin: 0 6px;
+      min-width: 100px;
+      padding: 6px 10px;
+      margin: 0 4px;
       background: #fff;
       cursor: pointer;
       position: relative;
-      border: 1px solid #dbe7fb;
-      border-radius: 4px;
+      border: 2px solid #dbe7fb;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    
+    .blank-word:hover {
+      background: #e3f2fd;
+      border-color: var(--primary-color);
     }
     
     .blank-word.has-answer {
       background: #e8fbe9;
-      border-color: #2ecc71;
+      border-color: var(--success-color);
+    }
+    
+    .blank-word.selected {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--secondary-color);
     }
     
     .options-popup {
@@ -698,7 +862,7 @@
       background: white;
       border: 1px solid #dbe7fb;
       border-radius: 6px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: var(--shadow-lg);
       z-index: 100;
       min-width: 150px;
     }
@@ -710,7 +874,8 @@
     }
     
     .option-item:hover {
-      background: #f0f6ff;
+      background: var(--primary-color);
+      color: white;
     }
     
     .option-item:last-child {
@@ -735,7 +900,7 @@
     
     .option-number {
       font-weight: bold;
-      color: #2c3e50;
+      color: var(--primary-color);
       min-width: 30px;
     }
     
@@ -751,17 +916,18 @@
       border-radius: 6px;
       background: #f8fbff;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: var(--transition);
     }
     
     .option-btn:hover {
-      background: #e9f0ff;
+      background: var(--primary-color);
+      color: white;
     }
     
     .option-btn.selected {
-      background: #3498db;
+      background: var(--success-color);
       color: white;
-      border-color: #3498db;
+      border-color: var(--success-color);
     }
     
     .word-bank-vertical {
@@ -771,37 +937,66 @@
     }
     
     .bank-word-vertical {
-      padding: 10px;
-      border: 1px solid #dbe7fb;
-      border-radius: 6px;
+      padding: 12px;
+      border: 2px solid #dbe7fb;
+      border-radius: 8px;
       background: #f8fbff;
       text-align: center;
-      cursor: grab;
+      cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+    
+    .bank-word-vertical:hover {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--secondary-color);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
     }
     
     .bank-word-vertical.used {
       opacity: 0.5;
       cursor: not-allowed;
-      background: #f8d7da;
-      border-color: #f5c6cb;
+      background: #f1f3f5;
+      border-color: #dee2e6;
+    }
+    
+    .bank-word-vertical.selected {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--secondary-color);
     }
     
     .blank-slot {
       display: inline-block;
       min-width: 100px;
-      padding: 4px 8px;
-      margin: 0 6px;
+      padding: 6px 10px;
+      margin: 0 4px;
       background: #fff;
       min-height: 30px;
       vertical-align: middle;
-      border: 1px solid #dbe7fb;
-      border-radius: 4px;
+      border: 2px solid #dbe7fb;
+      border-radius: 6px;
       cursor: pointer;
+      transition: var(--transition);
+      font-weight: 500;
+    }
+    
+    .blank-slot:hover {
+      background: #e3f2fd;
+      border-color: var(--primary-color);
     }
     
     .blank-slot.has-answer {
       background: #e8fbe9;
-      border-color: #2ecc71;
+      border-color: var(--success-color);
+    }
+    
+    .blank-slot.selected {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--secondary-color);
     }
     
     .footer-buttons {
@@ -812,9 +1007,15 @@
     .situation-item.used {
       opacity: 0.7;
       cursor: not-allowed;
-      background: #f8d7da;
-      border-color: #f5c6cb;
-      color: #333;
+      background: #f1f3f5;
+      border-color: #dee2e6;
+      color: var(--text-light);
+    }
+    
+    .situation-item.selected {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--secondary-color);
     }
     
     /* Listening Section Styles */
@@ -827,10 +1028,13 @@
       border-collapse: collapse;
       margin: 20px 0;
       font-size: 14px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
     }
     
     .true-false-table th {
-      background: #3498db;
+      background: var(--primary-color);
       color: white;
       padding: 15px;
       text-align: left;
@@ -842,14 +1046,15 @@
       padding: 15px;
       border-bottom: 1px solid #e1e8f6;
       vertical-align: top;
+      background: white;
     }
     
-    .true-false-table tr:nth-child(even) {
-      background: #f8f9fa;
+    .true-false-table tr:last-child td {
+      border-bottom: none;
     }
     
-    .true-false-table tr:hover {
-      background: #e3f2fd;
+    .true-false-table tr:hover td {
+      background: #f8fafc;
     }
     
     .answer-options {
@@ -862,29 +1067,30 @@
       align-items: center;
       gap: 8px;
       cursor: pointer;
-      padding: 10px 15px;
-      border-radius: 4px;
-      transition: background 0.2s;
+      padding: 8px 15px;
+      border-radius: 20px;
+      transition: var(--transition);
       font-weight: 500;
+      background: #f1f3f5;
     }
     
     .answer-option:hover {
-      background: #e3f2fd;
+      background: var(--primary-color);
+      color: white;
     }
     
     .answer-option input {
       margin: 0;
       transform: scale(1.2);
+      accent-color: var(--primary-color);
     }
 
     .correct-answer {
       background: #d4edda !important;
-      border-left: 4px solid #28a745;
     }
     
     .incorrect-answer {
       background: #f8d7da !important;
-      border-left: 4px solid #dc3545;
     }
     
     /* Writing Section Styles */
@@ -898,7 +1104,7 @@
     
     .writing-prompt {
       font-size: 14px;
-      color: #2c3e50;
+      color: var(--text-dark);
       line-height: 1.6;
       margin-bottom: 15px;
     }
@@ -907,13 +1113,13 @@
       background: #f8f9fa;
       padding: 12px;
       border-radius: 6px;
-      border-left: 4px solid #3498db;
+      border-left: 4px solid var(--primary-color);
       margin-bottom: 15px;
     }
     
     .writing-requirements h4 {
       margin: 0 0 8px 0;
-      color: #2c3e50;
+      color: var(--primary-color);
     }
     
     .writing-requirements ul {
@@ -923,7 +1129,7 @@
     
     .writing-requirements li {
       margin-bottom: 5px;
-      color: #2c3e50;
+      color: var(--text-dark);
     }
     
     .writing-area {
@@ -942,24 +1148,26 @@
       line-height: 1.6;
       resize: vertical;
       font-family: Arial, sans-serif;
+      transition: var(--transition);
     }
     
     .writing-textarea:focus {
       outline: none;
-      border-color: #3498db;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
     }
     
     .word-counter {
       margin-top: 10px;
       text-align: right;
       font-size: 13px;
-      color: #7f8c8d;
+      color: var(--text-light);
       padding: 8px 0;
     }
     
     .word-counter .count {
       font-weight: bold;
-      color: #2c3e50;
+      color: var(--primary-color);
     }
     
     /* Results Page Styles */
@@ -970,17 +1178,18 @@
     }
     
     .results-header {
-      background: #1e3a5f;
+      background: var(--primary-color);
       color: #fff;
       padding: 18px 20px;
       display: flex;
       align-items: center;
       gap: 16px;
+      box-shadow: var(--shadow);
     }
     
     .results-logo {
       background: #fff;
-      color: #1e3a5f;
+      color: var(--primary-color);
       padding: 8px 12px;
       border-radius: 6px;
       font-weight: 800;
@@ -1008,14 +1217,14 @@
       background: #fff;
       border-radius: 10px;
       padding: 16px;
-      box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
-      border-left: 6px solid #1e3a5f;
+      box-shadow: var(--shadow);
+      border-left: 6px solid var(--primary-color);
     }
     
     .results-tile h3 {
       margin: 0;
       font-size: 16px;
-      color: #1e3a5f;
+      color: var(--primary-color);
     }
     
     .results-tile .score {
@@ -1046,14 +1255,17 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: var(--shadow);
     }
     
     .summary .left {
       font-weight: 700;
+      color: var(--primary-color);
     }
     
     .summary .right {
       text-align: right;
+      font-size: 18px;
     }
     
     .controls {
@@ -1063,18 +1275,22 @@
     }
     
     .results-btn {
-      background: #4da6ff;
+      background: var(--primary-color);
       border: none;
       color: #fff;
       padding: 10px 14px;
       border-radius: 8px;
       font-weight: 700;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
     
     .results-btn:hover {
-      background: #3a8ce0;
+      background: var(--secondary-color);
+      transform: translateY(-2px);
     }
     
     .button-like {
@@ -1082,7 +1298,7 @@
     }
     
     .small-muted {
-      color: #6b7280;
+      color: var(--text-light);
       font-size: 13px;
     }
     
@@ -1095,7 +1311,7 @@
     
     .note {
       font-size: 13px;
-      color: #6b7280;
+      color: var(--text-light);
       margin-top: 8px;
     }
     
@@ -1108,21 +1324,22 @@
       background: white;
       border-top: 1px solid #e1e8f6;
       margin-top: 20px;
+      box-shadow: 0 -4px 6px rgba(0,0,0,0.05);
     }
     
     .status {
       font-size: 14px;
-      color: #7f8c8d;
+      color: var(--text-light);
     }
     
     .ghost {
       background: transparent;
-      border: 2px solid #2c3e50;
-      color: #2c3e50;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
     }
     
     .ghost:hover {
-      background: #2c3e50;
+      background: var(--primary-color);
       color: white;
     }
 
@@ -1194,124 +1411,6 @@
         padding: 20px 15px;
       }
     }
-
-    /* === تحسينات خاصة للهواتف الصغيرة جدا === */
-    @media (max-width: 480px) {
-      /* 1. تحسين الحاويات الرئيسية */
-      .container, .container-split, .container-full {
-        grid-template-columns: 1fr !important;
-        padding: 8px !important;
-        gap: 10px !important;
-      }
-      
-      /* 2. جعل اللوحات (panels) تأخذ عرض كامل */
-      .left-panel, .right-panel, .main-panel {
-        max-height: none !important;
-        height: auto !important;
-        overflow: visible !important;
-        margin-bottom: 10px;
-      }
-      
-      /* 3. تحسين الهيدر */
-      .topbar {
-        flex-direction: column !important;
-        align-items: stretch !important;
-        padding: 10px !important;
-      }
-      
-      .brand {
-        justify-content: center;
-        margin-bottom: 10px;
-      }
-      
-      /* 4. تحسين الأزرار في الهيدر */
-      .buttons-grid {
-        grid-template-columns: 1fr !important;
-        width: 100%;
-      }
-      
-      .exam-btn {
-        width: 100% !important;
-        margin: 2px 0 !important;
-        font-size: 14px !important;
-        padding: 12px 8px !important;
-      }
-      
-      /* 5. تحسين التايلات */
-      .top-tiles {
-        flex-wrap: wrap;
-        justify-content: center;
-      }
-      
-      .tile {
-        flex: 0 0 calc(33% - 5px) !important;
-        max-width: calc(33% - 5px) !important;
-        margin: 2px;
-        font-size: 11px !important;
-        padding: 8px 4px !important;
-      }
-      
-      /* 6. تحسين النصوص */
-      .passage, .text-content, .question-text {
-        font-size: 15px !important;
-        line-height: 1.5 !important;
-      }
-      
-      /* 7. تحسين الخيارات */
-      .option {
-        padding: 12px 10px !important;
-        margin: 4px 0 !important;
-      }
-      
-      /* 8. تحسين جداول True/False */
-      .true-false-table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-      }
-      
-      /* 9. تحسين منطقة الكتابة */
-      .writing-textarea {
-        min-height: 300px !important;
-        font-size: 16px !important;
-      }
-      
-      /* 10. تحسين الفوتر */
-      footer.controls {
-        flex-direction: column !important;
-        gap: 10px !important;
-      }
-      
-      .footer-buttons {
-        width: 100%;
-        display: flex;
-        gap: 5px;
-      }
-      
-      .footer-buttons .exam-btn {
-        flex: 1;
-      }
-      
-      /* 11. تحسين النتائج */
-      .results-tiles {
-        flex-direction: column !important;
-      }
-      
-      .results-tile {
-        margin-bottom: 10px;
-      }
-    }
-
-    /* === تحسينات للهواتف المتوسطة === */
-    @media (min-width: 481px) and (max-width: 768px) {
-      .container, .container-split {
-        grid-template-columns: 1fr !important;
-      }
-      
-      .tile {
-        max-width: 180px !important;
-      }
-    }
   </style>
 </head>
 <body id="body">
@@ -1319,31 +1418,31 @@
   <div id="start-page" class="start-container">
     <div class="start-content">
       <div class="logo">
-        <div class="logo-icon">📝</div>
+        <div class="logo-icon">📚</div>
         <h1>Deutsch B2 Prüfung</h1>
         <div class="subtitle">Bereiten Sie sich auf Ihre Prüfung vor</div>
       </div>
       <div class="card">
-        <h2>Prüfungsbereich auswählen</h2>
+        <h2>📋 Prüfungsbereich auswählen</h2>
         <p>Wählen Sie bitte den Bereich aus, den Sie üben möchten. Die Prüfung startet automatisch in <span id="time-display">30</span> Sekunden.</p>
         <select id="sectionSelect">
-          <option value="lesen">Lesen</option>
-          <option value="hoeren">Hören</option>
-          <option value="schreiben">Schreiben</option>
+          <option value="lesen">📖 Lesen</option>
+          <option value="hoeren">🎧 Hören</option>
+          <option value="schreiben">✍️ Schreiben</option>
         </select>
         <div class="button-container">
-          <button id="cancelBtn" class="btn">Abbrechen</button>
-          <button id="startBtn" class="btn">Jetzt starten</button>
+          <button id="cancelBtn" class="btn btn-secondary">❌ Abbrechen</button>
+          <button id="startBtn" class="btn">🚀 Jetzt starten</button>
         </div>
       </div>
       <div class="timer-container">
-        <div class="timer-label">Die Prüfung startet in:</div>
+        <div class="timer-label">⏳ Die Prüfung startet in:</div>
         <div class="timer" id="countdown">30</div>
         <div class="progress-bar">
           <div class="progress" id="progress"></div>
         </div>
       </div>
-      <div class="info-text">Stellen Sie sicher, dass Sie in einer ruhigen Umgebung sind und genügend Zeit haben.</div>
+      <div class="info-text">💡 Stellen Sie sicher, dass Sie in einer ruhigen Umgebung sind und genügend Zeit haben.</div>
     </div>
   </div>
 
@@ -1351,21 +1450,21 @@
   <div id="lesen-page" class="exam-page" style="display: none;">
     <header class="topbar" role="banner">
       <div class="brand">
-        <div class="logo">test</div>
+        <div class="logo">📚</div>
         <div class="meta">
           <div class="main-title">Deutsch - B2 (Übung)</div>
           <div class="sub-title">Lesen — Testbeispiel</div>
         </div>
       </div>
 
-      <div id="timer-lesen" class="timer" aria-live="polite">Verbleibende Zeit: 90:00</div>
+      <div id="timer-lesen" class="timer" aria-live="polite">⏱️ Verbleibende Zeit: 90:00</div>
 
       <div class="buttons-grid">
-        <button id="resetBtn-lesen" class="exam-btn reset">🔄 Von neu beginnen</button>
-        <button id="saveBtn-lesen" class="exam-btn save">📋 Speichern</button>
+        <button id="resetBtn-lesen" class="exam-btn reset">🔄 Neu beginnen</button>
+        <button id="saveBtn-lesen" class="exam-btn save">💾 Speichern</button>
         <button id="resultBtn-lesen" class="exam-btn result">📊 Ergebnis</button>
-        <button id="submitBtn-lesen" class="exam-btn submit">🏁 Abgabe</button>
-        <button class="exam-btn next" id="nextBtn-lesen">➡️ Nächste Prüfung</button>
+        <button id="submitBtn-lesen" class="exam-btn submit">📤 Abgabe</button>
+        <button class="exam-btn next" id="nextBtn-lesen">⏭️ Nächste Prüfung</button>
       </div>
     </header>
 
@@ -1385,7 +1484,7 @@
             <div id="sectionName-lesen" style="font-weight:800"></div>
             <div id="questionTitle-lesen" style="font-size:13px;color:#55607a">Frage</div>
           </div>
-          <button id="resetSectionBtn-lesen" class="exam-btn reset-section" style="display:none;">Teil zurücksetzen</button>
+          <button id="resetSectionBtn-lesen" class="exam-btn reset-section" style="display:none;">⟲ Teil zurücksetzen</button>
         </div>
         <div class="question-body" id="questionBody-lesen"></div>
         <div id="headingsBankContainer-lesen"></div>
@@ -1394,10 +1493,10 @@
 
     <footer class="controls">
       <div class="footer-buttons">
-        <button id="prevBtn-lesen" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-lesen" class="exam-btn ghost">Weiter</button>
+        <button id="prevBtn-lesen" class="exam-btn ghost">◀ Zurück</button>
+        <button id="nextBtn-lesen" class="exam-btn ghost">Weiter ▶</button>
       </div>
-      <div class="status"><span id="statusText-lesen">Nicht gespeichert</span></div>
+      <div class="status"><span id="statusText-lesen">⏳ Nicht gespeichert</span></div>
     </footer>
   </div>
 
@@ -1405,21 +1504,21 @@
   <div id="hoeren-page" class="exam-page" style="display: none;">
     <header class="topbar" role="banner">
       <div class="brand">
-        <div class="logo">test</div>
+        <div class="logo">🎧</div>
         <div class="meta">
           <div class="main-title">Deutsch - B2 (Übung)</div>
           <div class="sub-title">Hörverstehen — Testbeispiel</div>
         </div>
       </div>
 
-      <div id="timer-hoeren" class="timer" aria-live="polite">Verbleibende Zeit: 17:00</div>
+      <div id="timer-hoeren" class="timer" aria-live="polite">⏱️ Verbleibende Zeit: 17:00</div>
 
       <div class="buttons-grid">
-        <button id="resetBtn-hoeren" class="exam-btn reset">🔄 Von neu beginnen</button>
-        <button id="saveBtn-hoeren" class="exam-btn save">📋 Speichern</button>
+        <button id="resetBtn-hoeren" class="exam-btn reset">🔄 Neu beginnen</button>
+        <button id="saveBtn-hoeren" class="exam-btn save">💾 Speichern</button>
         <button id="resultBtn-hoeren" class="exam-btn result">📊 Ergebnis</button>
-        <button id="submitBtn-hoeren" class="exam-btn submit">🏁 Abgabe</button>
-        <button class="exam-btn next" id="nextBtn-hoeren">➡️ Nächste Prüfung</button>
+        <button id="submitBtn-hoeren" class="exam-btn submit">📤 Abgabe</button>
+        <button class="exam-btn next" id="nextBtn-hoeren">⏭️ Nächste Prüfung</button>
       </div>
     </header>
 
@@ -1433,10 +1532,10 @@
 
     <footer class="controls">
       <div class="footer-buttons">
-        <button id="prevBtn-hoeren" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-hoeren" class="exam-btn ghost">Weiter</button>
+        <button id="prevBtn-hoeren" class="exam-btn ghost">◀ Zurück</button>
+        <button id="nextBtn-hoeren" class="exam-btn ghost">Weiter ▶</button>
       </div>
-      <div class="status"><span id="statusText-hoeren">Nicht gespeichert</span></div>
+      <div class="status"><span id="statusText-hoeren">⏳ Nicht gespeichert</span></div>
     </footer>
   </div>
 
@@ -1444,21 +1543,21 @@
   <div id="schreiben-page" class="exam-page" style="display: none;">
     <header class="topbar" role="banner">
       <div class="brand">
-        <div class="logo">test</div>
+        <div class="logo">✍️</div>
         <div class="meta">
           <div class="main-title">Deutsch - B2 (Übung)</div>
           <div class="sub-title">Schreiben — Testbeispiel</div>
         </div>
       </div>
 
-      <div id="timer-schreiben" class="timer" aria-live="polite">Verbleibende Zeit: 30:00</div>
+      <div id="timer-schreiben" class="timer" aria-live="polite">⏱️ Verbleibende Zeit: 30:00</div>
 
       <div class="buttons-grid">
-        <button id="resetBtn-schreiben" class="exam-btn reset">🔄 Von neu beginnen</button>
-        <button id="saveBtn-schreiben" class="exam-btn save">📋 Speichern</button>
+        <button id="resetBtn-schreiben" class="exam-btn reset">🔄 Neu beginnen</button>
+        <button id="saveBtn-schreiben" class="exam-btn save">💾 Speichern</button>
         <button id="resultBtn-schreiben" class="exam-btn result">📊 Ergebnis</button>
-        <button id="submitBtn-schreiben" class="exam-btn submit">🏁 Abgabe</button>
-        <button class="exam-btn next" id="nextBtn-schreiben">➡️ Nächste Prüfung</button>
+        <button id="submitBtn-schreiben" class="exam-btn submit">📤 Abgabe</button>
+        <button class="exam-btn next" id="nextBtn-schreiben">⏭️ Nächste Prüfung</button>
       </div>
     </header>
 
@@ -1479,17 +1578,17 @@
 
     <footer class="controls">
       <div class="footer-buttons">
-        <button id="prevBtn-schreiben" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-schreiben" class="exam-btn ghost">Weiter</button>
+        <button id="prevBtn-schreiben" class="exam-btn ghost">◀ Zurück</button>
+        <button id="nextBtn-schreiben" class="exam-btn ghost">Weiter ▶</button>
       </div>
-      <div class="status"><span id="statusText-schreiben">Nicht gespeichert</span></div>
+      <div class="status"><span id="statusText-schreiben">⏳ Nicht gespeichert</span></div>
     </footer>
   </div>
 
   <!-- Ergebnisse Page -->
   <div id="ergebnisse-page" class="results-page" style="display: none;">
     <header class="results-header">
-      <div class="results-logo">test</div>
+      <div class="results-logo">📊</div>
       <div class="results-title">Gesamtergebnis — Deutsch B2</div>
     </header>
 
@@ -1499,23 +1598,145 @@
       <div class="summary" id="finalSummary-ergebnisse"></div>
       <div class="controls">
         <a class="button-like" href="#" id="backBtn-ergebnisse">
-          <button class="results-btn">🔁 Zurück zur Startseite</button>
+          <button class="results-btn">🔙 Zurück zur Startseite</button>
         </a>
-        <button id="calcBtn-ergebnisse" class="results-btn">✅ Ergebnisse anzeigen</button>
+        <button id="calcBtn-ergebnisse" class="results-btn">📊 Ergebnisse anzeigen</button>
       </div>
-      <div class="note">Hinweis: Schreiben (45 Punkte) wird manuell eingegeben, falls nicht automatisch vorhanden.</div>
+      <div class="note">💡 Hinweis: Schreiben (45 Punkte) wird manuell eingegeben, falls nicht automatisch vorhanden.</div>
     </div>
   </div>
+
+  <!-- Login Error Modal (يظهر فقط عند رفض الدخول) -->
+  <div id="login-error-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center;">
+    <div style="background: white; border-radius: 16px; padding: 40px; max-width: 400px; text-align: center;">
+      <div style="font-size: 64px; margin-bottom: 20px;">🔒</div>
+      <h2 style="color: #d32f2f; margin-bottom: 20px;">Zugriff verweigert</h2>
+      <p id="error-message" style="color: #333; margin-bottom: 30px; font-size: 16px;">Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.</p>
+      <button id="redirect-to-login" style="background: #d32f2f; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;">🔑 Zum Login</button>
+    </div>
+  </div>
+
+  <script type="module">
+    // =============================================
+    // التحقق من تسجيل الدخول - نسخة محسنة وآمنة
+    // =============================================
+    
+    (async function() {
+      // تكوين Supabase
+      const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
+      
+      // تهيئة Supabase
+      const { createClient } = window.supabase;
+      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      
+      // عناصر الصفحة
+      const body = document.getElementById('body');
+      const startPage = document.getElementById('start-page');
+      const loginErrorModal = document.getElementById('login-error-modal');
+      const errorMessage = document.getElementById('error-message');
+      
+      // دالة لعرض خطأ تسجيل الدخول
+      function showLoginError(message) {
+        // إخفاء محتوى الصفحة
+        startPage.style.display = 'none';
+        
+        // إظهار نافذة الخطأ
+        errorMessage.textContent = message || 'Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.';
+        loginErrorModal.style.display = 'flex';
+      }
+      
+      // التحقق من تسجيل الدخول
+      try {
+        // التحقق من الجلسة في Supabase
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError || !session) {
+          showLoginError('❌ Keine aktive Sitzung gefunden. Bitte melden Sie sich an.');
+          return;
+        }
+        
+        // التحقق من جدول permissions
+        const { data: permissions, error: permError } = await supabase
+          .from('user_permissions')
+          .select('can_access, subscription_type, subscription_expiry, trial_expiry')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
+        
+        // إذا كان هناك خطأ أو لا يوجد صلاحيات
+        if (permError) {
+          console.error('Permissions error:', permError);
+          showLoginError('❌ Fehler bei der Überprüfung Ihrer Berechtigungen.');
+          return;
+        }
+        
+        // إذا لم يتم العثور على المستخدم في جدول permissions
+        if (!permissions) {
+          // محاولة إدراج المستخدم إذا لم يكن موجوداً
+          const { error: insertError } = await supabase
+            .from('user_permissions')
+            .insert({
+              user_id: session.user.id,
+              email: session.user.email,
+              can_access: true,
+              subscription_type: 'free',
+              created_at: new Date().toISOString()
+            });
+          
+          if (insertError) {
+            console.error('Insert error:', insertError);
+            showLoginError('❌ Fehler beim Erstellen Ihres Benutzerkontos.');
+            return;
+          }
+        } else if (!permissions.can_access) {
+          // إذا كان can_access = false
+          showLoginError('❌ Sie haben keine Berechtigung für den Zugriff auf diese Prüfung.');
+          return;
+        }
+        
+        // التحقق من انتهاء الاشتراك
+        const now = new Date();
+        
+        if (permissions && permissions.subscription_type === 'trial_24h' && permissions.trial_expiry) {
+          const trialExpiry = new Date(permissions.trial_expiry);
+          if (trialExpiry < now) {
+            showLoginError('❌ Ihre Testphase ist abgelaufen. Bitte aktivieren Sie ein Abonnement.');
+            return;
+          }
+        }
+        
+        if (permissions && permissions.subscription_expiry) {
+          const subscriptionExpiry = new Date(permissions.subscription_expiry);
+          if (subscriptionExpiry < now) {
+            showLoginError('❌ Ihr Abonnement ist abgelaufen. Bitte erneuern Sie Ihr Abonnement.');
+            return;
+          }
+        }
+        
+        // إذا وصلنا إلى هنا، المستخدم مصرح له
+        console.log('✅ Zugriff gewährt für:', session.user.email);
+        
+        // إظهار محتوى الصفحة
+        startPage.style.display = 'flex';
+        
+      } catch (error) {
+        console.error('❌ Kritischer Fehler:', error);
+        showLoginError('❌ Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
+      }
+    })();
+  </script>
 
   <script>
     // ===== PAGE NAVIGATION =====
     function showPage(pageId) {
+      // Hide all pages
       document.getElementById('start-page').style.display = 'none';
       document.getElementById('lesen-page').style.display = 'none';
       document.getElementById('hoeren-page').style.display = 'none';
       document.getElementById('schreiben-page').style.display = 'none';
       document.getElementById('ergebnisse-page').style.display = 'none';
       
+      // Change body class based on page
       document.getElementById('body').className = '';
       if (pageId === 'ergebnisse-page') {
         document.getElementById('body').className = 'results-body';
@@ -1523,8 +1744,10 @@
         document.getElementById('body').className = 'exam-body';
       }
       
+      // Show selected page
       document.getElementById(pageId).style.display = 'block';
       
+      // Initialize the page if needed
       if (pageId === 'lesen-page' && typeof initLesenPage === 'function') {
         initLesenPage();
       } else if (pageId === 'hoeren-page' && typeof initHoerenPage === 'function') {
@@ -1535,6 +1758,11 @@
         initErgebnissePage();
       }
     }
+
+    // ربط زر التوجيه للـ Login
+    document.getElementById('redirect-to-login').addEventListener('click', function() {
+      window.location.href = '../index.html';
+    });
 
     // ===== START PAGE FUNCTIONALITY =====
     let initialCounter = 30;
@@ -1550,9 +1778,12 @@
     const cancelBtn = document.getElementById("cancelBtn");
 
     function startCountdown() {
+      // prevent double-starts or starting after exam already began
       if (countdownRunning || examStarted) return;
       countdownRunning = true;
+      // disable start button while counting
       try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
+      // reset counter & UI
       counter = initialCounter;
       timerEl.textContent = counter;
       timeDisplayEl.textContent = counter;
@@ -1570,10 +1801,12 @@
           countdownInterval = null;
           countdownRunning = false;
           progressEl.style.transform = "scaleX(1)";
+          // ensure exam starts only once
           if (!examStarted) {
             examStarted = true;
             startExam();
           }
+          // safety: re-enable start button (page usually navigates away)
           try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
         }
       }, 1000);
@@ -1597,6 +1830,7 @@
     }
 
     function startExam() {
+      // guard to ensure startExam is triggered once
       if (!examStarted) examStarted = true;
       const selectedSection = selectEl.value;
       if (selectedSection === 'lesen') {
@@ -1608,6 +1842,7 @@
       }
     }
 
+    // wire buttons: start will now start the countdown (not the exam directly)
     startBtn.addEventListener('click', startCountdown);
 
     cancelBtn.addEventListener('click', () => {
@@ -1616,10 +1851,10 @@
       timerEl.style.color = "#e53e3e";
     });
 
-    // ===== LESEN PAGE FUNCTIONALITY =====
-    function initLesenPage() {
-      const exam = {
-        id: "exam-001",
+    // ===== EXAM DATA =====
+    const EXAM_DATA = {
+      lesen: {
+        id: "exam-lesen-001",
         durationSec: 90 * 60,
         sections: [
           { 
@@ -1630,286 +1865,139 @@
             passage: "",
             questions: [],
             texts: [
-              {
-                id: "text1",
-                content: "Das Lesemagazin MENU hat eine Umfrage zu den populärsten Märkten in Österreich durchgeführt. Vor der eigentlichen Abstimmung hatte das Magazin seine Leserinnen und Leser dazu aufgerufen, Markte zu nominieren. Aus den häufigsten Nennungen hat das Redaktionsteam eine Liste mit zwanzig Märkte aus ganz Österreich erstellt und zwei Wochen lang online zur Abstimmung angeboten. Als klarer Sieger ging der Markt am Domplatz von St. Pölten hervor. Dieser ist berühmt für sein ganzjähriges Einkaufsvergnügen. Als Nahversorger für die Innenstadt und Anziehungspunkt für Menschen aus dem Umlana trägt er erheblich zur Lebensqualität der Bevölkerung bei, Auf Platz zwei und drei folgten zwei buregländische Märkte, nämlich der Markt der Erde in Parndorf und der Regionalmarkt in den ehemaligen Stallungen von Schloss Esterhäzy in Eisenstadt. Das große Interesse an der Abstimmung zeigt laut MENU, wie sehr die Konsumentinnen und Konsumenten Märkte schätzen.",
-                correctAnswer: "d"
-              },
-              {
-                id: "text2", 
-                content: "Sie sind der Meinung, dass Ihre Qualifikationen ausreichen, um Karriere zu machen? Qualifikationen und Berufserfahrung sind zwar wichtige Kriterien für den erfolgreichen Aufstieg auf der Karriereleiter, doch ohne gutes Selbstmarketing werden Sie auf halbem Wege stehenbleiben. Das ist letztlich genauso wie beim Verkauf eines Produktes: Es reicht nicht, dass ein Produkt gut ist, es muss auch gut beworben werden. Während Marketing das Produkt vorteilhaft am Markt platzieren möchte, verfolgt man beim Selbstmarketing das Ziel, seine Persönlichen und Stärken bewusst hervorzuheben. Mit anderen Worten: Es geht darum, sich gut zu verkaufen. Selbstmarketing beginnt schon bei der Bewerbung und dem Vorstellungssprach und setzt sich im Job fort. Auch dort müssen Sie auf sich aufmerksam machen. Doch Achtung: Angeber mag niemand! Wie Sie das richtige Maß finden, erfahren Sie in einem Seminar, das an vier Wochenenden im April in Klagenfurt stattfindet. Alle Details gibt es hier.",
-                correctAnswer: "f"
-              },
-              {
-                id: "text3",
-                content: "Der Wiener Naschmarkt gehört zu Österreichs beliebtesten Märkten. Mit einer Fläche von mehr als zwei Hektar ist er der größte Markt in der Innenstadt. Schon 1780 handelten Bauern dort mit Milchprodukten. Gemauerte Marktstände entstanden erst mehr als 100 Jahre später. Von 1910 an wurden mehr als 120 fixe Marktstände im einheitlichen Stil von Otto Wagner geplant und errichtet. Das Marktantagebäude bei der Kettenbrückengasse wurde 1916 fertiggestellt. Heute ist der Naschmarkt eine begehrte Wiener Sehenswürdigkeit. Bei Schönwettet zählt der Markt mehr als 65, 000 Personen pro woche, viele davon Touristen. Ein Teil der Marktfläche ist für Gastronomietbetriebe reserviert. Nun erzählt ein neuer Reiseführer die Geschichte des Naschmarktes, reich illustriert mit alten Aufnahmen. Ein Kapitel behandelt auch die berühmten Wienzeilenhäuser Otto Wagners, die sich an der Linken Wienzeile im Bereich des Naschmarktes befinden. Dazu gibt es Einkaufstipps und Beschreibungen der Lokale. „Der Markt am Wienfluss“. Hrsg. Hannes Ortner, 35 Seiten, 17 Euro.",
-                correctAnswer: "j"
-              },
-              {
-                id: "text4",
-                content: "Wer bloggt, zeigt neben Fachkompetenz auch Kreativität. Das schätzen auch 4 Arbeitgeber. Ob man über fachliche Fragestellungen schreibt oder einfach nur über das Leben - das Themenspektrum von Blogs ist riesig. Genauso vielfältig sind auch die Möglichkeiten, die sie Bewerberinnen und Bewerbern bieten. Wer einen Blog professionell betreibt, kann seine fachlichen Kompetenzen präsentieren und gleichzeitig seinen Ideenreichtum unter Beweis stellen. Doch auch die Darstellung eines Hobbys zeigt, dass der Bewerber aktiv und kreativ ist. Experten raten daher Bloggerinnen und Bloggern, in ihren Bewerbungsunterlagen gezielt darauf hinzuweisen. Doch Achtung: Ein Blog kann Bewerber auch in einem schlechten Licht erscheinen lassen. Bloggen während der Arbeitszeit und das Schreiben über Firmeninterna sind natürlich tabu.",
-                correctAnswer: "e"
-              },
-              {
-                id: "text5",
-                content: "Bis Herbst soll ein neues Marktkonzept für den altehrwürdigen Salzburger Grünmarkt vorliegen. Damit der Markt für Besucherinnen und Besucher wieder attraktiver wird, setzt die zuständige Stelle im Magistrat auf Nachhaltigkeit. Biologische Lebensmittel aus nachhaltiger Produktion, im Idealfall aus der Region, sollen den Markt wieder zu einem Fixpunkt in der Altstadt werden lassen. Der für Märkte, Stadtnatur und Lebensqualität zuständige Vizebürgermeister hofft, dass der Markt dazu beitragen kann, ein positives Lebensgefühl zu vermitteln. Obwohl die Stadt die Verkaufsstände vor einigen Jahren aufwändig hatte restaurieren lassen, verzeichneten die Händler zuletzt einen deutlichen Rückgang an Kundschaft. Zudem haben einige von ihnen altersbedingt ihre Verkaufsstände aufgegeben. In diesem Zusammenhang wurde auch die beliebte Foodbloggerin Jasmin May engagiert. Sie soll dazu beitragen, das Konzept in der Öffentlichkeit bekannter zu machen. Wir werden das Projekt weiterverfolgen und von seinem Fortgang berichten.",
-                correctAnswer: "a"
-              }
+              // Hier die Texte einfügen
             ],
             headings: [
-              {id: "a", text: "Erneuerungskur für einen alten Markt"},
-              {id: "b", text: "Junge Influencer werben für Bioprodukte"},
-              {id: "c", text: "Neues Buch über einen Wiener Architekten erschienen"},
-              {id: "d", text: "Österreichs beliebteste Marktplätze"},
-              {id: "e", text: "Schreiben im Internet für die Karriere"},
-              {id: "f", text: "Schulung zum Erfolg im Beruf"},
-              {id: "g", text: "Seminar: Produkte erfolgreich verkaufen"},
-              {id: "h", text: "Warum immer mehr Menschen auf Märkten einkaufen"},
-              {id: "i", text: "Wenn Blogger Firmengeheimnisse verraten"},
-              {id: "j", text: "Wissenswertes über Wiens größten innerstädtischen Markt"}
+              // Hier die Überschriften einfügen
             ]
           },
           { 
-            id: "s2", 
-            title: "Leseverstehen, Teil 2", 
-            points: 25,
-            passageTitle: "Österreich, das Land der Poolbesitzer",
-            passage: `Österreich schwimmt. Und das nicht nur in Seen, Teichen oder Frebadem, Ein Bick über die Gatenzaune des Landes macht deutlich: Die Österreicher schwimmen zunehmend gerne zu Hause. Die Poolbranche schätzt die Anzahl der Poolbesitzer in Österreich auf etwa 90.000 bis 150.000. Im Vergleich zu Deutschland ist Österreich wesentlich dichter mit Polls besiedelt. Warum Swimmingpools so beliebt sind, darüber herrscht Uneinigkeit. Manche Vertreter der Branche sehen darin eine Reaktion auf wirtschaftlich unsichere Zeiten. Da investierten die Leute gerne in die eigenen vier Wände und in den Gartern inklusive Pools, meinen sie. Aridere sehen darin einen Ausdruck des allgemeinen Wellness-und Gesundheitstrends. Auch die Sehnsucht nach dem Meer wird bisweilen als Argument für den ausgeprägten Wunsch nach einem Pool vorgebracht. Das allein kann es nicht sein, denn als stärkster Poolmarkt in Europa gilt nach wie vor Frankreich. Branchenkenner führen den Boom aber auch auf finanzielle Gründe zurück. Dass der Umsatz in den vergangenen Jahren stetig angestiegen ist, sehen viele im Angebot an preismäßigen Pools begründet. Vor 20 Jahren sei ein eigenes Schwimmbad noch ein absolutes Luxusgut gewesen. Jetzt gebe es immer mehr Alternativen, die einen Pool erschwinglich machen. Welche Gründe auch ausschlaggebend sein mögen: Die Branche besitzt durchaus noch Potenzial, da sind sich alle einig. Laut einer kurzlei durchgeführten Studie träumt nämlich beinahe jeder zweite Österreicher von einem Pool. An erster Stelle der Wohnungswünsche steht er zwar nicht: So hat für 97 Prozent der befragten Österreicher die Traumimmobilie einen Balkon, eine Loogia oder eine Terrasse, und 92 Prozent wünschen sich eine Garage. 82 Prozent sehnen sich nach einem Garten, und 46 Prozent nach einem Swimmingpool - und zehn Prozent besitzen auch einen solchen. Dabei gibt es regionale Unterschiede. In absoluten Zahlen gibt es die meisten Pools in Wien und Niedergsterreich. Pro Kopf gerechnet gibt es aber in Vorarlberg die meisten privaten Schwimmbader. Einen nagelneuen Pool hat auch die 37-jährige Rija in ihrem neuen Zuhause. Die Wienerin ist mit ihrem Lebensgefährten vor kurzem nach Niederösterreich gezogen. Es war immer mein Traum einen Pool zu haben", sagt sie. Nun kann sie den Sommer im eigenen Pool genießen. Neben der Entspannung und Abkühlung hat der Pool für sie noch einen weiteren Wert Der Pool hat Leben in den Garten gebracht. Es haben sich schon alle möglichen Bekannten zum Schwimmen angemeldet", sagt sie, Denen drück ich aber vorher einen Spaten in die Hand - ein Teil vom Garten ist ja noch Baustelle." Tatsächlich schweißt so ein Pool nicht nur die Nachbarschaft zusammen. Es ist auch die beste Werbung für weitere Becken. Kaum hat einer in einer Siedlung einen Pool, hat der Nachbar spatiestens nach zwei Jahren auch einen", meint ein Branchenvertreter. Besonders deutlich wird das in Kleingartensiedlungen, bei denen ein kleines Schwimmbecken schon beinahe zur Grundausstattung gehörn. Doch manche Menschen bevorzugen naturnahe Schwimmteiche. Nach Schätzungen macht de Anteil der Schwimmteiche am Schwimmanlagenmarkt rund 15 Prozent aus, in den vergangenen Jahren ist die Nachfrage nach Schwimmteichen stark gestiegen. Das hat auch zur Entwicklung von Naturpools geführt. Optisch ein klassischer Swimmingpool, kommt der Naturpool ganzlich ohne Chemikalien aus Hier wird das Wasser durch Pumpen und Fillersysteme sauber gehalten. Bei der naturlichen Variante geht es übrigens bei 35.000 Euro los. Dafür spart man sich das jährliche Befüllen und Putzen. Das jährliche Befüllen von Pools aus den Wasserleitungen kann in manchen Regionen gelegentlich zu Wasserknappheit führen. Das betrifft aber meist nur jene Gemeinden, die von sehr kleinen Wassergenossenschaften versorgt werden. In Wien fali die Belülung der Pools kaum auf. Was den Leiter des Wiener Rohmetzes eher stort, ist der Wasserdiebstahl über Hydranten, also über die Zapistellen in den Straßen für Feuerwehr und Straßenreinigung. Denn wer es besonders eilig hat, kann seinen Pool auch über die Hydranten befüllen. Das geht schneller, muss aber angemeldet werden und kostet Geid. Generell gebe es aber keine Wasserknappheit. Es sei genug Wasser für alle da, so die Wesserversorger. Fürs Auffallen von Pools, aber auch fürs Blumengießen, zum Duschen und auch zum Trinken Wir verwenden in Österreich nur ein Prozent der vorhandenen Wasserressourcen.`,
+            id:"s2", 
+            title:"Leseverstehen, Teil 2", 
+            points:25,
+            passageTitle: "Hier den Titel des Textes einfügen",
+            passage: "Hier den Lesetext einfügen",
             questions: [
-              {
-                id: "s2q1",
-                type: "single",
-                text: "Einige Vertreter der Poolbranche denken, dass",
-                options: [
-                  {id: "s2q1o1", text: "es in Österreich bald mehr Pools gibt als in Frankreich"},
-                  {id: "s2q1o2", text: "in unsicheren Zeiten weniger investiert wird."},
-                  {id: "s2q1o3", text: "mehr Leute einen Pool bauen, weil Pools billiger geworden sind."}
-                ],
-                correctAnswer: "s2q1o3"
-              },
-              {
-                id: "s2q2",
-                type: "single", 
-                text: "Laut einer Studie",
-                options: [
-                  {id: "s2q2o1", text: "möchten die meisten Befragten ein Heim mit Garage."},
-                  {id: "s2q2o2", text: "steht ein Pool nicht an erster Stelle auf der Wunschliste,"},
-                  {id: "s2q2o3", text: "wünschen sich 10 Prozent der Österreicher einen Pool."}
-                ],
-                correctAnswer: "s2q2o2"
-              },
-              {
-                id: "s2q3",
-                type: "single",
-                text: "Rija ist der Meinung, dass",
-                options: [
-                  {id: "s2q3o1", text: "ein Pool die Nachbarn neidisch macht."},
-                  {id: "s2q3o2", text: "ihr Pool ein Anziehungspunkt für Freunde geworden ist."},
-                  {id: "s2q3o3", text: "ihre Freunde beim Poolbau helfen sollen."}
-                ],
-                correctAnswer: "s2q3o2"
-              },
-              {
-                id: "s2q4",
-                type: "single",
-                text: "Naturpools",
-                options: [
-                  {id: "s2q4o1", text: "brauchen keine chemischen Reinigungsmittel."},
-                  {id: "s2q4o2", text: "müssen häufig geputzt werden."},
-                  {id: "s2q4o3", text: "sehen genauso aus wie Schwimmteiche."}
-                ],
-                correctAnswer: "s2q4o1"
-              },
-              {
-                id: "s2q5", 
-                type: "single",
-                text: "In Wien",
-                options: [
-                  {id: "s2q5o1", text: "darf man einen Pool nur mit Wasser aus der Leitung füllen."},
-                  {id: "s2q5o2", text: "führt das Befüllen von Pools regelmäßig zu Wasserknappheit."},
-                  {id: "s2q5o3", text: "wird manchmal Wasser zum Befüllen von Pools gestohlen"}
-                ],
-                correctAnswer: "s2q5o3"
-              }
+              // Hier die Multiple-Choice-Fragen einfügen
             ]
           },
           { 
-            id: "s3", 
-            title: "Leseverstehen, Teil 3", 
-            points: 25,
-            passageTitle: "Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchما passt kein Text. Wählen Sie dann 'x'.",
+            id:"s3", 
+            title:"Leseverstehen, Teil 3", 
+            points:25,
+            passageTitle:"Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchmal passt kein Text. Wählen Sie dann 'x'.",
             passage: "",
-            questions: [],
+            questions:[],
             texts: [
-              {id: "A", text: "Die Nachfrage nach individueller Farb- und Stilberatung ist groß. Denn wer heute im Geschäfts- wie auch im Privatleben erfolgreich sein möchte, muss sich in Outfit und Benehmen vorteilhaft präsentieren können. Der Leitfaden zeigt Ihnen, wie Sie sich selbst am besten in Szene setzen. Von der passenden und farblich stimmigen Garderobe über Make-up und Accessoires bis zu modernen Umgangsformen. Nutzen Sie also diesen 'Kurs' als Eintrittskarte in diese reizvolle Welt der Selbstdarstellung. Sie werden garantiert mit einem überzeugenden und gewinnenden persönlichen Auftritt davon profitieren.", correctAnswer: "16"},
-              {id: "B", text: "Die meisten Menschen kennen keine Strategien, wie sie ihr Lernverhalten und die Fähigkeit, sich Informationen zu merken, gezielt trainieren können. Dieses Buch gibt zunächst einen Überblick, wie das menschliche Gedächtnis funktioniert, und bietet dann eine Fülle von Techniken an, mit denen auch Ungeübte sich das Lernen und Arbeiten leichter machen können.", correctAnswer: "13"},
-              {id: "C", text: "Dieses erstmals 1788 erschienene Buch handelt von dem Umgang der Menschen miteinander und gibt Ratschläge, wie man sich im Umgang mit Menschen verschiedenster Alters- und Rangstufen richtig verhält. Es definiert, was Gutes und was schlechtes Verhalten ist, und galt so lange Zeit als ein Leitfaden für “richtiges” Benehmen.", correctAnswer: null},
-              {id: "D", text: "Tim Gallwey entwickelte die Theorie vom Tennis-Spiel, das sich im Kopf abspielt. Er zeigt, wie jeder sein Leben frei von Angst und mit Eleganz spielen kann, ohne in Selbstzweifel oder Unkonzentriertheit zu verfallen. Das Gallwey’sche Tennisspiel setzt ungeahnte Energien frei und zeigt das grenzenlose Potential des menschlichen Körpers und Geistes, wenn es darum geht, seine Lebensziele zu verfolgen und zu erreichen.", correctAnswer: "12"},
-              {id: "E", text: "Jeder Mensch kann seine kommunikativen Möglichkeiten entdecken und damit sein Leben bereichern. Die Themen des Buches sind: Die Grundlagen der Kommunikation, Rede und Vortrag, Gespräche erfolgreich führen, Sicherheit gewinnen und Redeängste überwinden, Zeitmanagement für Redner und Konferenzleiter und vieles mehr. Ein ausführlicher Praxisteil mit zahlreichen Übungen ermöglicht es dem Leser, seine rhetorischen Fähigkeiten zu trainieren.", correctAnswer: "14"},
-              {id: "F", text: "Gute Umgangsformen sind wieder “in”. Aber gilt das auch in der Schule? Auf humorvolle Weise erzählt die Autorin aus ihrem Alltag als Lehrerin an einer Realschule. Von gutem Benehmen kann da nicht immer die Rede sein – übrigens auch nicht bei den Eltern..", correctAnswer: "15"},
-              {id: "G", text: "Frieder Schulze Reden wir miteinander oder aneinander vorbei? Manche Missverständnisse entstehen, wenn Menschen miteinander reden, besonders im privaten Bereich erleben wir das oft. Wenn Kommunikation erfolgreich sein soll, ist die Fähigkeit erforderlich, den anderen zu durchschauen und seelische Vorgänge und menschliche Probleme zu erkennen. Viele Beispiele zeigen, wie psychologische Aspekte menschliche Kommunikation verkomplizieren können und wie man damit am besten klar kommen kann.", correctAnswer: "17"},
-              {id: "H", text: "Ken Best Dein Körper liegt nicht Der Körper liegt nicht. Gesten und Gebärden decken die Ebene des Unbewussten auf: Wer einen erhobenen Zeigefinger oder eine gerümpfte Nase sieht, versteht sofort, was der Gesprächspartner meint, auch wenn der mit Worten etwas anderes sagt. Dieses Buch gibt einen anschaulichen Überblick über die Signale, die wir ständig mit unserem Körper senden, und hilft uns zu verstehen, ما jemand in Wahrheit gerade denkt und meint.", correctAnswer: null},
-              {id: "I", text: "Rolph Barth Basiswissen: Bewerbungstraining Die Konkurrenz auf dem Arbeitsmarkt um immer knapper werdende freie Stellen ist groß. Umso wichtiger ist es zu wissen, wie man sich richtig bewirbt. Dieses Buch gibt Arbeitsuchenden umfassende Informationen zur erfolgreichen Bewerbung und bereitet optimal auf das Vorstellungsgespräch vor. Im Übungsteil werden gute Formulierungen für das Anschreiben und das sichere Auftreten des Bewerbers im Gespräch trainiert.", correctAnswer: "18"},
-              {id: "J", text: "Brigitte Hühner Richtig präsentieren Dieses Buch ist ein Leitfaden für alle, die Teamsitzungen, Besprechungen, Workshops und Konferenzen durchführen. Anhand vieler praktischer Beispiele erhält der Leser Anregungen zum gekonnten Visualisieren, zur gut geplanten und sicher durchgeführten Präsentation und zur effektiv gestalteten Besprechung. Es zeigt, wie durch den Einsatz von Bildern und Grafiken Präsentationen aufgelockert und Informationen besser verstanden werden können.", correctAnswer: "19"},
-              {id: "K", text: "Helga Sinn-Krummacher Delfin oder Delphin? So schreibt man das jetzt richtig Dieses Trainingsbuch ist für den Arbeitsplatz und für zu Hause gedacht. Auf humorvolle Art werden die neuen Rechtschreibregeln der deutschen Sprache vorgestellt und eingeübt. Es enthält außerdem die neue amtliche Wortliste zur Rechtschreibung und die neuen Zeichensetzungsregeln.", correctAnswer: "20"},
-              {id: "L", text: "Erika Jack Zeitmanagement Viele Menschen wissen nicht mehr, wo Ihnen der Kopf steht. Zu viele Termine und Aufgaben stellen Sie unter ständigen Zeitdruck. Mit Zeitmanagement lernen Sie, wie Sie Ihre Zeit so einteilen können, dass Sie wieder Zeit zum Leben haben. Sie erkennen Ihre persönlichen Zeitdiebe, Sie lernen, Prioritäten und erreichbare Ziele zu setzen. Durch das Führen eines Zeitplanbuchs lernen Sie wieder (und dauerhaft), aus der Zeitfalle herauszukommen.", correctAnswer: "11"}
+              // Hier die Texte A-L einfügen
             ],
             situations: [
-              {id: "11", text: "Eine Bekannte interessiert sich für Bücher über den Tennissport."},
-              {id: "12", text: "Ein befreundetes Ehepaar steht andauernd unter Stress und möchte wieder mehr Zeit für sich und andere haben."},
-              {id: "13", text: "Eine Bekannte möchte ihre Wohnung renovieren und sucht Tipps zu Tapeten und Wandfarben."},
-              {id: "14", text: "Eine Studentin sucht Informationen, wie sie besser und systematischer lernen kann."},
-              {id: "15", text: "Ein Bekannter möchte wissen, welche Botschaften durch Gestik und Mimik transportiert werden."},
-              {id: "16", text: "Eine Bekannte möchte ihr äußeres Erscheinungsbild optimieren."},
-              {id: "17", text: "Ein Bekannter ist sich noch unsicher, wie er sich bei einem Vorstellungsgespräch am besten präsentiert."},
-              {id: "18", text: "Ein Bekannter schreibt an einer Hausarbeit über Höflichkeit und Benimmregeln in früheren Jahrhunderten."},
-              {id: "19", text: "Ein Bekannter möchte lernen, wie man gute Geschäftsbriefe schreibt."},
-              {id: "20", text: "Eine Bekannte ist sehr verunsichert, weil sie auf Konferenzen immer wieder Angst hat, frei zu sprechen."}
+              // Hier die Situationen 11-20 einfügen
             ]
           },
           { 
-            id: "s4", 
-            title: "Sprachbausteine, Teil 1", 
-            points: 15,
-            passageTitle: "Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.",
+            id:"s4", 
+            title:"Sprachbausteine, Teil 1", 
+            points:15,
+            passageTitle:"Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.",
             passage: "",
-            questions: [],
+            questions:[],
             fillBlanks: [
-              {
-                id: "21",
-                options: ["seine", "sind", "waren"],
-                correctAnswer: "sind"
-              },
-              {
-                id: "22",
-                options: ["da", "das", "dass"],
-                correctAnswer: "da"
-              },
-              {
-                id: "23",
-                options: ["an", "auf", "für"],
-                correctAnswer: "auf"
-              },
-              {
-                id: "24",
-                options: ["je ... desto", "sowohl.... als auch", "weder .... noch"],
-                correctAnswer: "sowohl.... als auch"
-              },
-              {
-                id: "25",
-                options: ["verwandte", "verwandeten", "verwandter"],
-                correctAnswer: "verwandte"
-              },
-              {
-                id: "26",
-                options: ["unsere", "unseren", "unserer"],
-                correctAnswer: "unsere"
-              },
-              {
-                id: "27",
-                options: ["als", "für", "wie"],
-                correctAnswer: "als"
-              },
-              {
-                id: "28",
-                options: ["dass", "ob", "wenn"],
-                correctAnswer: "ob"
-              },
-              {
-                id: "29",
-                options: ["bereten", "machen", "tun"],
-                correctAnswer: "tun"
-              },
-              {
-                id: "30",
-                options: ["hätten", "könnten", "sollten"],
-                correctAnswer: "könnten"
-              }
+              // Hier die Lücken 21-30 einfügen
             ],
-            fillText: `Liebe Maria, lieber Timur,
-
-herzlichen Dank für die Einladung zu eurem Hochzeitsfest! Nachdem wir gestern aus dem Urlaub zurückgekommen ________, haben wir euren Brief und die Einladungskarte im Briefkasten entdeckt. ________ gibt es nicht viel zu überlegen: Natürlich kommen wir sehr gerne! Wir freuen uns sehr ________ euch, dass ihr nun endlich diesen Schritt wagt. Es ist eine geniale Idee, ________ in der Türkei ________ in Österreich zu feiern, so können alle Freunde und ________ dabei sein. Wir hoffen, dass wir einige ________ alten Freunde wiedersehen werden.
-
-Ihr habt geschrieben, dass Timurs Eltern und seine Schwestern auch in Österreich sein werden. Endlich lernen wir auch Timurs Familie kennen! Und wie schön, dass ihr in Marias Heimatdorf im Mühlviertel feiert! Wir erinnern uns noch oft an die langen Partynächte, die wir dort ________ Jugendliche gemeinsam verbracht haben. Nun überlegen wir, ________ wir nicht gleich ein Hotelzimmer für einige Tage buchen sollten. Ihr habt ja sicher mit den Vorbereitungen alle Hände voll zu ________. Dann können wir am Freitag wandern gehen. Am Samstag ist dann euer Fest und am Sonntag ________ wir die Gelegenheit vor der Abreise noch gemütlich zusammen zu frühstücken. In welchem Hotel habt ihr eure Verwandten untergebracht? Seid ihr auch in einem Hotel, oder übernachtet ihr bei deinen Eltern, Maria? Nun, das können wir alles noch später besprechen.
-
-Vorerst freuen wir uns einfach nur auf euch und euer Fest.
-
-Noch einmal vielen Dank für die Einladung und bis bald!`
+            fillText: `Hier den Text mit ________ für jede Lücke einfügen`
           },
           { 
-            id: "s5", 
-            title: "Sprachbausteine, Teil 2", 
-            points: 15,
-            passageTitle: "Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort nur einmal verwenden. Nicht alle Wörter passen in den Text.",
+            id:"s5", 
+            title:"Sprachbausteine, Teil 2", 
+            points:15,
+            passageTitle:"Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort nur einmal verwenden. Nicht alle Wörter passen in den Text.",
             passage: "",
-            questions: [],
+            questions:[],
             fillBlanks2: [
-              {
-                id: "31",
-                options: ["BEGRIFFE", "DADURCH", "DAFÜR", "DASS", "DENN", "EINGRIFFE", "GING", "INNERHALB", "NAHKOMMEN", "NOCH", "SODASS", "SOWIE", "UM", "VORKOMMEN", "VOR", "WÄHREND"],
-                correctAnswer: "VOR"
-              },
-              {
-                id: "32", 
-                options: ["BEGRIFFE", "DADURCH", "DAFÜR", "DASS", "DENN", "EINGRIFFE", "GING", "INNERHALB", "NAHKOMMEN", "NOCH", "SODASS", "SOWIE", "UM", "VORKOMMEN", "VOR", "WÄHREND"],
-                correctAnswer: "DADURCH"
-              },
-              {
-                id: "33",
-                options: ["BEGRIFFE", "DADURCH", "DAFÜR", "DASS", "DENN", "EINGRIFFE", "GING", "INNERHALB", "NAHKOMMEN", "NOCH", "SODASS", "SOWIE", "UM", "VORKOMMEN", "VOR", "WÄHREND"],
-                correctAnswer: "DASS"
-              },
-              {
-                id: "34",
-                options: ["BEGRIFFE", "DADURCH", "DAFÜR", "DASS", "DENN", "EINGRIFFE", "GING", "INNERHALB", "NAHKOMMEN", "NOCH", "SODASS", "SOWIE", "UM", "VORKOMMEN", "VOR", "WÄHREND"],
-                correctAnswer: "UM"
-              },
-              {
-                id: "35",
-                options: ["BEGRIFFE", "DADURCH", "DAFÜR", "DASS", "DENN", "EINGRIFFE", "GING", "INNERHALB", "NAHKOMMEN", "NOCH", "SODASS", "SOWIE", "UM", "VORKOMMEN", "VOR", "WÄHREND"],
-                correctAnswer: "INNERHALB"
-              },
-              {
-                id: "36",
-                options: ["BEGRIFFE", "DADURCH", "DAFÜR", "DASS", "DENN", "EINGRIFFE", "GING", "INNERHALB", "NAHKOMMEN", "NOCH", "SODASS", "SOWIE", "UM", "VORKOMMEN", "VOR", "WÄHREND"],
-                correctAnswer: "DAFÜR"
-              },
-              {
-                id: "37",
-                options: ["BEGRIFFE", "DADURCH", "DAFÜR", "DASS", "DENN", "EINGRIFFE", "GING", "INNERHALB", "NAHKOMMEN", "NOCH", "SODASS", "SOWIE", "UM", "VORKOMMEN", "VOR", "WÄHREND"],
-                correctAnswer: "DENN"
-              },
-              {
-                id: "38",
-                options: ["BEGRIFFE", "DADURCH", "DAFÜR", "DASS", "DENN", "EINGRIFFE", "GING", "INNERHALB", "NAHKOMMEN", "NOCH", "SODASS", "SOWIE", "UM", "VORKOMMEN", "VOR", "WÄHREND"],
-                correctAnswer: "EINGRIFFE"
-              },
-              {
-                id: "39",
-                options: ["BEGRIFFE", "DADURCH", "DAFÜR", "DASS", "DENN", "EINGRIFFE", "GING", "INNERHALB", "NAHKOMMEN", "NOCH", "SODASS", "SOWIE", "UM", "VORKOMMEN", "VOR", "WÄHREND"],
-                correctAnswer: "NOCH"
-              },
-              {
-                id: "40",
-                options: ["BEGRIFFE", "DADURCH", "DAFÜR", "DASS", "DENN", "EINGRIFFE", "GING", "INNERHALB", "NAHKOMMEN", "NOCH", "SODASS", "SOWIE", "UM", "VORKOMMEN", "VOR", "WÄHREND"],
-                correctAnswer: "GING"
-              }
+              // Hier die Lücken 31-40 einfügen
             ],
-            fillText2: `Das Schicksal des Braunbären
-
-Klimatische Veränderungen seit der letzten Kaltzeit könnten für den stetigen Rückgang der Braunbärenzahl in Europa verantwortlich sein. Wie eine aktuelle Studie nahelegt, haben ________ allem steigende Wintertemperaturen in der vergangenen 12.000 Jahre die Fortpflanzungsrate der Tiere verringert, was entscheidend zu deren Verschwinden beigetragen hat. Zudem wurden ________ die Klimaveränderung größere Flächen für den Ackerbau nutzbar. Es ist längst unumstritten, ________ das Verschwinden der Braunbären mit der Landnutzung durch den Menschen zusammenhängt.
-
-Ein internationales Expertenteam untersuchte nun die Rolle des Klimas beim Rückgang der Bärenzahl. In den letzten 12.000 Jahren ist die Wintertemperatur in weiten Teilen Europas ________ zwei bis vier Grad angestiegen. In der Folge bekamen die Braunbären weniger ________, und ihre Zahl schrumpfte.
-
-Der Grund ________ ist, dass Braunbären bei steigenden Wintertemperaturen mehr Energie für ihre Winterruhe verbrauchen. Braunbärenweibchen benötigen ihre Energiereserven auch für die Fortpflanzung, ________ sie bringen im Winter ihre Jungen zur Welt. Wird mehr Energie für die Winterruhe verbraucht, bleibt nicht so viel für die Fortpflanzung übrig, und es gibt weniger Nachwuchs.
-
-Steigende Wintertemperaturen könnten auch indirekt für das Schicksal des Braunbären verantwortlich gewesen sein. Wärmere Winter begünstigten nämlich auch die menschlichen ________ in die Naturlandschaften und damit in den Lebensraum der Braunbären.
-
-Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimisch. Ein großes Aussterben gab es in Südwesteuropa vor 7.000 bis 5.000 Jahren. Richtig bergab ________ es mit dem Braunbären aber vor etwa 2.000 Jahren, als sich seine Zahl stark verringerte.`
+            fillText2: `Hier den Text mit ________ für jede Lücke einfügen`
           }
         ]
-      };
+      },
+      
+      hoeren: {
+        id: "exam-hörverstehen",
+        durationSec: 17 * 60,
+        sections: [
+          { 
+            id:"hörverstehen1", 
+            title:"Hörverstehen, Teil 1", 
+            points:25,
+            correctAnswers: { 
+              // Hier die richtigen Antworten für 41-45 einfügen
+            },
+            questions: [
+              // Hier die Fragen 41-45 einfügen
+            ]
+          },
+          { 
+            id:"hörverstehen2", 
+            title:"Hörverstehen, Teil 2", 
+            points:25,
+            correctAnswers: { 
+              // Hier die richtigen Antworten für 46-55 einfügen
+            },
+            questions: [
+              // Hier die Fragen 46-55 einfügen
+            ]
+          },
+          { 
+            id:"hörverstehen3", 
+            title:"Hörverstehen, Teil 3", 
+            points:25,
+            correctAnswers: { 
+              // Hier die richtigen Antworten für 56-60 einfügen
+            },
+            questions: [
+              // Hier die Fragen 56-60 einfügen
+            ]
+          }
+        ]
+      },
+      
+      schreiben: {
+        id: "exam-schreiben-001",
+        durationSec: 30 * 60,
+        sections: [
+          { 
+            id:"s1", 
+            title:"Schreiben, Teil 1", 
+            points:45,
+            passageTitle:"Aufgabe: Schreiben Sie eine E-Mail",
+            passage: "",
+            writingTask: {
+              prompt: `Hier den Aufgabentext für das Schreiben einfügen`,
+              requirements: [
+                "Hier die Anforderungen einfügen",
+                "Zweite Anforderung",
+                "Dritte Anforderung",
+                "Vierte Anforderung"
+              ],
+              wordCount: 0
+            }
+          }
+        ]
+      }
+    };
 
+    // ===== LESEN PAGE FUNCTIONALITY =====
+    function initLesenPage() {
+      const exam = EXAM_DATA.lesen;
+      
+      // Global variables for click selection mode
+      window.selectedHeadingId = null;
+      window.selectedSituationId = null;
+      window.selectedWordId = null;
+      window.selectedWord = null;
+      
+      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         questionIndex: 0, 
@@ -1918,7 +2006,8 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null
+        timerInterval: null,
+        examEnded: false
       };
       const topTiles = document.getElementById('topTiles-lesen');
       const passageTitleEl = document.getElementById('passageTitle-lesen');
@@ -1933,6 +2022,43 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
+      /* ===== Timer Functions with Auto-Submit ===== */
+      function handleTimeExpired() {
+        if (state.examEnded) return;
+        state.examEnded = true;
+        
+        // Stop timer
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
+        // Show results
+        state.showResults = true;
+        renderAll();
+        
+        // Check if there's next exam
+        const nextBtn = document.getElementById('nextBtn-lesen');
+        if (nextBtn && !nextBtn.disabled) {
+          // Auto navigate to next exam after 2 seconds
+          setTimeout(() => {
+            if (state.sectionIndex < exam.sections.length - 1) {
+              state.sectionIndex++;
+              state.showResults = false;
+              state.examEnded = false;
+              renderAll();
+            } else {
+              showPage('hoeren-page');
+            }
+          }, 2000);
+        } else {
+          // Go to results page
+          setTimeout(() => {
+            showPage('ergebnisse-page');
+          }, 2000);
+        }
+      }
+
       function startTimer(){
         if(state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -1943,6 +2069,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           if(state.remaining <= 0){
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
+            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -1956,6 +2083,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
+        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -1966,6 +2094,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
+      /* ===== Reset Section Function ===== */
       function resetCurrentSection() {
         const currentSection = exam.sections[state.sectionIndex];
         
@@ -1996,6 +2125,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         }
       }
 
+      /* ===== Render ===== */
       function renderTopTiles(){ 
         topTiles.innerHTML=''; 
         exam.sections.forEach((sec,idx)=>{ 
@@ -2017,6 +2147,8 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
       }
 
       function renderAll(){
+        if (state.examEnded) return;
+        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         sectionNameEl.textContent = section.title;
@@ -2045,7 +2177,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
       function renderPart1(){
         const section = exam.sections[state.sectionIndex];
         
-        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. Sie können jede Überschrift nur einmal verwenden.</div>`;
+        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. Sie können jede Überschrift nur einmal verwenden. (Klicken: Titel auswählen → auf Text klicken)</div>`;
         
         section.texts.forEach((text, idx) => {
           const letter = String.fromCharCode(97 + idx);
@@ -2055,7 +2187,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
             <div class="text-container">
               <div class="text-title">Text ${letter.toUpperCase()}</div>
               <div class="text-content">${text.content}</div>
-              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}">
+              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}" onclick="window.lesenApp.handleSlotClick('${text.id}')">
                 ${selectedHeading ? getHeadingTextById(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
               </div>
             </div>
@@ -2069,7 +2201,10 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           const isUsed = section.texts.some(text => state.answers[text.id] === heading.id);
           
           headingsHTML += `
-            <div class="heading-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-heading-id="${heading.id}">
+            <div class="heading-item ${isUsed ? 'used' : ''} ${window.selectedHeadingId === heading.id ? 'selected' : ''}" 
+                 draggable="${!isUsed}" 
+                 data-heading-id="${heading.id}"
+                 onclick="window.lesenApp.handleHeadingClick('${heading.id}')">
               ${heading.id}) ${heading.text}
             </div>
           `;
@@ -2083,6 +2218,41 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         
         questionBodyEl.innerHTML = '';
         questionTitleEl.textContent = '';
+      }
+
+      function handleHeadingClick(headingId) {
+        const section = exam.sections[state.sectionIndex];
+        const isUsed = section.texts.some(text => state.answers[text.id] === headingId);
+        if (isUsed) return;
+        
+        // Deselect if already selected
+        if (window.selectedHeadingId === headingId) {
+          window.selectedHeadingId = null;
+        } else {
+          window.selectedHeadingId = headingId;
+        }
+        renderPart1();
+      }
+
+      function handleSlotClick(textId) {
+        // If a heading is selected, place it in the slot
+        if (window.selectedHeadingId) {
+          // Remove any previous usage of this heading
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === window.selectedHeadingId) {
+              delete state.answers[key];
+            }
+          });
+          
+          state.answers[textId] = window.selectedHeadingId;
+          window.selectedHeadingId = null;
+          renderAll();
+        } 
+        // If slot already has a heading, return it to bank
+        else if (state.answers[textId]) {
+          delete state.answers[textId];
+          renderAll();
+        }
       }
 
       function getHeadingTextById(id){
@@ -2123,6 +2293,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
             });
             
             state.answers[textId] = headingId;
+            window.selectedHeadingId = null;
             renderAll();
           });
         });
@@ -2166,7 +2337,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         const section = exam.sections[state.sectionIndex];
         
         let textsHTML = `
-          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. Sie können jede Situation nur einmal verwenden. Manchmal passt keine Situation.</div>
+          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. Sie können jede Situation nur einmal verwenden. Manchmal passt keine Situation. (Klicken: Situation auswählen → auf Text klicken)</div>
           <div class="texts-list">
             <h3>Texte (A-L)</h3>
         `;
@@ -2179,7 +2350,9 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
             <div class="text-item" data-text-id="${text.id}">
               <div class="text-letter">${text.id})</div>
               <div class="text-content">${text.text}</div>
-              <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" data-text-id="${text.id}">
+              <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" 
+                   data-text-id="${text.id}" 
+                   onclick="window.lesenApp.handleSituationSlotClick('${text.id}')">
                 ${selectedSituation ? selectedSituation.text : (userAnswer === 'X' ? 'X - Keine passende Situation' : 'Ziehen Sie hier eine Situation hin')}
               </div>
             </div>
@@ -2201,10 +2374,13 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           const isX = state.answers[situation.id] === 'X';
           
           situationsHTML += `
-            <div class="situation-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-situation-id="${situation.id}">
+            <div class="situation-item ${isUsed ? 'used' : ''} ${window.selectedSituationId === situation.id ? 'selected' : ''}" 
+                 draggable="${!isUsed}" 
+                 data-situation-id="${situation.id}"
+                 onclick="${!isUsed ? `window.lesenApp.handleSituationClick('${situation.id}')` : ''}">
               <div class="situation-number">${situationNumber}.</div>
               <div class="situation-text">${situation.text}</div>
-              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}')">X - Kein passender Text</button>` : ''}
+              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}'); event.stopPropagation();">X - Kein passender Text</button>` : ''}
             </div>
           `;
         });
@@ -2218,6 +2394,39 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         setupPart3DragAndDrop();
       }
 
+      function handleSituationClick(situationId) {
+        if (window.selectedSituationId === situationId) {
+          window.selectedSituationId = null;
+        } else {
+          window.selectedSituationId = situationId;
+        }
+        renderPart3();
+      }
+
+      function handleSituationSlotClick(textId) {
+        // If a situation is selected, place it in the slot
+        if (window.selectedSituationId) {
+          // Remove any previous usage of this situation
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === window.selectedSituationId) {
+              delete state.answers[key];
+            }
+          });
+          
+          state.answers[window.selectedSituationId] = textId;
+          window.selectedSituationId = null;
+          renderAll();
+        } 
+        // If slot already has a situation, return it to bank
+        else {
+          const situationId = Object.keys(state.answers).find(key => state.answers[key] === textId);
+          if (situationId) {
+            delete state.answers[situationId];
+            renderAll();
+          }
+        }
+      }
+
       function markNoMatch(situationId) {
         Object.keys(state.answers).forEach(key => {
           if(state.answers[key] === situationId) {
@@ -2226,8 +2435,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         });
         
         state.answers[situationId] = 'X';
-        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
-        
+        window.selectedSituationId = null;
         renderAll();
       }
 
@@ -2265,6 +2473,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
             });
             
             state.answers[situationId] = textId;
+            window.selectedSituationId = null;
             renderAll();
           });
         });
@@ -2288,19 +2497,13 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         section.fillBlanks.forEach(blank => {
           const userAnswer = state.answers[blank.id];
           const displayText = userAnswer ? userAnswer : '________';
-          tempText = tempText.replace(`BLANK_${blank.id}`, `<span class="blank-word ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}">${displayText}</span>`);
+          tempText = tempText.replace(`BLANK_${blank.id}`, `<span class="blank-word ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}" onclick="window.lesenApp.handleBlankClick('${blank.id}')">${displayText}</span>`);
         });
         
         passageContentEl.innerHTML = `
           <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können die Lücken in beliebiger Reihenfolge ausfüllen.</div>
           <div class="fill-blank-container">${tempText}</div>
         `;
-        
-        document.querySelectorAll('.blank-word').forEach(blank => {
-          blank.addEventListener('click', (e) => {
-            showOptionsPopup(e.target);
-          });
-        });
         
         let optionsHTML = `<div class="horizontal-options" style="gap: 8px;">`;
         
@@ -2330,17 +2533,10 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         headingsBankContainer.innerHTML = '';
       }
 
-      function showOptionsPopup(blankElement){
-        const existingPopup = document.querySelector('.options-popup');
-        if(existingPopup) {
-          existingPopup.remove();
-        }
-        
-        const blankId = blankElement.getAttribute('data-blank-id');
-        const section = exam.sections.find(s => s.id === 's4');
+      function handleBlankClick(blankId) {
+        const section = exam.sections[state.sectionIndex];
         const blank = section.fillBlanks.find(b => b.id === blankId);
-        
-        if(!blank) return;
+        if (!blank) return;
         
         const popup = document.createElement('div');
         popup.className = 'options-popup';
@@ -2351,12 +2547,19 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           optionItem.textContent = opt;
           optionItem.onclick = () => {
             selectSprachbausteine1(blankId, opt);
-            popup.remove();
+            document.querySelectorAll('.options-popup').forEach(p => p.remove());
           };
           popup.appendChild(optionItem);
         });
         
-        blankElement.appendChild(popup);
+        // Remove any existing popup
+        document.querySelectorAll('.options-popup').forEach(p => p.remove());
+        
+        // Find the clicked element and append popup
+        const element = document.querySelector(`[data-blank-id="${blankId}"]`);
+        if (element) {
+          element.appendChild(popup);
+        }
       }
 
       function selectSprachbausteine1(blankId, answer){
@@ -2366,6 +2569,8 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
 
       function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
+        
+        // Build text with placeholders
         let textWithPlaceholders = section.fillText2;
         const placeholders = [];
         section.fillBlanks2.forEach(blank => {
@@ -2374,39 +2579,39 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           textWithPlaceholders = textWithPlaceholders.replace('________', ph);
         });
 
+        // Replace placeholders with span elements
         placeholders.forEach(item => {
           const userAnswer = state.answers[item.id];
           const displayText = userAnswer ? userAnswer : '________';
-          const span = `<span class="blank-slot ${userAnswer ? 'has-answer' : ''}" data-blank-id="${item.id}">${displayText}</span>`;
+          const span = `<span class="blank-slot ${userAnswer ? 'has-answer' : ''} ${window.selectedWordId === item.id ? 'selected' : ''}" data-blank-id="${item.id}" onclick="window.lesenApp.handleWordSlotClick('${item.id}')">${displayText}</span>`;
           textWithPlaceholders = textWithPlaceholders.replace(item.ph, span);
         });
 
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können jedes Wort nur einmal verwenden.</div>
+          <div class="instructions">Klicken Sie auf eine Lücke und dann auf ein Wort aus der Liste. (Klicken: Wort auswählen → auf Lücke klicken)</div>
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
-        document.querySelectorAll('.blank-slot').forEach(slot => {
-          slot.addEventListener('click', (e) => {
-            showSprachbausteine2Options(slot);
-          });
-        });
-
+        // Build word bank on the right
         let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
         const usedWords = Object.values(state.answers);
-        const bank = section.wordBank && section.wordBank.length ? section.wordBank : (section.fillBlanks2[0] ? section.fillBlanks2[0].options : []);
+        const bank = section.fillBlanks2[0] ? section.fillBlanks2[0].options : [];
+        
         bank.forEach(word => {
           const isUsed = usedWords.includes(word);
+          const isSelected = window.selectedWord === word;
+          
           wordBankHTML += `
-            <div class="bank-word-vertical ${isUsed ? 'used' : ''}" 
+            <div class="bank-word-vertical ${isUsed ? 'used' : ''} ${isSelected ? 'selected' : ''}" 
                  draggable="${!isUsed}" 
                  data-word="${word}"
-                 ${!isUsed ? `onclick="window.lesenApp.selectSprachbausteine2FromBank('${word}')"` : ''}>
+                 onclick="${!isUsed ? `window.lesenApp.handleWordClick('${word}')` : ''}">
               ${word}
             </div>
           `;
         });
         wordBankHTML += `</div>`;
+        
         questionBodyEl.innerHTML = wordBankHTML;
         questionTitleEl.textContent = '';
         headingsBankContainer.innerHTML = '';
@@ -2414,207 +2619,247 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         setupSprachbausteine2DragAndDrop();
       }
 
-      let lastClickedSprachSlot = null;
+      function handleWordClick(word) {
+        // Toggle selection
+        if (window.selectedWord === word) {
+          window.selectedWord = null;
+          window.selectedWordId = null;
+        } else {
+          window.selectedWord = word;
+          window.selectedWordId = null;
+        }
+        renderSprachbausteine2();
+      }
+
+      function handleWordSlotClick(blankId) {
+        // If a word is selected, place it in the slot
+        if (window.selectedWord) {
+          const word = window.selectedWord;
+          
+          // Remove this word from any other slot if it exists
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === word) {
+              delete state.answers[key];
+            }
+          });
+          
+          // Remove previous answer from this slot if any
+          if (state.answers[blankId]) {
+            // Word will be freed automatically as it's not in answers anymore
+          }
+          
+          state.answers[blankId] = word;
+          window.selectedWord = null;
+          renderSprachbausteine2();
+        } 
+        // If slot already has a word, return it to bank
+        else if (state.answers[blankId]) {
+          delete state.answers[blankId];
+          renderSprachbausteine2();
+        }
+      }
 
       function setupSprachbausteine2DragAndDrop(){
-        const bankWords = Array.from(document.querySelectorAll('.bank-word-vertical'));
-        bankWords.forEach(el => {
-          const word = el.dataset.word;
-          if(!el.classList.contains('used')){
-            el.setAttribute('draggable','true');
-          } else {
-            el.setAttribute('draggable','false');
-          }
-          el.removeEventListener('dragstart', el._dstart);
-          el._dstart = (e) => {
-            e.dataTransfer.setData('text/plain', word);
-            e.dataTransfer.setData('source', 'bank');
-          };
-          el.addEventListener('dragstart', el._dstart);
-
-          el.removeEventListener('click', el._onclick);
-          el._onclick = () => {
-            if(el.classList.contains('used')) return;
-            selectSprachbausteine2FromBank(word);
-          };
-          el.addEventListener('click', el._onclick);
+        const wordItems = document.querySelectorAll('.bank-word-vertical:not(.used)');
+        const blankSlots = document.querySelectorAll('.blank-slot');
+        
+        wordItems.forEach(item => {
+          item.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.dataset.word);
+          });
         });
-
-        const slots = Array.from(document.querySelectorAll('.blank-slot'));
-        slots.forEach(slot => {
+        
+        blankSlots.forEach(slot => {
           slot.addEventListener('dragover', (e) => {
             e.preventDefault();
-            slot.classList.add('drag-over');
+            slot.style.background = '#e8f4ff';
           });
+          
           slot.addEventListener('dragleave', (e) => {
-            slot.classList.remove('drag-over');
+            slot.style.background = slot.classList.contains('has-answer') ? '#e8fbe9' : '#f8fbff';
           });
+          
           slot.addEventListener('drop', (e) => {
             e.preventDefault();
-            slot.classList.remove('drag-over');
-            const word = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/html');
-            if(!word) return;
+            const word = e.dataTransfer.getData('text/plain');
             const blankId = slot.dataset.blankId;
-            if(!blankId) return;
-            Object.keys(state.answers).forEach(k => {
-              if(state.answers[k] === word){
-                delete state.answers[k];
-              }
-            });
-            const prev = state.answers[blankId];
-            if(prev){
-              const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
-              if(prevEl){
-                prevEl.classList.remove('used');
-                prevEl.setAttribute('draggable','true');
-                prevEl.addEventListener('click', prevEl._onclick);
-              }
-            }
-            const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
-            if(bankEl){
-              bankEl.classList.add('used');
-              bankEl.setAttribute('draggable','false');
-              bankEl.removeEventListener('click', bankEl._onclick);
-            }
-            state.answers[blankId] = word;
-            renderAll();
+            
+            selectSprachbausteine2(blankId, word);
           });
         });
       }
 
-      function showSprachbausteine2Options(slot){
-        document.querySelectorAll('.blank-slot').forEach(s => s.classList.remove('selected-sprach'));
-        slot.classList.add('selected-sprach');
-        lastClickedSprachSlot = slot;
-      }
-
-      function selectSprachbausteine2FromBank(word){
-        let slot = lastClickedSprachSlot;
-        if(!slot){
-          slot = Array.from(document.querySelectorAll('.blank-slot')).find(s => {
-            const id = s.dataset.blankId;
-            return !state.answers[id];
-          });
-        }
-        if(!slot) {
-          return;
-        }
-        const blankId = slot.dataset.blankId;
-        Object.keys(state.answers).forEach(k => {
-          if(state.answers[k] === word){
-            delete state.answers[k];
+      function selectSprachbausteine2(blankId, word){
+        // Remove this word from any other slot
+        Object.keys(state.answers).forEach(key => {
+          if (state.answers[key] === word) {
+            delete state.answers[key];
           }
         });
-        const prev = state.answers[blankId];
-        if(prev){
-          const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
-          if(prevEl){
-            prevEl.classList.remove('used');
-            prevEl.setAttribute('draggable','true');
-            if(prevEl._onclick) prevEl.addEventListener('click', prevEl._onclick);
-          }
-        }
-        const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
-        if(bankEl){
-          bankEl.classList.add('used');
-          bankEl.setAttribute('draggable','false');
-          if(bankEl._onclick) try{ bankEl.removeEventListener('click', bankEl._onclick); }catch(e){}
-        }
-        state.answers[blankId] = word;
-        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
-        lastClickedSprachSlot = null;
-        renderAll();
+        state.answers[blankId] = word;
+        window.selectedWord = null;
+        renderSprachbausteine2();
       }
 
       function selectOption(questionId, optionId){
         state.answers[questionId] = optionId;
-        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
-        
         renderAll();
       }
 
-      function renderResults(){
-        let resultsHTML = `<h2>Ergebnisse</h2>`;
+      function renderResults() {
+        let resultsHTML = `
+          <div class="result-item">
+            <h3>📊 Ergebnis - ${sectionNameEl.textContent}</h3>
+        `;
+        
         let totalCorrect = 0;
         let totalQuestions = 0;
+        const section = exam.sections[state.sectionIndex];
         
-        exam.sections.forEach(section => {
-          resultsHTML += `<div class="result-item"><h3>${section.title}</h3>`;
-          
-          if(section.id === 's1'){
-            section.texts.forEach(text => {
-              totalQuestions++;
-              const userAnswer = state.answers[text.id];
-              const isCorrect = userAnswer === text.correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Text ${text.id}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
-                </div>
-              `;
-            });
-          } else if(section.id === 's2'){
-            section.questions.forEach(question => {
-              totalQuestions++;
-              const userAnswer = state.answers[question.id];
-              const isCorrect = userAnswer === question.correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>${question.text}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
-                </div>
-              `;
-            });
-          } else if(section.id === 's3'){
-            section.situations.forEach(situation => {
-              totalQuestions++;
-              const userAnswer = state.answers[situation.id];
-              const correctText = section.texts.find(t => t.correctAnswer === situation.id);
-              const isCorrect = userAnswer === (correctText ? correctText.id : null);
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Situation ${situation.id}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
-                </div>
-              `;
-            });
-          } else if(section.id === 's4'){
-            section.fillBlanks.forEach(blank => {
-              totalQuestions++;
-              const userAnswer = state.answers[blank.id];
-              const isCorrect = userAnswer === blank.correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
-                </div>
-              `;
-            });
-          } else if(section.id === 's5'){
-            section.fillBlanks2.forEach(blank => {
-              totalQuestions++;
-              const userAnswer = state.answers[blank.id];
-              const isCorrect = userAnswer === blank.correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
-                </div>
-              `;
-            });
-          }
-          
-          resultsHTML += `</div>`;
-        });
+        if (section.id === 's1') {
+          section.texts.forEach((text, index) => {
+            totalQuestions++;
+            const userAnswer = state.answers[text.id];
+            const isCorrect = userAnswer === text.correctAnswer;
+            if (isCorrect) totalCorrect++;
+            
+            const resultClass = isCorrect ? 'correct' : 'incorrect';
+            const resultIcon = isCorrect ? '✅' : '❌';
+            const answerText = userAnswer ? getHeadingTextById(userAnswer) : 'Nicht beantwortet';
+            const correctText = getHeadingTextById(text.correctAnswer);
+            
+            resultsHTML += `
+              <div class="result-detail ${resultClass}">
+                <div class="result-question">Text ${String.fromCharCode(97 + index).toUpperCase()}</div>
+                <div class="result-answer ${resultClass}">${answerText}</div>
+                <div class="result-icon ${resultClass}">${resultIcon}</div>
+              </div>
+              <div style="font-size: 13px; color: #718096; margin-left: 20px; margin-bottom: 10px;">
+                Richtig: ${correctText}
+              </div>
+            `;
+          });
+        } else if (section.id === 's2') {
+          section.questions.forEach((question, index) => {
+            totalQuestions++;
+            const userAnswer = state.answers[question.id];
+            const isCorrect = userAnswer === question.correctAnswer;
+            if (isCorrect) totalCorrect++;
+            
+            const resultClass = isCorrect ? 'correct' : 'incorrect';
+            const resultIcon = isCorrect ? '✅' : '❌';
+            
+            let userAnswerText = 'Nicht beantwortet';
+            if (userAnswer) {
+              const option = question.options.find(o => o.id === userAnswer);
+              userAnswerText = option ? option.text : userAnswer;
+            }
+            
+            let correctAnswerText = '';
+            const correctOption = question.options.find(o => o.id === question.correctAnswer);
+            correctAnswerText = correctOption ? correctOption.text : question.correctAnswer;
+            
+            resultsHTML += `
+              <div class="result-detail ${resultClass}">
+                <div class="result-question">${index + 1}. ${question.text}</div>
+                <div class="result-answer ${resultClass}">${userAnswerText}</div>
+                <div class="result-icon ${resultClass}">${resultIcon}</div>
+              </div>
+              <div style="font-size: 13px; color: #718096; margin-left: 20px; margin-bottom: 10px;">
+                Richtig: ${correctAnswerText}
+              </div>
+            `;
+          });
+        } else if (section.id === 's3') {
+          section.situations.forEach((situation, index) => {
+            totalQuestions++;
+            const userAnswer = state.answers[situation.id];
+            const correctText = section.texts.find(t => t.correctAnswer === situation.id);
+            const isCorrect = userAnswer === (correctText ? correctText.id : null);
+            if (isCorrect) totalCorrect++;
+            
+            const resultClass = isCorrect ? 'correct' : 'incorrect';
+            const resultIcon = isCorrect ? '✅' : '❌';
+            
+            let userAnswerText = 'Nicht beantwortet';
+            if (userAnswer === 'X') {
+              userAnswerText = 'X - Kein Text';
+            } else if (userAnswer) {
+              const text = section.texts.find(t => t.id === userAnswer);
+              userAnswerText = text ? `${text.id}) ${text.text.substring(0, 50)}...` : userAnswer;
+            }
+            
+            let correctAnswerText = 'X - Kein Text';
+            if (correctText) {
+              correctAnswerText = `${correctText.id}) ${correctText.text.substring(0, 50)}...`;
+            }
+            
+            resultsHTML += `
+              <div class="result-detail ${resultClass}">
+                <div class="result-question">Situation ${situation.id}</div>
+                <div class="result-answer ${resultClass}">${userAnswer === 'X' ? 'X' : (userAnswer || '-')}</div>
+                <div class="result-icon ${resultClass}">${resultIcon}</div>
+              </div>
+              <div style="font-size: 13px; color: #718096; margin-left: 20px; margin-bottom: 10px;">
+                ${situation.text.substring(0, 100)}...<br>
+                <strong>Richtig:</strong> ${correctAnswerText}
+              </div>
+            `;
+          });
+        } else if (section.id === 's4') {
+          section.fillBlanks.forEach(blank => {
+            totalQuestions++;
+            const userAnswer = state.answers[blank.id];
+            const isCorrect = userAnswer === blank.correctAnswer;
+            if (isCorrect) totalCorrect++;
+            
+            const resultClass = isCorrect ? 'correct' : 'incorrect';
+            const resultIcon = isCorrect ? '✅' : '❌';
+            
+            resultsHTML += `
+              <div class="result-detail ${resultClass}">
+                <div class="result-question">Lücke ${blank.id}</div>
+                <div class="result-answer ${resultClass}">${userAnswer || 'Nicht beantwortet'}</div>
+                <div class="result-icon ${resultClass}">${resultIcon}</div>
+              </div>
+              <div style="font-size: 13px; color: #718096; margin-left: 20px; margin-bottom: 10px;">
+                Richtig: ${blank.correctAnswer}
+              </div>
+            `;
+          });
+        } else if (section.id === 's5') {
+          section.fillBlanks2.forEach(blank => {
+            totalQuestions++;
+            const userAnswer = state.answers[blank.id];
+            const isCorrect = userAnswer === blank.correctAnswer;
+            if (isCorrect) totalCorrect++;
+            
+            const resultClass = isCorrect ? 'correct' : 'incorrect';
+            const resultIcon = isCorrect ? '✅' : '❌';
+            
+            resultsHTML += `
+              <div class="result-detail ${resultClass}">
+                <div class="result-question">Lücke ${blank.id}</div>
+                <div class="result-answer ${resultClass}">${userAnswer || 'Nicht beantwortet'}</div>
+                <div class="result-icon ${resultClass}">${resultIcon}</div>
+              </div>
+              <div style="font-size: 13px; color: #718096; margin-left: 20px; margin-bottom: 10px;">
+                Richtig: ${blank.correctAnswer}
+              </div>
+            `;
+          });
+        }
         
         const percentage = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
-        resultsHTML += `<div class="result-item"><h3>Gesamtergebnis: ${totalCorrect}/${totalQuestions} (${percentage}%)</h3></div>`;
+        
+        resultsHTML += `
+          <div class="result-summary">
+            <h4>Gesamtergebnis</h4>
+            <div class="percentage">${percentage}%</div>
+            <div>${totalCorrect} von ${totalQuestions} richtig</div>
+          </div>
+        </div>`;
         
         passageContentEl.innerHTML = resultsHTML;
         questionBodyEl.innerHTML = '';
@@ -2622,6 +2867,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         questionTitleEl.textContent = '';
       }
 
+      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex > 0){
           state.sectionIndex--;
@@ -2635,6 +2881,8 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           state.sectionIndex++;
           state.questionIndex = 0;
           renderAll();
+        } else {
+          showPage('hoeren-page');
         }
       });
 
@@ -2667,10 +2915,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         }
       });
 
-      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
-        showPage('hoeren-page');
-      });
-
+      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
@@ -2680,122 +2925,20 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         selectOption,
         markNoMatch,
         selectSprachbausteine1,
-        selectSprachbausteine2FromBank
+        selectSprachbausteine2,
+        handleHeadingClick,
+        handleSlotClick,
+        handleSituationClick,
+        handleSituationSlotClick,
+        handleBlankClick,
+        handleWordClick,
+        handleWordSlotClick
       };
     }
 
     // ===== HÖREN PAGE FUNCTIONALITY =====
     function initHoerenPage() {
-      const exam = {
-        id: "exam-hörverstehen",
-        durationSec: 17 * 60,
-        sections: [
-          { 
-            id: "hörverstehen1", 
-            title: "Hörverstehen, Teil 1", 
-            points: 25,
-            correctAnswers: { "41": "falsch", "42": "richtig", "43": "richtig", "44": "falsch", "45": "richtig" },
-            questions: [
-              {
-                id: "41",
-                text: "Die Stadt Friedrichsberg lädt zu einer Preisverleihung ein."
-              },
-              {
-                id: "42", 
-                text: "Die Alte Brücke ist zum Jahresbeginn wieder befahrbar."
-              },
-              {
-                id: "43",
-                text: "Der Wanderer wurde verarztet und in Sicherheit gebracht."
-              },
-              {
-                id: "44",
-                text: "In dem Unternehmen kommt es zu Kündigungen."
-              },
-              {
-                id: "45",
-                text: "Man kann nach einer Registrierung an einem Gruppenlauf teilnehmen."
-              }
-            ]
-          },
-          { 
-            id: "hörverstehen2", 
-            title: "Hörverstehen, Teil 2", 
-            points: 25,
-            correctAnswers: { "46": "falsch", "47": "richtig", "48": "falsch", "49": "falsch", "50": "falsch", "51": "falsch", "52": "richtig", "53": "falsch", "54": "falsch", "55": "falsch" },
-            questions: [
-              {
-                id: "46",
-                text: "Professor Steiner möchte, dass die Studierenden das Gelernte auch in der Praxis anwenden können."
-              },
-              {
-                id: "47",
-                text: "Steiners Hobby ist es, experimentelle Filme zu machen."
-              },
-              {
-                id: "48", 
-                text: "Journalisten sollten heute auf einzelne Medien spezialisiert sein."
-              },
-              {
-                id: "49",
-                text: "Nach Steiners Ansicht ist der Berufswunsch Sportjournalist heutzutage unrealistisch."
-              },
-              {
-                id: "50",
-                text: "Journalisten sollten möglichst viele Informationen an die Öffentlichkeit weitergeben."
-              },
-              {
-                id: "51",
-                text: "Steiner musste wegen einer Verletzung mit dem Fußballspielen aufhören."
-              },
-              {
-                id: "52",
-                text: "Steiner hat während seines Journalistik-Studiums für das ZDF Fußballspiele kommentiert."
-              },
-              {
-                id: "53",
-                text: "Steiner legt Wert darauf, als Moderator Sportlern gegenüber neutral zu bleiben."
-              },
-              {
-                id: "54",
-                text: "Auch die Frau von Roland Wünschmann engagiert sich im Fußball."
-              },
-              {
-                id: "55",
-                text: "Der Vereinsvorstand schätzt Herrn Wünschmanns Arbeit."
-              }
-            ]
-          },
-          { 
-            id: "hörverstehen3", 
-            title: "Hörverstehen, Teil 3", 
-            points: 25,
-            correctAnswers: { "56": "richtig", "57": "falsch", "58": "richtig", "59": "falsch", "60": "falsch" },
-            questions: [
-              {
-                id: "56",
-                text: "Während des Musikfestivals 'Sound of Frankfurt' gibt es verbilligte Fahrkarten für alle öffentlichen Verkehrsmittel."
-              },
-              {
-                id: "57",
-                text: "Sie gehen am 3. Juli ins Konzert, weil Sie die beiden Leipziger Klaviervirtuosen hören möchten."
-              },
-              {
-                id: "58",
-                text: "Am Wochenende können Sie sich in Hamburg über die Bekämpfung von Krankheiten bei Apfelbäumen informieren."
-              },
-              {
-                id: "59",
-                text: "Im Handwerksmuseum werden Kleidungsstücke ausgestellt."
-              },
-              {
-                id: "60",
-                text: "Die Autobahn 'A5' ist zwischen Baden-... (الجملة غير مكتملة في النص الأصلي، لكن الإجابة الصحيحة هي falsch)."
-              }
-            ]
-          }
-        ]
-      };
+      const exam = EXAM_DATA.hoeren;
 
       let state = { 
         sectionIndex: 0, 
@@ -2803,13 +2946,45 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null
+        timerInterval: null,
+        examEnded: false
       };
       
       const topTiles = document.getElementById('topTiles-hoeren');
       const contentContainer = document.getElementById('contentContainer-hoeren');
       const timerEl = document.getElementById('timer-hoeren');
       const statusText = document.getElementById('statusText-hoeren');
+
+      function handleTimeExpired() {
+        if (state.examEnded) return;
+        state.examEnded = true;
+        
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
+        state.showResults = true;
+        renderAll();
+        
+        const nextBtn = document.getElementById('nextBtn-hoeren');
+        if (nextBtn && !nextBtn.disabled) {
+          setTimeout(() => {
+            if (state.sectionIndex < exam.sections.length - 1) {
+              state.sectionIndex++;
+              state.showResults = false;
+              state.examEnded = false;
+              renderAll();
+            } else {
+              showPage('schreiben-page');
+            }
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            showPage('ergebnisse-page');
+          }, 2000);
+        }
+      }
 
       function startTimer() {
         if (state.timerInterval) {
@@ -2821,6 +2996,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
+            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -2834,6 +3010,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
+        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -2866,6 +3043,8 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
       }
 
       function renderAll() {
+        if (state.examEnded) return;
+        
         renderTopTiles();
         
         if (state.showResults) {
@@ -2947,7 +3126,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           state.answers[sectionId] = {};
         }
         state.answers[sectionId][questionId] = answer;
-        try{ localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
         renderTopTiles();
       }
@@ -3024,6 +3202,8 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           state.sectionIndex++;
           state.showResults = false;
           renderAll();
+        } else {
+          showPage('schreiben-page');
         }
       });
 
@@ -3053,10 +3233,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         }
       });
 
-      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
-        showPage('schreiben-page');
-      });
-
       updateTimerDisplay();
       renderAll();
       startTimer();
@@ -3069,37 +3245,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
 
     // ===== SCHREIBEN PAGE FUNCTIONALITY =====
     function initSchreibenPage() {
-      const exam = {
-        id: "exam-002",
-        durationSec: 30 * 60,
-        sections: [
-          { 
-            id: "s1", 
-            title: "Schreiben, Teil 1", 
-            points: 45,
-            passageTitle: "Aufgabe: Schreiben Sie eine E-Mail",
-            passage: "",
-            writingTask: {
-              prompt: `Möchten Sie in Ihrer Freizeit mehr erleben? Neue Leute aus Mainz kennenlernen? Am Wochenende nie mehr allein sein? 
-      Dann werden Sie Mitglied im Freizeitverein!
-      Wir organisieren verschiedene Aktivitäten in Mainz und Umgebung:
-      Wanderungen, Fahrradtouren, Museums- und Theaterbesuche, Spiele- und Kinoabende, Restaurantbesuche und Ausflüge.
-      Jede Woche stehen mindestens zwei unterschiedliche Angebote auf dem Programm.
-      Ob Sport oder Kultur – bei uns kommt jeder auf seine Kosten. Sie können viel Neues ausprobieren und lernen dabei nette Leute kennen.
-      Unsere Mitglieder sind zwischen 26 und 85 Jahre alt. Bei uns ist jeder willkommen, ob Student oder Senior. 
-      Sie finden bei uns neue Freunde und Bekannte, mit denen Sie viel erleben können. Probieren Sie es doch einfach mal aus!
-      Die Mitgliedschaft kostet 20 Euro pro Monat.`,
-              requirements: [
-                "Erklären Sie, was Sie nach dem Lesen der Anzeige erwartet hatten.",
-                "Erklären Sie, warum Sie mit dem Angebot des Freizeitvereins nicht zufrieden sind.",
-                "Machen Sie Verbesserungsvorschläge zum Programm.",
-                "Erklären Sie, was Sie tun werden, wenn sich nichts ändert."
-              ],
-              wordCount: 0
-            }
-          }
-        ]
-      };
+      const exam = EXAM_DATA.schreiben;
 
       let state = { 
         sectionIndex: 0, 
@@ -3107,7 +3253,8 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null
+        timerInterval: null,
+        examEnded: false
       };
       
       const topTiles = document.getElementById('topTiles-schreiben');
@@ -3116,6 +3263,23 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
       const writingContainer = document.getElementById('writingContainer-schreiben');
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
+
+      function handleTimeExpired() {
+        if (state.examEnded) return;
+        state.examEnded = true;
+        
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
+        state.showResults = true;
+        renderAll();
+        
+        setTimeout(() => {
+          showPage('ergebnisse-page');
+        }, 2000);
+      }
 
       function startTimer() {
         if (state.timerInterval) {
@@ -3127,6 +3291,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
+            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -3140,6 +3305,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
+        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -3166,6 +3332,8 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
       }
 
       function renderAll() {
+        if (state.examEnded) return;
+        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         passageTitleEl.textContent = section.passageTitle;
@@ -3184,8 +3352,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         passageContentEl.innerHTML = `
           <div class="writing-task">
             <div class="writing-prompt">${section.writingTask.prompt}</div>
-            <div class="instructions" style="border:1px solid #e1e8f6; padding:10px; margin:10px 0; border-radius:6px; background:#ffffff;">Sie sind seit zwei Wochen Mitglied im Freizeitverein. Doch Sie sind nicht zufrieden. 
-      Schreiben Sie eine Beschwerde.</div>
+            <div class="instructions" style="border:1px solid #e1e8f6; padding:10px; margin:10px 0; border-radius:6px; background:#ffffff;">${section.writingTask.prompt}</div>
             <div class="writing-requirements">
               <h4>Schreiben Sie in Ihrer E-Mail:</h4>
               <ul>
@@ -3221,7 +3388,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
 
       function updateWritingAnswer(sectionId, text) {
         state.answers[sectionId] = text;
-        try{ localStorage.setItem('schreibenAnswers', JSON.stringify({content: state.answers[sectionId], wordCount: (state.answers[sectionId]||'').trim().split(/\s+/).filter(Boolean).length})); }catch(e){}
         
         const wordCount = countWords(text);
         document.querySelector('.word-counter .count').textContent = wordCount;
@@ -3263,6 +3429,8 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           state.sectionIndex++;
           state.showResults = false;
           renderAll();
+        } else {
+          showPage('ergebnisse-page');
         }
       });
 
@@ -3272,7 +3440,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
       });
 
       document.getElementById('resetBtn-schreiben').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöschت.')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3292,10 +3460,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         }
       });
 
-      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
-        showPage('ergebnisse-page');
-      });
-
       updateTimerDisplay();
       renderAll();
       startTimer();
@@ -3308,80 +3472,6 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
 
     // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
     function initErgebnissePage() {
-      const CORRECT_ANSWERS = {
-        lesen: {
-          "text1": "d",
-          "text2": "f", 
-          "text3": "j",
-          "text4": "e",
-          "text5": "a",
-          
-          "s2q1": "s2q1o3",
-          "s2q2": "s2q2o2",
-          "s2q3": "s2q3o2",
-          "s2q4": "s2q4o1",
-          "s2q5": "s2q5o3",
-          
-          "11": "D",
-          "12": "L",
-          "13": "X",
-          "14": "B",
-          "15": "H",
-          "16": "A",
-          "17": "I",
-          "18": "C",
-          "19": "K",
-          "20": "E",
-          
-          "21": "waren",
-          "22": "da",
-          "23": "für",
-          "24": "sowohl.... als auch",
-          "25": "verwandeten",
-          "26": "unserer",
-          "27": "als",
-          "28": "ob",
-          "29": "tun",
-          "30": "hätten",
-          
-          "31": "WÄHREND",
-          "32": "DADURCH",
-          "33": "DASS",
-          "34": "UM",
-          "35": "NAHKOMMEN",
-          "36": "DAFÜR",
-          "37": "DENN",
-          "38": "EINGRIFFE",
-          "39": "NOCH",
-          "40": "GING"
-        },
-        
-        hoeren: {
-          "41": "falsch",
-          "42": "richtig",
-          "43": "richtig",
-          "44": "falsch",
-          "45": "richtig",
-          
-          "46": "falsch",
-          "47": "richtig",
-          "48": "falsch",
-          "49": "falsch",
-          "50": "falsch",
-          "51": "falsch",
-          "52": "falsch",
-          "53": "falsch",
-          "54": "richtig",
-          "55": "richtig",
-          
-          "56": "richtig",
-          "57": "falsch",
-          "58": "richtig",
-          "59": "falsch",
-          "60": "falsch"
-        }
-      };
-
       const CONFIG = {
         totals: { 
           lesen: 105, 
@@ -3392,83 +3482,23 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         counts: { 
           lesen: 40, 
           hoeren: 20 
-        },
-        hoerenCorrect: CORRECT_ANSWERS.hoeren,
-        lesenCorrect: CORRECT_ANSWERS.lesen
+        }
       };
 
-      function normalizeAnswer(a) {
-        if (a === null || a === undefined) return '';
-        let s = String(a).trim();
-        if (s === '') return '';
-        const low = s.toLowerCase();
-        if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
-        if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
-        return s;
-      }
+      const CORRECT_ANSWERS = {
+        lesen: {
+          // Hier die richtigen Antworten für Lesen einfügen
+        },
+        hoeren: {
+          // Hier die richtigen Antworten für Hören einfügen
+        }
+      };
 
       function readExamResults() {
         try {
-          const lesen = {};
-          const hoeren = {};
-          const schreiben = { content: '', wordCount: 0 };
-
-          try {
-            if (window._lesenState && window._lesenState.answers) {
-              Object.keys(window._lesenState.answers).forEach(k => {
-                lesen[k] = window._lesenState.answers[k];
-              });
-            }
-          } catch (e) {}
-
-          try {
-            if (window._hoerenState && window._hoerenState.answers) {
-              Object.keys(window._hoerenState.answers).forEach(sectionId => {
-                const sec = window._hoerenState.answers[sectionId] || {};
-                Object.keys(sec).forEach(q => {
-                  hoeren[q] = sec[q];
-                });
-              });
-            }
-          } catch (e) {}
-
-          try {
-            if (window._schreibenState && window._schreibenState.answers) {
-              const answers = window._schreibenState.answers;
-              if (answers['s1']) {
-                schreiben.content = answers['s1'];
-              } else {
-                const keys = Object.keys(answers);
-                if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
-              }
-              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0;
-            }
-          } catch (e) {}
-
-          try {
-            if (Object.keys(lesen).length === 0) {
-              const storedL = localStorage.getItem('lesenAnswers');
-              if (storedL) Object.assign(lesen, JSON.parse(storedL));
-            }
-          } catch (e) {}
-
-          try {
-            if (Object.keys(hoeren).length === 0) {
-              const storedH = localStorage.getItem('hoerenAnswers');
-              if (storedH) Object.assign(hoeren, JSON.parse(storedH));
-            }
-          } catch (e) {}
-
-          try {
-            if (!schreiben.content) {
-              const storedS = localStorage.getItem('schreibenAnswers');
-              if (storedS) {
-                const obj = JSON.parse(storedS);
-                schreiben.content = obj.content || '';
-                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0);
-              }
-            }
-          } catch (e) {}
+          const lesen = window._lesenState ? window._lesenState.answers : {};
+          const hoeren = window._hoerenState ? window._hoerenState.answers : {};
+          const schreiben = window._schreibenState ? window._schreibenState.answers : {};
 
           return { hoeren, lesen, schreiben };
         } catch (e) {
@@ -3476,365 +3506,223 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         }
       }
 
-      function getHeadingText(headingId) {
-        if (!headingId || headingId === '-' || headingId === 'X') return '-';
-        const headings = {
-          "a": "Erneuerungskur für einen alten Markt",
-          "b": "Junge Influencer werben für Bioprodukte",
-          "c": "Neues Buch über einen Wiener Architekten erschienen",
-          "d": "Österreichs beliebteste Marktplätze",
-          "e": "Schreiben im Internet für die Karriere",
-          "f": "Schulung zum Erfolg im Beruf",
-          "g": "Seminar: Produkte erfolgreich verkaufen",
-          "h": "Warum immer mehr Menschen auf Märkten einkaufen",
-          "i": "Wenn Blogger Firmengeheimnisse verraten",
-          "j": "Wissenswertes über Wiens größten innerstädtischen Markt"
-        };
-        return headings[headingId] || headingId;
-      }
-
-      function getOptionText(questionId, optionId) {
-        if (!optionId || optionId === '-') return '-';
-        const options = {
-          "s2q1o1": "es in Österreich bald mehr Pools gibt als in Frankreich",
-          "s2q1o2": "in unsicheren Zeiten weniger investiert wird.",
-          "s2q1o3": "mehr Leute einen Pool bauen, weil Pools billiger geworden sind.",
-          "s2q2o1": "möchten die meisten Befragten ein Heim mit Garage.",
-          "s2q2o2": "steht ein Pool nicht an erster Stelle auf der Wunschliste,",
-          "s2q2o3": "wünschen sich 10 Prozent der Österreicher einen Pool.",
-          "s2q3o1": "ein Pool die Nachbarn neidisch macht.",
-          "s2q3o2": "ihr Pool ein Anziehungspunkt für Freunde geworden ist.",
-          "s2q3o3": "ihre Freunde beim Poolbau helfen sollen.",
-          "s2q4o1": "brauchen keine chemischen Reinigungsmittel.",
-          "s2q4o2": "müssen häufig geputzt werden.",
-          "s2q4o3": "sehen genauso aus wie Schwimmteiche.",
-          "s2q5o1": "darf man einen Pool nur mit Wasser aus der Leitung füllen.",
-          "s2q5o2": "führt das Befüllen von Pools regelmäßig zu Wasserknappheit.",
-          "s2q5o3": "wird manchmal Wasser zum Befüllen von Pools gestohlen"
-        };
-        return options[optionId] || optionId;
-      }
-
-      function getSituationText(id) {
-        const situations = {
-          "11": "Eine Bekannte interessiert sich für Bücher über den Tennissport.",
-          "12": "Ein befreundetes Ehepaar steht andauernd unter Stress und möchte wieder mehr Zeit für sich und andere haben.",
-          "13": "Eine Bekannte möchte ihre Wohnung renovieren und sucht Tipps zu Tapeten und Wandfarben.",
-          "14": "Eine Studentin sucht Informationen, wie sie besser und systematischer lernen kann.",
-          "15": "Ein Bekannter möchte wissen, welche Botschaften durch Gestik und Mimik transportiert werden.",
-          "16": "Eine Bekannte interessiert sich für Bücher über den Tennissport.",
-          "17": "Ein Bekannter ist sich noch unsicher, wie er sich bei einem Vorstellungsgespräch am besten präsentiert.",
-          "18": "Ein Bekannter schreibt an einer Hausarbeit über Höflichkeit und Benimmregeln in früheren Jahrhunderten.",
-          "19": "Ein Bekannter möchte lernen, wie man gute Geschäftsbriefe schreibt.",
-          "20": "Eine Bekannte ist sehr verunsichert, weil sie auf Konferenzen immer wieder Angst hat, frei zu sprechen."
-        };
-        return situations[id] || id;
-      }
-
-      function escapeHtml(s) {
-        return String(s)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      }
-
-      function buildTable(title, dets, total, max) {
-        let html = `<div class="result-item">
-                <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
-                <div class="section-table">
-                  <table class="true-false-table">
-                    <thead>
-                      <tr>
-                        <th style="width: 10%">Frage</th>
-                        <th style="width: 40%">Ihre Antwort</th>
-                        <th style="width: 40%">Richtige Antwort</th>
-                        <th style="width: 10%">Ergebnis</th>
-                      </tr>
-                    </thead>
-                    <tbody>`;
-  
-        dets.forEach(x => {
-          const isCorrect = x.richtig;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
-          
-          html += `<tr class="${rowClass}">
-              <td><strong>${x.frage}</strong></td>
-              <td>${escapeHtml(x.user)}</td>
-              <td>${escapeHtml(x.correct)}</td>
-              <td><strong>${resultIcon}</strong></td>
-            </tr>`;
-        });
-  
-        html += `</tbody>
-          </table>
-          <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
-            <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
-          </div>
-        </div></div>`;
-        return html;
-      }
-
-      function gradeHoeren(u) {
-        const c = CONFIG.hoerenCorrect;
-        let okCount = 0;
-        const d = [];
+      function calculateLesenResults(answers) {
+        const exam = EXAM_DATA.lesen;
+        let correct = 0;
+        let total = 0;
         
-        for (let q = 41; q <= 60; q++) {
-          const k = String(q);
-          const uA = normalizeAnswer(u[k] || '');
-          const exp = normalizeAnswer(c[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
-          if (ok) okCount++;
-          const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
-          d.push({
-            frage: k,
-            user: uA || '-',
-            correct: exp || '-',
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
-          });
-        }
-        
-        const total = Number((okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2));
-        return { okCount, total, details: d };
-      }
-
-      function gradeLesen(u) {
-        const c = CONFIG.lesenCorrect;
-        let okCount = 0;
-        const d = [];
-        
-        Object.keys(c).forEach(k => {
-          const exp = normalizeAnswer(c[k]);
-          const uA = normalizeAnswer(u[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
-          if (ok) okCount++;
-          const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
-          
-          let userDisplay = uA || '-';
-          let correctDisplay = exp || '-';
-          
-          if (k.startsWith('text')) {
-            userDisplay = getHeadingText(uA);
-            correctDisplay = getHeadingText(exp);
-          } else if (k.startsWith('s2q')) {
-            userDisplay = getOptionText(k, uA);
-            correctDisplay = getOptionText(k, exp);
-          } else if (['11','12','13','14','15','16','17','18','19','20'].includes(k)) {
-            userDisplay = uA === 'X' ? 'X' : (uA || '-');
-            correctDisplay = exp === 'X' ? 'X' : (exp || '-');
+        exam.sections.forEach(section => {
+          if (section.id === 's1') {
+            section.texts.forEach(text => {
+              total++;
+              if (answers[text.id] === text.correctAnswer) correct++;
+            });
+          } else if (section.id === 's2') {
+            section.questions.forEach(question => {
+              total++;
+              if (answers[question.id] === question.correctAnswer) correct++;
+            });
+          } else if (section.id === 's3') {
+            section.situations.forEach(situation => {
+              total++;
+              const correctText = section.texts.find(t => t.correctAnswer === situation.id);
+              if (answers[situation.id] === (correctText ? correctText.id : null)) correct++;
+            });
+          } else if (section.id === 's4') {
+            section.fillBlanks.forEach(blank => {
+              total++;
+              if (answers[blank.id] === blank.correctAnswer) correct++;
+            });
+          } else if (section.id === 's5') {
+            section.fillBlanks2.forEach(blank => {
+              total++;
+              if (answers[blank.id] === blank.correctAnswer) correct++;
+            });
           }
-          
-          d.push({
-            frage: k,
-            user: userDisplay,
-            correct: correctDisplay,
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
+        });
+        
+        const points = Math.round((correct / total) * CONFIG.totals.lesen);
+        
+        return { correct, total, points };
+      }
+
+      function calculateHoerenResults(answers) {
+        const exam = EXAM_DATA.hoeren;
+        let correct = 0;
+        let total = 0;
+        
+        exam.sections.forEach(section => {
+          section.questions.forEach(question => {
+            total++;
+            if (answers[section.id] && answers[section.id][question.id] === section.correctAnswers[question.id]) {
+              correct++;
+            }
           });
         });
         
-        const total = Number((okCount * (CONFIG.totals.lesen / CONFIG.counts.lesen)).toFixed(2));
-        return { okCount, total, details: d };
+        const points = Math.round((correct / total) * CONFIG.totals.hoeren);
+        
+        return { correct, total, points };
+      }
+
+      function getHeadingText(questionId, answerId) {
+        if (!answerId || answerId === '-') return '';
+        
+        const headings = EXAM_DATA.lesen.sections[0].headings;
+        const heading = headings.find(h => h.id === answerId);
+        return heading ? heading.text : '';
+      }
+
+      function getAnswerText(section, questionId, answerId) {
+        if (!answerId || answerId === '-') return '-';
+        
+        if (section === 'lesen') {
+          const lesenExam = EXAM_DATA.lesen;
+          const teil2 = lesenExam.sections[1];
+          const question = teil2.questions.find(q => q.id === questionId);
+          if (question) {
+            const option = question.options.find(o => o.id === answerId);
+            return option ? option.text : answerId;
+          }
+        }
+        return answerId;
       }
 
       function renderLesenDetails(answers) {
-        const result = gradeLesen(answers || {});
+        let html = `<div class="section-table">`;
         
-        let html = `<div class="result-item">
-              <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
+        html += `<h4>Teil 1: Überschriften zuordnen</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Text</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
         
-        const part1Details = result.details.filter(d => d.frage.startsWith('text'));
-        const part2Details = result.details.filter(d => d.frage.startsWith('s2q'));
-        const part3Details = result.details.filter(d => ['11','12','13','14','15','16','17','18','19','20'].includes(d.frage));
-        const part4Details = result.details.filter(d => ['21','22','23','24','25','26','27','28','29','30'].includes(d.frage));
-        const part5Details = result.details.filter(d => ['31','32','33','34','35','36','37','38','39','40'].includes(d.frage));
+        // Hier die Logik zum Anzeigen der Ergebnisse einfügen
         
-        if (part1Details.length > 0) {
-          html += `<h4 style="margin-top: 20px;">Teil 1: Überschriften zuordnen</h4>
-                   ${buildTable('Überschriften zuordnen', part1Details, 
-                     (result.okCount/result.details.length*25), 25).replace('<h3>', '<h4>').replace('</h3>', '</h4>')}`;
-        }
+        html += `</tbody></table></div>`;
         
-        if (part2Details.length > 0) {
-          html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
-                   ${buildTable('Fragen zum Text', part2Details, 
-                     (result.okCount/result.details.length*25), 25).replace('<h3>', '<h4>').replace('</h3>', '</h4>')}`;
-        }
-        
-        if (part3Details.length > 0) {
-          html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
-                   ${buildTable('Texte zuordnen', part3Details, 
-                     (result.okCount/result.details.length*25), 25).replace('<h3>', '<h4>').replace('</h3>', '</h4>')}`;
-        }
-        
-        if (part4Details.length > 0) {
-          html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
-                   ${buildTable('Sprachbausteine Teil 1', part4Details, 
-                     (result.okCount/result.details.length*15), 15).replace('<h3>', '<h4>').replace('</h3>', '</h4>')}`;
-        }
-        
-        if (part5Details.length > 0) {
-          html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
-                   ${buildTable('Sprachbausteine Teil 2', part5Details, 
-                     (result.okCount/result.details.length*15), 15).replace('<h3>', '<h4>').replace('</h3>', '</h4>')}`;
-        }
-        
-        html += `</div>`;
         return html;
       }
 
-      function buildHoerenDetails(answers) {
-        const result = gradeHoeren(answers || {});
-        return buildTable('Hörverstehen', result.details, result.total, CONFIG.totals.hoeren);
+      function renderHoerenDetails(answers) {
+        let html = `<div class="section-table">`;
+        
+        // Hier die Logik zum Anzeigen der Hören-Ergebnisse einfügen
+        
+        html += `</div>`;
+        
+        return html;
       }
 
-      function renderResults() {
+      function calculateResults() {
         const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
-        const h = gradeHoeren(st.hoeren || {});
-        const l = gradeLesen(st.lesen || {});
         const details = document.getElementById('details-ergebnisse');
         const tiles = document.getElementById('topTiles-ergebnisse');
-        const sScoreRaw = localStorage.getItem('schreibenScore');
-        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
 
         details.innerHTML = '';
         tiles.innerHTML = '';
 
+        const lesenResults = calculateLesenResults(st.lesen);
+        const hoerenResults = calculateHoerenResults(st.hoeren);
+        
         const tL = `<div class="results-tile">
-                    <h3>Lesen</h3>
-                    <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
-                    <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
+                    <h3>📖 Lesen</h3>
+                    <div class="score">${lesenResults.points}/${CONFIG.totals.lesen} Punkte</div>
+                    <div class="small-muted">(${lesenResults.correct}/${lesenResults.total} richtig)</div>
                   </div>`;
                   
         const tH = `<div class="results-tile">
-                    <h3>Hören</h3>
-                    <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
-                    <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
+                    <h3>🎧 Hören</h3>
+                    <div class="score">${hoerenResults.points}/${CONFIG.totals.hoeren} Punkte</div>
+                    <div class="small-muted">(${hoerenResults.correct}/${hoerenResults.total} richtig)</div>
                   </div>`;
                   
         const tS = `<div class="results-tile">
-                    <h3>Schreiben</h3>
-                    <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
-                    <div class="small-muted">Manuelle Eingabe</div>
+                    <h3>✍️ Schreiben</h3>
+                    <div class="score">Manuelle Bewertung</div>
+                    <div class="small-muted">(45 Punkte max.)</div>
                   </div>`;
                   
         tiles.innerHTML = tL + tH + tS;
 
-        details.innerHTML += `<h2 style="margin-top: 20px;">📊 Detaillierte Ergebnisse</h2>
-          <div class="instructions" style="margin-bottom: 20px;">
-            Hier sehen Sie eine detaillierte Auswertung Ihrer Prüfung. Richtige Antworten sind grün markiert, falsche rot.
-          </div>`;
+        details.innerHTML = `
+          <h2>📊 Detaillierte Ergebnisse</h2>
+          <div class="instructions">
+            Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Antworten:
+          </div>
+          
+          <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>
+        `;
         
         details.innerHTML += renderLesenDetails(st.lesen);
-        details.innerHTML += `<div class="result-item">
+        
+        details.innerHTML += `
           <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
-          ${buildHoerenDetails(st.hoeren)}
-        </div>`;
-
-        let sHtml = '<div class="result-item"><h3>✍️ Schreiben - Ihre Antwort</h3>';
-        const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
-        const wc = st.schreiben.wordCount || '-';
+        `;
+        details.innerHTML += renderHoerenDetails(st.hoeren);
         
-        sHtml += `<div class="small-muted">Wörter: ${wc}</div>
-                <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px">${txt}</div>
-                <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
-                  Punkte (0–45): 
-                  <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
-                  <button id="saveS" class="results-btn">Speichern</button>
-                </div>`;
-                
-        details.innerHTML += sHtml + '</div>';
+        details.innerHTML += `
+          <h3>✍️ Schreiben</h3>
+          <div class="writing-task">
+            <div class="writing-requirements">
+              <h4>Ihre Antwort:</h4>
+              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">
+                ${st.schreiben['s1'] || 'Keine Antwort vorhanden'}
+              </div>
+              <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center">
+                Punkte vergeben (0–45): 
+                <input id="schreibenInput" type="number" min="0" max="45" step="1" value="0"> 
+                <button id="saveSchreiben" class="results-btn">💾 Speichern</button>
+              </div>
+            </div>
+          </div>
+        `;
 
-        const total = (l.total + h.total + sScore).toFixed(2);
-        const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);
-        
+        const totalPoints = lesenResults.points + hoerenResults.points;
+        const maxPoints = CONFIG.totals.lesen + CONFIG.totals.hoeren;
+        const percentage = Math.round((totalPoints / maxPoints) * 100);
+
         document.getElementById('finalSummary-ergebnisse').innerHTML = `
           <div class="left">
-            Gesamtpunktzahl: <strong>${total}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
-            <span class="small-muted">Lesen + Hören + Schreiben</span>
+            Gesamtergebnis (ohne Schreiben)<br>
+            <span class="small-muted">Automatisch korrigierte Bereiche</span>
           </div>
           <div class="right">
-            Prozentsatz: <strong>${percent} %</strong>
+            <strong>${totalPoints}/${maxPoints} Punkte (${percentage}%)</strong>
           </div>`;
 
-        document.getElementById('saveS').onclick = () => {
-          const v = Number(document.getElementById('sInput').value) || 0;
-          localStorage.setItem('schreibenScore', v);
-          document.getElementById('schreibenScoreDisplay').textContent = `${v.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte`;
-          
-          const newTotal = (l.total + h.total + v).toFixed(2);
-          const newPercent = ((newTotal / CONFIG.totals.gesamt) * 100).toFixed(2);
-          
-          document.getElementById('finalSummary-ergebnisse').innerHTML = `
-            <div class="left">
-              Gesamtpunktzahl: <strong>${newTotal}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
-              <span class="small-muted">Lesen + Hören + Schreiben</span>
-            </div>
-            <div class="right">
-              Prozentsatz: <strong>${newPercent} %</strong>
-            </div>`;
+        document.getElementById('saveSchreiben').onclick = function() {
+          const points = parseInt(document.getElementById('schreibenInput').value) || 0;
+          localStorage.setItem('schreibenPoints', points);
+          alert('✅ Schreiben-Punkte gespeichert!');
         };
       }
 
-      document.getElementById('calcBtn-ergebnisse').onclick = () => renderResults();
+      document.getElementById('calcBtn-ergebnisse').onclick = () => calculateResults();
       document.getElementById('backBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
         showPage('start-page');
       };
       
-      renderResults();
+      calculateResults();
     }
-    
+
     // تحسين نظام السحب والإفلات للشاشات التي تعمل باللمس
     function setupTouchDragAndDrop() {
       if ('ontouchstart' in window) {
-        // إضافة دعم اللمس للعناصر القابلة للسحب
-        document.addEventListener('DOMContentLoaded', function() {
-          const draggables = document.querySelectorAll('[draggable="true"]');
-          
-          draggables.forEach(item => {
-            item.addEventListener('touchstart', handleTouchStart, { passive: false });
-            item.addEventListener('touchend', handleTouchEnd, { passive: false });
-          });
-          
-          const dropZones = document.querySelectorAll('.title-slot, .blank-slot');
-          dropZones.forEach(zone => {
-            zone.addEventListener('touchmove', handleTouchMove, { passive: false });
-            zone.addEventListener('touchend', handleTouchDrop, { passive: false });
-          });
+        document.querySelectorAll('[draggable="true"]').forEach(item => {
+          item.addEventListener('touchstart', handleTouchStart);
+          item.addEventListener('touchend', handleTouchEnd);
+        });
+        
+        document.querySelectorAll('.title-slot, .blank-slot').forEach(slot => {
+          slot.addEventListener('touchmove', handleTouchMove);
+          slot.addEventListener('touchend', handleTouchDrop);
         });
       }
     }
-    
+
     function handleTouchStart(e) {
-      const item = e.target;
-      if (item.getAttribute('draggable') === 'true') {
-        e.preventDefault();
-        const data = item.dataset.headingId || item.dataset.situationId || item.dataset.word;
-        if (data) {
-          item.classList.add('dragging');
-          // تنفيذ السحب عند اللمس
-        }
-      }
+      // تنفيذ السحب عند اللمس
     }
-    
-    function handleTouchEnd(e) {
-      const item = e.target;
-      item.classList.remove('dragging');
-    }
-    
-    function handleTouchMove(e) {
-      e.preventDefault();
-    }
-    
-    function handleTouchDrop(e) {
-      e.preventDefault();
-    }
-    
+
     // استدعاء الدالة عند تحميل الصفحة
     document.addEventListener('DOMContentLoaded', setupTouchDragAndDrop);
   </script>
