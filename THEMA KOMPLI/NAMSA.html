@@ -253,64 +253,46 @@
       padding: 12px 20px;
       border-radius: 6px;
       border: none;
-      background: #4da6ff;
-      color: white;
+      background: white;
+      color: #1e3a5f;
       font-weight: 700;
       font-size: 15px;
       cursor: pointer;
-      transition: background 0.2s ease-in-out;
+      transition: background 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease;
       min-width: 150px;
       text-align: center;
     }
 
     .exam-btn:hover {
-      background: #336fbf;
-    }
-    
-    .exam-btn.save {
-      background: #4da6ff;
-      color: #000;
+      background: #1e3a5f;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
     
     .exam-btn.save:hover {
-      background: #3399ff;
-    }
-    
-    .exam-btn.submit {
-      background: #4da6ff;
+      background: #2c5282;
     }
     
     .exam-btn.submit:hover {
-      background: #3399ff;
-    }
-    
-    .exam-btn.result {
-      background: #4da6ff;
+      background: #2c5282;
     }
     
     .exam-btn.result:hover {
-      background: #3399ff;
-    }
-    
-    .exam-btn.next {
-      background: #4da6ff;
-      color: #fff;
+      background: #2c5282;
     }
     
     .exam-btn.next:hover {
-      background: #3399ff;
-    }
-    
-    .exam-btn.reset {
-      background: #4da6ff;
+      background: #2c5282;
     }
     
     .exam-btn.reset:hover {
-      background: #3399ff;
+      background: #2c5282;
     }
     
     .exam-btn.reset-section {
       background: #d35400;
+      color: white;
       font-size: 12px;
       padding: 6px 10px;
       min-width: auto;
@@ -322,6 +304,7 @@
     
     .exam-btn.no-match {
       background: #95a5a6;
+      color: white;
       font-size: 12px;
       padding: 6px 10px;
       min-width: auto;
@@ -626,9 +609,70 @@
     
     .result-item {
       margin: 10px 0;
-      padding: 10px;
-      border-radius: 6px;
+      padding: 15px;
+      border-radius: 8px;
       background: #f8f9fa;
+      border-left: 4px solid #1e3a5f;
+    }
+    
+    .result-item h3 {
+      color: #1e3a5f;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    
+    .result-detail {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px;
+      margin: 8px 0;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .result-question {
+      flex: 2;
+      font-weight: 500;
+    }
+    
+    .result-answer {
+      flex: 1;
+      text-align: center;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+    
+    .result-answer.correct {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .result-answer.incorrect {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .result-icon {
+      width: 30px;
+      text-align: center;
+      font-size: 18px;
+    }
+    
+    .result-summary {
+      margin-top: 20px;
+      padding: 15px;
+      background: #1e3a5f;
+      color: white;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .result-summary .percentage {
+      font-size: 32px;
+      font-weight: 700;
+      color: #4da6ff;
     }
     
     .instructions {
@@ -1827,169 +1871,101 @@
     // ===== EMPTY EXAM DATA STRUCTURE - FILL WITH YOUR CONTENT =====
     const EXAM_DATA = {
       lesen: {
-        id: "exam-lesen-001", // Change this ID
-        durationSec: 90 * 60, // Change duration as needed (in seconds)
+        id: "exam-lesen-001",
+        durationSec: 90 * 60,
         sections: [
           { 
-            id: "s1", // Change section ID
-            title: "Leseverstehen, Teil 1", // Change section title
-            points: 25, // Change points for this section
-            passageTitle: "Aufgabe: Ziehen Sie die passenden Überschriften auf die Texte.", // Change instruction
-            passage: "", // Leave empty for this section type
-            questions: [], // Leave empty for this section type
-            texts: [
-              // Add your texts here following this structure:
-              // {
-              //   id: "text1", // Unique ID
-              //   content: "Your text content here...", // The text content
-              //   correctAnswer: "a" // The correct heading ID
-              // }
-            ],
-            headings: [
-              // Add your headings here following this structure:
-              // {id: "a", text: "Heading text here..."}
-            ]
+            id: "s1", 
+            title: "Leseverstehen, Teil 1", 
+            points: 25,
+            passageTitle: "Aufgabe: Ziehen Sie die passenden Überschriften auf die Texte.",
+            passage: "",
+            questions: [],
+            texts: [],
+            headings: []
           },
           { 
             id:"s2", 
             title:"Leseverstehen, Teil 2", 
             points:25,
-            passageTitle: "Your passage title here...", // Title for the reading passage
-            passage: "Your reading passage text here...", // The full reading text
-            questions: [
-              // Add your multiple choice questions here following this structure:
-              // {
-              //   id: "s2q1", // Unique ID
-              //   type: "single",
-              //   text: "Question text here...",
-              //   options: [
-              //     {id: "s2q1o1", text: "Option 1"},
-              //     {id: "s2q1o2", text: "Option 2"},
-              //     {id: "s2q1o3", text: "Option 3"}
-              //   ],
-              //   correctAnswer: "s2q1o2" // The ID of the correct option
-              // }
-            ]
+            passageTitle: "",
+            passage: "",
+            questions: []
           },
           { 
             id:"s3", 
             title:"Leseverstehen, Teil 3", 
             points:25,
-            passageTitle:"Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchmal passt kein Text. Wählen Sie dann 'x'.", // Instruction
+            passageTitle:"Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchmal passt kein Text. Wählen Sie dann 'x'.",
             passage: "",
             questions:[],
-            texts: [
-              // Add your texts (A-L) here following this structure:
-              // {id: "A", text: "Text content...", correctAnswer: "11"} // The situation ID that matches this text, or empty string if no match
-            ],
-            situations: [
-              // Add your situations (11-20) here following this structure:
-              // {id: "11", text: "Situation description..."}
-            ]
+            texts: [],
+            situations: []
           },
           { 
             id:"s4", 
             title:"Sprachbausteine, Teil 1", 
             points:15,
-            passageTitle:"Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.", // Instruction
+            passageTitle:"Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.",
             passage: "",
             questions:[],
-            fillBlanks: [
-              // Add your fill-in-the-blanks questions here following this structure:
-              // {
-              //   id: "21", // Unique ID
-              //   options: ["option1", "option2", "option3"], // Available options
-              //   correctAnswer: "option2" // The correct answer
-              // }
-            ],
-            fillText: `Your text with ________ placeholders for each blank.` // Use ________ for each blank
+            fillBlanks: [],
+            fillText: ``
           },
           { 
             id:"s5", 
             title:"Sprachbausteine, Teil 2", 
             points:15,
-            passageTitle:"Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort nur einmal verwenden. Nicht alle Wörter passen in den Text.", // Instruction
+            passageTitle:"Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort nur einmal verwenden. Nicht alle Wörter passen in den Text.",
             passage: "",
             questions:[],
-            fillBlanks2: [
-              // Add your fill-in-the-blanks questions here following this structure:
-              // {
-              //   id: "31", // Unique ID
-              //   options: ["WORD1", "WORD2", "WORD3", "WORD4"], // All available words
-              //   correctAnswer: "WORD2" // The correct answer for this blank
-              // }
-            ],
-            fillText2: `Your text with ________ placeholders for each blank.` // Use ________ for each blank
+            fillBlanks2: [],
+            fillText2: ``
           }
         ]
       },
       
       hoeren: {
-        id: "exam-hörverstehen", // Change this ID
-        durationSec: 17 * 60, // Change duration as needed (in seconds)
+        id: "exam-hörverstehen",
+        durationSec: 17 * 60,
         sections: [
           { 
             id:"hörverstehen1", 
             title:"Hörverstehen, Teil 1", 
             points:25,
-            correctAnswers: { 
-              // Add correct answers for each question ID:
-              // "41": "richtig", 
-              // "42": "falsch" 
-            },
-            questions: [
-              // Add your true/false questions here following this structure:
-              // {
-              //   id: "41",
-              //   text: "Statement text..."
-              // }
-            ]
+            correctAnswers: {},
+            questions: []
           },
           { 
             id:"hörverstehen2", 
             title:"Hörverstehen, Teil 2", 
             points:25,
-            correctAnswers: { 
-              // Add correct answers for each question ID:
-              // "46": "richtig", 
-              // "47": "falsch" 
-            },
-            questions: [
-              // Add your true/false questions here
-            ]
+            correctAnswers: {},
+            questions: []
           },
           { 
             id:"hörverstehen3", 
             title:"Hörverstehen, Teil 3", 
             points:25,
-            correctAnswers: { 
-              // Add correct answers for each question ID
-            },
-            questions: [
-              // Add your true/false questions here
-            ]
+            correctAnswers: {},
+            questions: []
           }
         ]
       },
       
       schreiben: {
-        id: "exam-schreiben-001", // Change this ID
-        durationSec: 30 * 60, // Change duration as needed (in seconds)
+        id: "exam-schreiben-001",
+        durationSec: 30 * 60,
         sections: [
           { 
             id:"s1", 
             title:"Schreiben, Teil 1", 
             points:45,
-            passageTitle:"Aufgabe: Schreiben Sie eine E-Mail", // Title
+            passageTitle:"Aufgabe: Schreiben Sie eine E-Mail",
             passage: "",
             writingTask: {
-              prompt: `Your writing prompt text here...`, // The writing task description
-              requirements: [
-                "Requirement 1...",
-                "Requirement 2...",
-                "Requirement 3...",
-                "Requirement 4..."
-              ],
+              prompt: ``,
+              requirements: [],
               wordCount: 0
             }
           }
@@ -2038,17 +2014,14 @@
         if (state.examEnded) return;
         state.examEnded = true;
         
-        // Stop timer
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
           state.timerInterval = null;
         }
         
-        // Show results
         state.showResults = true;
         renderAll();
         
-        // Check if there's next exam
         setTimeout(() => {
           if (state.sectionIndex < exam.sections.length - 1) {
             state.sectionIndex++;
@@ -2227,7 +2200,6 @@
         const isUsed = section.texts.some(text => state.answers[text.id] === headingId);
         if (isUsed) return;
         
-        // Deselect if already selected
         if (window.selectedHeadingId === headingId) {
           window.selectedHeadingId = null;
         } else {
@@ -2237,9 +2209,7 @@
       }
 
       function handleSlotClick(textId) {
-        // If a heading is selected, place it in the slot
         if (window.selectedHeadingId) {
-          // Remove any previous usage of this heading
           Object.keys(state.answers).forEach(key => {
             if (state.answers[key] === window.selectedHeadingId) {
               delete state.answers[key];
@@ -2250,7 +2220,6 @@
           window.selectedHeadingId = null;
           renderAll();
         } 
-        // If slot already has a heading, return it to bank
         else if (state.answers[textId]) {
           delete state.answers[textId];
           renderAll();
@@ -2406,9 +2375,7 @@
       }
 
       function handleSituationSlotClick(textId) {
-        // If a situation is selected, place it in the slot
         if (window.selectedSituationId) {
-          // Remove any previous usage of this situation
           Object.keys(state.answers).forEach(key => {
             if (state.answers[key] === window.selectedSituationId) {
               delete state.answers[key];
@@ -2419,7 +2386,6 @@
           window.selectedSituationId = null;
           renderAll();
         } 
-        // If slot already has a situation, return it to bank
         else {
           const situationId = Object.keys(state.answers).find(key => state.answers[key] === textId);
           if (situationId) {
@@ -2554,10 +2520,8 @@
           popup.appendChild(optionItem);
         });
         
-        // Remove any existing popup
         document.querySelectorAll('.options-popup').forEach(p => p.remove());
         
-        // Find the clicked element and append popup
         const element = document.querySelector(`[data-blank-id="${blankId}"]`);
         if (element) {
           element.appendChild(popup);
@@ -2572,7 +2536,6 @@
       function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
         
-        // Build text with placeholders
         let textWithPlaceholders = section.fillText2;
         const placeholders = [];
         section.fillBlanks2.forEach(blank => {
@@ -2581,7 +2544,6 @@
           textWithPlaceholders = textWithPlaceholders.replace('________', ph);
         });
 
-        // Replace placeholders with span elements
         placeholders.forEach(item => {
           const userAnswer = state.answers[item.id];
           const displayText = userAnswer ? userAnswer : '________';
@@ -2594,7 +2556,6 @@
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
-        // Build word bank on the right
         let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
         const usedWords = Object.values(state.answers);
         const bank = section.fillBlanks2[0] ? section.fillBlanks2[0].options : [];
@@ -2622,7 +2583,6 @@
       }
 
       function handleWordClick(word) {
-        // Toggle selection
         if (window.selectedWord === word) {
           window.selectedWord = null;
           window.selectedWordId = null;
@@ -2634,27 +2594,22 @@
       }
 
       function handleWordSlotClick(blankId) {
-        // If a word is selected, place it in the slot
         if (window.selectedWord) {
           const word = window.selectedWord;
           
-          // Remove this word from any other slot if it exists
           Object.keys(state.answers).forEach(key => {
             if (state.answers[key] === word) {
               delete state.answers[key];
             }
           });
           
-          // Remove previous answer from this slot if any
           if (state.answers[blankId]) {
-            // Word will be freed automatically as it's not in answers anymore
           }
           
           state.answers[blankId] = word;
           window.selectedWord = null;
           renderSprachbausteine2();
         } 
-        // If slot already has a word, return it to bank
         else if (state.answers[blankId]) {
           delete state.answers[blankId];
           renderSprachbausteine2();
@@ -2692,7 +2647,6 @@
       }
 
       function selectSprachbausteine2(blankId, word){
-        // Remove this word from any other slot
         Object.keys(state.answers).forEach(key => {
           if (state.answers[key] === word) {
             delete state.answers[key];
@@ -2710,86 +2664,124 @@
       }
 
       function renderResults() {
-        let resultsHTML = `<h2>Ergebnisse</h2>`;
+        const section = exam.sections[state.sectionIndex];
+        let resultsHTML = `
+          <div class="result-item">
+            <h3>${section.title} - Ergebnisse</h3>
+        `;
+        
         let totalCorrect = 0;
         let totalQuestions = 0;
         
-        exam.sections.forEach(section => {
-          resultsHTML += `<div class="result-item"><h3>${section.title}</h3>`;
-          
-          if(section.id === 's1'){
-            section.texts.forEach(text => {
-              totalQuestions++;
-              const userAnswer = state.answers[text.id];
-              const isCorrect = userAnswer === text.correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Text ${text.id}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
-                </div>
-              `;
-            });
-          } else if(section.id === 's2'){
-            section.questions.forEach(question => {
-              totalQuestions++;
-              const userAnswer = state.answers[question.id];
-              const isCorrect = userAnswer === question.correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>${question.text}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
-                </div>
-              `;
-            });
-          } else if(section.id === 's3'){
-            section.situations.forEach(situation => {
-              totalQuestions++;
-              const userAnswer = state.answers[situation.id];
-              const correctText = section.texts.find(t => t.correctAnswer === situation.id);
-              const isCorrect = userAnswer === (correctText ? correctText.id : null);
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Situation ${situation.id}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
-                </div>
-              `;
-            });
-          } else if(section.id === 's4'){
-            section.fillBlanks.forEach(blank => {
-              totalQuestions++;
-              const userAnswer = state.answers[blank.id];
-              const isCorrect = userAnswer === blank.correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
-                </div>
-              `;
-            });
-          } else if(section.id === 's5'){
-            section.fillBlanks2.forEach(blank => {
-              totalQuestions++;
-              const userAnswer = state.answers[blank.id];
-              const isCorrect = userAnswer === blank.correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer || 'Nicht beantwortet'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
-                </div>
-              `;
-            });
-          }
-          
-          resultsHTML += `</div>`;
-        });
+        if (section.id === 's1') {
+          section.texts.forEach((text, index) => {
+            totalQuestions++;
+            const userAnswer = state.answers[text.id];
+            const isCorrect = userAnswer === text.correctAnswer;
+            if (isCorrect) totalCorrect++;
+            
+            const resultClass = isCorrect ? 'correct' : 'incorrect';
+            const resultIcon = isCorrect ? '✓' : '✗';
+            const answerText = userAnswer ? getHeadingTextById(userAnswer) : 'Nicht beantwortet';
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-question">Text ${String.fromCharCode(97 + index).toUpperCase()}</div>
+                <div class="result-answer ${resultClass}">${answerText}</div>
+                <div class="result-icon">${resultIcon}</div>
+              </div>
+            `;
+          });
+        } else if (section.id === 's2') {
+          section.questions.forEach((question, index) => {
+            totalQuestions++;
+            const userAnswer = state.answers[question.id];
+            const isCorrect = userAnswer === question.correctAnswer;
+            if (isCorrect) totalCorrect++;
+            
+            const resultClass = isCorrect ? 'correct' : 'incorrect';
+            const resultIcon = isCorrect ? '✓' : '✗';
+            
+            let userAnswerText = 'Nicht beantwortet';
+            if (userAnswer) {
+              const option = question.options.find(o => o.id === userAnswer);
+              userAnswerText = option ? option.text : userAnswer;
+            }
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-question">${index + 1}. ${question.text.substring(0, 50)}...</div>
+                <div class="result-answer ${resultClass}">${userAnswerText}</div>
+                <div class="result-icon">${resultIcon}</div>
+              </div>
+            `;
+          });
+        } else if (section.id === 's3') {
+          section.situations.forEach((situation, index) => {
+            totalQuestions++;
+            const userAnswer = state.answers[situation.id];
+            const correctText = section.texts.find(t => t.correctAnswer === situation.id);
+            const isCorrect = userAnswer === (correctText ? correctText.id : null);
+            if (isCorrect) totalCorrect++;
+            
+            const resultClass = isCorrect ? 'correct' : 'incorrect';
+            const resultIcon = isCorrect ? '✓' : '✗';
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-question">Situation ${situation.id}</div>
+                <div class="result-answer ${resultClass}">${userAnswer || '-'}</div>
+                <div class="result-icon">${resultIcon}</div>
+              </div>
+            `;
+          });
+        } else if (section.id === 's4') {
+          section.fillBlanks.forEach(blank => {
+            totalQuestions++;
+            const userAnswer = state.answers[blank.id];
+            const isCorrect = userAnswer === blank.correctAnswer;
+            if (isCorrect) totalCorrect++;
+            
+            const resultClass = isCorrect ? 'correct' : 'incorrect';
+            const resultIcon = isCorrect ? '✓' : '✗';
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-question">Lücke ${blank.id}</div>
+                <div class="result-answer ${resultClass}">${userAnswer || '-'}</div>
+                <div class="result-icon">${resultIcon}</div>
+              </div>
+            `;
+          });
+        } else if (section.id === 's5') {
+          section.fillBlanks2.forEach(blank => {
+            totalQuestions++;
+            const userAnswer = state.answers[blank.id];
+            const isCorrect = userAnswer === blank.correctAnswer;
+            if (isCorrect) totalCorrect++;
+            
+            const resultClass = isCorrect ? 'correct' : 'incorrect';
+            const resultIcon = isCorrect ? '✓' : '✗';
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-question">Lücke ${blank.id}</div>
+                <div class="result-answer ${resultClass}">${userAnswer || '-'}</div>
+                <div class="result-icon">${resultIcon}</div>
+              </div>
+            `;
+          });
+        }
         
         const percentage = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
-        resultsHTML += `<div class="result-item"><h3>Gesamtergebnis: ${totalCorrect}/${totalQuestions} (${percentage}%)</h3></div>`;
+        
+        resultsHTML += `
+          <div class="result-summary">
+            <div class="percentage">${percentage}%</div>
+            <div>${totalCorrect} von ${totalQuestions} richtig</div>
+            <div>Punkte: ${Math.round((totalCorrect / totalQuestions) * section.points)} / ${section.points}</div>
+          </div>
+        </div>`;
         
         passageContentEl.innerHTML = resultsHTML;
         questionBodyEl.innerHTML = '';
@@ -3059,60 +3051,55 @@
       }
 
       function renderResults() {
-        let resultsHTML = `<div class="panel-title">Ergebnisse - Hörverstehen</div>`;
+        const section = exam.sections[state.sectionIndex];
+        const userAnswers = state.answers[section.id] || {};
+        let correctCount = 0;
         
-        exam.sections.forEach(section => {
-          const userAnswers = state.answers[section.id] || {};
-          let correctCount = 0;
-          
-          resultsHTML += `
-            <div class="listening-task">
-              <h3>${section.title} (${section.points} Punkte)</h3>
-              <table class="true-false-table">
-                <thead>
-                  <tr>
-                    <th style="width: 10%">Nr.</th>
-                    <th style="width: 50%">Aussage</th>
-                    <th style="width: 15%">Ihre Antwort</th>
-                    <th style="width: 15%">Richtige Antwort</th>
-                    <th style="width: 10%">Punkte</th>
-                  </tr>
-                </thead>
-                <tbody>
-          `;
-          
-          section.questions.forEach((question) => {
-            const userAnswer = userAnswers[question.id] || '-';
-            const correctAnswer = section.correctAnswers[question.id];
-            const gotCorrect = userAnswer === correctAnswer;
-            const points = gotCorrect ? "1" : "0";
-            
-            if (gotCorrect) correctCount++;
-            
-            const rowClass = gotCorrect ? 'correct-answer' : 'incorrect-answer';
-            
-            resultsHTML += `
-              <tr class="${rowClass}">
-                <td><strong>${question.id}</strong></td>
-                <td class="question-text">${question.text}</td>
-                <td>${userAnswer}</td>
-                <td>${correctAnswer}</td>
-                <td><strong>${points}</strong></td>
+        let resultsHTML = `
+          <div class="panel-title">Ergebnisse - ${section.title}</div>
+          <table class="true-false-table">
+            <thead>
+              <tr>
+                <th style="width: 10%">Nr.</th>
+                <th style="width: 50%">Aussage</th>
+                <th style="width: 15%">Ihre Antwort</th>
+                <th style="width: 15%">Richtige Antwort</th>
+                <th style="width: 10%">Punkte</th>
               </tr>
-            `;
-          });
+            </thead>
+            <tbody>
+        `;
+        
+        section.questions.forEach((question) => {
+          const userAnswer = userAnswers[question.id] || '-';
+          const correctAnswer = section.correctAnswers[question.id];
+          const gotCorrect = userAnswer === correctAnswer;
+          const points = gotCorrect ? "1" : "0";
           
-          const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
+          if (gotCorrect) correctCount++;
+          
+          const rowClass = gotCorrect ? 'correct-answer' : 'incorrect-answer';
           
           resultsHTML += `
-                </tbody>
-              </table>
-              <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
-                <strong>Erreichte Punkte: ${correctCount}/${section.questions.length} richtig = ${totalPoints}/${section.points} Punkten</strong>
-              </div>
-            </div>
+            <tr class="${rowClass}">
+              <td><strong>${question.id}</strong></td>
+              <td class="question-text">${question.text}</td>
+              <td>${userAnswer}</td>
+              <td>${correctAnswer}</td>
+              <td><strong>${points}</strong></td>
+            </tr>
           `;
         });
+        
+        const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
+        
+        resultsHTML += `
+            </tbody>
+          </table>
+          <div style="margin-top: 15px; padding: 15px; background: #1e3a5f; color: white; border-radius: 6px; text-align: center;">
+            <strong>Erreichte Punkte: ${correctCount}/${section.questions.length} richtig = ${totalPoints}/${section.points} Punkten</strong>
+          </div>
+        `;
         
         contentContainer.innerHTML = resultsHTML;
       }
@@ -3285,15 +3272,11 @@
         passageContentEl.innerHTML = `
           <div class="writing-task">
             <div class="writing-prompt">${section.writingTask.prompt}</div>
-            <div class="instructions" style="border:1px solid #e1e8f6; padding:10px; margin:10px 0; border-radius:6px; background:#ffffff;">${section.writingTask.prompt}</div>
             <div class="writing-requirements">
               <h4>Schreiben Sie in Ihrer E-Mail:</h4>
               <ul>
                 ${section.writingTask.requirements.map(req => `<li>${req}</li>`).join('')}
               </ul>
-            </div>
-            <div class="instructions">
-              Schreiben Sie eine E-Mail (ca. 150-200 Wörter). Achten Sie auf den Textaufbau (Anrede, Einleitung, Hauptteil, Schluss) und eine angemessene Formulierung.
             </div>
           </div>
         `;
@@ -3327,23 +3310,22 @@
       }
 
       function renderResults() {
-        let resultsHTML = `<h2>Ergebnisse</h2>`;
+        const section = exam.sections[state.sectionIndex];
+        const userAnswer = state.answers[section.id];
+        const wordCount = countWords(userAnswer);
         
-        exam.sections.forEach(section => {
-          resultsHTML += `<div class="writing-task"><h3>${section.title}</h3>`;
-          
-          const userAnswer = state.answers[section.id];
-          const wordCount = countWords(userAnswer);
-          
-          resultsHTML += `
+        let resultsHTML = `
+          <div class="result-item">
+            <h3>${section.title} - Ergebnisse</h3>
             <div class="writing-requirements">
               <h4>Ihre Antwort (${wordCount} Wörter):</h4>
               <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${userAnswer || 'Keine Antwort'}</div>
             </div>
-          `;
-          
-          resultsHTML += `</div>`;
-        });
+            <div class="result-summary">
+              <div>Bitte manuell bewerten (max. ${section.points} Punkte)</div>
+            </div>
+          </div>
+        `;
         
         passageContentEl.innerHTML = resultsHTML;
         writingContainer.innerHTML = '';
@@ -3423,12 +3405,8 @@
       };
 
       const CORRECT_ANSWERS = {
-        lesen: {
-          // Hier die richtigen Antworten für Lesen einfügen
-        },
-        hoeren: {
-          // Hier die richtigen Antworten für Hören einfügen
-        }
+        lesen: {},
+        hoeren: {}
       };
 
       function readExamResults() {
@@ -3527,24 +3505,15 @@
 
       function renderLesenDetails(answers) {
         let html = `<div class="section-table">`;
-        
         html += `<h4>Teil 1: Überschriften zuordnen</h4><table class="true-false-table">`;
         html += `<thead><tr><th>Text</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
-        
-        // Hier die Logik zum Anzeigen der Ergebnisse einfügen
-        
         html += `</tbody></table></div>`;
-        
         return html;
       }
 
       function renderHoerenDetails(answers) {
         let html = `<div class="section-table">`;
-        
-        // Hier die Logik zum Anzeigen der Hören-Ergebnisse einfügen
-        
         html += `</div>`;
-        
         return html;
       }
 
@@ -3636,6 +3605,15 @@
       
       document.getElementById('backBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
+        // Reset exam started flag
+        examStarted = false;
+        // Reset countdown
+        counter = initialCounter;
+        timerEl.textContent = counter;
+        timeDisplayEl.textContent = counter;
+        progressEl.style.transform = "scaleX(0)";
+        timerEl.style.color = "";
+        // Go to start page
         showPage('start-page');
       };
       
@@ -3668,13 +3646,10 @@
           }
         }
         
-        // Go back to start page and reset countdown
+        // Reset exam started flag
         examStarted = false;
-        counter = initialCounter;
-        timerEl.textContent = counter;
-        timeDisplayEl.textContent = counter;
-        progressEl.style.transform = "scaleX(0)";
-        timerEl.style.color = "";
+        
+        // Go to start page without countdown
         showPage('start-page');
       };
       
