@@ -290,6 +290,15 @@
       background: #2c5282;
     }
     
+    .exam-btn.ai {
+      background: #10a37f;
+      color: white;
+    }
+    
+    .exam-btn.ai:hover {
+      background: #0d8c6d;
+    }
+    
     .exam-btn.reset-section {
       background: #d35400;
       color: white;
@@ -1068,6 +1077,84 @@
       color: #2c3e50;
     }
     
+    /* AI Grade Modal */
+    .ai-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .ai-modal-content {
+      background: white;
+      border-radius: 16px;
+      padding: 30px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    
+    .ai-modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+    }
+    
+    .ai-modal-close:hover {
+      color: #000;
+    }
+    
+    .ai-loading {
+      text-align: center;
+      padding: 30px;
+    }
+    
+    .ai-loading-spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #1e3a5f;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .ai-result {
+      padding: 20px;
+    }
+    
+    .ai-score {
+      font-size: 48px;
+      font-weight: 700;
+      color: #1e3a5f;
+      text-align: center;
+      margin: 20px 0;
+    }
+    
+    .ai-feedback {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      white-space: pre-wrap;
+    }
+    
     /* Results Page Styles */
     .results-body {
       background: #f7fafc;
@@ -1572,6 +1659,7 @@
         <button id="saveBtn-schreiben" class="exam-btn save">📋 Speichern</button>
         <button id="resultBtn-schreiben" class="exam-btn result">📊 Ergebnis</button>
         <button id="submitBtn-schreiben" class="exam-btn submit">🏁 Abgabe</button>
+        <button id="aiGradeBtn-schreiben" class="exam-btn ai">🤖 KI Bewertung</button>
         <button class="exam-btn next" id="nextBtn-schreiben">➡️ Nächste Prüfung</button>
       </div>
     </header>
@@ -1620,6 +1708,18 @@
         <button id="calcBtn-ergebnisse" class="results-btn">✅ Ergebnisse anzeigen</button>
       </div>
       <div class="note">Hinweis: Schreiben (45 Punkte) wird manuell eingegeben, falls nicht automatisch vorhanden.</div>
+    </div>
+  </div>
+
+  <!-- AI Grade Modal -->
+  <div id="aiModal" class="ai-modal">
+    <div class="ai-modal-content">
+      <span class="ai-modal-close" onclick="document.getElementById('aiModal').style.display='none'">&times;</span>
+      <div id="aiLoading" class="ai-loading">
+        <div class="ai-loading-spinner"></div>
+        <p>KI bewertet Ihren Text...</p>
+      </div>
+      <div id="aiResult" class="ai-result" style="display: none;"></div>
     </div>
   </div>
 
@@ -1868,6 +1968,84 @@
       timerEl.style.color = "#e53e3e";
     });
 
+    // ===== AI GRADING FUNCTION =====
+    async function getAIGrade(userText, taskPrompt) {
+      const modal = document.getElementById('aiModal');
+      const loading = document.getElementById('aiLoading');
+      const result = document.getElementById('aiResult');
+      
+      modal.style.display = 'flex';
+      loading.style.display = 'block';
+      result.style.display = 'none';
+      
+      // Prepare the prompt for ChatGPT
+      const prompt = `Du bist ein strenger und erfahrener TELC B2 Prüfer. Korrigiere folgenden Text nach den offiziellen TELC B2 Prüfungskriterien.
+
+AUFGABE:
+${taskPrompt}
+
+TEXT DES PRÜFLINGS:
+${userText}
+
+WICHTIGE ANWEISUNGEN:
+1. Sei STRENG bei der Bewertung - TELC B2 ist anspruchsvoll
+2. Gib NUR eine Zahl zwischen 0 und 45 zurück
+3. Keine Erklärungen, kein Feedback, keine Kommentare
+4. Nichts anderes als die Zahl
+5. Die Zahl muss den offiziellen TELC B2 Kriterien entsprechen
+
+ANTWORT (NUR DIE ZAHL):`;
+
+      try {
+        // Hier wird die ChatGPT API aufgerufen
+        // Du musst deinen eigenen API-Key einfügen
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer DEIN-API-KEY-HIER' // Hier musst du deinen API-Key einfügen
+          },
+          body: JSON.stringify({
+            model: 'gpt-3.5-turbo',
+            messages: [
+              { role: 'system', content: 'Du bist ein strenger TELC B2 Prüfer. Du gibst NUR eine Zahl zwischen 0 und 45 zurück.' },
+              { role: 'user', content: prompt }
+            ],
+            temperature: 0.3,
+            max_tokens: 10
+          })
+        });
+
+        const data = await response.json();
+        const score = data.choices[0].message.content.trim();
+        
+        // Validate that it's a number between 0 and 45
+        const scoreNum = parseInt(score);
+        if (isNaN(scoreNum) || scoreNum < 0 || scoreNum > 45) {
+          throw new Error('Ungültige Bewertung');
+        }
+        
+        loading.style.display = 'none';
+        result.style.display = 'block';
+        result.innerHTML = `
+          <h2 style="text-align: center; color: #1e3a5f;">TELC B2 Bewertung</h2>
+          <div class="ai-score">${scoreNum}/45</div>
+          <p style="text-align: center; color: #666;">Die KI hat Ihren Text streng nach TELC B2 Kriterien bewertet.</p>
+          <button onclick="document.getElementById('aiModal').style.display='none'" class="exam-btn" style="width: 100%; margin-top: 20px;">Schließen</button>
+        `;
+        
+      } catch (error) {
+        console.error('Fehler bei der KI-Bewertung:', error);
+        loading.style.display = 'none';
+        result.style.display = 'block';
+        result.innerHTML = `
+          <h2 style="text-align: center; color: #c0392b;">Fehler bei der Bewertung</h2>
+          <p style="text-align: center;">Die KI-Bewertung konnte nicht durchgeführt werden. Bitte versuchen Sie es später erneut.</p>
+          <button onclick="document.getElementById('aiModal').style.display='none'" class="exam-btn" style="width: 100%; margin-top: 20px;">Schließen</button>
+        `;
+      }
+    }
+
     // ===== EMPTY EXAM DATA STRUCTURE - FILL WITH YOUR CONTENT =====
     const EXAM_DATA = {
       lesen: {
@@ -1964,8 +2142,47 @@
             passageTitle:"Aufgabe: Schreiben Sie eine E-Mail",
             passage: "",
             writingTask: {
-              prompt: ``,
-              requirements: [],
+              prompt: `Engagement für Jugendliche
+
+Wie soll es nach dem Schulabschluss weitergehen? 
+Was wäre der ideale Beruf? 
+Wie findet man einen Ausbildungsplatz und wie bewirbt man sich? 
+
+Wollen Sie Jugendlichen dabei helfen, die richtigen Antworten auf diese Fragen zu finden 
+und so ihre Zukunftsperspektiven zu verbessern? 
+
+Dann werden Sie Bildungspatin/Bildungspate! 
+
+Wir suchen Bildungspatinnen und Bildungspaten, die Schülerinnen und Schüler ab 14 Jahren 
+unterstützen können: 
+- bei Problemen mit dem Schulabschluss, 
+- bei der Suche nach einem Ausbildungsplatz, 
+- beim Bewerbungsprozess, 
+- beim Berufseinstieg. 
+
+Sie helfen einer Schülerin oder einem Schüler dabei, den Übergang zwischen Schule und Beruf 
+zu meistern. 
+
+In drei Wochenendseminaren bereiten wir Sie auf diese spannende und anspruchsvolle 
+Aufgabe vor. 
+
+Sie erhalten außerdem regelmäßig Beratung und Unterstützung durch unser erfahrenes Team. 
+
+Setzen Sie Ihre Zeit, Ihr Wissen und Ihr Engagement ein, um das Leben eines Jugendlichen 
+positiv zu beeinflussen! 
+
+Mehr Informationen erhalten Sie unter: www.bildungspaten-für-jugendliche.net 
+
+Adresse: 
+Bildungspaten für Jugendliche e. V. 
+Hamburger Str. 112 
+60824 Frankfurt am Main`,
+              requirements: [
+                "Beschreiben Sie, welche Erfahrungen Sie bei Ihrem Engagement in dem Verein gemacht haben.",
+                "Erklären Sie, warum Sie Jugendlichen helfen wollten.",
+                "Beschreiben Sie, wie Sie sich die Mitarbeit im Verein vorgestellt haben.",
+                "Machen Sie Verbesserungsvorschläge."
+              ],
               wordCount: 0
             }
           }
@@ -3183,6 +3400,19 @@
       const writingContainer = document.getElementById('writingContainer-schreiben');
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
+
+      // AI Grade Button
+      document.getElementById('aiGradeBtn-schreiben').addEventListener('click', () => {
+        const section = exam.sections[state.sectionIndex];
+        const userText = state.answers[section.id] || '';
+        
+        if (userText.trim() === '') {
+          alert('Bitte schreiben Sie zuerst einen Text.');
+          return;
+        }
+        
+        getAIGrade(userText, section.writingTask.prompt);
+      });
 
       function handleTimeExpired() {
         if (state.examEnded) return;
