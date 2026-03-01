@@ -1627,9 +1627,7 @@
       <div id="details-ergebnisse"></div>
       <div class="summary" id="finalSummary-ergebnisse"></div>
       <div class="controls">
-        <a class="button-like" href="#" id="backBtn-ergebnisse">
-          <button class="results-btn">🔁 Zurück zur Startseite</button>
-        </a>
+        <button id="backBtn-ergebnisse" class="results-btn">🔁 Zurück zur Startseite</button>
         <button id="retryBtn-ergebnisse" class="results-btn secondary">🔄 Prüfung wiederholen</button>
         <button id="continueBtn-ergebnisse" class="results-btn">➡️ Zurück zur Prüfung</button>
       </div>
@@ -1662,6 +1660,7 @@
       const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       
       // عناصر الصفحة
+      const body = document.getElementById('body');
       const startPage = document.getElementById('start-page');
       const loginErrorModal = document.getElementById('login-error-modal');
       const errorMessage = document.getElementById('error-message');
@@ -1808,12 +1807,9 @@
     const cancelBtn = document.getElementById("cancelBtn");
 
     function startCountdown() {
-      // prevent double-starts or starting after exam already began
       if (countdownRunning || examStarted) return;
       countdownRunning = true;
-      // disable start button while counting
       try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
-      // reset counter & UI
       counter = initialCounter;
       timerEl.textContent = counter;
       timeDisplayEl.textContent = counter;
@@ -1831,12 +1827,10 @@
           countdownInterval = null;
           countdownRunning = false;
           progressEl.style.transform = "scaleX(1)";
-          // ensure exam starts only once
           if (!examStarted) {
             examStarted = true;
             startExam();
           }
-          // safety: re-enable start button (page usually navigates away)
           try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
         }
       }, 1000);
@@ -1860,7 +1854,6 @@
     }
 
     function startExam() {
-      // guard to ensure startExam is triggered once
       if (!examStarted) examStarted = true;
       const selectedSection = selectEl.value;
       if (selectedSection === 'lesen') {
@@ -1872,7 +1865,6 @@
       }
     }
 
-    // wire buttons: start will now start the countdown (not the exam directly)
     startBtn.addEventListener('click', startCountdown);
 
     cancelBtn.addEventListener('click', () => {
@@ -3052,9 +3044,6 @@ ________ warum wurden die Fähigkeiten der Fische so lange unterschätzt? „Int
               delete state.answers[key];
             }
           });
-          
-          if (state.answers[blankId]) {
-          }
           
           state.answers[blankId] = word;
           window.selectedWord = null;
