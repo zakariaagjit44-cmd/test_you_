@@ -1212,6 +1212,8 @@
       font-weight: 700;
       cursor: pointer;
       transition: background 0.3s;
+      text-decoration: none;
+      display: inline-block;
     }
     
     .results-btn:hover {
@@ -1647,9 +1649,7 @@
       <div id="details-ergebnisse"></div>
       <div class="summary" id="finalSummary-ergebnisse"></div>
       <div class="controls">
-        <a class="button-like" href="#" id="backBtn-ergebnisse">
-          <button class="results-btn">🔁 Zurück zur Startseite</button>
-        </a>
+        <button id="backBtn-ergebnisse" class="results-btn">🔁 Zurück zur Startseite</button>
         <button id="retryBtn-ergebnisse" class="results-btn secondary">🔄 Prüfung wiederholen</button>
         <button id="continueBtn-ergebnisse" class="results-btn">➡️ Zurück zur Prüfung</button>
       </div>
@@ -1829,12 +1829,9 @@
     const cancelBtn = document.getElementById("cancelBtn");
 
     function startCountdown() {
-      // prevent double-starts or starting after exam already began
       if (countdownRunning || examStarted) return;
       countdownRunning = true;
-      // disable start button while counting
       try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
-      // reset counter & UI
       counter = initialCounter;
       timerEl.textContent = counter;
       timeDisplayEl.textContent = counter;
@@ -1852,12 +1849,10 @@
           countdownInterval = null;
           countdownRunning = false;
           progressEl.style.transform = "scaleX(1)";
-          // ensure exam starts only once
           if (!examStarted) {
             examStarted = true;
             startExam();
           }
-          // safety: re-enable start button (page usually navigates away)
           try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
         }
       }, 1000);
@@ -1881,7 +1876,6 @@
     }
 
     function startExam() {
-      // guard to ensure startExam is triggered once
       if (!examStarted) examStarted = true;
       const selectedSection = selectEl.value;
       if (selectedSection === 'lesen') {
@@ -1893,7 +1887,6 @@
       }
     }
 
-    // wire buttons: start will now start the countdown (not the exam directly)
     startBtn.addEventListener('click', startCountdown);
 
     cancelBtn.addEventListener('click', () => {
@@ -1915,16 +1908,37 @@
             passageTitle: "Aufgabe: Ziehen Sie die passenden Überschriften auf die Texte.",
             passage: "",
             questions: [],
-            texts: [],
-            headings: []
+            texts: [
+              {
+                id: "text1",
+                content: "Hier kommt der Text 1...",
+                correctAnswer: "a"
+              }
+            ],
+            headings: [
+              {id: "a", text: "Überschrift 1"},
+              {id: "b", text: "Überschrift 2"}
+            ]
           },
           { 
             id:"s2", 
             title:"Leseverstehen, Teil 2", 
             points:25,
-            passageTitle: "",
-            passage: "",
-            questions: []
+            passageTitle: "Lesetext Titel",
+            passage: "Hier kommt der lange Lesetext...",
+            questions: [
+              {
+                id: "s2q1",
+                type: "single",
+                text: "Frage 1?",
+                options: [
+                  {id: "s2q1o1", text: "Option 1"},
+                  {id: "s2q1o2", text: "Option 2"},
+                  {id: "s2q1o3", text: "Option 3"}
+                ],
+                correctAnswer: "s2q1o2"
+              }
+            ]
           },
           { 
             id:"s3", 
@@ -1933,8 +1947,14 @@
             passageTitle:"Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchmal passt kein Text. Wählen Sie dann 'x'.",
             passage: "",
             questions:[],
-            texts: [],
-            situations: []
+            texts: [
+              {id: "A", text: "Text A...", correctAnswer: "11"},
+              {id: "B", text: "Text B...", correctAnswer: ""}
+            ],
+            situations: [
+              {id: "11", text: "Situation 11..."},
+              {id: "12", text: "Situation 12..."}
+            ]
           },
           { 
             id:"s4", 
@@ -1943,8 +1963,14 @@
             passageTitle:"Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.",
             passage: "",
             questions:[],
-            fillBlanks: [],
-            fillText: ``
+            fillBlanks: [
+              {
+                id: "21",
+                options: ["Option1", "Option2", "Option3"],
+                correctAnswer: "Option2"
+              }
+            ],
+            fillText: `Hallo, ich ________ ein Student.`
           },
           { 
             id:"s5", 
@@ -1953,8 +1979,14 @@
             passageTitle:"Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort nur einmal verwenden. Nicht alle Wörter passen in den Text.",
             passage: "",
             questions:[],
-            fillBlanks2: [],
-            fillText2: ``
+            fillBlanks2: [
+              {
+                id: "31",
+                options: ["WORT1", "WORT2", "WORT3", "WORT4"],
+                correctAnswer: "WORT2"
+              }
+            ],
+            fillText2: `Das ist ein ________ Text.`
           }
         ]
       },
@@ -1967,22 +1999,20 @@
             id:"hörverstehen1", 
             title:"Hörverstehen, Teil 1", 
             points:25,
-            correctAnswers: {},
-            questions: []
-          },
-          { 
-            id:"hörverstehen2", 
-            title:"Hörverstehen, Teil 2", 
-            points:25,
-            correctAnswers: {},
-            questions: []
-          },
-          { 
-            id:"hörverstehen3", 
-            title:"Hörverstehen, Teil 3", 
-            points:25,
-            correctAnswers: {},
-            questions: []
+            correctAnswers: {
+              "41": "falsch",
+              "42": "richtig"
+            },
+            questions: [
+              {
+                id: "41",
+                text: "Aussage 1"
+              },
+              {
+                id: "42",
+                text: "Aussage 2"
+              }
+            ]
           }
         ]
       },
@@ -1998,8 +2028,12 @@
             passageTitle:"Aufgabe: Schreiben Sie eine E-Mail",
             passage: "",
             writingTask: {
-              prompt: ``,
-              requirements: [],
+              prompt: `Schreiben Sie eine E-Mail...`,
+              requirements: [
+                "Punkt 1",
+                "Punkt 2",
+                "Punkt 3"
+              ],
               wordCount: 0
             }
           }
@@ -2011,13 +2045,11 @@
     function initLesenPage() {
       const exam = EXAM_DATA.lesen;
       
-      // Global variables for click selection mode
       window.selectedHeadingId = null;
       window.selectedSituationId = null;
       window.selectedWordId = null;
       window.selectedWord = null;
       
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         questionIndex: 0, 
@@ -2043,7 +2075,6 @@
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
-      /* ===== Timer Functions with Auto-Submit ===== */
       function handleTimeExpired() {
         if (state.examEnded) return;
         state.examEnded = true;
@@ -2103,11 +2134,10 @@
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Reset Section Function ===== */
       function resetCurrentSection() {
         const currentSection = exam.sections[state.sectionIndex];
         
-        if (confirm(`Möchten Sie wirklich den Teil "${currentSection.title}" zurücksetzen? Alle Antworten in diesem Teil werden gelöscht.`)) {
+        if (confirm(`Möchten Sie wirklich den Teil "${currentSection.title}" zurücksetzen?`)) {
           if (currentSection.id === 's1') {
             currentSection.texts.forEach(text => {
               delete state.answers[text.id];
@@ -2134,7 +2164,6 @@
         }
       }
 
-      /* ===== Render ===== */
       function renderTopTiles(){ 
         topTiles.innerHTML=''; 
         exam.sections.forEach((sec,idx)=>{ 
@@ -2186,7 +2215,7 @@
       function renderPart1(){
         const section = exam.sections[state.sectionIndex];
         
-        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. Sie können jede Überschrift nur einmal verwenden. (Klicken: Titel auswählen → auf Text klicken)</div>`;
+        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. (Klicken: Titel auswählen → auf Text klicken)</div>`;
         
         section.texts.forEach((text, idx) => {
           const letter = String.fromCharCode(97 + idx);
@@ -2342,7 +2371,7 @@
         const section = exam.sections[state.sectionIndex];
         
         let textsHTML = `
-          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. Sie können jede Situation nur einmal verwenden. Manchmal passt keine Situation. (Klicken: Situation auswählen → auf Text klicken)</div>
+          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. (Klicken: Situation auswählen → auf Text klicken)</div>
           <div class="texts-list">
             <h3>Texte (A-L)</h3>
         `;
@@ -2401,7 +2430,6 @@
       }
 
       function restoreX(textId) {
-        // Find which situation was marked as X for this text
         const situationId = Object.keys(state.answers).find(key => state.answers[key] === 'X' && key.includes('text'));
         if (situationId) {
           delete state.answers[situationId];
@@ -2513,7 +2541,7 @@
         });
         
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können die Lücken in beliebiger Reihenfolge ausfüllen.</div>
+          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort.</div>
           <div class="fill-blank-container">${tempText}</div>
         `;
         
@@ -2523,13 +2551,12 @@
           const userAnswer = state.answers[blank.id];
           
           optionsHTML += `
-            <div class="option-row" style="padding: 8px; margin-bottom: 5px;">
+            <div class="option-row">
               <div class="option-number">${blank.id}</div>
               <div class="option-buttons">
                 ${blank.options.map(opt => `
                   <div class="option-btn ${userAnswer === opt ? 'selected' : ''}" 
-                       onclick="window.lesenApp.selectSprachbausteine1('${blank.id}', '${opt}')" 
-                       style="padding: 6px 12px; font-size: 12px;">
+                       onclick="window.lesenApp.selectSprachbausteine1('${blank.id}', '${opt}')">
                     ${opt}
                   </div>
                 `).join('')}
@@ -2596,11 +2623,11 @@
         });
 
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf eine Lücke und dann auf ein Wort aus der Liste. (Klicken: Wort auswählen → auf Lücke klicken)</div>
+          <div class="instructions">Klicken Sie auf eine Lücke und dann auf ein Wort aus der Liste.</div>
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
-        let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
+        let wordBankHTML = `<div class="word-bank-vertical">`;
         const usedWords = Object.values(state.answers);
         const bank = section.fillBlanks2[0] ? section.fillBlanks2[0].options : [];
         
@@ -2646,9 +2673,6 @@
               delete state.answers[key];
             }
           });
-          
-          if (state.answers[blankId]) {
-          }
           
           state.answers[blankId] = word;
           window.selectedWord = null;
@@ -2727,7 +2751,7 @@
             resultsHTML += `
               <div class="result-detail">
                 <div class="result-row">
-                  <div class="result-label">Text ${String.fromCharCode(97 + index).toUpperCase()}:</div>
+                  <div class="result-label">Ihre Antwort:</div>
                   <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer ? getHeadingTextById(userAnswer) : 'Nicht beantwortet'}</div>
                 </div>
                 <div class="result-row">
@@ -2760,7 +2784,7 @@
             resultsHTML += `
               <div class="result-detail">
                 <div class="result-row">
-                  <div class="result-label">Frage ${index + 1}:</div>
+                  <div class="result-label">Ihre Antwort:</div>
                   <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswerText}</div>
                 </div>
                 <div class="result-row">
@@ -2784,7 +2808,7 @@
             resultsHTML += `
               <div class="result-detail">
                 <div class="result-row">
-                  <div class="result-label">Situation ${situation.id}:</div>
+                  <div class="result-label">Ihre Antwort:</div>
                   <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
                 </div>
                 <div class="result-row">
@@ -2807,7 +2831,7 @@
             resultsHTML += `
               <div class="result-detail">
                 <div class="result-row">
-                  <div class="result-label">Lücke ${blank.id}:</div>
+                  <div class="result-label">Ihre Antwort:</div>
                   <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
                 </div>
                 <div class="result-row">
@@ -2830,7 +2854,7 @@
             resultsHTML += `
               <div class="result-detail">
                 <div class="result-row">
-                  <div class="result-label">Lücke ${blank.id}:</div>
+                  <div class="result-label">Ihre Antwort:</div>
                   <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
                 </div>
                 <div class="result-row">
@@ -2861,7 +2885,6 @@
         questionTitleEl.textContent = '';
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex > 0){
           state.sectionIndex--;
@@ -2890,7 +2913,7 @@
       });
 
       resetBtn.addEventListener('click', ()=>{
-        if(confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')){
+        if(confirm('Möchten Sie wirklich von neu beginnen?')){
           state.answers = {};
           state.marked = {};
           state.showResults = false;
@@ -2913,7 +2936,6 @@
         }
       });
 
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
@@ -3055,17 +3077,16 @@
         let contentHTML = `
           <div class="panel-title">${section.title}</div>
           <div class="instructions">
-            Sie hören die Nachrichten. Entscheiden Sie beim Hören, ob die Aussagen richtig oder falsch sind. 
-            Sie hören die Nachrichten nur einmal. Sie haben jetzt 30 Sekunden, um die Aussagen zu lesen.
+            Sie hören die Nachrichten. Entscheiden Sie beim Hören, ob die Aussagen richtig oder falsch sind.
           </div>
           
           <div class="listening-task">
             <table class="true-false-table">
               <thead>
                 <tr>
-                  <th style="width: 10%">Nr.</th>
-                  <th style="width: 60%">Aussage</th>
-                  <th style="width: 30%">Ihre Antwort</th>
+                  <th>Nr.</th>
+                  <th>Aussage</th>
+                  <th>Ihre Antwort</th>
                 </tr>
               </thead>
               <tbody>
@@ -3080,24 +3101,10 @@
               <td>
                 <div class="answer-options">
                   <label class="answer-option">
-                    <input 
-                      type="radio" 
-                      name="q${section.id}_${question.id}" 
-                      value="richtig" 
-                      ${currentAnswer === 'richtig' ? 'checked' : ''}
-                      onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"
-                    >
-                    Richtig
+                    <input type="radio" name="q${section.id}_${question.id}" value="richtig" ${currentAnswer === 'richtig' ? 'checked' : ''} onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"> Richtig
                   </label>
                   <label class="answer-option">
-                    <input 
-                      type="radio" 
-                      name="q${section.id}_${question.id}" 
-                      value="falsch" 
-                      ${currentAnswer === 'falsch' ? 'checked' : ''}
-                      onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"
-                    >
-                    Falsch
+                    <input type="radio" name="q${section.id}_${question.id}" value="falsch" ${currentAnswer === 'falsch' ? 'checked' : ''} onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"> Falsch
                   </label>
                 </div>
               </td>
@@ -3142,7 +3149,7 @@
           resultsHTML += `
             <div class="result-detail">
               <div class="result-row">
-                <div class="result-label">Frage ${question.id}:</div>
+                <div class="result-label">Ihre Antwort:</div>
                 <div class="result-value ${gotCorrect ? 'correct' : 'incorrect'}">${userAnswer}</div>
               </div>
               <div class="result-row">
@@ -3196,7 +3203,7 @@
       });
 
       document.getElementById('resetBtn-hoeren').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3350,14 +3357,8 @@
         
         writingContainer.innerHTML = `
           <div class="writing-area">
-            <textarea 
-              class="writing-textarea" 
-              placeholder="Schreiben Sie hier Ihre E-Mail..."
-              oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)"
-            >${currentAnswer}</textarea>
-            <div class="word-counter">
-              Wörter: <span class="count">${wordCount}</span>
-            </div>
+            <textarea class="writing-textarea" placeholder="Schreiben Sie hier Ihre E-Mail..." oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)">${currentAnswer}</textarea>
+            <div class="word-counter">Wörter: <span class="count">${wordCount}</span></div>
           </div>
         `;
       }
@@ -3368,7 +3369,6 @@
 
       function updateWritingAnswer(sectionId, text) {
         state.answers[sectionId] = text;
-        
         const wordCount = countWords(text);
         document.querySelector('.word-counter .count').textContent = wordCount;
       }
@@ -3378,7 +3378,7 @@
         const userAnswer = state.answers[section.id];
         const wordCount = countWords(userAnswer);
         
-        let resultsHTML = `
+        passageContentEl.innerHTML = `
           <div class="result-item">
             <h3>${section.title} - Ergebnisse</h3>
             <div class="writing-requirements">
@@ -3390,8 +3390,6 @@
             </div>
           </div>
         `;
-        
-        passageContentEl.innerHTML = resultsHTML;
         writingContainer.innerHTML = '';
       }
 
@@ -3423,7 +3421,7 @@
       });
 
       document.getElementById('resetBtn-schreiben').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3468,17 +3466,11 @@
         }
       };
 
-      const CORRECT_ANSWERS = {
-        lesen: {},
-        hoeren: {}
-      };
-
       function readExamResults() {
         try {
           const lesen = window._lesenState ? window._lesenState.answers : {};
           const hoeren = window._hoerenState ? window._hoerenState.answers : {};
           const schreiben = window._schreibenState ? window._schreibenState.answers : {};
-
           return { hoeren, lesen, schreiben };
         } catch (e) {
           return { hoeren: {}, lesen: {}, schreiben: {} };
@@ -3521,7 +3513,6 @@
         });
         
         const points = Math.round((correct / total) * CONFIG.totals.lesen);
-        
         return { correct, total, points };
       }
 
@@ -3540,45 +3531,7 @@
         });
         
         const points = Math.round((correct / total) * CONFIG.totals.hoeren);
-        
         return { correct, total, points };
-      }
-
-      function getHeadingText(questionId, answerId) {
-        if (!answerId || answerId === '-') return '';
-        
-        const headings = EXAM_DATA.lesen.sections[0].headings;
-        const heading = headings.find(h => h.id === answerId);
-        return heading ? heading.text : '';
-      }
-
-      function getAnswerText(section, questionId, answerId) {
-        if (!answerId || answerId === '-') return '-';
-        
-        if (section === 'lesen') {
-          const lesenExam = EXAM_DATA.lesen;
-          const teil2 = lesenExam.sections[1];
-          const question = teil2.questions.find(q => q.id === questionId);
-          if (question) {
-            const option = question.options.find(o => o.id === answerId);
-            return option ? option.text : answerId;
-          }
-        }
-        return answerId;
-      }
-
-      function renderLesenDetails(answers) {
-        let html = `<div class="section-table">`;
-        html += `<h4>Teil 1: Überschriften zuordnen</h4><table class="true-false-table">`;
-        html += `<thead><tr><th>Text</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
-        html += `</tbody></table></div>`;
-        return html;
-      }
-
-      function renderHoerenDetails(answers) {
-        let html = `<div class="section-table">`;
-        html += `</div>`;
-        return html;
       }
 
       function calculateResults() {
@@ -3592,53 +3545,30 @@
         const lesenResults = calculateLesenResults(st.lesen);
         const hoerenResults = calculateHoerenResults(st.hoeren);
         
-        const tL = `<div class="results-tile">
-                    <h3>Lesen</h3>
-                    <div class="score">${lesenResults.points}/${CONFIG.totals.lesen} Punkte</div>
-                    <div class="small-muted">(${lesenResults.correct}/${lesenResults.total} richtig)</div>
-                  </div>`;
-                  
-        const tH = `<div class="results-tile">
-                    <h3>Hören</h3>
-                    <div class="score">${hoerenResults.points}/${CONFIG.totals.hoeren} Punkte</div>
-                    <div class="small-muted">(${hoerenResults.correct}/${hoerenResults.total} richtig)</div>
-                  </div>`;
-                  
-        const tS = `<div class="results-tile">
-                    <h3>Schreiben</h3>
-                    <div class="score">Manuelle Bewertung</div>
-                    <div class="small-muted">(45 Punkte max.)</div>
-                  </div>`;
-                  
+        const tL = `<div class="results-tile"><h3>Lesen</h3><div class="score">${lesenResults.points}/${CONFIG.totals.lesen} Punkte</div><div class="small-muted">(${lesenResults.correct}/${lesenResults.total} richtig)</div></div>`;
+        const tH = `<div class="results-tile"><h3>Hören</h3><div class="score">${hoerenResults.points}/${CONFIG.totals.hoeren} Punkte</div><div class="small-muted">(${hoerenResults.correct}/${hoerenResults.total} richtig)</div></div>`;
+        const tS = `<div class="results-tile"><h3>Schreiben</h3><div class="score">Manuelle Bewertung</div><div class="small-muted">(45 Punkte max.)</div></div>`;
+        
         tiles.innerHTML = tL + tH + tS;
 
         details.innerHTML = `
           <h2>📊 Detaillierte Ergebnisse</h2>
-          <div class="instructions">
-            Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Antworten:
-          </div>
-          
+          <div class="instructions">Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Antworten:</div>
           <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>
-        `;
-        
-        details.innerHTML += renderLesenDetails(st.lesen);
-        
-        details.innerHTML += `
+          <div class="section-table">
+            <p>Keine detaillierten Daten vorhanden. Bitte füllen Sie die CORRECT_ANSWERS im Code aus.</p>
+          </div>
           <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
-        `;
-        details.innerHTML += renderHoerenDetails(st.hoeren);
-        
-        details.innerHTML += `
+          <div class="section-table">
+            <p>Keine detaillierten Daten vorhanden. Bitte füllen Sie die CORRECT_ANSWERS im Code aus.</p>
+          </div>
           <h3>✍️ Schreiben</h3>
           <div class="writing-task">
             <div class="writing-requirements">
               <h4>Ihre Antwort:</h4>
-              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">
-                ${st.schreiben['s1'] || 'Keine Antwort vorhanden'}
-              </div>
+              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${st.schreiben['s1'] || 'Keine Antwort vorhanden'}</div>
               <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center">
-                Punkte vergeben (0–45): 
-                <input id="schreibenInput" type="number" min="0" max="45" step="1" value="0"> 
+                Punkte vergeben (0–45): <input id="schreibenInput" type="number" min="0" max="45" step="1" value="0"> 
                 <button id="saveSchreiben" class="results-btn">💾 Speichern</button>
               </div>
             </div>
@@ -3650,13 +3580,8 @@
         const percentage = Math.round((totalPoints / maxPoints) * 100);
 
         document.getElementById('finalSummary-ergebnisse').innerHTML = `
-          <div class="left">
-            Gesamtergebnis (ohne Schreiben)<br>
-            <span class="small-muted">Automatisch korrigierte Bereiche</span>
-          </div>
-          <div class="right">
-            <strong>${totalPoints}/${maxPoints} Punkte (${percentage}%)</strong>
-          </div>`;
+          <div class="left">Gesamtergebnis (ohne Schreiben)<br><span class="small-muted">Automatisch korrigierte Bereiche</span></div>
+          <div class="right"><strong>${totalPoints}/${maxPoints} Punkte (${percentage}%)</strong></div>`;
 
         document.getElementById('saveSchreiben').onclick = function() {
           const points = parseInt(document.getElementById('schreibenInput').value) || 0;
@@ -3665,57 +3590,41 @@
         };
       }
 
-      document.getElementById('calcBtn-ergebnisse').onclick = () => calculateResults();
-      
       document.getElementById('backBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
-        // Reset exam started flag
         examStarted = false;
-        // Reset countdown
         counter = initialCounter;
         timerEl.textContent = counter;
         timeDisplayEl.textContent = counter;
         progressEl.style.transform = "scaleX(0)";
         timerEl.style.color = "";
-        // Go to start page
         showPage('start-page');
       };
       
       document.getElementById('retryBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
-        // Reset all exam states
         if (window._lesenState) {
           window._lesenState.answers = {};
           window._lesenState.marked = {};
           window._lesenState.showResults = false;
           window._lesenState.remaining = EXAM_DATA.lesen.durationSec;
-          if (window._lesenState.timerInterval) {
-            clearInterval(window._lesenState.timerInterval);
-          }
+          if (window._lesenState.timerInterval) clearInterval(window._lesenState.timerInterval);
         }
         if (window._hoerenState) {
           window._hoerenState.answers = {};
           window._hoerenState.showResults = false;
           window._hoerenState.remaining = EXAM_DATA.hoeren.durationSec;
-          if (window._hoerenState.timerInterval) {
-            clearInterval(window._hoerenState.timerInterval);
-          }
+          if (window._hoerenState.timerInterval) clearInterval(window._hoerenState.timerInterval);
         }
         if (window._schreibenState) {
           window._schreibenState.answers = {};
           window._schreibenState.showResults = false;
           window._schreibenState.remaining = EXAM_DATA.schreiben.durationSec;
-          if (window._schreibenState.timerInterval) {
-            clearInterval(window._schreibenState.timerInterval);
-          }
+          if (window._schreibenState.timerInterval) clearInterval(window._schreibenState.timerInterval);
         }
         
-        // Reset exam started flag
         examStarted = false;
-        
-        // Go to start page without countdown and start exam immediately
         showPage('start-page');
-        // Start exam immediately without countdown
         setTimeout(() => {
           startExam();
         }, 100);
@@ -3723,7 +3632,6 @@
       
       document.getElementById('continueBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
-        // Return to the first exam page (Lesen Teil 1) with all answers preserved
         if (window._lesenState) {
           window._lesenState.sectionIndex = 0;
           window._lesenState.showResults = false;
@@ -3736,26 +3644,19 @@
       calculateResults();
     }
 
-    // تحسين نظام السحب والإفلات للشاشات التي تعمل باللمس
     function setupTouchDragAndDrop() {
       if ('ontouchstart' in window) {
         document.querySelectorAll('[draggable="true"]').forEach(item => {
-          item.addEventListener('touchstart', handleTouchStart);
-          item.addEventListener('touchend', handleTouchEnd);
+          item.addEventListener('touchstart', (e) => {});
+          item.addEventListener('touchend', (e) => {});
         });
-        
         document.querySelectorAll('.title-slot, .blank-slot').forEach(slot => {
-          slot.addEventListener('touchmove', handleTouchMove);
-          slot.addEventListener('touchend', handleTouchDrop);
+          slot.addEventListener('touchmove', (e) => {});
+          slot.addEventListener('touchend', (e) => {});
         });
       }
     }
 
-    function handleTouchStart(e) {
-      // تنفيذ السحب عند اللمس
-    }
-
-    // استدعاء الدالة عند تحميل الصفحة
     document.addEventListener('DOMContentLoaded', setupTouchDragAndDrop);
   </script>
 </body>
