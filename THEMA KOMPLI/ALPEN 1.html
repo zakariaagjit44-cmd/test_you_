@@ -318,7 +318,7 @@
     .exam-btn.no-match.selected {
       background: #e74c3c;
     }
-
+    
     .exam-btn.restore {
       background: #3498db;
       color: white;
@@ -1631,7 +1631,6 @@
         </a>
         <button id="retryBtn-ergebnisse" class="results-btn secondary">🔄 Prüfung wiederholen</button>
         <button id="continueBtn-ergebnisse" class="results-btn">➡️ Zurück zur Prüfung</button>
-        <!-- Button entfernt: Ergebnisse anzeigen -->
       </div>
       <div class="note">Hinweis: Schreiben (45 Punkte) wird manuell eingegeben, falls nicht automatisch vorhanden.</div>
     </div>
@@ -1875,7 +1874,7 @@
       timerEl.style.color = "#e53e3e";
     });
 
-    // ===== EXAM DATA - COMPLETE FROM OLD FILE =====
+    // ===== COMPLETE EXAM DATA FROM OLD FILE =====
     const EXAM_DATA = {
       lesen: {
         id: "exam-lesen-001",
@@ -2361,13 +2360,11 @@ Hamburger Str. 112
     function initLesenPage() {
       const exam = EXAM_DATA.lesen;
       
-      // Global variables for click selection mode
       window.selectedHeadingId = null;
       window.selectedSituationId = null;
       window.selectedWordId = null;
       window.selectedWord = null;
       
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         questionIndex: 0, 
@@ -2393,7 +2390,6 @@ Hamburger Str. 112
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
-      /* ===== Timer Functions with Auto-Submit ===== */
       function handleTimeExpired() {
         if (state.examEnded) return;
         state.examEnded = true;
@@ -2453,11 +2449,10 @@ Hamburger Str. 112
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Reset Section Function ===== */
       function resetCurrentSection() {
         const currentSection = exam.sections[state.sectionIndex];
         
-        if (confirm(`Möchten Sie wirklich den Teil "${currentSection.title}" zurücksetzen? Alle Antworten in diesem Teil werden gelöscht.`)) {
+        if (confirm(`Möchten Sie wirklich den Teil "${currentSection.title}" zurücksetzen?`)) {
           if (currentSection.id === 's1') {
             currentSection.texts.forEach(text => {
               delete state.answers[text.id];
@@ -2484,7 +2479,6 @@ Hamburger Str. 112
         }
       }
 
-      /* ===== Render ===== */
       function renderTopTiles(){ 
         topTiles.innerHTML=''; 
         exam.sections.forEach((sec,idx)=>{ 
@@ -2536,7 +2530,7 @@ Hamburger Str. 112
       function renderPart1(){
         const section = exam.sections[state.sectionIndex];
         
-        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. Sie können jede Überschrift nur einmal verwenden. (Klicken: Titel auswählen → auf Text klicken)</div>`;
+        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. (Klicken: Titel auswählen → auf Text klicken)</div>`;
         
         section.texts.forEach((text, idx) => {
           const letter = String.fromCharCode(97 + idx);
@@ -2547,7 +2541,7 @@ Hamburger Str. 112
               <div class="text-title">Text ${letter.toUpperCase()}</div>
               <div class="text-content">${text.content}</div>
               <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}" onclick="window.lesenApp.handleSlotClick('${text.id}')">
-                ${selectedHeading ? getHeadingTextById(selectedHeading) : 'Hier klicken oder Überschrift ziehen'}
+                ${selectedHeading ? getHeadingTextById(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
               </div>
             </div>
           `;
@@ -2692,7 +2686,7 @@ Hamburger Str. 112
         const section = exam.sections[state.sectionIndex];
         
         let textsHTML = `
-          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. Sie können jede Situation nur einmal verwenden. Manchmal passt keine Situation. (Klicken: Situation auswählen → auf Text klicken)</div>
+          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. (Klicken: Situation auswählen → auf Text klicken)</div>
           <div class="texts-list">
             <h3>Texte (A-L)</h3>
         `;
@@ -2705,10 +2699,11 @@ Hamburger Str. 112
             <div class="text-item" data-text-id="${text.id}">
               <div class="text-letter">${text.id})</div>
               <div class="text-content">${text.text}</div>
-              <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" 
-                   data-text-id="${text.id}" 
-                   onclick="window.lesenApp.handleSituationSlotClick('${text.id}')">
-                ${selectedSituation ? selectedSituation.text : (userAnswer === 'X' ? 'X - Keine passende Situation' : 'Hier klicken oder Situation ziehen')}
+              <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" data-text-id="${text.id}">
+                <span onclick="window.lesenApp.handleSituationSlotClick('${text.id}')">
+                  ${selectedSituation ? selectedSituation.text : (userAnswer === 'X' ? 'X - Keine passende Situation' : 'Ziehen Sie hier eine Situation hin')}
+                </span>
+                ${userAnswer === 'X' ? `<button class="exam-btn restore" onclick="window.lesenApp.restoreX('${text.id}')">↩️ Zurück</button>` : ''}
               </div>
             </div>
           `;
@@ -2735,12 +2730,7 @@ Hamburger Str. 112
                  onclick="${!isUsed ? `window.lesenApp.handleSituationClick('${situation.id}')` : ''}">
               <div class="situation-number">${situationNumber}.</div>
               <div class="situation-text">${situation.text}</div>
-              ${!isUsed ? `
-                <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
-                  <button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}'); event.stopPropagation();">X - Kein passender Text</button>
-                  ${state.answers[situation.id] ? `<button class="exam-btn restore" onclick="window.lesenApp.restoreSituation('${situation.id}'); event.stopPropagation();">↩️ Zurück</button>` : ''}
-                </div>
-              ` : ''}
+              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}'); event.stopPropagation();">X - Kein passender Text</button>` : ''}
             </div>
           `;
         });
@@ -2752,6 +2742,14 @@ Hamburger Str. 112
         headingsBankContainer.innerHTML = '';
         
         setupPart3DragAndDrop();
+      }
+
+      function restoreX(textId) {
+        const situationId = Object.keys(state.answers).find(key => state.answers[key] === 'X' && key.includes('text'));
+        if (situationId) {
+          delete state.answers[situationId];
+        }
+        renderAll();
       }
 
       function handleSituationClick(situationId) {
@@ -2792,12 +2790,6 @@ Hamburger Str. 112
         });
         
         state.answers[situationId] = 'X';
-        window.selectedSituationId = null;
-        renderAll();
-      }
-
-      function restoreSituation(situationId) {
-        delete state.answers[situationId];
         window.selectedSituationId = null;
         renderAll();
       }
@@ -2864,7 +2856,7 @@ Hamburger Str. 112
         });
         
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können die Lücken in beliebiger Reihenfolge ausfüllen.</div>
+          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort.</div>
           <div class="fill-blank-container">${tempText}</div>
         `;
         
@@ -2874,13 +2866,12 @@ Hamburger Str. 112
           const userAnswer = state.answers[blank.id];
           
           optionsHTML += `
-            <div class="option-row" style="padding: 8px; margin-bottom: 5px;">
+            <div class="option-row">
               <div class="option-number">${blank.id}</div>
               <div class="option-buttons">
                 ${blank.options.map(opt => `
                   <div class="option-btn ${userAnswer === opt ? 'selected' : ''}" 
-                       onclick="window.lesenApp.selectSprachbausteine1('${blank.id}', '${opt}')" 
-                       style="padding: 6px 12px; font-size: 12px;">
+                       onclick="window.lesenApp.selectSprachbausteine1('${blank.id}', '${opt}')">
                     ${opt}
                   </div>
                 `).join('')}
@@ -2947,11 +2938,11 @@ Hamburger Str. 112
         });
 
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf eine Lücke und dann auf ein Wort aus der Liste. (Klicken: Wort auswählen → auf Lücke klicken)</div>
+          <div class="instructions">Klicken Sie auf eine Lücke und dann auf ein Wort aus der Liste.</div>
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
-        let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
+        let wordBankHTML = `<div class="word-bank-vertical">`;
         const usedWords = Object.values(state.answers);
         const bank = section.fillBlanks2[0] ? section.fillBlanks2[0].options : [];
         
@@ -3198,7 +3189,6 @@ Hamburger Str. 112
         questionTitleEl.textContent = '';
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex > 0){
           state.sectionIndex--;
@@ -3227,7 +3217,7 @@ Hamburger Str. 112
       });
 
       resetBtn.addEventListener('click', ()=>{
-        if(confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')){
+        if(confirm('Möchten Sie wirklich von neu beginnen?')){
           state.answers = {};
           state.marked = {};
           state.showResults = false;
@@ -3250,7 +3240,6 @@ Hamburger Str. 112
         }
       });
 
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
@@ -3259,13 +3248,13 @@ Hamburger Str. 112
       window.lesenApp = {
         selectOption,
         markNoMatch,
-        restoreSituation,
         selectSprachbausteine1,
         selectSprachbausteine2,
         handleHeadingClick,
         handleSlotClick,
         handleSituationClick,
         handleSituationSlotClick,
+        restoreX,
         handleBlankClick,
         handleWordClick,
         handleWordSlotClick
@@ -3392,17 +3381,16 @@ Hamburger Str. 112
         let contentHTML = `
           <div class="panel-title">${section.title}</div>
           <div class="instructions">
-            Sie hören die Nachrichten. Entscheiden Sie beim Hören, ob die Aussagen richtig oder falsch sind. 
-            Sie hören die Nachrichten nur einmal. Sie haben jetzt 30 Sekunden, um die Aussagen zu lesen.
+            Sie hören die Nachrichten. Entscheiden Sie beim Hören, ob die Aussagen richtig oder falsch sind.
           </div>
           
           <div class="listening-task">
             <table class="true-false-table">
               <thead>
                 <tr>
-                  <th style="width: 10%">Nr.</th>
-                  <th style="width: 60%">Aussage</th>
-                  <th style="width: 30%">Ihre Antwort</th>
+                  <th>Nr.</th>
+                  <th>Aussage</th>
+                  <th>Ihre Antwort</th>
                 </tr>
               </thead>
               <tbody>
@@ -3417,24 +3405,10 @@ Hamburger Str. 112
               <td>
                 <div class="answer-options">
                   <label class="answer-option">
-                    <input 
-                      type="radio" 
-                      name="q${section.id}_${question.id}" 
-                      value="richtig" 
-                      ${currentAnswer === 'richtig' ? 'checked' : ''}
-                      onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"
-                    >
-                    Richtig
+                    <input type="radio" name="q${section.id}_${question.id}" value="richtig" ${currentAnswer === 'richtig' ? 'checked' : ''} onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"> Richtig
                   </label>
                   <label class="answer-option">
-                    <input 
-                      type="radio" 
-                      name="q${section.id}_${question.id}" 
-                      value="falsch" 
-                      ${currentAnswer === 'falsch' ? 'checked' : ''}
-                      onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"
-                    >
-                    Falsch
+                    <input type="radio" name="q${section.id}_${question.id}" value="falsch" ${currentAnswer === 'falsch' ? 'checked' : ''} onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"> Falsch
                   </label>
                 </div>
               </td>
@@ -3467,47 +3441,36 @@ Hamburger Str. 112
         
         let resultsHTML = `
           <div class="panel-title">Ergebnisse - ${section.title}</div>
-          <table class="true-false-table">
-            <thead>
-              <tr>
-                <th style="width: 10%">Nr.</th>
-                <th style="width: 40%">Aussage</th>
-                <th style="width: 20%">Ihre Antwort</th>
-                <th style="width: 20%">Richtige Antwort</th>
-                <th style="width: 10%">Status</th>
-              </tr>
-            </thead>
-            <tbody>
         `;
         
         section.questions.forEach((question) => {
           const userAnswer = userAnswers[question.id] || '-';
           const correctAnswer = section.correctAnswers[question.id];
           const gotCorrect = userAnswer === correctAnswer;
-          const points = gotCorrect ? "1" : "0";
           
           if (gotCorrect) correctCount++;
           
           const rowClass = gotCorrect ? 'correct-answer' : 'incorrect-answer';
           
           resultsHTML += `
-            <tr class="${rowClass}">
-              <td><strong>${question.id}</strong></td>
-              <td class="question-text">${question.text}</td>
-              <td><strong>Ihre Antwort:</strong> ${userAnswer}</td>
-              <td><strong>Richtig:</strong> ${correctAnswer}</td>
-              <td><strong>${gotCorrect ? '✓' : '✗'}</strong></td>
-            </tr>
+            <div class="result-detail ${rowClass}" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+              <div><strong>Frage ${question.id}:</strong> ${question.text}</div>
+              <div style="display: flex; gap: 20px; width: 100%;">
+                <div><strong>Ihre Antwort:</strong> <span class="${gotCorrect ? 'result-correct' : 'result-incorrect'}">${userAnswer}</span></div>
+                <div><strong>Richtig:</strong> <span class="result-correct">${correctAnswer}</span></div>
+                <div><strong>${gotCorrect ? '✓' : '✗'}</strong></div>
+              </div>
+            </div>
           `;
         });
         
         const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
         
         resultsHTML += `
-            </tbody>
-          </table>
-          <div style="margin-top: 15px; padding: 15px; background: #1e3a5f; color: white; border-radius: 6px; text-align: center;">
-            <strong>Erreichte Punkte: ${correctCount}/${section.questions.length} richtig = ${totalPoints}/${section.points} Punkten</strong>
+          <div class="result-summary">
+            <div class="percentage">${Math.round((correctCount / section.questions.length) * 100)}%</div>
+            <div>${correctCount}/${section.questions.length} richtig</div>
+            <div>Punkte: ${totalPoints}/${section.points}</div>
           </div>
         `;
         
@@ -3542,7 +3505,7 @@ Hamburger Str. 112
       });
 
       document.getElementById('resetBtn-hoeren').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3696,14 +3659,8 @@ Hamburger Str. 112
         
         writingContainer.innerHTML = `
           <div class="writing-area">
-            <textarea 
-              class="writing-textarea" 
-              placeholder="Schreiben Sie hier Ihre E-Mail..."
-              oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)"
-            >${currentAnswer}</textarea>
-            <div class="word-counter">
-              Wörter: <span class="count">${wordCount}</span>
-            </div>
+            <textarea class="writing-textarea" placeholder="Schreiben Sie hier Ihre E-Mail..." oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)">${currentAnswer}</textarea>
+            <div class="word-counter">Wörter: <span class="count">${wordCount}</span></div>
           </div>
         `;
       }
@@ -3714,10 +3671,8 @@ Hamburger Str. 112
 
       function updateWritingAnswer(sectionId, text) {
         state.answers[sectionId] = text;
-        
         const wordCount = countWords(text);
-        const counter = document.querySelector('.word-counter .count');
-        if (counter) counter.textContent = wordCount;
+        document.querySelector('.word-counter .count').textContent = wordCount;
       }
 
       function renderResults() {
@@ -3725,7 +3680,7 @@ Hamburger Str. 112
         const userAnswer = state.answers[section.id];
         const wordCount = countWords(userAnswer);
         
-        let resultsHTML = `
+        passageContentEl.innerHTML = `
           <div class="result-item">
             <h3>${section.title} - Ergebnisse</h3>
             <div class="writing-requirements">
@@ -3737,8 +3692,6 @@ Hamburger Str. 112
             </div>
           </div>
         `;
-        
-        passageContentEl.innerHTML = resultsHTML;
         writingContainer.innerHTML = '';
       }
 
@@ -3770,7 +3723,7 @@ Hamburger Str. 112
       });
 
       document.getElementById('resetBtn-schreiben').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3820,7 +3773,6 @@ Hamburger Str. 112
           const lesen = window._lesenState ? window._lesenState.answers : {};
           const hoeren = window._hoerenState ? window._hoerenState.answers : {};
           const schreiben = window._schreibenState ? window._schreibenState.answers : {};
-
           return { hoeren, lesen, schreiben };
         } catch (e) {
           return { hoeren: {}, lesen: {}, schreiben: {} };
@@ -3863,7 +3815,6 @@ Hamburger Str. 112
         });
         
         const points = Math.round((correct / total) * CONFIG.totals.lesen);
-        
         return { correct, total, points };
       }
 
@@ -3882,13 +3833,11 @@ Hamburger Str. 112
         });
         
         const points = Math.round((correct / total) * CONFIG.totals.hoeren);
-        
         return { correct, total, points };
       }
 
       function renderLesenDetails(answers) {
         let html = `<div class="section-table">`;
-        
         const exam = EXAM_DATA.lesen;
         exam.sections.forEach(section => {
           if (section.id === 's1') {
@@ -4037,8 +3986,6 @@ Hamburger Str. 112
         };
       }
 
-      document.getElementById('calcBtn-ergebnisse')?.remove(); // Button entfernen
-      
       document.getElementById('backBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
         examStarted = false;
@@ -4052,43 +3999,35 @@ Hamburger Str. 112
       
       document.getElementById('retryBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
-        // Reset all exam states
         if (window._lesenState) {
           window._lesenState.answers = {};
           window._lesenState.marked = {};
           window._lesenState.showResults = false;
           window._lesenState.remaining = EXAM_DATA.lesen.durationSec;
-          if (window._lesenState.timerInterval) {
-            clearInterval(window._lesenState.timerInterval);
-          }
+          if (window._lesenState.timerInterval) clearInterval(window._lesenState.timerInterval);
         }
         if (window._hoerenState) {
           window._hoerenState.answers = {};
           window._hoerenState.showResults = false;
           window._hoerenState.remaining = EXAM_DATA.hoeren.durationSec;
-          if (window._hoerenState.timerInterval) {
-            clearInterval(window._hoerenState.timerInterval);
-          }
+          if (window._hoerenState.timerInterval) clearInterval(window._hoerenState.timerInterval);
         }
         if (window._schreibenState) {
           window._schreibenState.answers = {};
           window._schreibenState.showResults = false;
           window._schreibenState.remaining = EXAM_DATA.schreiben.durationSec;
-          if (window._schreibenState.timerInterval) {
-            clearInterval(window._schreibenState.timerInterval);
-          }
+          if (window._schreibenState.timerInterval) clearInterval(window._schreibenState.timerInterval);
         }
         
         examStarted = false;
-        
-        // Direkt starten ohne Countdown
-        const selectedSection = 'lesen';
-        showPage('lesen-page');
+        showPage('start-page');
+        setTimeout(() => {
+          startExam();
+        }, 100);
       };
       
       document.getElementById('continueBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
-        // Return to the last exam page
         if (window._schreibenState && window._schreibenState.answers) {
           showPage('schreiben-page');
         } else if (window._hoerenState && window._hoerenState.answers) {
@@ -4103,26 +4042,19 @@ Hamburger Str. 112
       calculateResults();
     }
 
-    // تحسين نظام السحب والإفلات للشاشات التي تعمل باللمس
     function setupTouchDragAndDrop() {
       if ('ontouchstart' in window) {
         document.querySelectorAll('[draggable="true"]').forEach(item => {
-          item.addEventListener('touchstart', handleTouchStart);
-          item.addEventListener('touchend', handleTouchEnd);
+          item.addEventListener('touchstart', (e) => {});
+          item.addEventListener('touchend', (e) => {});
         });
-        
         document.querySelectorAll('.title-slot, .blank-slot').forEach(slot => {
-          slot.addEventListener('touchmove', handleTouchMove);
-          slot.addEventListener('touchend', handleTouchDrop);
+          slot.addEventListener('touchmove', (e) => {});
+          slot.addEventListener('touchend', (e) => {});
         });
       }
     }
 
-    function handleTouchStart(e) {
-      // تنفيذ السحب عند اللمس
-    }
-
-    // استدعاء الدالة عند تحميل الصفحة
     document.addEventListener('DOMContentLoaded', setupTouchDragAndDrop);
   </script>
 </body>

@@ -3,7 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Deutsch B2 Prüfung - Inseln</title>
+  <title>Deutsch B2 Prüfung - Komplett</title>
+  
+  <!-- Supabase Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <style>
     /* ===== GLOBAL STYLES ===== */
     :root {
@@ -249,64 +253,46 @@
       padding: 12px 20px;
       border-radius: 6px;
       border: none;
-      background: #4da6ff;
-      color: white;
+      background: white;
+      color: #1e3a5f;
       font-weight: 700;
       font-size: 15px;
       cursor: pointer;
-      transition: background 0.2s ease-in-out;
+      transition: background 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease;
       min-width: 150px;
       text-align: center;
     }
 
     .exam-btn:hover {
-      background: #336fbf;
-    }
-    
-    .exam-btn.save {
-      background: #4da6ff;
-      color: #000;
+      background: #1e3a5f;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
     
     .exam-btn.save:hover {
-      background: #3399ff;
-    }
-    
-    .exam-btn.submit {
-      background: #4da6ff;
+      background: #2c5282;
     }
     
     .exam-btn.submit:hover {
-      background: #3399ff;
-    }
-    
-    .exam-btn.result {
-      background: #4da6ff;
+      background: #2c5282;
     }
     
     .exam-btn.result:hover {
-      background: #3399ff;
-    }
-    
-    .exam-btn.next {
-      background: #4da6ff;
-      color: #fff;
+      background: #2c5282;
     }
     
     .exam-btn.next:hover {
-      background: #3399ff;
-    }
-    
-    .exam-btn.reset {
-      background: #4da6ff;
+      background: #2c5282;
     }
     
     .exam-btn.reset:hover {
-      background: #3399ff;
+      background: #2c5282;
     }
     
     .exam-btn.reset-section {
       background: #d35400;
+      color: white;
       font-size: 12px;
       padding: 6px 10px;
       min-width: auto;
@@ -318,6 +304,7 @@
     
     .exam-btn.no-match {
       background: #95a5a6;
+      color: white;
       font-size: 12px;
       padding: 6px 10px;
       min-width: auto;
@@ -560,6 +547,10 @@
       border: 2px dashed #c8d9f6;
       border-radius: 6px;
       background: #f8fbff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
     
     .title-slot.has-title {
@@ -574,6 +565,21 @@
       font-weight: bold;
     }
     
+    .restore-btn {
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 11px;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+    
+    .restore-btn:hover {
+      background: #2980b9;
+    }
+    
     .headings-bank {
       display: flex;
       flex-direction: column;
@@ -586,11 +592,14 @@
       border: 1px solid #dbe7fb;
       border-radius: 8px;
       background: #f8fbff;
-      cursor: grab;
+      cursor: pointer;
+      transition: all 0.2s;
     }
     
     .heading-item:hover {
       background: #e9f0ff;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .heading-item.used {
@@ -598,6 +607,12 @@
       cursor: not-allowed;
       background: #f8d7da;
       border-color: #f5c6cb;
+    }
+    
+    .heading-item.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
     }
     
     .result-correct {
@@ -612,9 +627,87 @@
     
     .result-item {
       margin: 10px 0;
-      padding: 10px;
-      border-radius: 6px;
+      padding: 15px;
+      border-radius: 8px;
       background: #f8f9fa;
+      border-left: 4px solid #1e3a5f;
+    }
+    
+    .result-item h3 {
+      color: #1e3a5f;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    
+    .result-detail {
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      margin: 8px 0;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .result-row {
+      display: flex;
+      align-items: center;
+      margin: 4px 0;
+    }
+    
+    .result-label {
+      font-weight: 600;
+      min-width: 120px;
+      color: #2c3e50;
+    }
+    
+    .result-value {
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    
+    .result-value.correct {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .result-value.incorrect {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .result-status {
+      margin-top: 8px;
+      padding: 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-align: center;
+    }
+    
+    .result-status.correct {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .result-status.incorrect {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .result-summary {
+      margin-top: 20px;
+      padding: 15px;
+      background: #1e3a5f;
+      color: white;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .result-summary .percentage {
+      font-size: 32px;
+      font-weight: 700;
+      color: #4da6ff;
     }
     
     .instructions {
@@ -672,23 +765,37 @@
     
     .fill-blank-container {
       margin: 20px 0;
+      line-height: 2.2;
     }
     
     .blank-word {
       display: inline-block;
-      min-width: 120px;
-      padding: 4px 8px;
-      margin: 0 6px;
+      min-width: 100px;
+      padding: 6px 10px;
+      margin: 0 4px;
       background: #fff;
       cursor: pointer;
       position: relative;
-      border: 1px solid #dbe7fb;
-      border-radius: 4px;
+      border: 2px solid #dbe7fb;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .blank-word:hover {
+      background: #e3f2fd;
+      border-color: #3498db;
     }
     
     .blank-word.has-answer {
       background: #e8fbe9;
       border-color: #2ecc71;
+    }
+    
+    .blank-word.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
     }
     
     .options-popup {
@@ -771,12 +878,21 @@
     }
     
     .bank-word-vertical {
-      padding: 10px;
-      border: 1px solid #dbe7fb;
-      border-radius: 6px;
+      padding: 12px;
+      border: 2px solid #dbe7fb;
+      border-radius: 8px;
       background: #f8fbff;
       text-align: center;
-      cursor: grab;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    
+    .bank-word-vertical:hover {
+      background: #e9f0ff;
+      border-color: #3498db;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .bank-word-vertical.used {
@@ -786,22 +902,41 @@
       border-color: #f5c6cb;
     }
     
+    .bank-word-vertical.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
+    }
+    
     .blank-slot {
       display: inline-block;
       min-width: 100px;
-      padding: 4px 8px;
-      margin: 0 6px;
+      padding: 6px 10px;
+      margin: 0 4px;
       background: #fff;
       min-height: 30px;
       vertical-align: middle;
-      border: 1px solid #dbe7fb;
-      border-radius: 4px;
+      border: 2px solid #dbe7fb;
+      border-radius: 6px;
       cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    
+    .blank-slot:hover {
+      background: #e3f2fd;
+      border-color: #3498db;
     }
     
     .blank-slot.has-answer {
       background: #e8fbe9;
       border-color: #2ecc71;
+    }
+    
+    .blank-slot.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
     }
     
     .footer-buttons {
@@ -815,6 +950,12 @@
       background: #f8d7da;
       border-color: #f5c6cb;
       color: #333;
+    }
+    
+    .situation-item.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
     }
     
     /* Listening Section Styles */
@@ -1071,10 +1212,20 @@
       font-weight: 700;
       cursor: pointer;
       transition: background 0.3s;
+      text-decoration: none;
+      display: inline-block;
     }
     
     .results-btn:hover {
       background: #3a8ce0;
+    }
+    
+    .results-btn.secondary {
+      background: #95a5a6;
+    }
+    
+    .results-btn.secondary:hover {
+      background: #7f8c8d;
     }
     
     .button-like {
@@ -1321,7 +1472,7 @@
       <div class="logo">
         <div class="logo-icon">📝</div>
         <h1>Deutsch B2 Prüfung</h1>
-        <div class="subtitle">Inseln – Lesen, Hören, Schreiben</div>
+        <div class="subtitle">Bereiten Sie sich auf Ihre Prüfung vor</div>
       </div>
       <div class="card">
         <h2>Prüfungsbereich auswählen</h2>
@@ -1354,7 +1505,7 @@
         <div class="logo">test</div>
         <div class="meta">
           <div class="main-title">Deutsch - B2 (Übung)</div>
-          <div class="sub-title">Lesen — Inseln</div>
+          <div class="sub-title">Lesen — Testbeispiel</div>
         </div>
       </div>
 
@@ -1395,7 +1546,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-lesen" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-lesen" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn2-lesen" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-lesen">Nicht gespeichert</span></div>
     </footer>
@@ -1408,7 +1559,7 @@
         <div class="logo">test</div>
         <div class="meta">
           <div class="main-title">Deutsch - B2 (Übung)</div>
-          <div class="sub-title">Hörverstehen — Inseln</div>
+          <div class="sub-title">Hörverstehen — Testbeispiel</div>
         </div>
       </div>
 
@@ -1434,7 +1585,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-hoeren" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-hoeren" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn2-hoeren" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-hoeren">Nicht gespeichert</span></div>
     </footer>
@@ -1447,7 +1598,7 @@
         <div class="logo">test</div>
         <div class="meta">
           <div class="main-title">Deutsch - B2 (Übung)</div>
-          <div class="sub-title">Schreiben — Inseln</div>
+          <div class="sub-title">Schreiben — Testbeispiel</div>
         </div>
       </div>
 
@@ -1480,7 +1631,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-schreiben" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-schreiben" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn2-schreiben" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-schreiben">Nicht gespeichert</span></div>
     </footer>
@@ -1490,7 +1641,7 @@
   <div id="ergebnisse-page" class="results-page" style="display: none;">
     <header class="results-header">
       <div class="results-logo">test</div>
-      <div class="results-title">Gesamtergebnis — Deutsch B2 Inseln</div>
+      <div class="results-title">Gesamtergebnis — Deutsch B2</div>
     </header>
 
     <div class="results-container">
@@ -1498,14 +1649,133 @@
       <div id="details-ergebnisse"></div>
       <div class="summary" id="finalSummary-ergebnisse"></div>
       <div class="controls">
-        <a class="button-like" href="#" id="backBtn-ergebnisse">
-          <button class="results-btn">🔁 Zurück zur Startseite</button>
-        </a>
-        <button id="calcBtn-ergebnisse" class="results-btn">✅ Ergebnisse anzeigen</button>
+        <button id="backBtn-ergebnisse" class="results-btn">🔁 Zurück zur Startseite</button>
+        <button id="retryBtn-ergebnisse" class="results-btn secondary">🔄 Prüfung wiederholen</button>
+        <button id="continueBtn-ergebnisse" class="results-btn">➡️ Zurück zur Prüfung</button>
       </div>
       <div class="note">Hinweis: Schreiben (45 Punkte) wird manuell eingegeben, falls nicht automatisch vorhanden.</div>
     </div>
   </div>
+
+  <!-- Login Error Modal (يظهر فقط عند رفض الدخول) -->
+  <div id="login-error-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center;">
+    <div style="background: white; border-radius: 16px; padding: 40px; max-width: 400px; text-align: center;">
+      <div style="font-size: 64px; margin-bottom: 20px;">❌</div>
+      <h2 style="color: #d32f2f; margin-bottom: 20px;">Zugriff verweigert</h2>
+      <p id="error-message" style="color: #333; margin-bottom: 30px; font-size: 16px;">Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.</p>
+      <button id="redirect-to-login" style="background: #d32f2f; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;">Zum Login</button>
+    </div>
+  </div>
+
+  <script type="module">
+    // =============================================
+    // التحقق من تسجيل الدخول - نسخة محسنة وآمنة
+    // =============================================
+    
+    (async function() {
+      // تكوين Supabase
+      const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
+      
+      // تهيئة Supabase
+      const { createClient } = window.supabase;
+      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      
+      // عناصر الصفحة
+      const body = document.getElementById('body');
+      const startPage = document.getElementById('start-page');
+      const loginErrorModal = document.getElementById('login-error-modal');
+      const errorMessage = document.getElementById('error-message');
+      
+      // دالة لعرض خطأ تسجيل الدخول
+      function showLoginError(message) {
+        // إخفاء محتوى الصفحة
+        startPage.style.display = 'none';
+        
+        // إظهار نافذة الخطأ
+        errorMessage.textContent = message || 'Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.';
+        loginErrorModal.style.display = 'flex';
+      }
+      
+      // التحقق من تسجيل الدخول
+      try {
+        // التحقق من الجلسة في Supabase
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError || !session) {
+          showLoginError('❌ Keine aktive Sitzung gefunden. Bitte melden Sie sich an.');
+          return;
+        }
+        
+        // التحقق من جدول permissions
+        const { data: permissions, error: permError } = await supabase
+          .from('user_permissions')
+          .select('can_access, subscription_type, subscription_expiry, trial_expiry')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
+        
+        // إذا كان هناك خطأ أو لا يوجد صلاحيات
+        if (permError) {
+          console.error('Permissions error:', permError);
+          showLoginError('❌ Fehler bei der Überprüfung Ihrer Berechtigungen.');
+          return;
+        }
+        
+        // إذا لم يتم العثور على المستخدم في جدول permissions
+        if (!permissions) {
+          // محاولة إدراج المستخدم إذا لم يكن موجوداً
+          const { error: insertError } = await supabase
+            .from('user_permissions')
+            .insert({
+              user_id: session.user.id,
+              email: session.user.email,
+              can_access: true,
+              subscription_type: 'free',
+              created_at: new Date().toISOString()
+            });
+          
+          if (insertError) {
+            console.error('Insert error:', insertError);
+            showLoginError('❌ Fehler beim Erstellen Ihres Benutzerkontos.');
+            return;
+          }
+        } else if (!permissions.can_access) {
+          // إذا كان can_access = false
+          showLoginError('❌ Sie haben keine Berechtigung für den Zugriff auf diese Prüfung.');
+          return;
+        }
+        
+        // التحقق من انتهاء الاشتراك
+        const now = new Date();
+        
+        if (permissions && permissions.subscription_type === 'trial_24h' && permissions.trial_expiry) {
+          const trialExpiry = new Date(permissions.trial_expiry);
+          if (trialExpiry < now) {
+            showLoginError('❌ Ihre Testphase ist abgelaufen. Bitte aktivieren Sie ein Abonnement.');
+            return;
+          }
+        }
+        
+        if (permissions && permissions.subscription_expiry) {
+          const subscriptionExpiry = new Date(permissions.subscription_expiry);
+          if (subscriptionExpiry < now) {
+            showLoginError('❌ Ihr Abonnement ist abgelaufen. Bitte erneuern Sie Ihr Abonnement.');
+            return;
+          }
+        }
+        
+        // إذا وصلنا إلى هنا، المستخدم مصرح له
+        console.log('✅ Zugriff gewährt für:', session.user.email);
+        
+        // إظهار محتوى الصفحة
+        startPage.style.display = 'flex';
+        
+      } catch (error) {
+        console.error('❌ Kritischer Fehler:', error);
+        showLoginError('❌ Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
+      }
+    })();
+  </script>
 
   <script>
     // ===== PAGE NAVIGATION =====
@@ -1540,6 +1810,11 @@
       }
     }
 
+    // ربط زر التوجيه للـ Login
+    document.getElementById('redirect-to-login').addEventListener('click', function() {
+      window.location.href = '../index.html';
+    });
+
     // ===== START PAGE FUNCTIONALITY =====
     let initialCounter = 30;
     let counter = initialCounter;
@@ -1554,12 +1829,9 @@
     const cancelBtn = document.getElementById("cancelBtn");
 
     function startCountdown() {
-      // prevent double-starts or starting after exam already began
       if (countdownRunning || examStarted) return;
       countdownRunning = true;
-      // disable start button while counting
       try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
-      // reset counter & UI
       counter = initialCounter;
       timerEl.textContent = counter;
       timeDisplayEl.textContent = counter;
@@ -1577,12 +1849,10 @@
           countdownInterval = null;
           countdownRunning = false;
           progressEl.style.transform = "scaleX(1)";
-          // ensure exam starts only once
           if (!examStarted) {
             examStarted = true;
             startExam();
           }
-          // safety: re-enable start button (page usually navigates away)
           try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
         }
       }, 1000);
@@ -1606,7 +1876,6 @@
     }
 
     function startExam() {
-      // guard to ensure startExam is triggered once
       if (!examStarted) examStarted = true;
       const selectedSection = selectEl.value;
       if (selectedSection === 'lesen') {
@@ -1618,7 +1887,6 @@
       }
     }
 
-    // wire buttons: start will now start the countdown (not the exam directly)
     startBtn.addEventListener('click', startCountdown);
 
     cancelBtn.addEventListener('click', () => {
@@ -1658,7 +1926,7 @@
         
         // Sprachbausteine Teil 1
         "21": "um",
-        "22": "ob",
+        "22": "dass",
         "23": "aber",
         "24": "unbedingt",
         "25": "mich",
@@ -1710,88 +1978,10 @@
       }
     };
 
-    // ===== HILFSFUNKTIONEN =====
-    function getHeadingText(headingId) {
-      if (!headingId || headingId === '-' || headingId === '') return '-';
-      const headings = {
-        "a": "Deutscher Forscher startet Expedition auf Vogelinsel in Südamerika",
-        "b": "Die beliebtesten Reiseziele unter den europäischen Inseln",
-        "c": "Fernreisen in eine unberührte Tierwelt",
-        "d": "Geführte Bootsausflüge zu einsamen Badebuchten",
-        "e": "Grüne Geisterinsel in Asien",
-        "f": "Immer mehr Reiseunternehmen streichen Thailand aus ihrem Angebot",
-        "g": "Inseln zählen weltweit zu den wichtigsten Reisedestinationen",
-        "h": "Nachhaltiger Tourismus auf chinesischen Inseln",
-        "i": "Tierparadies auf einer Nordseeinsel",
-        "j": "Umstrittener Umgang mit Tieren als Touristenmagnet"
-      };
-      return headings[headingId] || headingId;
-    }
-
-    function getOptionText(questionId, optionId) {
-      if (!optionId || optionId === '-' || optionId === '') return '-';
-      const options = {
-        "s2q1o1": "sind in der Milchproduktion beliebter als andere Rinderrassen.",
-        "s2q1o2": "spielen in der Milchproduktion kaum eine Rolle.",
-        "s2q1o3": "stammen aus Norddeutschland.",
-        "s2q2o1": "hat bereits einige Preise gewonnen.",
-        "s2q2o2": "war Siegerin bei einer Veranstaltung in Italien.",
-        "s2q2o3": "wurde als schönste Kuh Europas ausgezeichnet.",
-        "s2q3o1": "bekam Krista ein Kalb.",
-        "s2q3o2": "wäre Krista fast gestorben.",
-        "s2q3o3": "wurde Krista operiert.",
-        "s2q4o1": "betreffen die Familie Seeger nicht.",
-        "s2q4o2": "sind eine Folge des Verbraucherverhaltens.",
-        "s2q4o3": "werden im Film ausführlich behandelt.",
-        "s2q5o1": "begeistert Kinobetreiber bislang nicht.",
-        "s2q5o2": "konnte die Kritiker nicht überzeugen.",
-        "s2q5o3": "wurde als beste Dokumentation ausgezeichnet."
-      };
-      return options[optionId] || optionId;
-    }
-
-    function getSituationText(id) {
-      const situations = {
-        "11": "Ein Bekannter möchte einen Film sehen, der nach dem Werk eines Schriftstellers gedreht wurde.",
-        "12": "Bekannte interessieren sich für Wintersportveranstaltungen.",
-        "13": "Sie suchen eine Musiksendung. Sie mögen besonders Klaviermusik.",
-        "14": "Sie mögen Filme mit viel Action und viel Spaß. Ihre Lieblingshelden können auch mal zuschlagen.",
-        "15": "Ein Bekannter interessiert sich für kurdische Geschichte.",
-        "16": "Sie mögen Familienkomödien, besonders mit frechen Kindern.",
-        "17": "Eine Bekannte interessiert sich für die Geschichte des bis 1989 geteilten Berlins.",
-        "18": "Sie sehen gern spannende, aber أيضا spaßige Agentenfilme.",
-        "19": "Sie würden gern etwas über Großstadtjugendliche erfahren, die am Rand der Gesellschaft leben.",
-        "20": "Sie möchten im nächsten Urlaub tauchen und sich über die Risiken informieren."
-      };
-      return situations[id] || id;
-    }
-
-    function escapeHtml(s) {
-      if (s === null || s === undefined) return '';
-      return String(s)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
-    function normalizeAnswer(a) {
-      if (a === null || a === undefined || a === '') return '-';
-      let s = String(a).trim();
-      if (s === '') return '-';
-      const low = s.toLowerCase();
-      if (["richtig", "true", "yes", "ja", "wahr"].includes(low)) return 'richtig';
-      if (["falsch", "false", "no", "nein", "unwahr"].includes(low)) return 'falsch';
-      if (s === 'X' || s === 'x') return 'X';
-      return s;
-    }
-
-    // ===== LESEN PAGE FUNCTIONALITY =====
-    function initLesenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
-      const exam = {
-        id: "exam-001",
+    // ===== EMPTY EXAM DATA STRUCTURE - FILL WITH YOUR CONTENT =====
+    const EXAM_DATA = {
+      lesen: {
+        id: "exam-lesen-001",
         durationSec: 90 * 60,
         sections: [
           { 
@@ -1808,7 +1998,7 @@
                 correctAnswer: "e"
               },
               {
-                id: "text2", 
+                id: "text2",
                 content: "Der Reiseveranstalter TOURIMARS hat kürzlich eine Befragung durchgeführt. Er wollte wissen, welche Inseln in Europa unter Reisenden besonders populär sind. Nach dieser Umfrage führt die griechische Insel Santorin die Liste an. Auf Platz zwei steht Madeira, die grüne Insel im Atlantik. Mit Kreta und Zakynthos schaffen es an dritter und vierter Stelle noch zwei weitere griechische Inseln in die Liste - übrigens wird die Attraktivität griechischer Inseln auch in anderen Umfragen bestätigt. Platz fünf nimmt die Badeinsel Fuerteventura ein. Rang sechs kommt der britischen Kanalinsel Jersey zu. Mallorca folgt auf Platz sieben, gefolgt von der italienischen Insel Capri und der Kanareninsel Teneriffa. Gerade noch in die Top Ten schaffte es auch die französische Mittelmeerinsel Korsika, die sowohl für Wanderer als auch für Badeurlauber interessant ist. Für die Umfrage waren Erfahrungsberichte von Urlaubern über einen Zeitraum von 12 Monaten ausgewertet worden. Sie bewerteten dabei die Hotels, Restaurants und Sehenswürdigkeiten der besuchten Insel.",
                 correctAnswer: "b"
               },
@@ -1819,7 +2009,7 @@
               },
               {
                 id: "text4",
-                content: "Die südamerikanischen Galapagosinseln locken nicht mit weißen Sandstränden und Palmen. Dennoch sind sie das Ziel so mancher Reisesehnsüchte. Für viele Menschen gelten die fernen Inseln als eine Art Paradies. Und tatsächlich kommt man wohl nirgendwo sonst ungezähmten Tieren so nahe wir auf diesen Inseln: Auf den unbewohnten Galapagosinseln verhalten sich die Tiere so, als ob keine Menschen gäbe. Für die Besucher genauso faszinierend wie für die Entdeckungsreisenden früherer Jahrhunderte ist dabei die Zutraulichkeit, die sich die Tiere durch das Fehlen von natürlichen Feinden auf den Inseln bewahrt haben. Man kann das ganze Jahr über zu den Galapagosinseln reisen. Die bewohnten Inseln kann man dabei ganz gut allein besuchen. Anders sieht es bei den unbewohnten Inseln aus. Hier lassen die Behörden seit einigen Jahren nur eine begrenzte Zahl an Schiffen zu, und ohne Führer ist das Betreten nicht erlaubt. Die Inseln und ihre Tiere bleiben sich selbst überlassen, damit das Naturparadies auch weiterhin erhalten bleibt.",
+                content: "Die südamerikanischen Galapagosinseln locken nicht mit weißen Sandstränden und Palmen. Dennoch sind sie das Ziel so mancher Reisesehnsüchte. Für viele Menschen gelten die fernen Inseln als eine Art Paradies. Und tatsächlich kommt man wohl nirgendwo sonst ungezähmten Tieren so nahe wie auf diesen Inseln: Auf den unbewohnten Galapagosinseln verhalten sich die Tiere so, als ob es keine Menschen gäbe. Für die Besucher genauso faszinierend wie für die Entdeckungsreisenden früherer Jahrhunderte ist dabei die Zutraulichkeit, die sich die Tiere durch das Fehlen von natürlichen Feinden auf den Inseln bewahrt haben. Man kann das ganze Jahr über zu den Galapagosinseln reisen. Die bewohnten Inseln kann man dabei ganz gut allein besuchen. Anders sieht es bei den unbewohnten Inseln aus. Hier lassen die Behörden seit einigen Jahren nur eine begrenzte Zahl an Schiffen zu, und ohne Führer ist das Betreten nicht erlaubt. Die Inseln und ihre Tiere bleiben sich selbst überlassen, damit das Naturparadies auch weiterhin erhalten bleibt.",
                 correctAnswer: "c"
               },
               {
@@ -1842,9 +2032,9 @@
             ]
           },
           { 
-            id: "s2", 
-            title: "Leseverstehen, Teil 2", 
-            points: 25,
+            id:"s2", 
+            title:"Leseverstehen, Teil 2", 
+            points:25,
             passageTitle: "Krista - Die schönste Kuh Deutschlands",
             passage: `Krista ist die schönste Kuh Deutschlands. Und jetzt auch noch ein Kinostar. Am letzten Donnerstag kam ein Film über die schwarz-weiß gefleckte Kuh und ihre Besitzer in einige norddeutsche Kinos. Wovon der Film handelt? Von Kristas Leben auf dem Hof der Familie Seeger in Bissel, einem kleinen Dorf in Norddeutschland.
 
@@ -1856,13 +2046,13 @@ Krista gehört zur Welteilte. Auf Veranstaltungen wird sie immer wieder ausgezei
 
 Jörg und Janine Seeger erlauben dem Kinozuschauer interessante Einblicke in ihren Alltag auf dem Bauernhof. Die Kamera verfolgt zwar immer den Weg von Kuh Krista, aber zu sehen ist dabei natürlich auch die Arbeit der gesamten Familie auf dem Hof. Manchmal ist das auch ein romantisches Leben, es ist aber vor allem immer sehr arbeitsreich.
 
-"Für meiner sind Kühe nicht nur Nutztiere", sagt die Bäuerin Janine Seeger. Schon als Kind hätten ihr die Tiere Geborgenheit, manchmal Trost gespendet. Aber sie weiß, dass die Kühe Geld bringen müssen, entweder durch möglichst viel Milch oder durch viel Nachwuchs. Die kleinen Kälber lassen sich zu recht guten Preisen verkaufen, das lohnt sich für die Seegers.
+"Für mich sind Kühe nicht nur Nutztiere", sagt die Bäuerin Janine Seeger. Schon als Kind hätten ihr die Tiere Geborgenheit, manchmal Trost gespendet. Aber sie weiß, dass die Kühe Geld bringen müssen, entweder durch möglichst viel Milch oder durch viel Nachwuchs. Die kleinen Kälber lassen sich zu recht guten Preisen verkaufen, das lohnt sich für die Seegers.
 
 Krista kann zunächst aus gesundheitlichen Gründen keine Kälber bekommen. Auch diese Problematik wird im Film gezeigt. Der Zuschauer merkt, dass Jörg Seeger enttäuscht ist: Seine beste Kuh kann kein Kalb bekommen. Aber es geht gut aus, denn Krista wird operiert und nach Ende der Dreharbeiten klappt es dann doch mit dem Nachwuchs für die Kuh.
 
 Während der jahrelangen Dreharbeiten hat sich auch die Familie entwickelt. Mittlerweile haben die Seegers zwei Kinder. "Deshalb verändert sich im Film mein Gewicht etwas", erzählt Janine Seeger und lacht. Und wie ist es so, vor der Kamera zu stehen? "Erst ungewohnt, dann irgendwie vertraut", sagt die 32-Jährige. Zu den Filmemachern habe sich ein freundschaftliches Verhältnis entwickelt. "Wie schön, Carsten und Antje sind wieder da", habe es dann nur noch geheißen, wenn das Team anrückte.
 
-Der Film zeigt aber auch, wie sich im Laufe der Jahre das Leben auf dem Hof der Seegers verändert hat und wie schwierig it auch hier geworden ist, mit Milchkühen Geld zu verdienen. Der Markt ist hart umkämpft und die Preise sinken immer weiter, denn die Verbraucher im Supermarkt greifen gerne zum günstigsten Produkt. Für viele ist es da nicht wichtig, wie die Milch produziert wurde. Auch das zeigt der Film, wenngleich eher nebenbei.
+Der Film zeigt aber auch, wie sich im Laufe der Jahre das Leben auf dem Hof der Seegers verändert hat und wie schwierig es auch hier geworden ist, mit Milchkühen Geld zu verdienen. Der Markt ist hart umkämpft und die Preise sinken immer weiter, denn die Verbraucher im Supermarkt greifen gerne zum günstigsten Produkt. Für viele ist es da nicht wichtig, wie die Milch produziert wurde. Auch das zeigt der Film, wenngleich eher nebenbei.
 
 Familie Seeger ist stolz drauf, dass ein Film über ihren Hof und über die schöne Kuh Krista gedreht wurde. So heißt nun übrigens auch der Film: "Die schöne Krista". Am vergangenen Wochenende haben die Seegers den Film bei einem Hoffest gezeigt. Familie und Freunde sowie Nachbarn waren zu Gast, und alle haben sich über den Film gefreut.
 
@@ -1926,23 +2116,23 @@ Familie Seeger ist stolz drauf, dass ein Film über ihren Hof und über die sch�
             ]
           },
           { 
-            id: "s3", 
-            title: "Leseverstehen, Teil 3", 
-            points: 25,
-            passageTitle: "Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchما passt kein Text. Wählen Sie dann 'x'.",
+            id:"s3", 
+            title:"Leseverstehen, Teil 3", 
+            points:25,
+            passageTitle:"Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchmal passt kein Text. Wählen Sie dann 'x'.",
             passage: "",
-            questions: [],
+            questions:[],
             texts: [
               {id: "A", text: "23.15 3SAT Es geschah im August Ullrich Kasten und Hans-Hermann Hertle schildern in ihrer hervorragenden Dokumentation anhand von Archivmaterial minutiös sämtliche Stationen des Mauerbaus. Sie erzählen die Vorgeschichte der Berlin-Krise und beleuchten die Hintergründe der Teilung Deutschlands. Ferner haben sie Zeitzeugen nach ihren Reaktionen auf das einschneidende Ereignis befragt. Zu Wort kommen in dem Film nicht nur namhafte Vertreter der internationalen Politik, sondern auch Grenzsoldaten, Flüchtlinge und Angehörige von Maueropfern.", correctAnswer: "17"},
               {id: "B", text: "21.00 NDR Joja Wendt Ob Klassik, Rock'n'Roll oder Jazz, Joja Wendt, Hamburger Pianist mit enormen Entertainer Qualitäten, variiert bekannte Songs und stellt seine Fingerfertigkeit auch in eigenen Kompositionen unter Beweis. Stargast in dem heutigen Fernseh-Special ist die Schlagersängerin Michelle mit dem Titel 'Ich schicke dir jetzt einen Engel'.", correctAnswer: "13"},
-              {id: "C", text: "20.15 SAT1 Einfach unwiderstehlich Gut kochen kann Amanda nicht. Folglich steht ihr kleines, von der Mutter geerbtes Restaurant in Manhattan kurz vor dem Aus. Da entflieht plötzlich ein Krebs aus ihrem Einkaufskorb und sorgt mit seinen Zauberkünsten für lukullische Sensationen. Tom, Manager eines Gourmet Restaurants an der Fifth Avenue, kommt als einer der ersten in deren Genuss. Amanda hat sich in ihn verliebt, als der schon bekannte Krebs unter Toms Hosenbein flüchtet. Seine Zauber-kräfte werden dringend gebraucht, denn Tom gehört zu den Männern, die ziemlich viel Angst vor Liebesbeziehungen haben.", correctAnswer: null},
+              {id: "C", text: "20.15 SAT1 Einfach unwiderstehlich Gut kochen kann Amanda nicht. Folglich steht ihr kleines, von der Mutter geerbtes Restaurant in Manhattan kurz vor dem Aus. Da entflieht plötzlich ein Krebs aus ihrem Einkaufskorb und sorgt mit seinen Zauberkünsten für lukullische Sensationen. Tom, Manager eines Gourmet Restaurants an der Fifth Avenue, kommt als einer der ersten in deren Genuss. Amanda hat sich in ihn verliebt, als der schon bekannte Krebs unter Toms Hosenbein flüchtete. Seine Zauber-kräfte werden dringend gebraucht, denn Tom gehört zu den Männern, die ziemlich viel Angst vor Liebesbeziehungen haben.", correctAnswer: null},
               {id: "D", text: "22.00 HR New York Express Aus Sorge um die nationale Sicherheit versteckt der amerikanische Geheimdienst den genialen, aber vermeintlich psychisch kranken Physiker Arthur Vincenti. Der völlig verrückte New Yorker Psychiater Dr. Snow erhält den Auftrag, ihn zu heilen. Immer nachts wird er mit verbundenen Augen zu dem Versteck gebracht. Aber auch einige Gangster sind nicht untätig. Sie haben es auf das Wissen des Geheimnisträgers Vincenti abgesehen, das sie fremden Spionen verkaufen möchten.", correctAnswer: "16"},
-              {id: "E", text: "20.15 PRO 7 Kein Vater von gestern Er schreit wie am Spieß, wenn er lange Hosen tragen soll, und lacht sich kaputt, wenn er die Katze in eine Mülltüte gesteckt hat. Alles ist einfacher, als sich um den 5-jährigen Calvin zu kümmern. Doch sein liebevoller Vater Russell, der den J gen allein erzieht, meistert sämtliche Katastrophen mit Bravour und Geduld. Weil sich Kind und Karriere nicht unter einen Hut bringen ließen, verlor der Jurist einen tollen Job in einer renommierten Chicagoer Anwaltskanzlei. Jetzt sitzt er mit seinem Sohn in einem Dorf in Kansas und arbeitet in der Kanzlei eines Freundes. Die Bekanntschaft mit der attraktiven Beth bringt neuen Schwung in sein Leben. Doch da taucht Russells Ex-Ehefrau wieder auf", correctAnswer: "14"},
+              {id: "E", text: "20.15 PRO 7 Kein Vater von gestern Er schreit wie am Spieß, wenn er lange Hosen tragen soll, und lacht sich kaputt, wenn er die Katze in eine Mülltüte gesteckt hat. Alles ist einfacher, als sich um den 5-jährigen Calvin zu kümmern. Doch sein liebevoller Vater Russell, der den Jungen allein erzieht, meistert sämtliche Katastrophen mit Bravour und Geduld. Weil sich Kind und Karriere nicht unter einen Hut bringen ließen, verlor der Jurist einen tollen Job in einer renommierten Chicagoer Anwaltskanzlei. Jetzt sitzt er mit seinem Sohn in einem Dorf in Kansas und arbeitet in der Kanzlei eines Freundes. Die Bekanntschaft mit der attraktiven Beth bringt neuen Schwung in sein Leben. Doch da taucht Russells Ex-Ehefrau wieder auf", correctAnswer: "14"},
               {id: "F", text: "20.15 ZDF Der Preis der Schönheit Der 16-jährige Schüler Timo leidet unter seiner Figur. Er ist zu dick, um bei den Mädchen gut anzukommen. Deshalb beschließt er, eine Diät zu machen. Er will unbedingt abnehmen. Als er nach einiger Zeit tatsächlich 20 Kilo leichter ist, ist er überglücklich. Doch dann beginnt er, sich für viel zu dünn zu halten. Er will wieder zunehmen, schafft es aber nicht, normal zu essen. Er leidet an Magersucht und muss in eine Spezialklinik eingewiesen werden.", correctAnswer: "19"},
               {id: "G", text: "23.30 WDR Die Nacht der Nächte Der Film erzählt die Geschichte von vier jungen Leuten, die in der Silvesternacht in Berlin unterwegs sind. Sie wollen das neue Jahr gebührend feiern. Doch die Nacht nimmt einen überraschenden Verlauf. Der Film zeigt, wie die vier jungen Leute in dieser Nacht ihr Leben für immer verändern. Es geht um Liebe, Freundschaft und die Suche nach dem Glück.", correctAnswer: null},
               {id: "H", text: "21.45 RTL Der Unfall Auf der Autobahn bei Köln kommt es zu einem schweren Unfall. Ein LKW ist auf mehrere Pkws aufgefahren. Es gibt mehrere Verletzte. Die Rettungskräfte sind schnell vor Ort und kümmern sich um die Verletzten. Parallel dazu wird die Unfallursache untersucht. War es technisches Versagen oder menschliches Versagen? Die Ermittlungen laufen.", correctAnswer: "18"},
-              {id: "I", text: "22.30 PRO7 Die Insel Eine Gruppe von Jugendlichen strandet auf einer einsamen Insel. Sie müssen lernen, ohne Handy und ohne Comfort zu überleben. Schnell wird klar, dass nicht alle gleich gut mit der Situation zurechtkommen. Es bilden sich Grüppchen und Konflikte sind vorprogrammiert. Doch als einer der Jugendlichen schwer verletzt wird, müssen alle zusammenhalten, um zu überleben.", correctAnswer: "20"},
-              {id: "J", text: "19.30 KIKA Die Sendung mit der Maus Heute geht es in der Sendung mit der Maus um das Thema 'Feuer'. Wie entsteht Feuer? Wie kann man es löschen? Und warum is Feuer so wichtig für uns Menschen? Die Maus besucht eine Feuerwache und schaut den Feuerwehrleuten bei der Arbeit zu. Außerdem gibt es wie immer die Lach- und Sachgeschichten.", correctAnswer: "11"},
+              {id: "I", text: "22.30 PRO7 Die Insel Eine Gruppe von Jugendlichen strandet auf einer einsamen Insel. Sie müssen lernen, ohne Handy und ohne Komfort zu überleben. Schnell wird klar, dass nicht alle gleich gut mit der Situation zurechtkommen. Es bilden sich Grüppchen und Konflikte sind vorprogrammiert. Doch als einer der Jugendlichen schwer verletzt wird, müssen alle zusammenhalten, um zu überleben.", correctAnswer: "20"},
+              {id: "J", text: "19.30 KIKA Die Sendung mit der Maus Heute geht es in der Sendung mit der Maus um das Thema 'Feuer'. Wie entsteht Feuer? Wie kann man es löschen? Und warum ist Feuer so wichtig für uns Menschen? Die Maus besucht eine Feuerwache und schaut den Feuerwehrleuten bei der Arbeit zu. Außerdem gibt es wie immer die Lach- und Sachgeschichten.", correctAnswer: "11"},
               {id: "K", text: "23.00 ARTE Die Kunst des Scheiterns Der Film porträtiert drei Menschen, die in ihrem Leben gescheitert sind. Eine Unternehmerin, deren Firma pleite ging, ein Sportler, der wegen einer Verletzung seine Karriere beenden musste, und eine Künstlerin, die nie den Durchbruch schaffte. Der Film zeigt, wie sie mit ihrem Scheitern umgehen und was sie daraus gelernt haben. Es ist eine Hommage an die Widerstandskraft des menschlichen Geistes.", correctAnswer: "15"},
               {id: "L", text: "21.00 VOX Kitchen Impossible Sternekoch Tim Mälzer stellt sich heute einer besonderen Herausforderung. Er muss in einer fremden Küche ohne seine gewohnten Utensilien ein Drei-Gänge-Menü zubereiten. Die Zutaten bekommt er erst kurz vor Beginn der Sendung. Schaffen er und sein Team es, pünktlich ein perfektes Menü auf den Tisch zu bringen? Die Spannung ist garantiert.", correctAnswer: "12"}
             ],
@@ -1960,12 +2150,12 @@ Familie Seeger ist stolz drauf, dass ein Film über ihren Hof und über die sch�
             ]
           },
           { 
-            id: "s4", 
-            title: "Sprachbausteine, Teil 1", 
-            points: 15,
-            passageTitle: "Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.",
+            id:"s4", 
+            title:"Sprachbausteine, Teil 1", 
+            points:15,
+            passageTitle:"Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.",
             passage: "",
-            questions: [],
+            questions:[],
             fillBlanks: [
               {
                 id: "21",
@@ -2024,23 +2214,23 @@ nun habe ich mich schon so lange nicht bei dir gemeldet – das tut mir wirklich
 
 Was macht denn deine Ausbildung? Wenn ich ________ nicht täusche, bist du ja in einem halben Jahr schon fertig, oder? Das ist ja nicht mehr lang!
 
-Neulich habe ich übrigens Tina und Kevin hier in der Nähe der Uni getroffen – die waren ja schon ein Paar, ________ wir noch in der Schule gegangen sind, und jetzt will sie tatsächlich verheiratet!
+Neulich habe ich übrigens Tina und Kevin hier in der Nähe der Uni getroffen – die waren ja schon ein Paar, ________ wir noch in der Schule gegangen sind, und jetzt will sie tatsächlich verheiraten!
 
 Wie sehen denn deine Pläne für die ________ Wochenenden aus? Wir könnten uns ja vielleicht mal wieder treffen und in Ruhe quatschen – hättest du Lust ________ ?
 
-In meiner Straße hat vor einem Monat ein nettes kleines Café aufgemacht, die haben nicht nur sehr leckere Kuchen, ________ auch einige kleine Gerichte zu wirklich günstigen Preisen. Wäre das was ________ dich? Mail wir doch einfach, wenn du magst, ich würde mich freuen.
+In meiner Straße hat vor einem Monat ein nettes kleines Café aufgemacht, die haben nicht nur sehr leckere Kuchen, ________ auch einige kleine Gerichte zu wirklich günstigen Preisen. Wäre das was ________ dich? Mail mir doch einfach, wenn du magst, ich würde mich freuen.
 
 Viele Grüße,
 
 Nadine`
           },
           { 
-            id: "s5", 
-            title: "Sprachbausteine, Teil 2", 
-            points: 15,
-            passageTitle: "Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort nur einmal verwenden. Nicht alle Wörter passen in den Text.",
+            id:"s5", 
+            title:"Sprachbausteine, Teil 2", 
+            points:15,
+            passageTitle:"Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort nur einmal verwenden. Nicht alle Wörter passen in den Text.",
             passage: "",
-            questions: [],
+            questions:[],
             fillBlanks2: [
               {
                 id: "31",
@@ -2102,14 +2292,266 @@ Doch hat das Autofahren auch Schattenseiten. Mangelnde Bewegungsmöglichkeiten, 
 
 Dass Fahrradfahren um einiges gesünder ist, als hinter dem Lenkrad zu sitzen, bestätigen auch die Mediziner. Wer Fahrrad fährt ________ zu sitzen, bringt seinen Blutkreislauf in Schwung, stärkt die Abwehrkräfte des Körpers und trainiert seinen Körper. Auch die Bewegung an der frischen Luft tut Menschen gut, die sich sonst die meiste Zeit ________ geschlossener Räume in Büros, Schulen oder Fabriken aufhalten ________.
 
-Auch die Geschäftswelt hat die Fahrradfahrer als Kunden entdeckt. Ein breites Angebot ________ Zubehör für Fahrräder von schicken Radfelgen über sportliche Mehrganggetriebe, mit denen Berge kein Problem mehr darstellen, bis zur Designer-Trinkflasche machen aus dem einfachen Fahrrad ein exlusives Fahrzeug. Und natürlich darf bei keinem Fahrradfahrer eine aufwändige Sicherheitsausstattung mehr fehlen: Schutzhelme, Ellenbogen- und Knieschützer, die das Fahrrad im Falle eines Unfalls fast so sicher wie einen Panzer machen ________.
+Auch die Geschäftswelt hat die Fahrradfahrer als Kunden entdeckt. Ein breites Angebot ________ Zubehör für Fahrräder von schicken Radfelgen über sportliche Mehrganggetriebe, mit denen Berge kein Problem mehr darstellen, bis zur Designer-Trinkflasche machen aus dem einfachen Fahrrad ein exklusives Fahrzeug. Und natürlich darf bei keinem Fahrradfahrer eine aufwändige Sicherheitsausstattung mehr fehlen: Schutzhelme, Ellenbogen- und Knieschützer, die das Fahrrad im Falle eines Unfalls fast so sicher wie einen Panzer machen ________.
 
 Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ________ sind die Autoschlangen wieder länger. ________ einen praktischen Wetterschutz für Radfahrer haben die Geschäfte noch nicht im Angebot.`
           }
         ]
-      };
+      },
+      
+      hoeren: {
+        id: "exam-hörverstehen",
+        durationSec: 17 * 60,
+        sections: [
+          { 
+            id:"hörverstehen1", 
+            title:"Hörverstehen, Teil 1", 
+            points:25,
+            correctAnswers: {
+              "41": "falsch",
+              "42": "falsch",
+              "43": "falsch",
+              "44": "richtig",
+              "45": "richtig"
+            },
+            questions: [
+              {
+                id: "41",
+                text: "Auf der Insel Bali wurden neue Maßnahmen zur Müllentsorgung beschlossen."
+              },
+              {
+                id: "42",
+                text: "In Nordfrankreich wird nach einem entlaufenen Panther gesucht."
+              },
+              {
+                id: "43",
+                text: "Die Mietervereinigung rät Mieterinnen und Mietern, die Betriebskosten nicht zu bezahlen."
+              },
+              {
+                id: "44",
+                text: "Der Sekt-Hersteller hat die Pläne für sein Bauvorhaben geändert."
+              },
+              {
+                id: "45",
+                text: "Die Löscharbeiten sind noch nicht abgeschlossen."
+              }
+            ]
+          },
+          { 
+            id:"hörverstehen2", 
+            title:"Hörverstehen, Teil 2", 
+            points:25,
+            correctAnswers: {
+              "46": "falsch",
+              "47": "richtig",
+              "48": "richtig",
+              "49": "richtig",
+              "50": "falsch",
+              "51": "falsch",
+              "52": "richtig",
+              "53": "falsch",
+              "54": "richtig",
+              "55": "richtig"
+            },
+            questions: [
+              {
+                id: "46",
+                text: "Roland Wünschmann arbeitet Vollzeit als Fußballtrainer bei Viktoria Köln."
+              },
+              {
+                id: "47",
+                text: "Viktoria Köln möchte am Ende der Spielsaison aufsteigen."
+              },
+              {
+                id: "48",
+                text: "Zu Beginn dieser Saison hat ein Spieler Viktoria Köln verlassen."
+              },
+              {
+                id: "49",
+                text: "Neue Spieler kommen bei Viktoria Köln immer aus der eigenen Jugendmannschaft."
+              },
+              {
+                id: "50",
+                text: "Die Mannschaft von Viktoria Köln hat Schwächen in der Abwehr."
+              },
+              {
+                id: "51",
+                text: "Roland Wünschmann wagt die Prognose, dass diese Saison der 1. FC Mönchengladbach Meister wird."
+              },
+              {
+                id: "52",
+                text: "Roland Wünschmann kann seinen Beruf und sein Ehrenamt als Fußballtrainer miteinander vereinbaren."
+              },
+              {
+                id: "53",
+                text: "Auch die Frau von Roland Wünschmann engagiert sich im Fußball."
+              },
+              {
+                id: "54",
+                text: "Der Vereinsvorstand schätzt Herrn Wünschmanns Arbeit."
+              },
+              {
+                id: "55",
+                text: "Roland Wünschmann ist mit der bisherigen Nachwuchsförderung des Vereins noch nicht voll zufrieden."
+              }
+            ]
+          },
+          { 
+            id:"hörverstehen3", 
+            title:"Hörverstehen, Teil 3", 
+            points:25,
+            correctAnswers: {
+              "56": "richtig",
+              "57": "falsch",
+              "58": "falsch",
+              "59": "falsch",
+              "60": "richtig"
+            },
+            questions: [
+              {
+                id: "56",
+                text: "Sie können im Internet prüfen, ob Ihre aktuelle Bestellung schon unterwegs ist."
+              },
+              {
+                id: "57",
+                text: "Man kann für die Nachtveranstaltung noch Karten im Internet kaufen."
+              },
+              {
+                id: "58",
+                text: "Die Teilnahme an der Party im Burghof kostet nichts."
+              },
+              {
+                id: "59",
+                text: "In Bamberg kann man in der nächsten Woche besonders günstig Mitglied in einem Sportverein werden."
+              },
+              {
+                id: "60",
+                text: "Wer ein wichtiges Anliegen hat, soll eine andere Nummer wählen."
+              }
+            ]
+          }
+        ]
+      },
+      
+      schreiben: {
+        id: "exam-schreiben-001",
+        durationSec: 30 * 60,
+        sections: [
+          { 
+            id:"s1", 
+            title:"Schreiben, Teil 1", 
+            points:45,
+            passageTitle:"Aufgabe: Schreiben Sie eine E-Mail",
+            passage: "",
+            writingTask: {
+              prompt: `Möchten Sie in Ihrer Freizeit mehr erleben? Neue Leute aus Mainz kennenlernen? Am Wochenende nie mehr allein sein? 
+      Dann werden Sie Mitglied im Freizeitverein!
+      Wir organisieren verschiedene Aktivitäten in Mainz und Umgebung:
+      Wanderungen, Fahrradtouren, Museums- und Theaterbesuche, Spiele- und Kinoabende, Restaurantbesuche und Ausflüge.
+      Jede Woche stehen mindestens zwei unterschiedliche Angebote auf dem Programm.
+      Ob Sport oder Kultur – bei uns kommt jeder auf seine Kosten. Sie können viel Neues ausprobieren und lernen dabei nette Leute kennen.
+      Unsere Mitglieder sind zwischen 26 und 85 Jahre alt. Bei uns ist jeder willkommen, ob Student oder Senior. 
+      Sie finden bei uns neue Freunde und Bekannte, mit denen Sie viel erleben können. Probieren Sie es doch einfach mal aus!
+      Die Mitgliedschaft kostet 20 Euro pro Monat.`,
+              requirements: [
+                "Erklären Sie, was Sie nach dem Lesen der Anzeige erwartet hatten.",
+                "Erklären Sie, warum Sie mit dem Angebot des Freizeitvereins nicht zufrieden sind.",
+                "Machen Sie Verbesserungsvorschläge zum Programm.",
+                "Erklären Sie, was Sie tun werden, wenn sich nichts ändert."
+              ],
+              wordCount: 0
+            }
+          }
+        ]
+      }
+    };
 
-      /* ===== State & DOM refs ===== */
+    // ===== HILFSFUNKTIONEN =====
+    function getHeadingText(headingId) {
+      if (!headingId || headingId === '-' || headingId === '') return '-';
+      const headings = {
+        "a": "Deutscher Forscher startet Expedition auf Vogelinsel in Südamerika",
+        "b": "Die beliebtesten Reiseziele unter den europäischen Inseln",
+        "c": "Fernreisen in eine unberührte Tierwelt",
+        "d": "Geführte Bootsausflüge zu einsamen Badebuchten",
+        "e": "Grüne Geisterinsel in Asien",
+        "f": "Immer mehr Reiseunternehmen streichen Thailand aus ihrem Angebot",
+        "g": "Inseln zählen weltweit zu den wichtigsten Reisedestinationen",
+        "h": "Nachhaltiger Tourismus auf chinesischen Inseln",
+        "i": "Tierparadies auf einer Nordseeinsel",
+        "j": "Umstrittener Umgang mit Tieren als Touristenmagnet"
+      };
+      return headings[headingId] || headingId;
+    }
+
+    function getOptionText(questionId, optionId) {
+      if (!optionId || optionId === '-' || optionId === '') return '-';
+      const options = {
+        "s2q1o1": "sind in der Milchproduktion beliebter als andere Rinderrassen.",
+        "s2q1o2": "spielen in der Milchproduktion kaum eine Rolle.",
+        "s2q1o3": "stammen aus Norddeutschland.",
+        "s2q2o1": "hat bereits einige Preise gewonnen.",
+        "s2q2o2": "war Siegerin bei einer Veranstaltung in Italien.",
+        "s2q2o3": "wurde als schönste Kuh Europas ausgezeichnet.",
+        "s2q3o1": "bekam Krista ein Kalb.",
+        "s2q3o2": "wäre Krista fast gestorben.",
+        "s2q3o3": "wurde Krista operiert.",
+        "s2q4o1": "betreffen die Familie Seeger nicht.",
+        "s2q4o2": "sind eine Folge des Verbraucherverhaltens.",
+        "s2q4o3": "werden im Film ausführlich behandelt.",
+        "s2q5o1": "begeistert Kinobetreiber bislang nicht.",
+        "s2q5o2": "konnte die Kritiker nicht überzeugen.",
+        "s2q5o3": "wurde als beste Dokumentation ausgezeichnet."
+      };
+      return options[optionId] || optionId;
+    }
+
+    function getSituationText(id) {
+      const situations = {
+        "11": "Ein Bekannter möchte einen Film sehen, der nach dem Werk eines Schriftstellers gedreht wurde.",
+        "12": "Bekannte interessieren sich für Wintersportveranstaltungen.",
+        "13": "Sie suchen eine Musiksendung. Sie mögen besonders Klaviermusik.",
+        "14": "Sie mögen Filme mit viel Action und viel Spaß. Ihre Lieblingshelden können auch mal zuschlagen.",
+        "15": "Ein Bekannter interessiert sich für kurdische Geschichte.",
+        "16": "Sie mögen Familienkomödien, besonders mit frechen Kindern.",
+        "17": "Eine Bekannte interessiert sich für die Geschichte des bis 1989 geteilten Berlins.",
+        "18": "Sie sehen gern spannende, aber auch spaßige Agentenfilme.",
+        "19": "Sie würden gern etwas über Großstadtjugendliche erfahren, die am Rand der Gesellschaft leben.",
+        "20": "Sie möchten im nächsten Urlaub tauchen und sich über die Risiken informieren."
+      };
+      return situations[id] || id;
+    }
+
+    function escapeHtml(s) {
+      if (s === null || s === undefined) return '';
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function normalizeAnswer(a) {
+      if (a === null || a === undefined || a === '') return '-';
+      let s = String(a).trim();
+      if (s === '') return '-';
+      const low = s.toLowerCase();
+      if (["richtig", "true", "yes", "ja", "wahr"].includes(low)) return 'richtig';
+      if (["falsch", "false", "no", "nein", "unwahr"].includes(low)) return 'falsch';
+      if (s === 'X' || s === 'x') return 'X';
+      return s;
+    }
+
+    // ===== LESEN PAGE FUNCTIONALITY =====
+    function initLesenPage() {
+      const exam = EXAM_DATA.lesen;
+      
+      window.selectedHeadingId = null;
+      window.selectedSituationId = null;
+      window.selectedWordId = null;
+      window.selectedWord = null;
+      
       let state = { 
         sectionIndex: 0, 
         questionIndex: 0, 
@@ -2118,7 +2560,9 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null
+        timerInterval: null,
+        examEnded: false,
+        currentPage: 'lesen'
       };
       const topTiles = document.getElementById('topTiles-lesen');
       const passageTitleEl = document.getElementById('passageTitle-lesen');
@@ -2133,7 +2577,30 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
-      /* ===== Timer Functions ===== */
+      function handleTimeExpired() {
+        if (state.examEnded) return;
+        state.examEnded = true;
+        
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
+        state.showResults = true;
+        renderAll();
+        
+        setTimeout(() => {
+          if (state.sectionIndex < exam.sections.length - 1) {
+            state.sectionIndex++;
+            state.showResults = false;
+            state.examEnded = false;
+            renderAll();
+          } else {
+            showPage('hoeren-page');
+          }
+        }, 2000);
+      }
+
       function startTimer(){
         if(state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -2144,6 +2611,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           if(state.remaining <= 0){
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
+            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -2157,6 +2625,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
+        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -2167,11 +2636,10 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Reset Section Function ===== */
       function resetCurrentSection() {
         const currentSection = exam.sections[state.sectionIndex];
         
-        if (confirm(`Möchten Sie wirklich den Teil "${currentSection.title}" zurücksetzen? Alle Antworten in diesem Teil werden gelöscht.`)) {
+        if (confirm(`Möchten Sie wirklich den Teil "${currentSection.title}" zurücksetzen?`)) {
           if (currentSection.id === 's1') {
             currentSection.texts.forEach(text => {
               delete state.answers[text.id];
@@ -2198,7 +2666,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       }
 
-      /* ===== Render ===== */
       function renderTopTiles(){ 
         topTiles.innerHTML=''; 
         exam.sections.forEach((sec,idx)=>{ 
@@ -2220,6 +2687,8 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       }
 
       function renderAll(){
+        if (state.examEnded) return;
+        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         sectionNameEl.textContent = section.title;
@@ -2248,7 +2717,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       function renderPart1(){
         const section = exam.sections[state.sectionIndex];
         
-        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. Sie können jede Überschrift nur einmal verwenden.</div>`;
+        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. (Klicken: Titel auswählen → auf Text klicken)</div>`;
         
         section.texts.forEach((text, idx) => {
           const letter = String.fromCharCode(97 + idx);
@@ -2258,7 +2727,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             <div class="text-container">
               <div class="text-title">Text ${letter.toUpperCase()}</div>
               <div class="text-content">${text.content}</div>
-              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}">
+              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}" onclick="window.lesenApp.handleSlotClick('${text.id}')">
                 ${selectedHeading ? getHeadingText(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
               </div>
             </div>
@@ -2272,7 +2741,10 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           const isUsed = section.texts.some(text => state.answers[text.id] === heading.id);
           
           headingsHTML += `
-            <div class="heading-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-heading-id="${heading.id}">
+            <div class="heading-item ${isUsed ? 'used' : ''} ${window.selectedHeadingId === heading.id ? 'selected' : ''}" 
+                 draggable="${!isUsed}" 
+                 data-heading-id="${heading.id}"
+                 onclick="window.lesenApp.handleHeadingClick('${heading.id}')">
               ${heading.id}) ${heading.text}
             </div>
           `;
@@ -2286,6 +2758,37 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         
         questionBodyEl.innerHTML = '';
         questionTitleEl.textContent = '';
+      }
+
+      function handleHeadingClick(headingId) {
+        const section = exam.sections[state.sectionIndex];
+        const isUsed = section.texts.some(text => state.answers[text.id] === headingId);
+        if (isUsed) return;
+        
+        if (window.selectedHeadingId === headingId) {
+          window.selectedHeadingId = null;
+        } else {
+          window.selectedHeadingId = headingId;
+        }
+        renderPart1();
+      }
+
+      function handleSlotClick(textId) {
+        if (window.selectedHeadingId) {
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === window.selectedHeadingId) {
+              delete state.answers[key];
+            }
+          });
+          
+          state.answers[textId] = window.selectedHeadingId;
+          window.selectedHeadingId = null;
+          renderAll();
+        } 
+        else if (state.answers[textId]) {
+          delete state.answers[textId];
+          renderAll();
+        }
       }
 
       function setupDragAndDrop(){
@@ -2320,6 +2823,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             });
             
             state.answers[textId] = headingId;
+            window.selectedHeadingId = null;
             renderAll();
           });
         });
@@ -2363,7 +2867,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         const section = exam.sections[state.sectionIndex];
         
         let textsHTML = `
-          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. Sie können jede Situation nur einmal verwenden. Manchmal passt keine Situation.</div>
+          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. (Klicken: Situation auswählen → auf Text klicken)</div>
           <div class="texts-list">
             <h3>Texte (A-L)</h3>
         `;
@@ -2377,7 +2881,10 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               <div class="text-letter">${text.id})</div>
               <div class="text-content">${text.text}</div>
               <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" data-text-id="${text.id}">
-                ${selectedSituation ? selectedSituation.text : (userAnswer === 'X' ? 'X - Keine passende Situation' : 'Ziehen Sie hier eine Situation hin')}
+                <span onclick="window.lesenApp.handleSituationSlotClick('${text.id}')">
+                  ${selectedSituation ? selectedSituation.text : (userAnswer === 'X' ? 'X - Keine passende Situation' : 'Ziehen Sie hier eine Situation hin')}
+                </span>
+                ${userAnswer === 'X' ? `<button class="restore-btn" onclick="window.lesenApp.restoreX('${text.id}')">↩️ Zurück</button>` : ''}
               </div>
             </div>
           `;
@@ -2398,10 +2905,13 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           const isX = state.answers[situation.id] === 'X';
           
           situationsHTML += `
-            <div class="situation-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-situation-id="${situation.id}">
+            <div class="situation-item ${isUsed ? 'used' : ''} ${window.selectedSituationId === situation.id ? 'selected' : ''}" 
+                 draggable="${!isUsed}" 
+                 data-situation-id="${situation.id}"
+                 onclick="${!isUsed ? `window.lesenApp.handleSituationClick('${situation.id}')` : ''}">
               <div class="situation-number">${situationNumber}.</div>
               <div class="situation-text">${situation.text}</div>
-              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}')">X - Kein passender Text</button>` : ''}
+              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}'); event.stopPropagation();">X - Kein passender Text</button>` : ''}
             </div>
           `;
         });
@@ -2415,6 +2925,44 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         setupPart3DragAndDrop();
       }
 
+      function restoreX(textId) {
+        const situationId = Object.keys(state.answers).find(key => state.answers[key] === 'X' && key.includes('text'));
+        if (situationId) {
+          delete state.answers[situationId];
+        }
+        renderAll();
+      }
+
+      function handleSituationClick(situationId) {
+        if (window.selectedSituationId === situationId) {
+          window.selectedSituationId = null;
+        } else {
+          window.selectedSituationId = situationId;
+        }
+        renderPart3();
+      }
+
+      function handleSituationSlotClick(textId) {
+        if (window.selectedSituationId) {
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === window.selectedSituationId) {
+              delete state.answers[key];
+            }
+          });
+          
+          state.answers[window.selectedSituationId] = textId;
+          window.selectedSituationId = null;
+          renderAll();
+        } 
+        else {
+          const situationId = Object.keys(state.answers).find(key => state.answers[key] === textId);
+          if (situationId) {
+            delete state.answers[situationId];
+            renderAll();
+          }
+        }
+      }
+
       function markNoMatch(situationId) {
         Object.keys(state.answers).forEach(key => {
           if(state.answers[key] === situationId) {
@@ -2423,8 +2971,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         });
         
         state.answers[situationId] = 'X';
-        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
-        
+        window.selectedSituationId = null;
         renderAll();
       }
 
@@ -2462,6 +3009,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             });
             
             state.answers[situationId] = textId;
+            window.selectedSituationId = null;
             renderAll();
           });
         });
@@ -2485,19 +3033,13 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         section.fillBlanks.forEach(blank => {
           const userAnswer = state.answers[blank.id];
           const displayText = userAnswer ? userAnswer : '________';
-          tempText = tempText.replace(`BLANK_${blank.id}`, `<span class="blank-word ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}">${displayText}</span>`);
+          tempText = tempText.replace(`BLANK_${blank.id}`, `<span class="blank-word ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}" onclick="window.lesenApp.handleBlankClick('${blank.id}')">${displayText}</span>`);
         });
         
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können die Lücken in beliebiger Reihenfolge ausfüllen.</div>
+          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort.</div>
           <div class="fill-blank-container">${tempText}</div>
         `;
-        
-        document.querySelectorAll('.blank-word').forEach(blank => {
-          blank.addEventListener('click', (e) => {
-            showOptionsPopup(e.target);
-          });
-        });
         
         let optionsHTML = `<div class="horizontal-options" style="gap: 8px;">`;
         
@@ -2505,13 +3047,12 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           const userAnswer = state.answers[blank.id];
           
           optionsHTML += `
-            <div class="option-row" style="padding: 8px; margin-bottom: 5px;">
+            <div class="option-row">
               <div class="option-number">${blank.id}</div>
               <div class="option-buttons">
                 ${blank.options.map(opt => `
                   <div class="option-btn ${userAnswer === opt ? 'selected' : ''}" 
-                       onclick="window.lesenApp.selectSprachbausteine1('${blank.id}', '${opt}')" 
-                       style="padding: 6px 12px; font-size: 12px;">
+                       onclick="window.lesenApp.selectSprachbausteine1('${blank.id}', '${opt}')">
                     ${opt}
                   </div>
                 `).join('')}
@@ -2527,17 +3068,10 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         headingsBankContainer.innerHTML = '';
       }
 
-      function showOptionsPopup(blankElement){
-        const existingPopup = document.querySelector('.options-popup');
-        if(existingPopup) {
-          existingPopup.remove();
-        }
-        
-        const blankId = blankElement.getAttribute('data-blank-id');
-        const section = exam.sections.find(s => s.id === 's4');
+      function handleBlankClick(blankId) {
+        const section = exam.sections[state.sectionIndex];
         const blank = section.fillBlanks.find(b => b.id === blankId);
-        
-        if(!blank) return;
+        if (!blank) return;
         
         const popup = document.createElement('div');
         popup.className = 'options-popup';
@@ -2548,12 +3082,17 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           optionItem.textContent = opt;
           optionItem.onclick = () => {
             selectSprachbausteine1(blankId, opt);
-            popup.remove();
+            document.querySelectorAll('.options-popup').forEach(p => p.remove());
           };
           popup.appendChild(optionItem);
         });
         
-        blankElement.appendChild(popup);
+        document.querySelectorAll('.options-popup').forEach(p => p.remove());
+        
+        const element = document.querySelector(`[data-blank-id="${blankId}"]`);
+        if (element) {
+          element.appendChild(popup);
+        }
       }
 
       function selectSprachbausteine1(blankId, answer){
@@ -2563,6 +3102,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
 
       function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
+        
         let textWithPlaceholders = section.fillText2;
         const placeholders = [];
         section.fillBlanks2.forEach(blank => {
@@ -2574,36 +3114,34 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         placeholders.forEach(item => {
           const userAnswer = state.answers[item.id];
           const displayText = userAnswer ? userAnswer : '________';
-          const span = `<span class="blank-slot ${userAnswer ? 'has-answer' : ''}" data-blank-id="${item.id}">${displayText}</span>`;
+          const span = `<span class="blank-slot ${userAnswer ? 'has-answer' : ''} ${window.selectedWordId === item.id ? 'selected' : ''}" data-blank-id="${item.id}" onclick="window.lesenApp.handleWordSlotClick('${item.id}')">${displayText}</span>`;
           textWithPlaceholders = textWithPlaceholders.replace(item.ph, span);
         });
 
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können jedes Wort nur einmal verwenden.</div>
+          <div class="instructions">Klicken Sie auf eine Lücke und dann auf ein Wort aus der Liste.</div>
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
-        document.querySelectorAll('.blank-slot').forEach(slot => {
-          slot.addEventListener('click', (e) => {
-            showSprachbausteine2Options(slot);
-          });
-        });
-
-        let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
+        let wordBankHTML = `<div class="word-bank-vertical">`;
         const usedWords = Object.values(state.answers);
-        const bank = section.wordBank && section.wordBank.length ? section.wordBank : (section.fillBlanks2[0] ? section.fillBlanks2[0].options : []);
+        const bank = section.fillBlanks2[0] ? section.fillBlanks2[0].options : [];
+        
         bank.forEach(word => {
           const isUsed = usedWords.includes(word);
+          const isSelected = window.selectedWord === word;
+          
           wordBankHTML += `
-            <div class="bank-word-vertical ${isUsed ? 'used' : ''}" 
+            <div class="bank-word-vertical ${isUsed ? 'used' : ''} ${isSelected ? 'selected' : ''}" 
                  draggable="${!isUsed}" 
                  data-word="${word}"
-                 ${!isUsed ? `onclick="window.lesenApp.selectSprachbausteine2FromBank('${word}')"` : ''}>
+                 onclick="${!isUsed ? `window.lesenApp.handleWordClick('${word}')` : ''}">
               ${word}
             </div>
           `;
         });
         wordBankHTML += `</div>`;
+        
         questionBodyEl.innerHTML = wordBankHTML;
         questionTitleEl.textContent = '';
         headingsBankContainer.innerHTML = '';
@@ -2611,211 +3149,232 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         setupSprachbausteine2DragAndDrop();
       }
 
-      let lastClickedSprachSlot = null;
+      function handleWordClick(word) {
+        if (window.selectedWord === word) {
+          window.selectedWord = null;
+          window.selectedWordId = null;
+        } else {
+          window.selectedWord = word;
+          window.selectedWordId = null;
+        }
+        renderSprachbausteine2();
+      }
+
+      function handleWordSlotClick(blankId) {
+        if (window.selectedWord) {
+          const word = window.selectedWord;
+          
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === word) {
+              delete state.answers[key];
+            }
+          });
+          
+          state.answers[blankId] = word;
+          window.selectedWord = null;
+          renderSprachbausteine2();
+        } 
+        else if (state.answers[blankId]) {
+          delete state.answers[blankId];
+          renderSprachbausteine2();
+        }
+      }
 
       function setupSprachbausteine2DragAndDrop(){
-        const bankWords = Array.from(document.querySelectorAll('.bank-word-vertical'));
-        bankWords.forEach(el => {
-          const word = el.dataset.word;
-          if(!el.classList.contains('used')){
-            el.setAttribute('draggable','true');
-          } else {
-            el.setAttribute('draggable','false');
-          }
-          el.removeEventListener('dragstart', el._dstart);
-          el._dstart = (e) => {
-            e.dataTransfer.setData('text/plain', word);
-            e.dataTransfer.setData('source', 'bank');
-          };
-          el.addEventListener('dragstart', el._dstart);
-
-          el.removeEventListener('click', el._onclick);
-          el._onclick = () => {
-            if(el.classList.contains('used')) return;
-            selectSprachbausteine2FromBank(word);
-          };
-          el.addEventListener('click', el._onclick);
+        const wordItems = document.querySelectorAll('.bank-word-vertical:not(.used)');
+        const blankSlots = document.querySelectorAll('.blank-slot');
+        
+        wordItems.forEach(item => {
+          item.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.dataset.word);
+          });
         });
-
-        const slots = Array.from(document.querySelectorAll('.blank-slot'));
-        slots.forEach(slot => {
+        
+        blankSlots.forEach(slot => {
           slot.addEventListener('dragover', (e) => {
             e.preventDefault();
-            slot.classList.add('drag-over');
+            slot.style.background = '#e8f4ff';
           });
+          
           slot.addEventListener('dragleave', (e) => {
-            slot.classList.remove('drag-over');
+            slot.style.background = slot.classList.contains('has-answer') ? '#e8fbe9' : '#f8fbff';
           });
+          
           slot.addEventListener('drop', (e) => {
             e.preventDefault();
-            slot.classList.remove('drag-over');
-            const word = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/html');
-            if(!word) return;
+            const word = e.dataTransfer.getData('text/plain');
             const blankId = slot.dataset.blankId;
-            if(!blankId) return;
-            Object.keys(state.answers).forEach(k => {
-              if(state.answers[k] === word){
-                delete state.answers[k];
-              }
-            });
-            const prev = state.answers[blankId];
-            if(prev){
-              const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
-              if(prevEl){
-                prevEl.classList.remove('used');
-                prevEl.setAttribute('draggable','true');
-                prevEl.addEventListener('click', prevEl._onclick);
-              }
-            }
-            const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
-            if(bankEl){
-              bankEl.classList.add('used');
-              bankEl.setAttribute('draggable','false');
-              bankEl.removeEventListener('click', bankEl._onclick);
-            }
-            state.answers[blankId] = word;
-            renderAll();
+            
+            selectSprachbausteine2(blankId, word);
           });
         });
       }
 
-      function showSprachbausteine2Options(slot){
-        document.querySelectorAll('.blank-slot').forEach(s => s.classList.remove('selected-sprach'));
-        slot.classList.add('selected-sprach');
-        lastClickedSprachSlot = slot;
-      }
-
-      function selectSprachbausteine2FromBank(word){
-        let slot = lastClickedSprachSlot;
-        if(!slot){
-          slot = Array.from(document.querySelectorAll('.blank-slot')).find(s => {
-            const id = s.dataset.blankId;
-            return !state.answers[id];
-          });
-        }
-        if(!slot) {
-          return;
-        }
-        const blankId = slot.dataset.blankId;
-        Object.keys(state.answers).forEach(k => {
-          if(state.answers[k] === word){
-            delete state.answers[k];
+      function selectSprachbausteine2(blankId, word){
+        Object.keys(state.answers).forEach(key => {
+          if (state.answers[key] === word) {
+            delete state.answers[key];
           }
         });
-        const prev = state.answers[blankId];
-        if(prev){
-          const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
-          if(prevEl){
-            prevEl.classList.remove('used');
-            prevEl.setAttribute('draggable','true');
-            if(prevEl._onclick) prevEl.addEventListener('click', prevEl._onclick);
-          }
-        }
-        const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
-        if(bankEl){
-          bankEl.classList.add('used');
-          bankEl.setAttribute('draggable','false');
-          if(bankEl._onclick) try{ bankEl.removeEventListener('click', bankEl._onclick); }catch(e){}
-        }
-        state.answers[blankId] = word;
-        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
-        lastClickedSprachSlot = null;
-        renderAll();
+        state.answers[blankId] = word;
+        window.selectedWord = null;
+        renderSprachbausteine2();
       }
 
       function selectOption(questionId, optionId){
         state.answers[questionId] = optionId;
-        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
-        
         renderAll();
       }
 
-      function renderResults(){
-        let resultsHTML = `<h2>Ergebnisse</h2>`;
+      function renderResults() {
+        const section = exam.sections[state.sectionIndex];
+        let resultsHTML = `
+          <div class="result-item">
+            <h3>${section.title} - Ergebnisse</h3>
+        `;
+        
         let totalCorrect = 0;
         let totalQuestions = 0;
         
-        exam.sections.forEach(section => {
-          resultsHTML += `<div class="result-item"><h3>${section.title}</h3>`;
-          
-          if(section.id === 's1'){
-            section.texts.forEach(text => {
-              totalQuestions++;
-              const userAnswer = state.answers[text.id] || '-';
-              const correctAnswer = CORRECT_ANSWERS.lesen[text.id];
-              const isCorrect = userAnswer === correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Text ${text.id}: ${userAnswer} 
-                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+        if (section.id === 's1') {
+          section.texts.forEach((text, index) => {
+            totalQuestions++;
+            const userAnswer = state.answers[text.id];
+            const isCorrect = userAnswer === CORRECT_ANSWERS.lesen[text.id];
+            if (isCorrect) totalCorrect++;
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer ? getHeadingText(userAnswer) : 'Nicht beantwortet'}</div>
                 </div>
-              `;
-            });
-          } else if(section.id === 's2'){
-            section.questions.forEach(question => {
-              totalQuestions++;
-              const userAnswer = state.answers[question.id] || '-';
-              const correctAnswer = CORRECT_ANSWERS.lesen[question.id];
-              const isCorrect = userAnswer === correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>${question.text}: ${userAnswer} 
-                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${getHeadingText(CORRECT_ANSWERS.lesen[text.id])}</div>
                 </div>
-              `;
-            });
-          } else if(section.id === 's3'){
-            section.situations.forEach(situation => {
-              totalQuestions++;
-              const userAnswer = state.answers[situation.id] || '-';
-              const correctAnswer = CORRECT_ANSWERS.lesen[situation.id];
-              const isCorrect = userAnswer === correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Situation ${situation.id}: ${userAnswer} 
-                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
                 </div>
-              `;
-            });
-          } else if(section.id === 's4'){
-            section.fillBlanks.forEach(blank => {
-              totalQuestions++;
-              const userAnswer = state.answers[blank.id] || '-';
-              const correctAnswer = CORRECT_ANSWERS.lesen[blank.id];
-              const isCorrect = userAnswer === correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer} 
-                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+              </div>
+            `;
+          });
+        } else if (section.id === 's2') {
+          section.questions.forEach((question, index) => {
+            totalQuestions++;
+            const userAnswer = state.answers[question.id];
+            const isCorrect = userAnswer === CORRECT_ANSWERS.lesen[question.id];
+            if (isCorrect) totalCorrect++;
+            
+            let userAnswerText = 'Nicht beantwortet';
+            if (userAnswer) {
+              const option = question.options.find(o => o.id === userAnswer);
+              userAnswerText = option ? option.text : userAnswer;
+            }
+            
+            let correctAnswerText = '';
+            const correctOption = question.options.find(o => o.id === CORRECT_ANSWERS.lesen[question.id]);
+            correctAnswerText = correctOption ? correctOption.text : CORRECT_ANSWERS.lesen[question.id];
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswerText}</div>
                 </div>
-              `;
-            });
-          } else if(section.id === 's5'){
-            section.fillBlanks2.forEach(blank => {
-              totalQuestions++;
-              const userAnswer = state.answers[blank.id] || '-';
-              const correctAnswer = CORRECT_ANSWERS.lesen[blank.id];
-              const isCorrect = userAnswer === correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer} 
-                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${correctAnswerText}</div>
                 </div>
-              `;
-            });
-          }
-          
-          resultsHTML += `</div>`;
-        });
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
+              </div>
+            `;
+          });
+        } else if (section.id === 's3') {
+          section.situations.forEach((situation, index) => {
+            totalQuestions++;
+            const userAnswer = state.answers[situation.id];
+            const isCorrect = userAnswer === CORRECT_ANSWERS.lesen[situation.id];
+            if (isCorrect) totalCorrect++;
+            
+            let correctText = section.texts.find(t => t.id === CORRECT_ANSWERS.lesen[situation.id]);
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer ? (userAnswer === 'X' ? 'X' : 'Text '+userAnswer) : '-'}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${CORRECT_ANSWERS.lesen[situation.id] === 'X' ? 'X' : 'Text '+CORRECT_ANSWERS.lesen[situation.id]}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
+              </div>
+            `;
+          });
+        } else if (section.id === 's4') {
+          section.fillBlanks.forEach(blank => {
+            totalQuestions++;
+            const userAnswer = state.answers[blank.id];
+            const isCorrect = userAnswer === CORRECT_ANSWERS.lesen[blank.id];
+            if (isCorrect) totalCorrect++;
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${CORRECT_ANSWERS.lesen[blank.id]}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
+              </div>
+            `;
+          });
+        } else if (section.id === 's5') {
+          section.fillBlanks2.forEach(blank => {
+            totalQuestions++;
+            const userAnswer = state.answers[blank.id];
+            const isCorrect = userAnswer === CORRECT_ANSWERS.lesen[blank.id];
+            if (isCorrect) totalCorrect++;
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${CORRECT_ANSWERS.lesen[blank.id]}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
+              </div>
+            `;
+          });
+        }
         
         const percentage = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
-        resultsHTML += `<div class="result-item"><h3>Gesamtergebnis: ${totalCorrect}/${totalQuestions} (${percentage}%)</h3></div>`;
+        
+        resultsHTML += `
+          <div class="result-summary">
+            <div class="percentage">${percentage}%</div>
+            <div>${totalCorrect} von ${totalQuestions} richtig</div>
+            <div>Punkte: ${Math.round((totalCorrect / totalQuestions) * section.points)} / ${section.points}</div>
+          </div>
+        </div>`;
         
         passageContentEl.innerHTML = resultsHTML;
         questionBodyEl.innerHTML = '';
@@ -2823,7 +3382,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         questionTitleEl.textContent = '';
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex > 0){
           state.sectionIndex--;
@@ -2832,12 +3390,18 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       });
 
-      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
+      document.getElementById('nextBtn2-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex < exam.sections.length - 1){
           state.sectionIndex++;
           state.questionIndex = 0;
           renderAll();
+        } else {
+          showPage('hoeren-page');
         }
+      });
+
+      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
+        showPage('hoeren-page');
       });
 
       resultBtn.addEventListener('click', ()=>{
@@ -2846,7 +3410,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       });
 
       resetBtn.addEventListener('click', ()=>{
-        if(confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')){
+        if(confirm('Möchten Sie wirklich von neu beginnen?')){
           state.answers = {};
           state.marked = {};
           state.showResults = false;
@@ -2869,144 +3433,40 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       });
 
-      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
-        showPage('hoeren-page');
-      });
-
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
       window._lesenState = state;
       window.lesenApp = {
         selectOption,
         markNoMatch,
         selectSprachbausteine1,
-        selectSprachbausteine2FromBank
+        selectSprachbausteine2,
+        handleHeadingClick,
+        handleSlotClick,
+        handleSituationClick,
+        handleSituationSlotClick,
+        restoreX,
+        handleBlankClick,
+        handleWordClick,
+        handleWordSlotClick
       };
     }
 
     // ===== HÖREN PAGE FUNCTIONALITY =====
     function initHoerenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
-      const exam = {
-        id: "exam-hörverstehen",
-        durationSec: 17 * 60, // 17 minutes in seconds
-        sections: [
-          { 
-            id: "hörverstehen1", 
-            title: "Hörverstehen, Teil 1", 
-            points: 25,
-            questions: [
-              {
-                id: "41",
-                text: "Auf der Insel Bali wurden neue Maßnahmen zur Müllentsorgung beschlossen."
-              },
-              {
-                id: "42", 
-                text: "In Nordfrankreich wird nach einem entlaufenen Panther gesucht."
-              },
-              {
-                id: "43",
-                text: "Die Mietervereinigung rät Mieterinnen und Mietern, die Betriebskosten nicht zu bezahlen."
-              },
-              {
-                id: "44",
-                text: "Der Sekt-Hersteller hat die Pläne für sein Bauvorhaben geändert."
-              },
-              {
-                id: "45",
-                text: "Die Löscharbeiten sind noch nicht abgeschlossen."
-              }
-            ]
-          },
-          { 
-            id: "hörverstehen2", 
-            title: "Hörverstehen, Teil 2", 
-            points: 25,
-            questions: [
-              {
-                id: "46",
-                text: "Roland Wünschmann arbeitet Vollzeit als Fußballtrainer bei Viktoria Köln."
-              },
-              {
-                id: "47",
-                text: "Viktoria Köln möchte am Ende der Spielsaison aufsteigen."
-              },
-              {
-                id: "48", 
-                text: "Zu Beginn dieser Saison hat ein Spieler Viktoria Köln verlassen."
-              },
-              {
-                id: "49",
-                text: "Neue Spieler kommen bei Viktoria Köln immer aus der eigenen Jugendmannschaft."
-              },
-              {
-                id: "50",
-                text: "Die Mannschaft von Viktoria Köln hat Schwächen in der Abwehr."
-              },
-              {
-                id: "51",
-                text: "Roland Wünschmann wagt die Prognose, dass diese Saison der 1. FC Mönchengladbach Meister wird."
-              },
-              {
-                id: "52",
-                text: "Roland Wünschmann kann seinen Beruf und sein Ehrenamt als Fußballtrainer miteinander vereinbaren."
-              },
-              {
-                id: "53",
-                text: "Auch die Frau von Roland Wünschmann engagiert sich im Fußball."
-              },
-              {
-                id: "54",
-                text: "Der Vereinsvorstand schätzt Herrn Wünschmanns Arbeit."
-              },
-              {
-                id: "55",
-                text: "Roland Wünschmann ist mit der bisherigen Nachwuchsförderung des Vereins noch nicht voll zufrieden."
-              }
-            ]
-          },
-          { 
-            id: "hörverstehen3", 
-            title: "Hörverstehen, Teil 3", 
-            points: 25,
-            questions: [
-              {
-                id: "56",
-                text: "Sie können im Internet prüfen, ob Ihre aktuelle Bestellung schon unterwegs ist."
-              },
-              {
-                id: "57",
-                text: "Man kann für die Nachtveranstaltung noch Karten im Internet kaufen."
-              },
-              {
-                id: "58",
-                text: "Die Teilnahme an der Party im Burghof kostet nichts."
-              },
-              {
-                id: "59",
-                text: "In Bamberg kann man in der nächsten Woche besonders günstig Mitglied in einem Sportverein werden."
-              },
-              {
-                id: "60",
-                text: "Wer ein wichtiges Anliegen hat, soll eine andere Nummer wählen."
-              }
-            ]
-          }
-        ]
-      };
+      const exam = EXAM_DATA.hoeren;
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null
+        timerInterval: null,
+        examEnded: false,
+        currentPage: 'hoeren'
       };
       
       const topTiles = document.getElementById('topTiles-hoeren');
@@ -3014,7 +3474,30 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       const timerEl = document.getElementById('timer-hoeren');
       const statusText = document.getElementById('statusText-hoeren');
 
-      /* ===== Timer Functions ===== */
+      function handleTimeExpired() {
+        if (state.examEnded) return;
+        state.examEnded = true;
+        
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
+        state.showResults = true;
+        renderAll();
+        
+        setTimeout(() => {
+          if (state.sectionIndex < exam.sections.length - 1) {
+            state.sectionIndex++;
+            state.showResults = false;
+            state.examEnded = false;
+            renderAll();
+          } else {
+            showPage('schreiben-page');
+          }
+        }, 2000);
+      }
+
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3025,6 +3508,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
+            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -3038,6 +3522,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
+        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -3048,7 +3533,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -3071,6 +3555,8 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       }
 
       function renderAll() {
+        if (state.examEnded) return;
+        
         renderTopTiles();
         
         if (state.showResults) {
@@ -3088,17 +3574,16 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         let contentHTML = `
           <div class="panel-title">${section.title}</div>
           <div class="instructions">
-            Sie hören die Nachrichten. Entscheiden Sie beim Hören, ob die Aussagen richtig oder falsch sind. 
-            Sie hören die Nachrichten nur einmal. Sie haben jetzt 30 Sekunden, um die Aussagen zu lesen.
+            Sie hören die Nachrichten. Entscheiden Sie beim Hören, ob die Aussagen richtig oder falsch sind.
           </div>
           
           <div class="listening-task">
             <table class="true-false-table">
               <thead>
                 <tr>
-                  <th style="width: 10%">Nr.</th>
-                  <th style="width: 60%">Aussage</th>
-                  <th style="width: 30%">Ihre Antwort</th>
+                  <th>Nr.</th>
+                  <th>Aussage</th>
+                  <th>Ihre Antwort</th>
                 </tr>
               </thead>
               <tbody>
@@ -3113,24 +3598,10 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               <td>
                 <div class="answer-options">
                   <label class="answer-option">
-                    <input 
-                      type="radio" 
-                      name="q${section.id}_${question.id}" 
-                      value="richtig" 
-                      ${currentAnswer === 'richtig' ? 'checked' : ''}
-                      onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"
-                    >
-                    Richtig
+                    <input type="radio" name="q${section.id}_${question.id}" value="richtig" ${currentAnswer === 'richtig' ? 'checked' : ''} onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"> Richtig
                   </label>
                   <label class="answer-option">
-                    <input 
-                      type="radio" 
-                      name="q${section.id}_${question.id}" 
-                      value="falsch" 
-                      ${currentAnswer === 'falsch' ? 'checked' : ''}
-                      onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"
-                    >
-                    Falsch
+                    <input type="radio" name="q${section.id}_${question.id}" value="falsch" ${currentAnswer === 'falsch' ? 'checked' : ''} onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"> Falsch
                   </label>
                 </div>
               </td>
@@ -3152,71 +3623,55 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           state.answers[sectionId] = {};
         }
         state.answers[sectionId][questionId] = answer;
-        try{ localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
         renderTopTiles();
       }
 
       function renderResults() {
-        let resultsHTML = `<div class="panel-title">Ergebnisse - Hörverstehen</div>`;
+        const section = exam.sections[state.sectionIndex];
+        const userAnswers = state.answers[section.id] || {};
+        let correctCount = 0;
         
-        exam.sections.forEach(section => {
-          const userAnswers = state.answers[section.id] || {};
-          let correctCount = 0;
+        let resultsHTML = `
+          <div class="panel-title">Ergebnisse - ${section.title}</div>
+        `;
+        
+        section.questions.forEach((question) => {
+          const userAnswer = userAnswers[question.id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.hoeren[question.id];
+          const gotCorrect = userAnswer === correctAnswer;
+          
+          if (gotCorrect) correctCount++;
           
           resultsHTML += `
-            <div class="listening-task">
-              <h3>${section.title} (${section.points} Punkte)</h3>
-              <table class="true-false-table">
-                <thead>
-                  <tr>
-                    <th style="width: 10%">Nr.</th>
-                    <th style="width: 50%">Aussage</th>
-                    <th style="width: 15%">Ihre Antwort</th>
-                    <th style="width: 15%">Richtige Antwort</th>
-                    <th style="width: 10%">Punkte</th>
-                  </tr>
-                </thead>
-                <tbody>
-          `;
-          
-          section.questions.forEach((question) => {
-            const userAnswer = normalizeAnswer(userAnswers[question.id] || '');
-            const correctAnswer = CORRECT_ANSWERS.hoeren[question.id];
-            const gotCorrect = userAnswer === correctAnswer;
-            const points = gotCorrect ? "1" : "0";
-            
-            if (gotCorrect) correctCount++;
-            
-            const rowClass = gotCorrect ? 'correct-answer' : 'incorrect-answer';
-            
-            resultsHTML += `
-              <tr class="${rowClass}">
-                <td><strong>${question.id}</strong></td>
-                <td class="question-text">${question.text}</td>
-                <td>${userAnswer}</td>
-                <td>${correctAnswer}</td>
-                <td><strong>${points}</strong></td>
-              </tr>
-            `;
-          });
-          
-          const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
-          
-          resultsHTML += `
-                </tbody>
-              </table>
-              <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
-                <strong>Erreichte Punkte: ${correctCount}/${section.questions.length} richtig = ${totalPoints}/${section.points} Punkten</strong>
+            <div class="result-detail">
+              <div class="result-row">
+                <div class="result-label">Ihre Antwort:</div>
+                <div class="result-value ${gotCorrect ? 'correct' : 'incorrect'}">${userAnswer}</div>
+              </div>
+              <div class="result-row">
+                <div class="result-label">Richtige Antwort:</div>
+                <div class="result-value correct">${correctAnswer}</div>
+              </div>
+              <div class="result-status ${gotCorrect ? 'correct' : 'incorrect'}">
+                ${gotCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
               </div>
             </div>
           `;
         });
         
+        const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
+        
+        resultsHTML += `
+          <div class="result-summary">
+            <div>${correctCount}/${section.questions.length} richtig</div>
+            <div>Punkte: ${totalPoints}/${section.points}</div>
+          </div>
+        `;
+        
         contentContainer.innerHTML = resultsHTML;
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-hoeren').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3225,12 +3680,18 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       });
 
-      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
+      document.getElementById('nextBtn2-hoeren').addEventListener('click', () => {
         if (state.sectionIndex < exam.sections.length - 1) {
           state.sectionIndex++;
           state.showResults = false;
           renderAll();
+        } else {
+          showPage('schreiben-page');
         }
+      });
+
+      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
+        showPage('schreiben-page');
       });
 
       document.getElementById('resultBtn-hoeren').addEventListener('click', () => {
@@ -3239,7 +3700,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       });
 
       document.getElementById('resetBtn-hoeren').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3259,65 +3720,29 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       });
 
-      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
-        showPage('schreiben-page');
-      });
-
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
-        window._hoerenState = state;
-        window.hoerenApp = {
+      window._hoerenState = state;
+      window.hoerenApp = {
         updateListeningAnswer
       };
     }
 
     // ===== SCHREIBEN PAGE FUNCTIONALITY =====
     function initSchreibenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
-      const exam = {
-        id: "exam-002",
-        durationSec: 30 * 60, // 30 minutes in seconds
-        sections: [
-          { 
-            id: "s1", 
-            title: "Schreiben, Teil 1", 
-            points: 45,
-            passageTitle: "Aufgabe: Schreiben Sie eine E-Mail",
-            passage: "",
-            writingTask: {
-              prompt: `Möchten Sie in Ihrer Freizeit mehr erleben? Neue Leute aus Mainz kennenlernen? Am Wochenende nie mehr allein sein? 
-      Dann werden Sie Mitglied im Freizeitverein!
-      Wir organisieren verschiedene Aktivitäten in Mainz und Umgebung:
-      Wanderungen, Fahrradtouren, Museums- und Theaterbesuche, Spiele- und Kinoabende, Restaurantbesuche und Ausflüge.
-      Jede Woche stehen mindestens zwei unterschiedliche Angebote auf dem Programm.
-      Ob Sport oder Kultur – bei uns kommt jeder auf seine Kosten. Sie können viel Neues ausprobieren und lernen dabei nette Leute kennen.
-      Unsere Mitglieder sind zwischen 26 und 85 Jahre alt. Bei uns ist jeder willkommen, ob Student oder Senior. 
-      Sie finden bei uns neue Freunde und Bekannte, mit denen Sie viel erleben können. Probieren Sie es doch einfach mal aus!
-      Die Mitgliedschaft kostet 20 Euro pro Monat.`,
-              requirements: [
-                "Erklären Sie, was Sie nach dem Lesen der Anzeige erwartet hatten.",
-                "Erklären Sie, warum Sie mit dem Angebot des Freizeitvereins nicht zufrieden sind.",
-                "Machen Sie Verbesserungsvorschläge zum Programm.",
-                "Erklären Sie, was Sie tun werden, wenn sich nichts ändert."
-              ],
-              wordCount: 0
-            }
-          }
-        ]
-      };
+      const exam = EXAM_DATA.schreiben;
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null
+        timerInterval: null,
+        examEnded: false,
+        currentPage: 'schreiben'
       };
       
       const topTiles = document.getElementById('topTiles-schreiben');
@@ -3327,7 +3752,23 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
 
-      /* ===== Timer Functions ===== */
+      function handleTimeExpired() {
+        if (state.examEnded) return;
+        state.examEnded = true;
+        
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
+        state.showResults = true;
+        renderAll();
+        
+        setTimeout(() => {
+          showPage('ergebnisse-page');
+        }, 2000);
+      }
+
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3338,6 +3779,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
+            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -3351,6 +3793,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
+        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -3361,7 +3804,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -3378,6 +3820,8 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       }
 
       function renderAll() {
+        if (state.examEnded) return;
+        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         passageTitleEl.textContent = section.passageTitle;
@@ -3396,16 +3840,11 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         passageContentEl.innerHTML = `
           <div class="writing-task">
             <div class="writing-prompt">${section.writingTask.prompt}</div>
-            <div class="instructions" style="border:1px solid #e1e8f6; padding:10px; margin:10px 0; border-radius:6px; background:#ffffff;">Sie sind seit zwei Wochen Mitglied im Freizeitverein. Doch Sie sind nicht zufrieden. 
-      Schreiben Sie eine Beschwerde.</div>
             <div class="writing-requirements">
               <h4>Schreiben Sie in Ihrer E-Mail:</h4>
               <ul>
                 ${section.writingTask.requirements.map(req => `<li>${req}</li>`).join('')}
               </ul>
-            </div>
-            <div class="instructions">
-              Schreiben Sie eine E-Mail (ca. 150-200 Wörter). Achten Sie auf den Textaufbau (Anrede, Einleitung, Hauptteil, Schluss) und eine angemessene Formulierung.
             </div>
           </div>
         `;
@@ -3415,14 +3854,8 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         
         writingContainer.innerHTML = `
           <div class="writing-area">
-            <textarea 
-              class="writing-textarea" 
-              placeholder="Schreiben Sie hier Ihre E-Mail..."
-              oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)"
-            >${currentAnswer}</textarea>
-            <div class="word-counter">
-              Wörter: <span class="count">${wordCount}</span>
-            </div>
+            <textarea class="writing-textarea" placeholder="Schreiben Sie hier Ihre E-Mail..." oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)">${currentAnswer}</textarea>
+            <div class="word-counter">Wörter: <span class="count">${wordCount}</span></div>
           </div>
         `;
       }
@@ -3433,36 +3866,30 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
 
       function updateWritingAnswer(sectionId, text) {
         state.answers[sectionId] = text;
-        try{ localStorage.setItem('schreibenAnswers', JSON.stringify({content: state.answers[sectionId], wordCount: (state.answers[sectionId]||'').trim().split(/\s+/).filter(Boolean).length})); }catch(e){}
-        
         const wordCount = countWords(text);
         document.querySelector('.word-counter .count').textContent = wordCount;
       }
 
       function renderResults() {
-        let resultsHTML = `<h2>Ergebnisse</h2>`;
+        const section = exam.sections[state.sectionIndex];
+        const userAnswer = state.answers[section.id];
+        const wordCount = countWords(userAnswer);
         
-        exam.sections.forEach(section => {
-          resultsHTML += `<div class="writing-task"><h3>${section.title}</h3>`;
-          
-          const userAnswer = state.answers[section.id];
-          const wordCount = countWords(userAnswer);
-          
-          resultsHTML += `
+        passageContentEl.innerHTML = `
+          <div class="result-item">
+            <h3>${section.title} - Ergebnisse</h3>
             <div class="writing-requirements">
               <h4>Ihre Antwort (${wordCount} Wörter):</h4>
               <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${userAnswer || 'Keine Antwort'}</div>
             </div>
-          `;
-          
-          resultsHTML += `</div>`;
-        });
-        
-        passageContentEl.innerHTML = resultsHTML;
+            <div class="result-summary">
+              <div>Bitte manuell bewerten (max. ${section.points} Punkte)</div>
+            </div>
+          </div>
+        `;
         writingContainer.innerHTML = '';
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-schreiben').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3471,12 +3898,18 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       });
 
-      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
+      document.getElementById('nextBtn2-schreiben').addEventListener('click', () => {
         if (state.sectionIndex < exam.sections.length - 1) {
           state.sectionIndex++;
           state.showResults = false;
           renderAll();
+        } else {
+          showPage('ergebnisse-page');
         }
+      });
+
+      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
+        showPage('ergebnisse-page');
       });
 
       document.getElementById('resultBtn-schreiben').addEventListener('click', () => {
@@ -3485,7 +3918,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       });
 
       document.getElementById('resetBtn-schreiben').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöschت.')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3505,18 +3938,12 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       });
 
-      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
-        showPage('ergebnisse-page');
-      });
-
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
-        window._schreibenState = state;
-        window.schreibenApp = {
+      window._schreibenState = state;
+      window.schreibenApp = {
         updateWritingAnswer
       };
     }
@@ -3749,7 +4176,14 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         
         for (let i = 41; i <= 60; i++) {
           const id = i.toString();
-          const userAnswer = normalizeAnswer(answers[id] || '');
+          let userAnswer = '-';
+          
+          Object.keys(answers).forEach(sectionId => {
+            if (answers[sectionId] && answers[sectionId][id]) {
+              userAnswer = normalizeAnswer(answers[sectionId][id]);
+            }
+          });
+          
           const correctAnswer = CORRECT_ANSWERS.hoeren[id];
           const isCorrect = userAnswer === correctAnswer;
           const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
@@ -3769,81 +4203,9 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
 
       function readExamResults() {
         try {
-          const lesen = {};
-          const hoeren = {};
-          const schreiben = { content: '', wordCount: 0 };
-
-          // Try to read from in-memory states
-          try {
-            if (window._lesenState && window._lesenState.answers) {
-              Object.keys(window._lesenState.answers).forEach(k => {
-                lesen[k] = window._lesenState.answers[k];
-              });
-            }
-          } catch (e) {}
-
-          try {
-            if (window._hoerenState && window._hoerenState.answers) {
-              Object.keys(window._hoerenState.answers).forEach(sectionId => {
-                const sec = window._hoerenState.answers[sectionId] || {};
-                Object.keys(sec).forEach(q => {
-                  hoeren[q] = sec[q];
-                });
-              });
-            }
-          } catch (e) {}
-
-          try {
-            if (window._schreibenState && window._schreibenState.answers) {
-              const answers = window._schreibenState.answers;
-              if (answers['s1']) {
-                schreiben.content = answers['s1'];
-              } else {
-                const keys = Object.keys(answers);
-                if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
-              }
-              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0;
-            }
-          } catch (e) {}
-
-          // Fallback to localStorage
-          try {
-            if (Object.keys(lesen).length === 0) {
-              const storedL = localStorage.getItem('lesenAnswers');
-              if (storedL) Object.assign(lesen, JSON.parse(storedL));
-            }
-          } catch (e) {}
-
-          try {
-            if (Object.keys(hoeren).length === 0) {
-              const storedH = localStorage.getItem('hoerenAnswers');
-              if (storedH) {
-                const parsed = JSON.parse(storedH);
-                // Handle nested structure
-                if (typeof parsed === 'object') {
-                  Object.keys(parsed).forEach(sectionId => {
-                    if (typeof parsed[sectionId] === 'object') {
-                      Object.keys(parsed[sectionId]).forEach(q => {
-                        hoeren[q] = parsed[sectionId][q];
-                      });
-                    }
-                  });
-                }
-              }
-            }
-          } catch (e) {}
-
-          try {
-            if (!schreiben.content) {
-              const storedS = localStorage.getItem('schreibenAnswers');
-              if (storedS) {
-                const obj = JSON.parse(storedS);
-                schreiben.content = obj.content || '';
-                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0);
-              }
-            }
-          } catch (e) {}
-
+          const lesen = window._lesenState ? window._lesenState.answers : {};
+          const hoeren = window._hoerenState ? window._hoerenState.answers : {};
+          const schreiben = window._schreibenState ? window._schreibenState.answers : {};
           return { hoeren, lesen, schreiben };
         } catch (e) {
           return { hoeren: {}, lesen: {}, schreiben: {} };
@@ -3855,9 +4217,16 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         
         for (let q = 41; q <= 60; q++) {
           const k = q.toString();
-          const uA = normalizeAnswer(answers[k] || '');
+          let uA = '-';
+          
+          Object.keys(answers).forEach(sectionId => {
+            if (answers[sectionId] && answers[sectionId][k]) {
+              uA = normalizeAnswer(answers[sectionId][k]);
+            }
+          });
+          
           const exp = CORRECT_ANSWERS.hoeren[k];
-          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
+          const ok = (uA !== '-' && uA === exp);
           if (ok) okCount++;
         }
         
@@ -3871,7 +4240,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         Object.keys(CORRECT_ANSWERS.lesen).forEach(k => {
           const exp = CORRECT_ANSWERS.lesen[k];
           const uA = normalizeAnswer(answers[k] || '');
-          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
+          const ok = (uA !== '-' && uA === exp);
           if (ok) okCount++;
         });
         
@@ -3880,12 +4249,12 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       }
 
       function renderResults() {
-        const st = readExamResults();
+        const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
         const h = gradeHoeren(st.hoeren || {});
         const l = gradeLesen(st.lesen || {});
         const details = document.getElementById('details-ergebnisse');
         const tiles = document.getElementById('topTiles-ergebnisse');
-        const sScoreRaw = localStorage.getItem('schreibenScore');
+        const sScoreRaw = localStorage.getItem('schreibenPoints');
         const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
 
         details.innerHTML = '';
@@ -3894,13 +4263,13 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         const tL = `<div class="results-tile">
                     <h3>Lesen</h3>
                     <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
-                    <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
+                    <div class="small-muted">(${l.okCount}/${CONFIG.counts.lesen} richtig)</div>
                   </div>`;
                   
         const tH = `<div class="results-tile">
                     <h3>Hören</h3>
                     <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
-                    <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
+                    <div class="small-muted">(${h.okCount}/${CONFIG.counts.hoeren} richtig)</div>
                   </div>`;
                   
         const tS = `<div class="results-tile">
@@ -3922,8 +4291,8 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
                             </div>`;
 
         let sHtml = '<div class="result-item"><h3>✍️ Schreiben - Ihre Antwort</h3>';
-        const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
-        const wc = st.schreiben.wordCount || '-';
+        const txt = st.schreiben['s1'] ? escapeHtml(st.schreiben['s1']) : '<span class="small-muted">Kein Text gefunden.</span>';
+        const wc = st.schreiben['s1'] ? st.schreiben['s1'].trim().split(/\s+/).filter(Boolean).length : 0;
         
         sHtml += `<div class="small-muted">Wörter: ${wc}</div>
                 <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px;white-space:pre-wrap;">${txt}</div>
@@ -3949,7 +4318,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
 
         document.getElementById('saveS').onclick = () => {
           const v = Number(document.getElementById('sInput').value) || 0;
-          localStorage.setItem('schreibenScore', v);
+          localStorage.setItem('schreibenPoints', v);
           document.getElementById('schreibenScoreDisplay').textContent = `${v.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte`;
           
           const newTotal = (l.total + h.total + v).toFixed(2);
@@ -3966,36 +4335,73 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         };
       }
 
-      document.getElementById('calcBtn-ergebnisse').onclick = () => renderResults();
       document.getElementById('backBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
+        examStarted = false;
+        counter = initialCounter;
+        timerEl.textContent = counter;
+        timeDisplayEl.textContent = counter;
+        progressEl.style.transform = "scaleX(0)";
+        timerEl.style.color = "";
         showPage('start-page');
+      };
+      
+      document.getElementById('retryBtn-ergebnisse').onclick = (e) => {
+        e.preventDefault();
+        if (window._lesenState) {
+          window._lesenState.answers = {};
+          window._lesenState.marked = {};
+          window._lesenState.showResults = false;
+          window._lesenState.remaining = EXAM_DATA.lesen.durationSec;
+          if (window._lesenState.timerInterval) clearInterval(window._lesenState.timerInterval);
+        }
+        if (window._hoerenState) {
+          window._hoerenState.answers = {};
+          window._hoerenState.showResults = false;
+          window._hoerenState.remaining = EXAM_DATA.hoeren.durationSec;
+          if (window._hoerenState.timerInterval) clearInterval(window._hoerenState.timerInterval);
+        }
+        if (window._schreibenState) {
+          window._schreibenState.answers = {};
+          window._schreibenState.showResults = false;
+          window._schreibenState.remaining = EXAM_DATA.schreiben.durationSec;
+          if (window._schreibenState.timerInterval) clearInterval(window._schreibenState.timerInterval);
+        }
+        
+        examStarted = false;
+        showPage('start-page');
+        setTimeout(() => {
+          startExam();
+        }, 100);
+      };
+      
+      document.getElementById('continueBtn-ergebnisse').onclick = (e) => {
+        e.preventDefault();
+        if (window._lesenState) {
+          window._lesenState.sectionIndex = 0;
+          window._lesenState.showResults = false;
+          showPage('lesen-page');
+        } else {
+          showPage('start-page');
+        }
       };
       
       renderResults();
     }
 
-    // تحسين نظام السحب والإفلات للشاشات التي تعمل باللمس
     function setupTouchDragAndDrop() {
       if ('ontouchstart' in window) {
-        // تغيير سلوك العناصر القابلة للسحب
         document.querySelectorAll('[draggable="true"]').forEach(item => {
-          item.addEventListener('touchstart', handleTouchStart);
-          item.addEventListener('touchend', handleTouchEnd);
+          item.addEventListener('touchstart', (e) => {});
+          item.addEventListener('touchend', (e) => {});
         });
-        
         document.querySelectorAll('.title-slot, .blank-slot').forEach(slot => {
-          slot.addEventListener('touchmove', handleTouchMove);
-          slot.addEventListener('touchend', handleTouchDrop);
+          slot.addEventListener('touchmove', (e) => {});
+          slot.addEventListener('touchend', (e) => {});
         });
       }
     }
 
-    function handleTouchStart(e) {
-      // تنفيذ السحب عند اللمس
-    }
-
-    // استدعاء الدالة عند تحميل الصفحة
     document.addEventListener('DOMContentLoaded', setupTouchDragAndDrop);
   </script>
 </body>

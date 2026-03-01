@@ -4,6 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Deutsch B2 Prüfung - Komplett</title>
+  
+  <!-- Supabase Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
   <style>
     /* ===== GLOBAL STYLES ===== */
     :root {
@@ -249,64 +253,46 @@
       padding: 12px 20px;
       border-radius: 6px;
       border: none;
-      background: #4da6ff;
-      color: white;
+      background: white;
+      color: #1e3a5f;
       font-weight: 700;
       font-size: 15px;
       cursor: pointer;
-      transition: background 0.2s ease-in-out;
+      transition: background 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease;
       min-width: 150px;
       text-align: center;
     }
 
     .exam-btn:hover {
-      background: #336fbf;
-    }
-    
-    .exam-btn.save {
-      background: #4da6ff;
-      color: #000;
+      background: #1e3a5f;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
     
     .exam-btn.save:hover {
-      background: #3399ff;
-    }
-    
-    .exam-btn.submit {
-      background: #4da6ff;
+      background: #2c5282;
     }
     
     .exam-btn.submit:hover {
-      background: #3399ff;
-    }
-    
-    .exam-btn.result {
-      background: #4da6ff;
+      background: #2c5282;
     }
     
     .exam-btn.result:hover {
-      background: #3399ff;
-    }
-    
-    .exam-btn.next {
-      background: #4da6ff;
-      color: #fff;
+      background: #2c5282;
     }
     
     .exam-btn.next:hover {
-      background: #3399ff;
-    }
-    
-    .exam-btn.reset {
-      background: #4da6ff;
+      background: #2c5282;
     }
     
     .exam-btn.reset:hover {
-      background: #3399ff;
+      background: #2c5282;
     }
     
     .exam-btn.reset-section {
       background: #d35400;
+      color: white;
       font-size: 12px;
       padding: 6px 10px;
       min-width: auto;
@@ -318,6 +304,7 @@
     
     .exam-btn.no-match {
       background: #95a5a6;
+      color: white;
       font-size: 12px;
       padding: 6px 10px;
       min-width: auto;
@@ -560,6 +547,10 @@
       border: 2px dashed #c8d9f6;
       border-radius: 6px;
       background: #f8fbff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
     
     .title-slot.has-title {
@@ -574,6 +565,21 @@
       font-weight: bold;
     }
     
+    .restore-btn {
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 11px;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+    
+    .restore-btn:hover {
+      background: #2980b9;
+    }
+    
     .headings-bank {
       display: flex;
       flex-direction: column;
@@ -586,11 +592,14 @@
       border: 1px solid #dbe7fb;
       border-radius: 8px;
       background: #f8fbff;
-      cursor: grab;
+      cursor: pointer;
+      transition: all 0.2s;
     }
     
     .heading-item:hover {
       background: #e9f0ff;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .heading-item.used {
@@ -598,6 +607,12 @@
       cursor: not-allowed;
       background: #f8d7da;
       border-color: #f5c6cb;
+    }
+    
+    .heading-item.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
     }
     
     .result-correct {
@@ -612,10 +627,87 @@
     
     .result-item {
       margin: 10px 0;
-      padding: 10px;
-      border-radius: 6px;
+      padding: 15px;
+      border-radius: 8px;
       background: #f8f9fa;
-      border: 1px solid #e1e8f6;
+      border-left: 4px solid #1e3a5f;
+    }
+    
+    .result-item h3 {
+      color: #1e3a5f;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    
+    .result-detail {
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      margin: 8px 0;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .result-row {
+      display: flex;
+      align-items: center;
+      margin: 4px 0;
+    }
+    
+    .result-label {
+      font-weight: 600;
+      min-width: 120px;
+      color: #2c3e50;
+    }
+    
+    .result-value {
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    
+    .result-value.correct {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .result-value.incorrect {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .result-status {
+      margin-top: 8px;
+      padding: 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-align: center;
+    }
+    
+    .result-status.correct {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .result-status.incorrect {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .result-summary {
+      margin-top: 20px;
+      padding: 15px;
+      background: #1e3a5f;
+      color: white;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .result-summary .percentage {
+      font-size: 32px;
+      font-weight: 700;
+      color: #4da6ff;
     }
     
     .instructions {
@@ -673,23 +765,37 @@
     
     .fill-blank-container {
       margin: 20px 0;
+      line-height: 2.2;
     }
     
     .blank-word {
       display: inline-block;
-      min-width: 120px;
-      padding: 4px 8px;
-      margin: 0 6px;
+      min-width: 100px;
+      padding: 6px 10px;
+      margin: 0 4px;
       background: #fff;
       cursor: pointer;
       position: relative;
-      border: 1px solid #dbe7fb;
-      border-radius: 4px;
+      border: 2px solid #dbe7fb;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .blank-word:hover {
+      background: #e3f2fd;
+      border-color: #3498db;
     }
     
     .blank-word.has-answer {
       background: #e8fbe9;
       border-color: #2ecc71;
+    }
+    
+    .blank-word.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
     }
     
     .options-popup {
@@ -772,12 +878,21 @@
     }
     
     .bank-word-vertical {
-      padding: 10px;
-      border: 1px solid #dbe7fb;
-      border-radius: 6px;
+      padding: 12px;
+      border: 2px solid #dbe7fb;
+      border-radius: 8px;
       background: #f8fbff;
       text-align: center;
-      cursor: grab;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    
+    .bank-word-vertical:hover {
+      background: #e9f0ff;
+      border-color: #3498db;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .bank-word-vertical.used {
@@ -787,22 +902,41 @@
       border-color: #f5c6cb;
     }
     
+    .bank-word-vertical.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
+    }
+    
     .blank-slot {
       display: inline-block;
       min-width: 100px;
-      padding: 4px 8px;
-      margin: 0 6px;
+      padding: 6px 10px;
+      margin: 0 4px;
       background: #fff;
       min-height: 30px;
       vertical-align: middle;
-      border: 1px solid #dbe7fb;
-      border-radius: 4px;
+      border: 2px solid #dbe7fb;
+      border-radius: 6px;
       cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    
+    .blank-slot:hover {
+      background: #e3f2fd;
+      border-color: #3498db;
     }
     
     .blank-slot.has-answer {
       background: #e8fbe9;
       border-color: #2ecc71;
+    }
+    
+    .blank-slot.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
     }
     
     .footer-buttons {
@@ -816,6 +950,12 @@
       background: #f8d7da;
       border-color: #f5c6cb;
       color: #333;
+    }
+    
+    .situation-item.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
     }
     
     /* Listening Section Styles */
@@ -1072,10 +1212,20 @@
       font-weight: 700;
       cursor: pointer;
       transition: background 0.3s;
+      text-decoration: none;
+      display: inline-block;
     }
     
     .results-btn:hover {
       background: #3a8ce0;
+    }
+    
+    .results-btn.secondary {
+      background: #95a5a6;
+    }
+    
+    .results-btn.secondary:hover {
+      background: #7f8c8d;
     }
     
     .button-like {
@@ -1396,7 +1546,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-lesen" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-lesen" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn2-lesen" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-lesen">Nicht gespeichert</span></div>
     </footer>
@@ -1435,7 +1585,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-hoeren" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-hoeren" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn2-hoeren" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-hoeren">Nicht gespeichert</span></div>
     </footer>
@@ -1481,7 +1631,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-schreiben" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn-schreiben" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn2-schreiben" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-schreiben">Nicht gespeichert</span></div>
     </footer>
@@ -1499,14 +1649,133 @@
       <div id="details-ergebnisse"></div>
       <div class="summary" id="finalSummary-ergebnisse"></div>
       <div class="controls">
-        <a class="button-like" href="#" id="backBtn-ergebnisse">
-          <button class="results-btn">🔁 Zurück zur Startseite</button>
-        </a>
-        <button id="calcBtn-ergebnisse" class="results-btn">✅ Ergebnisse anzeigen</button>
+        <button id="backBtn-ergebnisse" class="results-btn">🔁 Zurück zur Startseite</button>
+        <button id="retryBtn-ergebnisse" class="results-btn secondary">🔄 Prüfung wiederholen</button>
+        <button id="continueBtn-ergebnisse" class="results-btn">➡️ Zurück zur Prüfung</button>
       </div>
       <div class="note">Hinweis: Schreiben (45 Punkte) wird manuell eingegeben, falls nicht automatisch vorhanden.</div>
     </div>
   </div>
+
+  <!-- Login Error Modal (يظهر فقط عند رفض الدخول) -->
+  <div id="login-error-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center;">
+    <div style="background: white; border-radius: 16px; padding: 40px; max-width: 400px; text-align: center;">
+      <div style="font-size: 64px; margin-bottom: 20px;">❌</div>
+      <h2 style="color: #d32f2f; margin-bottom: 20px;">Zugriff verweigert</h2>
+      <p id="error-message" style="color: #333; margin-bottom: 30px; font-size: 16px;">Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.</p>
+      <button id="redirect-to-login" style="background: #d32f2f; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;">Zum Login</button>
+    </div>
+  </div>
+
+  <script type="module">
+    // =============================================
+    // التحقق من تسجيل الدخول - نسخة محسنة وآمنة
+    // =============================================
+    
+    (async function() {
+      // تكوين Supabase
+      const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
+      
+      // تهيئة Supabase
+      const { createClient } = window.supabase;
+      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      
+      // عناصر الصفحة
+      const body = document.getElementById('body');
+      const startPage = document.getElementById('start-page');
+      const loginErrorModal = document.getElementById('login-error-modal');
+      const errorMessage = document.getElementById('error-message');
+      
+      // دالة لعرض خطأ تسجيل الدخول
+      function showLoginError(message) {
+        // إخفاء محتوى الصفحة
+        startPage.style.display = 'none';
+        
+        // إظهار نافذة الخطأ
+        errorMessage.textContent = message || 'Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.';
+        loginErrorModal.style.display = 'flex';
+      }
+      
+      // التحقق من تسجيل الدخول
+      try {
+        // التحقق من الجلسة في Supabase
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError || !session) {
+          showLoginError('❌ Keine aktive Sitzung gefunden. Bitte melden Sie sich an.');
+          return;
+        }
+        
+        // التحقق من جدول permissions
+        const { data: permissions, error: permError } = await supabase
+          .from('user_permissions')
+          .select('can_access, subscription_type, subscription_expiry, trial_expiry')
+          .eq('user_id', session.user.id)
+          .maybeSingle();
+        
+        // إذا كان هناك خطأ أو لا يوجد صلاحيات
+        if (permError) {
+          console.error('Permissions error:', permError);
+          showLoginError('❌ Fehler bei der Überprüfung Ihrer Berechtigungen.');
+          return;
+        }
+        
+        // إذا لم يتم العثور على المستخدم في جدول permissions
+        if (!permissions) {
+          // محاولة إدراج المستخدم إذا لم يكن موجوداً
+          const { error: insertError } = await supabase
+            .from('user_permissions')
+            .insert({
+              user_id: session.user.id,
+              email: session.user.email,
+              can_access: true,
+              subscription_type: 'free',
+              created_at: new Date().toISOString()
+            });
+          
+          if (insertError) {
+            console.error('Insert error:', insertError);
+            showLoginError('❌ Fehler beim Erstellen Ihres Benutzerkontos.');
+            return;
+          }
+        } else if (!permissions.can_access) {
+          // إذا كان can_access = false
+          showLoginError('❌ Sie haben keine Berechtigung für den Zugriff auf diese Prüfung.');
+          return;
+        }
+        
+        // التحقق من انتهاء الاشتراك
+        const now = new Date();
+        
+        if (permissions && permissions.subscription_type === 'trial_24h' && permissions.trial_expiry) {
+          const trialExpiry = new Date(permissions.trial_expiry);
+          if (trialExpiry < now) {
+            showLoginError('❌ Ihre Testphase ist abgelaufen. Bitte aktivieren Sie ein Abonnement.');
+            return;
+          }
+        }
+        
+        if (permissions && permissions.subscription_expiry) {
+          const subscriptionExpiry = new Date(permissions.subscription_expiry);
+          if (subscriptionExpiry < now) {
+            showLoginError('❌ Ihr Abonnement ist abgelaufen. Bitte erneuern Sie Ihr Abonnement.');
+            return;
+          }
+        }
+        
+        // إذا وصلنا إلى هنا، المستخدم مصرح له
+        console.log('✅ Zugriff gewährt für:', session.user.email);
+        
+        // إظهار محتوى الصفحة
+        startPage.style.display = 'flex';
+        
+      } catch (error) {
+        console.error('❌ Kritischer Fehler:', error);
+        showLoginError('❌ Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
+      }
+    })();
+  </script>
 
   <script>
     // ===== PAGE NAVIGATION =====
@@ -1541,6 +1810,11 @@
       }
     }
 
+    // ربط زر التوجيه للـ Login
+    document.getElementById('redirect-to-login').addEventListener('click', function() {
+      window.location.href = '../index.html';
+    });
+
     // ===== START PAGE FUNCTIONALITY =====
     let initialCounter = 30;
     let counter = initialCounter;
@@ -1555,12 +1829,9 @@
     const cancelBtn = document.getElementById("cancelBtn");
 
     function startCountdown() {
-      // prevent double-starts or starting after exam already began
       if (countdownRunning || examStarted) return;
       countdownRunning = true;
-      // disable start button while counting
       try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
-      // reset counter & UI
       counter = initialCounter;
       timerEl.textContent = counter;
       timeDisplayEl.textContent = counter;
@@ -1578,12 +1849,10 @@
           countdownInterval = null;
           countdownRunning = false;
           progressEl.style.transform = "scaleX(1)";
-          // ensure exam starts only once
           if (!examStarted) {
             examStarted = true;
             startExam();
           }
-          // safety: re-enable start button (page usually navigates away)
           try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
         }
       }, 1000);
@@ -1607,7 +1876,6 @@
     }
 
     function startExam() {
-      // guard to ensure startExam is triggered once
       if (!examStarted) examStarted = true;
       const selectedSection = selectEl.value;
       if (selectedSection === 'lesen') {
@@ -1619,7 +1887,6 @@
       }
     }
 
-    // wire buttons: start will now start the countdown (not the exam directly)
     startBtn.addEventListener('click', startCountdown);
 
     cancelBtn.addEventListener('click', () => {
@@ -1628,684 +1895,10 @@
       timerEl.style.color = "#e53e3e";
     });
 
-    // NOTE: removed automatic startCountdown() on page load to prevent the timer starting twice
-
-    // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
-    function initErgebnissePage() {
-      // كائن الإجابات الصحيحة المركزية (يجب تعبئته من الملف الأصلي للامتحان الجديد)
-      const CORRECT_ANSWERS = {
-        lesen: {
-          // الجزء الأول: Überschriften zuordnen (النصوص 1-5)
-          "text1": "h",
-          "text2": "e", 
-          "text3": "i",
-          "text4": "c",
-          "text5": "b",
-          
-          // الجزء الثاني: Fragen zum Text (الأسئلة s2q1-s2q5)
-          "s2q1": "s2q1o1",
-          "s2q2": "s2q2o3",
-          "s2q3": "s2q3o1",
-          "s2q4": "s2q4o3",
-          "s2q5": "s2q5o2",
-          
-          // الجزء الثالث: Texte zuordnen (المواقف 11-20)
-          "11": "D",
-          "12": "H",
-          "13": "J",
-          "14": "X",
-          "15": "f",
-          "16": "B",
-          "17": "E",
-          "18": "G",
-          "19": "A",
-          "20": "C",
-          
-          // Sprachbausteine Teil 1 (الفراغات 21-30)
-          "21": "um",
-          "22": "dass",
-          "23": "aber",
-          "24": "unbedingt",
-          "25": "mich",
-          "26": "als",
-          "27": "kommenden",
-          "28": "dazu",
-          "29": "sondern",
-          "30": "für",
-          
-          // Sprachbausteine Teil 2 (الفراغات 31-40)
-          "31": "KAUM",
-          "32": "AUF",
-          "33": "VORBEI",
-          "34": "STATT",
-          "35": "INNERHALB",
-          "36": "MÜSSEN",
-          "37": "AN",
-          "38": "SOLLEN",
-          "39": "DANN",
-          "40": "DENN"
-        },
-        
-        hoeren: {
-          // Hören Teil 1 (الأسئلة 41-45)
-          "41": "falsch",
-          "42": "richtig",
-          "43": "richtig",
-          "44": "falsch",
-          "45": "falsch",
-          
-          // Hören Teil 2 (الأسئلة 46-53)
-          "46": "richtig",
-          "47": "falsch",
-          "48": "richtig",
-          "49": "richtig",
-          "50": "falsch",
-          "51": "richtig",
-          "52": "richtig",
-          "53": "richtig",
-          
-          // Hören Teil 3 (الأسئلة 54-58)
-          "54": "richtig",
-          "55": "falsch",
-          "56": "falsch",
-          "57": "richtig",
-          "58": "falsch"
-        }
-      };
-
-      const CONFIG = {
-        totals: { 
-          lesen: 105, 
-          hoeren: 75, 
-          schreiben: 45, 
-          gesamt: 225 
-        },
-        counts: { 
-          lesen: 40, 
-          hoeren: 20 
-        },
-        hoerenCorrect: CORRECT_ANSWERS.hoeren,
-        lesenCorrect: CORRECT_ANSWERS.lesen
-      };
-
-      // ===== الدوال المساعدة =====
-      function normalizeAnswer(a) {
-        if (a === null || a === undefined || a === '') return '-';
-        let s = String(a).trim();
-        if (s === '') return '-';
-        const low = s.toLowerCase();
-        if (["richtig", "true", "yes", "ja", "r"].includes(low)) return 'richtig';
-        if (["falsch", "false", "no", "nein", "f"].includes(low)) return 'falsch';
-        return s;
-      }
-
-      function getHeadingText(headingId) {
-        if (!headingId || headingId === '-' || headingId === 'X') return '-';
-        const headings = {
-          "a": "Für unterwegs: Leckereien im Zugrestaurant",
-          "b": "In der Stadt der warmen Quellen",
-          "c": "Irrtum: Süßes macht doch nicht glücklich",
-          "d": "Mitmach-Museum: Bonbons selbst herstellen",
-          "e": "Naschen statt wegwerfen",
-          "f": "Neues Thermalbad in Rom",
-          "g": "Reisen: Die beliebtesten Thermalbäder",
-          "h": "Süßwaren mit langer Tradition",
-          "i": "Wasser, Wärme, Wellness - antike Badefreuden",
-          "j": "Zucker sorgt für Stimmungshoch"
-        };
-        return headings[headingId] || headingId;
-      }
-
-      function getOptionText(questionId, optionId) {
-        if (!optionId || optionId === '-') return '-';
-        const options = {
-          "s2q1o1": "erhielt kurz vor Eintritt in den Ruhestand einen Preis.",
-          "s2q1o2": "wechselte in ihrer beruflichen Laufbahn mehrmals die Schule.",
-          "s2q1o3": "wurde schon mehrfach für Auszeichnungen vorgeschlagen.",
-          "s2q2o1": "am liebsten direkt nach dem Studium heiraten wolle.",
-          "s2q2o2": "mit ihrem Studium gute Perspektiven haben werde.",
-          "s2q2o3": "womöglich nicht genug für ihren Lebensunterhalt verdienen könne.",
-          "s2q3o1": "die Schüler sich im Unterricht schlecht benehmen würden.",
-          "s2q3o2": "die Schüler wenig Interesse an ihren Fächern hätten.",
-          "s2q3o3": "sie kein Talent für das Unterrichten hätte.",
-          "s2q4o1": "haben erst nach dem Abitur von dem Wettbewerb erfahren.",
-          "s2q4o2": "reichten für den Wettbewerb verschiedene Einzelbeiträge ein.",
-          "s2q4o3": "wollten ihr für die gelungene Prüfungsvorbereitung Anerkennung zeigen.",
-          "s2q5o1": "bald Zeit für ausgedehnte Reisen zu haben.",
-          "s2q5o2": "mit ehemaligen Schülern ein Projekt zu planen.",
-          "s2q5o3": "nun endlich in Pension gehen zu können."
-        };
-        return options[optionId] || optionId;
-      }
-
-      function getSituationText(id) {
-        const situations = {
-          "11": "Die Tochter einer Bekannten wird vier Jahre alt. Sie möchten ihr etwas zum Geburtstag mitbringen.",
-          "12": "Ein Bekannter hat sich einen Fotoapparat gekauft und möchte die Grundlagen der Fotografie erlernen.",
-          "13": "Ein Bekannter möchte eine mehrtägige Reise unternehmen und dabei einen Fotokurs machen.",
-          "14": "Eine Bekannte kann gut fotografieren und hat bereits einige Kurse gemacht. Sie würde gerne neue kreative Techniken kennenlernen.",
-          "15": "Ein Freund würde gerne im Winter verreisen. Er möchte viel Zeit an der frischen Luft verbringen und sich bewegen.",
-          "16": "Eine Freundin hat viele Kleidungsstücke, die sie nicht mehr trägt. Sie sucht Anregungen, was sie damit machen könnte.",
-          "17": "Sie besuchen einen Freund, der sich für Malerei interessiert. Sie möchten ihm ein passendes Geschenk mitbringen.",
-          "18": "Sie fahren gerne Ski und möchten mit Ihrer Familie Wintersport machen.",
-          "19": "Sie möchten mit Ihrem zwölfjährigen Sohn eine Ausstellung besuchen. Er interessiert sich für Tiere.",
-          "20": "Sie treffen sich an einem Sonntagnachmittag mit einer Freundin, die sich gerne mit Mode und ihrer Geschichte beschäftigt. Sie möchten mit ihr etwas unternehmen."
-        };
-        return situations[id] || id;
-      }
-
-      function escapeHtml(s) {
-        if (s === '-') return '-';
-        return String(s)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      }
-
-      function buildTable(title, dets, total, max) {
-        let html = `<div class="result-item">
-                      <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
-                      <div class="section-table">
-                        <table class="true-false-table">
-                          <thead>
-                            <tr>
-                              <th style="width: 10%">Frage</th>
-                              <th style="width: 40%">Ihre Antwort</th>
-                              <th style="width: 40%">Richtige Antwort</th>
-                              <th style="width: 10%">Ergebnis</th>
-                            </tr>
-                          </thead>
-                          <tbody>`;
-        
-        dets.forEach(x => {
-          const isCorrect = x.richtig;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${x.frage}</strong></td>
-                    <td>${escapeHtml(x.user)}</td>
-                    <td>${escapeHtml(x.correct)}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        });
-        
-        html += `</tbody>
-                </table>
-                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
-                  <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
-                </div>
-              </div></div>`;
-        return html;
-      }
-
-      function readExamResults() {
-        try {
-          const lesen = {};
-          const hoeren = {};
-          const schreiben = { content: '', wordCount: 0 };
-
-          // 1) Try to read from in-memory states exposed by pages
-          try {
-            if (window._lesenState && window._lesenState.answers) {
-              Object.keys(window._lesenState.answers).forEach(k => {
-                lesen[k] = window._lesenState.answers[k];
-              });
-            }
-          } catch (e) {}
-
-          try {
-            if (window._hoerenState && window._hoerenState.answers) {
-              Object.keys(window._hoerenState.answers).forEach(sectionId => {
-                const sec = window._hoerenState.answers[sectionId] || {};
-                Object.keys(sec).forEach(q => {
-                  hoeren[q] = sec[q];
-                });
-              });
-            }
-          } catch (e) {}
-
-          try {
-            if (window._schreibenState && window._schreibenState.answers) {
-              const answers = window._schreibenState.answers;
-              if (answers['s1']) {
-                schreiben.content = answers['s1'];
-              } else {
-                const keys = Object.keys(answers);
-                if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
-              }
-              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0;
-            }
-          } catch (e) {}
-
-          // 2) Fallback to localStorage if any part is still empty
-          try {
-            if (Object.keys(lesen).length === 0) {
-              const storedL = localStorage.getItem('lesenAnswers');
-              if (storedL) Object.assign(lesen, JSON.parse(storedL));
-            }
-          } catch (e) {}
-
-          try {
-            if (Object.keys(hoeren).length === 0) {
-              const storedH = localStorage.getItem('hoerenAnswers');
-              if (storedH) Object.assign(hoeren, JSON.parse(storedH));
-            }
-          } catch (e) {}
-
-          try {
-            if (!schreiben.content) {
-              const storedS = localStorage.getItem('schreibenAnswers');
-              if (storedS) {
-                const obj = JSON.parse(storedS);
-                schreiben.content = obj.content || '';
-                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0);
-              }
-            }
-          } catch (e) {}
-
-          // final safe return
-          return { hoeren, lesen, schreiben };
-        } catch (e) {
-          return { hoeren: {}, lesen: {}, schreiben: {} };
-        }
-      }
-
-      function gradeHoeren(u) {
-        const c = CORRECT_ANSWERS.hoeren;
-        let okCount = 0;
-        const d = [];
-        
-        for (let q = 41; q <= 58; q++) {
-          const k = String(q);
-          const uA = normalizeAnswer(u[k] || '');
-          const exp = normalizeAnswer(c[k] || '');
-          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
-          if (ok) okCount++;
-          const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
-          d.push({
-            frage: k,
-            user: uA,
-            correct: exp,
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
-          });
-        }
-        
-        const total = Number((okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2));
-        return { okCount, total, details: d };
-      }
-
-      function gradeLesen(u) {
-        const c = CORRECT_ANSWERS.lesen;
-        let okCount = 0;
-        const d = [];
-        
-        // تحقق من كل سؤال في القراءة
-        const allQuestions = [
-          // النصوص 1-5
-          "text1", "text2", "text3", "text4", "text5",
-          // الأسئلة s2q1-s2q5
-          "s2q1", "s2q2", "s2q3", "s2q4", "s2q5",
-          // المواقف 11-20
-          "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
-          // الفراغات 21-30
-          "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
-          // الفراغات 31-40
-          "31", "32", "33", "34", "35", "36", "37", "38", "39", "40"
-        ];
-        
-        allQuestions.forEach(k => {
-          const exp = normalizeAnswer(c[k] || '');
-          const uA = normalizeAnswer(u[k] || '');
-          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
-          if (ok) okCount++;
-          const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
-          
-          let displayUser = uA;
-          let displayCorrect = exp;
-          
-          // تحويل المعرفات إلى نصوص مقروءة
-          if (k.startsWith('text')) {
-            displayUser = getHeadingText(uA);
-            displayCorrect = getHeadingText(exp);
-          } else if (k.startsWith('s2q')) {
-            displayUser = getOptionText(k, uA);
-            displayCorrect = getOptionText(k, exp);
-          } else if (['11','12','13','14','15','16','17','18','19','20'].includes(k)) {
-            if (uA === 'X') {
-              displayUser = 'X - Kein passender Text';
-            } else {
-              displayUser = uA;
-            }
-            if (exp === 'X') {
-              displayCorrect = 'X - Kein passender Text';
-            } else {
-              displayCorrect = exp;
-            }
-          }
-          
-          d.push({
-            frage: k,
-            user: displayUser,
-            correct: displayCorrect,
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
-          });
-        });
-        
-        const total = Number((okCount * (CONFIG.totals.lesen / CONFIG.counts.lesen)).toFixed(2));
-        return { okCount, total, details: d };
-      }
-
-      function renderLesenDetails(answers) {
-        let html = `<div class="result-item">
-                    <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
-        
-        // 1. Überschriften zuordnen
-        html += `<h4>Teil 1: Überschriften zuordnen</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th style="width: 10%">Text</th>
-                       <th style="width: 40%">Ihre Antwort</th>
-                       <th style="width: 40%">Richtige Antwort</th>
-                       <th style="width: 10%">Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 1; i <= 5; i++) {
-          const k = `text${i}`;
-          const uA = normalizeAnswer(answers[k] || '');
-          const exp = normalizeAnswer(CORRECT_ANSWERS.lesen[k] || '');
-          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
-          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = ok ? '✅' : '❌';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>Text ${String.fromCharCode(64+i)}</strong></td>
-                    <td>${escapeHtml(getHeadingText(uA))}</td>
-                    <td>${escapeHtml(getHeadingText(exp))}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        
-        // 2. Fragen zum Text
-        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th style="width: 10%">Frage</th>
-                       <th style="width: 40%">Ihre Antwort</th>
-                       <th style="width: 40%">Richtige Antwort</th>
-                       <th style="width: 10%">Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 1; i <= 5; i++) {
-          const k = `s2q${i}`;
-          const uA = normalizeAnswer(answers[k] || '');
-          const exp = normalizeAnswer(CORRECT_ANSWERS.lesen[k] || '');
-          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
-          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = ok ? '✅' : '❌';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${i}</strong></td>
-                    <td>${escapeHtml(getOptionText(k, uA))}</td>
-                    <td>${escapeHtml(getOptionText(k, exp))}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        
-        // 3. Texte zuordnen
-        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th style="width: 10%">Situation</th>
-                       <th style="width: 40%">Ihre Antwort</th>
-                       <th style="width: 40%">Richtige Antwort</th>
-                       <th style="width: 10%">Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 11; i <= 20; i++) {
-          const k = i.toString();
-          const uA = normalizeAnswer(answers[k] || '');
-          const exp = normalizeAnswer(CORRECT_ANSWERS.lesen[k] || '');
-          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
-          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = ok ? '✅' : '❌';
-          
-          let displayUser = uA;
-          let displayCorrect = exp;
-          if (uA === 'X') displayUser = 'X - Kein passender Text';
-          if (exp === 'X') displayCorrect = 'X - Kein passender Text';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${k}</strong></td>
-                    <td>${escapeHtml(displayUser)}</td>
-                    <td>${escapeHtml(displayCorrect)}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        
-        // 4. Sprachbausteine Teil 1
-        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th style="width: 10%">Lücke</th>
-                       <th style="width: 40%">Ihre Antwort</th>
-                       <th style="width: 40%">Richtige Antwort</th>
-                       <th style="width: 10%">Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 21; i <= 30; i++) {
-          const k = i.toString();
-          const uA = normalizeAnswer(answers[k] || '');
-          const exp = normalizeAnswer(CORRECT_ANSWERS.lesen[k] || '');
-          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
-          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = ok ? '✅' : '❌';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${k}</strong></td>
-                    <td>${escapeHtml(uA)}</td>
-                    <td>${escapeHtml(exp)}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        
-        // 5. Sprachbausteine Teil 2
-        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th style="width: 10%">Lücke</th>
-                       <th style="width: 40%">Ihre Antwort</th>
-                       <th style="width: 40%">Richtige Antwort</th>
-                       <th style="width: 10%">Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 31; i <= 40; i++) {
-          const k = i.toString();
-          const uA = normalizeAnswer(answers[k] || '');
-          const exp = normalizeAnswer(CORRECT_ANSWERS.lesen[k] || '');
-          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
-          const rowClass = ok ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = ok ? '✅' : '❌';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${k}</strong></td>
-                    <td>${escapeHtml(uA)}</td>
-                    <td>${escapeHtml(exp)}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table></div>`;
-        return html;
-      }
-
-      function buildHoerenDetails(answers) {
-        let html = `<table class="true-false-table">
-                      <thead>
-                        <tr>
-                          <th>Frage</th>
-                          <th>Ihre Antwort</th>
-                          <th>Richtige Antwort</th>
-                          <th>Ergebnis</th>
-                        </tr>
-                      </thead>
-                      <tbody>`;
-        
-        for (let i = 41; i <= 58; i++) {
-          const id = i.toString();
-          const userAnswer = normalizeAnswer(answers[id] || '');
-          const correctAnswer = CORRECT_ANSWERS.hoeren[id];
-          const isCorrect = (userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase());
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅' : '❌';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${id}</strong></td>
-                    <td>${userAnswer}</td>
-                    <td>${correctAnswer}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        return html;
-      }
-
-      function renderResults() {
-        const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
-        const h = gradeHoeren(st.hoeren || {});
-        const l = gradeLesen(st.lesen || {});
-        const details = document.getElementById('details-ergebnisse');
-        const tiles = document.getElementById('topTiles-ergebnisse');
-        const sScoreRaw = localStorage.getItem('schreibenScore');
-        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
-
-        details.innerHTML = '';
-        tiles.innerHTML = '';
-
-        const tL = `<div class="results-tile">
-                      <h3>Lesen</h3>
-                      <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
-                      <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
-                    </div>`;
-                    
-        const tH = `<div class="results-tile">
-                      <h3>Hören</h3>
-                      <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
-                      <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
-                    </div>`;
-                    
-        const tS = `<div class="results-tile">
-                      <h3>Schreiben</h3>
-                      <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
-                      <div class="small-muted">Manuelle Eingabe</div>
-                    </div>`;
-                    
-        tiles.innerHTML = tL + tH + tS;
-
-        details.innerHTML += `<h2>📊 Detaillierte Ergebnisse</h2>
-                             <div class="instructions">Unten sehen Sie eine detaillierte Auswertung Ihrer Prüfungsergebnisse.</div>`;
-        
-        // إضافة قسم القراءة
-        details.innerHTML += renderLesenDetails(st.lesen);
-        
-        // إضافة قسم الاستماع
-        details.innerHTML += `<div class="result-item">
-                                <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
-                                ${buildHoerenDetails(st.hoeren)}
-                                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
-                                  <strong>Erreichte Punkte: ${h.total.toFixed(2)}/${CONFIG.totals.hoeren} (${((h.total/CONFIG.totals.hoeren)*100).toFixed(1)}%)</strong>
-                                </div>
-                              </div>`;
-        
-        // إضافة قسم الكتابة
-        let sHtml = '<div class="result-item"><h3>✍️ Schreiben - Ihre Antwort</h3>';
-        const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
-        const wc = st.schreiben.wordCount || '-';
-        
-        sHtml += `<div class="small-muted">Wörter: ${wc}</div>
-                  <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px; white-space: pre-wrap;">${txt}</div>
-                  <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
-                    Punkte (0–45): 
-                    <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
-                    <button id="saveS" class="results-btn">Speichern</button>
-                  </div></div>`;
-                  
-        details.innerHTML += sHtml;
-
-        const total = (l.total + h.total + sScore).toFixed(2);
-        const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);
-        
-        document.getElementById('finalSummary-ergebnisse').innerHTML = `
-          <div class="left">
-            Gesamtpunktzahl: <strong>${total}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
-            <span class="small-muted">Lesen + Hören + Schreiben</span>
-          </div>
-          <div class="right">
-            Prozentsatz: <strong>${percent} %</strong>
-          </div>`;
-
-        document.getElementById('saveS').onclick = () => {
-          const v = Number(document.getElementById('sInput').value) || 0;
-          localStorage.setItem('schreibenScore', v);
-          document.getElementById('schreibenScoreDisplay').textContent = `${v.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte`;
-          
-          const newTotal = (l.total + h.total + v).toFixed(2);
-          const newPercent = ((newTotal / CONFIG.totals.gesamt) * 100).toFixed(2);
-          
-          document.getElementById('finalSummary-ergebnisse').innerHTML = `
-            <div class="left">
-              Gesamtpunktzahl: <strong>${newTotal}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
-              <span class="small-muted">Lesen + Hören + Schreiben</span>
-            </div>
-            <div class="right">
-              Prozentsatz: <strong>${newPercent} %</strong>
-            </div>`;
-        };
-      }
-
-      document.getElementById('calcBtn-ergebnisse').onclick = () => renderResults();
-      document.getElementById('backBtn-ergebnisse').onclick = (e) => {
-        e.preventDefault();
-        showPage('start-page');
-      };
-      
-      // Initialize results on page load
-      renderResults();
-    }
-
-    // ===== LESEN PAGE FUNCTIONALITY =====
-    function initLesenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
-      const exam = {
-        id: "exam-001",
+    // ===== EMPTY EXAM DATA STRUCTURE - FILL WITH YOUR CONTENT =====
+    const EXAM_DATA = {
+      lesen: {
+        id: "exam-lesen-001",
         durationSec: 90 * 60,
         sections: [
           { 
@@ -2318,27 +1911,27 @@
             texts: [
               {
                 id: "text1",
-                content: "1. Bonbons machen Kinder glücklich, und zwar nicht erst seit gestem: Denn diese beliebte Süßigkeit ist viel älter, als man eigentlich vermuten würde. Schon vor über 1.000 Jahren gab es im antiken China, in Griechenland und im Römischen Reich Süßwaren aus Honig, Blüten und Früchten. Wer noch mehr über Bonbons erfahren möchte, sollte einen Ausflug nach Vaihingen an der Enz unternehmen: Dort gibt es nicht nur seit 1828 die Bonbon- und Zuckerwarenfabrik Jung. sondern auch das einzige Bonbon-Museum Deutschlands. Auf 300 Quadratmetern Ausstellungsfläche finden sich Antworten auf viele herkommen, wie sie früher hergestelt wurden Fragen: Man erfährt dort elwa, wo Bonbons oder warum sie gegen Husten helfen. Gezeigt werden auch Bonbondosen, Bonbon-Maschinen und alte Werbemittel. Beim Rundgang durch das Museum unternehmen kleine und große Bonbonherstellung bis hin zur vollautomatischen Besucher eine Reise von den Anfängen der Fabrikproduktion unserer Zeit.",
+                content: "1. Bonbons machen Kinder glücklich, und zwar nicht erst seit gestern: Denn diese beliebte Süßigkeit ist viel älter, als man eigentlich vermuten würde. Schon vor über 1.000 Jahren gab es im antiken China, in Griechenland und im Römischen Reich Süßwaren aus Honig, Blüten und Früchten. Wer noch mehr über Bonbons erfahren möchte, sollte einen Ausflug nach Vaihingen an der Enz unternehmen: Dort gibt es nicht nur seit 1828 die Bonbon- und Zuckerwarenfabrik Jung, sondern auch das einzige Bonbon-Museum Deutschlands. Auf 300 Quadratmetern Ausstellungsfläche finden sich Antworten auf viele Fragen: Man erfährt dort etwa, wo Bonbons herkommen, wie sie früher hergestellt wurden oder warum sie gegen Husten helfen. Gezeigt werden auch Bonbondosen, Bonbon-Maschinen und alte Werbemittel. Beim Rundgang durch das Museum unternehmen kleine und große Besucher eine Reise von den Anfängen der Bonbonherstellung bis hin zur vollautomatischen Fabrikproduktion unserer Zeit.",
                 correctAnswer: "h"
               },
               {
-                id: "text2", 
-                content: "2. Am Frankfurter Hauptbahnhof können Reisende beim Warten auf den Zug noch schnell einen besonderen Snack genießen. Denn am Bahnhof steht jetzt ein Ret-tomat-ein Automat, in dem abgelaufene Schokoriegel, Chips, Nüsse und andere Leckereien verkauft werden. Das Mindesthaltbarkeitsdatum der Produkte ist in den meisten Fällen fast abgelaufen, daher werden sie gunstiger angeboten als im Handel. Auch Getränke hält der Automat bereit. Die Produkte sind überschüssig beziehungsweise stehen kurz vor oder nach dem Ablauf des Mindesthaltbarkeitsdatums, sind aber trotzdem noch gut, erklärt ein Sprecher der Deutschen Bahn. Mit dem neuen Service wolle der Konzern den Denn sie werden natürlich sorgfältig geprüft. Bahnhof noch attraktiver machen und  Resouecen schützen. Fahrgäste sollen so die Möglichkeit erhalten, sich mit Süßigkeiten und Knab-bereien zu versorgen und gleichzeitig etwas gegen Lebenmitteöverschwendung. Außerdem könnten Vorbeigehende quasi nebenbei auch über die Problematik, dass viele Lebensmittel weggeworfen werden, aufge-klärt werden. ",
+                id: "text2",
+                content: "2. Am Frankfurter Hauptbahnhof können Reisende beim Warten auf den Zug noch schnell einen besonderen Snack genießen. Denn am Bahnhof steht jetzt ein Ret-tomat-ein Automat, in dem abgelaufene Schokoriegel, Chips, Nüsse und andere Leckereien verkauft werden. Das Mindesthaltbarkeitsdatum der Produkte ist in den meisten Fällen fast abgelaufen, daher werden sie günstiger angeboten als im Handel. Auch Getränke hält der Automat bereit. Die Produkte sind überschüssig beziehungsweise stehen kurz vor oder nach dem Ablauf des Mindesthaltbarkeitsdatums, sind aber trotzdem noch gut, erklärt ein Sprecher der Deutschen Bahn. Mit dem neuen Service wolle der Konzern den Bahnhof noch attraktiver machen und Ressourcen schützen. Denn sie werden natürlich sorgfältig geprüft. Fahrgäste sollen so die Möglichkeit erhalten, sich mit Süßigkeiten und Knabbereien zu versorgen und gleichzeitig etwas gegen Lebensmittelverschwendung zu tun. Außerdem könnten Vorbeigehende quasi nebenbei auch über die Problematik, dass viele Lebensmittel weggeworfen werden, aufgeklärt werden.",
                 correctAnswer: "e"
               },
               {
                 id: "text3",
-                content: "3. mehrere Badebecken sowie Räume für Schwitz- und Dampfba der machten sle zu ganz besonderen Prestigebauten. Doch in den öffentlichen Badehäusem spielte sich auch das gesellschaftliche Leben ab: Dort traf man sich, tauschte sich aus oder verhandelte sogar über Geschäfte. Für viele Menschen im alten Rom gehörte ein Besuch in einer Therme zu den beliebtesten Freizeitaktivitäten. Mit den Jahren wurde die römische Badekultur immer weiterentwickelt und verbreitete sich auch über die Grenzen des Reiches hinaus. Wo heiße saus der Erde sprudelt, hat sich sein, und wertvolle Mosaik- und Marmorböden, vieler orts das Bäder- und Kurwesen gut entwickelt. Schon im alten Rom wusste man, dass ein Bad Im warmen Wasser wohltuend ist und gegen Alltagsstress, Verspannungen und Stimmungstiefs wirkt. Badeanstalten gab es überall im Römischen Reich. Gegen eine geringe Eintrittsge-bühr konnten Bürger, die nach Erholung suchten, in den gewaltigen Thermen- Anlagen entspannen-diese boten Platz für bis zu 1000 Menschen. Die römischen Bader wurden von spezialisierten Architekten und Bauleuten errichtet. Möglichst prunkvoll und luxurios sollten sie.",
+                content: "3. mehrere Badebecken sowie Räume für Schwitz- und Dampfbäder machten sie zu ganz besonderen Prestigebauten. Doch in den öffentlichen Badehäusern spielte sich auch das gesellschaftliche Leben ab: Dort traf man sich, tauschte sich aus oder verhandelte sogar über Geschäfte. Für viele Menschen im alten Rom gehörte ein Besuch in einer Therme zu den beliebtesten Freizeitaktivitäten. Mit den Jahren wurde die römische Badekultur immer weiterentwickelt und verbreitete sich auch über die Grenzen des Reiches hinaus. Wo heiße Quellen der Erde sprudelt, hat sich vielerorts das Bäder- und Kurwesen gut entwickelt. Schon im alten Rom wusste man, dass ein Bad im warmen Wasser wohltuend ist und gegen Alltagsstress, Verspannungen und Stimmungstiefs wirkt. Badeanstalten gab es überall im Römischen Reich. Gegen eine geringe Eintrittsgebühr konnten Bürger, die nach Erholung suchten, in den gewaltigen Thermenanlagen entspannen-diese boten Platz für bis zu 1000 Menschen. Die römischen Bäder wurden von spezialisierten Architekten und Bauleuten errichtet. Möglichst prunkvoll und luxuriös sollten sie sein, und wertvolle Mosaik- und Marmorböden zierten die Räume.",
                 correctAnswer: "i"
               },
               {
                 id: "text4",
-                content: "4. Nicht nur in Hollywoodfilmen tröstet man sich bel Liebes-kummer mit Pralinen: Der Griff zu Süßigkeiten ist überall weit verbreitet. Viele glauben, dass sie die Stimmung aufhellen, die Konzentration verbessern oder gegen Nachmittagstlefs Im Büro helfen. Doch damit liegen womöglich falsch. Denn Wissenschaftler haben nun genauer erforscht, wie Zucker auf unser Gemüt wirkt. In ihrer Studie stellten sie praktisch keinen positiver Einfluss des Zuckerkonsums auf die Laune fest im Gegentell. Die Idee, dass Zucker die Stimmung heben kann, ist auf der ganzen Welt verbreitet, sagt Konstantin Geor-glou von der Humboldt-Universität in Berlin. Unsere Ergebnisse bestätigen solche Annahmen jedoch keineswegs-wenn überhaupt, dann sorgt Zucker dafür, dass wir uns schlechter fühlen. Die Auswertung deutet darauf hin, dass Probanden nach Zuckerkonsum müder und unaufmerksamer waren als jene, die nur ein Placebo bekommen hatten.",
+                content: "4. Nicht nur in Hollywoodfilmen tröstet man sich bei Liebeskummer mit Pralinen: Der Griff zu Süßigkeiten ist überall weit verbreitet. Viele glauben, dass sie die Stimmung aufhellen, die Konzentration verbessern oder gegen Nachmittagstiefs im Büro helfen. Doch damit liegen sie womöglich falsch. Denn Wissenschaftler haben nun genauer erforscht, wie Zucker auf unser Gemüt wirkt. In ihrer Studie stellten sie praktisch keinen positiven Einfluss des Zuckerkonsums auf die Laune fest – im Gegenteil. Die Idee, dass Zucker die Stimmung heben kann, ist auf der ganzen Welt verbreitet, sagt Konstantin Georgiou von der Humboldt-Universität in Berlin. Unsere Ergebnisse bestätigen solche Annahmen jedoch keineswegs – wenn überhaupt, dann sorgt Zucker dafür, dass wir uns schlechter fühlen. Die Auswertung deutet darauf hin, dass Probanden nach Zuckerkonsum müder und unaufmerksamer waren als jene, die nur ein Placebo bekommen hatten.",
                 correctAnswer: "c"
               },
               {
                 id: "text5",
-                content: "5. Wellness und der Besuch von Kurorten und Thermalbädern haben seit Jahrhunderten Tradition in Ungarn. Das Land besitzt zwar keinen direkten Zugang zum Meer, aber dafür wimmelt es in diesem Binnenstaat nur so von Thermalquellen. Dabei handelt es sich um Quellen, aus denen Grundwasser austritt, das über 20 Grad warm ist. Dieses Wasser enthält Mineralstoffe, denen eine positive Wirkung auf den Organismus zugeschrieben wird. 123 Thermal- quellen finden sich allein in Budapest, das berühmt für seine Bäder ist. Diese Stadt ist damit nicht nur das einzige Kurbad, das zugleich die Hauptstadt eines Landes ist, sondern auch die größte Kurstadt Europas. In Budapest kann man zwischen über 20 Bädern wählen. Viele sind Bauten von beträchtlichem historischen wie architektonischen Rang. Obwohl Budapest auch eine ausgeprägte Café- Kultur besitzt, sind die Bäder für die Stadtbewohner wich- tige Treffpunkte- denn oft verabreden sich Freunde in einem Bad",
+                content: "5. Wellness und der Besuch von Kurorten und Thermalbädern haben seit Jahrhunderten Tradition in Ungarn. Das Land besitzt zwar keinen direkten Zugang zum Meer, aber dafür wimmelt es in diesem Binnenstaat nur so von Thermalquellen. Dabei handelt es sich um Quellen, aus denen Grundwasser austritt, das über 20 Grad warm ist. Dieses Wasser enthält Mineralstoffe, denen eine positive Wirkung auf den Organismus zugeschrieben wird. 123 Thermalquellen finden sich allein in Budapest, das berühmt für seine Bäder ist. Diese Stadt ist damit nicht nur die einzige Hauptstadt eines Landes, die zugleich ein Kurbad ist, sondern auch die größte Kurstadt Europas. In Budapest kann man zwischen über 20 Bädern wählen. Viele sind Bauten von beträchtlichem historischen wie architektonischen Rang. Obwohl Budapest auch eine ausgeprägte Café-Kultur besitzt, sind die Bäder für die Stadtbewohner wichtige Treffpunkte – denn oft verabreden sich Freunde in einem Bad.",
                 correctAnswer: "b"
               }
             ],
@@ -2356,23 +1949,23 @@
             ]
           },
           { 
-            id: "s2", 
-            title: "Leseverstehen, Teil 2", 
-            points: 25,
+            id:"s2", 
+            title:"Leseverstehen, Teil 2", 
+            points:25,
             passageTitle: "Lehrkräftepreis: Lehrerin aus Frankfurt ausgezeichnet",
-            passage: `Fast 3000 Jahre sind vergangen, seit der griechische Dichter Homer eines der berühmtesten Werke der Weltliteratur, die _Ilias,_ niedergeschrieben haben soll. Bei Schulen dafür heutzutage noch Interesse zu wecken, ist gewiss für jeden Lehrer eine Herausforderung. Doch Brigitte Vollmer gelingt es, ihre Schüler für die alten Texte zu begeistern – so spannend und plastisch sind ihre Schilderungen, mit denen sie die Heldensagen der Antike zum Leben erweckt.
+            passage: `Fast 3000 Jahre sind vergangen, seit der griechische Dichter Homer eines der berühmtesten Werke der Weltliteratur, die Ilias, niedergeschrieben haben soll. Bei Schülern dafür heutzutage noch Interesse zu wecken, ist gewiss für jeden Lehrer eine Herausforderung. Doch Brigitte Vollmer gelingt es, ihre Schüler für die alten Texte zu begeistern – so spannend und plastisch sind ihre Schilderungen, mit denen sie die Heldensagen der Antike zum Leben erweckt.
 
-Mehreren Generationen von Schülern hat die 66-Jährige diese Werke nahegebracht. Seit 33 Jahren unterrichtet sie Griechisch, Latein und Philosophie am Heinrich-von-Gagern-Gymnasium in Frankfurt – dort hat sie direkt nach ihrem Referendariat angefangen und ist geblieben. Seit 22 Jahren fungiert sie außerdem als Fachbereichsleiterin. Vor Kurzem, wenige Monate vor Ende ihres Berufslebens, hat sie für ihr pädagogisches Wirken **den Deutschen Lehrkräftepreis** erhalten, für den sie von ihren Schülerinnen und Schülern nominiert worden war. Es war ihre erste Nominierung bei einem Wettbewerb, und diese hatte gleich durchschlagenden Erfolg, obwohl über 6000 Bewerbungen eingegangen waren.
+Mehreren Generationen von Schülern hat die 66-Jährige diese Werke nahegebracht. Seit 33 Jahren unterrichtet sie Griechisch, Latein und Philosophie am Heinrich-von-Gagern-Gymnasium in Frankfurt – dort hat sie direkt nach ihrem Referendariat angefangen und ist geblieben. Seit 22 Jahren fungiert sie außerdem als Fachbereichsleiterin. Vor Kurzem, wenige Monate vor Ende ihres Berufslebens, hat sie für ihr pädagogisches Wirken den Deutschen Lehrkräftepreis erhalten, für den sie von ihren Schülerinnen und Schülern nominiert worden war. Es war ihre erste Nominierung bei einem Wettbewerb, und diese hatte gleich durchschlagenden Erfolg, obwohl über 6000 Bewerbungen eingegangen waren.
 
-Ihre Liebe zu alten Sprachen wurde schon während ihrer Schulzeit in Marburg geweckt: „Ich hatte einen wunderbaren Griechischlehrer und einen fantastischen Lateinlehrer\", erzählt sie mit glänzenden Augen. \"Bald war mir klar: Wenn ich irgendwas studiere, dann diese Fächer.\" […] Obwohl ihre Eltern von diesen Plänen zunächst alles andere als begeistert waren\", erinnert sie sich lachend. Sie müsse wohl irgendwann einen reichen Mann heiraten, um finanziell über die Runden zu kommen, hieß es in der Familie. Schließlich sahen schon damals die Berufsaussichten für Geisteswissenschaftler nicht immer rosig aus.
+Ihre Liebe zu alten Sprachen wurde schon während ihrer Schulzeit in Marburg geweckt: „Ich hatte einen wunderbaren Griechischlehrer und einen fantastischen Lateinlehrer", erzählt sie mit glänzenden Augen. "Bald war mir klar: Wenn ich irgendwas studiere, dann diese Fächer." […] Obwohl ihre Eltern von diesen Plänen zunächst alles andere als begeistert waren", erinnert sie sich lachend. Sie müsse wohl irgendwann einen reichen Mann heiraten, um finanziell über die Runden zu kommen, hieß es in der Familie. Schließlich sahen schon damals die Berufsaussichten für Geisteswissenschaftler nicht immer rosig aus.
 
-Dabei wussten ihre Eltern genau, dass das Heiraten ihr damals noch gar nicht in den Sinn kam; \"Meinen Mann habe ich erst kennengelernt, als ich 35 Jahre alt war – und die Hauptverdienerin in unserer Familie war dann immer ich\", schmunzelt sie.
+Dabei wussten ihre Eltern genau, dass das Heiraten ihr damals noch gar nicht in den Sinn kam; "Meinen Mann habe ich erst kennengelernt, als ich 35 Jahre alt war – und die Hauptverdienerin in unserer Familie war dann immer ich", schmunzelt sie.
 
-Die Sorge ihrer Eltern, dass sie in eine finanziell prekäre Situation geraten könnte, war also unbegründet. Denn nachdem sie sich im Studium neben Griechisch und Latein auch noch der Philosophie, der Archäologie und der Kunstgeschichte gewidmet hatte, entschied sie sich für eine Schullaufbahn. Allerdings erst nach einigem Zögern und eigentlich nur aus Vernunftgründen. Vor Beginn ihres Referendariats in Darmstadt habe sie nämlich etliche Zweifel geplagt, erzählt sie: \"Klar, Wissen vermitteln, anderen etwas erklären – das konnte ich. **Aber ich habe mich daran erinnert, wie trocken wir früher manchmal zu unseren Lehrern waren. Und ich dachte: Jetzt kriegst du das zurück** .\" Doch was fehlte: Begeistert seien die Eifklässler gewesen, die sie damals unterrichtete. Wohl auch deshalb, weil sie beeindruckt waren von ihrem Wissen – und vor allem von ihrer Leidenschaft für die Fächer, die sie unterrichtete.
+Die Sorge ihrer Eltern, dass sie in eine finanziell prekäre Situation geraten könnte, war also unbegründet. Denn nachdem sie sich im Studium neben Griechisch und Latein auch noch der Philosophie, der Archäologie und der Kunstgeschichte gewidmet hatte, entschied sie sich für eine Schullaufbahn. Allerdings erst nach einigem Zögern und eigentlich nur aus Vernunftgründen. Vor Beginn ihres Referendariats in Darmstadt habe sie nämlich etliche Zweifel geplagt, erzählt sie: "Klar, Wissen vermitteln, anderen etwas erklären – das konnte ich. Aber ich habe mich daran erinnert, wie trocken wir früher manchmal zu unseren Lehrern waren. Und ich dachte: Jetzt kriegst du das zurück." Doch was fehlte: Begeistert seien die Elftklässler gewesen, die sie damals unterrichtete. Wohl auch deshalb, weil sie beeindruckt waren von ihrem Wissen – und vor allem von ihrer Leidenschaft für die Fächer, die sie unterrichtete.
 
-Der Deutsche Lehrkräftepreis wird jährlich vergeben. Dank dieser Initiative können Schüler besondere Anerkennung und Dankbarkeit für einen Lehrer oder eine Lehrerin ihrer Wahl zum Ausdruck bringen. Die Lehrer werden von Schülern aus dem laufenden oder vorherigen Abschlussjahr vorgeschlagen und in Texten, Fotos oder Videos präsentiert. Die Schüler arbeiten dabei entweder allein oder in einem Team. Sechs Abiturienten meldeten Brigitte Vollmer gemeinsam bei dem Wettbewerb an. \"Kurz vor der Abiturprüfung haben wir von dem Preis erfahren und dachten sofort, dass Frau Vollmer die Richtige dafür ist\", erzählt der 19-jährige Leon Walter. \"Kein Lehrer hat uns so gut auf das Abitur vorbereitet wie sie, dafür sind wir ihr wirklich dankbar.\" Um die Jury mit ihrem Beitrag zu überzeugen, drehten die Schüler zusammen ein Video, in dem sie Frau Vollmer vorstellten.
+Der Deutsche Lehrkräftepreis wird jährlich vergeben. Dank dieser Initiative können Schüler besondere Anerkennung und Dankbarkeit für einen Lehrer oder eine Lehrerin ihrer Wahl zum Ausdruck bringen. Die Lehrer werden von Schülern aus dem laufenden oder vorherigen Abschlussjahr vorgeschlagen und in Texten, Fotos oder Videos präsentiert. Die Schüler arbeiten dabei entweder allein oder in einem Team. Sechs Abiturienten meldeten Brigitte Vollmer gemeinsam bei dem Wettbewerb an. "Kurz vor der Abiturprüfung haben wir von dem Preis erfahren und dachten sofort, dass Frau Vollmer die Richtige dafür ist", erzählt der 19-jährige Leon Walter. "Kein Lehrer hat uns so gut auf das Abitur vorbereitet wie sie, dafür sind wir ihr wirklich dankbar." Um die Jury mit ihrem Beitrag zu überzeugen, drehten die Schüler zusammen ein Video, in dem sie Frau Vollmer vorstellten.
 
-Über den Lehrkräftepreis habe sie sich riesig gefreut, sagt sie. \"Es ist für mich nicht leicht, dass ich mich nun in den Ruhestand verabschieden muss, aber das ist ein gelungener Abschluss meiner beruflichen Laufbahn.\" Auch wenn sie ihre Arbeit vermissen wird, blickt sie optimistisch in die Zukunft: Denn sie möchte nicht ganz mit dem Unterrichten aufhören, sondern unter anderem an der Volkshochschule Kurse geben. Ob sie nicht erstmal Urlaub machen wolle? \"Danach steht mir jetzt eigentlich nicht der Sinn. Ich mache vielleicht ein paar kleine Wochenendausflüge, aber ich habe eigentlich ganz andere Pläne.\"
+Über den Lehrkräftepreis habe sie sich riesig gefreut, sagt sie. "Es ist für mich nicht leicht, dass ich mich nun in den Ruhestand verabschieden muss, aber das ist ein gelungener Abschluss meiner beruflichen Laufbahn." Auch wenn sie ihre Arbeit vermissen wird, blickt sie optimistisch in die Zukunft: Denn sie möchte nicht ganz mit dem Unterrichten aufhören, sondern unter anderem an der Volkshochschule Kurse geben. Ob sie nicht erstmal Urlaub machen wolle? "Danach steht mir jetzt eigentlich nicht der Sinn. Ich mache vielleicht ein paar kleine Wochenendausflüge, aber ich habe eigentlich ganz andere Pläne."
 
 Denn einige ihrer Abiturienten möchten mit ihr eine Reise nach Griechenland organisieren – eine Idee, die sie begeistert. Die Werke der antiken Dichter werden sie also weiterhin begleiten.`,
             questions: [
@@ -2434,46 +2027,46 @@ Denn einige ihrer Abiturienten möchten mit ihr eine Reise nach Griechenland org
             ]
           },
           { 
-            id: "s3", 
-            title: "Leseverstehen, Teil 3", 
-            points: 25,
-            passageTitle: "Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchما passt kein Text. Wählen Sie dann 'x'.",
+            id:"s3", 
+            title:"Leseverstehen, Teil 3", 
+            points:25,
+            passageTitle:"Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchmal passt kein Text. Wählen Sie dann 'x'.",
             passage: "",
-            questions: [],
+            questions:[],
             texts: [
               {id: "A", text: "Expedition ins Reich der Schneeleoparden. Schneeleoparden zählen zu den seltensten Großkatzen der Erde. Weltweit leben nur noch 4000 bis 6400 dieser Tiere in freier Wildbahn. Welchen Gefahren sind sie ausgesetzt? Und wie können wir sie schützen? Die interaktive Ausstellung „Expedition Schneeleopard\" nimmt die Besucher mit auf eine Reise in das Reich der seltenen Großkatzen. Mitmach-Ausstellung: wird zu einem Erlebnis für Groß und Klein. Die Ausstellung: ist bis zum 23. Januar im Zoologischen Forschungsmuseum Bonn, Di bis So von 10 bis 18 Uhr zu sehen.", correctAnswer: "19"},
               {id: "B", text: "Alte Jeans, Blusen oder Kleider hat jeder bei sich im Schrank. Ob das gute Stück zu eng ist, aus der Mode gekommen ist – werfen muss man es nicht. Aus alten Sachen lässt sich wunderbar Neues kreieren: vom Stuhlbzug bis zur trendigen Weste. Mit diesem Ratgeber nähen Anfänger Schritt für Schritt ihre neuen Accessoires aus alten Jeans ganz schnell zu einem neuen Schmuckstück. Autorin Amélie Betker widmet sich seit über fünfzehn Jahren Mode-Accessoires und teilt ihr Wissen und ihre Begeisterung fürs Nähen weiterzugeben. Amélie Betker: Aus alt mach neu – Nähen mit Jeansstoff, 96 Seiten, 16,99 Euro.", correctAnswer: "16"},
               {id: "C", text: "Blauer Sto mit Historie Am 20. Mai 1873 meldete der Amerikaner Levi Strauss das Patent auf die Blue Jeans an. Die Ausstellung „Blue Jeans – von der Arbeiterkleidung zum Laufsteg“ zeigt, wie sich die weltberühmte Hose im Laufe der Zeit entwickelte. Präsentiert werden Fotos, Filme und Zeitschriften, alte Jeans-Originale und neue Designerstücke. Modemuseum Düsseldorf 24. November bis 10. März Dienstag bis Sonntag von 10 bis 19 Uhr Eintritt: Erwachsene: 9 Euro Kinder und Jugendliche: 5 Euro.", correctAnswer: "20"},
               {id: "D", text: "Es ist ein sonniger Herbsttag, doch plötzlich fällt im Zauberland unerwartet Schnee. Während sich ihre Freunde in das Schneegetümmel stürzen, wundert sich Prinzessin Mina: Woher kommt der viele Schnee bloß? Und was hat es mit einem kleinen Schneefuchs, der sie am Waldrand gesehen hat? Kurz entschlossen macht sich Prinzessin Mina auf die Suche nach dem kleinen Fuchs. Eine warmherzige und stimmungsvoll illustrierte Wintergeschichte für kleine und große Prinzessinnen und Prinzen! Elisabeth Heller: Schnee im Zauberland. Für Kinder ab drei Jahren, gebundenes Buch, 52 Seiten, 17,90 €.", correctAnswer: "11"},
-              {id: "E", text: "Schnee in der Kunst  Ein Muss für alle Schneeliebhaber: Der Band zeigt, wie sich Künstler von 1800 bis heute vom Schnee inspirieren ließen. Künstlerischen Ausdruck findet der Schnee in Gemälden der Romantik, des Impressionismus, Symbolismus, Impressionismus und der Neuen Sachlichkeit. Schneemotive von der Frühzeit der Fotografie bis heute sowie ausgewählte Texte zur zeitgenössischen Kunst spannen den Bogen bis in die Gegenwart. Schnee in der Kunst, von Nadja Schwenzer, 312 Seiten, 200 Abbildungen gebunden mit Schutzumschlag, 39,80 € ", correctAnswer: ""},
-              {id: "f", text: "Märchenlandschaft aus Schnee und Eis Der beliebte Kurort Oberstdorf liegt am Fuße der Allgäuer Hochalpen. Winterwanderer kommen hier auf ihre Kosten: Auf den Wanderwegen gelangt man schnell in stille, verschneite Landschaft. Wir bieten ein Wanderurlaub in der Gruppe mit fünf leichten bis moderaten Winterwanderungen rund um Oberstdorf. Übernachtung in einem komfortablen Vier-Sterne-Hotel mit Wellnessbereich und Innenpool, 8 Tage mit Halbpension ab 988 € Infos unter: www.winterwanderwoche-oberstdorf.net ", correctAnswer: "15"},
-              {id: "G", text: "Wintersport im Wandel der Zeit Ob auf Skiern, Schlittschuhen oder Skiern, vor der Haustür oder im Winterurlaub in den Alpen: Sport und Spiel im Schnee sind für viele der Inbegri􏰆 eines großen Wintervergnügens. Dazu gehören auch private Fotos, die zeigen, wie sich Wintersport im letzten Jahrhundert entwickelt hat: vom einfachen Ausrüstungsstück und Kleidung bis zum Hightech-Ski. Die Ausstellung zeigt, wie die kalte Jahreszeit in der Mittepunkt gerückt ist. Erlebnis-Ausstellung für die ganze Familie. Termin: von 27.11. bis 27.02., Dienstag bis Sonntag, von 11 bis 17 Uhr Historisches Museum Prenzlau ", correctAnswer: "18"},
+              {id: "E", text: "Schnee in der Kunst Ein Muss für alle Schneeliebhaber: Der Band zeigt, wie sich Künstler von 1800 bis heute vom Schnee inspirieren ließen. Künstlerischen Ausdruck findet der Schnee in Gemälden der Romantik, des Impressionismus, Symbolismus, Impressionismus und der Neuen Sachlichkeit. Schneemotive von der Frühzeit der Fotografie bis heute sowie ausgewählte Texte zur zeitgenössischen Kunst spannen den Bogen bis in die Gegenwart. Schnee in der Kunst, von Nadja Schwenzer, 312 Seiten, 200 Abbildungen gebunden mit Schutzumschlag, 39,80 € ", correctAnswer: ""},
+              {id: "F", text: "Märchenlandschaft aus Schnee und Eis Der beliebte Kurort Oberstdorf liegt am Fuße der Allgäuer Hochalpen. Winterwanderer kommen hier auf ihre Kosten: Auf den Wanderwegen gelangt man schnell in stille, verschneite Landschaft. Wir bieten ein Wanderurlaub in der Gruppe mit fünf leichten bis moderaten Winterwanderungen rund um Oberstdorf. Übernachtung in einem komfortablen Vier-Sterne-Hotel mit Wellnessbereich und Innenpool, 8 Tage mit Halbpension ab 988 € Infos unter: www.winterwanderwoche-oberstdorf.net ", correctAnswer: "15"},
+              {id: "G", text: "Wintersport im Wandel der Zeit Ob auf Skiern, Schlittschuhen oder Skiern, vor der Haustür oder im Winterurlaub in den Alpen: Sport und Spiel im Schnee sind für viele der Inbegriff eines großen Wintervergnügens. Dazu gehören auch private Fotos, die zeigen, wie sich Wintersport im letzten Jahrhundert entwickelt hat: vom einfachen Ausrüstungsstück und Kleidung bis zum Hightech-Ski. Die Ausstellung zeigt, wie die kalte Jahreszeit in den Mittelpunkt gerückt ist. Erlebnis-Ausstellung für die ganze Familie. Termin: von 27.11. bis 27.02., Dienstag bis Sonntag, von 11 bis 17 Uhr Historisches Museum Prenzlau ", correctAnswer: "18"},
               {id: "H", text: "Atemberaubende Fotos leicht gemacht Sie möchten Fotos machen, die einzigartig sind? Melden Sie sich für unser Seminar an. Dort lernen Sie die besten Techniken für Landschaftsfotografie. Teilnahme nur nach vorheriger Zahlung. Begrenzter Zugang nur für fünf Personen. Kontaktieren Sie uns für weitere Informationen. Jetzt anmelden: www.nt-pictures.net ", correctAnswer: "12"},
               {id: "I", text: "Nähen statt Einkaufsstress Die Suche nach einer perfekt sitzenden Jeans kann manchmal zum Albtraum werden: Stundenlang zieht man durch die Geschäfte, probiert eine Hose nach der anderen an. Warum also nicht einfach Jeans selbst nähen? Das ist einfacher, als es klingt. Buchen Sie unseren Online-Nähkurs für alle. Sie werden überrascht sein, wie viel Freude das Nähen macht und wie schnell Sie Ihre neue Hose in der Hand halten. ", correctAnswer: ""},
-              {id: "J", text: "Tolle Aufnahmen in einer spektakulären Landschaft Smaragdgrünes Wasser, majestätische Felswände und mit ein wenig Glück – ein hellblauer Himmel. Diesen Traum findet man an der südlichsten Spitze Deutschlands: Die Rede ist vom Königssee in Bayern – der ideale Ort für unseren Workshop Landschaftsfotografie. Programmpunkte:  Einführung zur Landschaftsfotografie Arbeit mit natürlichem Licht Bildkomposition Persönliches Feedback zu den Fotos Kurs für Fortgeschrittene, maximal 5 Teilnehmer Leitung: Jenny Holzhausen, Landschaftsfotografin und Buchautorin Termin: Samstag, 04.06.2022, von 9 Uhr bis 17 Uhr Preis: 99 €Trepunkt: Seestraße 3, 83471 Schönau am Königssee ", correctAnswer: "13"},
+              {id: "J", text: "Tolle Aufnahmen in einer spektakulären Landschaft Smaragdgrünes Wasser, majestätische Felswände und mit ein wenig Glück – ein hellblauer Himmel. Diesen Traum findet man an der südlichsten Spitze Deutschlands: Die Rede ist vom Königssee in Bayern – der ideale Ort für unseren Workshop Landschaftsfotografie. Programmpunkte: Einführung zur Landschaftsfotografie Arbeit mit natürlichem Licht Bildkomposition Persönliches Feedback zu den Fotos Kurs für Fortgeschrittene, maximal 5 Teilnehmer Leitung: Jenny Holzhausen, Landschaftsfotografin und Buchautorin Termin: Samstag, 04.06.2022, von 9 Uhr bis 17 Uhr Preis: 99 €Trepunkt: Seestraße 3, 83471 Schönau am Königssee ", correctAnswer: "13"},
               {id: "K", text: "Die Schneekönigin Es ist ein kalter, verschneiter Wintertag. Da bekommt der junge Kai Besuch von der Schneekönigin – und sie nimmt ihn mit in ihr eisiges Reich. Die mutige Gerda versucht alles, um Kai zu retten. Das Familien-Musical „Die Schneekönigin\" basiert auf dem bekannten Märchen von Hans-Christian Andersen. Unter der Regie von Bastian Nüchtermeier ist eine aufwendige Bühnenshow entstanden, Kinder ab 5 Jahren und Erwachsene sind eingeladen, in eine magische Welt einzutauchen. Und sogar Eis zum Schmelzen bringt. Die Schneekönigin, das Musical Konzertsaal Jena Sonntag, 4.12., 15 Uhr Tickets ab 19,95 € ", correctAnswer: ""},
-              {id: "L", text: "Lieblingsorte Der Ei􏰆elturm in Paris, Urlaubsorte der Kindheit, der Wald hinter dem Haus oder das Sofa daheim: An Lieblingsorten fühlt man sich wohl und man besucht diese gerne. Sie inspirieren aber auch Maler, Schriftsteller und Fotografen. Und vielleicht auch Sie? Bei diesem Fotowettbewerb suchen wir Ihre Aufnahmen von besonderen Orten. Belohnt werden die besten Fotos mit tollen Preisen und einer Verö􏰆entlichung in unserem Magazin. Einsendeschluss: am 30. Juni. Mehr Infos: www.fotomagazin-linse.net.", correctAnswer: ""}
+              {id: "L", text: "Lieblingsorte Der Eiffelturm in Paris, Urlaubsorte der Kindheit, der Wald hinter dem Haus oder das Sofa daheim: An Lieblingsorten fühlt man sich wohl und man besucht diese gerne. Sie inspirieren aber auch Maler, Schriftsteller und Fotografen. Und vielleicht auch Sie? Bei diesem Fotowettbewerb suchen wir Ihre Aufnahmen von besonderen Orten. Belohnt werden die besten Fotos mit tollen Preisen und einer Veröffentlichung in unserem Magazin. Einsendeschluss: am 30. Juni. Mehr Infos: www.fotomagazin-linse.net.", correctAnswer: ""}
             ],
             situations: [
               {id: "11", text: "Die Tochter einer Bekannten wird vier Jahre alt. Sie möchten ihr etwas zum Geburtstag mitbringen."},
-              {id: "12", text: " Ein Bekannter hat sich einen Fotoapparat gekauft und möchte die Grundlagen der Fotografie erlernen."},
+              {id: "12", text: "Ein Bekannter hat sich einen Fotoapparat gekauft und möchte die Grundlagen der Fotografie erlernen."},
               {id: "13", text: "Ein Bekannter möchte eine mehrtägige Reise unternehmen und dabei einen Fotokurs machen."},
               {id: "14", text: "Eine Bekannte kann gut fotografieren und hat bereits einige Kurse gemacht. Sie würde gerne neue kreative Techniken kennenlernen."},
-              {id: "15", text: "Ein Freund würde gerne im Winter verreisen. Er möchte viel Zeit an der frischen Luft verbringen und sich bewegen"},
+              {id: "15", text: "Ein Freund würde gerne im Winter verreisen. Er möchte viel Zeit an der frischen Luft verbringen und sich bewegen."},
               {id: "16", text: "Eine Freundin hat viele Kleidungsstücke, die sie nicht mehr trägt. Sie sucht Anregungen, was sie damit machen könnte."},
               {id: "17", text: "Sie besuchen einen Freund, der sich für Malerei interessiert. Sie möchten ihm ein passendes Geschenk mitbringen."},
               {id: "18", text: "Sie fahren gerne Ski und möchten mit Ihrer Familie Wintersport machen."},
               {id: "19", text: "Sie möchten mit Ihrem zwölfjährigen Sohn eine Ausstellung besuchen. Er interessiert sich für Tiere."},
-              {id: "20", text: "Sie treffen sich an einem Sonntagnachmittag mit einer Freundin, die sich gerne mit Mode und ihrer Geschichte beschäftigt. Sie möchten mit ihr etwas unternehmen"}
+              {id: "20", text: "Sie treffen sich an einem Sonntagnachmittag mit einer Freundin, die sich gerne mit Mode und ihrer Geschichte beschäftigt. Sie möchten mit ihr etwas unternehmen."}
             ]
           },
           { 
-            id: "s4", 
-            title: "Sprachbausteine, Teil 1", 
-            points: 15,
-            passageTitle: "Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.",
+            id:"s4", 
+            title:"Sprachbausteine, Teil 1", 
+            points:15,
+            passageTitle:"Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.",
             passage: "",
-            questions: [],
+            questions:[],
             fillBlanks: [
               {
                 id: "21",
@@ -2530,9 +2123,9 @@ Denn einige ihrer Abiturienten möchten mit ihr eine Reise nach Griechenland org
 
 nun habe ich mich schon so lange nicht bei dir gemeldet - das tut mir wirklich leid! Ich hatte in den vergangenen Monaten viel Stress, weil ich ja nun studiere und nebenbei noch arbeiten muss, ________ meine Miete und alles andere bezahlen zu können. Zum Glück macht mir mein Nebenjob wenigstens Spaß. Ich weiß nicht, ________ ich das sonst durchhalten würde. Vielleicht habe ich dir schon erzählt, dass ich abends und am Wochenende in einer Kneipe in der Küche helfe. Das ist zwar oft sehr anstrengend, ________ anderseits ist dauernd was los, es wird nicht langweilig, und meine Kollegen sind total nett. Erinnerst du dich noch an unsere Zeit in der Grundschule? Mit acht Jahren wollte ich ja ________ Kellnerin werden, weil man da Trinkgeld bekommt. Naja, jetzt bin ich in der Küche gelandet, knapp daneben ist auch vorbei ;)
 
-Was macht denn deine Ausbildung? Wenn ich ________ nicht täusche, bist du ja in einem halben Jahr schon fertig, oder? Das ist ja nicht more lang!
+Was macht denn deine Ausbildung? Wenn ich ________ nicht täusche, bist du ja in einem halben Jahr schon fertig, oder? Das ist ja nicht mehr lang!
 
-Neulich habe ich übrigens Tina und Kevin hier in der Nähe der Uni getroffen - die waren ja schon ein Paar, ________ wir noch in der Schule gegangen sind, und jetzt will sie tatsächlich verheiratet!
+Neulich habe ich übrigens Tina und Kevin hier in der Nähe der Uni getroffen - die waren ja schon ein Paar, ________ wir noch in der Schule gegangen sind, und jetzt will sie tatsächlich heiraten!
 
 Wie sehen denn deine Pläne für die ________ Wochenenden aus? Wir könnten uns ja vielleicht mal wieder treffen und in Ruhe quatschen - hättest du Lust ________ ?
 
@@ -2543,12 +2136,12 @@ Viele Grüße,
 Nadine`
           },
           { 
-            id: "s5", 
-            title: "Sprachbausteine, Teil 2", 
-            points: 15,
-            passageTitle: "Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort فقط einmal verwenden. Nicht alle Wörter passen in den Text.",
+            id:"s5", 
+            title:"Sprachbausteine, Teil 2", 
+            points:15,
+            passageTitle:"Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort nur einmal verwenden. Nicht alle Wörter passen in den Text.",
             passage: "",
-            questions: [],
+            questions:[],
             fillBlanks2: [
               {
                 id: "31",
@@ -2601,23 +2194,197 @@ Nadine`
                 correctAnswer: "DENN"
               }
             ],
-            wordBank: ["AN", "AUF", "BEINAHE", "DAFÜR", "DANN", "DENN", "DÜRFEN", "FAST", "INNERHALB", "KAUM", "MÜSSEN", "SOLLEN", "STATT", "VOR", "VORBEI"],
             fillText2: `Das Fahrrad: ernsthafte Konkurrenz fürs Auto?
 
 Welches Fortbewegungsmittel, denken Sie, wird in Deutschland am häufigsten benutzt? Natürlich das Automobil. Volkswagen, Porsche, Mercedes Benz, BMW, Audi: In ________ einem anderen Land gibt es so viele Automobilfabriken wie in Deutschland, spielt die Automobilindustrie eine so große Rolle. Nahezu jeder Haushalt verfügt über mindestens ein Auto, das Auto spielt im Leben der Deutschen eine große Rolle, sowohl als Fortbewegungsmittel zum Arbeitsplatz oder in den Urlaub als auch als Statussymbol: Zeig mir dein Auto und ich weiß, wer du bist.
 
-Doch hat das Autofahren auch Schattenseiten. Mangelnde Bewegungsmöglichkeiten, gesundheitliche Probleme und Stress bringen zumindest in den Großstädten immer more Autofahrer dazu, sich vom Automobil freizumachen und ________ ein anderes Verkehrsmittel umzusteigen, das in dem Ruf steht, gesünder zu sein als das Auto: das Fahrrad. Nicht nur in der Freizeit, sondern auch auf dem Weg zum Arbeitsplatz wird das Rad benutzt. "Ich habe keine Lust, Morgen für Morgen im Stau zu stehen und Zeit zu verlieren", sagt Bettina Meier (25): "Da ist es viel entspannender, auf den zumeist gut ausgebauten Fahrradwegen an den im Stau wartenden Fahrzeugen ________ und ausgeruht am Arbeitsplatz anzukommen."
+Doch hat das Autofahren auch Schattenseiten. Mangelnde Bewegungsmöglichkeiten, gesundheitliche Probleme und Stress bringen zumindest in den Großstädten immer mehr Autofahrer dazu, sich vom Automobil freizumachen und ________ ein anderes Verkehrsmittel umzusteigen, das in dem Ruf steht, gesünder zu sein als das Auto: das Fahrrad. Nicht nur in der Freizeit, sondern auch auf dem Weg zum Arbeitsplatz wird das Rad benutzt. "Ich habe keine Lust, Morgen für Morgen im Stau zu stehen und Zeit zu verlieren", sagt Bettina Meier (25): "Da ist es viel entspannender, auf den zumeist gut ausgebauten Fahrradwegen an den im Stau wartenden Fahrzeugen ________ und ausgeruht am Arbeitsplatz anzukommen."
 
 Dass Fahrradfahren um einiges gesünder ist, als hinter dem Lenkrad zu sitzen, bestätigen auch die Mediziner. Wer Fahrrad fährt ________ zu sitzen, bringt seinen Blutkreislauf in Schwung, stärkt die Abwehrkräfte des Körpers und trainiert seinen Körper. Auch die Bewegung an der frischen Luft tut Menschen gut, die sich sonst die meiste Zeit ________ geschlossener Räume in Büros, Schulen oder Fabriken aufhalten ________.
 
-Auch die Geschäftswelt hat die Fahrradfahrer als Kunden entdeckt. Ein breites Angebot ________ Zubehör für Fahrräder von schicken Radfelgen über sportliche Mehrganggetriebe, mit denen Berge kein Problem mehr darstellen, bis zur Designer-Trinkflasche machen aus dem einfachen Fahrrad ein exlusives Fahrzeug. Und natürlich darf bei keinem Fahrradfahrer eine aufwändige Sicherheitsausstattung more fehlen: Schutzhelme, Ellenbogen- und Knieschützer, die das Fahrrad im Falle eines Unfalls fast so sicher wie einen Panzer machen ________.
+Auch die Geschäftswelt hat die Fahrradfahrer als Kunden entdeckt. Ein breites Angebot ________ Zubehör für Fahrräder von schicken Radfelgen über sportliche Mehrganggetriebe, mit denen Berge kein Problem mehr darstellen, bis zur Designer-Trinkflasche machen aus dem einfachen Fahrrad ein exklusives Fahrzeug. Und natürlich darf bei keinem Fahrradfahrer eine aufwändige Sicherheitsausstattung mehr fehlen: Schutzhelme, Ellenbogen- und Knieschützer, die das Fahrrad im Falle eines Unfalls fast so sicher wie einen Panzer machen ________.
 
 Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ________ sind die Autoschlangen wieder länger. ________ einen praktischen Wetterschutz für Radfahrer haben die Geschäfte noch nicht im Angebot.`
           }
         ]
-      };
+      },
+      
+      hoeren: {
+        id: "exam-hörverstehen",
+        durationSec: 17 * 60,
+        sections: [
+          { 
+            id:"hörverstehen1", 
+            title:"Hörverstehen, Teil 1", 
+            points:25,
+            correctAnswers: {
+              "41": "falsch",
+              "42": "richtig",
+              "43": "richtig",
+              "44": "falsch",
+              "45": "falsch"
+            },
+            questions: [
+              {
+                id: "41",
+                text: "Die Deutsche Lufthansa hat ihre Führungsposition verloren."
+              },
+              {
+                id: "42", 
+                text: "Ein Bonner Sportverein zeigt der Öffentlichkeit sein Angebot."
+              },
+              {
+                id: "43",
+                text: "Die Rahmenbedingungen in deutschen Pflegeheimen bedürfen dringend einer Änderung."
+              },
+              {
+                id: "44",
+                text: "Durch moderne Wärmedämmung könnten die Heizkosten deutlich reduziert werden."
+              },
+              {
+                id: "45",
+                text: "Das Nationale Olympische Komitee hat die Dopingsperre für Tom Sanders aufgehoben."
+              }
+            ]
+          },
+          { 
+            id:"hörverstehen2", 
+            title:"Hörverstehen, Teil 2", 
+            points:25,
+            correctAnswers: {
+              "46": "richtig",
+              "47": "falsch",
+              "48": "richtig",
+              "49": "richtig",
+              "50": "richtig",
+              "51": "falsch",
+              "52": "falsch",
+              "53": "richtig",
+              "54": "richtig",
+              "55": "falsch"
+            },
+            questions: [
+              {
+                id: "46",
+                text: "Der Berufseinstieg ist in anderen Ländern nicht leicht."
+              },
+              {
+                id: "47",
+                text: "Carina ist ihr Beruf wichtiger als ihr Privatleben."
+              },
+              {
+                id: "48",
+                text: "Carina hat sich der Agentur mit einem Videofilm vorgestellt."
+              },
+              {
+                id: "49",
+                text: "Carina musste für einen Film ihr Gewicht stark verändern."
+              },
+              {
+                id: "50", 
+                text: "Carina macht lieber gefühlvolle Filme als Action-Filme."
+              },
+              {
+                id: "51",
+                text: "Wegen der vielen Fehlstunden hatte Carina Probleme mit dem Direktor der Schule."
+              },
+              {
+                id: "52",
+                text: "Carinas Eltern haben ihre Tochter von Anfang an unterstützt."
+              },
+              {
+                id: "53",
+                text: "Carina finde den Wechsel zwischen Schule und Drehterminen nicht leicht."
+              },
+              {
+                id: "54",
+                text: "Bei Dialogen darf man auch selbst etwas erfinden."
+              },
+              {
+                id: "55",
+                text: "Carina empfiehlt, sich andere Schauspieler im Theater und in Filmen anzusehen."
+              }
+            ]
+          },
+          { 
+            id:"hörverstehen3", 
+            title:"Hörverstehen, Teil 3", 
+            points:25,
+            correctAnswers: {
+              "56": "falsch",
+              "57": "richtig",
+              "58": "falsch",
+              "59": "richtig",
+              "60": "falsch"
+            },
+            questions: [
+              {
+                id: "56",
+                text: "Bei der Fahrschule kann man sich über das Internet anmelden."
+              },
+              {
+                id: "57",
+                text: "Die Anruferin ist im Hinblick auf die Abfahrtszeit flexibel."
+              },
+              {
+                id: "58",
+                text: "Für den Halb-Marathon kann man sich noch am Sonntag registrieren lassen."
+              },
+              {
+                id: "59",
+                text: "Bei dem Flug nach Mallorca ändert sich die Abflugzeit."
+              },
+              {
+                id: "60",
+                text: "In Halle D wird aus E-Books vorgelesen."
+              }
+            ]
+          }
+        ]
+      },
+      
+      schreiben: {
+        id: "exam-schreiben-001",
+        durationSec: 30 * 60,
+        sections: [
+          { 
+            id:"s1", 
+            title:"Schreiben, Teil 1", 
+            points:45,
+            passageTitle:"Aufgabe: Schreiben Sie eine E-Mail",
+            passage: "",
+            writingTask: {
+              prompt: `Möchten Sie in Ihrer Freizeit mehr erleben? Neue Leute aus Mainz kennenlernen? Am Wochenende nie mehr allein sein? 
+      Dann werden Sie Mitglied im Freizeitverein!
+      Wir organisieren verschiedene Aktivitäten in Mainz und Umgebung:
+      Wanderungen, Fahrradtouren, Museums- und Theaterbesuche, Spiele- und Kinoabende, Restaurantbesuche und Ausflüge.
+      Jede Woche stehen mindestens zwei unterschiedliche Angebote auf dem Programm.
+      Ob Sport oder Kultur – bei uns kommt jeder auf seine Kosten. Sie können viel Neues ausprobieren und lernen dabei nette Leute kennen.
+      Unsere Mitglieder sind zwischen 26 und 85 Jahre alt. Bei uns ist jeder willkommen, ob Student oder Senior. 
+      Sie finden bei uns neue Freunde und Bekannte, mit denen Sie viel erleben können. Probieren Sie es doch einfach mal aus!
+      Die Mitgliedschaft kostet 20 Euro pro Monat.`,
+              requirements: [
+                "Erklären Sie, was Sie nach dem Lesen der Anzeige erwartet hatten.",
+                "Erklären Sie, warum Sie mit dem Angebot des Freizeitvereins nicht zufrieden sind.",
+                "Machen Sie Verbesserungsvorschläge zum Programm.",
+                "Erklären Sie, was Sie tun werden, wenn sich nichts ändert."
+              ],
+              wordCount: 0
+            }
+          }
+        ]
+      }
+    };
 
-      /* ===== State & DOM refs ===== */
+    // ===== LESEN PAGE FUNCTIONALITY =====
+    function initLesenPage() {
+      const exam = EXAM_DATA.lesen;
+      
+      window.selectedHeadingId = null;
+      window.selectedSituationId = null;
+      window.selectedWordId = null;
+      window.selectedWord = null;
+      
       let state = { 
         sectionIndex: 0, 
         questionIndex: 0, 
@@ -2626,7 +2393,9 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null
+        timerInterval: null,
+        examEnded: false,
+        currentPage: 'lesen'
       };
       const topTiles = document.getElementById('topTiles-lesen');
       const passageTitleEl = document.getElementById('passageTitle-lesen');
@@ -2641,7 +2410,30 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
-      /* ===== Timer Functions ===== */
+      function handleTimeExpired() {
+        if (state.examEnded) return;
+        state.examEnded = true;
+        
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
+        state.showResults = true;
+        renderAll();
+        
+        setTimeout(() => {
+          if (state.sectionIndex < exam.sections.length - 1) {
+            state.sectionIndex++;
+            state.showResults = false;
+            state.examEnded = false;
+            renderAll();
+          } else {
+            showPage('hoeren-page');
+          }
+        }, 2000);
+      }
+
       function startTimer(){
         if(state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -2652,6 +2444,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           if(state.remaining <= 0){
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
+            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -2665,6 +2458,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
+        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -2675,11 +2469,10 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Reset Section Function ===== */
       function resetCurrentSection() {
         const currentSection = exam.sections[state.sectionIndex];
         
-        if (confirm(`Möchten Sie wirklich den Teil "${currentSection.title}" zurücksetzen? Alle Antworten in diesem Teil werden gelöscht.`)) {
+        if (confirm(`Möchten Sie wirklich den Teil "${currentSection.title}" zurücksetzen?`)) {
           if (currentSection.id === 's1') {
             currentSection.texts.forEach(text => {
               delete state.answers[text.id];
@@ -2706,7 +2499,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       }
 
-      /* ===== Render ===== */
       function renderTopTiles(){ 
         topTiles.innerHTML=''; 
         exam.sections.forEach((sec,idx)=>{ 
@@ -2728,6 +2520,8 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       }
 
       function renderAll(){
+        if (state.examEnded) return;
+        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         sectionNameEl.textContent = section.title;
@@ -2756,7 +2550,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       function renderPart1(){
         const section = exam.sections[state.sectionIndex];
         
-        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. Sie können jede Überschrift nur einmal verwenden.</div>`;
+        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. (Klicken: Titel auswählen → auf Text klicken)</div>`;
         
         section.texts.forEach((text, idx) => {
           const letter = String.fromCharCode(97 + idx);
@@ -2766,7 +2560,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             <div class="text-container">
               <div class="text-title">Text ${letter.toUpperCase()}</div>
               <div class="text-content">${text.content}</div>
-              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}">
+              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}" onclick="window.lesenApp.handleSlotClick('${text.id}')">
                 ${selectedHeading ? getHeadingTextById(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
               </div>
             </div>
@@ -2780,7 +2574,10 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           const isUsed = section.texts.some(text => state.answers[text.id] === heading.id);
           
           headingsHTML += `
-            <div class="heading-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-heading-id="${heading.id}">
+            <div class="heading-item ${isUsed ? 'used' : ''} ${window.selectedHeadingId === heading.id ? 'selected' : ''}" 
+                 draggable="${!isUsed}" 
+                 data-heading-id="${heading.id}"
+                 onclick="window.lesenApp.handleHeadingClick('${heading.id}')">
               ${heading.id}) ${heading.text}
             </div>
           `;
@@ -2794,6 +2591,37 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         
         questionBodyEl.innerHTML = '';
         questionTitleEl.textContent = '';
+      }
+
+      function handleHeadingClick(headingId) {
+        const section = exam.sections[state.sectionIndex];
+        const isUsed = section.texts.some(text => state.answers[text.id] === headingId);
+        if (isUsed) return;
+        
+        if (window.selectedHeadingId === headingId) {
+          window.selectedHeadingId = null;
+        } else {
+          window.selectedHeadingId = headingId;
+        }
+        renderPart1();
+      }
+
+      function handleSlotClick(textId) {
+        if (window.selectedHeadingId) {
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === window.selectedHeadingId) {
+              delete state.answers[key];
+            }
+          });
+          
+          state.answers[textId] = window.selectedHeadingId;
+          window.selectedHeadingId = null;
+          renderAll();
+        } 
+        else if (state.answers[textId]) {
+          delete state.answers[textId];
+          renderAll();
+        }
       }
 
       function getHeadingTextById(id){
@@ -2834,6 +2662,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             });
             
             state.answers[textId] = headingId;
+            window.selectedHeadingId = null;
             renderAll();
           });
         });
@@ -2877,7 +2706,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         const section = exam.sections[state.sectionIndex];
         
         let textsHTML = `
-          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. Sie können jede Situation nur einmal verwenden. Manchmal passt keine Situation.</div>
+          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. (Klicken: Situation auswählen → auf Text klicken)</div>
           <div class="texts-list">
             <h3>Texte (A-L)</h3>
         `;
@@ -2891,7 +2720,10 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               <div class="text-letter">${text.id})</div>
               <div class="text-content">${text.text}</div>
               <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" data-text-id="${text.id}">
-                ${selectedSituation ? selectedSituation.text : (userAnswer === 'X' ? 'X - Keine passende Situation' : 'Ziehen Sie hier eine Situation hin')}
+                <span onclick="window.lesenApp.handleSituationSlotClick('${text.id}')">
+                  ${selectedSituation ? selectedSituation.text : (userAnswer === 'X' ? 'X - Keine passende Situation' : 'Ziehen Sie hier eine Situation hin')}
+                </span>
+                ${userAnswer === 'X' ? `<button class="restore-btn" onclick="window.lesenApp.restoreX('${text.id}')">↩️ Zurück</button>` : ''}
               </div>
             </div>
           `;
@@ -2912,10 +2744,13 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           const isX = state.answers[situation.id] === 'X';
           
           situationsHTML += `
-            <div class="situation-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-situation-id="${situation.id}">
+            <div class="situation-item ${isUsed ? 'used' : ''} ${window.selectedSituationId === situation.id ? 'selected' : ''}" 
+                 draggable="${!isUsed}" 
+                 data-situation-id="${situation.id}"
+                 onclick="${!isUsed ? `window.lesenApp.handleSituationClick('${situation.id}')` : ''}">
               <div class="situation-number">${situationNumber}.</div>
               <div class="situation-text">${situation.text}</div>
-              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}')">X - Kein passender Text</button>` : ''}
+              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}'); event.stopPropagation();">X - Kein passender Text</button>` : ''}
             </div>
           `;
         });
@@ -2929,6 +2764,44 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         setupPart3DragAndDrop();
       }
 
+      function restoreX(textId) {
+        const situationId = Object.keys(state.answers).find(key => state.answers[key] === textId);
+        if (situationId) {
+          delete state.answers[situationId];
+        }
+        renderAll();
+      }
+
+      function handleSituationClick(situationId) {
+        if (window.selectedSituationId === situationId) {
+          window.selectedSituationId = null;
+        } else {
+          window.selectedSituationId = situationId;
+        }
+        renderPart3();
+      }
+
+      function handleSituationSlotClick(textId) {
+        if (window.selectedSituationId) {
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === window.selectedSituationId) {
+              delete state.answers[key];
+            }
+          });
+          
+          state.answers[window.selectedSituationId] = textId;
+          window.selectedSituationId = null;
+          renderAll();
+        } 
+        else {
+          const situationId = Object.keys(state.answers).find(key => state.answers[key] === textId);
+          if (situationId) {
+            delete state.answers[situationId];
+            renderAll();
+          }
+        }
+      }
+
       function markNoMatch(situationId) {
         Object.keys(state.answers).forEach(key => {
           if(state.answers[key] === situationId) {
@@ -2937,8 +2810,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         });
         
         state.answers[situationId] = 'X';
-        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
-        
+        window.selectedSituationId = null;
         renderAll();
       }
 
@@ -2976,6 +2848,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             });
             
             state.answers[situationId] = textId;
+            window.selectedSituationId = null;
             renderAll();
           });
         });
@@ -2999,19 +2872,13 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         section.fillBlanks.forEach(blank => {
           const userAnswer = state.answers[blank.id];
           const displayText = userAnswer ? userAnswer : '________';
-          tempText = tempText.replace(`BLANK_${blank.id}`, `<span class="blank-word ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}">${displayText}</span>`);
+          tempText = tempText.replace(`BLANK_${blank.id}`, `<span class="blank-word ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}" onclick="window.lesenApp.handleBlankClick('${blank.id}')">${displayText}</span>`);
         });
         
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können die Lücken in beliebiger Reihenfolge ausfüllen.</div>
+          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort.</div>
           <div class="fill-blank-container">${tempText}</div>
         `;
-        
-        document.querySelectorAll('.blank-word').forEach(blank => {
-          blank.addEventListener('click', (e) => {
-            showOptionsPopup(e.target);
-          });
-        });
         
         let optionsHTML = `<div class="horizontal-options" style="gap: 8px;">`;
         
@@ -3019,13 +2886,12 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           const userAnswer = state.answers[blank.id];
           
           optionsHTML += `
-            <div class="option-row" style="padding: 8px; margin-bottom: 5px;">
+            <div class="option-row">
               <div class="option-number">${blank.id}</div>
               <div class="option-buttons">
                 ${blank.options.map(opt => `
                   <div class="option-btn ${userAnswer === opt ? 'selected' : ''}" 
-                       onclick="window.lesenApp.selectSprachbausteine1('${blank.id}', '${opt}')" 
-                       style="padding: 6px 12px; font-size: 12px;">
+                       onclick="window.lesenApp.selectSprachbausteine1('${blank.id}', '${opt}')">
                     ${opt}
                   </div>
                 `).join('')}
@@ -3041,17 +2907,10 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         headingsBankContainer.innerHTML = '';
       }
 
-      function showOptionsPopup(blankElement){
-        const existingPopup = document.querySelector('.options-popup');
-        if(existingPopup) {
-          existingPopup.remove();
-        }
-        
-        const blankId = blankElement.getAttribute('data-blank-id');
-        const section = exam.sections.find(s => s.id === 's4');
+      function handleBlankClick(blankId) {
+        const section = exam.sections[state.sectionIndex];
         const blank = section.fillBlanks.find(b => b.id === blankId);
-        
-        if(!blank) return;
+        if (!blank) return;
         
         const popup = document.createElement('div');
         popup.className = 'options-popup';
@@ -3062,12 +2921,17 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           optionItem.textContent = opt;
           optionItem.onclick = () => {
             selectSprachbausteine1(blankId, opt);
-            popup.remove();
+            document.querySelectorAll('.options-popup').forEach(p => p.remove());
           };
           popup.appendChild(optionItem);
         });
         
-        blankElement.appendChild(popup);
+        document.querySelectorAll('.options-popup').forEach(p => p.remove());
+        
+        const element = document.querySelector(`[data-blank-id="${blankId}"]`);
+        if (element) {
+          element.appendChild(popup);
+        }
       }
 
       function selectSprachbausteine1(blankId, answer){
@@ -3077,54 +2941,46 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
 
       function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
-        // Build text but replace blanks with unique placeholders first (prevents ambiguous replacements)
+        
         let textWithPlaceholders = section.fillText2;
         const placeholders = [];
         section.fillBlanks2.forEach(blank => {
           const ph = `BLANK_${blank.id}`;
           placeholders.push({id: blank.id, ph});
-          // replace first occurrence of the visual underline with placeholder
           textWithPlaceholders = textWithPlaceholders.replace('________', ph);
         });
 
-        // Now replace placeholders with actual span elements showing current answer (or underscore)
         placeholders.forEach(item => {
           const userAnswer = state.answers[item.id];
           const displayText = userAnswer ? userAnswer : '________';
-          const span = `<span class="blank-slot ${userAnswer ? 'has-answer' : ''}" data-blank-id="${item.id}">${displayText}</span>`;
+          const span = `<span class="blank-slot ${userAnswer ? 'has-answer' : ''} ${window.selectedWordId === item.id ? 'selected' : ''}" data-blank-id="${item.id}" onclick="window.lesenApp.handleWordSlotClick('${item.id}')">${displayText}</span>`;
           textWithPlaceholders = textWithPlaceholders.replace(item.ph, span);
         });
 
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können jedes Wort nur einmal verwenden.</div>
+          <div class="instructions">Klicken Sie auf eine Lücke und dann auf ein Wort aus der Liste.</div>
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
-        // attach click handlers to slots
-        document.querySelectorAll('.blank-slot').forEach(slot => {
-          slot.addEventListener('click', (e) => {
-            // use the element itself to open popup
-            showSprachbausteine2Options(slot);
-          });
-        });
-
-        // Build word bank on the right
-        let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
+        let wordBankHTML = `<div class="word-bank-vertical">`;
         const usedWords = Object.values(state.answers);
-        // Use section.wordBank if present, otherwise derive from fillBlanks2 options
-        const bank = section.wordBank && section.wordBank.length ? section.wordBank : (section.fillBlanks2[0] ? section.fillBlanks2[0].options : []);
+        const bank = section.fillBlanks2[0] ? section.fillBlanks2[0].options : [];
+        
         bank.forEach(word => {
           const isUsed = usedWords.includes(word);
+          const isSelected = window.selectedWord === word;
+          
           wordBankHTML += `
-            <div class="bank-word-vertical ${isUsed ? 'used' : ''}" 
+            <div class="bank-word-vertical ${isUsed ? 'used' : ''} ${isSelected ? 'selected' : ''}" 
                  draggable="${!isUsed}" 
                  data-word="${word}"
-                 ${!isUsed ? `onclick="window.lesenApp.selectSprachbausteine2FromBank('${word}')"` : ''}>
+                 onclick="${!isUsed ? `window.lesenApp.handleWordClick('${word}')` : ''}">
               ${word}
             </div>
           `;
         });
         wordBankHTML += `</div>`;
+        
         questionBodyEl.innerHTML = wordBankHTML;
         questionTitleEl.textContent = '';
         headingsBankContainer.innerHTML = '';
@@ -3132,226 +2988,231 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         setupSprachbausteine2DragAndDrop();
       }
 
-      // --- Added functions to handle drag/drop and clicks for Sprachbausteine Teil 2 ---
-      let lastClickedSprachSlot = null;
+      function handleWordClick(word) {
+        if (window.selectedWord === word) {
+          window.selectedWord = null;
+          window.selectedWordId = null;
+        } else {
+          window.selectedWord = word;
+          window.selectedWordId = null;
+        }
+        renderSprachbausteine2();
+      }
+
+      function handleWordSlotClick(blankId) {
+        if (window.selectedWord) {
+          const word = window.selectedWord;
+          
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === word) {
+              delete state.answers[key];
+            }
+          });
+          
+          state.answers[blankId] = word;
+          window.selectedWord = null;
+          renderSprachbausteine2();
+        } 
+        else if (state.answers[blankId]) {
+          delete state.answers[blankId];
+          renderSprachbausteine2();
+        }
+      }
 
       function setupSprachbausteine2DragAndDrop(){
-        // bank words: make draggable if not used, attach dragstart
-        const bankWords = Array.from(document.querySelectorAll('.bank-word-vertical'));
-        bankWords.forEach(el => {
-          const word = el.dataset.word;
-          if(!el.classList.contains('used')){
-            el.setAttribute('draggable','true');
-          } else {
-            el.setAttribute('draggable','false');
-          }
-          // ensure single attached listener
-          el.removeEventListener('dragstart', el._dstart);
-          el._dstart = (e) => {
-            e.dataTransfer.setData('text/plain', word);
-            // also set an indicator
-            e.dataTransfer.setData('source', 'bank');
-          };
-          el.addEventListener('dragstart', el._dstart);
-
-          // keep onclick behavior (select into clicked slot)
-          el.removeEventListener('click', el._onclick);
-          el._onclick = () => {
-            if(el.classList.contains('used')) return;
-            selectSprachbausteine2FromBank(word);
-          };
-          el.addEventListener('click', el._onclick);
+        const wordItems = document.querySelectorAll('.bank-word-vertical:not(.used)');
+        const blankSlots = document.querySelectorAll('.blank-slot');
+        
+        wordItems.forEach(item => {
+          item.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.dataset.word);
+          });
         });
-
-        // blank slots: allow drop
-        const slots = Array.from(document.querySelectorAll('.blank-slot'));
-        slots.forEach(slot => {
+        
+        blankSlots.forEach(slot => {
           slot.addEventListener('dragover', (e) => {
             e.preventDefault();
-            slot.classList.add('drag-over');
+            slot.style.background = '#e8f4ff';
           });
+          
           slot.addEventListener('dragleave', (e) => {
-            slot.classList.remove('drag-over');
+            slot.style.background = slot.classList.contains('has-answer') ? '#e8fbe9' : '#f8fbff';
           });
+          
           slot.addEventListener('drop', (e) => {
             e.preventDefault();
-            slot.classList.remove('drag-over');
-            const word = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/html');
-            if(!word) return;
-            // Determine blank id
+            const word = e.dataTransfer.getData('text/plain');
             const blankId = slot.dataset.blankId;
-            if(!blankId) return;
-            // If this word is already used in another slot, free it
-            Object.keys(state.answers).forEach(k => {
-              if(state.answers[k] === word){
-                delete state.answers[k];
-              }
-            });
-            // If slot had a previous answer, free that bank word
-            const prev = state.answers[blankId];
-            if(prev){
-              const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
-              if(prevEl){
-                prevEl.classList.remove('used');
-                prevEl.setAttribute('draggable','true');
-                prevEl.addEventListener('click', prevEl._onclick);
-              }
-            }
-            // mark bank word used
-            const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
-            if(bankEl){
-              bankEl.classList.add('used');
-              bankEl.setAttribute('draggable','false');
-              // remove click to prevent double-placing
-              bankEl.removeEventListener('click', bankEl._onclick);
-            }
-            // assign to state and re-render
-            state.answers[blankId] = word;
-            renderAll();
+            
+            selectSprachbausteine2(blankId, word);
           });
         });
       }
 
-      function showSprachbausteine2Options(slot){
-        // highlight selected slot so click from bank knows target
-        document.querySelectorAll('.blank-slot').forEach(s => s.classList.remove('selected-sprach'));
-        slot.classList.add('selected-sprach');
-        lastClickedSprachSlot = slot;
-      }
-
-      function selectSprachbausteine2FromBank(word){
-        // choose target slot: prefer lastClicked, otherwise first empty
-        let slot = lastClickedSprachSlot;
-        if(!slot){
-          slot = Array.from(document.querySelectorAll('.blank-slot')).find(s => {
-            const id = s.dataset.blankId;
-            return !state.answers[id];
-          });
-        }
-        if(!slot) {
-          // if none available, do nothing
-          return;
-        }
-        const blankId = slot.dataset.blankId;
-        // free previous occurrence of word
-        Object.keys(state.answers).forEach(k => {
-          if(state.answers[k] === word){
-            delete state.answers[k];
+      function selectSprachbausteine2(blankId, word){
+        Object.keys(state.answers).forEach(key => {
+          if (state.answers[key] === word) {
+            delete state.answers[key];
           }
         });
-        // free previous word in target slot
-        const prev = state.answers[blankId];
-        if(prev){
-          const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
-          if(prevEl){
-            prevEl.classList.remove('used');
-            prevEl.setAttribute('draggable','true');
-            if(prevEl._onclick) prevEl.addEventListener('click', prevEl._onclick);
-          }
-        }
-        // mark selected bank word as used
-        const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
-        if(bankEl){
-          bankEl.classList.add('used');
-          bankEl.setAttribute('draggable','false');
-          if(bankEl._onclick) try{ bankEl.removeEventListener('click', bankEl._onclick); }catch(e){}
-        }
-        // assign value
-        state.answers[blankId] = word;
-        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
-        lastClickedSprachSlot = null;
-        renderAll();
+        state.answers[blankId] = word;
+        window.selectedWord = null;
+        renderSprachbausteine2();
       }
 
       function selectOption(questionId, optionId){
         state.answers[questionId] = optionId;
-        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
-        
         renderAll();
       }
 
-      function renderResults(){
-        let resultsHTML = `<h2>Ergebnisse</h2>`;
+      function renderResults() {
+        const section = exam.sections[state.sectionIndex];
+        let resultsHTML = `
+          <div class="result-item">
+            <h3>${section.title} - Ergebnisse</h3>
+        `;
+        
         let totalCorrect = 0;
         let totalQuestions = 0;
         
-        exam.sections.forEach(section => {
-          resultsHTML += `<div class="result-item"><h3>${section.title}</h3>`;
-          
-          if(section.id === 's1'){
-            section.texts.forEach(text => {
-              totalQuestions++;
-              const userAnswer = state.answers[text.id];
-              const isCorrect = userAnswer === text.correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Text ${text.id}: ${userAnswer || '-'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+        if (section.id === 's1') {
+          section.texts.forEach((text, index) => {
+            totalQuestions++;
+            const userAnswer = state.answers[text.id];
+            const isCorrect = userAnswer === text.correctAnswer;
+            if (isCorrect) totalCorrect++;
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer ? getHeadingTextById(userAnswer) : 'Nicht beantwortet'}</div>
                 </div>
-              `;
-            });
-          } else if(section.id === 's2'){
-            section.questions.forEach(question => {
-              totalQuestions++;
-              const userAnswer = state.answers[question.id];
-              const isCorrect = userAnswer === question.correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>${question.text}: ${userAnswer || '-'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${getHeadingTextById(text.correctAnswer)}</div>
                 </div>
-              `;
-            });
-          } else if(section.id === 's3'){
-            section.situations.forEach(situation => {
-              totalQuestions++;
-              const userAnswer = state.answers[situation.id];
-              const correctText = section.texts.find(t => t.correctAnswer === situation.id);
-              const isCorrect = userAnswer === (correctText ? correctText.id : null);
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Situation ${situation.id}: ${userAnswer || '-'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
                 </div>
-              `;
-            });
-          } else if(section.id === 's4'){
-            section.fillBlanks.forEach(blank => {
-              totalQuestions++;
-              const userAnswer = state.answers[blank.id];
-              const isCorrect = userAnswer === blank.correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer || '-'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+              </div>
+            `;
+          });
+        } else if (section.id === 's2') {
+          section.questions.forEach((question, index) => {
+            totalQuestions++;
+            const userAnswer = state.answers[question.id];
+            const isCorrect = userAnswer === question.correctAnswer;
+            if (isCorrect) totalCorrect++;
+            
+            let userAnswerText = 'Nicht beantwortet';
+            if (userAnswer) {
+              const option = question.options.find(o => o.id === userAnswer);
+              userAnswerText = option ? option.text : userAnswer;
+            }
+            
+            let correctAnswerText = '';
+            const correctOption = question.options.find(o => o.id === question.correctAnswer);
+            correctAnswerText = correctOption ? correctOption.text : question.correctAnswer;
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswerText}</div>
                 </div>
-              `;
-            });
-          } else if(section.id === 's5'){
-            section.fillBlanks2.forEach(blank => {
-              totalQuestions++;
-              const userAnswer = state.answers[blank.id];
-              const isCorrect = userAnswer === blank.correctAnswer;
-              if(isCorrect) totalCorrect++;
-              
-              resultsHTML += `
-                <div>Lücke ${blank.id}: ${userAnswer || '-'} 
-                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${correctAnswerText}</div>
                 </div>
-              `;
-            });
-          }
-          
-          resultsHTML += `</div>`;
-        });
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
+              </div>
+            `;
+          });
+        } else if (section.id === 's3') {
+          section.situations.forEach((situation, index) => {
+            totalQuestions++;
+            const userAnswer = state.answers[situation.id];
+            const correctText = section.texts.find(t => t.correctAnswer === situation.id);
+            const isCorrect = userAnswer === (correctText ? correctText.id : null);
+            if (isCorrect) totalCorrect++;
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${correctText ? correctText.id : 'X'}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
+              </div>
+            `;
+          });
+        } else if (section.id === 's4') {
+          section.fillBlanks.forEach(blank => {
+            totalQuestions++;
+            const userAnswer = state.answers[blank.id];
+            const isCorrect = userAnswer === blank.correctAnswer;
+            if (isCorrect) totalCorrect++;
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${blank.correctAnswer}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
+              </div>
+            `;
+          });
+        } else if (section.id === 's5') {
+          section.fillBlanks2.forEach(blank => {
+            totalQuestions++;
+            const userAnswer = state.answers[blank.id];
+            const isCorrect = userAnswer === blank.correctAnswer;
+            if (isCorrect) totalCorrect++;
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${blank.correctAnswer}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
+              </div>
+            `;
+          });
+        }
         
         const percentage = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
-        resultsHTML += `<div class="result-item"><h3>Gesamtergebnis: ${totalCorrect}/${totalQuestions} (${percentage}%)</h3></div>`;
+        
+        resultsHTML += `
+          <div class="result-summary">
+            <div class="percentage">${percentage}%</div>
+            <div>${totalCorrect} von ${totalQuestions} richtig</div>
+            <div>Punkte: ${Math.round((totalCorrect / totalQuestions) * section.points)} / ${section.points}</div>
+          </div>
+        </div>`;
         
         passageContentEl.innerHTML = resultsHTML;
         questionBodyEl.innerHTML = '';
@@ -3359,7 +3220,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         questionTitleEl.textContent = '';
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex > 0){
           state.sectionIndex--;
@@ -3368,12 +3228,18 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       });
 
-      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
+      document.getElementById('nextBtn2-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex < exam.sections.length - 1){
           state.sectionIndex++;
           state.questionIndex = 0;
           renderAll();
+        } else {
+          showPage('hoeren-page');
         }
+      });
+
+      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
+        showPage('hoeren-page');
       });
 
       resultBtn.addEventListener('click', ()=>{
@@ -3382,7 +3248,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       });
 
       resetBtn.addEventListener('click', ()=>{
-        if(confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')){
+        if(confirm('Möchten Sie wirklich von neu beginnen?')){
           state.answers = {};
           state.marked = {};
           state.showResults = false;
@@ -3405,147 +3271,40 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       });
 
-      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
-        showPage('hoeren-page');
-      });
-
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
       window._lesenState = state;
       window.lesenApp = {
         selectOption,
         markNoMatch,
         selectSprachbausteine1,
-        selectSprachbausteine2FromBank
+        selectSprachbausteine2,
+        handleHeadingClick,
+        handleSlotClick,
+        handleSituationClick,
+        handleSituationSlotClick,
+        restoreX,
+        handleBlankClick,
+        handleWordClick,
+        handleWordSlotClick
       };
     }
 
     // ===== HÖREN PAGE FUNCTIONALITY =====
     function initHoerenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
-      const exam = {
-        id: "exam-hörverstehen",
-        durationSec: 17 * 60, // 17 minutes in seconds
-        sections: [
-          { 
-            id: "hörverstehen1", 
-            title: "Hörverstehen, Teil 1", 
-            points: 25,
-            correctAnswers: { "41": "falsch", "42": "richtig", "43": "richtig", "44": "falsch", "45": "falsch" },
-            questions: [
-              {
-                id: "41",
-                text: "Die Deutsche Lufthansa hat ihre Führungsposition verloren."
-              },
-              {
-                id: "42", 
-                text: "Ein Bonner Sportverein zeigt der Öffentlichkeit sein Angebot."
-              },
-              {
-                id: "43",
-                text: "Die Rahmenbedingungen in deutschen Pflegeheimen bedürfen dringend einer Änderung."
-              },
-              {
-                id: "44",
-                text: "Durch moderne Wärmedämmung könnten die Heizkosten deutlich reduziert werden."
-              },
-              {
-                id: "45",
-                text: "Das Nationale Olympische Komitee hat die Dopingsperre für Tom Sanders aufgehoben."
-              }
-            ]
-          },
-          { 
-            id: "hörverstehen2", 
-            title: "Hörverstehen, Teil 2", 
-            points: 25,
-            correctAnswers: { "46": "richtig", "47": "falsch", "48": "richtig", "49": "richtig", "50": "richtig", "51": "falsch", "52": "falsch", "53": "richtig" },
-            questions: [
-              {
-                id: "46",
-                text: "Der Berufseinstieg ist in anderen Ländern nicht leicht."
-              },
-              {
-                id: "47",
-                text: "Carina ist ihr Beruf wichtiger als ihr Privatleben."
-              },
-              {
-                id: "48",
-                text: "Carina hat sich der Agentur mit einem Videofilm vorgestellt."
-              },
-              {
-                id: "49",
-                text: "Carina musste für einen Film ihr Gewicht stark verändern."
-              },
-              {
-                id: "50", 
-                text: "Carina macht lieber gefühlvolle Filme als Action-Filme."
-              },
-              {
-                id: "51",
-                text: "Wegen der vielen Fehlstunden hatte Carina Probleme mit dem Direktor der Schule"
-              },
-              {
-                id: "52",
-                text: "Carinas Eltern haben ihre Tochter von Anfang an unterstützt."
-              },
-              {
-                id: "53",
-                text: "Carina finde den Wechsel zwischen Schule und Drehterminen Nicht leicht."
-              },
-              {
-                id: "54",
-                text: "Bei Dialogen darf man auch selbst etwas erfinden."
-              },
-              {
-                id: "55",
-                text: "Carina empfiehlt, sich andere Schauspieler im Theater und in Filmen anzusehen"
-              }
-            ]
-          },
-          { 
-            id: "hörverstehen3", 
-            title: "Hörverstehen, Teil 3", 
-            points: 25,
-            correctAnswers: { "54": "richtig", "55": "falsch", "56": "falsch", "57": "richtig", "58": "falsch" },
-            questions: [
-              {
-                id: "56",
-                text: "Bei der Fahrschule kann man sich über das Internet anmelden."
-              },
-              {
-                id: "57",
-                text: "Die Anruferin ist im Hinblick auf die Abfahrtszeit flexibel."
-              },
-              {
-                id: "58",
-                text: "Für den Halb-Marathon kann man sich noch am Sonntag registrieren lassen."
-              },
-              {
-                id: "59",
-                text: "Bei dem Flug nach Mallorca ändert sich die Abflugzeit."
-              },
-              {
-                id: "60",
-                text: "In Halle D wird aus E-Books vorgelesen."
-              }
-            ]
-          }
-        ]
-      };
+      const exam = EXAM_DATA.hoeren;
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null
+        timerInterval: null,
+        examEnded: false,
+        currentPage: 'hoeren'
       };
       
       const topTiles = document.getElementById('topTiles-hoeren');
@@ -3553,7 +3312,30 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       const timerEl = document.getElementById('timer-hoeren');
       const statusText = document.getElementById('statusText-hoeren');
 
-      /* ===== Timer Functions ===== */
+      function handleTimeExpired() {
+        if (state.examEnded) return;
+        state.examEnded = true;
+        
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
+        state.showResults = true;
+        renderAll();
+        
+        setTimeout(() => {
+          if (state.sectionIndex < exam.sections.length - 1) {
+            state.sectionIndex++;
+            state.showResults = false;
+            state.examEnded = false;
+            renderAll();
+          } else {
+            showPage('schreiben-page');
+          }
+        }, 2000);
+      }
+
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3564,6 +3346,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
+            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -3577,6 +3360,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
+        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -3587,7 +3371,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -3603,7 +3386,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         const answers = state.answers[section.id];
         if (!answers) return false;
         
-        // تحقق إذا تمت الإجابة على جميع الأسئلة في هذا القسم
         const answeredQuestions = Object.keys(answers).length;
         const totalQuestions = section.questions.length;
         
@@ -3611,6 +3393,8 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       }
 
       function renderAll() {
+        if (state.examEnded) return;
+        
         renderTopTiles();
         
         if (state.showResults) {
@@ -3628,17 +3412,16 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         let contentHTML = `
           <div class="panel-title">${section.title}</div>
           <div class="instructions">
-            Sie hören die Nachrichten. Entscheiden Sie beim Hören, ob die Aussagen richtig oder falsch sind. 
-            Sie hören die Nachrichten nur einmal. Sie haben jetzt 30 Sekunden, um die Aussagen zu lesen.
+            Sie hören die Nachrichten. Entscheiden Sie beim Hören, ob die Aussagen richtig oder falsch sind.
           </div>
           
           <div class="listening-task">
             <table class="true-false-table">
               <thead>
                 <tr>
-                  <th style="width: 10%">Nr.</th>
-                  <th style="width: 60%">Aussage</th>
-                  <th style="width: 30%">Ihre Antwort</th>
+                  <th>Nr.</th>
+                  <th>Aussage</th>
+                  <th>Ihre Antwort</th>
                 </tr>
               </thead>
               <tbody>
@@ -3653,24 +3436,10 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
               <td>
                 <div class="answer-options">
                   <label class="answer-option">
-                    <input 
-                      type="radio" 
-                      name="q${section.id}_${question.id}" 
-                      value="richtig" 
-                      ${currentAnswer === 'richtig' ? 'checked' : ''}
-                      onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"
-                    >
-                    Richtig
+                    <input type="radio" name="q${section.id}_${question.id}" value="richtig" ${currentAnswer === 'richtig' ? 'checked' : ''} onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"> Richtig
                   </label>
                   <label class="answer-option">
-                    <input 
-                      type="radio" 
-                      name="q${section.id}_${question.id}" 
-                      value="falsch" 
-                      ${currentAnswer === 'falsch' ? 'checked' : ''}
-                      onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"
-                    >
-                    Falsch
+                    <input type="radio" name="q${section.id}_${question.id}" value="falsch" ${currentAnswer === 'falsch' ? 'checked' : ''} onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"> Falsch
                   </label>
                 </div>
               </td>
@@ -3692,73 +3461,55 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           state.answers[sectionId] = {};
         }
         state.answers[sectionId][questionId] = answer;
-        try{ localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
-        
-        // إعادة عرض البلاطات لتحديث حالة "تم"
         renderTopTiles();
       }
 
       function renderResults() {
-        let resultsHTML = `<div class="panel-title">Ergebnisse - Hörverstehen</div>`;
+        const section = exam.sections[state.sectionIndex];
+        const userAnswers = state.answers[section.id] || {};
+        let correctCount = 0;
         
-        exam.sections.forEach(section => {
-          const userAnswers = state.answers[section.id] || {};
-          let correctCount = 0;
+        let resultsHTML = `
+          <div class="panel-title">Ergebnisse - ${section.title}</div>
+        `;
+        
+        section.questions.forEach((question) => {
+          const userAnswer = userAnswers[question.id] || '-';
+          const correctAnswer = section.correctAnswers[question.id];
+          const gotCorrect = userAnswer === correctAnswer;
+          
+          if (gotCorrect) correctCount++;
           
           resultsHTML += `
-            <div class="listening-task">
-              <h3>${section.title} (${section.points} Punkte)</h3>
-              <table class="true-false-table">
-                <thead>
-                  <tr>
-                    <th style="width: 10%">Nr.</th>
-                    <th style="width: 50%">Aussage</th>
-                    <th style="width: 15%">Ihre Antwort</th>
-                    <th style="width: 15%">Richtige Antwort</th>
-                    <th style="width: 10%">Punkte</th>
-                  </tr>
-                </thead>
-                <tbody>
-          `;
-          
-          section.questions.forEach((question) => {
-            const userAnswer = userAnswers[question.id] || '-';
-            const correctAnswer = section.correctAnswers[question.id];
-            const gotCorrect = userAnswer === correctAnswer;
-            const points = gotCorrect ? "1" : "0";
-            
-            if (gotCorrect) correctCount++;
-            
-            const rowClass = gotCorrect ? 'correct-answer' : 'incorrect-answer';
-            
-            resultsHTML += `
-              <tr class="${rowClass}">
-                <td><strong>${question.id}</strong></td>
-                <td class="question-text">${question.text}</td>
-                <td>${userAnswer}</td>
-                <td>${correctAnswer}</td>
-                <td><strong>${points}</strong></td>
-              </tr>
-            `;
-          });
-          
-          const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
-          
-          resultsHTML += `
-                </tbody>
-              </table>
-              <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
-                <strong>Erreichte Punkte: ${correctCount}/${section.questions.length} richtig = ${totalPoints}/${section.points} Punkten</strong>
+            <div class="result-detail">
+              <div class="result-row">
+                <div class="result-label">Ihre Antwort:</div>
+                <div class="result-value ${gotCorrect ? 'correct' : 'incorrect'}">${userAnswer}</div>
+              </div>
+              <div class="result-row">
+                <div class="result-label">Richtige Antwort:</div>
+                <div class="result-value correct">${correctAnswer}</div>
+              </div>
+              <div class="result-status ${gotCorrect ? 'correct' : 'incorrect'}">
+                ${gotCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
               </div>
             </div>
           `;
         });
         
+        const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
+        
+        resultsHTML += `
+          <div class="result-summary">
+            <div>${correctCount}/${section.questions.length} richtig</div>
+            <div>Punkte: ${totalPoints}/${section.points}</div>
+          </div>
+        `;
+        
         contentContainer.innerHTML = resultsHTML;
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-hoeren').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -3767,12 +3518,18 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       });
 
-      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
+      document.getElementById('nextBtn2-hoeren').addEventListener('click', () => {
         if (state.sectionIndex < exam.sections.length - 1) {
           state.sectionIndex++;
           state.showResults = false;
           renderAll();
+        } else {
+          showPage('schreiben-page');
         }
+      });
+
+      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
+        showPage('schreiben-page');
       });
 
       document.getElementById('resultBtn-hoeren').addEventListener('click', () => {
@@ -3781,7 +3538,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       });
 
       document.getElementById('resetBtn-hoeren').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3801,65 +3558,29 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       });
 
-      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
-        showPage('schreiben-page');
-      });
-
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
-        window._hoerenState = state;
-        window.hoerenApp = {
+      window._hoerenState = state;
+      window.hoerenApp = {
         updateListeningAnswer
       };
     }
 
     // ===== SCHREIBEN PAGE FUNCTIONALITY =====
     function initSchreibenPage() {
-      /* ===== Self-contained exam (embedded) ===== */
-      const exam = {
-        id: "exam-002",
-        durationSec: 30 * 60, // 30 minutes in seconds
-        sections: [
-          { 
-            id: "s1", 
-            title: "Schreiben, Teil 1", 
-            points: 45,
-            passageTitle: "Aufgabe: Schreiben Sie eine E-Mail",
-            passage: "",
-            writingTask: {
-              prompt: `Möchten Sie in Ihrer Freizeit mehr erleben? Neue Leute aus Mainz kennenlernen? Am Wochenende nie mehr allein sein? 
-      Dann werden Sie Mitglied im Freizeitverein!
-      Wir organisieren verschiedene Aktivitäten in Mainz und Umgebung:
-      Wanderungen, Fahrradtouren, Museums- und Theaterbesuche, Spiele- und Kinoabende, Restaurantbesuche und Ausflüge.
-      Jede Woche stehen mindestens zwei unterschiedliche Angebote auf dem Programm.
-      Ob Sport oder Kultur – bei uns kommt jeder auf seine Kosten. Sie können viel Neues ausprobieren und lernen dabei nette Leute kennen.
-      Unsere Mitglieder sind zwischen 26 und 85 Jahre alt. Bei uns ist jeder willkommen, ob Student oder Senior. 
-      Sie finden bei uns neue Freunde und Bekannte, mit denen Sie viel erleben können. Probieren Sie es doch einfach mal aus!
-      Die Mitgliedschaft kostet 20 Euro pro Monat.`,
-              requirements: [
-                "Erklären Sie, was Sie nach dem Lesen der Anzeige erwartet hatten.",
-                "Erklären Sie, warum Sie mit dem Angebot des Freizeitvereins nicht zufrieden sind.",
-                "Machen Sie Verbesserungsvorschläge zum Programm.",
-                "Erklären Sie, was Sie tun werden, wenn sich nichts ändert."
-              ],
-              wordCount: 0
-            }
-          }
-        ]
-      };
+      const exam = EXAM_DATA.schreiben;
 
-      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         answers: {}, 
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null
+        timerInterval: null,
+        examEnded: false,
+        currentPage: 'schreiben'
       };
       
       const topTiles = document.getElementById('topTiles-schreiben');
@@ -3869,7 +3590,23 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
 
-      /* ===== Timer Functions ===== */
+      function handleTimeExpired() {
+        if (state.examEnded) return;
+        state.examEnded = true;
+        
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
+        state.showResults = true;
+        renderAll();
+        
+        setTimeout(() => {
+          showPage('ergebnisse-page');
+        }, 2000);
+      }
+
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3880,6 +3617,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
+            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -3893,6 +3631,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
+        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -3903,7 +3642,6 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      /* ===== Render ===== */
       function renderTopTiles() { 
         topTiles.innerHTML = ''; 
         exam.sections.forEach((sec, idx) => { 
@@ -3920,6 +3658,8 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       }
 
       function renderAll() {
+        if (state.examEnded) return;
+        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         passageTitleEl.textContent = section.passageTitle;
@@ -3935,38 +3675,25 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       function renderWritingSection() {
         const section = exam.sections[state.sectionIndex];
         
-        // Render the prompt in left panel
         passageContentEl.innerHTML = `
           <div class="writing-task">
             <div class="writing-prompt">${section.writingTask.prompt}</div>
-            <div class="instructions" style="border:1px solid #e1e8f6; padding:10px; margin:10px 0; border-radius:6px; background:#ffffff;">Sie sind seit zwei Wochen Mitglied im Freizeitverein. Doch Sie sind nicht zufrieden. 
-      Schreiben Sie eine Beschwerde.</div>
             <div class="writing-requirements">
               <h4>Schreiben Sie in Ihrer E-Mail:</h4>
               <ul>
                 ${section.writingTask.requirements.map(req => `<li>${req}</li>`).join('')}
               </ul>
             </div>
-            <div class="instructions">
-              Schreiben Sie eine E-Mail (ca. 150-200 Wörter). Achten Sie auf den Textaufbau (Anrede, Einleitung, Hauptteil, Schluss) und eine angemessene Formulierung.
-            </div>
           </div>
         `;
         
-        // Render writing area in right panel
         const currentAnswer = state.answers[section.id] || '';
         const wordCount = countWords(currentAnswer);
         
         writingContainer.innerHTML = `
           <div class="writing-area">
-            <textarea 
-              class="writing-textarea" 
-              placeholder="Schreiben Sie hier Ihre E-Mail..."
-              oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)"
-            >${currentAnswer}</textarea>
-            <div class="word-counter">
-              Wörter: <span class="count">${wordCount}</span>
-            </div>
+            <textarea class="writing-textarea" placeholder="Schreiben Sie hier Ihre E-Mail..." oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)">${currentAnswer}</textarea>
+            <div class="word-counter">Wörter: <span class="count">${wordCount}</span></div>
           </div>
         `;
       }
@@ -3977,36 +3704,31 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
 
       function updateWritingAnswer(sectionId, text) {
         state.answers[sectionId] = text;
-        try{ localStorage.setItem('schreibenAnswers', JSON.stringify({content: state.answers[sectionId], wordCount: (state.answers[sectionId]||'').trim().split(/\s+/).filter(Boolean).length})); }catch(e){}
-        
         const wordCount = countWords(text);
-        document.querySelector('.word-counter .count').textContent = wordCount;
+        const counterEl = document.querySelector('.word-counter .count');
+        if (counterEl) counterEl.textContent = wordCount;
       }
 
       function renderResults() {
-        let resultsHTML = `<h2>Ergebnisse</h2>`;
+        const section = exam.sections[state.sectionIndex];
+        const userAnswer = state.answers[section.id];
+        const wordCount = countWords(userAnswer);
         
-        exam.sections.forEach(section => {
-          resultsHTML += `<div class="writing-task"><h3>${section.title}</h3>`;
-          
-          const userAnswer = state.answers[section.id];
-          const wordCount = countWords(userAnswer);
-          
-          resultsHTML += `
+        passageContentEl.innerHTML = `
+          <div class="result-item">
+            <h3>${section.title} - Ergebnisse</h3>
             <div class="writing-requirements">
               <h4>Ihre Antwort (${wordCount} Wörter):</h4>
-              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${userAnswer || '-'}</div>
+              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${userAnswer || 'Keine Antwort'}</div>
             </div>
-          `;
-          
-          resultsHTML += `</div>`;
-        });
-        
-        passageContentEl.innerHTML = resultsHTML;
+            <div class="result-summary">
+              <div>Bitte manuell bewerten (max. ${section.points} Punkte)</div>
+            </div>
+          </div>
+        `;
         writingContainer.innerHTML = '';
       }
 
-      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-schreiben').addEventListener('click', () => {
         if (state.sectionIndex > 0) {
           state.sectionIndex--;
@@ -4015,12 +3737,18 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       });
 
-      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
+      document.getElementById('nextBtn2-schreiben').addEventListener('click', () => {
         if (state.sectionIndex < exam.sections.length - 1) {
           state.sectionIndex++;
           state.showResults = false;
           renderAll();
+        } else {
+          showPage('ergebnisse-page');
         }
+      });
+
+      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
+        showPage('ergebnisse-page');
       });
 
       document.getElementById('resultBtn-schreiben').addEventListener('click', () => {
@@ -4029,7 +3757,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       });
 
       document.getElementById('resetBtn-schreiben').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöschت.')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -4038,8 +3766,8 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
       });
 
       document.getElementById('saveBtn-schreiben').addEventListener('click', () => {
-        statusText.textContent = 'Gespeicherت';
-        setTimeout(() => { statusText.textContent = 'Nicht gespeicherت' }, 2000);
+        statusText.textContent = 'Gespeichert';
+        setTimeout(() => { statusText.textContent = 'Nicht gespeichert' }, 2000);
       });
 
       document.getElementById('submitBtn-schreiben').addEventListener('click', () => {
@@ -4049,43 +3777,222 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
         }
       });
 
-      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
-        showPage('ergebnisse-page');
-      });
-
-      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      // Expose functions to global scope for event handlers
-        window._schreibenState = state;
-        window.schreibenApp = {
+      window._schreibenState = state;
+      window.schreibenApp = {
         updateWritingAnswer
       };
     }
 
-    // تحسين السحب والإفلات للشاشات التي تعمل باللمس
-    function setupTouchDragAndDrop() {
-      if ('ontouchstart' in window) {
-        // تغيير سلوك العناصر القابلة للسحب
-        document.querySelectorAll('[draggable="true"]').forEach(item => {
-          item.addEventListener('touchstart', handleTouchStart);
-          item.addEventListener('touchend', handleTouchEnd);
+    // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
+    function initErgebnissePage() {
+      const CONFIG = {
+        totals: { 
+          lesen: 105, 
+          hoeren: 75, 
+          schreiben: 45, 
+          gesamt: 225 
+        },
+        counts: { 
+          lesen: 40, 
+          hoeren: 20 
+        }
+      };
+
+      function readExamResults() {
+        try {
+          const lesen = window._lesenState ? window._lesenState.answers : {};
+          const hoeren = window._hoerenState ? window._hoerenState.answers : {};
+          const schreiben = window._schreibenState ? window._schreibenState.answers : {};
+          return { hoeren, lesen, schreiben };
+        } catch (e) {
+          return { hoeren: {}, lesen: {}, schreiben: {} };
+        }
+      }
+
+      function calculateLesenResults(answers) {
+        const exam = EXAM_DATA.lesen;
+        let correct = 0;
+        let total = 0;
+        
+        exam.sections.forEach(section => {
+          if (section.id === 's1') {
+            section.texts.forEach(text => {
+              total++;
+              if (answers[text.id] === text.correctAnswer) correct++;
+            });
+          } else if (section.id === 's2') {
+            section.questions.forEach(question => {
+              total++;
+              if (answers[question.id] === question.correctAnswer) correct++;
+            });
+          } else if (section.id === 's3') {
+            section.situations.forEach(situation => {
+              total++;
+              const correctText = section.texts.find(t => t.correctAnswer === situation.id);
+              if (answers[situation.id] === (correctText ? correctText.id : null)) correct++;
+            });
+          } else if (section.id === 's4') {
+            section.fillBlanks.forEach(blank => {
+              total++;
+              if (answers[blank.id] === blank.correctAnswer) correct++;
+            });
+          } else if (section.id === 's5') {
+            section.fillBlanks2.forEach(blank => {
+              total++;
+              if (answers[blank.id] === blank.correctAnswer) correct++;
+            });
+          }
         });
         
+        const points = Math.round((correct / total) * CONFIG.totals.lesen);
+        return { correct, total, points };
+      }
+
+      function calculateHoerenResults(answers) {
+        const exam = EXAM_DATA.hoeren;
+        let correct = 0;
+        let total = 0;
+        
+        exam.sections.forEach(section => {
+          section.questions.forEach(question => {
+            total++;
+            if (answers[section.id] && answers[section.id][question.id] === section.correctAnswers[question.id]) {
+              correct++;
+            }
+          });
+        });
+        
+        const points = Math.round((correct / total) * CONFIG.totals.hoeren);
+        return { correct, total, points };
+      }
+
+      function calculateResults() {
+        const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
+        const details = document.getElementById('details-ergebnisse');
+        const tiles = document.getElementById('topTiles-ergebnisse');
+
+        details.innerHTML = '';
+        tiles.innerHTML = '';
+
+        const lesenResults = calculateLesenResults(st.lesen);
+        const hoerenResults = calculateHoerenResults(st.hoeren);
+        
+        const tL = `<div class="results-tile"><h3>Lesen</h3><div class="score">${lesenResults.points}/${CONFIG.totals.lesen} Punkte</div><div class="small-muted">(${lesenResults.correct}/${lesenResults.total} richtig)</div></div>`;
+        const tH = `<div class="results-tile"><h3>Hören</h3><div class="score">${hoerenResults.points}/${CONFIG.totals.hoeren} Punkte</div><div class="small-muted">(${hoerenResults.correct}/${hoerenResults.total} richtig)</div></div>`;
+        const tS = `<div class="results-tile"><h3>Schreiben</h3><div class="score">Manuelle Bewertung</div><div class="small-muted">(45 Punkte max.)</div></div>`;
+        
+        tiles.innerHTML = tL + tH + tS;
+
+        details.innerHTML = `
+          <h2>📊 Detaillierte Ergebnisse</h2>
+          <div class="instructions">Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Antworten:</div>
+          <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>
+          <div class="section-table">
+            <p>Keine detaillierten Daten vorhanden. Bitte füllen Sie die CORRECT_ANSWERS im Code aus.</p>
+          </div>
+          <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+          <div class="section-table">
+            <p>Keine detaillierten Daten vorhanden. Bitte füllen Sie die CORRECT_ANSWERS im Code aus.</p>
+          </div>
+          <h3>✍️ Schreiben</h3>
+          <div class="writing-task">
+            <div class="writing-requirements">
+              <h4>Ihre Antwort:</h4>
+              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${st.schreiben['s1'] || 'Keine Antwort vorhanden'}</div>
+              <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center">
+                Punkte vergeben (0–45): <input id="schreibenInput" type="number" min="0" max="45" step="1" value="0"> 
+                <button id="saveSchreiben" class="results-btn">💾 Speichern</button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        const totalPoints = lesenResults.points + hoerenResults.points;
+        const maxPoints = CONFIG.totals.lesen + CONFIG.totals.hoeren;
+        const percentage = Math.round((totalPoints / maxPoints) * 100);
+
+        document.getElementById('finalSummary-ergebnisse').innerHTML = `
+          <div class="left">Gesamtergebnis (ohne Schreiben)<br><span class="small-muted">Automatisch korrigierte Bereiche</span></div>
+          <div class="right"><strong>${totalPoints}/${maxPoints} Punkte (${percentage}%)</strong></div>`;
+
+        document.getElementById('saveSchreiben').onclick = function() {
+          const points = parseInt(document.getElementById('schreibenInput').value) || 0;
+          localStorage.setItem('schreibenPoints', points);
+          alert('✅ Schreiben-Punkte gespeichert!');
+        };
+      }
+
+      document.getElementById('backBtn-ergebnisse').onclick = (e) => {
+        e.preventDefault();
+        examStarted = false;
+        counter = initialCounter;
+        timerEl.textContent = counter;
+        timeDisplayEl.textContent = counter;
+        progressEl.style.transform = "scaleX(0)";
+        timerEl.style.color = "";
+        showPage('start-page');
+      };
+      
+      document.getElementById('retryBtn-ergebnisse').onclick = (e) => {
+        e.preventDefault();
+        if (window._lesenState) {
+          window._lesenState.answers = {};
+          window._lesenState.marked = {};
+          window._lesenState.showResults = false;
+          window._lesenState.remaining = EXAM_DATA.lesen.durationSec;
+          if (window._lesenState.timerInterval) clearInterval(window._lesenState.timerInterval);
+        }
+        if (window._hoerenState) {
+          window._hoerenState.answers = {};
+          window._hoerenState.showResults = false;
+          window._hoerenState.remaining = EXAM_DATA.hoeren.durationSec;
+          if (window._hoerenState.timerInterval) clearInterval(window._hoerenState.timerInterval);
+        }
+        if (window._schreibenState) {
+          window._schreibenState.answers = {};
+          window._schreibenState.showResults = false;
+          window._schreibenState.remaining = EXAM_DATA.schreiben.durationSec;
+          if (window._schreibenState.timerInterval) clearInterval(window._schreibenState.timerInterval);
+        }
+        
+        examStarted = false;
+        showPage('start-page');
+        setTimeout(() => {
+          startExam();
+        }, 100);
+      };
+      
+      document.getElementById('continueBtn-ergebnisse').onclick = (e) => {
+        e.preventDefault();
+        if (window._lesenState) {
+          window._lesenState.sectionIndex = 0;
+          window._lesenState.showResults = false;
+          showPage('lesen-page');
+        } else {
+          showPage('start-page');
+        }
+      };
+      
+      calculateResults();
+    }
+
+    function setupTouchDragAndDrop() {
+      if ('ontouchstart' in window) {
+        document.querySelectorAll('[draggable="true"]').forEach(item => {
+          item.addEventListener('touchstart', (e) => {});
+          item.addEventListener('touchend', (e) => {});
+        });
         document.querySelectorAll('.title-slot, .blank-slot').forEach(slot => {
-          slot.addEventListener('touchmove', handleTouchMove);
-          slot.addEventListener('touchend', handleTouchDrop);
+          slot.addEventListener('touchmove', (e) => {});
+          slot.addEventListener('touchend', (e) => {});
         });
       }
     }
 
-    function handleTouchStart(e) {
-      // تنفيذ السحب عند اللمس
-    }
-
-    // استدعاء الدالة عند تحميل الصفحة
     document.addEventListener('DOMContentLoaded', setupTouchDragAndDrop);
   </script>
 </body>
