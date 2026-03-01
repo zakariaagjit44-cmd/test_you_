@@ -1652,6 +1652,7 @@
         <button id="backBtn-ergebnisse" class="results-btn">🔁 Zurück zur Startseite</button>
         <button id="retryBtn-ergebnisse" class="results-btn secondary">🔄 Prüfung wiederholen</button>
         <button id="continueBtn-ergebnisse" class="results-btn">➡️ Zurück zur Prüfung</button>
+        <button id="calcBtn-ergebnisse" class="results-btn">✅ Ergebnisse anzeigen</button>
       </div>
       <div class="note">Hinweis: Schreiben (45 Punkte) wird manuell eingegeben, falls nicht automatisch vorhanden.</div>
     </div>
@@ -1666,6 +1667,151 @@
       <button id="redirect-to-login" style="background: #d32f2f; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;">Zum Login</button>
     </div>
   </div>
+
+  <script>
+    // ===== دوال مساعدة =====
+    function getHeadingText(headingId) {
+      if (!headingId || headingId === '-') return '-';
+      const headings = {
+        "a": "Neue Heuschreckenart in Frankreich entdeckt",
+        "b": "Kleine Plagegeister können Krankheiten bringen",
+        "c": "Landwirte wollen Gift gegen schädliche Insekten einsetzen",
+        "d": "Neue Mittel gegen Mücken",
+        "e": "Neue Studie: Nicht nur Affen und Delfine erkennen sich selbst",
+        "f": "Probleme beim Versuchsaufbau: Studie gescheitert",
+        "g": "Rhein nach Chemieunfall noch immer tot",
+        "h": "Rückblick: Fischsterben im Rhein",
+        "i": "Um die Zukunft der Nordsee ist es schlecht bestellt",
+        "j": "WWF zieht positive Bilanz für die Nordsee"
+      };
+      return headings[headingId] || headingId;
+    }
+
+    function getOptionText(questionId, optionId) {
+      if (!optionId || optionId === '-') return '-';
+      const options = {
+        "s2q1o1": "belegt, dass die Mitarbeiter sich über Lärm im Großraumbüro beklagen.",
+        "s2q1o2": "brachte keine eindeutigen Ergebnisse zur Zufriedenheit mit unterschiedlichen Büroformen.",
+        "s2q1o3": "zeigt, dass Mitarbeiter in Großraumbüros seltener krank sind als andere.",
+        "s2q2o1": "reduzieren den Krankenstand.",
+        "s2q2o2": "sind kostengünstiger zu beheizen.",
+        "s2q2o3": "werden immer seltener.",
+        "s2q3o1": "bevorzugen Einzelbüros.",
+        "s2q3o2": "genießen eine individuell ausgewählte Büromöblierung.",
+        "s2q3o3": "leiden unter zu engen Einzelbüros.",
+        "s2q4o1": "ist in Londoner Großraumbüros für den Chef größer als für andere Mitarbeiter.",
+        "s2q4o2": "schließt die gemeinsam genutzten Flächen aus.",
+        "s2q4o3": "wird in London oft unter mehreren Mitarbeitern aufgeteilt.",
+        "s2q5o1": "gibt es vor allem in Banken und Telekommunikationsunternehmen.",
+        "s2q5o2": "werden bald in 40% der deutschen Firmen eingeführt.",
+        "s2q5o3": "werden meist in Einzelzellen unterteilt."
+      };
+      return options[optionId] || optionId;
+    }
+
+    function getSituationText(id) {
+      const situations = {
+        "11": "Sie suchen ein Au-pair Mädchen, das im Haushalt helfen und mit Ihren Kindern Englisch sprechen soll.",
+        "12": "Ihre 14-jährige Nichte möchte sich über einen Auslandsaufenthalt informieren.",
+        "13": "Ihr Sohn möchte als Koch im Ausland arbeiten. Er sucht nach einer passenden Stelle.",
+        "14": "Eine französische Bekannte ist Übersetzerin und möchte gelegentlich arbeiten.",
+        "15": "Ihre kinderlose Nachbarsfamilie möchte für einige Zeit einen jungen Menschen aufnehmen.",
+        "16": "Sie sollen die neue Webseite Ihrer Firma ins Englische übersetzen lassen.",
+        "17": "Sie kochen gerne und suchen nach Rezepten aus anderen Ländern.",
+        "18": "Im Herbst beginnt Ihre Tochter ein Studium, Sie möchte ein Bankkonto eröffnen.",
+        "19": "Sie wollen Geld nach Kanada überweisen, Sie möchten wissen, wie viel Sie für die Überweisung bezahlen müssen.",
+        "20": "Ein Freund aus Salzburg will sich in Frankreich bewerben. Er möchte seine Zeugnisse übersetzen lassen."
+      };
+      return situations[id] || id;
+    }
+
+    function escapeHtml(s) {
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function normalizeAnswer(a) {
+      if (a === null || a === undefined || a === '') return '-';
+      let s = String(a).trim();
+      if (s === '') return '-';
+      const low = s.toLowerCase();
+      if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
+      if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
+      return s;
+    }
+
+    // ===== إجابات صحيحة ثابتة (من الملف الثاني) =====
+    const CORRECT_ANSWERS = {
+      lesen: {
+        "text1": "c",
+        "text2": "h",
+        "text3": "b",
+        "text4": "e",
+        "text5": "i",
+        "s2q1": "s2q1o1",
+        "s2q2": "s2q2o2",
+        "s2q3": "s2q3o1",
+        "s2q4": "s2q4o3",
+        "s2q5": "s2q5o1",
+        "11": "19",
+        "12": "C",
+        "13": "J",
+        "14": "G",
+        "15": "F",
+        "16": "D",
+        "17": "H",
+        "18": "E",
+        "19": "A",
+        "20": "B",
+        "21": "über",
+        "22": "gar",
+        "23": "besonders",
+        "24": "schließlich",
+        "25": "entfernt",
+        "26": "wechseln",
+        "27": "gesagt",
+        "28": "kommenden",
+        "29": "je",
+        "30": "wäre",
+        "31": "GEHÖREN",
+        "32": "BLEIBT",
+        "33": "MANCHER",
+        "34": "ALS",
+        "35": "FERTIG",
+        "36": "WINK",
+        "37": "MIT",
+        "38": "TAKT",
+        "39": "KLAR",
+        "40": "WAS"
+      },
+      hoeren: {
+        "41": "falsch",
+        "42": "falsch",
+        "43": "falsch",
+        "44": "richtig",
+        "45": "richtig",
+        "46": "falsch",
+        "47": "richtig",
+        "48": "richtig",
+        "49": "richtig",
+        "50": "falsch",
+        "51": "falsch",
+        "52": "richtig",
+        "53": "falsch",
+        "54": "richtig",
+        "55": "richtig",
+        "56": "richtig",
+        "57": "falsch",
+        "58": "falsch",
+        "59": "falsch",
+        "60": "richtig"
+      }
+    };
+  </script>
 
   <script type="module">
     // =============================================
@@ -2395,7 +2541,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
               <div class="text-title">Text ${letter.toUpperCase()}</div>
               <div class="text-content">${text.content}</div>
               <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}" onclick="window.lesenApp.handleSlotClick('${text.id}')">
-                ${selectedHeading ? getHeadingTextById(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
+                ${selectedHeading ? getHeadingText(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
               </div>
             </div>
           `;
@@ -3638,7 +3784,18 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
       function readExamResults() {
         try {
           const lesen = window._lesenState ? window._lesenState.answers : {};
-          const hoeren = window._hoerenState ? window._hoerenState.answers : {};
+          const hoeren = {};
+          
+          // تجميع إجابات الهورين من جميع الأقسام
+          if (window._hoerenState && window._hoerenState.answers) {
+            Object.keys(window._hoerenState.answers).forEach(sectionId => {
+              const sec = window._hoerenState.answers[sectionId] || {};
+              Object.keys(sec).forEach(q => {
+                hoeren[q] = sec[q];
+              });
+            });
+          }
+          
           const schreiben = window._schreibenState ? window._schreibenState.answers : {};
           return { hoeren, lesen, schreiben };
         } catch (e) {
@@ -3693,7 +3850,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         exam.sections.forEach(section => {
           section.questions.forEach(question => {
             total++;
-            if (answers[section.id] && answers[section.id][question.id] === section.correctAnswers[question.id]) {
+            if (answers[question.id] && answers[question.id] === section.correctAnswers[question.id]) {
               correct++;
             }
           });
@@ -3701,6 +3858,198 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         
         const points = Math.round((correct / total) * CONFIG.totals.hoeren);
         return { correct, total, points };
+      }
+
+      function renderLesenDetails(answers) {
+        let html = `<div class="result-item"><h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
+        
+        // Teil 1: Überschriften zuordnen
+        html += `<h4>Teil 1: Überschriften zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Text</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 1; i <= 5; i++) {
+          const id = `text${i}`;
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>Text ${i}</strong></td>
+                    <td>${getHeadingText(userAnswer)}</td>
+                    <td>${getHeadingText(correctAnswer)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // Teil 2: Fragen zum Text
+        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Frage</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 1; i <= 5; i++) {
+          const id = `s2q${i}`;
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>Frage ${i}</strong></td>
+                    <td>${getOptionText(id, userAnswer)}</td>
+                    <td>${getOptionText(id, correctAnswer)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // Teil 3: Texte zuordnen
+        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Situation</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 11; i <= 20; i++) {
+          const id = i.toString();
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // Sprachbausteine Teil 1
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Lücke</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 21; i <= 30; i++) {
+          const id = i.toString();
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        
+        // Sprachbausteine Teil 2
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
+                 <table class="true-false-table">
+                   <thead>
+                     <tr>
+                       <th>Lücke</th>
+                       <th>Ihre Antwort</th>
+                       <th>Richtige Antwort</th>
+                       <th>Ergebnis</th>
+                     </tr>
+                   </thead>
+                   <tbody>`;
+        
+        for (let i = 31; i <= 40; i++) {
+          const id = i.toString();
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table></div>`;
+        return html;
+      }
+
+      function buildHoerenDetails(answers) {
+        let html = `<table class="true-false-table">
+                      <thead>
+                        <tr>
+                          <th>Frage</th>
+                          <th>Ihre Antwort</th>
+                          <th>Richtige Antwort</th>
+                          <th>Ergebnis</th>
+                        </tr>
+                      </thead>
+                      <tbody>`;
+        
+        for (let i = 41; i <= 60; i++) {
+          const id = i.toString();
+          const userAnswer = answers[id] || '-';
+          const correctAnswer = CORRECT_ANSWERS.hoeren[id] || '-';
+          const isCorrect = userAnswer === correctAnswer;
+          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = isCorrect ? '✅' : '❌';
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${id}</strong></td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        }
+        
+        html += `</tbody></table>`;
+        return html;
       }
 
       function calculateResults() {
@@ -3714,52 +4063,64 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         const lesenResults = calculateLesenResults(st.lesen);
         const hoerenResults = calculateHoerenResults(st.hoeren);
         
+        const sScoreRaw = localStorage.getItem('schreibenPoints');
+        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
+        
         const tL = `<div class="results-tile"><h3>Lesen</h3><div class="score">${lesenResults.points}/${CONFIG.totals.lesen} Punkte</div><div class="small-muted">(${lesenResults.correct}/${lesenResults.total} richtig)</div></div>`;
         const tH = `<div class="results-tile"><h3>Hören</h3><div class="score">${hoerenResults.points}/${CONFIG.totals.hoeren} Punkte</div><div class="small-muted">(${hoerenResults.correct}/${hoerenResults.total} richtig)</div></div>`;
-        const tS = `<div class="results-tile"><h3>Schreiben</h3><div class="score">Manuelle Bewertung</div><div class="small-muted">(45 Punkte max.)</div></div>`;
+        const tS = `<div class="results-tile"><h3>Schreiben</h3><div class="score" id="schreibenScoreDisplay">${sScore}/${CONFIG.totals.schreiben} Punkte</div><div class="small-muted">Manuelle Bewertung</div></div>`;
         
         tiles.innerHTML = tL + tH + tS;
 
-        details.innerHTML = `
-          <h2>📊 Detaillierte Ergebnisse</h2>
-          <div class="instructions">Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Antworten:</div>
-          <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>
-          <div class="section-table">
-            <p>Keine detaillierten Daten vorhanden. Bitte füllen Sie die CORRECT_ANSWERS im Code aus.</p>
-          </div>
-          <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
-          <div class="section-table">
-            <p>Keine detaillierten Daten vorhanden. Bitte füllen Sie die CORRECT_ANSWERS im Code aus.</p>
-          </div>
-          <h3>✍️ Schreiben</h3>
-          <div class="writing-task">
-            <div class="writing-requirements">
-              <h4>Ihre Antwort:</h4>
-              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${st.schreiben['s1'] || 'Keine Antwort vorhanden'}</div>
-              <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center">
-                Punkte vergeben (0–45): <input id="schreibenInput" type="number" min="0" max="45" step="1" value="0"> 
-                <button id="saveSchreiben" class="results-btn">💾 Speichern</button>
-              </div>
-            </div>
-          </div>
-        `;
+        details.innerHTML = '<h2>📊 Detaillierte Ergebnisse</h2>';
+        details.innerHTML += renderLesenDetails(st.lesen);
+        
+        details.innerHTML += `<div class="result-item">
+                              <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+                              ${buildHoerenDetails(st.hoeren)}
+                            </div>`;
 
-        const totalPoints = lesenResults.points + hoerenResults.points;
-        const maxPoints = CONFIG.totals.lesen + CONFIG.totals.hoeren;
+        let sHtml = '<div class="result-item"><h3>✍️ Schreiben - Ihre Antwort</h3>';
+        const txt = st.schreiben['s1'] ? escapeHtml(st.schreiben['s1']) : '<span class="small-muted">Kein Text gefunden.</span>';
+        const wc = st.schreiben['s1'] ? st.schreiben['s1'].trim().split(/\s+/).filter(Boolean).length : 0;
+        
+        sHtml += `<div class="small-muted">Wörter: ${wc}</div>
+                <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px">${txt}</div>
+                <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
+                  Punkte (0–45): 
+                  <input id="schreibenInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
+                  <button id="saveSchreiben" class="results-btn">Speichern</button>
+                </div></div>`;
+                
+        details.innerHTML += sHtml;
+
+        const totalPoints = lesenResults.points + hoerenResults.points + sScore;
+        const maxPoints = CONFIG.totals.gesamt;
         const percentage = Math.round((totalPoints / maxPoints) * 100);
 
         document.getElementById('finalSummary-ergebnisse').innerHTML = `
-          <div class="left">Gesamtergebnis (ohne Schreiben)<br><span class="small-muted">Automatisch korrigierte Bereiche</span></div>
+          <div class="left">Gesamtergebnis<br><span class="small-muted">Lesen + Hören + Schreiben</span></div>
           <div class="right"><strong>${totalPoints}/${maxPoints} Punkte (${percentage}%)</strong></div>`;
 
         document.getElementById('saveSchreiben').onclick = function() {
           const points = parseInt(document.getElementById('schreibenInput').value) || 0;
           localStorage.setItem('schreibenPoints', points);
-          alert('✅ Schreiben-Punkte gespeichert!');
+          document.getElementById('schreibenScoreDisplay').textContent = `${points}/${CONFIG.totals.schreiben} Punkte`;
+          
+          const newTotal = lesenResults.points + hoerenResults.points + points;
+          const newPercentage = Math.round((newTotal / maxPoints) * 100);
+          
+          document.getElementById('finalSummary-ergebnisse').innerHTML = `
+            <div class="left">Gesamtergebnis<br><span class="small-muted">Lesen + Hören + Schreiben</span></div>
+            <div class="right"><strong>${newTotal}/${maxPoints} Punkte (${newPercentage}%)</strong></div>`;
         };
       }
 
-      document.getElementById('backBtn-ergebnisse').onclick = (e) => {
+      document.getElementById('calcBtn-ergebnisse').addEventListener('click', function() {
+        calculateResults();
+      });
+
+      document.getElementById('backBtn-ergebnisse').addEventListener('click', (e) => {
         e.preventDefault();
         examStarted = false;
         counter = initialCounter;
@@ -3768,9 +4129,9 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         progressEl.style.transform = "scaleX(0)";
         timerEl.style.color = "";
         showPage('start-page');
-      };
+      });
       
-      document.getElementById('retryBtn-ergebnisse').onclick = (e) => {
+      document.getElementById('retryBtn-ergebnisse').addEventListener('click', (e) => {
         e.preventDefault();
         if (window._lesenState) {
           window._lesenState.answers = {};
@@ -3797,9 +4158,9 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         setTimeout(() => {
           startExam();
         }, 100);
-      };
+      });
       
-      document.getElementById('continueBtn-ergebnisse').onclick = (e) => {
+      document.getElementById('continueBtn-ergebnisse').addEventListener('click', (e) => {
         e.preventDefault();
         if (window._lesenState) {
           window._lesenState.sectionIndex = 0;
@@ -3808,8 +4169,9 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         } else {
           showPage('start-page');
         }
-      };
+      });
       
+      // تنفيذ الحساب عند تحميل الصفحة
       calculateResults();
     }
 
