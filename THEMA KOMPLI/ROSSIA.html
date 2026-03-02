@@ -1894,7 +1894,7 @@
       timerEl.style.color = "#e53e3e";
     });
 
-    // ===== EXAM DATA FROM ROSSIA.HTML =====
+    // ===== EXAM DATA FROM ROSSIA.html =====
     const EXAM_DATA = {
       lesen: {
         id: "exam-001",
@@ -3710,6 +3710,73 @@ Adenauerstraße 12
         }
       };
 
+      const CORRECT_ANSWERS = {
+        lesen: {
+          "text1": "c",
+          "text2": "d",
+          "text3": "f",
+          "text4": "g",
+          "text5": "i",
+          "s2q1": "s2q1o2",
+          "s2q2": "s2q2o1",
+          "s2q3": "s2q3o3",
+          "s2q4": "s2q4o3",
+          "s2q5": "s2q5o3",
+          "11": "L",
+          "12": "J",
+          "13": "A",
+          "14": "H",
+          "15": "K",
+          "16": "C",
+          "17": "D",
+          "18": "I",
+          "19": "E",
+          "20": "F",
+          "21": "über",
+          "22": "außerdem",
+          "23": "nehmen",
+          "24": "da",
+          "25": "davon",
+          "26": "gesprochen",
+          "27": "dass",
+          "28": "sich",
+          "29": "die",
+          "30": "jedenfalls",
+          "31": "Flut",
+          "32": "recht",
+          "33": "aber",
+          "34": "stellt",
+          "35": "Diesen",
+          "36": "meisten",
+          "37": "Korrekt",
+          "38": "unlogische",
+          "39": "unterscheiden",
+          "40": "somit"
+        },
+        hoeren: {
+          "41": "richtig",
+          "42": "falsch",
+          "43": "falsch",
+          "44": "falsch",
+          "45": "richtig",
+          "46": "falsch",
+          "47": "richtig",
+          "48": "falsch",
+          "49": "richtig",
+          "50": "richtig",
+          "51": "falsch",
+          "52": "falsch",
+          "53": "richtig",
+          "54": "falsch",
+          "55": "richtig",
+          "56": "richtig",
+          "57": "falsch",
+          "58": "falsch",
+          "59": "falsch",
+          "60": "richtig"
+        }
+      };
+
       function readExamResults() {
         try {
           const lesen = window._lesenState ? window._lesenState.answers : {};
@@ -3778,6 +3845,170 @@ Adenauerstraße 12
         return { correct, total, points };
       }
 
+      function getHeadingText(questionId, answerId) {
+        if (!answerId || answerId === '-') return '';
+
+        const headings = EXAM_DATA.lesen.sections[0].headings;
+        const heading = headings.find(h => h.id === answerId);
+        return heading ? heading.text : '';
+      }
+
+      function getAnswerText(section, questionId, answerId) {
+        if (!answerId || answerId === '-') return '-';
+
+        if (section === 'lesen') {
+          const lesenExam = EXAM_DATA.lesen;
+          const teil2 = lesenExam.sections[1];
+          const question = teil2.questions.find(q => q.id === questionId);
+          if (question) {
+            const option = question.options.find(o => o.id === answerId);
+            return option ? option.text : answerId;
+          }
+        }
+        return answerId;
+      }
+
+      function renderLesenDetails(answers) {
+        let html = `<div class="section-table">`;
+
+        html += `<h4>Teil 1: Überschriften zuordnen</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Text</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+
+        for (let i = 1; i <= 5; i++) {
+          const questionId = `text${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Text ${String.fromCharCode(96 + i).toUpperCase()}</td>
+                    <td>${userAnswer ? userAnswer + ') ' + getHeadingText(questionId, userAnswer) : '-'}</td>
+                    <td>${correctAnswer ? correctAnswer + ') ' + getHeadingText(questionId, correctAnswer) : '-'}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+
+        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+
+        for (let i = 1; i <= 5; i++) {
+          const questionId = `s2q${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Frage ${i}</td>
+                    <td>${getAnswerText('lesen', questionId, userAnswer)}</td>
+                    <td>${getAnswerText('lesen', questionId, correctAnswer)}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+
+        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Situation</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+
+        for (let i = 11; i <= 20; i++) {
+          const questionId = `${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Situation ${i}</td>
+                    <td>${userAnswer === 'X' ? 'X - Kein Text' : (userAnswer || '-')}</td>
+                    <td>${correctAnswer || 'X - Kein Text'}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Lücke</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+
+        for (let i = 21; i <= 40; i++) {
+          const questionId = `${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Lücke ${i}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table></div>`;
+
+        return html;
+      }
+
+      function renderHoerenDetails(answers) {
+        let html = `<div class="section-table">`;
+
+        html += `<h4>Teil 1</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+
+        for (let i = 41; i <= 45; i++) {
+          const questionId = `${i}`;
+          const section = 'hörverstehen1';
+          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
+          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>${questionId}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+
+        html += `<h4 style="margin-top: 20px;">Teil 2</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+
+        for (let i = 46; i <= 55; i++) {
+          const questionId = `${i}`;
+          const section = 'hörverstehen2';
+          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
+          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>${questionId}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+
+        html += `<h4 style="margin-top: 20px;">Teil 3</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+
+        for (let i = 56; i <= 60; i++) {
+          const questionId = `${i}`;
+          const section = 'hörverstehen3';
+          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
+          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>${questionId}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table></div>`;
+
+        return html;
+      }
+
       function calculateResults() {
         const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
         const details = document.getElementById('details-ergebnisse');
@@ -3799,13 +4030,16 @@ Adenauerstraße 12
           <h2>📊 Detaillierte Ergebnisse</h2>
           <div class="instructions">Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Antworten:</div>
           <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>
-          <div class="section-table">
-            <p>Keine detaillierten Daten vorhanden. Bitte füllen Sie die CORRECT_ANSWERS im Code aus.</p>
-          </div>
+        `;
+
+        details.innerHTML += renderLesenDetails(st.lesen);
+
+        details.innerHTML += `
           <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
-          <div class="section-table">
-            <p>Keine detaillierten Daten vorhanden. Bitte füllen Sie die CORRECT_ANSWERS im Code aus.</p>
-          </div>
+        `;
+        details.innerHTML += renderHoerenDetails(st.hoeren);
+
+        details.innerHTML += `
           <h3>✍️ Schreiben</h3>
           <div class="writing-task">
             <div class="writing-requirements">
