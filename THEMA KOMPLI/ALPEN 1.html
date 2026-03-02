@@ -637,41 +637,58 @@
     
     .result-detail {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px;
+      flex-direction: column;
+      padding: 12px;
       margin: 8px 0;
       background: white;
       border-radius: 6px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     
-    .result-question {
-      flex: 2;
+    .result-row {
+      display: flex;
+      align-items: center;
+      margin: 4px 0;
+    }
+    
+    .result-label {
+      font-weight: 600;
+      min-width: 120px;
+      color: #2c3e50;
+    }
+    
+    .result-value {
+      padding: 4px 10px;
+      border-radius: 4px;
       font-weight: 500;
     }
     
-    .result-answer {
-      flex: 1;
-      text-align: center;
-      padding: 5px 10px;
-      border-radius: 4px;
-    }
-    
-    .result-answer.correct {
+    .result-value.correct {
       background: #d4edda;
       color: #155724;
     }
     
-    .result-answer.incorrect {
+    .result-value.incorrect {
       background: #f8d7da;
       color: #721c24;
     }
     
-    .result-icon {
-      width: 30px;
+    .result-status {
+      margin-top: 8px;
+      padding: 8px;
+      border-radius: 4px;
+      font-weight: 600;
       text-align: center;
-      font-size: 18px;
+    }
+    
+    .result-status.correct {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .result-status.incorrect {
+      background: #f8d7da;
+      color: #721c24;
     }
     
     .result-summary {
@@ -3055,6 +3072,7 @@ Hamburger Str. 112
         renderAll();
       }
 
+      // [IMPORTANT] NEUE ERGEBNISSE-RENDER-FUNKTION - AUS DEM ZWEITEN FILE ÜBERNOMMEN
       function renderResults() {
         const section = exam.sections[state.sectionIndex];
         let resultsHTML = `
@@ -3069,21 +3087,22 @@ Hamburger Str. 112
           section.texts.forEach((text, index) => {
             totalQuestions++;
             const userAnswer = state.answers[text.id];
-            const correctAnswer = text.correctAnswer;
-            const isCorrect = userAnswer === correctAnswer;
+            const isCorrect = userAnswer === text.correctAnswer;
             if (isCorrect) totalCorrect++;
-            
-            const resultClass = isCorrect ? 'correct' : 'incorrect';
-            const resultIcon = isCorrect ? '✓' : '✗';
-            const answerText = userAnswer ? getHeadingTextById(userAnswer) : 'Nicht beantwortet';
-            const correctText = getHeadingTextById(correctAnswer);
             
             resultsHTML += `
               <div class="result-detail">
-                <div class="result-question">Text ${String.fromCharCode(97 + index).toUpperCase()}</div>
-                <div class="result-answer ${resultClass}"><strong>Ihre Antwort:</strong> ${answerText}</div>
-                <div class="result-answer ${resultClass}"><strong>Richtig:</strong> ${correctText}</div>
-                <div class="result-icon">${resultIcon}</div>
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer ? getHeadingTextById(userAnswer) : 'Nicht beantwortet'}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${getHeadingTextById(text.correctAnswer)}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
               </div>
             `;
           });
@@ -3091,12 +3110,8 @@ Hamburger Str. 112
           section.questions.forEach((question, index) => {
             totalQuestions++;
             const userAnswer = state.answers[question.id];
-            const correctAnswer = question.correctAnswer;
-            const isCorrect = userAnswer === correctAnswer;
+            const isCorrect = userAnswer === question.correctAnswer;
             if (isCorrect) totalCorrect++;
-            
-            const resultClass = isCorrect ? 'correct' : 'incorrect';
-            const resultIcon = isCorrect ? '✓' : '✗';
             
             let userAnswerText = 'Nicht beantwortet';
             if (userAnswer) {
@@ -3105,17 +3120,22 @@ Hamburger Str. 112
             }
             
             let correctAnswerText = '';
-            if (correctAnswer) {
-              const option = question.options.find(o => o.id === correctAnswer);
-              correctAnswerText = option ? option.text : correctAnswer;
-            }
+            const correctOption = question.options.find(o => o.id === question.correctAnswer);
+            correctAnswerText = correctOption ? correctOption.text : question.correctAnswer;
             
             resultsHTML += `
               <div class="result-detail">
-                <div class="result-question">${index + 1}. ${question.text.substring(0, 30)}...</div>
-                <div class="result-answer ${resultClass}"><strong>Ihre Antwort:</strong> ${userAnswerText}</div>
-                <div class="result-answer ${resultClass}"><strong>Richtig:</strong> ${correctAnswerText}</div>
-                <div class="result-icon">${resultIcon}</div>
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswerText}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${correctAnswerText}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
               </div>
             `;
           });
@@ -3128,15 +3148,19 @@ Hamburger Str. 112
             const isCorrect = userAnswer === correctAnswer;
             if (isCorrect) totalCorrect++;
             
-            const resultClass = isCorrect ? 'correct' : 'incorrect';
-            const resultIcon = isCorrect ? '✓' : '✗';
-            
             resultsHTML += `
               <div class="result-detail">
-                <div class="result-question">Situation ${situation.id}</div>
-                <div class="result-answer ${resultClass}"><strong>Ihre Antwort:</strong> ${userAnswer || '-'}</div>
-                <div class="result-answer ${resultClass}"><strong>Richtig:</strong> ${correctAnswer || 'X'}</div>
-                <div class="result-icon">${resultIcon}</div>
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${correctAnswer || 'X'}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
               </div>
             `;
           });
@@ -3144,19 +3168,22 @@ Hamburger Str. 112
           section.fillBlanks.forEach(blank => {
             totalQuestions++;
             const userAnswer = state.answers[blank.id];
-            const correctAnswer = blank.correctAnswer;
-            const isCorrect = userAnswer === correctAnswer;
+            const isCorrect = userAnswer === blank.correctAnswer;
             if (isCorrect) totalCorrect++;
-            
-            const resultClass = isCorrect ? 'correct' : 'incorrect';
-            const resultIcon = isCorrect ? '✓' : '✗';
             
             resultsHTML += `
               <div class="result-detail">
-                <div class="result-question">Lücke ${blank.id}</div>
-                <div class="result-answer ${resultClass}"><strong>Ihre Antwort:</strong> ${userAnswer || '-'}</div>
-                <div class="result-answer ${resultClass}"><strong>Richtig:</strong> ${correctAnswer}</div>
-                <div class="result-icon">${resultIcon}</div>
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${blank.correctAnswer}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
               </div>
             `;
           });
@@ -3164,19 +3191,22 @@ Hamburger Str. 112
           section.fillBlanks2.forEach(blank => {
             totalQuestions++;
             const userAnswer = state.answers[blank.id];
-            const correctAnswer = blank.correctAnswer;
-            const isCorrect = userAnswer === correctAnswer;
+            const isCorrect = userAnswer === blank.correctAnswer;
             if (isCorrect) totalCorrect++;
-            
-            const resultClass = isCorrect ? 'correct' : 'incorrect';
-            const resultIcon = isCorrect ? '✓' : '✗';
             
             resultsHTML += `
               <div class="result-detail">
-                <div class="result-question">Lücke ${blank.id}</div>
-                <div class="result-answer ${resultClass}"><strong>Ihre Antwort:</strong> ${userAnswer || '-'}</div>
-                <div class="result-answer ${resultClass}"><strong>Richtig:</strong> ${correctAnswer}</div>
-                <div class="result-icon">${resultIcon}</div>
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${blank.correctAnswer}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
               </div>
             `;
           });
@@ -3815,12 +3845,78 @@ Hamburger Str. 112
         }
       };
 
+      const CORRECT_ANSWERS = {
+        lesen: {
+          "text1": "f",
+          "text2": "d",
+          "text3": "b",
+          "text4": "a",
+          "text5": "e",
+          "s2q1": "s2q1o2",
+          "s2q2": "s2q2o1",
+          "s2q3": "s2q3o3",
+          "s2q4": "s2q4o3",
+          "s2q5": "s2q5o3",
+          "11": "A",
+          "12": "X",
+          "13": "G",
+          "14": "I",
+          "15": "K",
+          "16": "F",
+          "17": "X",
+          "18": "H",
+          "19": "D",
+          "20": "L",
+          "21": "um",
+          "22": "ob",
+          "23": "aber",
+          "24": "unbedingt",
+          "25": "mich",
+          "26": "als",
+          "27": "kommenden",
+          "28": "dazu",
+          "29": "sondern",
+          "30": "für",
+          "31": "KAUM",
+          "32": "AUF",
+          "33": "VORBEI",
+          "34": "STATT",
+          "35": "INNERHALB",
+          "36": "MÜSSEN",
+          "37": "AN",
+          "38": "SOLLEN",
+          "39": "DANN",
+          "40": "DENN"
+        },
+        hoeren: {
+          "41": "falsch",
+          "42": "richtig",
+          "43": "richtig",
+          "44": "falsch",
+          "45": "falsch",
+          "46": "richtig",
+          "47": "falsch",
+          "48": "richtig",
+          "49": "richtig",
+          "50": "falsch",
+          "51": "falsch",
+          "52": "richtig",
+          "53": "richtig",
+          "54": "richtig",
+          "55": "falsch",
+          "56": "richtig",
+          "57": "richtig",
+          "58": "richtig",
+          "59": "falsch",
+          "60": "falsch"
+        }
+      };
+
       function readExamResults() {
         try {
           const lesen = window._lesenState ? window._lesenState.answers : {};
           const hoeren = window._hoerenState ? window._hoerenState.answers : {};
           const schreiben = window._schreibenState ? window._schreibenState.answers : {};
-
           return { hoeren, lesen, schreiben };
         } catch (e) {
           return { hoeren: {}, lesen: {}, schreiben: {} };
@@ -3863,7 +3959,6 @@ Hamburger Str. 112
         });
         
         const points = Math.round((correct / total) * CONFIG.totals.lesen);
-        
         return { correct, total, points };
       }
 
@@ -3882,74 +3977,170 @@ Hamburger Str. 112
         });
         
         const points = Math.round((correct / total) * CONFIG.totals.hoeren);
-        
         return { correct, total, points };
+      }
+
+      function getHeadingText(questionId, answerId) {
+        if (!answerId || answerId === '-') return '';
+        
+        const headings = EXAM_DATA.lesen.sections[0].headings;
+        const heading = headings.find(h => h.id === answerId);
+        return heading ? heading.text : '';
+      }
+
+      function getAnswerText(section, questionId, answerId) {
+        if (!answerId || answerId === '-') return '-';
+        
+        if (section === 'lesen') {
+          const lesenExam = EXAM_DATA.lesen;
+          const teil2 = lesenExam.sections[1];
+          const question = teil2.questions.find(q => q.id === questionId);
+          if (question) {
+            const option = question.options.find(o => o.id === answerId);
+            return option ? option.text : answerId;
+          }
+        }
+        return answerId;
       }
 
       function renderLesenDetails(answers) {
         let html = `<div class="section-table">`;
         
-        const exam = EXAM_DATA.lesen;
-        exam.sections.forEach(section => {
-          if (section.id === 's1') {
-            html += `<h4>Teil 1: Überschriften zuordnen</h4>`;
-            section.texts.forEach((text, idx) => {
-              const userAnswer = answers[text.id];
-              const correctAnswer = text.correctAnswer;
-              const isCorrect = userAnswer === correctAnswer;
-              const userText = userAnswer ? (section.headings.find(h => h.id === userAnswer)?.text || userAnswer) : '-';
-              const correctText = section.headings.find(h => h.id === correctAnswer)?.text || correctAnswer;
-              html += `<div class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}" style="padding: 8px; margin: 4px 0;">Text ${String.fromCharCode(65+idx)}: Ihre Antwort: ${userText} | Richtig: ${correctText} | ${isCorrect ? '✓' : '✗'}</div>`;
-            });
-          }
-          if (section.id === 's2') {
-            html += `<h4>Teil 2: Fragen zum Text</h4>`;
-            section.questions.forEach((q, idx) => {
-              const userAnswer = answers[q.id];
-              const isCorrect = userAnswer === q.correctAnswer;
-              const userText = userAnswer ? (q.options.find(o => o.id === userAnswer)?.text || userAnswer) : '-';
-              const correctText = q.options.find(o => o.id === q.correctAnswer)?.text || q.correctAnswer;
-              html += `<div class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}" style="padding: 8px; margin: 4px 0;">Frage ${idx+1}: Ihre Antwort: ${userText} | Richtig: ${correctText} | ${isCorrect ? '✓' : '✗'}</div>`;
-            });
-          }
-          if (section.id === 's3') {
-            html += `<h4>Teil 3: Texte zuordnen</h4>`;
-            section.situations.forEach(sit => {
-              const userAnswer = answers[sit.id];
-              const correctText = section.texts.find(t => t.correctAnswer === sit.id);
-              const correctAnswer = correctText ? correctText.id : 'X';
-              const isCorrect = userAnswer === correctAnswer;
-              html += `<div class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}" style="padding: 8px; margin: 4px 0;">Situation ${sit.id}: Ihre Antwort: ${userAnswer || '-'} | Richtig: ${correctAnswer} | ${isCorrect ? '✓' : '✗'}</div>`;
-            });
-          }
-          if (section.id === 's4' || section.id === 's5') {
-            const blanks = section.id === 's4' ? section.fillBlanks : section.fillBlanks2;
-            html += `<h4>${section.id === 's4' ? 'Sprachbausteine 1' : 'Sprachbausteine 2'}</h4>`;
-            blanks.forEach(blank => {
-              const userAnswer = answers[blank.id];
-              const correctAnswer = blank.correctAnswer;
-              const isCorrect = userAnswer === correctAnswer;
-              html += `<div class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}" style="padding: 8px; margin: 4px 0;">Lücke ${blank.id}: Ihre Antwort: ${userAnswer || '-'} | Richtig: ${correctAnswer} | ${isCorrect ? '✓' : '✗'}</div>`;
-            });
-          }
-        });
-        html += `</div>`;
+        html += `<h4>Teil 1: Überschriften zuordnen</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Text</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 1; i <= 5; i++) {
+          const questionId = `text${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Text ${String.fromCharCode(96 + i).toUpperCase()}</td>
+                    <td>${userAnswer}) ${getHeadingText(questionId, userAnswer)}</td>
+                    <td>${correctAnswer}) ${getHeadingText(questionId, correctAnswer)}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 1; i <= 5; i++) {
+          const questionId = `s2q${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Frage ${i}</td>
+                    <td>${getAnswerText('lesen', questionId, userAnswer)}</td>
+                    <td>${getAnswerText('lesen', questionId, correctAnswer)}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Situation</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 11; i <= 20; i++) {
+          const questionId = `${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Situation ${i}</td>
+                    <td>${userAnswer === 'X' ? 'X - Kein Text' : (userAnswer || '-')}</td>
+                    <td>${correctAnswer || 'X - Kein Text'}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Lücke</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 21; i <= 40; i++) {
+          const questionId = `${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Lücke ${i}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table></div>`;
+        
         return html;
       }
 
       function renderHoerenDetails(answers) {
         let html = `<div class="section-table">`;
-        const exam = EXAM_DATA.hoeren;
-        exam.sections.forEach(section => {
-          html += `<h4>${section.title}</h4>`;
-          section.questions.forEach(q => {
-            const userAnswer = answers[section.id]?.[q.id] || '-';
-            const correctAnswer = section.correctAnswers[q.id];
-            const isCorrect = userAnswer === correctAnswer;
-            html += `<div class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}" style="padding: 8px; margin: 4px 0;">${q.id}: Ihre Antwort: ${userAnswer} | Richtig: ${correctAnswer} | ${isCorrect ? '✓' : '✗'}</div>`;
-          });
-        });
-        html += `</div>`;
+        
+        html += `<h4>Teil 1</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 41; i <= 45; i++) {
+          const questionId = `${i}`;
+          const section = 'hörverstehen1';
+          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
+          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>${questionId}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 2</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 46; i <= 55; i++) {
+          const questionId = `${i}`;
+          const section = 'hörverstehen2';
+          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
+          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>${questionId}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 3</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 56; i <= 60; i++) {
+          const questionId = `${i}`;
+          const section = 'hörverstehen3';
+          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
+          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>${questionId}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table></div>`;
+        
         return html;
       }
 
@@ -3964,32 +4155,15 @@ Hamburger Str. 112
         const lesenResults = calculateLesenResults(st.lesen);
         const hoerenResults = calculateHoerenResults(st.hoeren);
         
-        const tL = `<div class="results-tile">
-                    <h3>Lesen</h3>
-                    <div class="score">${lesenResults.points}/${CONFIG.totals.lesen} Punkte</div>
-                    <div class="small-muted">(${lesenResults.correct}/${lesenResults.total} richtig)</div>
-                  </div>`;
-                  
-        const tH = `<div class="results-tile">
-                    <h3>Hören</h3>
-                    <div class="score">${hoerenResults.points}/${CONFIG.totals.hoeren} Punkte</div>
-                    <div class="small-muted">(${hoerenResults.correct}/${hoerenResults.total} richtig)</div>
-                  </div>`;
-                  
-        const tS = `<div class="results-tile">
-                    <h3>Schreiben</h3>
-                    <div class="score">Manuelle Bewertung</div>
-                    <div class="small-muted">(45 Punkte max.)</div>
-                  </div>`;
-                  
+        const tL = `<div class="results-tile"><h3>Lesen</h3><div class="score">${lesenResults.points}/${CONFIG.totals.lesen} Punkte</div><div class="small-muted">(${lesenResults.correct}/${lesenResults.total} richtig)</div></div>`;
+        const tH = `<div class="results-tile"><h3>Hören</h3><div class="score">${hoerenResults.points}/${CONFIG.totals.hoeren} Punkte</div><div class="small-muted">(${hoerenResults.correct}/${hoerenResults.total} richtig)</div></div>`;
+        const tS = `<div class="results-tile"><h3>Schreiben</h3><div class="score">Manuelle Bewertung</div><div class="small-muted">(45 Punkte max.)</div></div>`;
+        
         tiles.innerHTML = tL + tH + tS;
 
         details.innerHTML = `
           <h2>📊 Detaillierte Ergebnisse</h2>
-          <div class="instructions">
-            Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Antworten:
-          </div>
-          
+          <div class="instructions">Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Antworten:</div>
           <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>
         `;
         
@@ -4005,12 +4179,9 @@ Hamburger Str. 112
           <div class="writing-task">
             <div class="writing-requirements">
               <h4>Ihre Antwort:</h4>
-              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">
-                ${st.schreiben['s1'] || 'Keine Antwort vorhanden'}
-              </div>
+              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${st.schreiben['s1'] || 'Keine Antwort vorhanden'}</div>
               <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center">
-                Punkte vergeben (0–45): 
-                <input id="schreibenInput" type="number" min="0" max="45" step="1" value="0"> 
+                Punkte vergeben (0–45): <input id="schreibenInput" type="number" min="0" max="45" step="1" value="0"> 
                 <button id="saveSchreiben" class="results-btn">💾 Speichern</button>
               </div>
             </div>
@@ -4022,13 +4193,8 @@ Hamburger Str. 112
         const percentage = Math.round((totalPoints / maxPoints) * 100);
 
         document.getElementById('finalSummary-ergebnisse').innerHTML = `
-          <div class="left">
-            Gesamtergebnis (ohne Schreiben)<br>
-            <span class="small-muted">Automatisch korrigierte Bereiche</span>
-          </div>
-          <div class="right">
-            <strong>${totalPoints}/${maxPoints} Punkte (${percentage}%)</strong>
-          </div>`;
+          <div class="left">Gesamtergebnis (ohne Schreiben)<br><span class="small-muted">Automatisch korrigierte Bereiche</span></div>
+          <div class="right"><strong>${totalPoints}/${maxPoints} Punkte (${percentage}%)</strong></div>`;
 
         document.getElementById('saveSchreiben').onclick = function() {
           const points = parseInt(document.getElementById('schreibenInput').value) || 0;
