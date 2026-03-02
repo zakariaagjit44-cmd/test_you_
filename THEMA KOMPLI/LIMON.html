@@ -3845,6 +3845,168 @@ Industriestraße 12
         return { correct, total, points };
       }
 
+      function getHeadingText(questionId, answerId) {
+        if (!answerId || answerId === '-') return '';
+        const headings = EXAM_DATA.lesen.sections[0].headings;
+        const heading = headings.find(h => h.id === answerId);
+        return heading ? heading.text : '';
+      }
+
+      function getAnswerText(section, questionId, answerId) {
+        if (!answerId || answerId === '-') return '-';
+        if (section === 'lesen') {
+          const lesenExam = EXAM_DATA.lesen;
+          const teil2 = lesenExam.sections[1];
+          const question = teil2.questions.find(q => q.id === questionId);
+          if (question) {
+            const option = question.options.find(o => o.id === answerId);
+            return option ? option.text : answerId;
+          }
+        }
+        return answerId;
+      }
+
+      function renderLesenDetails(answers) {
+        let html = `<div class="section-table">`;
+        
+        html += `<h4>Teil 1: Überschriften zuordnen</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Text</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 1; i <= 5; i++) {
+          const questionId = `text${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Text ${String.fromCharCode(96 + i).toUpperCase()}</td>
+                    <td>${userAnswer}) ${getHeadingText(questionId, userAnswer)}</td>
+                    <td>${correctAnswer}) ${getHeadingText(questionId, correctAnswer)}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 1; i <= 5; i++) {
+          const questionId = `s2q${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Frage ${i}</td>
+                    <td>${getAnswerText('lesen', questionId, userAnswer)}</td>
+                    <td>${getAnswerText('lesen', questionId, correctAnswer)}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Situation</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 11; i <= 20; i++) {
+          const questionId = `${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Situation ${i}</td>
+                    <td>${userAnswer === 'X' ? 'X - Kein Text' : (userAnswer || '-')}</td>
+                    <td>${correctAnswer === 'X' ? 'X - Kein Text' : correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Lücke</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 21; i <= 40; i++) {
+          const questionId = `${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Lücke ${i}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table></div>`;
+        
+        return html;
+      }
+
+      function renderHoerenDetails(answers) {
+        let html = `<div class="section-table">`;
+        
+        html += `<h4>Teil 1</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 41; i <= 45; i++) {
+          const questionId = `${i}`;
+          const section = 'hörverstehen1';
+          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
+          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>${questionId}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 2</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 46; i <= 55; i++) {
+          const questionId = `${i}`;
+          const section = 'hörverstehen2';
+          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
+          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>${questionId}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 3</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 56; i <= 60; i++) {
+          const questionId = `${i}`;
+          const section = 'hörverstehen3';
+          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
+          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>${questionId}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table></div>`;
+        
+        return html;
+      }
+
       function calculateResults() {
         const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
         const details = document.getElementById('details-ergebnisse');
@@ -3862,69 +4024,25 @@ Industriestraße 12
         
         tiles.innerHTML = tL + tH + tS;
 
-        // Lesen Details
-        let lesenHTML = '<div class="result-item"><h3>📖 Leseverstehen - Detaillierte Auswertung</h3>';
-        Object.keys(CORRECT_ANSWERS.lesen).forEach(key => {
-          const userAnswer = st.lesen[key] || '-';
-          const isCorrect = userAnswer === CORRECT_ANSWERS.lesen[key];
-          lesenHTML += `
-            <div class="result-detail">
-              <div class="result-row">
-                <div class="result-label">Frage ${key}:</div>
-                <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer}</div>
-              </div>
-              <div class="result-row">
-                <div class="result-label">Richtig:</div>
-                <div class="result-value correct">${CORRECT_ANSWERS.lesen[key]}</div>
-              </div>
-              <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
-                ${isCorrect ? '✔️' : '❌'}
-              </div>
-            </div>
-          `;
-        });
-        lesenHTML += '</div>';
-        details.innerHTML += lesenHTML;
-
-        // Hören Details
-        let hoerenHTML = '<div class="result-item"><h3>👂 Hörverstehen - Detaillierte Auswertung</h3>';
-        Object.keys(CORRECT_ANSWERS.hoeren).forEach(questionId => {
-          let userAnswer = '-';
-          Object.keys(st.hoeren).forEach(sectionId => {
-            if (st.hoeren[sectionId] && st.hoeren[sectionId][questionId]) {
-              userAnswer = st.hoeren[sectionId][questionId];
-            }
-          });
-          const isCorrect = userAnswer === CORRECT_ANSWERS.hoeren[questionId];
-          hoerenHTML += `
-            <div class="result-detail">
-              <div class="result-row">
-                <div class="result-label">Frage ${questionId}:</div>
-                <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer}</div>
-              </div>
-              <div class="result-row">
-                <div class="result-label">Richtig:</div>
-                <div class="result-value correct">${CORRECT_ANSWERS.hoeren[questionId]}</div>
-              </div>
-              <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
-                ${isCorrect ? '✔️' : '❌'}
-              </div>
-            </div>
-          `;
-        });
-        hoerenHTML += '</div>';
-        details.innerHTML += hoerenHTML;
-
-        // Schreiben Details
-        const schreibenContent = st.schreiben['s1'] || 'Keine Antwort vorhanden';
-        const wordCount = schreibenContent.trim() === '' ? 0 : schreibenContent.trim().split(/\s+/).length;
+        details.innerHTML = `
+          <h2>📊 Detaillierte Ergebnisse</h2>
+          <div class="instructions">Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Antworten:</div>
+          <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>
+        `;
         
-        let schreibenHTML = `
-          <div class="result-item">
-            <h3>✍️ Schreiben - Ihre Antwort</h3>
+        details.innerHTML += renderLesenDetails(st.lesen);
+        
+        details.innerHTML += `
+          <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+        `;
+        details.innerHTML += renderHoerenDetails(st.hoeren);
+        
+        details.innerHTML += `
+          <h3>✍️ Schreiben</h3>
+          <div class="writing-task">
             <div class="writing-requirements">
-              <h4>Ihre Antwort (${wordCount} Wörter):</h4>
-              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${schreibenContent}</div>
+              <h4>Ihre Antwort:</h4>
+              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${st.schreiben['s1'] || 'Keine Antwort vorhanden'}</div>
               <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center">
                 Punkte vergeben (0–45): <input id="schreibenInput" type="number" min="0" max="45" step="1" value="0"> 
                 <button id="saveSchreiben" class="results-btn">💾 Speichern</button>
@@ -3932,7 +4050,6 @@ Industriestraße 12
             </div>
           </div>
         `;
-        details.innerHTML += schreibenHTML;
 
         const totalPoints = lesenResults.points + hoerenResults.points;
         const maxPoints = CONFIG.totals.lesen + CONFIG.totals.hoeren;
