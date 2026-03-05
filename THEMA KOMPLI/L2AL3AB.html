@@ -7,9 +7,1466 @@
   
   <!-- Supabase Library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <style>
+    /* ===== GLOBAL STYLES ===== */
+    :root {
+      --primary-color: #1e3a5f;
+      --secondary-color: #2c5282;
+      --accent-color: #4da6ff;
+      --light-color: #ebf8ff;
+      --text-color: #2d3748;
+      --white: #ffffff;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: var(--white);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    button {
+      cursor: pointer;
+    }
+    
+    /* ===== START PAGE STYLES ===== */
+    .start-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    
+    .start-content {
+      max-width: 600px;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .logo {
+      margin-bottom: 20px;
+    }
+    
+    .logo-icon {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+    
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    
+    .subtitle {
+      font-size: 18px;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+    
+    .card {
+      background-color: var(--white);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: var(--shadow);
+      color: var(--text-color);
+    }
+    
+    .card h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+    
+    .card p {
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    
+    select {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 2px solid var(--accent-color);
+      outline: none;
+      background-color: var(--white);
+      color: var(--text-color);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    
+    select:focus {
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.3);
+    }
+    
+    .timer-container {
+      margin: 25px 0;
+    }
+    
+    .timer-label {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    
+    .timer {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--accent-color);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    .progress-bar {
+      height: 8px;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    
+    .progress {
+      height: 100%;
+      width: 100%;
+      background-color: var(--accent-color);
+      border-radius: 4px;
+      transform: scaleX(1);
+      transform-origin: left;
+      transition: transform 1s linear;
+    }
+    
+    .info-text {
+      font-size: 14px;
+      margin-top: 20px;
+      opacity: 0.8;
+    }
+    
+    .button-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .btn {
+      flex: 1;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      background-color: var(--accent-color);
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+    
+    .btn:hover {
+      background-color: #3399ff;
+    }
+    
+    /* ===== EXAM PAGE STYLES ===== */
+    .exam-body {
+      background: #f5f5f5;
+      color: #333;
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Header Styles */
+    header.topbar {
+      background: #1e3a5f;
+      color: #fff;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      min-height: 80px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .brand .logo {
+      width: 80px;
+      height: 40px;
+      background: #e74c3c;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 18px;
+    }
+
+    .meta .main-title {
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .meta .sub-title {
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    .timer {
+      font-weight: 700;
+      font-size: 18px;
+      color: #fff;
+      margin: 0 20px;
+    }
+
+    .buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(2, auto);
+      gap: 10px 20px;
+    }
+
+    .exam-btn {
+      padding: 12px 20px;
+      border-radius: 6px;
+      border: none;
+      background: white;
+      color: #1e3a5f;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease;
+      min-width: 150px;
+      text-align: center;
+    }
+
+    .exam-btn:hover {
+      background: #1e3a5f;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .exam-btn.save:hover {
+      background: #2c5282;
+    }
+    
+    .exam-btn.submit:hover {
+      background: #2c5282;
+    }
+    
+    .exam-btn.result:hover {
+      background: #2c5282;
+    }
+    
+    .exam-btn.next:hover {
+      background: #2c5282;
+    }
+    
+    .exam-btn.reset:hover {
+      background: #2c5282;
+    }
+    
+    .exam-btn.reset-section {
+      background: #d35400;
+      color: white;
+      font-size: 12px;
+      padding: 6px 10px;
+      min-width: auto;
+    }
+    
+    .exam-btn.reset-section:hover {
+      background: #e67e22;
+    }
+    
+    .exam-btn.no-match {
+      background: #95a5a6;
+      color: white;
+      font-size: 12px;
+      padding: 6px 10px;
+      min-width: auto;
+      margin-top: 5px;
+    }
+    
+    .exam-btn.no-match:hover {
+      background: #7f8c8d;
+    }
+    
+    .exam-btn.no-match.selected {
+      background: #e74c3c;
+    }
+    
+    /* Top Tiles */
+    .top-tiles {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #1e3a5f;
+      border-bottom: 1px solid #0f223a;
+    }
+    
+    .tile {
+      flex: 1;
+      max-width: 180px;
+      text-align: center;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: #3b4a63;
+      color: #fff;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60px;
+    }
+    
+    .tile:hover {
+      background: #4a5b78;
+    }
+    
+    .tile.active {
+      background: #ffffff;
+      color: #000;
+      border-color: #bbb;
+    }
+    
+    .tile.done {
+      background: #2ecc71;
+      color: #fff;
+      border-color: #27ae60;
+    }
+    
+    .tile.done::after {
+      content: " ✅";
+      margin-left: 5px;
+    }
+    
+    .tile .points {
+      background: rgba(255,255,255,0.2);
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+    
+    .tile.active .points {
+      background: #e9eefc;
+      color: #2c3e50;
+    }
+    
+    /* Container Styles */
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 16px;
+      padding: 16px;
+      max-width: 1200px;
+      margin: 12px auto;
+    }
+    
+    .container-full {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      padding: 16px;
+      max-width: 1200px;
+      margin: 12px auto;
+    }
+    
+    .container-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding: 16px;
+      max-width: 1200px;
+      margin: 12px auto;
+    }
+    
+    .left-panel {
+      background: white;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      max-height: 76vh;
+      overflow: auto;
+    }
+    
+    .left-panel .passage {
+      font-size: 14px;
+      color: #2c3e50;
+      line-height: 1.8;
+    }
+    
+    .left-panel h2 {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+    
+    .right-panel {
+      background: white;
+      border-radius: 8px;
+      padding: 12px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 76vh;
+      overflow: auto;
+    }
+    
+    .main-panel {
+      background: white;
+      border-radius: 8px;
+      padding: 25px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      max-height: 76vh;
+      overflow: auto;
+    }
+    
+    .panel-title {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #1e3a5f;
+      font-weight: 700;
+    }
+    
+    /* Question Styles */
+    .question-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .question-body {
+      margin-top: 8px;
+    }
+    
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .option {
+      background: #fbfdff;
+      border: 1px solid #e1e8f6;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .option:hover {
+      background: #f0f6ff;
+    }
+    
+    .option.selected {
+      background: #e8fbe9;
+      border-color: #2ecc71;
+    }
+    
+    .option .radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid #cfdff6;
+      background: #fff;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    
+    .option.selected .radio {
+      background: #3498db;
+      border-color: #3498db;
+      box-shadow: inset 0 -3px 0 rgba(0,0,0,0.05);
+    }
+    
+    .text-container {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #e1e8f6;
+      border-radius: 8px;
+      background: #fbfdff;
+      position: relative;
+      min-height: 120px;
+    }
+    
+    .text-container:hover {
+      background: #f0f6ff;
+    }
+    
+    .text-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #2c3e50;
+    }
+    
+    .text-content {
+      font-size: 14px;
+      color: #2c3e50;
+      line-height: 1.6;
+    }
+    
+    .title-slot {
+      min-height: 40px;
+      margin-top: 10px;
+      padding: 8px;
+      border: 2px dashed #c8d9f6;
+      border-radius: 6px;
+      background: #f8fbff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .title-slot.has-title {
+      background: #e8fbe9;
+      border-color: #2ecc71;
+    }
+    
+    .title-slot.has-x {
+      background: #f8d7da;
+      border-color: #e74c3c;
+      color: #c0392b;
+      font-weight: bold;
+    }
+    
+    .restore-btn {
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 11px;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+    
+    .restore-btn:hover {
+      background: #2980b9;
+    }
+    
+    .headings-bank {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 0;
+    }
+    
+    .heading-item {
+      padding: 10px;
+      border: 1px solid #dbe7fb;
+      border-radius: 8px;
+      background: #f8fbff;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .heading-item:hover {
+      background: #e9f0ff;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .heading-item.used {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #f8d7da;
+      border-color: #f5c6cb;
+    }
+    
+    .heading-item.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
+    }
+    
+    .result-correct {
+      color: #27ae60;
+      font-weight: bold;
+    }
+    
+    .result-incorrect {
+      color: #c0392b;
+      font-weight: bold;
+    }
+    
+    .result-item {
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 8px;
+      background: #f8f9fa;
+      border-left: 4px solid #1e3a5f;
+    }
+    
+    .result-item h3 {
+      color: #1e3a5f;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    
+    .result-detail {
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      margin: 8px 0;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .result-row {
+      display: flex;
+      align-items: center;
+      margin: 4px 0;
+    }
+    
+    .result-label {
+      font-weight: 600;
+      min-width: 120px;
+      color: #2c3e50;
+    }
+    
+    .result-value {
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    
+    .result-value.correct {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .result-value.incorrect {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .result-status {
+      margin-top: 8px;
+      padding: 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-align: center;
+    }
+    
+    .result-status.correct {
+      background: #d4edda;
+      color: #155724;
+    }
+    
+    .result-status.incorrect {
+      background: #f8d7da;
+      color: #721c24;
+    }
+    
+    .result-summary {
+      margin-top: 20px;
+      padding: 15px;
+      background: #1e3a5f;
+      color: white;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    .result-summary .percentage {
+      font-size: 32px;
+      font-weight: 700;
+      color: #4da6ff;
+    }
+    
+    .instructions {
+      color: #7f8c8d;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+    
+    .question-text {
+      font-weight: 600;
+      margin-bottom: 15px;
+      font-size: 15px;
+      color: #2c3e50;
+    }
+    
+    .all-questions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    
+    .question-block {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #e1e8f6;
+      border-radius: 8px;
+      background: #fbfdff;
+    }
+    
+    .texts-list, .situations-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .text-item, .situation-item {
+      padding: 15px;
+      border: 1px solid #e1e8f6;
+      border-radius: 8px;
+      background: #fbfdff;
+    }
+    
+    .text-letter {
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+    
+    .situation-number {
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+    
+    .fill-blank-container {
+      margin: 20px 0;
+      line-height: 2.2;
+    }
+    
+    .blank-word {
+      display: inline-block;
+      min-width: 100px;
+      padding: 6px 10px;
+      margin: 0 4px;
+      background: #fff;
+      cursor: pointer;
+      position: relative;
+      border: 2px solid #dbe7fb;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    
+    .blank-word:hover {
+      background: #e3f2fd;
+      border-color: #3498db;
+    }
+    
+    .blank-word.has-answer {
+      background: #e8fbe9;
+      border-color: #2ecc71;
+    }
+    
+    .blank-word.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
+    }
+    
+    .options-popup {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      border: 1px solid #dbe7fb;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      z-index: 100;
+      min-width: 150px;
+    }
+    
+    .option-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #f0f4fb;
+    }
+    
+    .option-item:hover {
+      background: #f0f6ff;
+    }
+    
+    .option-item:last-child {
+      border-bottom: none;
+    }
+    
+    .horizontal-options {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .option-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 10px;
+      border: 1px solid #e1e8f6;
+      border-radius: 8px;
+      background: #fbfdff;
+    }
+    
+    .option-number {
+      font-weight: bold;
+      color: #2c3e50;
+      min-width: 30px;
+    }
+    
+    .option-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .option-btn {
+      padding: 8px 16px;
+      border: 1px solid #dbe7fb;
+      border-radius: 6px;
+      background: #f8fbff;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .option-btn:hover {
+      background: #e9f0ff;
+    }
+    
+    .option-btn.selected {
+      background: #3498db;
+      color: white;
+      border-color: #3498db;
+    }
+    
+    .word-bank-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    
+    .bank-word-vertical {
+      padding: 12px;
+      border: 2px solid #dbe7fb;
+      border-radius: 8px;
+      background: #f8fbff;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    
+    .bank-word-vertical:hover {
+      background: #e9f0ff;
+      border-color: #3498db;
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .bank-word-vertical.used {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #f8d7da;
+      border-color: #f5c6cb;
+    }
+    
+    .bank-word-vertical.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
+    }
+    
+    .blank-slot {
+      display: inline-block;
+      min-width: 100px;
+      padding: 6px 10px;
+      margin: 0 4px;
+      background: #fff;
+      min-height: 30px;
+      vertical-align: middle;
+      border: 2px solid #dbe7fb;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    
+    .blank-slot:hover {
+      background: #e3f2fd;
+      border-color: #3498db;
+    }
+    
+    .blank-slot.has-answer {
+      background: #e8fbe9;
+      border-color: #2ecc71;
+    }
+    
+    .blank-slot.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
+    }
+    
+    .footer-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .situation-item.used {
+      opacity: 0.7;
+      cursor: not-allowed;
+      background: #f8d7da;
+      border-color: #f5c6cb;
+      color: #333;
+    }
+    
+    .situation-item.selected {
+      background: #3498db;
+      color: white;
+      border-color: #2980b9;
+    }
+    
+    /* Listening Section Styles */
+    .listening-task {
+      margin-bottom: 10px;
+    }
+    
+    .true-false-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+    
+    .true-false-table th {
+      background: #3498db;
+      color: white;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    
+    .true-false-table td {
+      padding: 15px;
+      border-bottom: 1px solid #e1e8f6;
+      vertical-align: top;
+    }
+    
+    .true-false-table tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+    
+    .true-false-table tr:hover {
+      background: #e3f2fd;
+    }
+    
+    .answer-options {
+      display: flex;
+      gap: 25px;
+    }
+    
+    .answer-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 10px 15px;
+      border-radius: 4px;
+      transition: background 0.2s;
+      font-weight: 500;
+    }
+    
+    .answer-option:hover {
+      background: #e3f2fd;
+    }
+    
+    .answer-option input {
+      margin: 0;
+      transform: scale(1.2);
+    }
+
+    .correct-answer {
+      background: #d4edda !important;
+      border-left: 4px solid #28a745;
+    }
+    
+    .incorrect-answer {
+      background: #f8d7da !important;
+      border-left: 4px solid #dc3545;
+    }
+    
+    /* Writing Section Styles */
+    .writing-task {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #e1e8f6;
+      border-radius: 8px;
+      background: #fbfdff;
+    }
+    
+    .writing-prompt {
+      font-size: 14px;
+      color: #2c3e50;
+      line-height: 1.6;
+      margin-bottom: 15px;
+    }
+    
+    .writing-requirements {
+      background: #f8f9fa;
+      padding: 12px;
+      border-radius: 6px;
+      border-left: 4px solid #3498db;
+      margin-bottom: 15px;
+    }
+    
+    .writing-requirements h4 {
+      margin: 0 0 8px 0;
+      color: #2c3e50;
+    }
+    
+    .writing-requirements ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+    
+    .writing-requirements li {
+      margin-bottom: 5px;
+      color: #2c3e50;
+    }
+    
+    .writing-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .writing-textarea {
+      flex: 1;
+      min-height: 500px;
+      padding: 15px;
+      border: 2px solid #e1e8f6;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.6;
+      resize: vertical;
+      font-family: Arial, sans-serif;
+    }
+    
+    .writing-textarea:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+    
+    .word-counter {
+      margin-top: 10px;
+      text-align: right;
+      font-size: 13px;
+      color: #7f8c8d;
+      padding: 8px 0;
+    }
+    
+    .word-counter .count {
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    
+    /* Results Page Styles */
+    .results-body {
+      background: #f7fafc;
+      color: #0f1724;
+      line-height: 1.6;
+    }
+    
+    .results-header {
+      background: #1e3a5f;
+      color: #fff;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .results-logo {
+      background: #fff;
+      color: #1e3a5f;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-weight: 800;
+    }
+    
+    .results-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    
+    .results-container {
+      max-width: 1100px;
+      margin: 22px auto;
+      padding: 20px;
+    }
+    
+    .results-tiles {
+      display: flex;
+      gap: 12px;
+      margin: 18px 0;
+    }
+    
+    .results-tile {
+      flex: 1;
+      background: #fff;
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
+      border-left: 6px solid #1e3a5f;
+    }
+    
+    .results-tile h3 {
+      margin: 0;
+      font-size: 16px;
+      color: #1e3a5f;
+    }
+    
+    .results-tile .score {
+      font-size: 20px;
+      font-weight: 800;
+      margin-top: 8px;
+    }
+    
+    .section-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+    
+    .section-table th,
+    .section-table td {
+      padding: 8px;
+      border-bottom: 1px solid #e6eef8;
+      text-align: left;
+      font-size: 14px;
+    }
+    
+    .summary {
+      background: #fff;
+      padding: 16px;
+      border-radius: 10px;
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .summary .left {
+      font-weight: 700;
+    }
+    
+    .summary .right {
+      text-align: right;
+    }
+    
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    
+    .results-btn {
+      background: #4da6ff;
+      border: none;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.3s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .results-btn:hover {
+      background: #3a8ce0;
+    }
+    
+    .results-btn.secondary {
+      background: #95a5a6;
+    }
+    
+    .results-btn.secondary:hover {
+      background: #7f8c8d;
+    }
+    
+    .button-like {
+      text-decoration: none;
+    }
+    
+    .small-muted {
+      color: #6b7280;
+      font-size: 13px;
+    }
+    
+    input[type="number"] {
+      width: 90px;
+      padding: 8px;
+      border: 1px solid #d7e6fb;
+      border-radius: 6px;
+    }
+    
+    .note {
+      font-size: 13px;
+      color: #6b7280;
+      margin-top: 8px;
+    }
+    
+    /* Footer */
+    footer.controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: white;
+      border-top: 1px solid #e1e8f6;
+      margin-top: 20px;
+    }
+    
+    .status {
+      font-size: 14px;
+      color: #7f8c8d;
+    }
+    
+    .ghost {
+      background: transparent;
+      border: 2px solid #2c3e50;
+      color: #2c3e50;
+    }
+    
+    .ghost:hover {
+      background: #2c3e50;
+      color: white;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 980px) {
+      .container {
+        grid-template-columns: 1fr;
+        padding: 12px;
+      }
+      
+      .container-split {
+        grid-template-columns: 1fr;
+      }
+      
+      .right-panel {
+        order: 2;
+      }
+      
+      .top-tiles {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+      
+      header.topbar {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+      }
+      
+      .buttons-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .answer-options {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      footer.controls {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .results-tiles {
+        flex-direction: column;
+      }
+      
+      .summary {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+      
+      .controls {
+        flex-direction: column;
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .start-content {
+        padding: 25px 20px;
+      }
+      
+      h1 {
+        font-size: 28px;
+      }
+      
+      .card {
+        padding: 20px 15px;
+      }
+    }
+
+    /* === تحسينات خاصة للهواتف الصغيرة جدا === */
+    @media (max-width: 480px) {
+      /* 1. تحسين الحاويات الرئيسية */
+      .container, .container-split, .container-full {
+        grid-template-columns: 1fr !important;
+        padding: 8px !important;
+        gap: 10px !important;
+      }
+      
+      /* 2. جعل اللوحات (panels) تأخذ عرض كامل */
+      .left-panel, .right-panel, .main-panel {
+        max-height: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        margin-bottom: 10px;
+      }
+      
+      /* 3. تحسين الهيدر */
+      .topbar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        padding: 10px !important;
+      }
+      
+      .brand {
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+      
+      /* 4. تحسين الأزرار في الهيدر */
+      .buttons-grid {
+        grid-template-columns: 1fr !important;
+        width: 100%;
+      }
+      
+      .exam-btn {
+        width: 100% !important;
+        margin: 2px 0 !important;
+        font-size: 14px !important;
+        padding: 12px 8px !important;
+      }
+      
+      /* 5. تحسين التايلات */
+      .top-tiles {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .tile {
+        flex: 0 0 calc(33% - 5px) !important;
+        max-width: calc(33% - 5px) !important;
+        margin: 2px;
+        font-size: 11px !important;
+        padding: 8px 4px !important;
+      }
+      
+      /* 6. تحسين النصوص */
+      .passage, .text-content, .question-text {
+        font-size: 15px !important;
+        line-height: 1.5 !important;
+      }
+      
+      /* 7. تحسين الخيارات */
+      .option {
+        padding: 12px 10px !important;
+        margin: 4px 0 !important;
+      }
+      
+      /* 8. تحسين جداول True/False */
+      .true-false-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+      
+      /* 9. تحسين منطقة الكتابة */
+      .writing-textarea {
+        min-height: 300px !important;
+        font-size: 16px !important;
+      }
+      
+      /* 10. تحسين الفوتر */
+      footer.controls {
+        flex-direction: column !important;
+        gap: 10px !important;
+      }
+      
+      .footer-buttons {
+        width: 100%;
+        display: flex;
+        gap: 5px;
+      }
+      
+      .footer-buttons .exam-btn {
+        flex: 1;
+      }
+      
+      /* 11. تحسين النتائج */
+      .results-tiles {
+        flex-direction: column !important;
+      }
+      
+      .results-tile {
+        margin-bottom: 10px;
+      }
+    }
+
+    /* === تحسينات للهواتف المتوسطة === */
+    @media (min-width: 481px) and (max-width: 768px) {
+      .container, .container-split {
+        grid-template-columns: 1fr !important;
+      }
+      
+      .tile {
+        max-width: 180px !important;
+      }
+    }
+  </style>
 </head>
 <body id="body">
-  <!-- START PAGE -->
+  <!-- Start Page -->
   <div id="start-page" class="start-container">
     <div class="start-content">
       <div class="logo">
@@ -41,9 +1498,9 @@
     </div>
   </div>
 
-  <!-- LESEN PAGE -->
+  <!-- Lesen Page -->
   <div id="lesen-page" class="exam-page" style="display: none;">
-    <header class="topbar">
+    <header class="topbar" role="banner">
       <div class="brand">
         <div class="logo">test</div>
         <div class="meta">
@@ -51,7 +1508,9 @@
           <div class="sub-title">Lesen — Testbeispiel</div>
         </div>
       </div>
-      <div id="timer-lesen" class="timer">Verbleibende Zeit: 90:00</div>
+
+      <div id="timer-lesen" class="timer" aria-live="polite">Verbleibende Zeit: 90:00</div>
+
       <div class="buttons-grid">
         <button id="resetBtn-lesen" class="exam-btn reset">🔄 Von neu beginnen</button>
         <button id="saveBtn-lesen" class="exam-btn save">📋 Speichern</button>
@@ -61,7 +1520,7 @@
       </div>
     </header>
 
-    <div class="top-tiles" id="topTiles-lesen"></div>
+    <div class="top-tiles" id="topTiles-lesen" role="navigation" aria-label="Sections overview"></div>
 
     <div class="container">
       <main class="left-panel" id="leftPanel-lesen">
@@ -71,7 +1530,7 @@
         </div>
       </main>
 
-      <aside class="right-panel" id="rightPanel-lesen">
+      <aside class="right-panel" id="rightPanel-lesen" aria-labelledby="questionTitle-lesen">
         <div class="question-head">
           <div>
             <div id="sectionName-lesen" style="font-weight:800"></div>
@@ -93,9 +1552,9 @@
     </footer>
   </div>
 
-  <!-- HÖREN PAGE -->
+  <!-- Hören Page -->
   <div id="hoeren-page" class="exam-page" style="display: none;">
-    <header class="topbar">
+    <header class="topbar" role="banner">
       <div class="brand">
         <div class="logo">test</div>
         <div class="meta">
@@ -103,7 +1562,9 @@
           <div class="sub-title">Hörverstehen — Testbeispiel</div>
         </div>
       </div>
-      <div id="timer-hoeren" class="timer">Verbleibende Zeit: 17:00</div>
+
+      <div id="timer-hoeren" class="timer" aria-live="polite">Verbleibende Zeit: 17:00</div>
+
       <div class="buttons-grid">
         <button id="resetBtn-hoeren" class="exam-btn reset">🔄 Von neu beginnen</button>
         <button id="saveBtn-hoeren" class="exam-btn save">📋 Speichern</button>
@@ -113,7 +1574,7 @@
       </div>
     </header>
 
-    <div class="top-tiles" id="topTiles-hoeren"></div>
+    <div class="top-tiles" id="topTiles-hoeren" role="navigation" aria-label="Sections overview"></div>
 
     <div class="container-full">
       <main class="main-panel" id="mainPanel-hoeren">
@@ -130,17 +1591,19 @@
     </footer>
   </div>
 
-  <!-- SCHREIBEN PAGE with AI Correction Feature -->
+  <!-- Schreiben Page -->
   <div id="schreiben-page" class="exam-page" style="display: none;">
-    <header class="topbar">
+    <header class="topbar" role="banner">
       <div class="brand">
         <div class="logo">test</div>
         <div class="meta">
           <div class="main-title">Deutsch - B2 (Übung)</div>
-          <div class="sub-title">Schreiben — Testbeispiel mit KI-Korrektur</div>
+          <div class="sub-title">Schreiben — Testbeispiel</div>
         </div>
       </div>
-      <div id="timer-schreiben" class="timer">Verbleibende Zeit: 30:00</div>
+
+      <div id="timer-schreiben" class="timer" aria-live="polite">Verbleibende Zeit: 30:00</div>
+
       <div class="buttons-grid">
         <button id="resetBtn-schreiben" class="exam-btn reset">🔄 Von neu beginnen</button>
         <button id="saveBtn-schreiben" class="exam-btn save">📋 Speichern</button>
@@ -150,7 +1613,7 @@
       </div>
     </header>
 
-    <div class="top-tiles" id="topTiles-schreiben"></div>
+    <div class="top-tiles" id="topTiles-schreiben" role="navigation" aria-label="Sections overview"></div>
 
     <div class="container-split">
       <main class="left-panel" id="leftPanel-schreiben">
@@ -161,21 +1624,7 @@
       </main>
 
       <aside class="right-panel" id="rightPanel-schreiben">
-        <div class="writing-area">
-          <textarea id="writingTextarea" class="writing-textarea" placeholder="Schreiben Sie hier Ihre E-Mail..."></textarea>
-          <div class="word-counter">Wörter: <span class="count" id="wordCount">0</span></div>
-          
-          <!-- AI Correction Button -->
-          <button id="correctWritingBtn" class="exam-btn save" style="width: 100%; margin: 15px 0; background: #9b59b6;">
-            🤖 Text korrigieren (KI)
-          </button>
-          
-          <!-- Correction Result Display -->
-          <div id="correctionResult" class="correction-result" style="display: none; margin-top: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #9b59b6;">
-            <h4 style="color: #9b59b6; margin-bottom: 10px;">📝 KI-Korrektur</h4>
-            <div id="correctionContent"></div>
-          </div>
-        </div>
+        <div id="writingContainer-schreiben"></div>
       </aside>
     </div>
 
@@ -188,7 +1637,7 @@
     </footer>
   </div>
 
-  <!-- ERGEBNISSE PAGE -->
+  <!-- Ergebnisse Page -->
   <div id="ergebnisse-page" class="results-page" style="display: none;">
     <header class="results-header">
       <div class="results-logo">test</div>
@@ -208,7 +1657,7 @@
     </div>
   </div>
 
-  <!-- LOGIN ERROR MODAL -->
+  <!-- Login Error Modal (يظهر فقط عند رفض الدخول) -->
   <div id="login-error-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center;">
     <div style="background: white; border-radius: 16px; padding: 40px; max-width: 400px; text-align: center;">
       <div style="font-size: 64px; margin-bottom: 20px;">❌</div>
@@ -218,577 +1667,235 @@
     </div>
   </div>
 
-  <style>
-    /* ===== RESET & GLOBAL ===== */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    :root {
-      --primary: #1e3a5f;
-      --secondary: #2c5282;
-      --accent: #4da6ff;
-      --light: #ebf8ff;
-      --text: #2d3748;
-      --white: #ffffff;
-      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      --transition: all 0.3s ease;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      min-height: 100vh;
-    }
-
-    /* ===== START PAGE ===== */
-    .start-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      color: var(--white);
-      padding: 20px;
-    }
-
-    .start-content {
-      max-width: 600px;
-      width: 100%;
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 16px;
-      padding: 40px;
-      box-shadow: var(--shadow);
-      text-align: center;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-
-    .logo-icon { font-size: 48px; margin-bottom: 10px; }
-    h1 { font-size: 32px; margin-bottom: 10px; font-weight: 700; }
-    .subtitle { font-size: 18px; margin-bottom: 30px; opacity: 0.9; }
-
-    .card {
-      background: var(--white);
-      border-radius: 12px;
-      padding: 25px;
-      margin-bottom: 30px;
-      box-shadow: var(--shadow);
-      color: var(--text);
-    }
-
-    .card h2 { font-size: 20px; margin-bottom: 15px; color: var(--primary); }
-    .card p { margin-bottom: 20px; line-height: 1.5; }
-
-    select {
-      width: 100%;
-      padding: 12px 16px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: 2px solid var(--accent);
-      outline: none;
-      background: var(--white);
-      color: var(--text);
-      cursor: pointer;
-    }
-
-    .button-container {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-
-    .btn {
-      flex: 1;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      background: var(--accent);
-      color: white;
-      transition: var(--transition);
-    }
-
-    .btn:hover { background: #3399ff; }
-
-    .timer-container { margin: 25px 0; }
-    .timer-label { font-size: 16px; margin-bottom: 10px; }
-    .timer { font-size: 48px; font-weight: 700; color: var(--accent); text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-    
-    .progress-bar {
-      height: 8px;
-      width: 100%;
-      background: rgba(255,255,255,0.2);
-      border-radius: 4px;
-      overflow: hidden;
-      margin-top: 10px;
-    }
-    
-    .progress {
-      height: 100%;
-      width: 100%;
-      background: var(--accent);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 1s linear;
-    }
-
-    /* ===== EXAM PAGES ===== */
-    .exam-body { background: #f5f5f5; color: #333; line-height: 1.45; }
-
-    /* Header */
-    .topbar {
-      background: var(--primary);
-      color: #fff;
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      min-height: 80px;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-
-    .brand { display: flex; gap: 15px; align-items: center; }
-    .brand .logo {
-      width: 80px;
-      height: 40px;
-      background: #e74c3c;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      color: white;
-      font-size: 18px;
-    }
-    .meta .main-title { font-weight: 800; font-size: 18px; }
-    .meta .sub-title { font-size: 13px; opacity: 0.9; }
-
-    .buttons-grid {
-      display: grid;
-      grid-template-columns: repeat(2, auto);
-      gap: 10px 20px;
-    }
-
-    .exam-btn {
-      padding: 12px 20px;
-      border-radius: 6px;
-      border: none;
-      background: white;
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 15px;
-      cursor: pointer;
-      transition: all 0.2s;
-      min-width: 150px;
-      text-align: center;
-    }
-    .exam-btn:hover { background: var(--secondary); color: white; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-    .exam-btn.reset-section {
-      background: #d35400;
-      color: white;
-      font-size: 12px;
-      padding: 6px 10px;
-      min-width: auto;
-    }
-
-    /* Top Tiles */
-    .top-tiles {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-      padding: 8px 12px;
-      background: var(--primary);
-      border-bottom: 1px solid #0f223a;
-      flex-wrap: wrap;
-    }
-    
-    .tile {
-      flex: 1;
-      max-width: 180px;
-      text-align: center;
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      background: #3b4a63;
-      color: #fff;
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 60px;
-    }
-    .tile:hover { background: #4a5b78; }
-    .tile.active { background: #ffffff; color: #000; border-color: #bbb; }
-    .tile.done { background: #2ecc71; color: #fff; border-color: #27ae60; }
-    .tile.done::after { content: " ✅"; margin-left: 5px; }
-    .tile .points {
-      background: rgba(255,255,255,0.2);
-      padding: 4px 8px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 11px;
-      margin-top: 4px;
-    }
-
-    /* Layout */
-    .container {
-      display: grid;
-      grid-template-columns: 1fr 420px;
-      gap: 16px;
-      padding: 16px;
-      max-width: 1200px;
-      margin: 12px auto;
-    }
-    .container-full { display: grid; grid-template-columns: 1fr; gap: 16px; padding: 16px; max-width: 1200px; margin: 12px auto; }
-    .container-split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; max-width: 1200px; margin: 12px auto; }
-
-    .left-panel, .right-panel, .main-panel {
-      background: white;
-      border-radius: 8px;
-      padding: 18px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
-      max-height: 76vh;
-      overflow: auto;
-    }
-
-    .passage { font-size: 14px; color: #2c3e50; line-height: 1.8; }
-    .panel-title { font-size: 18px; margin-bottom: 15px; color: var(--primary); font-weight: 700; }
-
-    /* Question Styles */
-    .question-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .options { display: flex; flex-direction: column; gap: 8px; }
-    .option {
-      background: #fbfdff;
-      border: 1px solid #e1e8f6;
-      padding: 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .option:hover { background: #f0f6ff; }
-    .option.selected { background: #e8fbe9; border-color: #2ecc71; }
-    .option .radio {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      border: 2px solid #cfdff6;
-      background: #fff;
-      display: inline-block;
-      flex-shrink: 0;
-    }
-    .option.selected .radio { background: #3498db; border-color: #3498db; }
-
-    .text-container {
-      margin-bottom: 20px;
-      padding: 15px;
-      border: 1px solid #e1e8f6;
-      border-radius: 8px;
-      background: #fbfdff;
-      min-height: 120px;
-    }
-    .text-title { font-weight: 700; margin-bottom: 8px; color: #2c3e50; }
-
-    .title-slot {
-      min-height: 40px;
-      margin-top: 10px;
-      padding: 8px;
-      border: 2px dashed #c8d9f6;
-      border-radius: 6px;
-      background: #f8fbff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .title-slot.has-title { background: #e8fbe9; border-color: #2ecc71; }
-    .title-slot.has-x { background: #f8d7da; border-color: #e74c3c; color: #c0392b; font-weight: bold; }
-
-    .headings-bank { display: flex; flex-direction: column; gap: 8px; margin-top: 0; }
-    .heading-item {
-      padding: 10px;
-      border: 1px solid #dbe7fb;
-      border-radius: 8px;
-      background: #f8fbff;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .heading-item:hover { background: #e9f0ff; transform: translateY(-2px); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-    .heading-item.used { opacity: 0.5; cursor: not-allowed; background: #f8d7da; border-color: #f5c6cb; }
-
-    /* True/False Table */
-    .true-false-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-      font-size: 14px;
-    }
-    .true-false-table th {
-      background: #3498db;
-      color: white;
-      padding: 15px;
-      text-align: left;
-      font-weight: 600;
-    }
-    .true-false-table td {
-      padding: 15px;
-      border-bottom: 1px solid #e1e8f6;
-      vertical-align: top;
-    }
-    .true-false-table tr:nth-child(even) { background: #f8f9fa; }
-    .true-false-table tr:hover { background: #e3f2fd; }
-
-    .answer-options { display: flex; gap: 25px; }
-    .answer-option {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      padding: 10px 15px;
-      border-radius: 4px;
-      transition: background 0.2s;
-      font-weight: 500;
-    }
-    .answer-option:hover { background: #e3f2fd; }
-
-    /* Writing Area */
-    .writing-area {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-    .writing-textarea {
-      flex: 1;
-      min-height: 400px;
-      padding: 15px;
-      border: 2px solid #e1e8f6;
-      border-radius: 8px;
-      font-size: 14px;
-      line-height: 1.6;
-      resize: vertical;
-      font-family: Arial, sans-serif;
-    }
-    .writing-textarea:focus { outline: none; border-color: #3498db; }
-    .word-counter { margin-top: 10px; text-align: right; font-size: 13px; color: #7f8c8d; }
-    .word-counter .count { font-weight: bold; color: #2c3e50; }
-
-    /* Correction Result */
-    .correction-result {
-      margin-top: 15px;
-      padding: 15px;
-      background: #f8f9fa;
-      border-radius: 8px;
-      border-left: 4px solid #9b59b6;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-    .correction-result h4 { color: #9b59b6; margin-bottom: 10px; }
-    .correction-content { white-space: pre-wrap; }
-
-    /* Fill Blanks */
-    .fill-blank-container { margin: 20px 0; line-height: 2.2; }
-    .blank-word, .blank-slot {
-      display: inline-block;
-      min-width: 100px;
-      padding: 6px 10px;
-      margin: 0 4px;
-      background: #fff;
-      cursor: pointer;
-      border: 2px solid #dbe7fb;
-      border-radius: 6px;
-      font-weight: 500;
-      transition: all 0.2s;
-    }
-    .blank-word:hover, .blank-slot:hover { background: #e3f2fd; border-color: #3498db; }
-    .blank-word.has-answer, .blank-slot.has-answer { background: #e8fbe9; border-color: #2ecc71; }
-
-    .word-bank-vertical { display: flex; flex-direction: column; gap: 8px; }
-    .bank-word-vertical {
-      padding: 12px;
-      border: 2px solid #dbe7fb;
-      border-radius: 8px;
-      background: #f8fbff;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-weight: 500;
-    }
-    .bank-word-vertical:hover { background: #e9f0ff; border-color: #3498db; transform: translateY(-2px); }
-    .bank-word-vertical.used { opacity: 0.5; cursor: not-allowed; background: #f8d7da; border-color: #f5c6cb; }
-
-    /* Results Page */
-    .results-body { background: #f7fafc; color: #0f1724; line-height: 1.6; }
-    .results-header {
-      background: var(--primary);
-      color: #fff;
-      padding: 18px 20px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-    .results-logo {
-      background: #fff;
-      color: var(--primary);
-      padding: 8px 12px;
-      border-radius: 6px;
-      font-weight: 800;
-    }
-    .results-container { max-width: 1100px; margin: 22px auto; padding: 20px; }
-    .results-tiles { display: flex; gap: 12px; margin: 18px 0; flex-wrap: wrap; }
-    .results-tile {
-      flex: 1;
-      background: #fff;
-      border-radius: 10px;
-      padding: 16px;
-      box-shadow: 0 6px 18px rgba(2,6,23,0.06);
-      border-left: 6px solid var(--primary);
-    }
-    .results-tile h3 { margin: 0; font-size: 16px; color: var(--primary); }
-    .results-tile .score { font-size: 20px; font-weight: 800; margin-top: 8px; }
-
-    .result-detail {
-      padding: 12px;
-      margin: 8px 0;
-      background: white;
-      border-radius: 6px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .result-row { display: flex; align-items: center; margin: 4px 0; }
-    .result-label { font-weight: 600; min-width: 120px; color: #2c3e50; }
-    .result-value { padding: 4px 10px; border-radius: 4px; font-weight: 500; }
-    .result-value.correct { background: #d4edda; color: #155724; }
-    .result-value.incorrect { background: #f8d7da; color: #721c24; }
-    .result-status {
-      margin-top: 8px;
-      padding: 8px;
-      border-radius: 4px;
-      font-weight: 600;
-      text-align: center;
-    }
-    .result-status.correct { background: #d4edda; color: #155724; }
-    .result-status.incorrect { background: #f8d7da; color: #721c24; }
-    .result-summary {
-      margin-top: 20px;
-      padding: 15px;
-      background: var(--primary);
-      color: white;
-      border-radius: 8px;
-      text-align: center;
-    }
-    .result-summary .percentage { font-size: 32px; font-weight: 700; color: var(--accent); }
-
-    /* Footer */
-    footer.controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 20px;
-      background: white;
-      border-top: 1px solid #e1e8f6;
-      margin-top: 20px;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-    .footer-buttons { display: flex; gap: 10px; }
-    .ghost { background: transparent; border: 2px solid #2c3e50; color: #2c3e50; }
-    .ghost:hover { background: #2c3e50; color: white; }
-
-    /* Responsive */
-    @media (max-width: 980px) {
-      .container, .container-split { grid-template-columns: 1fr; }
-      .right-panel { order: 2; }
-      .topbar { flex-direction: column; text-align: center; }
-      .buttons-grid { grid-template-columns: 1fr; }
-      .answer-options { flex-direction: column; }
-    }
-    @media (max-width: 600px) {
-      .start-content { padding: 25px 20px; }
-      h1 { font-size: 28px; }
-    }
-    @media (max-width: 480px) {
-      .tile { flex: 0 0 calc(50% - 5px) !important; max-width: calc(50% - 5px) !important; }
-      .writing-textarea { min-height: 300px !important; font-size: 16px !important; }
-    }
-  </style>
-
-  <!-- SUPABASE CLIENT SCRIPT -->
   <script type="module">
     // =============================================
-    // SUPABASE AUTH CHECK
+    // التحقق من تسجيل الدخول - نسخة محسنة وآمنة
     // =============================================
-    const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
     
-    const { createClient } = window.supabase;
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    
-    // Auth check
     (async function() {
+      // تكوين Supabase
+      const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
+      
+      // تهيئة Supabase
+      const { createClient } = window.supabase;
+      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      
+      // عناصر الصفحة
+      const body = document.getElementById('body');
       const startPage = document.getElementById('start-page');
       const loginErrorModal = document.getElementById('login-error-modal');
       const errorMessage = document.getElementById('error-message');
       
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
+      // دالة لعرض خطأ تسجيل الدخول
+      function showLoginError(message) {
+        // إخفاء محتوى الصفحة
+        startPage.style.display = 'none';
         
-        if (!session) {
-          startPage.style.display = 'none';
-          errorMessage.textContent = '❌ Keine aktive Sitzung gefunden. Bitte melden Sie sich an.';
-          loginErrorModal.style.display = 'flex';
+        // إظهار نافذة الخطأ
+        errorMessage.textContent = message || 'Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.';
+        loginErrorModal.style.display = 'flex';
+      }
+      
+      // التحقق من تسجيل الدخول
+      try {
+        // التحقق من الجلسة في Supabase
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError || !session) {
+          showLoginError('❌ Keine aktive Sitzung gefunden. Bitte melden Sie sich an.');
           return;
         }
         
-        // Check permissions
-        const { data: permissions } = await supabase
+        // التحقق من جدول permissions
+        const { data: permissions, error: permError } = await supabase
           .from('user_permissions')
-          .select('can_access')
+          .select('can_access, subscription_type, subscription_expiry, trial_expiry')
           .eq('user_id', session.user.id)
           .maybeSingle();
         
-        if (!permissions || !permissions.can_access) {
-          startPage.style.display = 'none';
-          errorMessage.textContent = '❌ Sie haben keine Berechtigung für den Zugriff auf diese Prüfung.';
-          loginErrorModal.style.display = 'flex';
+        // إذا كان هناك خطأ أو لا يوجد صلاحيات
+        if (permError) {
+          console.error('Permissions error:', permError);
+          showLoginError('❌ Fehler bei der Überprüfung Ihrer Berechtigungen.');
           return;
         }
         
-        // Show start page
-        startPage.style.display = 'flex';
+        // إذا لم يتم العثور على المستخدم في جدول permissions
+        if (!permissions) {
+          // محاولة إدراج المستخدم إذا لم يكن موجوداً
+          const { error: insertError } = await supabase
+            .from('user_permissions')
+            .insert({
+              user_id: session.user.id,
+              email: session.user.email,
+              can_access: true,
+              subscription_type: 'free',
+              created_at: new Date().toISOString()
+            });
+          
+          if (insertError) {
+            console.error('Insert error:', insertError);
+            showLoginError('❌ Fehler beim Erstellen Ihres Benutzerkontos.');
+            return;
+          }
+        } else if (!permissions.can_access) {
+          // إذا كان can_access = false
+          showLoginError('❌ Sie haben keine Berechtigung für den Zugriff auf diese Prüfung.');
+          return;
+        }
+        
+        // التحقق من انتهاء الاشتراك
+        const now = new Date();
+        
+        if (permissions && permissions.subscription_type === 'trial_24h' && permissions.trial_expiry) {
+          const trialExpiry = new Date(permissions.trial_expiry);
+          if (trialExpiry < now) {
+            showLoginError('❌ Ihre Testphase ist abgelaufen. Bitte aktivieren Sie ein Abonnement.');
+            return;
+          }
+        }
+        
+        if (permissions && permissions.subscription_expiry) {
+          const subscriptionExpiry = new Date(permissions.subscription_expiry);
+          if (subscriptionExpiry < now) {
+            showLoginError('❌ Ihr Abonnement ist abgelaufen. Bitte erneuern Sie Ihr Abonnement.');
+            return;
+          }
+        }
+        
+        // إذا وصلنا إلى هنا، المستخدم مصرح له
         console.log('✅ Zugriff gewährt für:', session.user.email);
         
+        // إظهار محتوى الصفحة
+        startPage.style.display = 'flex';
+        
       } catch (error) {
-        console.error('❌ Auth error:', error);
-        startPage.style.display = 'none';
-        errorMessage.textContent = '❌ Ein kritischer Fehler ist aufgetreten.';
-        loginErrorModal.style.display = 'flex';
+        console.error('❌ Kritischer Fehler:', error);
+        showLoginError('❌ Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
       }
     })();
-
-    document.getElementById('redirect-to-login').addEventListener('click', () => {
-      window.location.href = '../index.html';
-    });
   </script>
 
-  <script type="module">
-    // =============================================
-    // EXAM DATA - COMPLETE FROM ORIGINAL
-    // =============================================
+  <script>
+    // ===== PAGE NAVIGATION =====
+    function showPage(pageId) {
+      // Hide all pages
+      document.getElementById('start-page').style.display = 'none';
+      document.getElementById('lesen-page').style.display = 'none';
+      document.getElementById('hoeren-page').style.display = 'none';
+      document.getElementById('schreiben-page').style.display = 'none';
+      document.getElementById('ergebnisse-page').style.display = 'none';
+      
+      // Change body class based on page
+      document.getElementById('body').className = '';
+      if (pageId === 'ergebnisse-page') {
+        document.getElementById('body').className = 'results-body';
+      } else if (pageId !== 'start-page') {
+        document.getElementById('body').className = 'exam-body';
+      }
+      
+      // Show selected page
+      document.getElementById(pageId).style.display = 'block';
+      
+      // Initialize the page if needed
+      if (pageId === 'lesen-page' && typeof initLesenPage === 'function') {
+        initLesenPage();
+      } else if (pageId === 'hoeren-page' && typeof initHoerenPage === 'function') {
+        initHoerenPage();
+      } else if (pageId === 'schreiben-page' && typeof initSchreibenPage === 'function') {
+        initSchreibenPage();
+      } else if (pageId === 'ergebnisse-page' && typeof initErgebnissePage === 'function') {
+        initErgebnissePage();
+      }
+    }
+
+    // ربط زر التوجيه للـ Login
+    document.getElementById('redirect-to-login').addEventListener('click', function() {
+      window.location.href = '../index.html';
+    });
+
+    // ===== START PAGE FUNCTIONALITY =====
+    let initialCounter = 30;
+    let counter = initialCounter;
+    let countdownInterval;
+    let countdownRunning = false;
+    let examStarted = false;
+    const timerEl = document.getElementById("countdown");
+    const timeDisplayEl = document.getElementById("time-display");
+    const progressEl = document.getElementById("progress");
+    const selectEl = document.getElementById("sectionSelect");
+    const startBtn = document.getElementById("startBtn");
+    const cancelBtn = document.getElementById("cancelBtn");
+
+    function startCountdown() {
+      if (countdownRunning || examStarted) return;
+      countdownRunning = true;
+      try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
+      counter = initialCounter;
+      timerEl.textContent = counter;
+      timeDisplayEl.textContent = counter;
+      progressEl.style.transform = "scaleX(0)";
+      timerEl.style.color = "";
+
+      countdownInterval = setInterval(() => {
+        counter--;
+        timerEl.textContent = counter;
+        timeDisplayEl.textContent = counter;
+        const progressValue = (initialCounter - counter) / initialCounter;
+        progressEl.style.transform = `scaleX(${progressValue})`;
+        if (counter <= 0) {
+          clearInterval(countdownInterval);
+          countdownInterval = null;
+          countdownRunning = false;
+          progressEl.style.transform = "scaleX(1)";
+          if (!examStarted) {
+            examStarted = true;
+            startExam();
+          }
+          try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
+        }
+      }, 1000);
+    }
+
+    function stopCountdown(reset = true) {
+      if (countdownInterval) {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+      countdownRunning = false;
+      try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
+      progressEl.style.transform = "scaleX(0)";
+      if (reset) {
+        counter = initialCounter;
+        timerEl.textContent = counter;
+        timeDisplayEl.textContent = counter;
+      } else {
+        timerEl.textContent = "Gestoppt";
+      }
+    }
+
+    function startExam() {
+      if (!examStarted) examStarted = true;
+      const selectedSection = selectEl.value;
+      if (selectedSection === 'lesen') {
+        showPage('lesen-page');
+      } else if (selectedSection === 'hoeren') {
+        showPage('hoeren-page');
+      } else if (selectedSection === 'schreiben') {
+        showPage('schreiben-page');
+      }
+    }
+
+    startBtn.addEventListener('click', startCountdown);
+
+    cancelBtn.addEventListener('click', () => {
+      stopCountdown(true);
+      timerEl.textContent = "Abgebrochen";
+      timerEl.style.color = "#e53e3e";
+    });
+
+    // ===== EXAM DATA - VOLLSTÄNDIG AUS ALTER DATEI ÜBERNOMMEN =====
     const EXAM_DATA = {
       lesen: {
         id: "exam-lesen-001",
@@ -947,16 +2054,56 @@
             passage: "",
             questions:[],
             fillBlanks: [
-              { id: "21", options: ["obwohl", "trotz", "während"], correctAnswer: "obwohl" },
-              { id: "22", options: ["hat", "hatte", "hätte"], correctAnswer: "hatte" },
-              { id: "23", options: ["konnte", "sollte", "wollte"], correctAnswer: "wollte" },
-              { id: "24", options: ["dafür", "damit", "davon"], correctAnswer: "davon" },
-              { id: "25", options: ["Einerseits ... andererseits", "weder ... noch", "zwar ... aber"], correctAnswer: "zwar ... aber" },
-              { id: "26", options: ["dabei", "davon", "dazu"], correctAnswer: "dabei" },
-              { id: "27", options: ["aussuchen", "ausgesucht", "auszusuchen"], correctAnswer: "auszusuchen" },
-              { id: "28", options: ["grundlegende", "grundlegenden", "grundlegender"], correctAnswer: "grundlegende" },
-              { id: "29", options: ["am", "im", "zum"], correctAnswer: "im" },
-              { id: "30", options: ["dass", "ob", "wie"], correctAnswer: "wie" }
+              {
+                id: "21",
+                options: ["obwohl", "trotz", "während"],
+                correctAnswer: "obwohl"
+              },
+              {
+                id: "22",
+                options: ["hat", "hatte", "hätte"],
+                correctAnswer: "hatte"
+              },
+              {
+                id: "23",
+                options: ["konnte", "sollte", "wollte"],
+                correctAnswer: "wollte"
+              },
+              {
+                id: "24",
+                options: ["dafür", "damit", "davon"],
+                correctAnswer: "davon"
+              },
+              {
+                id: "25",
+                options: ["Einerseits ... andererseits", "weder ... noch", "zwar ... aber"],
+                correctAnswer: "zwar ... aber"
+              },
+              {
+                id: "26",
+                options: ["dabei", "davon", "dazu"],
+                correctAnswer: "dabei"
+              },
+              {
+                id: "27",
+                options: ["aussuchen", "ausgesucht", "auszusuchen"],
+                correctAnswer: "auszusuchen"
+              },
+              {
+                id: "28",
+                options: ["grundlegende", "grundlegenden", "grundlegender"],
+                correctAnswer: "grundlegende"
+              },
+              {
+                id: "29",
+                options: ["am", "im", "zum"],
+                correctAnswer: "im"
+              },
+              {
+                id: "30",
+                options: ["dass", "ob", "wie"],
+                correctAnswer: "wie"
+              }
             ],
             fillText: `Lieber Thomas,
 ich muss dir unbedingt etwas erzählen: Ich bin heute das erste Mal in meinem Leben Ski gefahren, ________ ich mir das bisher nie zugetraut hatte. Meine Freundin Lisa hat mich eingeladen, einige Tage mit ihr und ihren Eltern in den Bergen zu verbringen. Und bevor ich ankam, ________ sie schon einen individuellen Skikurs für mich gebucht! Du kannst dir vorstellen, wie mich das überrascht hat! Ich ________ es mir schon anders überlegen, aber Lisa wollte nichts ________ hören. Heute Morgen ging es dann los. ________ war ich ziemlich aufgeregt, ________ habe ich mich auch unheimlich gefreut. Mit der Skilehrerin habe ich mich gleich gut verstanden. Sie hat mich abgeholt und mir ________ geholfen, im Sportgeschäft Schuhe, Skier, Stöcke und einen Helm für mich ________. Dann hat mir die Skilehrerin einige ________ Dinge erklärt. Ich war anfangs sehr unsicher, mit der Zeit ließ das aber nach. Die Kinder im Zwergenkurs scheinen ________ Gegensatz zu mir überhaupt keine Angst zu haben. Das Schlimmste am ersten Tag war der Schlepplift. Erst habe ich den Lift einige Male verpasst, dann bin ich hingefallen. Irgendwie habe ich es dann doch noch geschafft. Und zum Schluss bin ich mit der Lehrerin sogar eine leichte Piste runtergefahren. Morgen habe ich wieder zwei Stunden. Ich habe jetzt schon Muskelkater und mir tut alles weh! Ich weiß gar nicht, ________ ich das schaffen soll. Ich werde dich über meine Fortschritte auf dem Laufenden halten :)
@@ -971,16 +2118,56 @@ Samira`
             passage: "",
             questions:[],
             fillBlanks2: [
-              { id: "31", options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"], correctAnswer: "WEIL" },
-              { id: "32", options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"], correctAnswer: "IMMER" },
-              { id: "33", options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"], correctAnswer: "TUN" },
-              { id: "34", options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"], correctAnswer: "WURDE" },
-              { id: "35", options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"], correctAnswer: "VON" },
-              { id: "36", options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"], correctAnswer: "DAMIT" },
-              { id: "37", options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"], correctAnswer: "SPIELERISCHE" },
-              { id: "38", options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"], correctAnswer: "DASS" },
-              { id: "39", options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"], correctAnswer: "GESTALTEN" },
-              { id: "40", options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"], correctAnswer: "GEHT" }
+              {
+                id: "31",
+                options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"],
+                correctAnswer: "WEIL"
+              },
+              {
+                id: "32", 
+                options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"],
+                correctAnswer: "IMMER"
+              },
+              {
+                id: "33",
+                options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"],
+                correctAnswer: "TUN"
+              },
+              {
+                id: "34",
+                options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"],
+                correctAnswer: "WURDE"
+              },
+              {
+                id: "35",
+                options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"],
+                correctAnswer: "VON"
+              },
+              {
+                id: "36",
+                options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"],
+                correctAnswer: "DAMIT"
+              },
+              {
+                id: "37",
+                options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"],
+                correctAnswer: "SPIELERISCHE"
+              },
+              {
+                id: "38",
+                options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"],
+                correctAnswer: "DASS"
+              },
+              {
+                id: "39",
+                options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"],
+                correctAnswer: "GESTALTEN"
+              },
+              {
+                id: "40",
+                options: ["DAMIT", "DAS", "DASS", "FIGUREN", "FÜR", "GEHT", "GESTALTEN", "IMMER", "NIE", "SPIELERISCHE", "SUCHEN", "TUN", "VON", "WEIL", "WURDE"],
+                correctAnswer: "GEHT"
+              }
             ],
             fillText2: `Wie Handschrift wieder cool wird
 Mit dem sogenannten SMS-Daumen erbringen Kinder heutzutage Höchstleistungen. Das Handgelenk hingegen schmerzt schnell, ________ Schreiben mit der Hand ungewohnt ist. Kinder haben damit in der Schule ________ mehr Probleme.
@@ -1002,11 +2189,26 @@ Gerade Jugendlichen im Alter zwischen 13 und 15 Jahren biete die Auseinandersetz
             points:25,
             correctAnswers: { "41": "falsch", "42": "richtig", "43": "richtig", "44": "falsch", "45": "falsch" },
             questions: [
-              { id: "41", text: "Die Wetterlage in den Alpen wird sich in den nächsten Tagen verbessern." },
-              { id: "42", text: "Die Fans des FC Neustadt waren von dem Sieg ihrer Mannschaft überrascht." },
-              { id: "43", text: "Erzieherinnen verlangen eine bessere Bezahlung." },
-              { id: "44", text: "Im Berliner Zoo gibt es eine große Pandafamilie." },
-              { id: "45", text: "Die Zahl der Deutschland-Urlauber ist rückläufig." }
+              {
+                id: "41",
+                text: "Die Wetterlage in den Alpen wird sich in den nächsten Tagen verbessern."
+              },
+              {
+                id: "42", 
+                text: "Die Fans des FC Neustadt waren von dem Sieg ihrer Mannschaft überrascht."
+              },
+              {
+                id: "43",
+                text: "Erzieherinnen verlangen eine bessere Bezahlung."
+              },
+              {
+                id: "44",
+                text: "Im Berliner Zoo gibt es eine große Pandafamilie."
+              },
+              {
+                id: "45",
+                text: "Die Zahl der Deutschland-Urlauber ist rückläufig."
+              }
             ]
           },
           { 
@@ -1015,16 +2217,46 @@ Gerade Jugendlichen im Alter zwischen 13 und 15 Jahren biete die Auseinandersetz
             points:25,
             correctAnswers: { "46": "richtig", "47": "falsch", "48": "richtig", "49": "richtig", "50": "falsch", "51": "falsch", "52": "falsch", "53": "richtig", "54": "richtig", "55": "falsch" },
             questions: [
-              { id: "46", text: "In dem Restaurant gab es einen Wasserschaden." },
-              { id: "47", text: "Anton Laurito ist bei seinen Großeltern aufgewachsen." },
-              { id: "48", text: "Im Haus der Großeltern lebten auch andere Kinder." },
-              { id: "49", text: "Der Stress störte den Studiogast während der Ausbildung nicht." },
-              { id: "50", text: "Bei neuen Mitarbeitern legt Anton Laurito am meisten Wert auf viel Erfahrung." },
-              { id: "51", text: "Aussehen und Geschlecht der Speisen haben für den Koch den gleichen Stellenwert." },
-              { id: "52", text: "In der Essschule können Kinder kochen lernen." },
-              { id: "53", text: "Anton Laurito lehnt Fastfood nicht grundsätzlich ab." },
-              { id: "54", text: "Der Koch hat eine gesunde Einstellung zum Thema Wettbewerb." },
-              { id: "55", text: "Zuhause probiert er gerne komplizierte Gerichte aus." }
+              {
+                id: "46",
+                text: "In dem Restaurant gab es einen Wasserschaden."
+              },
+              {
+                id: "47",
+                text: "Anton Laurito ist bei seinen Großeltern aufgewachsen."
+              },
+              {
+                id: "48", 
+                text: "Im Haus der Großeltern lebten auch andere Kinder."
+              },
+              {
+                id: "49",
+                text: "Der Stress störte den Studiogast während der Ausbildung nicht."
+              },
+              {
+                id: "50",
+                text: "Bei neuen Mitarbeitern legt Anton Laurito am meisten Wert auf viel Erfahrung."
+              },
+              {
+                id: "51",
+                text: "Aussehen und Geschlecht der Speisen haben für den Koch den gleichen Stellenwert."
+              },
+              {
+                id: "52",
+                text: "In der Essschule können Kinder kochen lernen."
+              },
+              {
+                id: "53",
+                text: "Anton Laurito lehnt Fastfood nicht grundsätzlich ab."
+              },
+              {
+                id: "54",
+                text: "Der Koch hat eine gesunde Einstellung zum Thema Wettbewerb."
+              },
+              {
+                id: "55",
+                text: "Zuhause probiert er gerne komplizierte Gerichte aus."
+              }
             ]
           },
           { 
@@ -1033,11 +2265,26 @@ Gerade Jugendlichen im Alter zwischen 13 und 15 Jahren biete die Auseinandersetz
             points:25,
             correctAnswers: { "56": "richtig", "57": "richtig", "58": "richtig", "59": "falsch", "60": "falsch" },
             questions: [
-              { id: "56", text: "Am Wochenanfang soll man einen Aufenthalt im Freien vermeiden." },
-              { id: "57", text: "Abends ist das Risiko, einen Wildunfall zu haben, am größten." },
-              { id: "58", text: "Man kann bei dem Fest an verschiedenen Orten Musik hören." },
-              { id: "59", text: "In dringenden Fällen können Sie die Firma ab Montag erreichen." },
-              { id: "60", text: "Am Abend werden Verkehrsbehinderungen erwartet." }
+              {
+                id: "56",
+                text: "Am Wochenanfang soll man einen Aufenthalt im Freien vermeiden."
+              },
+              {
+                id: "57",
+                text: "Abends ist das Risiko, einen Wildunfall zu haben, am größten."
+              },
+              {
+                id: "58",
+                text: "Man kann bei dem Fest an verschiedenen Orten Musik hören."
+              },
+              {
+                id: "59",
+                text: "In dringenden Fällen können Sie die Firma ab Montag erreichen."
+              },
+              {
+                id: "60",
+                text: "Am Abend werden Verkehrsbehinderungen erwartet."
+              }
             ]
           }
         ]
@@ -1102,102 +2349,7 @@ Hamburger Str. 112
       }
     };
 
-    // =============================================
-    // MAIN APPLICATION CODE
-    // =============================================
-    const { createClient } = window.supabase;
-    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // Page Navigation
-    function showPage(pageId) {
-      document.getElementById('start-page').style.display = 'none';
-      document.getElementById('lesen-page').style.display = 'none';
-      document.getElementById('hoeren-page').style.display = 'none';
-      document.getElementById('schreiben-page').style.display = 'none';
-      document.getElementById('ergebnisse-page').style.display = 'none';
-      
-      document.getElementById('body').className = '';
-      if (pageId === 'ergebnisse-page') {
-        document.getElementById('body').className = 'results-body';
-      } else if (pageId !== 'start-page') {
-        document.getElementById('body').className = 'exam-body';
-      }
-      
-      document.getElementById(pageId).style.display = 'block';
-      
-      if (pageId === 'lesen-page') initLesenPage();
-      else if (pageId === 'hoeren-page') initHoerenPage();
-      else if (pageId === 'schreiben-page') initSchreibenPage();
-      else if (pageId === 'ergebnisse-page') initErgebnissePage();
-    }
-
-    // Start Page Countdown
-    let initialCounter = 30;
-    let counter = initialCounter;
-    let countdownInterval;
-    let countdownRunning = false;
-    let examStarted = false;
-    
-    const timerEl = document.getElementById("countdown");
-    const timeDisplayEl = document.getElementById("time-display");
-    const progressEl = document.getElementById("progress");
-    const selectEl = document.getElementById("sectionSelect");
-    const startBtn = document.getElementById("startBtn");
-    const cancelBtn = document.getElementById("cancelBtn");
-
-    function startCountdown() {
-      if (countdownRunning || examStarted) return;
-      countdownRunning = true;
-      startBtn.disabled = true;
-      counter = initialCounter;
-      timerEl.textContent = counter;
-      timeDisplayEl.textContent = counter;
-      progressEl.style.transform = "scaleX(0)";
-
-      countdownInterval = setInterval(() => {
-        counter--;
-        timerEl.textContent = counter;
-        timeDisplayEl.textContent = counter;
-        progressEl.style.transform = `scaleX(${(initialCounter - counter) / initialCounter})`;
-        
-        if (counter <= 0) {
-          clearInterval(countdownInterval);
-          countdownRunning = false;
-          progressEl.style.transform = "scaleX(1)";
-          if (!examStarted) {
-            examStarted = true;
-            startExam();
-          }
-          startBtn.disabled = false;
-        }
-      }, 1000);
-    }
-
-    function stopCountdown(reset = true) {
-      if (countdownInterval) clearInterval(countdownInterval);
-      countdownRunning = false;
-      startBtn.disabled = false;
-      progressEl.style.transform = "scaleX(0)";
-      if (reset) {
-        counter = initialCounter;
-        timerEl.textContent = counter;
-        timeDisplayEl.textContent = counter;
-      } else {
-        timerEl.textContent = "Gestoppt";
-      }
-    }
-
-    function startExam() {
-      if (!examStarted) examStarted = true;
-      showPage(selectEl.value + '-page');
-    }
-
-    startBtn.addEventListener('click', startCountdown);
-    cancelBtn.addEventListener('click', () => stopCountdown(true));
-
-    // =============================================
-    // LESEN PAGE
-    // =============================================
+    // ===== LESEN PAGE FUNCTIONALITY =====
     function initLesenPage() {
       const exam = EXAM_DATA.lesen;
       
@@ -1218,7 +2370,6 @@ Hamburger Str. 112
         examEnded: false,
         currentPage: 'lesen'
       };
-      
       const topTiles = document.getElementById('topTiles-lesen');
       const passageTitleEl = document.getElementById('passageTitle-lesen');
       const passageContentEl = document.getElementById('passageContent-lesen');
@@ -1228,14 +2379,22 @@ Hamburger Str. 112
       const headingsBankContainer = document.getElementById('headingsBankContainer-lesen');
       const timerEl = document.getElementById('timer-lesen');
       const statusText = document.getElementById('statusText-lesen');
+      const resultBtn = document.getElementById('resultBtn-lesen');
+      const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
       function handleTimeExpired() {
         if (state.examEnded) return;
         state.examEnded = true;
-        if (state.timerInterval) clearInterval(state.timerInterval);
+        
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
         state.showResults = true;
         renderAll();
+        
         setTimeout(() => {
           if (state.sectionIndex < exam.sections.length - 1) {
             state.sectionIndex++;
@@ -1248,11 +2407,14 @@ Hamburger Str. 112
         }, 2000);
       }
 
-      function startTimer() {
-        if (state.timerInterval) clearInterval(state.timerInterval);
+      function startTimer(){
+        if(state.timerInterval) {
+          clearInterval(state.timerInterval);
+        }
+        
         state.timerStarted = true;
-        state.timerInterval = setInterval(() => {
-          if (state.remaining <= 0) {
+        state.timerInterval = setInterval(()=>{
+          if(state.remaining <= 0){
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
             handleTimeExpired();
@@ -1263,8 +2425,10 @@ Hamburger Str. 112
         }, 1000);
       }
 
-      function resetTimer() {
-        if (state.timerInterval) clearInterval(state.timerInterval);
+      function resetTimer(){
+        if(state.timerInterval) {
+          clearInterval(state.timerInterval);
+        }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
         state.examEnded = false;
@@ -1272,53 +2436,91 @@ Hamburger Str. 112
         startTimer();
       }
 
-      function updateTimerDisplay() {
+      function updateTimerDisplay(){
         const min = Math.floor(state.remaining / 60);
         const sec = state.remaining % 60;
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
-      function renderTopTiles() { 
-        topTiles.innerHTML = ''; 
-        exam.sections.forEach((sec, idx) => { 
-          const div = document.createElement('div'); 
-          div.className = 'tile' + (idx === state.sectionIndex ? ' active' : '') + (isSectionDone(sec) ? ' done' : ''); 
-          div.innerHTML = `<div>${sec.title}</div><div class="points">${sec.points} P</div>`; 
-          div.onclick = () => { state.sectionIndex = idx; state.questionIndex = 0; state.showResults = false; renderAll(); }; 
+      function resetCurrentSection() {
+        const currentSection = exam.sections[state.sectionIndex];
+        
+        if (confirm(`Möchten Sie wirklich den Teil "${currentSection.title}" zurücksetzen?`)) {
+          if (currentSection.id === 's1') {
+            currentSection.texts.forEach(text => {
+              delete state.answers[text.id];
+            });
+          } else if (currentSection.id === 's2') {
+            currentSection.questions.forEach(question => {
+              delete state.answers[question.id];
+            });
+          } else if (currentSection.id === 's3') {
+            currentSection.situations.forEach(situation => {
+              delete state.answers[situation.id];
+            });
+          } else if (currentSection.id === 's4') {
+            currentSection.fillBlanks.forEach(blank => {
+              delete state.answers[blank.id];
+            });
+          } else if (currentSection.id === 's5') {
+            currentSection.fillBlanks2.forEach(blank => {
+              delete state.answers[blank.id];
+            });
+          }
+          
+          renderAll();
+        }
+      }
+
+      function renderTopTiles(){ 
+        topTiles.innerHTML=''; 
+        exam.sections.forEach((sec,idx)=>{ 
+          const div=document.createElement('div'); 
+          div.className='tile'+(idx===state.sectionIndex?' active':'')+(isSectionDone(sec)?' done':''); 
+          div.innerHTML=`<div>${sec.title}</div><div class="points">${sec.points} P</div>`; 
+          div.onclick=()=>{state.sectionIndex=idx; state.questionIndex=0; state.showResults=false; renderAll();}; 
           topTiles.appendChild(div); 
         }); 
       }
 
-      function isSectionDone(section) {
-        if (section.id === 's1') return section.texts.every(t => state.answers[t.id]);
-        if (section.id === 's2') return section.questions.every(q => state.answers[q.id]);
-        if (section.id === 's3') return section.situations.every(h => state.answers[h.id] || state.answers[h.id] === 'X');
-        if (section.id === 's4') return section.fillBlanks.every(b => state.answers[b.id]);
-        if (section.id === 's5') return section.fillBlanks2.every(b => state.answers[b.id]);
+      function isSectionDone(section){
+        if(section.id==='s1') return section.texts.every(t=>state.answers[t.id]);
+        if(section.id==='s2') return section.questions.every(q=>state.answers[q.id]);
+        if(section.id==='s3') return section.situations.every(h=>state.answers[h.id] || state.answers[h.id] === 'X');
+        if(section.id==='s4') return section.fillBlanks.every(b=>state.answers[b.id]);
+        if(section.id==='s5') return section.fillBlanks2.every(b=>state.answers[b.id]);
         return false;
       }
 
-      function renderAll() {
+      function renderAll(){
         if (state.examEnded) return;
+        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         sectionNameEl.textContent = section.title;
         passageTitleEl.textContent = section.passageTitle;
+        
         resetSectionBtn.style.display = 'block';
         
-        if (state.showResults) {
+        if(state.showResults){
           renderResults();
           return;
         }
         
-        if (section.id === 's1') renderPart1();
-        else if (section.id === 's2') renderPart2();
-        else if (section.id === 's3') renderPart3();
-        else if (section.id === 's4') renderSprachbausteine1();
-        else if (section.id === 's5') renderSprachbausteine2();
+        if(section.id === 's1'){
+          renderPart1();
+        } else if(section.id === 's2'){
+          renderPart2();
+        } else if(section.id === 's3'){
+          renderPart3();
+        } else if(section.id === 's4'){
+          renderSprachbausteine1();
+        } else if(section.id === 's5'){
+          renderSprachbausteine2();
+        }
       }
 
-      function renderPart1() {
+      function renderPart1(){
         const section = exam.sections[state.sectionIndex];
         
         let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. (Klicken: Titel auswählen → auf Text klicken)</div>`;
@@ -1346,20 +2548,100 @@ Hamburger Str. 112
           
           headingsHTML += `
             <div class="heading-item ${isUsed ? 'used' : ''} ${window.selectedHeadingId === heading.id ? 'selected' : ''}" 
+                 draggable="${!isUsed}" 
                  data-heading-id="${heading.id}"
                  onclick="window.lesenApp.handleHeadingClick('${heading.id}')">
               ${heading.id}) ${heading.text}
             </div>
           `;
         });
+        
         headingsHTML += `</div>`;
         
         headingsBankContainer.innerHTML = headingsHTML;
+        
+        setupDragAndDrop();
+        
         questionBodyEl.innerHTML = '';
         questionTitleEl.textContent = '';
       }
 
-      function renderPart2() {
+      function handleHeadingClick(headingId) {
+        const section = exam.sections[state.sectionIndex];
+        const isUsed = section.texts.some(text => state.answers[text.id] === headingId);
+        if (isUsed) return;
+        
+        if (window.selectedHeadingId === headingId) {
+          window.selectedHeadingId = null;
+        } else {
+          window.selectedHeadingId = headingId;
+        }
+        renderPart1();
+      }
+
+      function handleSlotClick(textId) {
+        if (window.selectedHeadingId) {
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === window.selectedHeadingId) {
+              delete state.answers[key];
+            }
+          });
+          
+          state.answers[textId] = window.selectedHeadingId;
+          window.selectedHeadingId = null;
+          renderAll();
+        } 
+        else if (state.answers[textId]) {
+          delete state.answers[textId];
+          renderAll();
+        }
+      }
+
+      function getHeadingTextById(id){
+        const section = exam.sections[state.sectionIndex];
+        const heading = section.headings.find(h => h.id === id);
+        return heading ? `${heading.id}) ${heading.text}` : '';
+      }
+
+      function setupDragAndDrop(){
+        const headingItems = document.querySelectorAll('.heading-item:not(.used)');
+        const titleSlots = document.querySelectorAll('.title-slot');
+        
+        headingItems.forEach(item => {
+          item.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.dataset.headingId);
+          });
+        });
+        
+        titleSlots.forEach(slot => {
+          slot.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            slot.style.background = '#e8f4ff';
+          });
+          
+          slot.addEventListener('dragleave', (e) => {
+            slot.style.background = slot.classList.contains('has-title') ? '#e8fbe9' : '#f8fbff';
+          });
+          
+          slot.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const headingId = e.dataTransfer.getData('text/plain');
+            const textId = slot.dataset.textId;
+            
+            Object.keys(state.answers).forEach(key => {
+              if(state.answers[key] === headingId) {
+                delete state.answers[key];
+              }
+            });
+            
+            state.answers[textId] = headingId;
+            window.selectedHeadingId = null;
+            renderAll();
+          });
+        });
+      }
+
+      function renderPart2(){
         const section = exam.sections[state.sectionIndex];
         
         passageContentEl.innerHTML = `<div class="passage">${section.passage}</div>`;
@@ -1393,7 +2675,7 @@ Hamburger Str. 112
         headingsBankContainer.innerHTML = '';
       }
 
-      function renderPart3() {
+      function renderPart3(){
         const section = exam.sections[state.sectionIndex];
         
         let textsHTML = `
@@ -1421,6 +2703,7 @@ Hamburger Str. 112
         });
         
         textsHTML += `</div>`;
+        
         passageContentEl.innerHTML = textsHTML;
         
         let situationsHTML = `
@@ -1435,6 +2718,7 @@ Hamburger Str. 112
           
           situationsHTML += `
             <div class="situation-item ${isUsed ? 'used' : ''} ${window.selectedSituationId === situation.id ? 'selected' : ''}" 
+                 draggable="${!isUsed}" 
                  data-situation-id="${situation.id}"
                  onclick="${!isUsed ? `window.lesenApp.handleSituationClick('${situation.id}')` : ''}">
               <div class="situation-number">${situationNumber}.</div>
@@ -1445,17 +2729,113 @@ Hamburger Str. 112
         });
         
         situationsHTML += `</div>`;
+        
         questionBodyEl.innerHTML = situationsHTML;
         questionTitleEl.textContent = '';
         headingsBankContainer.innerHTML = '';
+        
+        setupPart3DragAndDrop();
       }
 
-      function renderSprachbausteine1() {
+      function restoreX(textId) {
+        const situationId = Object.keys(state.answers).find(key => state.answers[key] === 'X' && key.includes('text'));
+        if (situationId) {
+          delete state.answers[situationId];
+        }
+        renderAll();
+      }
+
+      function handleSituationClick(situationId) {
+        if (window.selectedSituationId === situationId) {
+          window.selectedSituationId = null;
+        } else {
+          window.selectedSituationId = situationId;
+        }
+        renderPart3();
+      }
+
+      function handleSituationSlotClick(textId) {
+        if (window.selectedSituationId) {
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === window.selectedSituationId) {
+              delete state.answers[key];
+            }
+          });
+          
+          state.answers[window.selectedSituationId] = textId;
+          window.selectedSituationId = null;
+          renderAll();
+        } 
+        else {
+          const situationId = Object.keys(state.answers).find(key => state.answers[key] === textId);
+          if (situationId) {
+            delete state.answers[situationId];
+            renderAll();
+          }
+        }
+      }
+
+      function markNoMatch(situationId) {
+        Object.keys(state.answers).forEach(key => {
+          if(state.answers[key] === situationId) {
+            delete state.answers[key];
+          }
+        });
+        
+        state.answers[situationId] = 'X';
+        window.selectedSituationId = null;
+        renderAll();
+      }
+
+      function setupPart3DragAndDrop(){
+        const situationItems = document.querySelectorAll('.situation-item:not(.used)');
+        const textSlots = document.querySelectorAll('.text-item .title-slot');
+        
+        situationItems.forEach(item => {
+          item.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.dataset.situationId);
+          });
+        });
+        
+        textSlots.forEach(slot => {
+          slot.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            slot.style.background = '#e8f4ff';
+          });
+          
+          slot.addEventListener('dragleave', (e) => {
+            const hasTitle = slot.classList.contains('has-title');
+            const hasX = slot.classList.contains('has-x');
+            slot.style.background = hasTitle ? '#e8fbe9' : (hasX ? '#f8d7da' : '#f8fbff');
+          });
+          
+          slot.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const situationId = e.dataTransfer.getData('text/plain');
+            const textId = slot.dataset.textId;
+            
+            Object.keys(state.answers).forEach(key => {
+              if(state.answers[key] === situationId) {
+                delete state.answers[key];
+              }
+            });
+            
+            state.answers[situationId] = textId;
+            window.selectedSituationId = null;
+            renderAll();
+          });
+        });
+      }
+
+      function renderSprachbausteine1(){
         const section = exam.sections[state.sectionIndex];
         
         let textWithBlanks = section.fillText;
+        
         const blankPlaceholders = [];
-        section.fillBlanks.forEach(blank => blankPlaceholders.push(`BLANK_${blank.id}`));
+        section.fillBlanks.forEach(blank => {
+          blankPlaceholders.push(`BLANK_${blank.id}`);
+        });
         
         let tempText = textWithBlanks;
         blankPlaceholders.forEach((placeholder, index) => {
@@ -1494,12 +2874,45 @@ Hamburger Str. 112
         });
         
         optionsHTML += `</div>`;
+        
         questionBodyEl.innerHTML = optionsHTML;
         questionTitleEl.textContent = '';
         headingsBankContainer.innerHTML = '';
       }
 
-      function renderSprachbausteine2() {
+      function handleBlankClick(blankId) {
+        const section = exam.sections[state.sectionIndex];
+        const blank = section.fillBlanks.find(b => b.id === blankId);
+        if (!blank) return;
+        
+        const popup = document.createElement('div');
+        popup.className = 'options-popup';
+        
+        blank.options.forEach(opt => {
+          const optionItem = document.createElement('div');
+          optionItem.className = 'option-item';
+          optionItem.textContent = opt;
+          optionItem.onclick = () => {
+            selectSprachbausteine1(blankId, opt);
+            document.querySelectorAll('.options-popup').forEach(p => p.remove());
+          };
+          popup.appendChild(optionItem);
+        });
+        
+        document.querySelectorAll('.options-popup').forEach(p => p.remove());
+        
+        const element = document.querySelector(`[data-blank-id="${blankId}"]`);
+        if (element) {
+          element.appendChild(popup);
+        }
+      }
+
+      function selectSprachbausteine1(blankId, answer){
+        state.answers[blankId] = answer;
+        renderAll();
+      }
+
+      function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
         
         let textWithPlaceholders = section.fillText2;
@@ -1532,6 +2945,7 @@ Hamburger Str. 112
           
           wordBankHTML += `
             <div class="bank-word-vertical ${isUsed ? 'used' : ''} ${isSelected ? 'selected' : ''}" 
+                 draggable="${!isUsed}" 
                  data-word="${word}"
                  onclick="${!isUsed ? `window.lesenApp.handleWordClick('${word}')` : ''}">
               ${word}
@@ -1543,22 +2957,100 @@ Hamburger Str. 112
         questionBodyEl.innerHTML = wordBankHTML;
         questionTitleEl.textContent = '';
         headingsBankContainer.innerHTML = '';
+
+        setupSprachbausteine2DragAndDrop();
       }
 
-      function getHeadingTextById(id) {
-        const section = exam.sections[state.sectionIndex];
-        const heading = section.headings.find(h => h.id === id);
-        return heading ? `${heading.id}) ${heading.text}` : '';
+      function handleWordClick(word) {
+        if (window.selectedWord === word) {
+          window.selectedWord = null;
+          window.selectedWordId = null;
+        } else {
+          window.selectedWord = word;
+          window.selectedWordId = null;
+        }
+        renderSprachbausteine2();
+      }
+
+      function handleWordSlotClick(blankId) {
+        if (window.selectedWord) {
+          const word = window.selectedWord;
+          
+          Object.keys(state.answers).forEach(key => {
+            if (state.answers[key] === word) {
+              delete state.answers[key];
+            }
+          });
+          
+          state.answers[blankId] = word;
+          window.selectedWord = null;
+          renderSprachbausteine2();
+        } 
+        else if (state.answers[blankId]) {
+          delete state.answers[blankId];
+          renderSprachbausteine2();
+        }
+      }
+
+      function setupSprachbausteine2DragAndDrop(){
+        const wordItems = document.querySelectorAll('.bank-word-vertical:not(.used)');
+        const blankSlots = document.querySelectorAll('.blank-slot');
+        
+        wordItems.forEach(item => {
+          item.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.dataset.word);
+          });
+        });
+        
+        blankSlots.forEach(slot => {
+          slot.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            slot.style.background = '#e8f4ff';
+          });
+          
+          slot.addEventListener('dragleave', (e) => {
+            slot.style.background = slot.classList.contains('has-answer') ? '#e8fbe9' : '#f8fbff';
+          });
+          
+          slot.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const word = e.dataTransfer.getData('text/plain');
+            const blankId = slot.dataset.blankId;
+            
+            selectSprachbausteine2(blankId, word);
+          });
+        });
+      }
+
+      function selectSprachbausteine2(blankId, word){
+        Object.keys(state.answers).forEach(key => {
+          if (state.answers[key] === word) {
+            delete state.answers[key];
+          }
+        });
+        
+        state.answers[blankId] = word;
+        window.selectedWord = null;
+        renderSprachbausteine2();
+      }
+
+      function selectOption(questionId, optionId){
+        state.answers[questionId] = optionId;
+        renderAll();
       }
 
       function renderResults() {
         const section = exam.sections[state.sectionIndex];
-        let resultsHTML = `<div class="result-item"><h3>${section.title} - Ergebnisse</h3>`;
+        let resultsHTML = `
+          <div class="result-item">
+            <h3>${section.title} - Ergebnisse</h3>
+        `;
+        
         let totalCorrect = 0;
         let totalQuestions = 0;
         
         if (section.id === 's1') {
-          section.texts.forEach(text => {
+          section.texts.forEach((text, index) => {
             totalQuestions++;
             const userAnswer = state.answers[text.id];
             const isCorrect = userAnswer === text.correctAnswer;
@@ -1566,32 +3058,55 @@ Hamburger Str. 112
             
             resultsHTML += `
               <div class="result-detail">
-                <div class="result-row">Ihre Antwort: <span class="${isCorrect ? 'correct' : 'incorrect'}">${userAnswer ? getHeadingTextById(userAnswer) : '-'}</span></div>
-                <div class="result-row">Richtige Antwort: <span class="correct">${getHeadingTextById(text.correctAnswer)}</span></div>
-                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? '✔️ Richtig' : '❌ Falsch'}</div>
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer ? getHeadingTextById(userAnswer) : 'Nicht beantwortet'}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${getHeadingTextById(text.correctAnswer)}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
               </div>
             `;
           });
         } else if (section.id === 's2') {
-          section.questions.forEach(question => {
+          section.questions.forEach((question, index) => {
             totalQuestions++;
             const userAnswer = state.answers[question.id];
             const isCorrect = userAnswer === question.correctAnswer;
             if (isCorrect) totalCorrect++;
             
-            let userAnswerText = '-';
+            let userAnswerText = 'Nicht beantwortet';
             if (userAnswer) {
-              const opt = question.options.find(o => o.id === userAnswer);
-              userAnswerText = opt ? opt.text : userAnswer;
+              const option = question.options.find(o => o.id === userAnswer);
+              userAnswerText = option ? option.text : userAnswer;
             }
-            let correctAnswerText = '';
-            const correctOpt = question.options.find(o => o.id === question.correctAnswer);
-            correctAnswerText = correctOpt ? correctOpt.text : question.correctAnswer;
             
-            resultsHTML += `<div class="result-detail">Ihre Antwort: <span class="${isCorrect ? 'correct' : 'incorrect'}">${userAnswerText}</span><br>Richtige Antwort: <span class="correct">${correctAnswerText}</span><br><span class="${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? '✔️ Richtig' : '❌ Falsch'}</span></div>`;
+            let correctAnswerText = '';
+            const correctOption = question.options.find(o => o.id === question.correctAnswer);
+            correctAnswerText = correctOption ? correctOption.text : question.correctAnswer;
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswerText}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${correctAnswerText}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
+              </div>
+            `;
           });
         } else if (section.id === 's3') {
-          section.situations.forEach(situation => {
+          section.situations.forEach((situation, index) => {
             totalQuestions++;
             const userAnswer = state.answers[situation.id];
             const correctText = section.texts.find(t => t.correctAnswer === situation.id);
@@ -1600,152 +3115,171 @@ Hamburger Str. 112
             
             resultsHTML += `
               <div class="result-detail">
-                Ihre Antwort: <span class="${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</span><br>
-                Richtige Antwort: <span class="correct">${correctText ? correctText.id : 'X'}</span><br>
-                <span class="${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? '✔️ Richtig' : '❌ Falsch'}</span>
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${correctText ? correctText.id : 'X'}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
               </div>
             `;
           });
-        } else if (section.id === 's4' || section.id === 's5') {
-          const blanks = section.id === 's4' ? section.fillBlanks : section.fillBlanks2;
-          blanks.forEach(blank => {
+        } else if (section.id === 's4') {
+          section.fillBlanks.forEach(blank => {
             totalQuestions++;
             const userAnswer = state.answers[blank.id];
             const isCorrect = userAnswer === blank.correctAnswer;
             if (isCorrect) totalCorrect++;
             
-            resultsHTML += `<div class="result-detail">Ihre Antwort: <span class="${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</span><br>Richtige Antwort: <span class="correct">${blank.correctAnswer}</span><br><span class="${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? '✔️ Richtig' : '❌ Falsch'}</span></div>`;
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${blank.correctAnswer}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
+              </div>
+            `;
+          });
+        } else if (section.id === 's5') {
+          section.fillBlanks2.forEach(blank => {
+            totalQuestions++;
+            const userAnswer = state.answers[blank.id];
+            const isCorrect = userAnswer === blank.correctAnswer;
+            if (isCorrect) totalCorrect++;
+            
+            resultsHTML += `
+              <div class="result-detail">
+                <div class="result-row">
+                  <div class="result-label">Ihre Antwort:</div>
+                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
+                </div>
+                <div class="result-row">
+                  <div class="result-label">Richtige Antwort:</div>
+                  <div class="result-value correct">${blank.correctAnswer}</div>
+                </div>
+                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
+                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+                </div>
+              </div>
+            `;
           });
         }
         
         const percentage = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+        
         resultsHTML += `
           <div class="result-summary">
             <div class="percentage">${percentage}%</div>
-            <div>${totalCorrect}/${totalQuestions} richtig</div>
-            <div>Punkte: ${Math.round((totalCorrect / totalQuestions) * section.points)}/${section.points}</div>
-          </div></div>`;
+            <div>${totalCorrect} von ${totalQuestions} richtig</div>
+            <div>Punkte: ${Math.round((totalCorrect / totalQuestions) * section.points)} / ${section.points}</div>
+          </div>
+        </div>`;
         
         passageContentEl.innerHTML = resultsHTML;
         questionBodyEl.innerHTML = '';
         sectionNameEl.textContent = 'Ergebnisse';
+        questionTitleEl.textContent = '';
       }
 
-      // Event handlers
-      function selectOption(questionId, optionId) { state.answers[questionId] = optionId; renderAll(); }
-      function handleHeadingClick(headingId) {
-        const section = exam.sections[state.sectionIndex];
-        if (section.texts.some(text => state.answers[text.id] === headingId)) return;
-        window.selectedHeadingId = window.selectedHeadingId === headingId ? null : headingId;
-        renderPart1();
-      }
-      function handleSlotClick(textId) {
-        if (window.selectedHeadingId) {
-          Object.keys(state.answers).forEach(key => { if (state.answers[key] === window.selectedHeadingId) delete state.answers[key]; });
-          state.answers[textId] = window.selectedHeadingId;
-          window.selectedHeadingId = null;
-        } else if (state.answers[textId]) delete state.answers[textId];
-        renderAll();
-      }
-      function handleSituationClick(situationId) {
-        window.selectedSituationId = window.selectedSituationId === situationId ? null : situationId;
-        renderPart3();
-      }
-      function handleSituationSlotClick(textId) {
-        if (window.selectedSituationId) {
-          Object.keys(state.answers).forEach(key => { if (state.answers[key] === window.selectedSituationId) delete state.answers[key]; });
-          state.answers[window.selectedSituationId] = textId;
-          window.selectedSituationId = null;
-        } else {
-          const situationId = Object.keys(state.answers).find(key => state.answers[key] === textId);
-          if (situationId) delete state.answers[situationId];
-        }
-        renderAll();
-      }
-      function markNoMatch(situationId) {
-        Object.keys(state.answers).forEach(key => { if (state.answers[key] === situationId) delete state.answers[key]; });
-        state.answers[situationId] = 'X';
-        window.selectedSituationId = null;
-        renderAll();
-      }
-      function restoreX(textId) {
-        const situationId = Object.keys(state.answers).find(key => state.answers[key] === 'X' && key.includes('text'));
-        if (situationId) delete state.answers[situationId];
-        renderAll();
-      }
-      function handleBlankClick(blankId) { /* Popup handled via options */ }
-      function selectSprachbausteine1(blankId, answer) { state.answers[blankId] = answer; renderAll(); }
-      function handleWordClick(word) {
-        window.selectedWord = window.selectedWord === word ? null : word;
-        window.selectedWordId = null;
-        renderSprachbausteine2();
-      }
-      function handleWordSlotClick(blankId) {
-        if (window.selectedWord) {
-          Object.keys(state.answers).forEach(key => { if (state.answers[key] === window.selectedWord) delete state.answers[key]; });
-          state.answers[blankId] = window.selectedWord;
-          window.selectedWord = null;
-        } else if (state.answers[blankId]) delete state.answers[blankId];
-        renderSprachbausteine2();
-      }
-      function selectSprachbausteine2(blankId, word) {
-        Object.keys(state.answers).forEach(key => { if (state.answers[key] === word) delete state.answers[key]; });
-        state.answers[blankId] = word;
-        window.selectedWord = null;
-        renderSprachbausteine2();
-      }
-
-      // Attach handlers to window
-      window.lesenApp = {
-        selectOption, handleHeadingClick, handleSlotClick, handleSituationClick,
-        handleSituationSlotClick, markNoMatch, restoreX, handleBlankClick,
-        selectSprachbausteine1, handleWordClick, handleWordSlotClick, selectSprachbausteine2
-      };
-
-      // Button listeners
-      document.getElementById('prevBtn-lesen').onclick = () => { if (state.sectionIndex > 0) { state.sectionIndex--; state.questionIndex = 0; renderAll(); } };
-      document.getElementById('nextBtn2-lesen').onclick = () => {
-        if (state.sectionIndex < exam.sections.length - 1) { state.sectionIndex++; state.questionIndex = 0; renderAll(); }
-        else showPage('hoeren-page');
-      };
-      document.getElementById('nextBtn-lesen').onclick = () => showPage('hoeren-page');
-      document.getElementById('resultBtn-lesen').onclick = () => { state.showResults = !state.showResults; renderAll(); };
-      document.getElementById('resetBtn-lesen').onclick = () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
-          state.answers = {}; state.marked = {}; state.showResults = false; resetTimer(); renderAll();
-        }
-      };
-      document.getElementById('saveBtn-lesen').onclick = () => {
-        statusText.textContent = 'Gespeichert';
-        setTimeout(() => { statusText.textContent = 'Nicht gespeichert'; }, 2000);
-      };
-      document.getElementById('submitBtn-lesen').onclick = () => {
-        if (confirm('Möchten Sie die Prüfung wirklich abgeben?')) { state.showResults = true; renderAll(); }
-      };
-      resetSectionBtn.onclick = () => {
-        if (confirm(`Möchten Sie wirklich den Teil "${exam.sections[state.sectionIndex].title}" zurücksetzen?`)) {
-          const section = exam.sections[state.sectionIndex];
-          if (section.id === 's1') section.texts.forEach(t => delete state.answers[t.id]);
-          else if (section.id === 's2') section.questions.forEach(q => delete state.answers[q.id]);
-          else if (section.id === 's3') section.situations.forEach(s => delete state.answers[s.id]);
-          else if (section.id === 's4') section.fillBlanks.forEach(b => delete state.answers[b.id]);
-          else if (section.id === 's5') section.fillBlanks2.forEach(b => delete state.answers[b.id]);
+      document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
+        if(state.sectionIndex > 0){
+          state.sectionIndex--;
+          state.questionIndex = 0;
           renderAll();
         }
-      };
+      });
+
+      document.getElementById('nextBtn2-lesen').addEventListener('click', ()=>{
+        if(state.sectionIndex < exam.sections.length - 1){
+          state.sectionIndex++;
+          state.questionIndex = 0;
+          renderAll();
+        } else {
+          showPage('hoeren-page');
+        }
+      });
+
+      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
+        showPage('hoeren-page');
+      });
+
+      resultBtn.addEventListener('click', ()=>{
+        state.showResults = !state.showResults;
+        renderAll();
+      });
+
+      resetBtn.addEventListener('click', ()=>{
+        if(confirm('Möchten Sie wirklich von neu beginnen?')){
+          state.answers = {};
+          state.marked = {};
+          state.showResults = false;
+          resetTimer();
+          renderAll();
+        }
+      });
+
+      resetSectionBtn.addEventListener('click', resetCurrentSection);
+
+      document.getElementById('saveBtn-lesen').addEventListener('click', ()=>{
+        statusText.textContent = 'Gespeichert';
+        setTimeout(()=>{statusText.textContent = 'Nicht gespeichert'}, 2000);
+      });
+
+      document.getElementById('submitBtn-lesen').addEventListener('click', ()=>{
+        if(confirm('Möchten Sie die Prüfung wirklich abgeben?')){
+          state.showResults = true;
+          renderAll();
+        }
+      });
 
       updateTimerDisplay();
       renderAll();
       startTimer();
+      
       window._lesenState = state;
+      window.lesenApp = {
+        selectOption,
+        markNoMatch,
+        selectSprachbausteine1,
+        selectSprachbausteine2,
+        handleHeadingClick,
+        handleSlotClick,
+        handleSituationClick,
+        handleSituationSlotClick,
+        restoreX,
+        handleBlankClick,
+        handleWordClick,
+        handleWordSlotClick
+      };
     }
 
-    // =============================================
-    // HÖREN PAGE
-    // =============================================
+    // ===== HÖREN PAGE FUNCTIONALITY =====
     function initHoerenPage() {
       const exam = EXAM_DATA.hoeren;
-      let state = { sectionIndex: 0, answers: {}, remaining: exam.durationSec, showResults: false, timerStarted: false, timerInterval: null, examEnded: false };
+
+      let state = { 
+        sectionIndex: 0, 
+        answers: {}, 
+        remaining: exam.durationSec,
+        showResults: false,
+        timerStarted: false,
+        timerInterval: null,
+        examEnded: false,
+        currentPage: 'hoeren'
+      };
+      
       const topTiles = document.getElementById('topTiles-hoeren');
       const contentContainer = document.getElementById('contentContainer-hoeren');
       const timerEl = document.getElementById('timer-hoeren');
@@ -1754,29 +3288,54 @@ Hamburger Str. 112
       function handleTimeExpired() {
         if (state.examEnded) return;
         state.examEnded = true;
-        if (state.timerInterval) clearInterval(state.timerInterval);
+        
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
         state.showResults = true;
         renderAll();
+        
         setTimeout(() => {
           if (state.sectionIndex < exam.sections.length - 1) {
-            state.sectionIndex++; state.showResults = false; state.examEnded = false; renderAll();
-          } else showPage('schreiben-page');
+            state.sectionIndex++;
+            state.showResults = false;
+            state.examEnded = false;
+            renderAll();
+          } else {
+            showPage('schreiben-page');
+          }
         }, 2000);
       }
 
       function startTimer() {
-        if (state.timerInterval) clearInterval(state.timerInterval);
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+        }
+        
         state.timerStarted = true;
         state.timerInterval = setInterval(() => {
-          if (state.remaining <= 0) { clearInterval(state.timerInterval); timerEl.textContent = 'Zeit abgelaufen'; handleTimeExpired(); return; }
-          state.remaining--; updateTimerDisplay();
+          if (state.remaining <= 0) {
+            clearInterval(state.timerInterval);
+            timerEl.textContent = 'Zeit abgelaufen';
+            handleTimeExpired();
+            return;
+          }
+          state.remaining--;
+          updateTimerDisplay();
         }, 1000);
       }
 
       function resetTimer() {
-        if (state.timerInterval) clearInterval(state.timerInterval);
-        state.remaining = exam.durationSec; state.timerStarted = false; state.examEnded = false;
-        updateTimerDisplay(); startTimer();
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+        }
+        state.remaining = exam.durationSec;
+        state.timerStarted = false;
+        state.examEnded = false;
+        updateTimerDisplay();
+        startTimer();
       }
 
       function updateTimerDisplay() {
@@ -1798,204 +3357,256 @@ Hamburger Str. 112
 
       function isSectionDone(section) {
         const answers = state.answers[section.id];
-        return answers && Object.keys(answers).length === section.questions.length;
+        if (!answers) return false;
+        
+        const answeredQuestions = Object.keys(answers).length;
+        const totalQuestions = section.questions.length;
+        
+        return answeredQuestions === totalQuestions;
       }
 
       function renderAll() {
         if (state.examEnded) return;
+        
         renderTopTiles();
-        if (state.showResults) renderResults();
-        else renderListeningSection();
+        
+        if (state.showResults) {
+          renderResults();
+          return;
+        }
+        
+        renderListeningSection();
       }
 
       function renderListeningSection() {
         const section = exam.sections[state.sectionIndex];
         const currentAnswers = state.answers[section.id] || {};
         
-        let contentHTML = `<div class="panel-title">${section.title}</div>
-          <div class="instructions">Sie hören die Nachrichten. Entscheiden Sie beim Hören, ob die Aussagen richtig oder falsch sind.</div>
-          <div class="listening-task"><table class="true-false-table"><thead><tr><th>Nr.</th><th>Aussage</th><th>Ihre Antwort</th></tr></thead><tbody>`;
+        let contentHTML = `
+          <div class="panel-title">${section.title}</div>
+          <div class="instructions">
+            Sie hören die Nachrichten. Entscheiden Sie beim Hören, ob die Aussagen richtig oder falsch sind.
+          </div>
+          
+          <div class="listening-task">
+            <table class="true-false-table">
+              <thead>
+                <tr>
+                  <th>Nr.</th>
+                  <th>Aussage</th>
+                  <th>Ihre Antwort</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
         
-        section.questions.forEach(question => {
+        section.questions.forEach((question, index) => {
           const currentAnswer = currentAnswers[question.id] || '';
           contentHTML += `
             <tr>
               <td><strong>${question.id}</strong></td>
-              <td>${question.text}</td>
+              <td class="question-text">${question.text}</td>
               <td>
                 <div class="answer-options">
-                  <label class="answer-option"><input type="radio" name="q${section.id}_${question.id}" value="richtig" ${currentAnswer === 'richtig' ? 'checked' : ''} onchange="window.hoerenApp.updateAnswer('${section.id}', '${question.id}', this.value)"> Richtig</label>
-                  <label class="answer-option"><input type="radio" name="q${section.id}_${question.id}" value="falsch" ${currentAnswer === 'falsch' ? 'checked' : ''} onchange="window.hoerenApp.updateAnswer('${section.id}', '${question.id}', this.value)"> Falsch</label>
+                  <label class="answer-option">
+                    <input type="radio" name="q${section.id}_${question.id}" value="richtig" ${currentAnswer === 'richtig' ? 'checked' : ''} onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"> Richtig
+                  </label>
+                  <label class="answer-option">
+                    <input type="radio" name="q${section.id}_${question.id}" value="falsch" ${currentAnswer === 'falsch' ? 'checked' : ''} onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"> Falsch
+                  </label>
                 </div>
               </td>
-            </tr>`;
+            </tr>
+          `;
         });
         
-        contentHTML += `</tbody></table></div>`;
+        contentHTML += `
+              </tbody>
+            </table>
+          </div>
+        `;
+        
         contentContainer.innerHTML = contentHTML;
+      }
+
+      function updateListeningAnswer(sectionId, questionId, answer) {
+        if (!state.answers[sectionId]) {
+          state.answers[sectionId] = {};
+        }
+        state.answers[sectionId][questionId] = answer;
+        
+        renderTopTiles();
       }
 
       function renderResults() {
         const section = exam.sections[state.sectionIndex];
         const userAnswers = state.answers[section.id] || {};
         let correctCount = 0;
-        let resultsHTML = `<div class="panel-title">Ergebnisse - ${section.title}</div>`;
         
-        section.questions.forEach(question => {
+        let resultsHTML = `
+          <div class="panel-title">Ergebnisse - ${section.title}</div>
+        `;
+        
+        section.questions.forEach((question) => {
           const userAnswer = userAnswers[question.id] || '-';
           const correctAnswer = section.correctAnswers[question.id];
           const gotCorrect = userAnswer === correctAnswer;
+          
           if (gotCorrect) correctCount++;
-          resultsHTML += `<div class="result-detail">Ihre Antwort: <span class="${gotCorrect ? 'correct' : 'incorrect'}">${userAnswer}</span><br>Richtige Antwort: <span class="correct">${correctAnswer}</span><br><span class="${gotCorrect ? 'correct' : 'incorrect'}">${gotCorrect ? '✔️ Richtig' : '❌ Falsch'}</span></div>`;
+          
+          resultsHTML += `
+            <div class="result-detail">
+              <div class="result-row">
+                <div class="result-label">Ihre Antwort:</div>
+                <div class="result-value ${gotCorrect ? 'correct' : 'incorrect'}">${userAnswer}</div>
+              </div>
+              <div class="result-row">
+                <div class="result-label">Richtige Antwort:</div>
+                <div class="result-value correct">${correctAnswer}</div>
+              </div>
+              <div class="result-status ${gotCorrect ? 'correct' : 'incorrect'}">
+                ${gotCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+              </div>
+            </div>
+          `;
         });
         
-        resultsHTML += `<div class="result-summary">${correctCount}/${section.questions.length} richtig<br>Punkte: ${Math.round((correctCount / section.questions.length) * section.points)}/${section.points}</div>`;
+        const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
+        
+        resultsHTML += `
+          <div class="result-summary">
+            <div>${correctCount}/${section.questions.length} richtig</div>
+            <div>Punkte: ${totalPoints}/${section.points}</div>
+          </div>
+        `;
+        
         contentContainer.innerHTML = resultsHTML;
       }
 
-      function updateAnswer(sectionId, questionId, answer) {
-        if (!state.answers[sectionId]) state.answers[sectionId] = {};
-        state.answers[sectionId][questionId] = answer;
-        renderTopTiles();
-      }
+      document.getElementById('prevBtn-hoeren').addEventListener('click', () => {
+        if (state.sectionIndex > 0) {
+          state.sectionIndex--;
+          state.showResults = false;
+          renderAll();
+        }
+      });
 
-      window.hoerenApp = { updateAnswer };
+      document.getElementById('nextBtn2-hoeren').addEventListener('click', () => {
+        if (state.sectionIndex < exam.sections.length - 1) {
+          state.sectionIndex++;
+          state.showResults = false;
+          renderAll();
+        } else {
+          showPage('schreiben-page');
+        }
+      });
 
-      document.getElementById('prevBtn-hoeren').onclick = () => { if (state.sectionIndex > 0) { state.sectionIndex--; state.showResults = false; renderAll(); } };
-      document.getElementById('nextBtn2-hoeren').onclick = () => {
-        if (state.sectionIndex < exam.sections.length - 1) { state.sectionIndex++; state.showResults = false; renderAll(); }
-        else showPage('schreiben-page');
-      };
-      document.getElementById('nextBtn-hoeren').onclick = () => showPage('schreiben-page');
-      document.getElementById('resultBtn-hoeren').onclick = () => { state.showResults = !state.showResults; renderAll(); };
-      document.getElementById('resetBtn-hoeren').onclick = () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen?')) { state.answers = {}; state.showResults = false; resetTimer(); renderAll(); }
-      };
-      document.getElementById('saveBtn-hoeren').onclick = () => {
+      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
+        showPage('schreiben-page');
+      });
+
+      document.getElementById('resultBtn-hoeren').addEventListener('click', () => {
+        state.showResults = !state.showResults;
+        renderAll();
+      });
+
+      document.getElementById('resetBtn-hoeren').addEventListener('click', () => {
+        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
+          state.answers = {};
+          state.showResults = false;
+          resetTimer();
+          renderAll();
+        }
+      });
+
+      document.getElementById('saveBtn-hoeren').addEventListener('click', () => {
         statusText.textContent = 'Gespeichert';
-        setTimeout(() => { statusText.textContent = 'Nicht gespeichert'; }, 2000);
-      };
-      document.getElementById('submitBtn-hoeren').onclick = () => {
-        if (confirm('Möchten Sie die Prüfung wirklich abgeben?')) { state.showResults = true; renderAll(); }
-      };
+        setTimeout(() => { statusText.textContent = 'Nicht gespeichert' }, 2000);
+      });
 
-      updateTimerDisplay(); renderAll(); startTimer();
+      document.getElementById('submitBtn-hoeren').addEventListener('click', () => {
+        if (confirm('Möchten Sie die Prüfung wirklich abgeben?')) {
+          state.showResults = true;
+          renderAll();
+        }
+      });
+
+      updateTimerDisplay();
+      renderAll();
+      startTimer();
+      
       window._hoerenState = state;
+      window.hoerenApp = {
+        updateListeningAnswer
+      };
     }
 
-    // =============================================
-    // SCHREIBEN PAGE with AI Correction
-    // =============================================
+    // ===== SCHREIBEN PAGE FUNCTIONALITY =====
     function initSchreibenPage() {
       const exam = EXAM_DATA.schreiben;
-      let state = { sectionIndex: 0, answers: {}, remaining: exam.durationSec, showResults: false, timerStarted: false, timerInterval: null, examEnded: false };
+
+      let state = { 
+        sectionIndex: 0, 
+        answers: {}, 
+        remaining: exam.durationSec,
+        showResults: false,
+        timerStarted: false,
+        timerInterval: null,
+        examEnded: false,
+        currentPage: 'schreiben'
+      };
       
       const topTiles = document.getElementById('topTiles-schreiben');
       const passageTitleEl = document.getElementById('passageTitle-schreiben');
       const passageContentEl = document.getElementById('passageContent-schreiben');
-      const writingTextarea = document.getElementById('writingTextarea');
-      const wordCountSpan = document.getElementById('wordCount');
+      const writingContainer = document.getElementById('writingContainer-schreiben');
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
-      const correctBtn = document.getElementById('correctWritingBtn');
-      const correctionResult = document.getElementById('correctionResult');
-      const correctionContent = document.getElementById('correctionContent');
-
-      function countWords(text) {
-        return text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
-      }
-
-      function updateWordCount() {
-        const text = writingTextarea.value;
-        wordCountSpan.textContent = countWords(text);
-        state.answers['s1'] = text;
-      }
-
-      writingTextarea.addEventListener('input', updateWordCount);
-
-      // AI Correction Function
-      async function correctWriting() {
-        const text = writingTextarea.value.trim();
-        if (!text) {
-          alert('Bitte schreiben Sie zuerst einen Text.');
-          return;
-        }
-
-        correctBtn.disabled = true;
-        correctBtn.textContent = '🔄 Korrigiere...';
-
-        try {
-          const { data: { session } } = await supabaseClient.auth.getSession();
-          if (!session) throw new Error('Nicht angemeldet');
-
-          const response = await fetch(`${SUPABASE_URL}/functions/v1/correct-writing`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${session.access_token}`
-            },
-            body: JSON.stringify({ text })
-          });
-
-          if (!response.ok) throw new Error('Fehler bei der Korrektur');
-
-          const result = await response.json();
-          
-          correctionResult.style.display = 'block';
-          correctionContent.innerHTML = `
-            <div style="margin-bottom: 15px; padding: 10px; background: white; border-radius: 6px;">
-              <strong>Korrigierter Text:</strong><br>
-              ${result.correctedText.replace(/\n/g, '<br>')}
-            </div>
-            <div style="margin-bottom: 15px; padding: 10px; background: white; border-radius: 6px;">
-              <strong>Bewertung:</strong>
-              <ul style="margin-top: 10px; list-style: none; padding-left: 0;">
-                <li>Inhalt: ${result.scores.inhalt}/5</li>
-                <li>Grammatik: ${result.scores.grammatik}/5</li>
-                <li>Wortschatz: ${result.scores.wortschatz}/5</li>
-                <li>Struktur: ${result.scores.struktur}/5</li>
-              </ul>
-              <strong>Gesamtpunktzahl: ${result.totalScore}/20</strong>
-            </div>
-            <div style="padding: 10px; background: white; border-radius: 6px;">
-              <strong>Verbesserungsvorschläge:</strong><br>
-              ${result.feedback}
-            </div>
-          `;
-
-        } catch (error) {
-          console.error('Correction error:', error);
-          alert('Fehler bei der Korrektur. Bitte versuchen Sie es später erneut.');
-        } finally {
-          correctBtn.disabled = false;
-          correctBtn.textContent = '🤖 Text korrigieren (KI)';
-        }
-      }
-
-      correctBtn.addEventListener('click', correctWriting);
 
       function handleTimeExpired() {
         if (state.examEnded) return;
         state.examEnded = true;
-        if (state.timerInterval) clearInterval(state.timerInterval);
+        
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+          state.timerInterval = null;
+        }
+        
         state.showResults = true;
         renderAll();
-        setTimeout(() => showPage('ergebnisse-page'), 2000);
+        
+        setTimeout(() => {
+          showPage('ergebnisse-page');
+        }, 2000);
       }
 
       function startTimer() {
-        if (state.timerInterval) clearInterval(state.timerInterval);
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+        }
+        
         state.timerStarted = true;
         state.timerInterval = setInterval(() => {
-          if (state.remaining <= 0) { clearInterval(state.timerInterval); timerEl.textContent = 'Zeit abgelaufen'; handleTimeExpired(); return; }
-          state.remaining--; updateTimerDisplay();
+          if (state.remaining <= 0) {
+            clearInterval(state.timerInterval);
+            timerEl.textContent = 'Zeit abgelaufen';
+            handleTimeExpired();
+            return;
+          }
+          state.remaining--;
+          updateTimerDisplay();
         }, 1000);
       }
 
       function resetTimer() {
-        if (state.timerInterval) clearInterval(state.timerInterval);
-        state.remaining = exam.durationSec; state.timerStarted = false; state.examEnded = false;
-        updateTimerDisplay(); startTimer();
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+        }
+        state.remaining = exam.durationSec;
+        state.timerStarted = false;
+        state.examEnded = false;
+        updateTimerDisplay();
+        startTimer();
       }
 
       function updateTimerDisplay() {
@@ -2021,12 +3632,17 @@ Hamburger Str. 112
 
       function renderAll() {
         if (state.examEnded) return;
+        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         passageTitleEl.textContent = section.passageTitle;
         
-        if (state.showResults) renderResults();
-        else renderWritingSection();
+        if (state.showResults) {
+          renderResults();
+          return;
+        }
+        
+        renderWritingSection();
       }
 
       function renderWritingSection() {
@@ -2037,14 +3653,32 @@ Hamburger Str. 112
             <div class="writing-prompt">${section.writingTask.prompt}</div>
             <div class="writing-requirements">
               <h4>Schreiben Sie in Ihrer E-Mail:</h4>
-              <ul>${section.writingTask.requirements.map(req => `<li>${req}</li>`).join('')}</ul>
+              <ul>
+                ${section.writingTask.requirements.map(req => `<li>${req}</li>`).join('')}
+              </ul>
             </div>
           </div>
         `;
         
         const currentAnswer = state.answers[section.id] || '';
-        writingTextarea.value = currentAnswer;
-        wordCountSpan.textContent = countWords(currentAnswer);
+        const wordCount = countWords(currentAnswer);
+        
+        writingContainer.innerHTML = `
+          <div class="writing-area">
+            <textarea class="writing-textarea" placeholder="Schreiben Sie hier Ihre E-Mail..." oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)">${currentAnswer}</textarea>
+            <div class="word-counter">Wörter: <span class="count">${wordCount}</span></div>
+          </div>
+        `;
+      }
+
+      function countWords(text) {
+        return text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+      }
+
+      function updateWritingAnswer(sectionId, text) {
+        state.answers[sectionId] = text;
+        const wordCount = countWords(text);
+        document.querySelector('.word-counter .count').textContent = wordCount;
       }
 
       function renderResults() {
@@ -2059,75 +3693,182 @@ Hamburger Str. 112
               <h4>Ihre Antwort (${wordCount} Wörter):</h4>
               <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${userAnswer || 'Keine Antwort'}</div>
             </div>
-            <div class="result-summary"><div>Bitte manuell bewerten (max. ${section.points} Punkte)</div></div>
+            <div class="result-summary">
+              <div>Bitte manuell bewerten (max. ${section.points} Punkte)</div>
+            </div>
           </div>
         `;
+        writingContainer.innerHTML = '';
       }
 
-      document.getElementById('prevBtn-schreiben').onclick = () => { if (state.sectionIndex > 0) { state.sectionIndex--; state.showResults = false; renderAll(); } };
-      document.getElementById('nextBtn2-schreiben').onclick = () => {
-        if (state.sectionIndex < exam.sections.length - 1) { state.sectionIndex++; state.showResults = false; renderAll(); }
-        else showPage('ergebnisse-page');
-      };
-      document.getElementById('nextBtn-schreiben').onclick = () => showPage('ergebnisse-page');
-      document.getElementById('resultBtn-schreiben').onclick = () => { state.showResults = !state.showResults; renderAll(); };
-      document.getElementById('resetBtn-schreiben').onclick = () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
-          state.answers = {}; state.showResults = false; resetTimer(); renderAll(); writingTextarea.value = ''; updateWordCount(); correctionResult.style.display = 'none';
+      document.getElementById('prevBtn-schreiben').addEventListener('click', () => {
+        if (state.sectionIndex > 0) {
+          state.sectionIndex--;
+          state.showResults = false;
+          renderAll();
         }
-      };
-      document.getElementById('saveBtn-schreiben').onclick = () => {
-        statusText.textContent = 'Gespeichert';
-        setTimeout(() => { statusText.textContent = 'Nicht gespeichert'; }, 2000);
-      };
-      document.getElementById('submitBtn-schreiben').onclick = () => {
-        if (confirm('Möchten Sie die Prüfung wirklich abgeben?')) { state.showResults = true; renderAll(); }
-      };
+      });
 
-      updateTimerDisplay(); renderAll(); startTimer();
+      document.getElementById('nextBtn2-schreiben').addEventListener('click', () => {
+        if (state.sectionIndex < exam.sections.length - 1) {
+          state.sectionIndex++;
+          state.showResults = false;
+          renderAll();
+        } else {
+          showPage('ergebnisse-page');
+        }
+      });
+
+      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
+        showPage('ergebnisse-page');
+      });
+
+      document.getElementById('resultBtn-schreiben').addEventListener('click', () => {
+        state.showResults = !state.showResults;
+        renderAll();
+      });
+
+      document.getElementById('resetBtn-schreiben').addEventListener('click', () => {
+        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
+          state.answers = {};
+          state.showResults = false;
+          resetTimer();
+          renderAll();
+        }
+      });
+
+      document.getElementById('saveBtn-schreiben').addEventListener('click', () => {
+        statusText.textContent = 'Gespeichert';
+        setTimeout(() => { statusText.textContent = 'Nicht gespeichert' }, 2000);
+      });
+
+      document.getElementById('submitBtn-schreiben').addEventListener('click', () => {
+        if (confirm('Möchten Sie die Prüfung wirklich abgeben?')) {
+          state.showResults = true;
+          renderAll();
+        }
+      });
+
+      updateTimerDisplay();
+      renderAll();
+      startTimer();
+      
       window._schreibenState = state;
+      window.schreibenApp = {
+        updateWritingAnswer
+      };
     }
 
-    // =============================================
-    // ERGEBNISSE PAGE
-    // =============================================
+    // ===== ERGEBNISSE PAGE FUNCTIONALITY - GLEICH WIE IN DER ALTEN DATEI =====
     function initErgebnissePage() {
-      const CONFIG = { totals: { lesen: 105, hoeren: 75, schreiben: 45, gesamt: 225 }, counts: { lesen: 40, hoeren: 20 } };
+      const CONFIG = {
+        totals: { 
+          lesen: 105, 
+          hoeren: 75, 
+          schreiben: 45, 
+          gesamt: 225 
+        },
+        counts: { 
+          lesen: 40, 
+          hoeren: 20 
+        }
+      };
+
       const CORRECT_ANSWERS = {
         lesen: {
-          "text1": "e", "text2": "d", "text3": "b", "text4": "a", "text5": "h",
-          "s2q1": "s2q1o3", "s2q2": "s2q2o2", "s2q3": "s2q3o2", "s2q4": "s2q4o1", "s2q5": "s2q5o3",
-          "11": "A", "12": "K", "13": "D", "14": "J", "15": "X", "16": "E", "17": "X", "18": "H", "19": "F", "20": "L",
-          "21": "obwohl", "22": "hatte", "23": "wollte", "24": "davon", "25": "zwar ... aber", "26": "dabei",
-          "27": "auszusuchen", "28": "grundlegende", "29": "im", "30": "wie",
-          "31": "WEIL", "32": "IMMER", "33": "TUN", "34": "WURDE", "35": "VON", "36": "DAMIT", "37": "SPIELERISCHE",
-          "38": "DASS", "39": "GESTALTEN", "40": "GEHT"
+          "text1": "e",
+          "text2": "d",
+          "text3": "b",
+          "text4": "a",
+          "text5": "h",
+          "s2q1": "s2q1o3",
+          "s2q2": "s2q2o2",
+          "s2q3": "s2q3o2",
+          "s2q4": "s2q4o1",
+          "s2q5": "s2q5o3",
+          "11": "A",
+          "12": "K",
+          "13": "D",
+          "14": "J",
+          "15": "X",
+          "16": "E",
+          "17": "X",
+          "18": "H",
+          "19": "F",
+          "20": "L",
+          "21": "obwohl",
+          "22": "hatte",
+          "23": "wollte",
+          "24": "davon",
+          "25": "zwar ... aber",
+          "26": "dabei",
+          "27": "auszusuchen",
+          "28": "grundlegende",
+          "29": "im",
+          "30": "wie",
+          "31": "WEIL",
+          "32": "IMMER",
+          "33": "TUN",
+          "34": "WURDE",
+          "35": "VON",
+          "36": "DAMIT",
+          "37": "SPIELERISCHE",
+          "38": "DASS",
+          "39": "GESTALTEN",
+          "40": "GEHT"
         },
         hoeren: {
-          "41": "falsch", "42": "richtig", "43": "richtig", "44": "falsch", "45": "falsch",
-          "46": "richtig", "47": "falsch", "48": "richtig", "49": "richtig", "50": "falsch",
-          "51": "falsch", "52": "falsch", "53": "richtig", "54": "richtig", "55": "falsch",
-          "56": "richtig", "57": "richtig", "58": "richtig", "59": "falsch", "60": "falsch"
+          "41": "falsch",
+          "42": "richtig",
+          "43": "richtig",
+          "44": "falsch",
+          "45": "falsch",
+          "46": "richtig",
+          "47": "falsch",
+          "48": "richtig",
+          "49": "richtig",
+          "50": "falsch",
+          "51": "falsch",
+          "52": "falsch",
+          "53": "richtig",
+          "54": "richtig",
+          "55": "falsch",
+          "56": "richtig",
+          "57": "richtig",
+          "58": "richtig",
+          "59": "falsch",
+          "60": "falsch"
         }
       };
 
       function readExamResults() {
-        return {
-          lesen: window._lesenState ? window._lesenState.answers : {},
-          hoeren: window._hoerenState ? window._hoerenState.answers : {},
-          schreiben: window._schreibenState ? window._schreibenState.answers : {}
-        };
+        try {
+          const lesen = window._lesenState ? window._lesenState.answers : {};
+          const hoeren = window._hoerenState ? window._hoerenState.answers : {};
+          const schreiben = window._schreibenState ? window._schreibenState.answers : {};
+
+          return { hoeren, lesen, schreiben };
+        } catch (e) {
+          return { hoeren: {}, lesen: {}, schreiben: {} };
+        }
       }
 
       function calculateLesenResults(answers) {
         const exam = EXAM_DATA.lesen;
-        let correct = 0, total = 0;
+        let correct = 0;
+        let total = 0;
         
         exam.sections.forEach(section => {
           if (section.id === 's1') {
-            section.texts.forEach(text => { total++; if (answers[text.id] === text.correctAnswer) correct++; });
+            section.texts.forEach(text => {
+              total++;
+              if (answers[text.id] === text.correctAnswer) correct++;
+            });
           } else if (section.id === 's2') {
-            section.questions.forEach(question => { total++; if (answers[question.id] === question.correctAnswer) correct++; });
+            section.questions.forEach(question => {
+              total++;
+              if (answers[question.id] === question.correctAnswer) correct++;
+            });
           } else if (section.id === 's3') {
             section.situations.forEach(situation => {
               total++;
@@ -2135,136 +3876,264 @@ Hamburger Str. 112
               if (answers[situation.id] === (correctText ? correctText.id : null)) correct++;
             });
           } else if (section.id === 's4') {
-            section.fillBlanks.forEach(blank => { total++; if (answers[blank.id] === blank.correctAnswer) correct++; });
+            section.fillBlanks.forEach(blank => {
+              total++;
+              if (answers[blank.id] === blank.correctAnswer) correct++;
+            });
           } else if (section.id === 's5') {
-            section.fillBlanks2.forEach(blank => { total++; if (answers[blank.id] === blank.correctAnswer) correct++; });
+            section.fillBlanks2.forEach(blank => {
+              total++;
+              if (answers[blank.id] === blank.correctAnswer) correct++;
+            });
           }
         });
         
-        return { correct, total, points: Math.round((correct / total) * CONFIG.totals.lesen) };
+        const points = Math.round((correct / total) * CONFIG.totals.lesen);
+        
+        return { correct, total, points };
       }
 
       function calculateHoerenResults(answers) {
         const exam = EXAM_DATA.hoeren;
-        let correct = 0, total = 0;
+        let correct = 0;
+        let total = 0;
         
         exam.sections.forEach(section => {
           section.questions.forEach(question => {
             total++;
-            if (answers[section.id] && answers[section.id][question.id] === section.correctAnswers[question.id]) correct++;
+            if (answers[section.id] && answers[section.id][question.id] === section.correctAnswers[question.id]) {
+              correct++;
+            }
           });
         });
         
-        return { correct, total, points: Math.round((correct / total) * CONFIG.totals.hoeren) };
+        const points = Math.round((correct / total) * CONFIG.totals.hoeren);
+        
+        return { correct, total, points };
       }
 
       function getHeadingText(questionId, answerId) {
         if (!answerId || answerId === '-') return '';
-        const heading = EXAM_DATA.lesen.sections[0].headings.find(h => h.id === answerId);
+        
+        const headings = EXAM_DATA.lesen.sections[0].headings;
+        const heading = headings.find(h => h.id === answerId);
         return heading ? heading.text : '';
       }
 
-      function renderLesenDetails(answers) {
-        let html = `<div class="section-table"><h4>Teil 1: Überschriften zuordnen</h4><table class="true-false-table"><thead><tr><th>Text</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+      function getAnswerText(section, questionId, answerId) {
+        if (!answerId || answerId === '-') return '-';
         
-        for (let i = 1; i <= 5; i++) {
-          const qid = `text${i}`;
-          const user = answers[qid] || '-';
-          const correct = CORRECT_ANSWERS.lesen[qid];
-          const isCorrect = user === correct;
-          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}"><td>Text ${String.fromCharCode(96 + i).toUpperCase()}</td><td>${user}) ${getHeadingText(qid, user)}</td><td>${correct}) ${getHeadingText(qid, correct)}</td><td><strong>${isCorrect ? '✓' : '✗'}</strong></td></tr>`;
-        }
-        html += `</tbody></table>`;
-
-        html += `<h4>Teil 2: Fragen zum Text</h4><table class="true-false-table"><thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
-        for (let i = 1; i <= 5; i++) {
-          const qid = `s2q${i}`;
-          const user = answers[qid] || '-';
-          const correct = CORRECT_ANSWERS.lesen[qid];
-          const isCorrect = user === correct;
-          let userText = user, correctText = correct;
-          const exam = EXAM_DATA.lesen.sections[1];
-          if (exam) {
-            const q = exam.questions.find(q => q.id === qid);
-            if (q) {
-              const uopt = q.options.find(o => o.id === user);
-              if (uopt) userText = uopt.text;
-              const copt = q.options.find(o => o.id === correct);
-              if (copt) correctText = copt.text;
-            }
+        if (section === 'lesen') {
+          const lesenExam = EXAM_DATA.lesen;
+          const teil2 = lesenExam.sections[1];
+          const question = teil2.questions.find(q => q.id === questionId);
+          if (question) {
+            const option = question.options.find(o => o.id === answerId);
+            return option ? option.text : answerId;
           }
-          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}"><td>Frage ${i}</td><td>${userText}</td><td>${correctText}</td><td><strong>${isCorrect ? '✓' : '✗'}</strong></td></tr>`;
+        }
+        return answerId;
+      }
+
+      function renderLesenDetails(answers) {
+        let html = `<div class="section-table">`;
+        
+        html += `<h4>Teil 1: Überschriften zuordnen</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Text</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 1; i <= 5; i++) {
+          const questionId = `text${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Text ${String.fromCharCode(96 + i).toUpperCase()}</td>
+                    <td>${userAnswer}) ${getHeadingText(questionId, userAnswer)}</td>
+                    <td>${correctAnswer}) ${getHeadingText(questionId, correctAnswer)}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
         }
         html += `</tbody></table>`;
-
-        html += `<h4>Teil 3: Texte zuordnen</h4><table class="true-false-table"><thead><tr><th>Situation</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
-        for (let i = 11; i <= 20; i++) {
-          const qid = `${i}`;
-          const user = answers[qid] || '-';
-          const correct = CORRECT_ANSWERS.lesen[qid];
-          const isCorrect = user === correct;
-          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}"><td>Situation ${i}</td><td>${user === 'X' ? 'X' : (user || '-')}</td><td>${correct || 'X'}</td><td><strong>${isCorrect ? '✓' : '✗'}</strong></td></tr>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 1; i <= 5; i++) {
+          const questionId = `s2q${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Frage ${i}</td>
+                    <td>${getAnswerText('lesen', questionId, userAnswer)}</td>
+                    <td>${getAnswerText('lesen', questionId, correctAnswer)}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
         }
         html += `</tbody></table>`;
-
-        html += `<h4>Sprachbausteine</h4><table class="true-false-table"><thead><tr><th>Lücke</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
-        for (let i = 21; i <= 40; i++) {
-          const qid = `${i}`;
-          const user = answers[qid] || '-';
-          const correct = CORRECT_ANSWERS.lesen[qid];
-          const isCorrect = user === correct;
-          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}"><td>Lücke ${i}</td><td>${user}</td><td>${correct}</td><td><strong>${isCorrect ? '✓' : '✗'}</strong></td></tr>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Situation</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 11; i <= 20; i++) {
+          const questionId = `${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Situation ${i}</td>
+                    <td>${userAnswer === 'X' ? 'X - Kein Text' : (userAnswer || '-')}</td>
+                    <td>${correctAnswer || 'X - Kein Text'}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Sprachbausteine</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Lücke</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 21; i <= 40; i++) {
+          const questionId = `${i}`;
+          const userAnswer = answers[questionId] || '-';
+          const correctAnswer = CORRECT_ANSWERS.lesen[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>Lücke ${i}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
         }
         html += `</tbody></table></div>`;
+        
         return html;
       }
 
       function renderHoerenDetails(answers) {
         let html = `<div class="section-table">`;
-        const parts = ['hörverstehen1', 'hörverstehen2', 'hörverstehen3'];
-        parts.forEach((part, pidx) => {
-          html += `<h4>Teil ${pidx + 1}</h4><table class="true-false-table"><thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
-          const start = pidx === 0 ? 41 : (pidx === 1 ? 46 : 56);
-          const end = pidx === 0 ? 45 : (pidx === 1 ? 55 : 60);
-          for (let i = start; i <= end; i++) {
-            const qid = `${i}`;
-            const user = (answers[part] && answers[part][qid]) || '-';
-            const correct = CORRECT_ANSWERS.hoeren[qid];
-            const isCorrect = user === correct;
-            html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}"><td>${qid}</td><td>${user}</td><td>${correct}</td><td><strong>${isCorrect ? '✓' : '✗'}</strong></td></tr>`;
-          }
-          html += `</tbody></table>`;
-        });
-        html += `</div>`;
+        
+        html += `<h4>Teil 1</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 41; i <= 45; i++) {
+          const questionId = `${i}`;
+          const section = 'hörverstehen1';
+          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
+          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>${questionId}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 2</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 46; i <= 55; i++) {
+          const questionId = `${i}`;
+          const section = 'hörverstehen2';
+          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
+          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>${questionId}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table>`;
+        
+        html += `<h4 style="margin-top: 20px;">Teil 3</h4><table class="true-false-table">`;
+        html += `<thead><tr><th>Frage</th><th>Ihre Antwort</th><th>Richtige Antwort</th><th>Ergebnis</th></tr></thead><tbody>`;
+        
+        for(let i = 56; i <= 60; i++) {
+          const questionId = `${i}`;
+          const section = 'hörverstehen3';
+          const userAnswer = (answers[section] && answers[section][questionId]) || '-';
+          const correctAnswer = CORRECT_ANSWERS.hoeren[questionId];
+          const isCorrect = userAnswer === correctAnswer;
+          
+          html += `<tr class="${isCorrect ? 'correct-answer' : 'incorrect-answer'}">
+                    <td>${questionId}</td>
+                    <td>${userAnswer}</td>
+                    <td>${correctAnswer}</td>
+                    <td><strong>${isCorrect ? '✓ Richtig' : '✗ Falsch'}</strong></td>
+                  </tr>`;
+        }
+        html += `</tbody></table></div>`;
+        
         return html;
       }
 
       function calculateResults() {
-        const st = readExamResults();
+        const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
         const details = document.getElementById('details-ergebnisse');
         const tiles = document.getElementById('topTiles-ergebnisse');
+
+        details.innerHTML = '';
+        tiles.innerHTML = '';
 
         const lesenResults = calculateLesenResults(st.lesen);
         const hoerenResults = calculateHoerenResults(st.hoeren);
         
-        tiles.innerHTML = `
-          <div class="results-tile"><h3>Lesen</h3><div class="score">${lesenResults.points}/${CONFIG.totals.lesen} P</div><div class="small-muted">(${lesenResults.correct}/${lesenResults.total} richtig)</div></div>
-          <div class="results-tile"><h3>Hören</h3><div class="score">${hoerenResults.points}/${CONFIG.totals.hoeren} P</div><div class="small-muted">(${hoerenResults.correct}/${hoerenResults.total} richtig)</div></div>
-          <div class="results-tile"><h3>Schreiben</h3><div class="score">Manuelle Bewertung</div><div class="small-muted">(45 Punkte max.)</div></div>
-        `;
+        const tL = `<div class="results-tile">
+                    <h3>Lesen</h3>
+                    <div class="score">${lesenResults.points}/${CONFIG.totals.lesen} Punkte</div>
+                    <div class="small-muted">(${lesenResults.correct}/${lesenResults.total} richtig)</div>
+                  </div>`;
+                  
+        const tH = `<div class="results-tile">
+                    <h3>Hören</h3>
+                    <div class="score">${hoerenResults.points}/${CONFIG.totals.hoeren} Punkte</div>
+                    <div class="small-muted">(${hoerenResults.correct}/${hoerenResults.total} richtig)</div>
+                  </div>`;
+                  
+        const tS = `<div class="results-tile">
+                    <h3>Schreiben</h3>
+                    <div class="score">Manuelle Bewertung</div>
+                    <div class="small-muted">(45 Punkte max.)</div>
+                  </div>`;
+                  
+        tiles.innerHTML = tL + tH + tS;
 
         details.innerHTML = `
           <h2>📊 Detaillierte Ergebnisse</h2>
-          <div class="instructions">Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Antworten:</div>
-          <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>${renderLesenDetails(st.lesen)}
-          <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>${renderHoerenDetails(st.hoeren)}
+          <div class="instructions">
+            Hier sehen Sie Ihre Antworten im Vergleich zu den richtigen Antworten:
+          </div>
+          
+          <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>
+        `;
+        
+        details.innerHTML += renderLesenDetails(st.lesen);
+        
+        details.innerHTML += `
+          <h3>👂 Hörverstehen - Detaillierte Auswertung</h3>
+        `;
+        details.innerHTML += renderHoerenDetails(st.hoeren);
+        
+        details.innerHTML += `
           <h3>✍️ Schreiben</h3>
           <div class="writing-task">
             <div class="writing-requirements">
               <h4>Ihre Antwort:</h4>
-              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${st.schreiben['s1'] || 'Keine Antwort vorhanden'}</div>
+              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">
+                ${st.schreiben['s1'] || 'Keine Antwort vorhanden'}
+              </div>
               <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center">
-                Punkte vergeben (0–45): <input id="schreibenInput" type="number" min="0" max="45" step="1" value="0"> 
+                Punkte vergeben (0–45): 
+                <input id="schreibenInput" type="number" min="0" max="45" step="1" value="0"> 
                 <button id="saveSchreiben" class="results-btn">Speichern</button>
               </div>
             </div>
@@ -2273,9 +4142,16 @@ Hamburger Str. 112
 
         const totalPoints = lesenResults.points + hoerenResults.points;
         const maxPoints = CONFIG.totals.lesen + CONFIG.totals.hoeren;
+        const percentage = Math.round((totalPoints / maxPoints) * 100);
+
         document.getElementById('finalSummary-ergebnisse').innerHTML = `
-          <div class="left">Gesamtergebnis (ohne Schreiben)<br><span class="small-muted">Automatisch korrigierte Bereiche</span></div>
-          <div class="right"><strong>${totalPoints}/${maxPoints} Punkte (${Math.round((totalPoints / maxPoints) * 100)}%)</strong></div>`;
+          <div class="left">
+            Gesamtergebnis (ohne Schreiben)<br>
+            <span class="small-muted">Automatisch korrigierte Bereiche</span>
+          </div>
+          <div class="right">
+            <strong>${totalPoints}/${maxPoints} Punkte (${percentage}%)</strong>
+          </div>`;
 
         document.getElementById('saveSchreiben').onclick = function() {
           const points = parseInt(document.getElementById('schreibenInput').value) || 0;
@@ -2291,80 +4167,67 @@ Hamburger Str. 112
         timerEl.textContent = counter;
         timeDisplayEl.textContent = counter;
         progressEl.style.transform = "scaleX(0)";
+        timerEl.style.color = "";
         showPage('start-page');
       };
       
       document.getElementById('retryBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
-        if (window._lesenState) { window._lesenState.answers = {}; window._lesenState.marked = {}; window._lesenState.showResults = false; window._lesenState.remaining = EXAM_DATA.lesen.durationSec; if (window._lesenState.timerInterval) clearInterval(window._lesenState.timerInterval); }
-        if (window._hoerenState) { window._hoerenState.answers = {}; window._hoerenState.showResults = false; window._hoerenState.remaining = EXAM_DATA.hoeren.durationSec; if (window._hoerenState.timerInterval) clearInterval(window._hoerenState.timerInterval); }
-        if (window._schreibenState) { window._schreibenState.answers = {}; window._schreibenState.showResults = false; window._schreibenState.remaining = EXAM_DATA.schreiben.durationSec; if (window._schreibenState.timerInterval) clearInterval(window._schreibenState.timerInterval); }
-        examStarted = false; showPage('start-page');
-        setTimeout(() => startExam(), 100);
+        if (window._lesenState) {
+          window._lesenState.answers = {};
+          window._lesenState.marked = {};
+          window._lesenState.showResults = false;
+          window._lesenState.remaining = EXAM_DATA.lesen.durationSec;
+          if (window._lesenState.timerInterval) clearInterval(window._lesenState.timerInterval);
+        }
+        if (window._hoerenState) {
+          window._hoerenState.answers = {};
+          window._hoerenState.showResults = false;
+          window._hoerenState.remaining = EXAM_DATA.hoeren.durationSec;
+          if (window._hoerenState.timerInterval) clearInterval(window._hoerenState.timerInterval);
+        }
+        if (window._schreibenState) {
+          window._schreibenState.answers = {};
+          window._schreibenState.showResults = false;
+          window._schreibenState.remaining = EXAM_DATA.schreiben.durationSec;
+          if (window._schreibenState.timerInterval) clearInterval(window._schreibenState.timerInterval);
+        }
+        
+        examStarted = false;
+        showPage('start-page');
+        setTimeout(() => {
+          startExam();
+        }, 100);
       };
       
       document.getElementById('continueBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
-        if (window._lesenState) { window._lesenState.sectionIndex = 0; window._lesenState.showResults = false; showPage('lesen-page'); }
-        else showPage('start-page');
+        if (window._lesenState) {
+          window._lesenState.sectionIndex = 0;
+          window._lesenState.showResults = false;
+          showPage('lesen-page');
+        } else {
+          showPage('start-page');
+        }
       };
       
       calculateResults();
     }
-  </script>
 
-  <!-- SUPABASE EDGE FUNCTION CORRECT-WRITING -->
-  <!-- 
-    Create this Edge Function in your Supabase project:
-    
-    // supabase/functions/correct-writing/index.ts
-    import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-    
-    serve(async (req) => {
-      try {
-        const { text } = await req.json();
-        
-        const openAIResponse = await fetch("https://api.openai.com/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${Deno.env.get("OPENAI_API_KEY")}`,
-          },
-          body: JSON.stringify({
-            model: "gpt-4o-mini",
-            messages: [
-              {
-                role: "system",
-                content: `Du bist ein offizieller Deutsch B2 Prüfer. Korrigiere den folgenden Text nach diesen Kriterien:
-                - Inhalt (5 Punkte): Ist der Inhalt passend und vollständig?
-                - Grammatik (5 Punkte): Sind die Sätze grammatikalisch korrekt?
-                - Wortschatz (5 Punkte): Ist der Wortschatz angemessen und vielfältig?
-                - Struktur (5 Punkte): Ist der Text gut strukturiert?
-                
-                Antworte im JSON-Format mit:
-                {
-                  "correctedText": "der korrigierte Text",
-                  "scores": { "inhalt": 0-5, "grammatik": 0-5, "wortschatz": 0-5, "struktur": 0-5 },
-                  "totalScore": 0-20,
-                  "feedback": "Verbesserungsvorschläge auf Deutsch"
-                }`
-              },
-              { role: "user", content: text }
-            ],
-            temperature: 0.3,
-          }),
+    function setupTouchDragAndDrop() {
+      if ('ontouchstart' in window) {
+        document.querySelectorAll('[draggable="true"]').forEach(item => {
+          item.addEventListener('touchstart', (e) => {});
+          item.addEventListener('touchend', (e) => {});
         });
-
-        const data = await openAIResponse.json();
-        const result = JSON.parse(data.choices[0].message.content);
-        
-        return new Response(JSON.stringify(result), {
-          headers: { "Content-Type": "application/json" },
+        document.querySelectorAll('.title-slot, .blank-slot').forEach(slot => {
+          slot.addEventListener('touchmove', (e) => {});
+          slot.addEventListener('touchend', (e) => {});
         });
-      } catch (error) {
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
       }
-    });
-  -->
+    }
+
+    document.addEventListener('DOMContentLoaded', setupTouchDragAndDrop);
+  </script>
 </body>
 </html>
