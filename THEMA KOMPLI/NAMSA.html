@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Deutsch B2 Prüfung - Komplett</title>
+  <title>Deutsch B2 Prüfung - Komplett (mit fixem Ergebnis)</title>
 
   <!-- Supabase Library -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1640,20 +1640,28 @@
   <!-- Ergebnisse Page -->
   <div id="ergebnisse-page" class="results-page" style="display: none;">
     <header class="results-header">
-      <div class="results-logo">test</div>
+      <div class="results-logo">telc</div>
       <div class="results-title">Gesamtergebnis — Deutsch B2</div>
     </header>
 
     <div class="results-container">
       <div class="results-tiles" id="topTiles-ergebnisse"></div>
+
       <div id="details-ergebnisse"></div>
+
       <div class="summary" id="finalSummary-ergebnisse"></div>
+
       <div class="controls">
-        <button id="backBtn-ergebnisse" class="results-btn">🔁 Zurück zur Startseite</button>
+        <a class="button-like" href="#" id="backBtn-ergebnisse">
+          <button class="results-btn">🔁 Zurück zur Startseite</button>
+        </a>
         <button id="retryBtn-ergebnisse" class="results-btn secondary">🔄 Prüfung wiederholen</button>
         <button id="continueBtn-ergebnisse" class="results-btn">➡️ Zurück zur Prüfung</button>
       </div>
-      <div class="note">Hinweis: Schreiben (45 Punkte) wird manuell eingegeben, falls nicht automatisch vorhanden.</div>
+
+      <div class="note">
+        Hinweis: Schreiben (45 Punkte) wird manuell eingegeben, falls nicht automatisch vorhanden.
+      </div>
     </div>
   </div>
 
@@ -2330,6 +2338,74 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
             }
           }
         ]
+      }
+    };
+
+    // ===== CORRECT ANSWERS FOR RESULTS PAGE (AUS BILDER.HTML ÜBERNOMMEN - FIX) =====
+    const CORRECT_ANSWERS = {
+      lesen: {
+        "text1": "d",
+        "text2": "f",
+        "text3": "j",
+        "text4": "e",
+        "text5": "a",
+        "s2q1": "s2q1o3",
+        "s2q2": "s2q2o2",
+        "s2q3": "s2q3o2",
+        "s2q4": "s2q4o1",
+        "s2q5": "s2q5o3",
+        "11": "L",
+        "12": "D",
+        "13": "B",
+        "14": "E",
+        "15": "F",
+        "16": "A",
+        "17": "I",
+        "18": "J",
+        "19": "K",
+        "20": "G",
+        "21": "sind",
+        "22": "da",
+        "23": "auf",
+        "24": "sowohl.... als auch",
+        "25": "verwandte",
+        "26": "unsere",
+        "27": "als",
+        "28": "ob",
+        "29": "tun",
+        "30": "könnten",
+        "31": "VOR",
+        "32": "DADURCH",
+        "33": "DASS",
+        "34": "UM",
+        "35": "INNERHALB",
+        "36": "DAFÜR",
+        "37": "DENN",
+        "38": "EINGRIFFE",
+        "39": "VORKOMMEN",
+        "40": "GING"
+      },
+      hoeren: {
+        "41": "falsch",
+        "42": "richtig",
+        "43": "richtig",
+        "44": "falsch",
+        "45": "richtig",
+        "46": "falsch",
+        "47": "richtig",
+        "48": "falsch",
+        "49": "falsch",
+        "50": "falsch",
+        "51": "falsch",
+        "52": "richtig",
+        "53": "falsch",
+        "54": "falsch",
+        "55": "falsch",
+        "56": "richtig",
+        "57": "falsch",
+        "58": "richtig",
+        "59": "falsch",
+        "60": "falsch"
       }
     };
 
@@ -3743,7 +3819,7 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
       };
     }
 
-    // ===== ERGEBNISSE PAGE FUNCTIONALITY (EXACTLY AS IN ORIGINAL NAMSA.HTML) =====
+    // ===== ERGEBNISSE PAGE FUNCTIONALITY (EXACTLY AS IN BILDER.HTML) =====
     function initErgebnissePage() {
       const CONFIG = {
         totals: { 
@@ -3755,155 +3831,14 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
         counts: { 
           lesen: 40, 
           hoeren: 20 
-        },
-        hoerenCorrect: {
-          "41": "falsch", "42": "richtig", "43": "richtig", "44": "falsch", "45": "richtig",
-          "46": "falsch", "47": "richtig", "48": "falsch", "49": "falsch", "50": "falsch",
-          "51": "falsch", "52": "richtig", "53": "falsch", "54": "falsch", "55": "falsch",
-          "56": "richtig", "57": "falsch", "58": "richtig", "59": "falsch", "60": "falsch"
-        },
-        lesenCorrect: Object.assign({},
-          {"text1": "d", "text2": "f", "text3": "j", "text4": "e", "text5": "a"},
-          {"s2q1": "s2q1o3", "s2q2": "s2q2o2", "s2q3": "s2q3o2", "s2q4": "s2q4o1", "s2q5": "s2q5o3"},
-          {"11": "L", "12": "D", "13": "B", "14": "E", "15": "F", "16": "A", "17": "I", "18": "J", "19": "K", "20": "G"},
-          {"21": "sind", "22": "da", "23": "auf", "24": "sowohl.... als auch", "25": "verwandte", "26": "unsere", "27": "als", "28": "ob", "29": "tun", "30": "könnten"},
-          {"31": "VOR", "32": "DADURCH", "33": "DASS", "34": "UM", "35": "INNERHALB", "36": "DAFÜR", "37": "DENN", "38": "EINGRIFFE", "39": "VORKOMMEN", "40": "GING"}
-        )
+        }
       };
 
       function normalizeAnswer(a) {
-        if (a === null || a === undefined) return '';
+        if (a === null || a === undefined || a === '') return '-';
         let s = String(a).trim();
-        if (s === '') return '';
-        const low = s.toLowerCase();
-        if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
-        if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
+        if (s === '' || s === 'undefined') return '-';
         return s;
-      }
-
-      function keyZeroToTen(k) {
-        return k === '0' ? '10' : k;
-      }
-
-      function readExamResults() {
-        try {
-          const lesen = {};
-          const hoeren = {};
-          const schreiben = { content: '', wordCount: 0 };
-
-          // 1) Try to read from in-memory states exposed by pages
-          try {
-            if (window._lesenState && window._lesenState.answers) {
-              Object.keys(window._lesenState.answers).forEach(k => {
-                lesen[k] = window._lesenState.answers[k];
-              });
-            }
-          } catch (e) {}
-
-          try {
-            if (window._hoerenState && window._hoerenState.answers) {
-              Object.keys(window._hoerenState.answers).forEach(sectionId => {
-                const sec = window._hoerenState.answers[sectionId] || {};
-                Object.keys(sec).forEach(q => {
-                  hoeren[q] = sec[q];
-                });
-              });
-            }
-          } catch (e) {}
-
-          try {
-            if (window._schreibenState && window._schreibenState.answers) {
-              const answers = window._schreibenState.answers;
-              if (answers['s1']) {
-                schreiben.content = answers['s1'];
-              } else {
-                const keys = Object.keys(answers);
-                if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
-              }
-              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0;
-            }
-          } catch (e) {}
-
-          // 2) Fallback to localStorage if any part is still empty
-          try {
-            if (Object.keys(lesen).length === 0) {
-              const storedL = localStorage.getItem('lesenAnswers');
-              if (storedL) Object.assign(lesen, JSON.parse(storedL));
-            }
-          } catch (e) {}
-
-          try {
-            if (Object.keys(hoeren).length === 0) {
-              const storedH = localStorage.getItem('hoerenAnswers');
-              if (storedH) Object.assign(hoeren, JSON.parse(storedH));
-            }
-          } catch (e) {}
-
-          try {
-            if (!schreiben.content) {
-              const storedS = localStorage.getItem('schreibenAnswers');
-              if (storedS) {
-                const obj = JSON.parse(storedS);
-                schreiben.content = obj.content || '';
-                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\\s+/).filter(Boolean).length : 0);
-              }
-            }
-          } catch (e) {}
-
-          // final safe return
-          return { hoeren, lesen, schreiben };
-        } catch (e) {
-          return { hoeren: {}, lesen: {}, schreiben: {} };
-        }
-      }
-
-      function gradeHoeren(u) {
-        const c = CONFIG.hoerenCorrect;
-        let okCount = 0;
-        const d = [];
-
-        for (let q = 41; q <= 60; q++) {
-          const k = String(q);
-          const uA = normalizeAnswer(u[k] || '');
-          const exp = normalizeAnswer(c[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
-          if (ok) okCount++;
-          const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
-          d.push({
-            frage: k,
-            user: uA || '-',
-            correct: exp || '-',
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
-          });
-        }
-
-        const total = Number((okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2));
-        return { okCount, total, details: d };
-      }
-
-      function gradeLesen(u) {
-        const c = CONFIG.lesenCorrect;
-        let okCount = 0;
-        const d = [];
-
-        Object.keys(c).forEach(k => {
-          const exp = normalizeAnswer(c[k]);
-          const uA = normalizeAnswer(u[k] || '');
-          const ok = (uA !== '' && uA.toLowerCase() === exp.toLowerCase());
-          if (ok) okCount++;
-          const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
-          d.push({
-            frage: k,
-            user: uA || '-',
-            correct: exp || '-',
-            richtig: ok,
-            punkte: ok ? ptsPer.toFixed(2) : '0'
-          });
-        });
-
-        const total = Number((okCount * (CONFIG.totals.lesen / CONFIG.counts.lesen)).toFixed(2));
-        return { okCount, total, details: d };
       }
 
       function escapeHtml(s) {
@@ -3915,161 +3850,267 @@ Am Ende der letzten Eiszeit war der Braunbär ________ überall in Europa heimis
           .replace(/'/g, '&#039;');
       }
 
-      function buildTable(title, dets, total, max) {
-        let h = `<h2>${title}</h2>
-                <table class="section-table">
-                  <thead>
-                    <tr>
-                      <th>Frage</th>
-                      <th>Ihre Antwort</th>
-                      <th>Richtige Antwort</th>
-                      <th>Ergebnis</th>
-                      <th>Punkte</th>
-                    </tr>
-                  </thead>
-                  <tbody>`;
+      function getHeadingText(headingId) {
+        if (!headingId || headingId === '-') return '-';
+        const headings = {
+          "a": "Erneuerungskur für einen alten Markt",
+          "b": "Junge Influencer werben für Bioprodukte",
+          "c": "Neues Buch über einen Wiener Architekten erschienen",
+          "d": "Österreichs beliebteste Marktplätze",
+          "e": "Schreiben im Internet für die Karriere",
+          "f": "Schulung zum Erfolg im Beruf",
+          "g": "Seminar: Produkte erfolgreich verkaufen",
+          "h": "Warum immer mehr Menschen auf Märkten einkaufen",
+          "i": "Wenn Blogger Firmengeheimnisse verraten",
+          "j": "Wissenswertes über Wiens größten innerstädtischen Markt"
+        };
+        return headings[headingId] || headingId;
+      }
 
-        dets.forEach(x => {
-          h += `<tr>
-                  <td>${x.frage}</td>
-                  <td>${escapeHtml(x.user)}</td>
-                  <td>${escapeHtml(x.correct)}</td>
-                  <td>${x.richtig ? '✔️' : '✖️'}</td>
-                  <td>${x.punkte}</td>
-                </tr>`;
+      function getOptionText(optionId) {
+        if (!optionId || optionId === '-') return '-';
+        const options = {
+          "s2q1o1": "es in Österreich bald mehr Pools gibt als in Frankreich",
+          "s2q1o2": "in unsicheren Zeiten weniger investiert wird.",
+          "s2q1o3": "mehr Leute einen Pool bauen, weil Pools billiger geworden sind.",
+          "s2q2o1": "möchten die meisten Befragten ein Heim mit Garage.",
+          "s2q2o2": "steht ein Pool nicht an erster Stelle auf der Wunschliste,",
+          "s2q2o3": "wünschen sich 10 Prozent der Österreicher einen Pool.",
+          "s2q3o1": "ein Pool die Nachbarn neidisch macht.",
+          "s2q3o2": "ihr Pool ein Anziehungspunkt für Freunde geworden ist.",
+          "s2q3o3": "ihre Freunde beim Poolbau helfen sollen.",
+          "s2q4o1": "brauchen keine chemischen Reinigungsmittel.",
+          "s2q4o2": "müssen häufig geputzt werden.",
+          "s2q4o3": "sehen genauso aus wie Schwimmteiche.",
+          "s2q5o1": "darf man einen Pool nur mit Wasser aus der Leitung füllen.",
+          "s2q5o2": "führt das Befüllen von Pools regelmäßig zu Wasserknappheit.",
+          "s2q5o3": "wird manchmal Wasser zum Befüllen von Pools gestohlen"
+        };
+        return options[optionId] || optionId;
+      }
+
+      function readExamResults() {
+        try {
+          const lesen = window._lesenState ? window._lesenState.answers : {};
+          const hoeren = {};
+          if (window._hoerenState && window._hoerenState.answers) {
+            Object.keys(window._hoerenState.answers).forEach(sectionId => {
+              Object.assign(hoeren, window._hoerenState.answers[sectionId]);
+            });
+          }
+          const schreiben = window._schreibenState ? window._schreibenState.answers : { content: '', wordCount: 0 };
+          if (schreiben && schreiben['s1']) {
+            schreiben.wordCount = schreiben['s1'] ? schreiben['s1'].trim().split(/\s+/).filter(Boolean).length : 0;
+          }
+          return { hoeren, lesen, schreiben };
+        } catch (e) {
+          return { hoeren: {}, lesen: {}, schreiben: {} };
+        }
+      }
+
+      function gradeHoeren(answers) {
+        let okCount = 0;
+        const details = [];
+        
+        for (let q = 41; q <= 60; q++) {
+          const id = String(q);
+          const userAnswer = normalizeAnswer(answers[id]);
+          const correctAnswer = CORRECT_ANSWERS.hoeren[id] || '-';
+          const isCorrect = userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase();
+          if (isCorrect) okCount++;
+          
+          details.push({
+            id: id,
+            user: userAnswer,
+            correct: correctAnswer,
+            isCorrect: isCorrect
+          });
+        }
+        
+        const total = (okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2);
+        return { okCount, total: parseFloat(total), details };
+      }
+
+      function gradeLesen(answers) {
+        let okCount = 0;
+        const details = [];
+        
+        Object.keys(CORRECT_ANSWERS.lesen).forEach(key => {
+          const userAnswer = normalizeAnswer(answers[key]);
+          const correctAnswer = CORRECT_ANSWERS.lesen[key] || '-';
+          const isCorrect = userAnswer !== '-' && userAnswer.toLowerCase() === correctAnswer.toLowerCase();
+          if (isCorrect) okCount++;
+          
+          details.push({
+            id: key,
+            user: userAnswer,
+            correct: correctAnswer,
+            isCorrect: isCorrect
+          });
         });
+        
+        const total = (okCount * (CONFIG.totals.lesen / CONFIG.counts.lesen)).toFixed(2);
+        return { okCount, total: parseFloat(total), details };
+      }
 
-        h += `</tbody>
-              </table>
-              <div class="small-muted">Teilpunkte: ${total.toFixed(2)} / ${max}</div>`;
-        return h;
+      function buildTable(title, details, total, max) {
+        let html = `<div class="result-item">
+                      <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
+                      <table class="true-false-table">
+                        <thead>
+                          <tr>
+                            <th style="width: 10%">Frage</th>
+                            <th style="width: 40%">Ihre Antwort</th>
+                            <th style="width: 40%">Richtige Antwort</th>
+                            <th style="width: 10%">Ergebnis</th>
+                          </tr>
+                        </thead>
+                        <tbody>`;
+        
+        details.forEach(item => {
+          const rowClass = item.isCorrect ? 'correct-answer' : 'incorrect-answer';
+          const resultIcon = item.isCorrect ? '✅ Richtig' : '❌ Falsch';
+          let userDisplay = item.user;
+          let correctDisplay = item.correct;
+          
+          if (item.id.startsWith('text')) {
+            userDisplay = getHeadingText(userDisplay);
+            correctDisplay = getHeadingText(correctDisplay);
+          }
+          else if (item.id.startsWith('s2q')) {
+            userDisplay = getOptionText(userDisplay);
+            correctDisplay = getOptionText(correctDisplay);
+          }
+          
+          html += `<tr class="${rowClass}">
+                    <td><strong>${item.id}</strong></td>
+                    <td>${escapeHtml(userDisplay)}</td>
+                    <td>${escapeHtml(correctDisplay)}</td>
+                    <td><strong>${resultIcon}</strong></td>
+                  </tr>`;
+        });
+        
+        html += `</tbody>
+                </table>
+                <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                  <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
+                </div>
+              </div>`;
+        return html;
       }
 
       function renderResults() {
-        const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
-        const h = gradeHoeren(st.hoeren || {});
-        const l = gradeLesen(st.lesen || {});
+        const results = readExamResults();
+        const h = gradeHoeren(results.hoeren);
+        const l = gradeLesen(results.lesen);
+        
         const details = document.getElementById('details-ergebnisse');
         const tiles = document.getElementById('topTiles-ergebnisse');
+        
         const sScoreRaw = localStorage.getItem('schreibenScore');
-        const sScore = sScoreRaw ? Number(sScoreRaw) : 0; // Default score is now 0
+        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
 
-        details.innerHTML = '';
-        tiles.innerHTML = '';
+        tiles.innerHTML = `
+          <div class="results-tile">
+            <h3>Lesen</h3>
+            <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen}</div>
+            <div class="small-muted">${((l.total / CONFIG.totals.lesen) * 100).toFixed(1)}%</div>
+          </div>
+          <div class="results-tile">
+            <h3>Hören</h3>
+            <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren}</div>
+            <div class="small-muted">${((h.total / CONFIG.totals.hoeren) * 100).toFixed(1)}%</div>
+          </div>
+          <div class="results-tile">
+            <h3>Schreiben</h3>
+            <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben}</div>
+            <div class="small-muted">Manuelle Eingabe</div>
+          </div>
+        `;
 
-        const tL = `<div class="results-tile">
-                    <h3>Lesen</h3>
-                    <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
-                    <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
-                  </div>`;
+        details.innerHTML = `
+          <div class="result-item">
+            <h2>📊 Detaillierte Ergebnisse</h2>
+            <div class="instructions">Hier sehen Sie einen detaillierten Vergleich Ihrer Antworten mit den korrekten Lösungen.</div>
+          </div>
+          
+          ${buildTable('Leseverstehen', l.details, l.total, CONFIG.totals.lesen)}
+          
+          ${buildTable('Hörverstehen', h.details, h.total, CONFIG.totals.hoeren)}
+          
+          <div class="result-item">
+            <h3>✍️ Schreiben - Ihre Antwort</h3>
+            <div class="small-muted">Wörter: ${results.schreiben.wordCount}</div>
+            <div style="margin-top: 10px; padding: 15px; background: white; border-radius: 6px; border: 1px solid #e1e8f6; min-height: 100px;">
+              ${results.schreiben && results.schreiben['s1'] ? escapeHtml(results.schreiben['s1']) : '<span class="small-muted">Keine Antwort</span>'}
+            </div>
+            <div style="margin-top: 15px; display: flex; gap: 10px; align-items: center;">
+              Punkte eingeben (0–45): 
+              <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}">
+              <button id="saveS" class="results-btn">Speichern</button>
+            </div>
+          </div>
+        `;
 
-        const tH = `<div class="results-tile">
-                    <h3>Hören</h3>
-                    <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
-                    <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
-                  </div>`;
-
-        const tS = `<div class="results-tile">
-                    <h3>Schreiben</h3>
-                    <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
-                    <div class="small-muted">Manuelle Eingabe</div>
-                  </div>`;
-
-        tiles.innerHTML = tL + tH + tS;
-
-        details.innerHTML += buildTable('Hören — Detail', h.details, h.total, CONFIG.totals.hoeren);
-        details.innerHTML += buildTable('Lesen — Detail', l.details, l.total, CONFIG.totals.lesen);
-
-        let sHtml = '<h2>Schreiben — Ergebnis (manuell)</h2>';
-        const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
-        const wc = st.schreiben.wordCount || '-';
-
-        sHtml += `<div class="small-muted">Wörter: ${wc}</div>
-                <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px">${txt}</div>
-                <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
-                  Punkte (0–45): 
-                  <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
-                  <button id="saveS" class="results-btn">Speichern</button>
-                </div>`;
-
-        details.innerHTML += sHtml;
-
-        const total = (l.total + h.total + sScore).toFixed(2);
-        const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);
-
+        const totalScore = l.total + h.total + sScore;
+        const totalMax = CONFIG.totals.gesamt;
+        const percentage = ((totalScore / totalMax) * 100).toFixed(2);
+        
         document.getElementById('finalSummary-ergebnisse').innerHTML = `
           <div class="left">
-            Gesamtpunktzahl: <strong>${total}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
+            <strong>Gesamtpunktzahl:</strong><br>
+            <span style="font-size: 24px; font-weight: bold;">${totalScore.toFixed(2)} / ${totalMax}</span><br>
             <span class="small-muted">Lesen + Hören + Schreiben</span>
           </div>
           <div class="right">
-            Prozentsatz: <strong>${percent} %</strong>
-          </div>`;
+            <strong>Prozentsatz:</strong><br>
+            <span style="font-size: 24px; font-weight: bold;">${percentage}%</span><br>
+            <span class="small-muted">von 100%</span>
+          </div>
+        `;
 
-        document.getElementById('saveS').onclick = () => {
-          const v = Number(document.getElementById('sInput').value) || 0;
-          localStorage.setItem('schreibenScore', v);
-          document.getElementById('schreibenScoreDisplay').textContent = `${v.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte`;
-
-          const newTotal = (l.total + h.total + v).toFixed(2);
-          const newPercent = ((newTotal / CONFIG.totals.gesamt) * 100).toFixed(2);
-
+        document.getElementById('saveS').onclick = function() {
+          const newScore = Number(document.getElementById('sInput').value) || 0;
+          localStorage.setItem('schreibenScore', newScore);
+          
+          document.getElementById('schreibenScoreDisplay').textContent = `${newScore.toFixed(2)} / ${CONFIG.totals.schreiben}`;
+          
+          const newTotalScore = l.total + h.total + newScore;
+          const newPercentage = ((newTotalScore / totalMax) * 100).toFixed(2);
+          
           document.getElementById('finalSummary-ergebnisse').innerHTML = `
             <div class="left">
-              Gesamtpunktzahl: <strong>${newTotal}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
+              <strong>Gesamtpunktzahl:</strong><br>
+              <span style="font-size: 24px; font-weight: bold;">${newTotalScore.toFixed(2)} / ${totalMax}</span><br>
               <span class="small-muted">Lesen + Hören + Schreiben</span>
             </div>
             <div class="right">
-              Prozentsatz: <strong>${newPercent} %</strong>
-            </div>`;
+              <strong>Prozentsatz:</strong><br>
+              <span style="font-size: 24px; font-weight: bold;">${newPercentage}%</span><br>
+              <span class="small-muted">von 100%</span>
+            </div>
+          `;
+          
+          alert('Schreiben-Punkte wurden gespeichert!');
         };
       }
 
-      document.getElementById('calcBtn-ergebnisse').onclick = () => renderResults();
-      document.getElementById('backBtn-ergebnisse').onclick = (e) => {
+      document.getElementById('backBtn-ergebnisse').addEventListener('click', (e) => {
         e.preventDefault();
         showPage('start-page');
-      };
-      document.getElementById('retryBtn-ergebnisse').onclick = (e) => {
+      });
+      
+      document.getElementById('retryBtn-ergebnisse').addEventListener('click', (e) => {
         e.preventDefault();
-        if (window._lesenState) {
-          window._lesenState.answers = {};
-          window._lesenState.marked = {};
-          window._lesenState.showResults = false;
-          window._lesenState.remaining = EXAM_DATA.lesen.durationSec;
-          if (window._lesenState.timerInterval) clearInterval(window._lesenState.timerInterval);
-        }
-        if (window._hoerenState) {
-          window._hoerenState.answers = {};
-          window._hoerenState.showResults = false;
-          window._hoerenState.remaining = EXAM_DATA.hoeren.durationSec;
-          if (window._hoerenState.timerInterval) clearInterval(window._hoerenState.timerInterval);
-        }
-        if (window._schreibenState) {
-          window._schreibenState.answers = {};
-          window._schreibenState.showResults = false;
-          window._schreibenState.remaining = EXAM_DATA.schreiben.durationSec;
-          if (window._schreibenState.timerInterval) clearInterval(window._schreibenState.timerInterval);
-        }
-
-        examStarted = false;
+        localStorage.removeItem('schreibenScore');
         showPage('start-page');
-        setTimeout(() => {
-          startExam();
-        }, 100);
-      };
-      document.getElementById('continueBtn-ergebnisse').onclick = (e) => {
+      });
+      
+      document.getElementById('continueBtn-ergebnisse').addEventListener('click', (e) => {
         e.preventDefault();
-        if (window._lesenState) {
-          window._lesenState.sectionIndex = 0;
-          window._lesenState.showResults = false;
-          showPage('lesen-page');
-        } else {
-          showPage('start-page');
-        }
-      };
-
-      // Initialize results on page load
+        showPage('lesen-page');
+      });
+      
       renderResults();
     }
 
