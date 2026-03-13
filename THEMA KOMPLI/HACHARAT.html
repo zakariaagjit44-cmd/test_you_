@@ -4,10 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Deutsch B2 Prüfung - Komplett</title>
-  
-  <!-- Supabase Library -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
   <style>
     /* ===== GLOBAL STYLES ===== */
     :root {
@@ -253,46 +249,64 @@
       padding: 12px 20px;
       border-radius: 6px;
       border: none;
-      background: white;
-      color: #1e3a5f;
+      background: #4da6ff;
+      color: white;
       font-weight: 700;
       font-size: 15px;
       cursor: pointer;
-      transition: background 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease;
+      transition: background 0.2s ease-in-out;
       min-width: 150px;
       text-align: center;
     }
 
     .exam-btn:hover {
-      background: #1e3a5f;
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      background: #336fbf;
+    }
+    
+    .exam-btn.save {
+      background: #4da6ff;
+      color: #000;
     }
     
     .exam-btn.save:hover {
-      background: #2c5282;
+      background: #3399ff;
+    }
+    
+    .exam-btn.submit {
+      background: #4da6ff;
     }
     
     .exam-btn.submit:hover {
-      background: #2c5282;
+      background: #3399ff;
+    }
+    
+    .exam-btn.result {
+      background: #4da6ff;
     }
     
     .exam-btn.result:hover {
-      background: #2c5282;
+      background: #3399ff;
+    }
+    
+    .exam-btn.next {
+      background: #4da6ff;
+      color: #fff;
     }
     
     .exam-btn.next:hover {
-      background: #2c5282;
+      background: #3399ff;
+    }
+    
+    .exam-btn.reset {
+      background: #4da6ff;
     }
     
     .exam-btn.reset:hover {
-      background: #2c5282;
+      background: #3399ff;
     }
     
     .exam-btn.reset-section {
       background: #d35400;
-      color: white;
       font-size: 12px;
       padding: 6px 10px;
       min-width: auto;
@@ -304,7 +318,6 @@
     
     .exam-btn.no-match {
       background: #95a5a6;
-      color: white;
       font-size: 12px;
       padding: 6px 10px;
       min-width: auto;
@@ -547,10 +560,6 @@
       border: 2px dashed #c8d9f6;
       border-radius: 6px;
       background: #f8fbff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
     
     .title-slot.has-title {
@@ -565,21 +574,6 @@
       font-weight: bold;
     }
     
-    .restore-btn {
-      background: #3498db;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 4px 8px;
-      font-size: 11px;
-      cursor: pointer;
-      margin-left: 8px;
-    }
-    
-    .restore-btn:hover {
-      background: #2980b9;
-    }
-    
     .headings-bank {
       display: flex;
       flex-direction: column;
@@ -592,14 +586,11 @@
       border: 1px solid #dbe7fb;
       border-radius: 8px;
       background: #f8fbff;
-      cursor: pointer;
-      transition: all 0.2s;
+      cursor: grab;
     }
     
     .heading-item:hover {
       background: #e9f0ff;
-      transform: translateY(-2px);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .heading-item.used {
@@ -607,12 +598,6 @@
       cursor: not-allowed;
       background: #f8d7da;
       border-color: #f5c6cb;
-    }
-    
-    .heading-item.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
     }
     
     .result-correct {
@@ -627,87 +612,9 @@
     
     .result-item {
       margin: 10px 0;
-      padding: 15px;
-      border-radius: 8px;
-      background: #f8f9fa;
-      border-left: 4px solid #1e3a5f;
-    }
-    
-    .result-item h3 {
-      color: #1e3a5f;
-      margin-bottom: 15px;
-      font-size: 18px;
-    }
-    
-    .result-detail {
-      display: flex;
-      flex-direction: column;
-      padding: 12px;
-      margin: 8px 0;
-      background: white;
+      padding: 10px;
       border-radius: 6px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    
-    .result-row {
-      display: flex;
-      align-items: center;
-      margin: 4px 0;
-    }
-    
-    .result-label {
-      font-weight: 600;
-      min-width: 120px;
-      color: #2c3e50;
-    }
-    
-    .result-value {
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-weight: 500;
-    }
-    
-    .result-value.correct {
-      background: #d4edda;
-      color: #155724;
-    }
-    
-    .result-value.incorrect {
-      background: #f8d7da;
-      color: #721c24;
-    }
-    
-    .result-status {
-      margin-top: 8px;
-      padding: 8px;
-      border-radius: 4px;
-      font-weight: 600;
-      text-align: center;
-    }
-    
-    .result-status.correct {
-      background: #d4edda;
-      color: #155724;
-    }
-    
-    .result-status.incorrect {
-      background: #f8d7da;
-      color: #721c24;
-    }
-    
-    .result-summary {
-      margin-top: 20px;
-      padding: 15px;
-      background: #1e3a5f;
-      color: white;
-      border-radius: 8px;
-      text-align: center;
-    }
-    
-    .result-summary .percentage {
-      font-size: 32px;
-      font-weight: 700;
-      color: #4da6ff;
+      background: #f8f9fa;
     }
     
     .instructions {
@@ -765,37 +672,23 @@
     
     .fill-blank-container {
       margin: 20px 0;
-      line-height: 2.2;
     }
     
     .blank-word {
       display: inline-block;
-      min-width: 100px;
-      padding: 6px 10px;
-      margin: 0 4px;
+      min-width: 120px;
+      padding: 4px 8px;
+      margin: 0 6px;
       background: #fff;
       cursor: pointer;
       position: relative;
-      border: 2px solid #dbe7fb;
-      border-radius: 6px;
-      font-weight: 500;
-      transition: all 0.2s;
-    }
-    
-    .blank-word:hover {
-      background: #e3f2fd;
-      border-color: #3498db;
+      border: 1px solid #dbe7fb;
+      border-radius: 4px;
     }
     
     .blank-word.has-answer {
       background: #e8fbe9;
       border-color: #2ecc71;
-    }
-    
-    .blank-word.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
     }
     
     .options-popup {
@@ -878,21 +771,12 @@
     }
     
     .bank-word-vertical {
-      padding: 12px;
-      border: 2px solid #dbe7fb;
-      border-radius: 8px;
+      padding: 10px;
+      border: 1px solid #dbe7fb;
+      border-radius: 6px;
       background: #f8fbff;
       text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-weight: 500;
-    }
-    
-    .bank-word-vertical:hover {
-      background: #e9f0ff;
-      border-color: #3498db;
-      transform: translateY(-2px);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      cursor: grab;
     }
     
     .bank-word-vertical.used {
@@ -902,41 +786,22 @@
       border-color: #f5c6cb;
     }
     
-    .bank-word-vertical.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
-    }
-    
     .blank-slot {
       display: inline-block;
       min-width: 100px;
-      padding: 6px 10px;
-      margin: 0 4px;
+      padding: 4px 8px;
+      margin: 0 6px;
       background: #fff;
       min-height: 30px;
       vertical-align: middle;
-      border: 2px solid #dbe7fb;
-      border-radius: 6px;
+      border: 1px solid #dbe7fb;
+      border-radius: 4px;
       cursor: pointer;
-      transition: all 0.2s;
-      font-weight: 500;
-    }
-    
-    .blank-slot:hover {
-      background: #e3f2fd;
-      border-color: #3498db;
     }
     
     .blank-slot.has-answer {
       background: #e8fbe9;
       border-color: #2ecc71;
-    }
-    
-    .blank-slot.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
     }
     
     .footer-buttons {
@@ -950,12 +815,6 @@
       background: #f8d7da;
       border-color: #f5c6cb;
       color: #333;
-    }
-    
-    .situation-item.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
     }
     
     /* Listening Section Styles */
@@ -1212,20 +1071,10 @@
       font-weight: 700;
       cursor: pointer;
       transition: background 0.3s;
-      text-decoration: none;
-      display: inline-block;
     }
     
     .results-btn:hover {
       background: #3a8ce0;
-    }
-    
-    .results-btn.secondary {
-      background: #95a5a6;
-    }
-    
-    .results-btn.secondary:hover {
-      background: #7f8c8d;
     }
     
     .button-like {
@@ -1451,6 +1300,59 @@
       .results-tile {
         margin-bottom: 10px;
       }
+      
+      /* 12. تحسين البدء صفحة */
+      .start-content {
+        padding: 20px 15px !important;
+      }
+      
+      .logo-icon {
+        font-size: 40px !important;
+      }
+      
+      h1 {
+        font-size: 24px !important;
+      }
+      
+      .card {
+        padding: 15px 12px !important;
+      }
+      
+      .btn {
+        padding: 10px 15px !important;
+        font-size: 14px !important;
+      }
+      
+      .timer {
+        font-size: 36px !important;
+      }
+      
+      /* 13. تحسين السحب والإفلات للهاتف */
+      .heading-item, .bank-word-vertical {
+        padding: 12px 10px !important;
+        font-size: 14px !important;
+        touch-action: manipulation;
+      }
+      
+      .title-slot {
+        min-height: 50px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px !important;
+      }
+      
+      /* 14. تحسين الخيارات الصغيرة */
+      .option-btn {
+        padding: 10px 12px !important;
+        font-size: 13px !important;
+      }
+      
+      /* 15. تحسين حقول الإدخال */
+      select, input[type="number"] {
+        font-size: 16px !important;
+        padding: 12px !important;
+      }
     }
 
     /* === تحسينات للهواتف المتوسطة === */
@@ -1461,6 +1363,11 @@
       
       .tile {
         max-width: 180px !important;
+      }
+      
+      .exam-btn {
+        min-width: 130px !important;
+        padding: 10px 15px !important;
       }
     }
   </style>
@@ -1546,7 +1453,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-lesen" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn2-lesen" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn-lesen" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-lesen">Nicht gespeichert</span></div>
     </footer>
@@ -1585,7 +1492,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-hoeren" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn2-hoeren" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn-hoeren" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-hoeren">Nicht gespeichert</span></div>
     </footer>
@@ -1631,7 +1538,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-schreiben" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn2-schreiben" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn-schreiben" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-schreiben">Nicht gespeichert</span></div>
     </footer>
@@ -1649,26 +1556,167 @@
       <div id="details-ergebnisse"></div>
       <div class="summary" id="finalSummary-ergebnisse"></div>
       <div class="controls">
-        <button id="backBtn-ergebnisse" class="results-btn">🔁 Zurück zur Startseite</button>
-        <button id="retryBtn-ergebnisse" class="results-btn secondary">🔄 Prüfung wiederholen</button>
-        <button id="continueBtn-ergebnisse" class="results-btn">➡️ Zurück zur Prüfung</button>
+        <a class="button-like" href="#" id="backBtn-ergebnisse">
+          <button class="results-btn">🔁 Zurück zur Startseite</button>
+        </a>
         <button id="calcBtn-ergebnisse" class="results-btn">✅ Ergebnisse anzeigen</button>
       </div>
       <div class="note">Hinweis: Schreiben (45 Punkte) wird manuell eingegeben, falls nicht automatisch vorhanden.</div>
     </div>
   </div>
 
-  <!-- Login Error Modal (يظهر فقط عند رفض الدخول) -->
-  <div id="login-error-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center;">
-    <div style="background: white; border-radius: 16px; padding: 40px; max-width: 400px; text-align: center;">
-      <div style="font-size: 64px; margin-bottom: 20px;">❌</div>
-      <h2 style="color: #d32f2f; margin-bottom: 20px;">Zugriff verweigert</h2>
-      <p id="error-message" style="color: #333; margin-bottom: 30px; font-size: 16px;">Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.</p>
-      <button id="redirect-to-login" style="background: #d32f2f; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;">Zum Login</button>
-    </div>
-  </div>
-
   <script>
+    // ===== دوال لتحسين تجربة اللمس للهواتف =====
+    function setupTouchDragAndDrop() {
+      if ('ontouchstart' in window) {
+        console.log("Touch device detected, setting up touch interactions");
+        
+        let draggedElement = null;
+        
+        document.addEventListener('touchstart', function(e) {
+          const target = e.target.closest('[draggable="true"]');
+          if (target && !target.classList.contains('used')) {
+            draggedElement = target;
+            target.classList.add('dragging');
+            e.preventDefault();
+          }
+        }, { passive: false });
+        
+        document.addEventListener('touchmove', function(e) {
+          if (draggedElement) {
+            e.preventDefault();
+          }
+        }, { passive: false });
+        
+        document.addEventListener('touchend', function(e) {
+          if (draggedElement) {
+            const dropTarget = document.elementFromPoint(
+              e.changedTouches[0].clientX,
+              e.changedTouches[0].clientY
+            );
+            
+            if (dropTarget) {
+              const slot = dropTarget.closest('.title-slot, .blank-slot');
+              if (slot) {
+                if (draggedElement.classList.contains('heading-item')) {
+                  const headingId = draggedElement.dataset.headingId;
+                  const textId = slot.dataset.textId;
+                  if (headingId && textId) {
+                    window.lesenApp.handleDrop(headingId, textId);
+                  }
+                } else if (draggedElement.classList.contains('situation-item')) {
+                  const situationId = draggedElement.dataset.situationId;
+                  const textId = slot.dataset.textId;
+                  if (situationId && textId) {
+                    window.lesenApp.handleDrop(situationId, textId);
+                  }
+                } else if (draggedElement.classList.contains('bank-word-vertical')) {
+                  const word = draggedElement.dataset.word;
+                  const blankId = slot.dataset.blankId;
+                  if (word && blankId) {
+                    window.lesenApp.selectSprachbausteine2FromBank(word, blankId);
+                  }
+                }
+              }
+            }
+            
+            draggedElement.classList.remove('dragging');
+            draggedElement = null;
+          }
+        });
+        
+        // جعل العناصر القابلة للسحب أكبر وأسهل للمس
+        document.querySelectorAll('[draggable="true"]').forEach(el => {
+          el.style.touchAction = 'none';
+          el.style.userSelect = 'none';
+          el.style.webkitUserSelect = 'none';
+        });
+      }
+    }
+    
+    // ===== كائن الإجابات الصحيحة =====
+    const CORRECT_ANSWERS = {
+      lesen: {
+        // Leseverstehen Teil 1 (النصوص 1-5)
+        "text1": "c",
+        "text2": "h",
+        "text3": "b",
+        "text4": "e",
+        "text5": "i",
+        
+        // Leseverstehen Teil 2 (الأسئلة s2q1-s2q5)
+        "s2q1": "s2q1o1",
+        "s2q2": "s2q2o2",
+        "s2q3": "s2q3o1",
+        "s2q4": "s2q4o3",
+        "s2q5": "s2q5o1",
+        
+        // Leseverstehen Teil 3 (المواقف 11-20)
+        "11": "X",
+        "12": "C",
+        "13": "X",
+        "14": "G",
+        "15": "F",
+        "16": "D",
+        "17": "H",
+        "18": "E",
+        "19": "A",
+        "20": "B",
+        
+        // Sprachbausteine Teil 1 (الفراغات 21-30)
+        "21": "über",
+        "22": "gar",
+        "23": "besonders",
+        "24": "schließlich",
+        "25": "entfernt",
+        "26": "wechseln",
+        "27": "gesagt",
+        "28": "kommenden",
+        "29": "je",
+        "30": "wäre",
+        
+        // Sprachbausteine Teil 2 (الفراغات 31-40)
+        "31": "GEHÖREN",
+        "32": "BLEIBT",
+        "33": "MANCHER",
+        "34": "ALS",
+        "35": "FERTIG",
+        "36": "WINK",
+        "37": "MIT",
+        "38": "TAKT",
+        "39": "KLAR",
+        "40": "WAS"
+      },
+      
+      hoeren: {
+        // Hören Teil 1 (الأسئلة 41-45)
+        "41": "falsch",
+        "42": "falsch",
+        "43": "falsch",
+        "44": "richtig",
+        "45": "richtig",
+        
+        // Hören Teil 2 (الأسئلة 46-55)
+        "46": "falsch",
+          "47": "richtig",
+          "48": "richtig",
+          "49": "richtig",
+          "50": "falsch",
+          "51": "falsch",
+          "52": "richtig",
+          "53": "falsch",
+          "54": "richtig",
+          "55": "richtig",
+        
+        // Hören Teil 3 (الأسئلة 56-60)
+        "56": "richtig",
+        "57": "falsch",
+        "58": "falsch",
+        "59": "falsch",
+        "60": "richtig"
+      }
+    };
+
     // ===== دوال مساعدة =====
     function getHeadingText(headingId) {
       if (!headingId || headingId === '-') return '-';
@@ -1725,6 +1773,24 @@
       return situations[id] || id;
     }
 
+    function getTextLetter(id) {
+      const texts = {
+        "A": "Infos zur Auslandsüberweisung...",
+        "B": "Französische Muttersprachler bieten Übersetzungen...",
+        "C": "Als Austauschschüler/in verbringst du einige Monate...",
+        "D": "Als gebürtige Engländerin, mit einem Studienabschluss in Englisch...",
+        "E": "Mit einem Konto bei der RUFA profitieren Sie...",
+        "F": "Wir laden Sie dazu ein, internationale Schülerinnen und Schüler...",
+        "G": "Französisch ist Ihre Muttersprache?...",
+        "H": "Ein Tag im Zeichen der guten Nachbarschaft...",
+        "I": "Konto-Neuheiten. Mit der neuen BaZa-App erledigen Sie...",
+        "J": "Seit einigen Jahren bietet die Volkshochschule...",
+        "K": "Spezialitäten aus der Küche. Viele klassische Gerichte...",
+        "L": "Am Weltspartag zur Bank. Der Weltspartag wurde..."
+      };
+      return texts[id] || id;
+    }
+
     function escapeHtml(s) {
       return String(s)
         .replace(/&/g, '&amp;')
@@ -1734,196 +1800,236 @@
         .replace(/'/g, '&#039;');
     }
 
-    function normalizeAnswer(a) {
-      if (a === null || a === undefined || a === '') return '-';
-      let s = String(a).trim();
-      if (s === '') return '-';
-      const low = s.toLowerCase();
-      if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
-      if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
-      return s;
+    // ===== دوال العرض المحسنة =====
+    function buildTable(title, dets, total, max) {
+      let html = `<div class="result-item">
+                    <h3>${title} - ${total.toFixed(2)}/${max} Punkte</h3>
+                    <table class="true-false-table">
+                      <thead>
+                        <tr>
+                          <th style="width: 10%">Frage</th>
+                          <th style="width: 40%">Ihre Antwort</th>
+                          <th style="width: 40%">Richtige Antwort</th>
+                          <th style="width: 10%">Ergebnis</th>
+                        </tr>
+                      </thead>
+                      <tbody>`;
+      
+      dets.forEach(x => {
+        const isCorrect = x.richtig;
+        const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+        const resultIcon = isCorrect ? '✅ Richtig' : '❌ Falsch';
+        
+        html += `<tr class="${rowClass}">
+                  <td><strong>${x.frage}</strong></td>
+                  <td>${escapeHtml(x.user)}</td>
+                  <td>${escapeHtml(x.correct)}</td>
+                  <td><strong>${resultIcon}</strong></td>
+                </tr>`;
+      });
+      
+      html += `</tbody>
+              </table>
+              <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                <strong>Erreichte Punkte: ${total.toFixed(2)}/${max} (${((total/max)*100).toFixed(1)}%)</strong>
+              </div>
+            </div>`;
+      return html;
     }
 
-    // ===== إجابات صحيحة ثابتة (من الملف الثاني) =====
-    const CORRECT_ANSWERS = {
-      lesen: {
-        "text1": "c",
-        "text2": "h",
-        "text3": "b",
-        "text4": "e",
-        "text5": "i",
-        "s2q1": "s2q1o1",
-        "s2q2": "s2q2o2",
-        "s2q3": "s2q3o1",
-        "s2q4": "s2q4o3",
-        "s2q5": "s2q5o1",
-        "11": "19",
-        "12": "C",
-        "13": "J",
-        "14": "G",
-        "15": "F",
-        "16": "D",
-        "17": "H",
-        "18": "E",
-        "19": "A",
-        "20": "B",
-        "21": "über",
-        "22": "gar",
-        "23": "besonders",
-        "24": "schließlich",
-        "25": "entfernt",
-        "26": "wechseln",
-        "27": "gesagt",
-        "28": "kommenden",
-        "29": "je",
-        "30": "wäre",
-        "31": "GEHÖREN",
-        "32": "BLEIBT",
-        "33": "MANCHER",
-        "34": "ALS",
-        "35": "FERTIG",
-        "36": "WINK",
-        "37": "MIT",
-        "38": "TAKT",
-        "39": "KLAR",
-        "40": "WAS"
-      },
-      hoeren: {
-        "41": "falsch",
-        "42": "falsch",
-        "43": "falsch",
-        "44": "richtig",
-        "45": "richtig",
-        "46": "falsch",
-        "47": "richtig",
-        "48": "richtig",
-        "49": "richtig",
-        "50": "falsch",
-        "51": "falsch",
-        "52": "richtig",
-        "53": "falsch",
-        "54": "richtig",
-        "55": "richtig",
-        "56": "richtig",
-        "57": "falsch",
-        "58": "falsch",
-        "59": "falsch",
-        "60": "richtig"
+    function renderLesenDetails(answers) {
+      let html = `<div class="result-item">
+                  <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
+      
+      // Teil 1: Überschriften zuordnen
+      html += `<h4>Teil 1: Überschriften zuordnen</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Text</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+      
+      for (let i = 1; i <= 5; i++) {
+        const id = `text${i}`;
+        const userAnswer = answers[id] || '-';
+        const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+        const isCorrect = userAnswer === correctAnswer;
+        const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+        const resultIcon = isCorrect ? '✅' : '❌';
+        
+        html += `<tr class="${rowClass}">
+                  <td><strong>Text ${i}</strong></td>
+                  <td>${getHeadingText(userAnswer)}</td>
+                  <td>${getHeadingText(correctAnswer)}</td>
+                  <td><strong>${resultIcon}</strong></td>
+                </tr>`;
       }
-    };
-  </script>
+      
+      html += `</tbody></table>`;
+      
+      // Teil 2: Fragen zum Text
+      html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Frage</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+      
+      for (let i = 1; i <= 5; i++) {
+        const id = `s2q${i}`;
+        const userAnswer = answers[id] || '-';
+        const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+        const isCorrect = userAnswer === correctAnswer;
+        const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+        const resultIcon = isCorrect ? '✅' : '❌';
+        
+        html += `<tr class="${rowClass}">
+                  <td><strong>Frage ${i}</strong></td>
+                  <td>${getOptionText(id, userAnswer)}</td>
+                  <td>${getOptionText(id, correctAnswer)}</td>
+                  <td><strong>${resultIcon}</strong></td>
+                </tr>`;
+      }
+      
+      html += `</tbody></table>`;
+      
+      // Teil 3: Texte zuordnen
+      html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Situation</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+      
+      for (let i = 11; i <= 20; i++) {
+        const id = i.toString();
+        const userAnswer = answers[id] || '-';
+        const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+        const isCorrect = userAnswer === correctAnswer;
+        const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+        const resultIcon = isCorrect ? '✅' : '❌';
+        
+        html += `<tr class="${rowClass}">
+                  <td><strong>${id}. ${getSituationText(id)}</strong></td>
+                  <td>${userAnswer === 'X' ? 'X - Kein passender Text' : userAnswer}</td>
+                  <td>${correctAnswer === 'X' ? 'X - Kein passender Text' : correctAnswer}</td>
+                  <td><strong>${resultIcon}</strong></td>
+                </tr>`;
+      }
+      
+      html += `</tbody></table>`;
+      
+      // Sprachbausteine Teil 1
+      html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Lücke</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+      
+      for (let i = 21; i <= 30; i++) {
+        const id = i.toString();
+        const userAnswer = answers[id] || '-';
+        const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+        const isCorrect = userAnswer === correctAnswer;
+        const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+        const resultIcon = isCorrect ? '✅' : '❌';
+        
+        html += `<tr class="${rowClass}">
+                  <td><strong>${id}</strong></td>
+                  <td>${userAnswer}</td>
+                  <td>${correctAnswer}</td>
+                  <td><strong>${resultIcon}</strong></td>
+                </tr>`;
+      }
+      
+      html += `</tbody></table>`;
+      
+      // Sprachbausteine Teil 2
+      html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
+               <table class="true-false-table">
+                 <thead>
+                   <tr>
+                     <th>Lücke</th>
+                     <th>Ihre Antwort</th>
+                     <th>Richtige Antwort</th>
+                     <th>Ergebnis</th>
+                   </tr>
+                 </thead>
+                 <tbody>`;
+      
+      for (let i = 31; i <= 40; i++) {
+        const id = i.toString();
+        const userAnswer = answers[id] || '-';
+        const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
+        const isCorrect = userAnswer === correctAnswer;
+        const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+        const resultIcon = isCorrect ? '✅' : '❌';
+        
+        html += `<tr class="${rowClass}">
+                  <td><strong>${id}</strong></td>
+                  <td>${userAnswer}</td>
+                  <td>${correctAnswer}</td>
+                  <td><strong>${resultIcon}</strong></td>
+                </tr>`;
+      }
+      
+      html += `</tbody></table></div>`;
+      return html;
+    }
 
-  <script type="module">
-    // =============================================
-    // التحقق من تسجيل الدخول - نسخة محسنة وآمنة
-    // =============================================
-    
-    (async function() {
-      // تكوين Supabase
-      const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
+    function buildHoerenDetails(answers) {
+      let html = `<table class="true-false-table">
+                    <thead>
+                      <tr>
+                        <th>Frage</th>
+                        <th>Ihre Antwort</th>
+                        <th>Richtige Antwort</th>
+                        <th>Ergebnis</th>
+                      </tr>
+                    </thead>
+                    <tbody>`;
       
-      // تهيئة Supabase
-      const { createClient } = window.supabase;
-      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      
-      // عناصر الصفحة
-      const body = document.getElementById('body');
-      const startPage = document.getElementById('start-page');
-      const loginErrorModal = document.getElementById('login-error-modal');
-      const errorMessage = document.getElementById('error-message');
-      
-      // دالة لعرض خطأ تسجيل الدخول
-      function showLoginError(message) {
-        // إخفاء محتوى الصفحة
-        startPage.style.display = 'none';
+      for (let i = 41; i <= 60; i++) {
+        const id = i.toString();
+        const userAnswer = answers[id] || '-';
+        const correctAnswer = CORRECT_ANSWERS.hoeren[id] || '-';
+        const isCorrect = userAnswer === correctAnswer;
+        const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
+        const resultIcon = isCorrect ? '✅' : '❌';
         
-        // إظهار نافذة الخطأ
-        errorMessage.textContent = message || 'Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.';
-        loginErrorModal.style.display = 'flex';
+        html += `<tr class="${rowClass}">
+                  <td><strong>${id}</strong></td>
+                  <td>${userAnswer}</td>
+                  <td>${correctAnswer}</td>
+                  <td><strong>${resultIcon}</strong></td>
+                </tr>`;
       }
       
-      // التحقق من تسجيل الدخول
-      try {
-        // التحقق من الجلسة في Supabase
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
-        if (sessionError || !session) {
-          showLoginError('❌ Keine aktive Sitzung gefunden. Bitte melden Sie sich an.');
-          return;
-        }
-        
-        // التحقق من جدول permissions
-        const { data: permissions, error: permError } = await supabase
-          .from('user_permissions')
-          .select('can_access, subscription_type, subscription_expiry, trial_expiry')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
-        
-        // إذا كان هناك خطأ أو لا يوجد صلاحيات
-        if (permError) {
-          console.error('Permissions error:', permError);
-          showLoginError('❌ Fehler bei der Überprüfung Ihrer Berechtigungen.');
-          return;
-        }
-        
-        // إذا لم يتم العثور على المستخدم في جدول permissions
-        if (!permissions) {
-          // محاولة إدراج المستخدم إذا لم يكن موجوداً
-          const { error: insertError } = await supabase
-            .from('user_permissions')
-            .insert({
-              user_id: session.user.id,
-              email: session.user.email,
-              can_access: true,
-              subscription_type: 'free',
-              created_at: new Date().toISOString()
-            });
-          
-          if (insertError) {
-            console.error('Insert error:', insertError);
-            showLoginError('❌ Fehler beim Erstellen Ihres Benutzerkontos.');
-            return;
-          }
-        } else if (!permissions.can_access) {
-          // إذا كان can_access = false
-          showLoginError('❌ Sie haben keine Berechtigung für den Zugriff auf diese Prüfung.');
-          return;
-        }
-        
-        // التحقق من انتهاء الاشتراك
-        const now = new Date();
-        
-        if (permissions && permissions.subscription_type === 'trial_24h' && permissions.trial_expiry) {
-          const trialExpiry = new Date(permissions.trial_expiry);
-          if (trialExpiry < now) {
-            showLoginError('❌ Ihre Testphase ist abgelaufen. Bitte aktivieren Sie ein Abonnement.');
-            return;
-          }
-        }
-        
-        if (permissions && permissions.subscription_expiry) {
-          const subscriptionExpiry = new Date(permissions.subscription_expiry);
-          if (subscriptionExpiry < now) {
-            showLoginError('❌ Ihr Abonnement ist abgelaufen. Bitte erneuern Sie Ihr Abonnement.');
-            return;
-          }
-        }
-        
-        // إذا وصلنا إلى هنا، المستخدم مصرح له
-        console.log('✅ Zugriff gewährt für:', session.user.email);
-        
-        // إظهار محتوى الصفحة
-        startPage.style.display = 'flex';
-        
-      } catch (error) {
-        console.error('❌ Kritischer Fehler:', error);
-        showLoginError('❌ Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
-      }
-    })();
-  </script>
+      html += `</tbody></table>`;
+      return html;
+    }
 
-  <script>
     // ===== PAGE NAVIGATION =====
     function showPage(pageId) {
       // Hide all pages
@@ -1954,12 +2060,10 @@
       } else if (pageId === 'ergebnisse-page' && typeof initErgebnissePage === 'function') {
         initErgebnissePage();
       }
+      
+      // Setup touch interactions for mobile
+      setTimeout(setupTouchDragAndDrop, 100);
     }
-
-    // ربط زر التوجيه للـ Login
-    document.getElementById('redirect-to-login').addEventListener('click', function() {
-      window.location.href = '../index.html';
-    });
 
     // ===== START PAGE FUNCTIONALITY =====
     let initialCounter = 30;
@@ -1975,9 +2079,12 @@
     const cancelBtn = document.getElementById("cancelBtn");
 
     function startCountdown() {
+      // prevent double-starts or starting after exam already began
       if (countdownRunning || examStarted) return;
       countdownRunning = true;
+      // disable start button while counting
       try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
+      // reset counter & UI
       counter = initialCounter;
       timerEl.textContent = counter;
       timeDisplayEl.textContent = counter;
@@ -1995,10 +2102,12 @@
           countdownInterval = null;
           countdownRunning = false;
           progressEl.style.transform = "scaleX(1)";
+          // ensure exam starts only once
           if (!examStarted) {
             examStarted = true;
             startExam();
           }
+          // safety: re-enable start button (page usually navigates away)
           try { startBtn.disabled = false; startBtn.removeAttribute('aria-disabled'); } catch(e){}
         }
       }, 1000);
@@ -2022,6 +2131,7 @@
     }
 
     function startExam() {
+      // guard to ensure startExam is triggered once
       if (!examStarted) examStarted = true;
       const selectedSection = selectEl.value;
       if (selectedSection === 'lesen') {
@@ -2033,6 +2143,7 @@
       }
     }
 
+    // wire buttons: start will now start the countdown (not the exam directly)
     startBtn.addEventListener('click', startCountdown);
 
     cancelBtn.addEventListener('click', () => {
@@ -2041,10 +2152,11 @@
       timerEl.style.color = "#e53e3e";
     });
 
-    // ===== FILLED EXAM DATA STRUCTURE - CONTENT FROM OLD FILE =====
-    const EXAM_DATA = {
-      lesen: {
-        id: "exam-lesen-001",
+    // ===== LESEN PAGE FUNCTIONALITY =====
+    function initLesenPage() {
+      /* ===== Self-contained exam (embedded) ===== */
+      const exam = {
+        id: "exam-001",
         durationSec: 90 * 60,
         sections: [
           { 
@@ -2067,17 +2179,17 @@
               },
               {
                 id: "text3",
-                content: "Der Klimawandel bringt es in Verbindung mit der Globalisierung mit sich, dass auch in Deutschland Tiere heimisch werden, die hier zuvor nicht beobachtet wurden. Zu diesen Neuankömmlingen gehören auch exotische Stechmücken, beispielsweise der japanische Bushmosquito. Mit den exotischen Stechmücken kommen auch neue Infektionserreger nach Deutschland, die möglicherweise auch bisher unbekannte Krankheiten beim Menschen auslösen können. Eine Forschergruppe identifizierte jetzt einige bisher nur in Afrika und Asien vorkommende Erreger. Anfang 2011 wurde ein interdisziplinäres Projekt ins Leben gerufen. Als ein erstes Ziel der Forschungsarbeit wird die Erstellung einer Mückenkarte für Deutschland angestrebt. 'Innerhalb weniger Jahre wollen wir einen Überblick über die Artenverteilung der Mücken haben und wissen was an Viren in ihnen steckt', so der Leiter des Bernhard-Nocht-Institut Professor Dr. Sven Klimpel. Das Bernhard-Nocht-Institut ist eine international anerkannte Forschungseinrichtung, die eine langjährige Erfahrung in der Virendiagnostik in das Projekt einbringen kann. Es verfügte über Laboratorien der höchsten Sicherheitsstufe, die erforderlich sind, um neue Viren mit unbekanntem Gefährdungspotential zu untersuchen. Mit der neu entdeckten, aus Asien stammenden Mückenarten könnten in Deutschland bisher 48 Stechmückenarten von den Entomologen nachgewiesen werden. Seit einigen Jahren breitete sich die Malaria-Mücke Anopheles plumbeus in Südwestdeutschland aus. Auch die Asiatische Tigermücke, die unter anderem das gefährliche Denguefieber verbreitet, schaffte es 2018 in die Schlagzeilen, weil sie am Rhein gefunden wurde.",
+                content: "Der Klimawandel bringt es in Verbindung mit der Globalisierung mit sich, dass auch in Deutschland Tiere heimisch werden, die hier zuvor nicht beobachtet wurden. Zu diesen Neuankömmlingen gehören auch exotische Stechmücken, beispielsweise der japanische Bushmosquito. Mit den exotischen Stechmücken kommen auch neue Infektionserreger nach Deutschland, die möglicherweise auch bisher unbekannte Krankheiten beim Menschen auslösen können. Eine Forschergruppe identifizierte jetzt einige bisher nur in Afrika und Asien vorkommende Erreger. Anfang 2011 wurde ein interdisziplinäres Projekt ins Leben gerufen. Als ein erstes Ziel der Forschungsarbeit wird die Erstellung einer Mückenkarte für Deutschland angestrebt. 'Innerhalb weniger Jahre wollen wir einen Überblick über die Artenverteilung der Mücken haben und wissen was an Viren in ihnen steckt', so der Leiter des Bernhard-Nocht-Institut Professor Dr. Sven Klimpel. Das Bernhard-Nocht-Institut ist eine internationale anerkannte Forschungseinrichtung, die eine langjährige Erfahrung in der Virendiagnostik in das Projekt einbringen kann. Es verfügte über Laboratorien der höchsten Sicherheitsstufe, die erforderlich sind, um neue Viren mit unbekanntem Gefährdungspotential zu untersuchen. Mit der neu entdeckten, aus Asien stammenden Mückenarten könnten in Deutschland bisher 48 Stechmückenarten von den Entomologen nachgewiesen werden. Seit einigen Jahren breitete sich die Malaria-Mücke Anopheles plumbeus in Südwestdeutschland aus. Auch die Asiatische Tigermücke, die unter anderem dagefährliche Dengueieber verbreitet, schaffte es 2018 in die Schlagzeilen, weil sie am Rhein gefunden wurde.",
                 correctAnswer: "b"
               },
               {
                 id: "text4",
-                content: "Forscher haben bei Versuchen im Bronx Zoo in New York eine neue Erkenntnis über Elefanten erlangt: Sie können sich selbst im Spiegel erkennen. Zumindest eines von drei Versuchstieren versuchte, einen auf seinem Kopfe aufgemalten Fleck, der im Spiegelbild zu sehen war, zu entfernen. Bisher war unter anderem von Affen, Delfinen und Elstern ein ähnliches Verhalten bekannt. Und auch bei diesen reagierte nicht immer alle Versuchstiere auf einen Spiegel. Es gab auch schon in der Vergangenheit solche Tests mit Elefanten, die aber auf keine Selbsterkenntnis schließen ließen. Den Grund sieht ein Wissenschaftler im Versuchsaufbau: 'Das große Problem ist, einen Spiegel zu haben, der 'elefantenfest' ist.' Frühere Versuche hätten zu kleine und zu schwer zugängliche Spiegeln verwendet. Die Elefanten aber wollten 'dagegen knallen, dahinter schauen, die Sache ausprobieren, bevor Sie verstehen, was vor sich geht'. Deshalb wurde diesmal ein 2,5 mal 2,5 Meter großer Spiegel in einem Elefantengehege mit drei weiblichen asiatischen Elefanten montiert, der stabil genug für ausgiebige Untersuchungen durch die Tiere war. Bei ähnlichen Tests mit Affen und Delfinen gibt es normalerweise vier Phasen der Erkenntnis im Spiegel: Zuerst der Versuch der Kommunikation mit dem vermeintlichen Artgenossen, dann eine physische Inspektion des Spiegels, ein Testen des Verhaltens des Spiegelbilds und schließlich die Selbsterkenntnis. Die Elefanten übersprangen die erste Phase und schauten in Phase zwei hinter den Spiegel und griffen auch mit dem Rüssel dahinter. In Phase drei führten sie verschiedene Bewegungen durch und verglichen sie mit denen des Spiegelbildes. Auch wenn sich dann nur eines der Tiere selbst erkannte, indem es den aufgemalten Fleck untersuchte und nach einiger Zeit dann auch das Interesse an dem Fleck verlor, sehen die Wissenschaftler das Ergebnis als eindeutigen Beweis für die Fähigkeit zur Selbsterkenntnis. Als Nächstes wollen sie die Fähigkeiten von Elefanten auch in ihrer natürlichen Umgebung weiter erforschen.",
+                content: "Forscher haben bei Versuchen im Bronx Zoo in New York eine neue Erkenntnis über Elefanten erlangt: Sie können sich selbst im Spiegel erkennen. Zumindest eines von drei Versuchstieren versuchte, einen auf seinem Kopfe aufgemalten Fleck, der im Spiegelbild zu sehen war, zu entfernen. Bisher war unter anderem von Affen, Delfinen und Elstern ein ähnliches Verhalten bekannt. Und auch bei diesen reagierte nicht immer alle Versuchstiere auf einen Spiegel. Es gab auch schon in der Vergangenheit solche Tests mit Elefanten, die aber auf keine Selbsterkenntnis schließen ließen. Den Grund sieht ein Wissenschaftler im Versuchsaufbau: 'Das große Problem ist, einen Spiegel zu haben, der 'elefantenfest' ist.' Frühere Versuche hätten zu kleine und zu schwer zugängliche Spiegeln verwendet. Die Elefanten aber wollten 'dagegen knallen, dahinter schauen, die Sache ausprobieren, bevor Sie verstehen, was vor sich geht'. Deshalb wurde diesmal mit ein 2,5 mal 2,5 Meter großer Spiegel in einem Elefantengehege mit drei weiblichen asiatischen Elefanten montiert, der stabil genug für ausgiebige Untersuchungen durch die Tiere war. Bei ähnlichen Tests mit Affen und Delfinen gibt es normalerweise vier Phasen der Erkenntnis im Spiegel: Zuerst der Versuch der Kommunikation mit dem vermeintlichen Artgenossen, dann eine physische Inspektion des Spiegels, ein Testen des Verhaltens des Spiegelbilds und schließlich die Selbsterkenntnis. Die Elefanten übersprangen die erste Phase und schauten in Phase zwei hinter den Spiegel und griffen auch mit dem Rüssel dahinter. In Phase drei führten sie verschiedene Bewegungen durch und verglichen sie mit denen des Spiegelbildes. Auch wenn sich dann nur eines der Tiere selbst erkannte, indem es den aufgemalten Fleck untersuchte und nach einiger Zeit dann auch das Interesse an dem Fleck verlor, sehen die Wissenschaftler das Ergebnis als eindeutigen Beweis für die Fähigkeit zur Selbsterkenntnis. Als Nächstes wollen sie die Fähigkeiten von Elefanten auch in ihrer natürlichen Umgebung weiter erforschen.",
                 correctAnswer: "e"
               },
               {
                 id: "text5",
-                content: "Heute und morgen tagt in Göteborg die Internationale Nordseekonferenz (INK), an der Regierungsvertreter der acht Nordsee-Anrainerstaaten teilnehmen. Der World Wide Fund For Nature (WWF) kritisierte in diesem Zusammenhang, dass dies das letzte Treffen dieser Art sei. Künftig sollen Fragen der Nordsee auf europäischer Ebene behandelt werden. Der WWF befürchtet, dass die Berücksichtigung ökologischer Belange der Nordsee künftig im europäischen Rahmen vernachlässigt werde: 'Es sieht nicht gut aus für die Nordsee'. So fasste WWF Meeresschützer Stefan Lutter diese Besorgnis in Worte. Der WWF ist der Ansicht, dass auf den Treffen der INK richtungsweisende Beschlüsse zum Nordseeschutz gefasst worden seien. Das Problem sei allerdings die Umsetzung dieser Beschlüsse in politisches Handeln in den Anrainerstaaten. Zu diesen Beschlüssen gehörte beispielsweise das 2001 vereinbarte Abkommen zum Verbot giftiger Schiffsfarben sowie ein weiteres Abkommen, das die Verunreinigung der Nordsee durch von Schiffen abgelassenes Ballastwasser bekämpfen sollte. Diese Abkommen wurden erst zum Teil umgesetzt. Der WWF befürchtet nun, dass diese wichtigen INK-Initiativen unter den Tisch fallen könnten. Anlässlich des letzten Treffens der Anrainerstaaten erneuerte der WWF seine Kritik an der Fischereipolitik. Das Ziel einer nachhaltigen Fischereipolitik stehe zwar auf der Tagesordnung der Konferenz, die alltägliche Praxis in der EU sei jedoch durch die 'Plünderung der Fischbestände' gekennzeichnet. Die Kabeljaubestände stünden kurz vor dem Zusammenbruch, sagte der WWF-Fischereixperte. Ein notwendiger Fangstopp für diese Fischart sei jedoch nicht geplant. Ein weiteres ungelöstes Problem sei das Beifang-Problem. Der WWF-Sprecher brachte dazu folgendes Rechenbeispiel: Auf jedes Kilo Plattfisch, das auf den Tellern lande, gingen über fünf Kilo ungenutzter Beifang in die Netze der Fangflotten.",
+                content: "Heute und morgen tagt in Göteborg die Internationale Nordseekonferenz (INK), an der Regierungsvertreter der acht Nordsee-Anrainerstaaten teilnehmen. Der World Wide Fund For Nature (WWF) kritisierte in diesem Zusammenhang, dass dies das letzte Treffen dieser Art sei. Künftig sollen Fragen der Nordsee auf europäischer Ebene behandelt werden. Der WWF befürchtet, dass die Berücksichtigung ökologische Beilage der Nordsee künftig im europäischen Rahmen vernachlässigt werde: 'Es sieht nicht gut aus für die Nordsee'. So fasste WWF Meeresschützer Stefan Lutter diese Besorgnis in Worte. Der WWF ist der Ansicht, dass auf den Treffen der INK richtungsweisende Beschlüsse zum Nordseeschutz gefasst worden seien. Das Problem sei allerdings die Umsetzung dieser Beschlüsse in politisches Handeln in den Anrainerstaaten. Zu diesen Beschlüssen gehörte beispielsweise das 2001 vereinbarte Abkommen zum Verbot giftiger Schiffsfarben sowie ein weiteres Abkommen, das die Verunreinigung der Nordsee durch von Schiffen abgelassenes Ballastwasser bekämpfen sollte. Diese Abkommen wurden erst zum Teil umgesetzt. Der WWF befürchtet nun, dass diese wichtigen INK- Initiativen unter den Tisch fallen könnten. Anlässlich des letzten Treffens der Anrainerstaaten erneuerte der WWF seine Kritik an der Fleischereipolitik. Das Ziel einer nachhaltigen Fischereipolitik stehe zwar auf der Tagesordnung der Konferenz, die alltägliche Praxis in der EU sei jedoch durch die 'Plünderung der Fischbestände' gekennzeichnet. Die Kabeljaubestände stünden kurz vor dem Zusammenbruch, sagte der WWF-Fischereixperte. Ein notwendiger Fangstopp für diese Fischart sei jedoch nicht geplant. Ein weiteres ungelöstes Problem sei das Beifang-Problem. Der WWF-Sprecher brachte dazu folgendes Rechenbeispiel: Auf jedes Kilo Plattfisch, das auf den Tellern lande, gingen über fünf Kilo ungenutzter Beifang in die Netze der Fangflotten.",
                 correctAnswer: "i"
               }
             ],
@@ -2095,11 +2207,11 @@
             ]
           },
           { 
-            id:"s2", 
-            title:"Leseverstehen, Teil 2", 
-            points:25,
+            id: "s2", 
+            title: "Leseverstehen, Teil 2", 
+            points: 25,
             passageTitle: "Müdigkeit und juckende Augen - Arbeit in Großraumbüros",
-            passage: `Die deutsche Sehnsucht nach dem Einzelbüro Dieser Artikel entsteht unter katastrophalen Bedingungen. Links vom Autor, keinen halben Meter entfernt, diskutieren die Onlineredakteure gerade über portugiesische Bankgeschäfte. Von rechts eilt nun der befreundete Kollege heran: "Sag mal, hast du eine Ahnung, ob das Bayern- Spiel heute Abend live im Fernsehen übertragen wird?" Und da, die Chefin, ganz aufgeregt winkt sie herüber: "Wann wird denn die Geschichte endlich fertig? Die hätte vor einer halben Stunde ins Korrektorat gemusst. Beeil dich bitte!" Was wir Arbeitenden im Großraumbüro immer schon ahnten, haben Schweizer Forscher nun erstmals auf breiter wissenschaftlicher Basis nachgewiesen: Großraum ist schlecht. Zumindest für diejenigen, die im Großraum arbeiten müssen. Mag sein, dass die Chefs in ihren Einzelbüros da anderer Meinung sind. Gut 1200 Beschäftigte aus unterschiedlichsten Berufen hat die Hochschule in Luzern befragt. Die Ergebnisse der Erhebung sind eindeutig. Beispiel Lärm: In Büros mit mehr als 16 Mitarbeitern fühlen sich 80% der Befragten regelmäßig durch Gespräche oder Telefonate gestört, in Zweierbüros sind es nicht mal 30%. Auch was die alltäglichen Büro Probleme betrifft, ist der Großraum von Nachteil. Einerlei, wonach die Forscher nun fragten, ob nach Müdigkeit, Schweregefühl im Kopf, juckende Augen oder verstopfte Nase – immer litten Mitarbeiter im Großraumbüro am stärksten. Wundert da, dass vier von zehn Großraumbeschäftigten mit ihrer Bürosituation "im Allgemeinen" sehr oder gar außerordentlich unzufrieden sind? Zum Vergleich: Acht von zehn Arbeitnehmern mit Einzelbüro geben an, sie seien ziemlich, sehr oder fast 50% außerordentlich zufrieden." Einzelbüros für alle müsste die Lösung lauten, doch der Trend geht in die andere Richtung: Offene Raumstrukturen nehmen zu. Kritiker dieser Entwicklung sehen dahinter vor allem einen Grund: Arbeitgeber wollen die Mieten und Heizkosten niedrig halten. Aber zumindest ein Argument dürfte auch die Arbeitgeber interessieren: Der Schweizer Studie zufolge ist die Zahl der Krankheitstage bei Beschäftigten in Großraumbüros deutlich höher als bei anderen. Deutsche Sehnsucht nach dem Einzelbüro Mein Schreibtisch. Mein Computer. Mein Büro. Das Einzelzimmer war fester Bestandteil der deutschen Bürokultur. Aber auch heute haben es noch viele und wer keines hat, träumt zumindest davon. Diese Sehnsucht ist typisch deutsch. "Verglichen mit den Beschäftigten in anderen Ländern, sitzen wir sehr bequem. Auch wenn alle Mitarbeiter die gleiche Möblierung haben, sitzen wir alle doch an unseren eigenen Schreibtischen, benutzen unsere eigenen Aktenschränke und möchten am liebsten die Tür zumachen können", sagt Robert Menke von der Immobilienberatung Kuschmann & Wakefield. Die hat eine Studie veröffentlicht, wonach deutsche Angestellte im internationalen Vergleich den meisten Platz haben: durchschnittlich 30 Quadratmeter Mietfläche per Kopf. Damit ist natürlich nicht nur das Schreibtisch-Areal gemeint, auch der Flur oder Küchenzeilen sind - falls vorhanden - eingerechnet. Doch umso erstaunlicher sind die Quadratmeterzahlen am anderen Ende der Statistik: In einigen osteuropäischen Ländern, aber auch in Schottland kommt jeder Beschäftigte gerade mal auf 10 Quadratmeter, selbst in Österreich sind es nur zwölf. Im angelsächsischen Raum gibt es viel mehr Großraumbüros als bei uns. In London, wo Büroraum weltweit mit am teuersten ist, ist etwa eine Zusammenarbeit auf eine Fläche von 600 Quadratmetern und mehr ganz normal. Normal "Häufig teilen sich sogar mehrere Mitarbeiter einen Arbeitsplatz. Statt eines festen Schreibtisches verfügt dann jeder über einen Rollcontainer. Der wird immer dorthin mitgenommen, wo gerade ein Arbeitsplatz frei ist. Das geht in der Regel über alle Hierarchiestufen", sagt Menke. Robert Menke erkennt auch in Deutschland "in einigen Bereichen eine Amerikanisierung des Büroraumes". Banken und Unternehmen im Telekommunikationssektor wären da vorne dabei. Doch das sind noch Ausnahmen. Nach wie vor arbeiten die meisten Angestellten entweder in kleinen Gruppen in etwas größeren Büros oder in "Einzelzellen", wie Büros für eine Person in der Sprache der Immobilienmakler heißen. Laut der Studie überlegen zwar 40% der befragten Unternehmer, ihre Großraumflächen zu erweitern oder die Arbeitsplätze flexibel zu gestalten, aber "richtige Großraumbüros gibt es eher selten", sagt Menke.`,
+            passage: `Die deutsche Sehnsucht nach dem Einzelbüro Dieser Artikel entsteht unter katastrophalen Bedingungen. Links vom Autor, keinen halben Meter entfernt, diskutieren die Onlineredakteure gerade über portugiesische Bankgeschäfte. Von rechts eilt nun der befreundete Kollege heran: "Sag mal, hast du eine Ahnung, ob das Bayern- Spiel heute Abend live im Fernsehen übertragen wird?" Und da, die Chefin, ganz aufgeregt winkt sie herüber: "Wann wir denn die Geschichte endlich fertig? Die hätte vor einer halben Stunde ins Korrektorat gemusst. Beeil dich bitte!" Was wir Arbeitenden im Großraumbüro immer schon ahaten, haben Schweizer Forscher nun erstmals auf breiter wissenschaftlicher Basis nachgewiesen: Großraum ist schlecht. Zumindest für diejenigen, die im Großraum arbeiten müssen. Mag sein, dass die Chefs in ihren Einzelbüros da anderer Meinung sind. Gut 1200 Beschäftigte aus unterschiedlichsten Berufen hat die Hochschule in Luzern befragt. Die Ergebnisse der Erhebung sind eindeutig. Beispiel Lärm: In Büros mit mehr als 16 Mitarbeitern fühlen sich 80% der Befragten regelmäßig durch Gespräche oder Telefonate gestört in Zweierbüros sind es nicht mal 30%. Auch was die alltäglichen Büro Probleme betrifft, ist der Großraum von Nachteil. Einerlei, wonach die Forscher nun fragten, ob nach Müdigkeit, Schweregefühl im Kopf, juckende Augen oder verstopfte Nase immer litten Mitarbeiter im Großraumbüro am stärksten. Wundert da, dass vier von zehn Großraumbeschäftigten mit ihrer Bürosituation im Allgemeinen" sehr oder gar außerordentlich unzufrieden sind? Zum Vergleich: Acht von zehn Arbeitnehmern mit Einzelbüro geben an, sie seien ziemlich, sehr oder fast 50% außerordentlich zufrieden." Einzelbüros für alle müsste die Lösung lauten, doch der Trend geht in die andere Richtung: Offene Raumstrukturen nehmen zu. Kritiker dieser Entwicklung sehen dahinter vor allem einen Grund: Arbeitgeber wollen die Mieten und Heizkosten niedrig halten. Aber zumindest ein Argument dürfte auch die Arbeitgeber interessieren: Der Schweizer Studie zufolge ist die Zahl der Krankheitstage bei Beschäftigten in Großraumbüros deutlich höher als bei anderen. deutsche Sehnsucht nach dem Einzelbüro Mein Schreibtisch. Mein Computer. Mein Büro. Das Einzelzimmer war fester Bestandteil der deutschen Bürokultur. Aber auch heute haben es noch viele und wer keines hat, träumt zumindest davon. Diese Sehnsucht ist typisch deutsch. "Verglichen mit den Beschäftigten in anderen Ländern, sitzen wir sehr bequem. Auch wenn alle Mitarbeiter die gleiche Möblierung haben, sitzen wir alle doch an unseren eigenen Schreibtischen, benutzen unsere eigenen Aktienschränke und möchten am liebsten die Tür zumachen können", sagt Robert Menke von der Immobilienberatung Kuschmann & Wakefield. Die hat eine Studie veröffentlicht, wonach deutsche Angestellte im internationalen Vergleich den meisten Platz haben: durchschnittlich 30 Quadratmeter Mietfläche per Kopf. Damit ist natürlich nicht nur das Schreibtisch-Areal gemeint, auch der Flur oder Küchenzeilen sindfalls vorhanden - eingerechnet. Doch umso erstaunlicher sind die Quadratmeterzahlen am anderen Ende der Statistik: In einigen osteuropäischen Ländern, aber auch in Schottland kommt jeder Beschäftigte gerade mal auf 10 Quadratmeter, selbst in Österreich sind es nur zwölf. Im angelsächsischen Raum gibt es viel mehr Großßraumbüros als bei uns. In London, wo Baroraum weltweit mit am tewersten ist, ist etwa eine Zusammenarbeit auf eine Fläche von 600 Quadratmetern und mehr ganz normal, normal "Häufig teilen sich sogar mehrere Mitarbeiter einen Arbeitsplatz. Statt eines festen Schreibtisches verfügt dann jeder über einen Rollcontainer. Der wird immer dorthin mitgenommen, wo gerade ein Arbeitsplatz frei ist. Das geht in der Regel über alle Hierarchiestufen", sagt Menke. Robert Menke erkennt auch in Deutschland "in einigen Bereichen eine Amerikanisierung des Büroraumes". Banken und Unternehmer im Telekommunikationssektor wären da varne dabei. Doch das sind noch Ausnahmen. Nach wie vur arbeiten die meisten Angestellten entweder in kleinen Gruppen in etwas größeren Büros oder in "Einzelzellen" wie Büros für eine Person in der Sprache der Immobilienmakler heißen. Laut der Studie überlegen zwar 40% der befragten Unternehmer, ihre Großraumflächen zu erweitern oder die Arbeitsplätze flexibel zu gestalten, aber "richtige Grofßraumbüros gibt es eher selten", sagt Menke.`,
             questions: [
               {
                 id: "s2q1",
@@ -2143,7 +2255,7 @@
                   {id: "s2q4o2", text: "schließt die gemeinsam genutzten Flächen aus."},
                   {id: "s2q4o3", text: "wird in London oft unter mehreren Mitarbeitern aufgeteilt."}
                 ],
-                correctAnswer: "s2q4o3"
+                correctAnswer: "s2q4o1"
               },
               {
                 id: "s2q5", 
@@ -2159,25 +2271,25 @@
             ]
           },
           { 
-            id:"s3", 
-            title:"Leseverstehen, Teil 3", 
-            points:25,
+            id: "s3", 
+            title: "Leseverstehen, Teil 3", 
+            points: 25,
             passageTitle:"Aufgabe: Lesen Sie die zehn Situationen (11-20) und die zwölf Texte (A-L). Welcher Text passt zu welcher Situation? Sie können jeden Text nur einmal verwenden. Manchmal passt kein Text. Wählen Sie dann 'x'.",
             passage: "",
             questions:[],
             texts: [
-              {id: "A", text: "Infos zur Auslandsüberweisung Bitte verwenden Sie die Funktion Auslandsüberweisung für Zahlungen in Länder, die nicht zum SEPA-Zahlungsraum gehören. Zum SEPA-Zahlungsraum gehören die Mitgliedsstaaten der Europäischen Union sowie die Länder Island, Norwegen, Liechtenstein, die Schweiz und Monaco. In diesem Raum gilt die Inlandsüberweisung. Bürgerinnen und Bürger können damit günstiger überweisen. Für alle anderen Länder gilt die Auslandsüberweisung. Bitte beachten Sie, dass bei Auslandsüberweisungen in der Regel Spesen zu zahlen sind. Für nähere Auskünfte über deren Höhe wenden Sie sich bitte direkt an die Kundenbetreuung.", correctAnswer: "19"},
-              {id: "B", text: "Französische Muttersprachler bieten Übersetzungen Deutsch-Französisch und Englisch-Französisch von Schulzeugnissen, Lebensläufen, Bewerbungen (Anschreiben & Motivationsschreiben), Arbeitszeugnissen usw., Arbeitsverträgen, Versicherungsverträgen. Auf Wunsch erstellen wir Ihre Jobanzeigen für den französischsprachigen Raum, angepasst an die jeweils landesübliche Anzeigengestaltung. Einwandfreie Qualität; schnell, garantiert termingerecht und zu einem fairen Preis. Kostenvoranschlag innerhalb von zwei Tagen. Standort Wien. Lieferungen innerhalb der EU. Nutzen Sie zur Kontaktaufnahme bitte das Online-Formular am Ende dieser Seite.", correctAnswer: "20"},
-              {id: "C", text: "Als Austauschschüler/in verbringst du einige Monate oder ein ganzes Jahr im Ausland. Du kannst ein Land in Europa wählen, aber auch Länder auf einem anderen Kontinent, wie zum Beispiel Amerika oder Australien. In dem Land deiner Wahl wohnst du bei einer Gastfamilie. Du besuchst die reguläre Schule, gemeinsam mit Schülerinnen und Schülern aus dem Gastland. So lernst du die Lebensweise und die Traditionen anderer Menschen kennen. Natürlich lernst du auch die Sprache deines Gastlandes. Wir bieten Informationsveranstaltungen in allen Bundesländern an. Dort beantworten wir alle deine Fragen. Schau doch einfach bei uns vorbei! Wir freuen uns auf dich!", correctAnswer: "12"},
-              {id: "D", text: "Als gebürtige Engländerin, mit einem Studienabschluss in Englisch, lebe ich seit vielen Jahren in Österreich. Ich biete Übersetzungen vom Deutschen ins Englische an: Lebensläufe, Ausbildungsunterlagen, Präsentationen, Websites, Produktbeschreibungen, Firmenflyer usw. Ich habe 20 Jahre Erfahrung mit Übersetzungen. Zu meinen zufriedenen Kunden zählen namhafte Unternehmen aus dem In- und Ausland. Auf Wunsch schicke ich Ihnen gerne eine Liste mit Referenzen zu. Wenn es einmal besonders schnell gehen muss, übernehme ich Expressarbeiten auch an Wochenenden. Effizient und zu einem angemessenen Preis. susan@language.at www.susanlanguage.at", correctAnswer: "16"},
+              {id: "A", text: "Infos zur Auslandsüberweisung Bitte verwenden Sie die Funktion Auslandsüberweisung für Zahlungen in Länder, die nicht zum SEPA-Zahlungsraum gehören. Zum SEPA-Zahlungsraum gehören die Mitgliedsstaaten der Europäischen Union sowie die Länder Island, Norwegen, Liechtenstein, die Schweiz und Monaco. In diesem Raum gilt die Inlandsüberweisung. Bürgerinnen und Bürger können damit günstiger überweisen. Für alle anderen Länder gilt die Auslandsüberweisung. Bitte beachten Sie, dass bei Auslandsüberweisungen in der Regel Spesen zu zahlen sind. Für nähere Auskünfte über deren Höhe wenden Sie sich bitte direkt an die Kundenbetreuung.", correctAnswer: "14"},
+              {id: "B", text: "Französische Muttersprachler bieten Übersetzungen Deutsch-Französisch und Englisch-Französisch von Schulzeugnissen, Lebensläufen, Bewerbungen (Anschreiben & Motivationsschreiben), Arbeitszeugnissen usw., Arbeitsverträgen, Versicherungsverträgen. Auf Wunsch erstellen wir Ihre Jobanzeigen für den französischsprachigen Raum, angepasst an die jeweils landesübliche Anzeigengestaltung. Einwandfreie Qualität; schnell, garantiert termingerecht und zu einem fairen Preis. Kostenvoranschlag innerhalb von zwei Tagen. Standort Wien. Lieferungen innerhalb der EU. Nutzen Sie zur Kontaktaufnahme bitte das Online-Formular am Ende dieser Seite.", correctAnswer: "19"},
+              {id: "C", text: "Als Austauschschüler/in verbringst du einige Monate oder ein ganzes Jahr im Ausland. Du kannst ein Land in Europa wählen, aber auch Länder auf einem anderen Kontinent, wie zum Beispiel Amerika oder Australien. In dem Land deiner Wahl wohnst du bei einer Gastfamilie. Du besuchst die reguläre Schule, gemeinsam mit Schülerinnen und Schülern aus dem Gastland. So lernst du die Lebensweise und die Traditionen anderer Menschen kennen. Natürlich lernst du auch die Sprache deines Gastlandes. Wir bieten Informationsveranstaltungen in allen Bundesländern an. Dort beantworten wir alle deine Fragen. Schau doch einfach bei uns vorbei! Wir freuen uns auf dich!", correctAnswer: "13"},
+              {id: "D", text: "Als gebürtige Engländerin, mit einem Studienabschluss in Englisch, lebe ich seit vielen Jahren in Österreich. Ich biete Übersetzungen vom Deutschen ins Englische an: Lebensläufe, Ausbildungsunterlagen, Präsentationen, Websites, Produktbeschreibungen, Firmenflyer usw. Ich habe 20 Jahre Erfahrung mit Übersetzungen. Zu meinen zufriedenen Kunden zählen namhafte Unternehmen aus dem In- und Ausland. Auf Wunsch schicke ich Ihnen gerne eine Liste mit Referenzen zu. Wenn es einmal besonders schnell gehen muss, übernehme ich Expressarbeiten auch an Wochenenden. Effizient und zu einem angemessenen Preis. susan@language.at www.susanlanguage.at", correctAnswer: "20"},
               {id: "E", text: "Mit einem Konto bei der RUFA profitieren Sie von attraktiven Angeboten und von persönlicher Beratung. Wir haben das passende Konto für Sie – vom Girokonto bis zum Gratiskonto für Jugendliche. Jetzt aktuell: GRATIS Studentenkonto. Ihnen steht ein persönlicher Berater zur Seite, wenn Sie Auskunft oder Hilfe brauchen. Zusätzlich bietet Ihnen das Konto einige Vorteile, z. B. eine gratis Unfallversicherung bis 24 Jahre. Mit Ihrer RUFA-Clubkarte bekommen Sie außerdem Ermäßigungen in ausgewählten Shops und bei bestimmten Veranstaltungen.", correctAnswer: "18"},
-              {id: "F", text: "Wir laden Sie dazu ein, internationale Schülerinnen und Schüler bei Ihnen zu Hause aufzunehmen. Dabei bieten Sie einem jungen Menschen mehr als nur einen Platz zum Schlafen und etwas zu essen, Sie helfen ihm, sich in einer fremden Umgebung zurechtzufinden, andere Sitten und Gebräuche und eine fremde Sprache kennenzulernen. Eine Gastschülerin oder einen Gastschüler aufzunehmen ist eine wunderbare Möglichkeit, selbst eine andere Kultur kennenzulernen und gleichzeitig die eigene Kultur zu teilen. Im Alltag können Sie gemeinsam kulturelle Unterschiede entdecken und schätzen lernen. Egal ob Sie selbst Kinder haben, allein oder in einem klassischen Familienhaushalt leben: Wir freuen uns auf Ihre Bewerbung!", correctAnswer: "15"},
-              {id: "G", text: "Französisch ist Ihre Muttersprache? Wir suchen eine freie Mitarbeiterin oder einen Mitarbeiter für Übersetzungen vom Deutschen ins Französische. Sie arbeiten fallweise und von zuhause aus (keine feste Anstellung). Ihr Aufgabenbereich: Übersetzung von einfachen kurzen Texten (Anfragen, Beantwortung von Anfragen, Reaktion auf Beschwerden usw.). Wenn nötig führen Sie auch kurze Telefonate mit französischen Kundinnen oder Kunden. Sie werden von uns eingearbeitet. Sie lernen unsere Produkte und das Fachvokabular anhand zweisprachiger Unterlagen kennen. Bei Fragen stehen Ihnen unsere Mitarbeiter gerne zur Verfügung. Interessiert? Wir freuen uns auf Ihre Online-Bewerbung.", correctAnswer: "14"},
+              {id: "F", text: "Wir laden Sie dazu ein, internationale Schülerinnen und Schüler bei Ihnen zu Hause aufzunehmen. Dabei bieten Sie einem jungen Menschen mehr als nur einen Platz zum Schlafen und etwas zu essen, Sie helfen ihm, sich in einer fremden Umgebung zurechtzufinden, andere Sitten und Gebräuche und eine fremde Sprache kennenzulernen. Eine Gastschülerin oder einen Gastschüler aufzunehmen ist eine wunderbare Möglichkeit, selbst eine andere Kultur kennenzulernen und gleichzeitig die eigene Kultur zu teilen. Im Alltag können Sie gemeinsam kulturelle Unterschiede entdecken und schätzen lernen. Egal ob Sie selbst Kinder haben, allein oder in einem klassischen Familienhaushold leben: Wir freuen uns auf Ihre Bewerbung!", correctAnswer: "15"},
+              {id: "G", text: "Französisch ist Ihre Muttersprache? Wir suchen eine freie Mitarbeiterin oder einen Mitarbeiter für Übersetzungen vom Deutschen ins Französische. Sie arbeiten fallweise und von zuhause aus (keine feste Anstellung). Ihr Aufgabenbereich: Übersetzung von einfachen kurzen Texten (Anfragen, Beantwortung von Anfragen, Reaktion auf Beschwerden usw.). Wenn nötig führen Sie auch kurze Telefonate mit französischen Kundinnen oder Kunden. Sie werden von uns eingearbeitet. Sie lernen unsere Produkte und das Fachvokabular anhand zweisprachiger Unterlagen kennen. Bei Fragen stehen Ihnen unsere Mitarbeiter gerne zur Verfügung. Interessiert? Wir hören auf Ihre Online-Bewerbung.", correctAnswer: "14"},
               {id: "H", text: "Ein Tag im Zeichen der guten Nachbarschaft. Im Rahmen des europäischen Nachbarschaftstages wurde auch heuer wieder in unserem Bezirk zu gemeinsamem Kochen und Genießen eingeladen. Solche Veranstaltungen dienen dazu, andere Menschen und Kulturen besser kennenzulernen. Wie auch in den vergangenen Jahren wurde das Fest wieder sehr gut aufgenommen. Die Veranstalter erhielten begeisterte Mails. Da viele Leute die zahlreichen Spezialitäten aus aller Welt nachkochen möchten, finden Sie hier unser Online-Kochbuch.", correctAnswer: "17"},
-              {id: "I", text: "Konto-Neuheiten. Mit der neuen BaZa-App erledigen Sie Ihre Bankgeschäfte, wann und wo Sie wollen. Für die schnelle Überweisung unterwegs, mit ein paar Klicks: Geben Sie einfach den Namen Ihres BaZa-Kontaktes an, alles andere erledigt die App für Sie. Oder per Smartphone-Kamera: Sie fotografieren einen Zahlschein, und die App erfasst die Daten automatisch. Mit der App können Sie auch direkt mit Ihrer Kundenbetreuerin oder Ihrem Kundenbetreuer Kontakt aufnehmen, eine Nachricht schicken, einen Termin vereinbaren oder um einen Rückruf bitten. Für alle, die schon ein BaZa-Konto haben: jetzt die neue App herunterladen. Zum Download.", correctAnswer: ""},
-              {id: "J", text: "Seit einigen Jahren bietet die Volkshochschule Laiendolmetscherinnen und Laiendolmetscher an, die fremdsprachigen Eltern den Kontakt mit der Schule erleichtern sollen. Das Angebot soll dazu beitragen, die Beziehungen zwischen Eltern, Lehrerinnen und Lehrern sowie der Schulleitung zu verbessern. Das Ziel ist ein besseres Miteinander und mehr Verständnis füreinander. Die Laiendolmetscher werden von der VHS auf ihre Aufgabe vorbereitet. Momentan bietet die VHS Laiendolmetscher in den Sprachen Albanisch, Bosnisch, Kroatisch, Serbisch, Slowakisch, Rumänisch, Türkisch, Spanisch, Italienisch und Französisch an. In Zukunft soll das Angebot um weitere Sprachen erweitert werden.", correctAnswer: "13"},
-              {id: "K", text: "Spezialitäten aus der Küche. Viele klassische Gerichte, die in Österreich auf den Tisch kommen, stammen aus den ehemaligen Kronländern der Monarchie: das Schnitzel aus Italien, die Palatschinken aus Ungarn, Golatschen und Knödel aus dem heutigen Tschechien. Dazu kommen zahlreiche regionale Spezialitäten wie Kasnudeln aus Kärnten, Steirisches Wurzelfleisch oder Salzburger Nockerl. Dies und vieles mehr können Sie bei einem unserer Kochkurse kennenlernen. Besonders willkommen sind Menschen, die aus anderen Ländern zu uns gekommen sind. Die Liste der Veranstaltungen finden Sie weiter unten.", correctAnswer: ""},
-              {id: "L", text: "Am Weltspartag zur Bank. Der Weltspartag wurde am 1. Internationalen Sparkassenkongress in Mailand im Oktober 1924 ins Leben gerufen, um die Bevölkerung zum Sparen zu bringen. Offiziell wird der Weltspartag am 31. Oktober gefeiert, in Österreich manchmal auch am letzten Werktag vor dem 31. Oktober. Denn an diesem speziellen Tag sollen die Banken für Kunden geöffnet haben. Besonders bei Kindern ist der Weltspartag sehr beliebt. Sie erhalten nämlich kleine Geschenke, wenn sie an diesem Tag mit ihrem Sparschwein zur Bank kommen. Aber auch für Erwachsene gibt es am Weltspartag oft besondere Angebote.", correctAnswer: ""}
+              {id: "I", text: "Konto-Neuheiten. Mit der neuen BaZa-App erledigen Sie Ihre Bankgeschäfte, wann und wo Sie wollen. Für die schnelle Überweisung unterwegs, mit ein paar Klicks: Geben Sie einfach den Namen Ihres Baza-Kontaktes an, alles andere erledigt die App für Sie. Oder per Smartphone-Kamera: Sie fotografieren einen Zahlschein, und die App erfasst die Daten automatisch. Mit der App können Sie auch direkt mit Ihrer Kundenbetreuerin oder Ihrem Kundenbetreuer Kontakt aufnehmen, eine Nachricht schicken, einen Termin vereinbaren oder um einen Rückruf bitten. Für alle, die schon ein Baza-Konto haben: jetzt die neue App herunterladen. Zum Download.", correctAnswer: "16"},
+              {id: "J", text: "Seit einigen Jahren bietet die Volkshochschule Laiendolmetscherinnen und Laiendolmetscher an, die fremdsprachigen Eltern den Kontakt mit der Schule erleichtern sollen. Das Angebot soll dazu beitragen, die Beziehungen zwischen Eltern, Lehrerinnen und Lehrern sowie der Schulleitung zu verbessern. Das Ziel ist ein besseres Miteinander und mehr Verständnis füreinander. Die Laiendolmetscher werden von der VHS auf ihre Aufgabe vorbereitet. Momentan bietet die VHS Laiendolmetscher in den Sprachen Albanisch, Bosnisch, Kroatisch, Serbisch, Slowakisch, Rumänisch, Türkisch, Spanisch, Italienisch und Französisch an. In Zukunft soll das Angebot um weitere Sprachen erweitert werden.", correctAnswer: null},
+              {id: "K", text: "Spezialitäten aus der Küche. Viele klassische Gerichte, die in Österreich auf den Tisch kommen, stammen aus den ehemaligen Kronländern der Monarchie: das Schnitzel aus Italien, die Palatschinken aus Ungarn, Golatschen und Knödel aus dem heutigen Tschechien. Dazu kommen zahlreiche regionale Spezialitäten wie Kasnudeln aus Kärnten, Steirisches Wurzelfleisch oder Salzburger Nockerl. Dies und vieles mehr können Sie bei einem unserer Kochkurse kennenlernen. Besonders willkommen sind Menschen, die aus anderen Ländern zu uns gekommen sind. Die Liste der Veranstaltungen finden Sie weiter unten.", correctAnswer: "11"},
+              {id: "L", text: "Am Weltspartag zur Bank. Der Weltspartag wurde am 1. Internationalen Sparkassenkongress in Mailand im Oktober 1924 ins Leben gerufen, um die Bevölkerung zum Sparen zu bringen. Offiziell wird der Weltspartag am 31. Oktober gefeiert, in Österreich manchmal auch am letzten Werktag vor dem 31. Oktober. Denn an diesem speziellen Tag sollen die Banken für Kunden geöffnet haben. Besonders bei Kindern ist der Weltspartag sehr beliebt. Sie erhalten nämlich kleine Geschenke, wenn sie an diesem Tag mit ihrem Sparschwein zur Bank kommen. Aber auch für Erwachsene gibt es am Weltspartag oft besondere Angebote.", correctAnswer: "12"}
             ],
             situations: [
               {id: "11", text: "Sie suchen ein Au-pair Mädchen, das im Haushalt helfen und mit Ihren Kindern Englisch sprechen soll."},
@@ -2193,23 +2305,63 @@
             ]
           },
           { 
-            id:"s4", 
-            title:"Sprachbausteine, Teil 1", 
-            points:15,
+            id: "s4", 
+            title: "Sprachbausteine, Teil 1", 
+            points: 15,
             passageTitle:"Aufgabe: Ergänzen Sie den Text. Wählen Sie für jede Lücke das passende Wort.",
             passage: "",
             questions:[],
             fillBlanks: [
-              { id: "21", options: ["an", "für", "über"], correctAnswer: "über" },
-              { id: "22", options: ["daher", "gar", "sicher"], correctAnswer: "gar" },
-              { id: "23", options: ["besonders", "einfach", "kaum"], correctAnswer: "besonders" },
-              { id: "24", options: ["allerdings", "außerdem", "schließlich"], correctAnswer: "schließlich" },
-              { id: "25", options: ["abgerückt", "entfernt", "weggezogen"], correctAnswer: "entfernt" },
-              { id: "26", options: ["ändern", "verwechseln", "wechseln"], correctAnswer: "wechseln" },
-              { id: "27", options: ["gesagt", "sagend", "zu sagen"], correctAnswer: "gesagt" },
-              { id: "28", options: ["kommende", "kommendem", "kommenden"], correctAnswer: "kommenden" },
-              { id: "29", options: ["als", "je", "weil"], correctAnswer: "je" },
-              { id: "30", options: ["ist", "war", "wäre"], correctAnswer: "wäre" }
+              {
+                id: "21",
+                options: ["an", "für", "über"],
+                correctAnswer: "über"
+              },
+              {
+                id: "22",
+                options: ["daher", "gar", "sicher"],
+                correctAnswer: "gar"
+              },
+              {
+                id: "23",
+                options: ["besonders", "einfach", "kaum"],
+                correctAnswer: "besonders"
+              },
+              {
+                id: "24",
+                options: ["allerdings", "außerdem", "schließlich"],
+                correctAnswer: "schließlich"
+              },
+              {
+                id: "25",
+                options: ["abgerückt", "entfernt", "weggezogen"],
+                correctAnswer: "entfernt"
+              },
+              {
+                id: "26",
+                options: ["ändern", "verwechseln", "wechseln"],
+                correctAnswer: "wechseln"
+              },
+              {
+                id: "27",
+                options: ["gesagt", "sagend", "zu sagen"],
+                correctAnswer: "gesagt"
+              },
+              {
+                id: "28",
+                options: ["kommende", "kommendem", "kommenden"],
+                correctAnswer: "kommenden"
+              },
+              {
+                id: "29",
+                options: ["als", "je", "weil"],
+                correctAnswer: "je"
+              },
+              {
+                id: "30",
+                options: ["ist", "war", "wäre"],
+                correctAnswer: "wäre"
+              }
             ],
             fillText: `Lieber Justus,
 
@@ -2217,11 +2369,13 @@ vielen Dank für deine Urlaubskarte, ________ die ich mich wirklich sehr gefreut
 
 Als Kind war ich mit meinen Eltern mal wandern, aber mir hat das damals nicht ________ gefallen. Ich war auch noch klein und hatte keine Lust, so lange zu laufen.
 
-Heute fahre ich lieber an den Strand und mache einen schönen Badeurlaub. Den ganzen Tag lesen, in der Sonne liegen, ab und zu mal ins Wasser gehen - ________ habe ich schon im Alltag genug Stress.
+Heute fahre ich lieber an den Strand und mache einen schönen Badeurlaub. Den ganzen Tag lesen, in der Sonne liegen, ab und zu mal ins Wasser gehen ________ habe ich schon im Alltag genug Stress.
 
-Dabei fällt mir ein: Wie ist eigentlich deine neue Stelle? Du arbeitest doch jetzt in dieser internationalen Baufirma, oder? Bist du jetzt schneller im Büro als früher oder ist die Firma sogar noch weiter ________ als deine alte? Du musstest ja immer ziemlich lange fahren, daran erinnere ich mich noch gut!
+Dabei fällt mir ein: Wie ist eigentlich deine neue Stelle? Du arbeitest doch jetzt in dieser internationalen Baufirma, oder? Bist du jetzt schneller im Büro als früher oder ist die Firma sogai noch weiter ________ als deine alte? Du musstest ja immer ziemlich lich lange fahren, fahr daran
 
-Ich denke im Moment auch darüber nach, die Stelle zu ________. Mein Chef und meine Kollegen sind zwar total nett und die Bezahlung ist auch gut, aber ich mache fast jeden Tag das Gleiche - und das jetzt schon seit über zehn Jahren. Ehrlich ________, ich langweile mich in den letzten Monaten immer häufiger und würde gerne noch mal etwas Neues ausprobieren. Deshalb mache ich ab dem ________ Monat erst mal eine Weiterbildung, sonst hätte ich wohl nicht so gute Chancen, eine neue Stelle zu bekommen. Schließlich wird es auch immer schwieriger, - ________ älter man ist. Die meisten Arbeitgeber wollen doch lieber jüngere Angestellte.
+erinnere ich mich noch gut!
+
+Ich denke im Moment auch darüber nach, die Stelle zu________ Mein Chef und meine Kollegen sind zwar total nett und die Bezahlung ist auch gut, aber ich mache fast jeden Tag das Gleiche - und das jetzt schon seit über zehn Jahren. Ehrlich ________ langweile ich mich in den letzten Monaten immer häufiger und würde gerne noch mal etwas Neues ausprobieren. Deshalb mache ich ab dem ________ Monat erst mal eine Weiterbildung, sonst hätte ich wohl nicht so gute Chancen, eine neue Stelle zu bekommen. Schließlich wird es auch immer schwieriger, -________ älter man ist. Die meisten Arbeitgeber wollen doch lieber jüngere Angestellte.
 
 Wie ________ es, wenn wir uns demnächst treffen würden? Wir könnten in diesem neuen Restaurant in der Innenstadt essen gehen. Melde dich doch einfach mal wieder!
 
@@ -2230,141 +2384,72 @@ Viele Grüße
 Richard`
           },
           { 
-            id:"s5", 
-            title:"Sprachbausteine, Teil 2", 
-            points:15,
+            id: "s5", 
+            title: "Sprachbausteine, Teil 2", 
+            points: 15,
             passageTitle:"Aufgabe: Lesen Sie den Text und entscheiden Sie, welches Wort in welche Lücke passt. Sie können jedes Wort nur einmal verwenden. Nicht alle Wörter passen in den Text.",
             passage: "",
             questions:[],
             fillBlanks2: [
-              { id: "31", options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"], correctAnswer: "GEHÖREN" },
-              { id: "32", options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"], correctAnswer: "BLEIBT" },
-              { id: "33", options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"], correctAnswer: "MANCHER" },
-              { id: "34", options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"], correctAnswer: "ALS" },
-              { id: "35", options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"], correctAnswer: "FERTIG" },
-              { id: "36", options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"], correctAnswer: "WINK" },
-              { id: "37", options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"], correctAnswer: "MIT" },
-              { id: "38", options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"], correctAnswer: "TAKT" },
-              { id: "39", options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"], correctAnswer: "KLAR" },
-              { id: "40", options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"], correctAnswer: "WAS" }
+              {
+                id: "31",
+                options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"],
+                correctAnswer: "GEHÖREN"
+              },
+              {
+                id: "32", 
+                options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"],
+                correctAnswer: "BLEIBT"
+              },
+              {
+                id: "33",
+                options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"],
+                correctAnswer: "MANCHER"
+              },
+              {
+                id: "34",
+                options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"],
+                correctAnswer: "ALS"
+              },
+              {
+                id: "35",
+                options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"],
+                correctAnswer: "FERTIG"
+              },
+              {
+                id: "36",
+                options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"],
+                correctAnswer: "WINK"
+              },
+              {
+                id: "37",
+                options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTig", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"],
+                correctAnswer: "MIT"
+              },
+              {
+                id: "38",
+                options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"],
+                correctAnswer: "TAKT"
+              },
+              {
+                id: "39",
+                options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"],
+                correctAnswer: "KLAR"
+              },
+              {
+                id: "40",
+                options: ["ALS", "BEHÄLT", "DAGEGEN","BLEIBT", "FERTIG", "WINK", "GEHÖREN", "JEDER", "MANCHER", "KLAR", "TAKT", "MIT", "TIPP", "WAS"],
+                correctAnswer: "WAS"
+              }
             ],
             fillText2: `Im Restaurant
 
-Eine unterhaltsame, schöne und gesellige Zeit. Das stellt man sich unter einem guten Essen vor. Störend wirkt da der ausführliche Erlebnisbericht der letzten Operation im Krankenhaus oder das Klingeln des Handys. Sowohl Gastgeber als Gast sollen alles dafür tun, dass das gemeinsame Essen Freude macht. Das Handy stellt man selbstverständlich ab. Das Essen beginnt, wenn der Gastgeber zur Serviette greift oder zum Gruß sein Glas erhebt. Besonders bei Kindern ein unbeliebtes Thema: die richtige Körperhaltung beim Essen. Die Arme ________ nicht auf den Tisch und die Hände nicht unter den Tisch. Man sitzt gerade, ohne unruhig hin und her zu rücken. Die Beine werden nebeneinander gestellt, nicht übereinander gelegt. Die Schuhe ________ in jedem Fall an. Nur keine Angst vor guten Restaurants mit ihrem Luxus! Denn je besser die Küche, umso aufmerksamer ist in der Regel das Personal. Doch schon bei der Anrede der Bedienung steht so ________ vor einem Problem. Die Bedienung ________ 'Fräulein' an den Tisch zu rufen, ist in Zeiten der Gleichberechtigung veraltet. 'Herr Ober' oder 'Bedienung' ist ________ noch möglich, aber auch schon etwas ungewöhnlich. Am besten versucht man sich Blickkontakt zu verschaffen, um mit einem kleinen ________ mit der Hand den Kellner an den Tisch zu bitten. Zudem gibt es zwischen Gast und Service eine Zeichensprache. Schließt der Gast die Speisekarte und legt sie auf den Tisch, ist dies für den Kellner das Signal, die Bestellung aufzunehmen. Ist man mit dem Essen ________, legt man das Besteck parallel nebeneinander auf den rechten Tellerrand. Der Kellner wird dann abräumen. Macht man hingegen nur eine Pause, wird es gekreuzt oder offen auf den Teller gelegt. Beim Bezahlen ist ________ gefragt. Übernimmt ein Gastgeber die Kosten, macht er dies dem Kellner ________. Ein 'Bringen Sie mir bitte die Rechnung' reicht da völlig aus. Möchte man hingegen getrennt bezahlen, ________ durchaus üblich ist, teilt man dies ebenfalls rechtzeitig der Bedienung mit. In Deutschland gibt man, je nach Zufriedenheit mit dem Service und der Höhe der Gesamtsumme, zwischen drei und zehn Prozent Trinkgeld. Ist man mit dem Service unzufrieden gewesen, gibt man kein Trinkgeld.`
+Eine unterhaltsame, schöne und gesellige Zeit. Das stellt man sich unter einem guten Essen vor. Störend wirkt da der anschauliche Erlebnisbericht der letzten Operation im Krankenhaus oder das Klingeln des Handys. Sowohl Gastgeber als Gast sollen alles dafür tun, dass das gemeinsame Essen Freude macht. Das Handy stellt man selbstverständlich ab. Das Essen beginnt, wenn der Gastgeber zur Serviette greift oder zum Gruß sein Glas erhebt. Besonders bei Kindern ein unbeliebtes Thema: die richtige Körperhaltung beim Essen. Die Arme ________ nicht auf den Tisch und die Hände nicht unter den Tisch. Mal sitzt gerade, ohne unruhig hin und her zu ricken. Die Beine werden nebeneinander gestellt, nicht übereinander gelegt. Die Schuhe ________ in jedem Fall an. Nur keine Angst vor guten Restaurants mit ihrem Luxus! Denn je besser die Küche, umso aufmerksamer ist in der Regel das Personal. Doch schon bei der Anrede der Bedienung steht so ________ vor einem Problem. Die Bedienung ________ 'Fräulein' an den Tisch zu rufen, ist in Zeiten dert Gleichberechtigung veraltet. 'Herr Ober' oder 'Bedienung' ist ________ noch möglich, aber auch schon etwas ungewöhnlich. Am besten versucht man sich Blickkontakt zu verschaffen, um mit einem kleinen ________ mit der Hand den Kellner an den Tisch zu bitten. Zudem gibt es zwischen Gast und Service eine Zeichensprache. Schließt der Gast die Speisekarte und legt sie auf den Tisch, ist dies für den Kellner dasSignal, die Bestellung aufzunehmen. Ist man mit dem Essen ________, legt man das Besteck parallel nebeneinander auf den rechten Tellerrand. Der Kellner wir dann abräumen. Macht man hingegen nur eine Pause, wird es gekreuzt oder offen auf den Teller gelegt. Beim Bezahlen ist ________ gefragt. Übernimmt ein Gastgeber die Kosten, macht er dies dem Kellner ________. Ein 'Bringen Sie mir bitte die Rechnung' reicht da völlig aus. Möchte man hingegen getrennt bezahlen, ________ durchaus üblich ist, teilt man dies ebenfalls rechtzeitig der Bedienung mit. In Deutschland gibt man, je nach Zufriedenheit mit dem Service und der Höhe der Gesamtsumme zwischen drei und zehn Prozent Trinkgeld. Ist man mit dem Service unzufrieden gewesen, gibt man kein Trinkgeld.`
           }
         ]
-      },
-      
-      hoeren: {
-        id: "exam-hörverstehen",
-        durationSec: 17 * 60,
-        sections: [
-          { 
-            id:"hörverstehen1", 
-            title:"Hörverstehen, Teil 1", 
-            points:25,
-            correctAnswers: {
-              "41": "falsch",
-              "42": "falsch",
-              "43": "falsch",
-              "44": "richtig",
-              "45": "richtig"
-            },
-            questions: [
-              { id: "41", text: "Auf der Insel Bali wurden neue Maßnahmen zur Müllentsorgung beschlossen." },
-              { id: "42", text: "In Nordfrankreich wird nach einem entlaufenen Panther gesucht." },
-              { id: "43", text: "Die Mietervereinigung rät Mieterinnen und Mietern, die Betriebskosten nicht zu bezahlen." },
-              { id: "44", text: "Der Sekt-Hersteller hat die Pläne für sein Bauvorhaben geändert." },
-              { id: "45", text: "Die Löscharbeiten sind noch nicht abgeschlossen." }
-            ]
-          },
-          { 
-            id:"hörverstehen2", 
-            title:"Hörverstehen, Teil 2", 
-            points:25,
-            correctAnswers: {
-              "46": "falsch",
-              "47": "richtig",
-              "48": "richtig",
-              "49": "richtig",
-              "50": "falsch",
-              "51": "falsch",
-              "52": "richtig",
-              "53": "falsch",
-              "54": "richtig",
-              "55": "richtig"
-            },
-            questions: [
-              { id: "46", text: "Roland Wünschmann arbeitet Vollzeit als Fußballtrainer bei Viktoria Köln." },
-              { id: "47", text: "Viktoria Köln möchte am Ende der Spielsaison aufsteigen." },
-              { id: "48", text: "Zu Beginn dieser Saison hat ein Spieler Viktoria Köln verlassen." },
-              { id: "49", text: "Neue Spieler kommen bei Viktoria Köln immer aus der eigenen Jugendmannschaft." },
-              { id: "50", text: "Die Mannschaft von Viktoria Köln hat Schwächen in der Abwehr." },
-              { id: "51", text: "Roland Wünschmann wagt die Prognose, dass diese Saison der 1. FC Mönchengladbach Meister wird." },
-              { id: "52", text: "Roland Wünschmann kann seinen Beruf und sein Ehrenamt als Fußballtrainer miteinander vereinbaren." },
-              { id: "53", text: "Auch die Frau von Roland Wünschmann engagiert sich im Fußball." },
-              { id: "54", text: "Der Vereinsvorstand schätzt Herrn Wünschmanns Arbeit." },
-              { id: "55", text: "Roland Wünschmann ist mit der bisherigen Nachwuchsförderung des Vereins noch nicht voll zufrieden." }
-            ]
-          },
-          { 
-            id:"hörverstehen3", 
-            title:"Hörverstehen, Teil 3", 
-            points:25,
-            correctAnswers: {
-              "56": "richtig",
-              "57": "falsch",
-              "58": "falsch",
-              "59": "falsch",
-              "60": "richtig"
-            },
-            questions: [
-              { id: "56", text: "Sie können im Internet prüfen, ob Ihre aktuelle Bestellung schon unterwegs ist." },
-              { id: "57", text: "Man kann für die Nachtveranstaltung noch Karten im Internet kaufen." },
-              { id: "58", text: "Die Teilnahme an der Party im Burghof kostet nichts." },
-              { id: "59", text: "In Bamberg kann man in der nächsten Woche besonders günstig Mitglied in einem Sportverein werden." },
-              { id: "60", text: "Wer ein wichtiges Anliegen hat, soll eine andere Nummer wählen." }
-            ]
-          }
-        ]
-      },
-      
-      schreiben: {
-        id: "exam-schreiben-001",
-        durationSec: 30 * 60,
-        sections: [
-          { 
-            id:"s1", 
-            title:"Schreiben, Teil 1", 
-            points:45,
-            passageTitle:"Aufgabe: Schreiben Sie eine E-Mail",
-            passage: "",
-            writingTask: {
-              prompt: `Backstage-Musik
+      };
 
-Sie haben Geld bezahlt, um hinter die Kulissen eines Theaterstücks zu gehen. 
-Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme sehen.`,
-              requirements: [
-                "Warum waren Sie unzufrieden?",
-                "Warum haben Sie sich für diese Vorstellung entschieden? Was hat Sie daran interessiert?",
-                "Was erwarten Sie von den Veranstaltern, um den Service zu verbessern?"
-              ],
-              wordCount: 0
-            }
-          }
-        ]
-      }
-    };
-
-    // ===== LESEN PAGE FUNCTIONALITY =====
-    function initLesenPage() {
-      const exam = EXAM_DATA.lesen;
-      
-      window.selectedHeadingId = null;
-      window.selectedSituationId = null;
-      window.selectedWordId = null;
-      window.selectedWord = null;
-      
+      /* ===== State & DOM refs ===== */
       let state = { 
         sectionIndex: 0, 
         questionIndex: 0, 
@@ -2373,9 +2458,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null,
-        examEnded: false,
-        currentPage: 'lesen'
+        timerInterval: null
       };
       const topTiles = document.getElementById('topTiles-lesen');
       const passageTitleEl = document.getElementById('passageTitle-lesen');
@@ -2390,30 +2473,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
       const resetBtn = document.getElementById('resetBtn-lesen');
       const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
 
-      function handleTimeExpired() {
-        if (state.examEnded) return;
-        state.examEnded = true;
-        
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-          state.timerInterval = null;
-        }
-        
-        state.showResults = true;
-        renderAll();
-        
-        setTimeout(() => {
-          if (state.sectionIndex < exam.sections.length - 1) {
-            state.sectionIndex++;
-            state.showResults = false;
-            state.examEnded = false;
-            renderAll();
-          } else {
-            showPage('hoeren-page');
-          }
-        }, 2000);
-      }
-
+      /* ===== Timer Functions ===== */
       function startTimer(){
         if(state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -2424,7 +2484,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
           if(state.remaining <= 0){
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
-            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -2438,7 +2497,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
-        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -2449,10 +2507,11 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
       }
 
+      /* ===== Reset Section Function ===== */
       function resetCurrentSection() {
         const currentSection = exam.sections[state.sectionIndex];
         
-        if (confirm(`Möchten Sie wirklich den Teil "${currentSection.title}" zurücksetzen?`)) {
+        if (confirm(`Möchten Sie wirklich den Teil "${currentSection.title}" zurücksetzen? Alle Antworten in diesem Teil werden gelöscht.`)) {
           if (currentSection.id === 's1') {
             currentSection.texts.forEach(text => {
               delete state.answers[text.id];
@@ -2479,6 +2538,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         }
       }
 
+      /* ===== Render ===== */
       function renderTopTiles(){ 
         topTiles.innerHTML=''; 
         exam.sections.forEach((sec,idx)=>{ 
@@ -2500,8 +2560,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
       }
 
       function renderAll(){
-        if (state.examEnded) return;
-        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         sectionNameEl.textContent = section.title;
@@ -2530,7 +2588,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
       function renderPart1(){
         const section = exam.sections[state.sectionIndex];
         
-        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. (Klicken: Titel auswählen → auf Text klicken)</div>`;
+        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. Sie können jede Überschrift nur einmal verwenden.</div>`;
         
         section.texts.forEach((text, idx) => {
           const letter = String.fromCharCode(97 + idx);
@@ -2540,7 +2598,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
             <div class="text-container">
               <div class="text-title">Text ${letter.toUpperCase()}</div>
               <div class="text-content">${text.content}</div>
-              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}" onclick="window.lesenApp.handleSlotClick('${text.id}')">
+              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}">
                 ${selectedHeading ? getHeadingText(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
               </div>
             </div>
@@ -2554,10 +2612,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
           const isUsed = section.texts.some(text => state.answers[text.id] === heading.id);
           
           headingsHTML += `
-            <div class="heading-item ${isUsed ? 'used' : ''} ${window.selectedHeadingId === heading.id ? 'selected' : ''}" 
-                 draggable="${!isUsed}" 
-                 data-heading-id="${heading.id}"
-                 onclick="window.lesenApp.handleHeadingClick('${heading.id}')">
+            <div class="heading-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-heading-id="${heading.id}">
               ${heading.id}) ${heading.text}
             </div>
           `;
@@ -2571,43 +2626,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         
         questionBodyEl.innerHTML = '';
         questionTitleEl.textContent = '';
-      }
-
-      function handleHeadingClick(headingId) {
-        const section = exam.sections[state.sectionIndex];
-        const isUsed = section.texts.some(text => state.answers[text.id] === headingId);
-        if (isUsed) return;
-        
-        if (window.selectedHeadingId === headingId) {
-          window.selectedHeadingId = null;
-        } else {
-          window.selectedHeadingId = headingId;
-        }
-        renderPart1();
-      }
-
-      function handleSlotClick(textId) {
-        if (window.selectedHeadingId) {
-          Object.keys(state.answers).forEach(key => {
-            if (state.answers[key] === window.selectedHeadingId) {
-              delete state.answers[key];
-            }
-          });
-          
-          state.answers[textId] = window.selectedHeadingId;
-          window.selectedHeadingId = null;
-          renderAll();
-        } 
-        else if (state.answers[textId]) {
-          delete state.answers[textId];
-          renderAll();
-        }
-      }
-
-      function getHeadingTextById(id){
-        const section = exam.sections[state.sectionIndex];
-        const heading = section.headings.find(h => h.id === id);
-        return heading ? `${heading.id}) ${heading.text}` : '';
       }
 
       function setupDragAndDrop(){
@@ -2642,7 +2660,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
             });
             
             state.answers[textId] = headingId;
-            window.selectedHeadingId = null;
             renderAll();
           });
         });
@@ -2686,7 +2703,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         const section = exam.sections[state.sectionIndex];
         
         let textsHTML = `
-          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. (Klicken: Situation auswählen → auf Text klicken)</div>
+          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. Sie können jede Situation nur einmal verwenden. Manchmal passt keine Situation.</div>
           <div class="texts-list">
             <h3>Texte (A-L)</h3>
         `;
@@ -2700,10 +2717,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
               <div class="text-letter">${text.id})</div>
               <div class="text-content">${text.text}</div>
               <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" data-text-id="${text.id}">
-                <span onclick="window.lesenApp.handleSituationSlotClick('${text.id}')">
-                  ${selectedSituation ? selectedSituation.text : (userAnswer === 'X' ? 'X - Keine passende Situation' : 'Ziehen Sie hier eine Situation hin')}
-                </span>
-                ${userAnswer === 'X' ? `<button class="restore-btn" onclick="window.lesenApp.restoreX('${text.id}')">↩️ Zurück</button>` : ''}
+                ${selectedSituation ? selectedSituation.text : (userAnswer === 'X' ? 'X - Keine passende Situation' : 'Ziehen Sie hier eine Situation hin')}
               </div>
             </div>
           `;
@@ -2724,13 +2738,10 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
           const isX = state.answers[situation.id] === 'X';
           
           situationsHTML += `
-            <div class="situation-item ${isUsed ? 'used' : ''} ${window.selectedSituationId === situation.id ? 'selected' : ''}" 
-                 draggable="${!isUsed}" 
-                 data-situation-id="${situation.id}"
-                 onclick="${!isUsed ? `window.lesenApp.handleSituationClick('${situation.id}')` : ''}">
+            <div class="situation-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-situation-id="${situation.id}">
               <div class="situation-number">${situationNumber}.</div>
               <div class="situation-text">${situation.text}</div>
-              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}'); event.stopPropagation();">X - Kein passender Text</button>` : ''}
+              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}')">X - Kein passender Text</button>` : ''}
             </div>
           `;
         });
@@ -2744,44 +2755,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         setupPart3DragAndDrop();
       }
 
-      function restoreX(textId) {
-        const situationId = Object.keys(state.answers).find(key => state.answers[key] === 'X' && key.includes('text'));
-        if (situationId) {
-          delete state.answers[situationId];
-        }
-        renderAll();
-      }
-
-      function handleSituationClick(situationId) {
-        if (window.selectedSituationId === situationId) {
-          window.selectedSituationId = null;
-        } else {
-          window.selectedSituationId = situationId;
-        }
-        renderPart3();
-      }
-
-      function handleSituationSlotClick(textId) {
-        if (window.selectedSituationId) {
-          Object.keys(state.answers).forEach(key => {
-            if (state.answers[key] === window.selectedSituationId) {
-              delete state.answers[key];
-            }
-          });
-          
-          state.answers[window.selectedSituationId] = textId;
-          window.selectedSituationId = null;
-          renderAll();
-        } 
-        else {
-          const situationId = Object.keys(state.answers).find(key => state.answers[key] === textId);
-          if (situationId) {
-            delete state.answers[situationId];
-            renderAll();
-          }
-        }
-      }
-
       function markNoMatch(situationId) {
         Object.keys(state.answers).forEach(key => {
           if(state.answers[key] === situationId) {
@@ -2790,7 +2763,21 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         });
         
         state.answers[situationId] = 'X';
-        window.selectedSituationId = null;
+        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
+        
+        renderAll();
+      }
+
+      function handleDrop(sourceId, targetId) {
+        Object.keys(state.answers).forEach(key => {
+          if(state.answers[key] === sourceId) {
+            delete state.answers[key];
+          }
+        });
+        
+        state.answers[sourceId] = targetId;
+        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
+        
         renderAll();
       }
 
@@ -2828,7 +2815,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
             });
             
             state.answers[situationId] = textId;
-            window.selectedSituationId = null;
             renderAll();
           });
         });
@@ -2852,13 +2838,19 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         section.fillBlanks.forEach(blank => {
           const userAnswer = state.answers[blank.id];
           const displayText = userAnswer ? userAnswer : '________';
-          tempText = tempText.replace(`BLANK_${blank.id}`, `<span class="blank-word ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}" onclick="window.lesenApp.handleBlankClick('${blank.id}')">${displayText}</span>`);
+          tempText = tempText.replace(`BLANK_${blank.id}`, `<span class="blank-word ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}">${displayText}</span>`);
         });
         
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort.</div>
+          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können die Lücken in beliebiger Reihenfolge ausfüllen.</div>
           <div class="fill-blank-container">${tempText}</div>
         `;
+        
+        document.querySelectorAll('.blank-word').forEach(blank => {
+          blank.addEventListener('click', (e) => {
+            showOptionsPopup(e.target);
+          });
+        });
         
         let optionsHTML = `<div class="horizontal-options" style="gap: 8px;">`;
         
@@ -2866,12 +2858,13 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
           const userAnswer = state.answers[blank.id];
           
           optionsHTML += `
-            <div class="option-row">
+            <div class="option-row" style="padding: 8px; margin-bottom: 5px;">
               <div class="option-number">${blank.id}</div>
               <div class="option-buttons">
                 ${blank.options.map(opt => `
                   <div class="option-btn ${userAnswer === opt ? 'selected' : ''}" 
-                       onclick="window.lesenApp.selectSprachbausteine1('${blank.id}', '${opt}')">
+                       onclick="window.lesenApp.selectSprachbausteine1('${blank.id}', '${opt}')" 
+                       style="padding: 6px 12px; font-size: 12px;">
                     ${opt}
                   </div>
                 `).join('')}
@@ -2887,10 +2880,17 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         headingsBankContainer.innerHTML = '';
       }
 
-      function handleBlankClick(blankId) {
-        const section = exam.sections[state.sectionIndex];
+      function showOptionsPopup(blankElement){
+        const existingPopup = document.querySelector('.options-popup');
+        if(existingPopup) {
+          existingPopup.remove();
+        }
+        
+        const blankId = blankElement.getAttribute('data-blank-id');
+        const section = exam.sections.find(s => s.id === 's4');
         const blank = section.fillBlanks.find(b => b.id === blankId);
-        if (!blank) return;
+        
+        if(!blank) return;
         
         const popup = document.createElement('div');
         popup.className = 'options-popup';
@@ -2901,17 +2901,12 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
           optionItem.textContent = opt;
           optionItem.onclick = () => {
             selectSprachbausteine1(blankId, opt);
-            document.querySelectorAll('.options-popup').forEach(p => p.remove());
+            popup.remove();
           };
           popup.appendChild(optionItem);
         });
         
-        document.querySelectorAll('.options-popup').forEach(p => p.remove());
-        
-        const element = document.querySelector(`[data-blank-id="${blankId}"]`);
-        if (element) {
-          element.appendChild(popup);
-        }
+        blankElement.appendChild(popup);
       }
 
       function selectSprachbausteine1(blankId, answer){
@@ -2921,7 +2916,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
 
       function renderSprachbausteine2(){
         const section = exam.sections[state.sectionIndex];
-        
         let textWithPlaceholders = section.fillText2;
         const placeholders = [];
         section.fillBlanks2.forEach(blank => {
@@ -2933,34 +2927,36 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         placeholders.forEach(item => {
           const userAnswer = state.answers[item.id];
           const displayText = userAnswer ? userAnswer : '________';
-          const span = `<span class="blank-slot ${userAnswer ? 'has-answer' : ''} ${window.selectedWordId === item.id ? 'selected' : ''}" data-blank-id="${item.id}" onclick="window.lesenApp.handleWordSlotClick('${item.id}')">${displayText}</span>`;
+          const span = `<span class="blank-slot ${userAnswer ? 'has-answer' : ''}" data-blank-id="${item.id}">${displayText}</span>`;
           textWithPlaceholders = textWithPlaceholders.replace(item.ph, span);
         });
 
         passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf eine Lücke und dann auf ein Wort aus der Liste.</div>
+          <div class="instructions">Klicken Sie على كل فراغ واختر الكلمة المناسبة. يمكنك استخدام كل كلمة مرة واحدة فقط.</div>
           <div class="fill-blank-container">${textWithPlaceholders}</div>
         `;
 
-        let wordBankHTML = `<div class="word-bank-vertical">`;
+        document.querySelectorAll('.blank-slot').forEach(slot => {
+          slot.addEventListener('click', (e) => {
+            showSprachbausteine2Options(slot);
+          });
+        });
+
+        let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
         const usedWords = Object.values(state.answers);
-        const bank = section.fillBlanks2[0] ? section.fillBlanks2[0].options : [];
-        
+        const bank = section.fillBlanks2[0].options;
         bank.forEach(word => {
           const isUsed = usedWords.includes(word);
-          const isSelected = window.selectedWord === word;
-          
           wordBankHTML += `
-            <div class="bank-word-vertical ${isUsed ? 'used' : ''} ${isSelected ? 'selected' : ''}" 
+            <div class="bank-word-vertical ${isUsed ? 'used' : ''}" 
                  draggable="${!isUsed}" 
                  data-word="${word}"
-                 onclick="${!isUsed ? `window.lesenApp.handleWordClick('${word}')` : ''}">
+                 ${!isUsed ? `onclick="window.lesenApp.selectSprachbausteine2FromBank('${word}')"` : ''}>
               ${word}
             </div>
           `;
         });
         wordBankHTML += `</div>`;
-        
         questionBodyEl.innerHTML = wordBankHTML;
         questionTitleEl.textContent = '';
         headingsBankContainer.innerHTML = '';
@@ -2968,231 +2964,217 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         setupSprachbausteine2DragAndDrop();
       }
 
-      function handleWordClick(word) {
-        if (window.selectedWord === word) {
-          window.selectedWord = null;
-          window.selectedWordId = null;
-        } else {
-          window.selectedWord = word;
-          window.selectedWordId = null;
-        }
-        renderSprachbausteine2();
-      }
-
-      function handleWordSlotClick(blankId) {
-        if (window.selectedWord) {
-          const word = window.selectedWord;
-          
-          Object.keys(state.answers).forEach(key => {
-            if (state.answers[key] === word) {
-              delete state.answers[key];
-            }
-          });
-          
-          state.answers[blankId] = word;
-          window.selectedWord = null;
-          renderSprachbausteine2();
-        } 
-        else if (state.answers[blankId]) {
-          delete state.answers[blankId];
-          renderSprachbausteine2();
-        }
-      }
+      let lastClickedSprachSlot = null;
 
       function setupSprachbausteine2DragAndDrop(){
-        const wordItems = document.querySelectorAll('.bank-word-vertical:not(.used)');
-        const blankSlots = document.querySelectorAll('.blank-slot');
-        
-        wordItems.forEach(item => {
-          item.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', e.target.dataset.word);
-          });
+        const bankWords = Array.from(document.querySelectorAll('.bank-word-vertical'));
+        bankWords.forEach(el => {
+          const word = el.dataset.word;
+          if(!el.classList.contains('used')){
+            el.setAttribute('draggable','true');
+          } else {
+            el.setAttribute('draggable','false');
+          }
+          el.removeEventListener('dragstart', el._dstart);
+          el._dstart = (e) => {
+            e.dataTransfer.setData('text/plain', word);
+            e.dataTransfer.setData('source', 'bank');
+          };
+          el.addEventListener('dragstart', el._dstart);
+
+          el.removeEventListener('click', el._onclick);
+          el._onclick = () => {
+            if(el.classList.contains('used')) return;
+            selectSprachbausteine2FromBank(word);
+          };
+          el.addEventListener('click', el._onclick);
         });
-        
-        blankSlots.forEach(slot => {
+
+        const slots = Array.from(document.querySelectorAll('.blank-slot'));
+        slots.forEach(slot => {
           slot.addEventListener('dragover', (e) => {
             e.preventDefault();
-            slot.style.background = '#e8f4ff';
+            slot.classList.add('drag-over');
           });
-          
           slot.addEventListener('dragleave', (e) => {
-            slot.style.background = slot.classList.contains('has-answer') ? '#e8fbe9' : '#f8fbff';
+            slot.classList.remove('drag-over');
           });
-          
           slot.addEventListener('drop', (e) => {
             e.preventDefault();
-            const word = e.dataTransfer.getData('text/plain');
+            slot.classList.remove('drag-over');
+            const word = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/html');
+            if(!word) return;
             const blankId = slot.dataset.blankId;
-            
-            selectSprachbausteine2(blankId, word);
+            if(!blankId) return;
+            Object.keys(state.answers).forEach(k => {
+              if(state.answers[k] === word){
+                delete state.answers[k];
+              }
+            });
+            const prev = state.answers[blankId];
+            if(prev){
+              const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
+              if(prevEl){
+                prevEl.classList.remove('used');
+                prevEl.setAttribute('draggable','true');
+                prevEl.addEventListener('click', prevEl._onclick);
+              }
+            }
+            const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
+            if(bankEl){
+              bankEl.classList.add('used');
+              bankEl.setAttribute('draggable','false');
+              bankEl.removeEventListener('click', bankEl._onclick);
+            }
+            state.answers[blankId] = word;
+            renderAll();
           });
         });
       }
 
-      function selectSprachbausteine2(blankId, word){
-        Object.keys(state.answers).forEach(key => {
-          if (state.answers[key] === word) {
-            delete state.answers[key];
+      function showSprachbausteine2Options(slot){
+        document.querySelectorAll('.blank-slot').forEach(s => s.classList.remove('selected-sprach'));
+        slot.classList.add('selected-sprach');
+        lastClickedSprachSlot = slot;
+      }
+
+      function selectSprachbausteine2FromBank(word, blankId = null){
+        let slot = lastClickedSprachSlot;
+        if(!slot && !blankId){
+          slot = Array.from(document.querySelectorAll('.blank-slot')).find(s => {
+            const id = s.dataset.blankId;
+            return !state.answers[id];
+          });
+        }
+        
+        if(!slot && blankId) {
+          slot = document.querySelector(`.blank-slot[data-blank-id="${blankId}"]`);
+        }
+        
+        if(!slot) {
+          return;
+        }
+        
+        const targetBlankId = blankId || slot.dataset.blankId;
+        Object.keys(state.answers).forEach(k => {
+          if(state.answers[k] === word){
+            delete state.answers[k];
           }
         });
+        const prev = state.answers[targetBlankId];
+        if(prev){
+          const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
+          if(prevEl){
+            prevEl.classList.remove('used');
+            prevEl.setAttribute('draggable','true');
+            if(prevEl._onclick) prevEl.addEventListener('click', prevEl._onclick);
+          }
+        }
+        const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
+        if(bankEl){
+          bankEl.classList.add('used');
+          bankEl.setAttribute('draggable','false');
+          if(bankEl._onclick) try{ bankEl.removeEventListener('click', bankEl._onclick); }catch(e){}
+        }
+        state.answers[targetBlankId] = word;
+        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
-        state.answers[blankId] = word;
-        window.selectedWord = null;
-        renderSprachbausteine2();
+        lastClickedSprachSlot = null;
+        renderAll();
       }
 
       function selectOption(questionId, optionId){
         state.answers[questionId] = optionId;
+        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
+        
         renderAll();
       }
 
-      function renderResults() {
-        const section = exam.sections[state.sectionIndex];
-        let resultsHTML = `
-          <div class="result-item">
-            <h3>${section.title} - Ergebnisse</h3>
-        `;
-        
+      function renderResults(){
+        let resultsHTML = `<h2>Ergebnisse</h2>`;
         let totalCorrect = 0;
         let totalQuestions = 0;
         
-        if (section.id === 's1') {
-          section.texts.forEach((text, index) => {
-            totalQuestions++;
-            const userAnswer = state.answers[text.id];
-            const isCorrect = userAnswer === text.correctAnswer;
-            if (isCorrect) totalCorrect++;
-            
-            resultsHTML += `
-              <div class="result-detail">
-                <div class="result-row">
-                  <div class="result-label">Ihre Antwort:</div>
-                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer ? getHeadingTextById(userAnswer) : 'Nicht beantwortet'}</div>
+        exam.sections.forEach(section => {
+          resultsHTML += `<div class="result-item"><h3>${section.title}</h3>`;
+          
+          if(section.id === 's1'){
+            section.texts.forEach(text => {
+              totalQuestions++;
+              const userAnswer = state.answers[text.id] || '-';
+              const correctAnswer = CORRECT_ANSWERS.lesen[text.id];
+              const isCorrect = userAnswer === correctAnswer;
+              if(isCorrect) totalCorrect++;
+              
+              resultsHTML += `
+                <div>Text ${text.id}: ${userAnswer || '-'} 
+                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
-                <div class="result-row">
-                  <div class="result-label">Richtige Antwort:</div>
-                  <div class="result-value correct">${getHeadingTextById(text.correctAnswer)}</div>
+              `;
+            });
+          } else if(section.id === 's2'){
+            section.questions.forEach(question => {
+              totalQuestions++;
+              const userAnswer = state.answers[question.id] || '-';
+              const correctAnswer = CORRECT_ANSWERS.lesen[question.id];
+              const isCorrect = userAnswer === correctAnswer;
+              if(isCorrect) totalCorrect++;
+              
+              resultsHTML += `
+                <div>${question.text}: ${userAnswer || '-'} 
+                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
-                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
-                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+              `;
+            });
+          } else if(section.id === 's3'){
+            section.situations.forEach(situation => {
+              totalQuestions++;
+              const userAnswer = state.answers[situation.id] || '-';
+              const correctAnswer = CORRECT_ANSWERS.lesen[situation.id];
+              const isCorrect = userAnswer === correctAnswer;
+              if(isCorrect) totalCorrect++;
+              
+              resultsHTML += `
+                <div>Situation ${situation.id}: ${userAnswer || '-'} 
+                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
-              </div>
-            `;
-          });
-        } else if (section.id === 's2') {
-          section.questions.forEach((question, index) => {
-            totalQuestions++;
-            const userAnswer = state.answers[question.id];
-            const isCorrect = userAnswer === question.correctAnswer;
-            if (isCorrect) totalCorrect++;
-            
-            let userAnswerText = 'Nicht beantwortet';
-            if (userAnswer) {
-              const option = question.options.find(o => o.id === userAnswer);
-              userAnswerText = option ? option.text : userAnswer;
-            }
-            
-            let correctAnswerText = '';
-            const correctOption = question.options.find(o => o.id === question.correctAnswer);
-            correctAnswerText = correctOption ? correctOption.text : question.correctAnswer;
-            
-            resultsHTML += `
-              <div class="result-detail">
-                <div class="result-row">
-                  <div class="result-label">Ihre Antwort:</div>
-                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswerText}</div>
+              `;
+            });
+          } else if(section.id === 's4'){
+            section.fillBlanks.forEach(blank => {
+              totalQuestions++;
+              const userAnswer = state.answers[blank.id] || '-';
+              const correctAnswer = CORRECT_ANSWERS.lesen[blank.id];
+              const isCorrect = userAnswer === correctAnswer;
+              if(isCorrect) totalCorrect++;
+              
+              resultsHTML += `
+                <div>Lücke ${blank.id}: ${userAnswer || '-'} 
+                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
-                <div class="result-row">
-                  <div class="result-label">Richtige Antwort:</div>
-                  <div class="result-value correct">${correctAnswerText}</div>
+              `;
+            });
+          } else if(section.id === 's5'){
+            section.fillBlanks2.forEach(blank => {
+              totalQuestions++;
+              const userAnswer = state.answers[blank.id] || '-';
+              const correctAnswer = CORRECT_ANSWERS.lesen[blank.id];
+              const isCorrect = userAnswer === correctAnswer;
+              if(isCorrect) totalCorrect++;
+              
+              resultsHTML += `
+                <div>Lücke ${blank.id}: ${userAnswer || '-'} 
+                ${userAnswer !== '-' ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
                 </div>
-                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
-                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
-                </div>
-              </div>
-            `;
-          });
-        } else if (section.id === 's3') {
-          section.situations.forEach((situation, index) => {
-            totalQuestions++;
-            const userAnswer = state.answers[situation.id];
-            const correctText = section.texts.find(t => t.correctAnswer === situation.id);
-            const isCorrect = userAnswer === (correctText ? correctText.id : null);
-            if (isCorrect) totalCorrect++;
-            
-            resultsHTML += `
-              <div class="result-detail">
-                <div class="result-row">
-                  <div class="result-label">Ihre Antwort:</div>
-                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
-                </div>
-                <div class="result-row">
-                  <div class="result-label">Richtige Antwort:</div>
-                  <div class="result-value correct">${correctText ? correctText.id : 'X'}</div>
-                </div>
-                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
-                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
-                </div>
-              </div>
-            `;
-          });
-        } else if (section.id === 's4') {
-          section.fillBlanks.forEach(blank => {
-            totalQuestions++;
-            const userAnswer = state.answers[blank.id];
-            const isCorrect = userAnswer === blank.correctAnswer;
-            if (isCorrect) totalCorrect++;
-            
-            resultsHTML += `
-              <div class="result-detail">
-                <div class="result-row">
-                  <div class="result-label">Ihre Antwort:</div>
-                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
-                </div>
-                <div class="result-row">
-                  <div class="result-label">Richtige Antwort:</div>
-                  <div class="result-value correct">${blank.correctAnswer}</div>
-                </div>
-                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
-                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
-                </div>
-              </div>
-            `;
-          });
-        } else if (section.id === 's5') {
-          section.fillBlanks2.forEach(blank => {
-            totalQuestions++;
-            const userAnswer = state.answers[blank.id];
-            const isCorrect = userAnswer === blank.correctAnswer;
-            if (isCorrect) totalCorrect++;
-            
-            resultsHTML += `
-              <div class="result-detail">
-                <div class="result-row">
-                  <div class="result-label">Ihre Antwort:</div>
-                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
-                </div>
-                <div class="result-row">
-                  <div class="result-label">Richtige Antwort:</div>
-                  <div class="result-value correct">${blank.correctAnswer}</div>
-                </div>
-                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
-                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
-                </div>
-              </div>
-            `;
-          });
-        }
+              `;
+            });
+          }
+          
+          resultsHTML += `</div>`;
+        });
         
         const percentage = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
-        
-        resultsHTML += `
-          <div class="result-summary">
-            <div class="percentage">${percentage}%</div>
-            <div>${totalCorrect} von ${totalQuestions} richtig</div>
-            <div>Punkte: ${Math.round((totalCorrect / totalQuestions) * section.points)} / ${section.points}</div>
-          </div>
-        </div>`;
+        resultsHTML += `<div class="result-item"><h3>Gesamtergebnis: ${totalCorrect}/${totalQuestions} (${percentage}%)</h3></div>`;
         
         passageContentEl.innerHTML = resultsHTML;
         questionBodyEl.innerHTML = '';
@@ -3200,6 +3182,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         questionTitleEl.textContent = '';
       }
 
+      /* ===== Event Listeners ===== */
       document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex > 0){
           state.sectionIndex--;
@@ -3208,18 +3191,12 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         }
       });
 
-      document.getElementById('nextBtn2-lesen').addEventListener('click', ()=>{
+      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
         if(state.sectionIndex < exam.sections.length - 1){
           state.sectionIndex++;
           state.questionIndex = 0;
           renderAll();
-        } else {
-          showPage('hoeren-page');
         }
-      });
-
-      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
-        showPage('hoeren-page');
       });
 
       resultBtn.addEventListener('click', ()=>{
@@ -3228,7 +3205,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
       });
 
       resetBtn.addEventListener('click', ()=>{
-        if(confirm('Möchten Sie wirklich von neu beginnen?')){
+        if(confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')){
           state.answers = {};
           state.marked = {};
           state.showResults = false;
@@ -3251,6 +3228,11 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         }
       });
 
+      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
+        showPage('hoeren-page');
+      });
+
+      /* ===== Initialize ===== */
       updateTimerDisplay();
       renderAll();
       startTimer();
@@ -3260,21 +3242,123 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         selectOption,
         markNoMatch,
         selectSprachbausteine1,
-        selectSprachbausteine2,
-        handleHeadingClick,
-        handleSlotClick,
-        handleSituationClick,
-        handleSituationSlotClick,
-        restoreX,
-        handleBlankClick,
-        handleWordClick,
-        handleWordSlotClick
+        selectSprachbausteine2FromBank,
+        handleDrop
       };
+      
+      // Setup touch interactions
+      setTimeout(setupTouchDragAndDrop, 100);
     }
 
     // ===== HÖREN PAGE FUNCTIONALITY =====
     function initHoerenPage() {
-      const exam = EXAM_DATA.hoeren;
+      const exam = {
+        id: "exam-hörverstehen",
+        durationSec: 17 * 60,
+        sections: [
+          { 
+            id: "hörverstehen1", 
+            title: "Hörverstehen, Teil 1", 
+            points: 25,
+            questions: [
+              {
+                id: "41",
+                text: "Auf der Insel Bali wurden neue Maßnahmen zur Müllentsorgung beschlossen."
+              },
+              {
+                id: "42", 
+                text: "In Nordfrankreich wird nach einem entlaufenen Panther gesucht."
+              },
+              {
+                id: "43",
+                text: "Die Mietervereinigung rät Mieterinnen und Mietern, die Betriebskosten nicht zu bezahlen."
+              },
+              {
+                id: "44",
+                text: "Der Sekt-Hersteller hat die Pläne für sein Bauvorhaben geändert."
+              },
+              {
+                id: "45",
+                text: "Die Löscharbeiten sind noch nicht abgeschlossen."
+              }
+            ]
+          },
+          { 
+            id: "hörverstehen2", 
+            title: "Hörverstehen, Teil 2", 
+            points: 25,
+            questions: [
+              {
+                id: "46",
+                text: "Roland Wünschmann arbeitet Vollzeit als Fußballtrainer bei Viktoria Köln."
+              },
+              {
+                id: "47",
+                text: "Viktoria Köln möchte am Ende der Spielsaison aufsteigen."
+              },
+              {
+                id: "48", 
+                text: "Zu Beginn dieser Saison hat ein Spieler Viktoria Köln verlassen."
+              },
+              {
+                id: "49",
+                text: "Neue Spieler kommen bei Viktoria Köln immer aus der eigenen Jugendmannschaft."
+              },
+              {
+                id: "50",
+                text: "Die Mannschaft von Viktoria Köln hat Schwächen in der Abwehr."
+              },
+              {
+                id: "51",
+                text: "Roland Wünschmann wagt die Prognose, dass diese Saison der 1. FC Mönchengladbach Meister wird."
+              },
+              {
+                id: "52",
+                text: "Roland Wünschmann kann seinen Beruf und sein Ehrenamt als Fußballtrainer miteinander vereinbaren."
+              },
+              {
+                id: "53",
+                text: "Auch die Frau von Roland Wünschmann engagiert sich im Fußball."
+              },
+              {
+                id: "54",
+                text: "Der Vereinsvorstand schätzt Herrn Wünschmanns Arbeit."
+              },
+              {
+                id: "55",
+                text: "Roland Wünschmann ist mit der bisherigen Nachwuchsförderung des Vereins noch nicht voll zufrieden."
+              }
+            ]
+          },
+          { 
+            id: "hörverstehen3", 
+            title: "Hörverstehen, Teil 3", 
+            points: 25,
+            questions: [
+              {
+                id: "56",
+                text: "Sie können im Internet prüfen, ob Ihre aktuelle Bestellung schon unterwegs ist."
+              },
+              {
+                id: "57",
+                text: "Man kann für die Nachtveranstaltung noch Karten im Internet kaufen."
+              },
+              {
+                id: "58",
+                text: "Die Teilnahme an der Party im Burghof kostet nichts."
+              },
+              {
+                id: "59",
+                text: "In Bamberg kann man in der nächsten Woche besonders günstig Mitglied in einem Sportverein werden."
+              },
+              {
+                id: "60",
+                text: "Wer ein wichtiges Anliegen hat, soll eine andere Nummer wählen."
+              }
+            ]
+          }
+        ]
+      };
 
       let state = { 
         sectionIndex: 0, 
@@ -3282,39 +3366,13 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null,
-        examEnded: false,
-        currentPage: 'hoeren'
+        timerInterval: null
       };
       
       const topTiles = document.getElementById('topTiles-hoeren');
       const contentContainer = document.getElementById('contentContainer-hoeren');
       const timerEl = document.getElementById('timer-hoeren');
       const statusText = document.getElementById('statusText-hoeren');
-
-      function handleTimeExpired() {
-        if (state.examEnded) return;
-        state.examEnded = true;
-        
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-          state.timerInterval = null;
-        }
-        
-        state.showResults = true;
-        renderAll();
-        
-        setTimeout(() => {
-          if (state.sectionIndex < exam.sections.length - 1) {
-            state.sectionIndex++;
-            state.showResults = false;
-            state.examEnded = false;
-            renderAll();
-          } else {
-            showPage('schreiben-page');
-          }
-        }, 2000);
-      }
 
       function startTimer() {
         if (state.timerInterval) {
@@ -3326,7 +3384,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
-            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -3340,7 +3397,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
-        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -3373,8 +3429,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
       }
 
       function renderAll() {
-        if (state.examEnded) return;
-        
         renderTopTiles();
         
         if (state.showResults) {
@@ -3392,16 +3446,17 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         let contentHTML = `
           <div class="panel-title">${section.title}</div>
           <div class="instructions">
-            Sie hören die Nachrichten. Entscheiden Sie beim Hören, ob die Aussagen richtig oder falsch sind.
+            Sie hören die Nachrichten. Entscheiden Sie beim Hören, ob die Aussagen richtig oder falsch sind. 
+            Sie hören die Nachrichten nur einmal. Sie haben jetzt 30 Sekunden, um die Aussagen zu lesen.
           </div>
           
           <div class="listening-task">
             <table class="true-false-table">
               <thead>
                 <tr>
-                  <th>Nr.</th>
-                  <th>Aussage</th>
-                  <th>Ihre Antwort</th>
+                  <th style="width: 10%">Nr.</th>
+                  <th style="width: 60%">Aussage</th>
+                  <th style="width: 30%">Ihre Antwort</th>
                 </tr>
               </thead>
               <tbody>
@@ -3416,10 +3471,24 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
               <td>
                 <div class="answer-options">
                   <label class="answer-option">
-                    <input type="radio" name="q${section.id}_${question.id}" value="richtig" ${currentAnswer === 'richtig' ? 'checked' : ''} onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"> Richtig
+                    <input 
+                      type="radio" 
+                      name="q${section.id}_${question.id}" 
+                      value="richtig" 
+                      ${currentAnswer === 'richtig' ? 'checked' : ''}
+                      onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"
+                    >
+                    Richtig
                   </label>
                   <label class="answer-option">
-                    <input type="radio" name="q${section.id}_${question.id}" value="falsch" ${currentAnswer === 'falsch' ? 'checked' : ''} onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"> Falsch
+                    <input 
+                      type="radio" 
+                      name="q${section.id}_${question.id}" 
+                      value="falsch" 
+                      ${currentAnswer === 'falsch' ? 'checked' : ''}
+                      onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"
+                    >
+                    Falsch
                   </label>
                 </div>
               </td>
@@ -3441,51 +3510,66 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
           state.answers[sectionId] = {};
         }
         state.answers[sectionId][questionId] = answer;
+        try{ localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); }catch(e){}
         
         renderTopTiles();
       }
 
       function renderResults() {
-        const section = exam.sections[state.sectionIndex];
-        const userAnswers = state.answers[section.id] || {};
-        let correctCount = 0;
+        let resultsHTML = `<div class="panel-title">Ergebnisse - Hörverstehen</div>`;
         
-        let resultsHTML = `
-          <div class="panel-title">Ergebnisse - ${section.title}</div>
-        `;
-        
-        section.questions.forEach((question) => {
-          const userAnswer = userAnswers[question.id] || '-';
-          const correctAnswer = section.correctAnswers[question.id];
-          const gotCorrect = userAnswer === correctAnswer;
-          
-          if (gotCorrect) correctCount++;
+        exam.sections.forEach(section => {
+          const userAnswers = state.answers[section.id] || {};
+          let correctCount = 0;
           
           resultsHTML += `
-            <div class="result-detail">
-              <div class="result-row">
-                <div class="result-label">Ihre Antwort:</div>
-                <div class="result-value ${gotCorrect ? 'correct' : 'incorrect'}">${userAnswer}</div>
-              </div>
-              <div class="result-row">
-                <div class="result-label">Richtige Antwort:</div>
-                <div class="result-value correct">${correctAnswer}</div>
-              </div>
-              <div class="result-status ${gotCorrect ? 'correct' : 'incorrect'}">
-                ${gotCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
+            <div class="listening-task">
+              <h3>${section.title} (${section.points} Punkte)</h3>
+              <table class="true-false-table">
+                <thead>
+                  <tr>
+                    <th style="width: 10%">Nr.</th>
+                    <th style="width: 50%">Aussage</th>
+                    <th style="width: 15%">Ihre Antwort</th>
+                    <th style="width: 15%">Richtige Antwort</th>
+                    <th style="width: 10%">Ergebnis</th>
+                  </tr>
+                </thead>
+                <tbody>
+          `;
+          
+          section.questions.forEach((question) => {
+            const userAnswer = userAnswers[question.id] || '-';
+            const correctAnswer = CORRECT_ANSWERS.hoeren[question.id];
+            const gotCorrect = userAnswer === correctAnswer;
+            
+            if (gotCorrect && userAnswer !== '-') correctCount++;
+            
+            const rowClass = gotCorrect && userAnswer !== '-' ? 'correct-answer' : (userAnswer === '-' ? '' : 'incorrect-answer');
+            const resultIcon = userAnswer === '-' ? '' : (gotCorrect ? '✅' : '❌');
+            
+            resultsHTML += `
+              <tr class="${rowClass}">
+                <td><strong>${question.id}</strong></td>
+                <td class="question-text">${question.text}</td>
+                <td>${userAnswer}</td>
+                <td>${correctAnswer}</td>
+                <td><strong>${resultIcon}</strong></td>
+              </tr>
+            `;
+          });
+          
+          const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
+          
+          resultsHTML += `
+                </tbody>
+              </table>
+              <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                <strong>Erreichte Punkte: ${correctCount}/${section.questions.length} richtig = ${totalPoints}/${section.points} Punkten</strong>
               </div>
             </div>
           `;
         });
-        
-        const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
-        
-        resultsHTML += `
-          <div class="result-summary">
-            <div>${correctCount}/${section.questions.length} richtig</div>
-            <div>Punkte: ${totalPoints}/${section.points}</div>
-          </div>
-        `;
         
         contentContainer.innerHTML = resultsHTML;
       }
@@ -3498,18 +3582,12 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         }
       });
 
-      document.getElementById('nextBtn2-hoeren').addEventListener('click', () => {
+      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
         if (state.sectionIndex < exam.sections.length - 1) {
           state.sectionIndex++;
           state.showResults = false;
           renderAll();
-        } else {
-          showPage('schreiben-page');
         }
-      });
-
-      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
-        showPage('schreiben-page');
       });
 
       document.getElementById('resultBtn-hoeren').addEventListener('click', () => {
@@ -3518,7 +3596,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
       });
 
       document.getElementById('resetBtn-hoeren').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3538,6 +3616,10 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         }
       });
 
+      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
+        showPage('schreiben-page');
+      });
+
       updateTimerDisplay();
       renderAll();
       startTimer();
@@ -3546,11 +3628,38 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
       window.hoerenApp = {
         updateListeningAnswer
       };
+      
+      // Setup touch interactions
+      setTimeout(setupTouchDragAndDrop, 100);
     }
 
     // ===== SCHREIBEN PAGE FUNCTIONALITY =====
     function initSchreibenPage() {
-      const exam = EXAM_DATA.schreiben;
+      const exam = {
+        id: "exam-002",
+        durationSec: 30 * 60,
+        sections: [
+          { 
+            id: "s1", 
+            title: "Schreiben, Teil 1", 
+            points: 45,
+            passageTitle: "Aufgabe: Schreiben Sie eine E-Mail",
+            passage: "",
+            writingTask: {
+              prompt: `Backstage-Musik
+
+Sie haben Geld bezahlt, um hinter die Kulissen eines Theaterstücks zu gehen. 
+Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme sehen.`,
+              requirements: [
+                "Warum waren Sie unzufrieden?",
+                "Warum haben Sie sich für diese Vorstellung entschieden? Was hat Sie daran interessiert?",
+                "Was erwarten Sie von den Veranstaltern, um den Service zu verbessern?"
+              ],
+              wordCount: 0
+            }
+          }
+        ]
+      };
 
       let state = { 
         sectionIndex: 0, 
@@ -3558,9 +3667,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null,
-        examEnded: false,
-        currentPage: 'schreiben'
+        timerInterval: null
       };
       
       const topTiles = document.getElementById('topTiles-schreiben');
@@ -3569,23 +3676,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
       const writingContainer = document.getElementById('writingContainer-schreiben');
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
-
-      function handleTimeExpired() {
-        if (state.examEnded) return;
-        state.examEnded = true;
-        
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-          state.timerInterval = null;
-        }
-        
-        state.showResults = true;
-        renderAll();
-        
-        setTimeout(() => {
-          showPage('ergebnisse-page');
-        }, 2000);
-      }
 
       function startTimer() {
         if (state.timerInterval) {
@@ -3597,7 +3687,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
-            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -3611,7 +3700,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
-        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -3638,8 +3726,6 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
       }
 
       function renderAll() {
-        if (state.examEnded) return;
-        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         passageTitleEl.textContent = section.passageTitle;
@@ -3658,11 +3744,16 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         passageContentEl.innerHTML = `
           <div class="writing-task">
             <div class="writing-prompt">${section.writingTask.prompt}</div>
+            <div class="instructions" style="border:1px solid #e1e8f6; padding:10px; margin:10px 0; border-radius:6px; background:#ffffff;">Sie haben hinter die Kulissen eines Theaterstücks geschaut. Leider waren Sie nicht zufrieden. 
+      Schreiben Sie eine Beschwerde an die Veranstalter.</div>
             <div class="writing-requirements">
               <h4>Schreiben Sie in Ihrer E-Mail:</h4>
               <ul>
                 ${section.writingTask.requirements.map(req => `<li>${req}</li>`).join('')}
               </ul>
+            </div>
+            <div class="instructions">
+              Schreiben Sie eine E-Mail (ca. 150-200 Wörter). Achten Sie auf den Textaufbau (Anrede, Einleitung, Hauptteil, Schluss) und eine angemessene Formulierung.
             </div>
           </div>
         `;
@@ -3672,8 +3763,14 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         
         writingContainer.innerHTML = `
           <div class="writing-area">
-            <textarea class="writing-textarea" placeholder="Schreiben Sie hier Ihre E-Mail..." oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)">${currentAnswer}</textarea>
-            <div class="word-counter">Wörter: <span class="count">${wordCount}</span></div>
+            <textarea 
+              class="writing-textarea" 
+              placeholder="Schreiben Sie hier Ihre E-Mail..."
+              oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)"
+            >${currentAnswer}</textarea>
+            <div class="word-counter">
+              Wörter: <span class="count">${wordCount}</span>
+            </div>
           </div>
         `;
       }
@@ -3684,27 +3781,32 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
 
       function updateWritingAnswer(sectionId, text) {
         state.answers[sectionId] = text;
+        try{ localStorage.setItem('schreibenAnswers', JSON.stringify({content: state.answers[sectionId], wordCount: (state.answers[sectionId]||'').trim().split(/\s+/).filter(Boolean).length})); }catch(e){}
+        
         const wordCount = countWords(text);
         document.querySelector('.word-counter .count').textContent = wordCount;
       }
 
       function renderResults() {
-        const section = exam.sections[state.sectionIndex];
-        const userAnswer = state.answers[section.id];
-        const wordCount = countWords(userAnswer);
+        let resultsHTML = `<h2>Ergebnisse</h2>`;
         
-        passageContentEl.innerHTML = `
-          <div class="result-item">
-            <h3>${section.title} - Ergebnisse</h3>
+        exam.sections.forEach(section => {
+          resultsHTML += `<div class="writing-task"><h3>${section.title}</h3>`;
+          
+          const userAnswer = state.answers[section.id];
+          const wordCount = countWords(userAnswer);
+          
+          resultsHTML += `
             <div class="writing-requirements">
               <h4>Ihre Antwort (${wordCount} Wörter):</h4>
               <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${userAnswer || 'Keine Antwort'}</div>
             </div>
-            <div class="result-summary">
-              <div>Bitte manuell bewerten (max. ${section.points} Punkte)</div>
-            </div>
-          </div>
-        `;
+          `;
+          
+          resultsHTML += `</div>`;
+        });
+        
+        passageContentEl.innerHTML = resultsHTML;
         writingContainer.innerHTML = '';
       }
 
@@ -3716,18 +3818,12 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         }
       });
 
-      document.getElementById('nextBtn2-schreiben').addEventListener('click', () => {
+      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
         if (state.sectionIndex < exam.sections.length - 1) {
           state.sectionIndex++;
           state.showResults = false;
           renderAll();
-        } else {
-          showPage('ergebnisse-page');
         }
-      });
-
-      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
-        showPage('ergebnisse-page');
       });
 
       document.getElementById('resultBtn-schreiben').addEventListener('click', () => {
@@ -3736,7 +3832,7 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
       });
 
       document.getElementById('resetBtn-schreiben').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöschت.')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3756,6 +3852,10 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         }
       });
 
+      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
+        showPage('ergebnisse-page');
+      });
+
       updateTimerDisplay();
       renderAll();
       startTimer();
@@ -3764,6 +3864,9 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
       window.schreibenApp = {
         updateWritingAnswer
       };
+      
+      // Setup touch interactions
+      setTimeout(setupTouchDragAndDrop, 100);
     }
 
     // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
@@ -3781,298 +3884,168 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
         }
       };
 
+      function normalizeAnswer(a) {
+        if (a === null || a === undefined || a === '') return '-';
+        let s = String(a).trim();
+        if (s === '') return '-';
+        const low = s.toLowerCase();
+        if (["richtig", "true", "yes", "ja"].includes(low)) return 'richtig';
+        if (["falsch", "false", "no", "nein"].includes(low)) return 'falsch';
+        return s;
+      }
+
       function readExamResults() {
         try {
-          const lesen = window._lesenState ? window._lesenState.answers : {};
+          const lesen = {};
           const hoeren = {};
-          
-          // تجميع إجابات الهورين من جميع الأقسام
-          if (window._hoerenState && window._hoerenState.answers) {
-            Object.keys(window._hoerenState.answers).forEach(sectionId => {
-              const sec = window._hoerenState.answers[sectionId] || {};
-              Object.keys(sec).forEach(q => {
-                hoeren[q] = sec[q];
+          const schreiben = { content: '', wordCount: 0 };
+
+          try {
+            if (window._lesenState && window._lesenState.answers) {
+              Object.keys(window._lesenState.answers).forEach(k => {
+                lesen[k] = window._lesenState.answers[k];
               });
-            });
-          }
-          
-          const schreiben = window._schreibenState ? window._schreibenState.answers : {};
+            }
+          } catch (e) {}
+
+          try {
+            if (window._hoerenState && window._hoerenState.answers) {
+              Object.keys(window._hoerenState.answers).forEach(sectionId => {
+                const sec = window._hoerenState.answers[sectionId] || {};
+                Object.keys(sec).forEach(q => {
+                  hoeren[q] = sec[q];
+                });
+              });
+            }
+          } catch (e) {}
+
+          try {
+            if (window._schreibenState && window._schreibenState.answers) {
+              const answers = window._schreibenState.answers;
+              if (answers['s1']) {
+                schreiben.content = answers['s1'];
+              } else {
+                const keys = Object.keys(answers);
+                if (keys.length > 0) schreiben.content = answers[keys[0]] || '';
+              }
+              schreiben.wordCount = (schreiben.content && schreiben.content.trim()) ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0;
+            }
+          } catch (e) {}
+
+          try {
+            if (Object.keys(lesen).length === 0) {
+              const storedL = localStorage.getItem('lesenAnswers');
+              if (storedL) Object.assign(lesen, JSON.parse(storedL));
+            }
+          } catch (e) {}
+
+          try {
+            if (Object.keys(hoeren).length === 0) {
+              const storedH = localStorage.getItem('hoerenAnswers');
+              if (storedH) Object.assign(hoeren, JSON.parse(storedH));
+            }
+          } catch (e) {}
+
+          try {
+            if (!schreiben.content) {
+              const storedS = localStorage.getItem('schreibenAnswers');
+              if (storedS) {
+                const obj = JSON.parse(storedS);
+                schreiben.content = obj.content || '';
+                schreiben.wordCount = obj.wordCount || (schreiben.content.trim() ? String(schreiben.content).trim().split(/\s+/).filter(Boolean).length : 0);
+              }
+            }
+          } catch (e) {}
+
           return { hoeren, lesen, schreiben };
         } catch (e) {
           return { hoeren: {}, lesen: {}, schreiben: {} };
         }
       }
 
-      function calculateLesenResults(answers) {
-        const exam = EXAM_DATA.lesen;
-        let correct = 0;
-        let total = 0;
+      function gradeHoeren(u) {
+        const c = CORRECT_ANSWERS.hoeren;
+        let okCount = 0;
+        const d = [];
         
-        exam.sections.forEach(section => {
-          if (section.id === 's1') {
-            section.texts.forEach(text => {
-              total++;
-              if (answers[text.id] === text.correctAnswer) correct++;
-            });
-          } else if (section.id === 's2') {
-            section.questions.forEach(question => {
-              total++;
-              if (answers[question.id] === question.correctAnswer) correct++;
-            });
-          } else if (section.id === 's3') {
-            section.situations.forEach(situation => {
-              total++;
-              const correctText = section.texts.find(t => t.correctAnswer === situation.id);
-              if (answers[situation.id] === (correctText ? correctText.id : null)) correct++;
-            });
-          } else if (section.id === 's4') {
-            section.fillBlanks.forEach(blank => {
-              total++;
-              if (answers[blank.id] === blank.correctAnswer) correct++;
-            });
-          } else if (section.id === 's5') {
-            section.fillBlanks2.forEach(blank => {
-              total++;
-              if (answers[blank.id] === blank.correctAnswer) correct++;
-            });
-          }
-        });
+        for (let q = 41; q <= 60; q++) {
+          const k = String(q);
+          const uA = normalizeAnswer(u[k] || '');
+          const exp = normalizeAnswer(c[k] || '');
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
+          if (ok) okCount++;
+          const ptsPer = CONFIG.totals.hoeren / CONFIG.counts.hoeren;
+          d.push({
+            frage: k,
+            user: uA,
+            correct: exp,
+            richtig: ok,
+            punkte: ok ? ptsPer.toFixed(2) : '0'
+          });
+        }
         
-        const points = Math.round((correct / total) * CONFIG.totals.lesen);
-        return { correct, total, points };
+        const total = Number((okCount * (CONFIG.totals.hoeren / CONFIG.counts.hoeren)).toFixed(2));
+        return { okCount, total, details: d };
       }
 
-      function calculateHoerenResults(answers) {
-        const exam = EXAM_DATA.hoeren;
-        let correct = 0;
-        let total = 0;
+      function gradeLesen(u) {
+        const c = CORRECT_ANSWERS.lesen;
+        let okCount = 0;
+        const d = [];
         
-        exam.sections.forEach(section => {
-          section.questions.forEach(question => {
-            total++;
-            if (answers[question.id] && answers[question.id] === section.correctAnswers[question.id]) {
-              correct++;
-            }
+        Object.keys(c).forEach(k => {
+          const exp = normalizeAnswer(c[k]);
+          const uA = normalizeAnswer(u[k] || '');
+          const ok = (uA !== '-' && uA.toLowerCase() === exp.toLowerCase());
+          if (ok) okCount++;
+          const ptsPer = CONFIG.totals.lesen / CONFIG.counts.lesen;
+          d.push({
+            frage: k,
+            user: uA,
+            correct: exp,
+            richtig: ok,
+            punkte: ok ? ptsPer.toFixed(2) : '0'
           });
         });
         
-        const points = Math.round((correct / total) * CONFIG.totals.hoeren);
-        return { correct, total, points };
+        const total = Number((okCount * (CONFIG.totals.lesen / CONFIG.counts.lesen)).toFixed(2));
+        return { okCount, total, details: d };
       }
 
-      function renderLesenDetails(answers) {
-        let html = `<div class="result-item"><h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
-        
-        // Teil 1: Überschriften zuordnen
-        html += `<h4>Teil 1: Überschriften zuordnen</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th>Text</th>
-                       <th>Ihre Antwort</th>
-                       <th>Richtige Antwort</th>
-                       <th>Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 1; i <= 5; i++) {
-          const id = `text${i}`;
-          const userAnswer = answers[id] || '-';
-          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
-          const isCorrect = userAnswer === correctAnswer;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅' : '❌';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>Text ${i}</strong></td>
-                    <td>${getHeadingText(userAnswer)}</td>
-                    <td>${getHeadingText(correctAnswer)}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        
-        // Teil 2: Fragen zum Text
-        html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th>Frage</th>
-                       <th>Ihre Antwort</th>
-                       <th>Richtige Antwort</th>
-                       <th>Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 1; i <= 5; i++) {
-          const id = `s2q${i}`;
-          const userAnswer = answers[id] || '-';
-          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
-          const isCorrect = userAnswer === correctAnswer;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅' : '❌';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>Frage ${i}</strong></td>
-                    <td>${getOptionText(id, userAnswer)}</td>
-                    <td>${getOptionText(id, correctAnswer)}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        
-        // Teil 3: Texte zuordnen
-        html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th>Situation</th>
-                       <th>Ihre Antwort</th>
-                       <th>Richtige Antwort</th>
-                       <th>Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 11; i <= 20; i++) {
-          const id = i.toString();
-          const userAnswer = answers[id] || '-';
-          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
-          const isCorrect = userAnswer === correctAnswer;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅' : '❌';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${id}</strong></td>
-                    <td>${userAnswer}</td>
-                    <td>${correctAnswer}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        
-        // Sprachbausteine Teil 1
-        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th>Lücke</th>
-                       <th>Ihre Antwort</th>
-                       <th>Richtige Antwort</th>
-                       <th>Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 21; i <= 30; i++) {
-          const id = i.toString();
-          const userAnswer = answers[id] || '-';
-          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
-          const isCorrect = userAnswer === correctAnswer;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅' : '❌';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${id}</strong></td>
-                    <td>${userAnswer}</td>
-                    <td>${correctAnswer}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        
-        // Sprachbausteine Teil 2
-        html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
-                 <table class="true-false-table">
-                   <thead>
-                     <tr>
-                       <th>Lücke</th>
-                       <th>Ihre Antwort</th>
-                       <th>Richtige Antwort</th>
-                       <th>Ergebnis</th>
-                     </tr>
-                   </thead>
-                   <tbody>`;
-        
-        for (let i = 31; i <= 40; i++) {
-          const id = i.toString();
-          const userAnswer = answers[id] || '-';
-          const correctAnswer = CORRECT_ANSWERS.lesen[id] || '-';
-          const isCorrect = userAnswer === correctAnswer;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅' : '❌';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${id}</strong></td>
-                    <td>${userAnswer}</td>
-                    <td>${correctAnswer}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table></div>`;
-        return html;
-      }
-
-      function buildHoerenDetails(answers) {
-        let html = `<table class="true-false-table">
-                      <thead>
-                        <tr>
-                          <th>Frage</th>
-                          <th>Ihre Antwort</th>
-                          <th>Richtige Antwort</th>
-                          <th>Ergebnis</th>
-                        </tr>
-                      </thead>
-                      <tbody>`;
-        
-        for (let i = 41; i <= 60; i++) {
-          const id = i.toString();
-          const userAnswer = answers[id] || '-';
-          const correctAnswer = CORRECT_ANSWERS.hoeren[id] || '-';
-          const isCorrect = userAnswer === correctAnswer;
-          const rowClass = isCorrect ? 'correct-answer' : 'incorrect-answer';
-          const resultIcon = isCorrect ? '✅' : '❌';
-          
-          html += `<tr class="${rowClass}">
-                    <td><strong>${id}</strong></td>
-                    <td>${userAnswer}</td>
-                    <td>${correctAnswer}</td>
-                    <td><strong>${resultIcon}</strong></td>
-                  </tr>`;
-        }
-        
-        html += `</tbody></table>`;
-        return html;
-      }
-
-      function calculateResults() {
+      function renderResults() {
         const st = readExamResults() || { hoeren: {}, lesen: {}, schreiben: {} };
+        const h = gradeHoeren(st.hoeren || {});
+        const l = gradeLesen(st.lesen || {});
         const details = document.getElementById('details-ergebnisse');
         const tiles = document.getElementById('topTiles-ergebnisse');
+        const sScoreRaw = localStorage.getItem('schreibenScore');
+        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
 
         details.innerHTML = '';
         tiles.innerHTML = '';
 
-        const lesenResults = calculateLesenResults(st.lesen);
-        const hoerenResults = calculateHoerenResults(st.hoeren);
-        
-        const sScoreRaw = localStorage.getItem('schreibenPoints');
-        const sScore = sScoreRaw ? Number(sScoreRaw) : 0;
-        
-        const tL = `<div class="results-tile"><h3>Lesen</h3><div class="score">${lesenResults.points}/${CONFIG.totals.lesen} Punkte</div><div class="small-muted">(${lesenResults.correct}/${lesenResults.total} richtig)</div></div>`;
-        const tH = `<div class="results-tile"><h3>Hören</h3><div class="score">${hoerenResults.points}/${CONFIG.totals.hoeren} Punkte</div><div class="small-muted">(${hoerenResults.correct}/${hoerenResults.total} richtig)</div></div>`;
-        const tS = `<div class="results-tile"><h3>Schreiben</h3><div class="score" id="schreibenScoreDisplay">${sScore}/${CONFIG.totals.schreiben} Punkte</div><div class="small-muted">Manuelle Bewertung</div></div>`;
-        
+        const tL = `<div class="results-tile">
+                    <h3>Lesen</h3>
+                    <div class="score">${l.total.toFixed(2)} / ${CONFIG.totals.lesen} Punkte</div>
+                    <div class="small-muted">(${(l.total / CONFIG.totals.lesen * 100).toFixed(2)} %)</div>
+                  </div>`;
+                  
+        const tH = `<div class="results-tile">
+                    <h3>Hören</h3>
+                    <div class="score">${h.total.toFixed(2)} / ${CONFIG.totals.hoeren} Punkte</div>
+                    <div class="small-muted">(${(h.total / CONFIG.totals.hoeren * 100).toFixed(2)} %)</div>
+                  </div>`;
+                  
+        const tS = `<div class="results-tile">
+                    <h3>Schreiben</h3>
+                    <div class="score" id="schreibenScoreDisplay">${sScore.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte</div>
+                    <div class="small-muted">Manuelle Eingabe</div>
+                  </div>`;
+                  
         tiles.innerHTML = tL + tH + tS;
 
         details.innerHTML = '<h2>📊 Detaillierte Ergebnisse</h2>';
+        
         details.innerHTML += renderLesenDetails(st.lesen);
         
         details.innerHTML += `<div class="result-item">
@@ -4081,114 +4054,63 @@ Dabei konnten Sie das Archiv der alten Theatermusik, die Masken und die Kostüme
                             </div>`;
 
         let sHtml = '<div class="result-item"><h3>✍️ Schreiben - Ihre Antwort</h3>';
-        const txt = st.schreiben['s1'] ? escapeHtml(st.schreiben['s1']) : '<span class="small-muted">Kein Text gefunden.</span>';
-        const wc = st.schreiben['s1'] ? st.schreiben['s1'].trim().split(/\s+/).filter(Boolean).length : 0;
+        const txt = st.schreiben.content ? escapeHtml(st.schreiben.content) : '<span class="small-muted">Kein Text gefunden.</span>';
+        const wc = st.schreiben.wordCount || '-';
         
         sHtml += `<div class="small-muted">Wörter: ${wc}</div>
                 <div style="margin-top:10px;padding:12px;background:#fff;border-radius:8px;border:1px solid #eef6ff;min-height:80px">${txt}</div>
                 <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
                   Punkte (0–45): 
-                  <input id="schreibenInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
-                  <button id="saveSchreiben" class="results-btn">Speichern</button>
+                  <input id="sInput" type="number" min="0" max="45" step="0.5" value="${sScore}"> 
+                  <button id="saveS" class="results-btn">Speichern</button>
                 </div></div>`;
                 
         details.innerHTML += sHtml;
 
-        const totalPoints = lesenResults.points + hoerenResults.points + sScore;
-        const maxPoints = CONFIG.totals.gesamt;
-        const percentage = Math.round((totalPoints / maxPoints) * 100);
-
+        const total = (l.total + h.total + sScore).toFixed(2);
+        const percent = ((total / CONFIG.totals.gesamt) * 100).toFixed(2);
+        
         document.getElementById('finalSummary-ergebnisse').innerHTML = `
-          <div class="left">Gesamtergebnis<br><span class="small-muted">Lesen + Hören + Schreiben</span></div>
-          <div class="right"><strong>${totalPoints}/${maxPoints} Punkte (${percentage}%)</strong></div>`;
+          <div class="left">
+            Gesamtpunktzahl: <strong>${total}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
+            <span class="small-muted">Lesen + Hören + Schreiben</span>
+          </div>
+          <div class="right">
+            Prozentsatz: <strong>${percent} %</strong>
+          </div>`;
 
-        document.getElementById('saveSchreiben').onclick = function() {
-          const points = parseInt(document.getElementById('schreibenInput').value) || 0;
-          localStorage.setItem('schreibenPoints', points);
-          document.getElementById('schreibenScoreDisplay').textContent = `${points}/${CONFIG.totals.schreiben} Punkte`;
+        document.getElementById('saveS').onclick = () => {
+          const v = Number(document.getElementById('sInput').value) || 0;
+          localStorage.setItem('schreibenScore', v);
+          document.getElementById('schreibenScoreDisplay').textContent = `${v.toFixed(2)} / ${CONFIG.totals.schreiben} Punkte`;
           
-          const newTotal = lesenResults.points + hoerenResults.points + points;
-          const newPercentage = Math.round((newTotal / maxPoints) * 100);
+          const newTotal = (l.total + h.total + v).toFixed(2);
+          const newPercent = ((newTotal / CONFIG.totals.gesamt) * 100).toFixed(2);
           
           document.getElementById('finalSummary-ergebnisse').innerHTML = `
-            <div class="left">Gesamtergebnis<br><span class="small-muted">Lesen + Hören + Schreiben</span></div>
-            <div class="right"><strong>${newTotal}/${maxPoints} Punkte (${newPercentage}%)</strong></div>`;
+            <div class="left">
+              Gesamtpunktzahl: <strong>${newTotal}</strong> / ${CONFIG.totals.gesamt} Punkte<br>
+              <span class="small-muted">Lesen + Hören + Schreiben</span>
+            </div>
+            <div class="right">
+              Prozentsatz: <strong>${newPercent} %</strong>
+            </div>`;
         };
       }
 
-      document.getElementById('calcBtn-ergebnisse').addEventListener('click', function() {
-        calculateResults();
-      });
-
-      document.getElementById('backBtn-ergebnisse').addEventListener('click', (e) => {
+      document.getElementById('calcBtn-ergebnisse').onclick = () => renderResults();
+      document.getElementById('backBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
-        examStarted = false;
-        counter = initialCounter;
-        timerEl.textContent = counter;
-        timeDisplayEl.textContent = counter;
-        progressEl.style.transform = "scaleX(0)";
-        timerEl.style.color = "";
         showPage('start-page');
-      });
+      };
       
-      document.getElementById('retryBtn-ergebnisse').addEventListener('click', (e) => {
-        e.preventDefault();
-        if (window._lesenState) {
-          window._lesenState.answers = {};
-          window._lesenState.marked = {};
-          window._lesenState.showResults = false;
-          window._lesenState.remaining = EXAM_DATA.lesen.durationSec;
-          if (window._lesenState.timerInterval) clearInterval(window._lesenState.timerInterval);
-        }
-        if (window._hoerenState) {
-          window._hoerenState.answers = {};
-          window._hoerenState.showResults = false;
-          window._hoerenState.remaining = EXAM_DATA.hoeren.durationSec;
-          if (window._hoerenState.timerInterval) clearInterval(window._hoerenState.timerInterval);
-        }
-        if (window._schreibenState) {
-          window._schreibenState.answers = {};
-          window._schreibenState.showResults = false;
-          window._schreibenState.remaining = EXAM_DATA.schreiben.durationSec;
-          if (window._schreibenState.timerInterval) clearInterval(window._schreibenState.timerInterval);
-        }
-        
-        examStarted = false;
-        showPage('start-page');
-        setTimeout(() => {
-          startExam();
-        }, 100);
-      });
-      
-      document.getElementById('continueBtn-ergebnisse').addEventListener('click', (e) => {
-        e.preventDefault();
-        if (window._lesenState) {
-          window._lesenState.sectionIndex = 0;
-          window._lesenState.showResults = false;
-          showPage('lesen-page');
-        } else {
-          showPage('start-page');
-        }
-      });
-      
-      // تنفيذ الحساب عند تحميل الصفحة
-      calculateResults();
+      renderResults();
     }
-
-    function setupTouchDragAndDrop() {
-      if ('ontouchstart' in window) {
-        document.querySelectorAll('[draggable="true"]').forEach(item => {
-          item.addEventListener('touchstart', (e) => {});
-          item.addEventListener('touchend', (e) => {});
-        });
-        document.querySelectorAll('.title-slot, .blank-slot').forEach(slot => {
-          slot.addEventListener('touchmove', (e) => {});
-          slot.addEventListener('touchend', (e) => {});
-        });
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', setupTouchDragAndDrop);
+    
+    // Initialize touch interactions on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(setupTouchDragAndDrop, 500);
+    });
   </script>
 </body>
 </html>

@@ -4,10 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Deutsch B2 Prüfung - Komplett</title>
-  
-  <!-- Supabase Library -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
   <style>
     /* ===== GLOBAL STYLES ===== */
     :root {
@@ -253,46 +249,64 @@
       padding: 12px 20px;
       border-radius: 6px;
       border: none;
-      background: white;
-      color: #1e3a5f;
+      background: #4da6ff;
+      color: white;
       font-weight: 700;
       font-size: 15px;
       cursor: pointer;
-      transition: background 0.2s ease-in-out, color 0.2s ease-in-out, transform 0.2s ease;
+      transition: background 0.2s ease-in-out;
       min-width: 150px;
       text-align: center;
     }
 
     .exam-btn:hover {
-      background: #1e3a5f;
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      background: #336fbf;
+    }
+    
+    .exam-btn.save {
+      background: #4da6ff;
+      color: #000;
     }
     
     .exam-btn.save:hover {
-      background: #2c5282;
+      background: #3399ff;
+    }
+    
+    .exam-btn.submit {
+      background: #4da6ff;
     }
     
     .exam-btn.submit:hover {
-      background: #2c5282;
+      background: #3399ff;
+    }
+    
+    .exam-btn.result {
+      background: #4da6ff;
     }
     
     .exam-btn.result:hover {
-      background: #2c5282;
+      background: #3399ff;
+    }
+    
+    .exam-btn.next {
+      background: #4da6ff;
+      color: #fff;
     }
     
     .exam-btn.next:hover {
-      background: #2c5282;
+      background: #3399ff;
+    }
+    
+    .exam-btn.reset {
+      background: #4da6ff;
     }
     
     .exam-btn.reset:hover {
-      background: #2c5282;
+      background: #3399ff;
     }
     
     .exam-btn.reset-section {
       background: #d35400;
-      color: white;
       font-size: 12px;
       padding: 6px 10px;
       min-width: auto;
@@ -304,7 +318,6 @@
     
     .exam-btn.no-match {
       background: #95a5a6;
-      color: white;
       font-size: 12px;
       padding: 6px 10px;
       min-width: auto;
@@ -547,10 +560,6 @@
       border: 2px dashed #c8d9f6;
       border-radius: 6px;
       background: #f8fbff;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
     
     .title-slot.has-title {
@@ -565,21 +574,6 @@
       font-weight: bold;
     }
     
-    .restore-btn {
-      background: #3498db;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 4px 8px;
-      font-size: 11px;
-      cursor: pointer;
-      margin-left: 8px;
-    }
-    
-    .restore-btn:hover {
-      background: #2980b9;
-    }
-    
     .headings-bank {
       display: flex;
       flex-direction: column;
@@ -592,14 +586,11 @@
       border: 1px solid #dbe7fb;
       border-radius: 8px;
       background: #f8fbff;
-      cursor: pointer;
-      transition: all 0.2s;
+      cursor: grab;
     }
     
     .heading-item:hover {
       background: #e9f0ff;
-      transform: translateY(-2px);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
     .heading-item.used {
@@ -607,12 +598,6 @@
       cursor: not-allowed;
       background: #f8d7da;
       border-color: #f5c6cb;
-    }
-    
-    .heading-item.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
     }
     
     .result-correct {
@@ -627,87 +612,9 @@
     
     .result-item {
       margin: 10px 0;
-      padding: 15px;
-      border-radius: 8px;
-      background: #f8f9fa;
-      border-left: 4px solid #1e3a5f;
-    }
-    
-    .result-item h3 {
-      color: #1e3a5f;
-      margin-bottom: 15px;
-      font-size: 18px;
-    }
-    
-    .result-detail {
-      display: flex;
-      flex-direction: column;
-      padding: 12px;
-      margin: 8px 0;
-      background: white;
+      padding: 10px;
       border-radius: 6px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    
-    .result-row {
-      display: flex;
-      align-items: center;
-      margin: 4px 0;
-    }
-    
-    .result-label {
-      font-weight: 600;
-      min-width: 120px;
-      color: #2c3e50;
-    }
-    
-    .result-value {
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-weight: 500;
-    }
-    
-    .result-value.correct {
-      background: #d4edda;
-      color: #155724;
-    }
-    
-    .result-value.incorrect {
-      background: #f8d7da;
-      color: #721c24;
-    }
-    
-    .result-status {
-      margin-top: 8px;
-      padding: 8px;
-      border-radius: 4px;
-      font-weight: 600;
-      text-align: center;
-    }
-    
-    .result-status.correct {
-      background: #d4edda;
-      color: #155724;
-    }
-    
-    .result-status.incorrect {
-      background: #f8d7da;
-      color: #721c24;
-    }
-    
-    .result-summary {
-      margin-top: 20px;
-      padding: 15px;
-      background: #1e3a5f;
-      color: white;
-      border-radius: 8px;
-      text-align: center;
-    }
-    
-    .result-summary .percentage {
-      font-size: 32px;
-      font-weight: 700;
-      color: #4da6ff;
+      background: #f8f9fa;
     }
     
     .instructions {
@@ -765,37 +672,23 @@
     
     .fill-blank-container {
       margin: 20px 0;
-      line-height: 2.2;
     }
     
     .blank-word {
       display: inline-block;
-      min-width: 100px;
-      padding: 6px 10px;
-      margin: 0 4px;
+      min-width: 120px;
+      padding: 4px 8px;
+      margin: 0 6px;
       background: #fff;
       cursor: pointer;
       position: relative;
-      border: 2px solid #dbe7fb;
-      border-radius: 6px;
-      font-weight: 500;
-      transition: all 0.2s;
-    }
-    
-    .blank-word:hover {
-      background: #e3f2fd;
-      border-color: #3498db;
+      border: 1px solid #dbe7fb;
+      border-radius: 4px;
     }
     
     .blank-word.has-answer {
       background: #e8fbe9;
       border-color: #2ecc71;
-    }
-    
-    .blank-word.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
     }
     
     .options-popup {
@@ -878,21 +771,12 @@
     }
     
     .bank-word-vertical {
-      padding: 12px;
-      border: 2px solid #dbe7fb;
-      border-radius: 8px;
+      padding: 10px;
+      border: 1px solid #dbe7fb;
+      border-radius: 6px;
       background: #f8fbff;
       text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-weight: 500;
-    }
-    
-    .bank-word-vertical:hover {
-      background: #e9f0ff;
-      border-color: #3498db;
-      transform: translateY(-2px);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      cursor: grab;
     }
     
     .bank-word-vertical.used {
@@ -902,41 +786,22 @@
       border-color: #f5c6cb;
     }
     
-    .bank-word-vertical.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
-    }
-    
     .blank-slot {
       display: inline-block;
       min-width: 100px;
-      padding: 6px 10px;
-      margin: 0 4px;
+      padding: 4px 8px;
+      margin: 0 6px;
       background: #fff;
       min-height: 30px;
       vertical-align: middle;
-      border: 2px solid #dbe7fb;
-      border-radius: 6px;
+      border: 1px solid #dbe7fb;
+      border-radius: 4px;
       cursor: pointer;
-      transition: all 0.2s;
-      font-weight: 500;
-    }
-    
-    .blank-slot:hover {
-      background: #e3f2fd;
-      border-color: #3498db;
     }
     
     .blank-slot.has-answer {
       background: #e8fbe9;
       border-color: #2ecc71;
-    }
-    
-    .blank-slot.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
     }
     
     .footer-buttons {
@@ -950,12 +815,6 @@
       background: #f8d7da;
       border-color: #f5c6cb;
       color: #333;
-    }
-    
-    .situation-item.selected {
-      background: #3498db;
-      color: white;
-      border-color: #2980b9;
     }
     
     /* Listening Section Styles */
@@ -1212,20 +1071,10 @@
       font-weight: 700;
       cursor: pointer;
       transition: background 0.3s;
-      text-decoration: none;
-      display: inline-block;
     }
     
     .results-btn:hover {
       background: #3a8ce0;
-    }
-    
-    .results-btn.secondary {
-      background: #95a5a6;
-    }
-    
-    .results-btn.secondary:hover {
-      background: #7f8c8d;
     }
     
     .button-like {
@@ -1546,7 +1395,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-lesen" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn2-lesen" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn-lesen" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-lesen">Nicht gespeichert</span></div>
     </footer>
@@ -1585,7 +1434,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-hoeren" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn2-hoeren" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn-hoeren" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-hoeren">Nicht gespeichert</span></div>
     </footer>
@@ -1631,7 +1480,7 @@
     <footer class="controls">
       <div class="footer-buttons">
         <button id="prevBtn-schreiben" class="exam-btn ghost">Zurück</button>
-        <button id="nextBtn2-schreiben" class="exam-btn ghost">Weiter</button>
+        <button id="nextBtn-schreiben" class="exam-btn ghost">Weiter</button>
       </div>
       <div class="status"><span id="statusText-schreiben">Nicht gespeichert</span></div>
     </footer>
@@ -1649,145 +1498,24 @@
       <div id="details-ergebnisse"></div>
       <div class="summary" id="finalSummary-ergebnisse"></div>
       <div class="controls">
-        <button id="backBtn-ergebnisse" class="results-btn">🔁 Zurück zur Startseite</button>
-        <button id="retryBtn-ergebnisse" class="results-btn secondary">🔄 Prüfung wiederholen</button>
-        <button id="continueBtn-ergebnisse" class="results-btn">➡️ Zurück zur Prüfung</button>
+        <a class="button-like" href="#" id="backBtn-ergebnisse">
+          <button class="results-btn">🔁 Zurück zur Startseite</button>
+        </a>
+        <button id="calcBtn-ergebnisse" class="results-btn">✅ Ergebnisse anzeigen</button>
       </div>
       <div class="note">Hinweis: Schreiben (45 Punkte) wird manuell eingegeben, falls nicht automatisch vorhanden.</div>
     </div>
   </div>
 
-  <!-- Login Error Modal (يظهر فقط عند رفض الدخول) -->
-  <div id="login-error-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center;">
-    <div style="background: white; border-radius: 16px; padding: 40px; max-width: 400px; text-align: center;">
-      <div style="font-size: 64px; margin-bottom: 20px;">❌</div>
-      <h2 style="color: #d32f2f; margin-bottom: 20px;">Zugriff verweigert</h2>
-      <p id="error-message" style="color: #333; margin-bottom: 30px; font-size: 16px;">Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.</p>
-      <button id="redirect-to-login" style="background: #d32f2f; color: white; border: none; padding: 15px 30px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer;">Zum Login</button>
-    </div>
-  </div>
-
-  <script type="module">
-    // =============================================
-    // التحقق من تسجيل الدخول - نسخة محسنة وآمنة
-    // =============================================
-    
-    (async function() {
-      // تكوين Supabase
-      const SUPABASE_URL = 'https://xdladxoibrkmjtmtccix.supabase.co';
-      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhkbGFkeG9pYnJrbWp0bXRjY2l4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA3MDY5MjAsImV4cCI6MjA3NjI4MjkyMH0.1zW6cLE1IP_F6wdi3m9EPvm0KKEVOeh7F2Sa05lFk5I';
-      
-      // تهيئة Supabase
-      const { createClient } = window.supabase;
-      const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      
-      // عناصر الصفحة
-      const body = document.getElementById('body');
-      const startPage = document.getElementById('start-page');
-      const loginErrorModal = document.getElementById('login-error-modal');
-      const errorMessage = document.getElementById('error-message');
-      
-      // دالة لعرض خطأ تسجيل الدخول
-      function showLoginError(message) {
-        // إخفاء محتوى الصفحة
-        startPage.style.display = 'none';
-        
-        // إظهار نافذة الخطأ
-        errorMessage.textContent = message || 'Sie müssen sich anmelden, um auf diese Prüfung zugreifen zu können.';
-        loginErrorModal.style.display = 'flex';
-      }
-      
-      // التحقق من تسجيل الدخول
-      try {
-        // التحقق من الجلسة في Supabase
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-        
-        if (sessionError || !session) {
-          showLoginError('❌ Keine aktive Sitzung gefunden. Bitte melden Sie sich an.');
-          return;
-        }
-        
-        // التحقق من جدول permissions
-        const { data: permissions, error: permError } = await supabase
-          .from('user_permissions')
-          .select('can_access, subscription_type, subscription_expiry, trial_expiry')
-          .eq('user_id', session.user.id)
-          .maybeSingle();
-        
-        // إذا كان هناك خطأ أو لا يوجد صلاحيات
-        if (permError) {
-          console.error('Permissions error:', permError);
-          showLoginError('❌ Fehler bei der Überprüfung Ihrer Berechtigungen.');
-          return;
-        }
-        
-        // إذا لم يتم العثور على المستخدم في جدول permissions
-        if (!permissions) {
-          // محاولة إدراج المستخدم إذا لم يكن موجوداً
-          const { error: insertError } = await supabase
-            .from('user_permissions')
-            .insert({
-              user_id: session.user.id,
-              email: session.user.email,
-              can_access: true,
-              subscription_type: 'free',
-              created_at: new Date().toISOString()
-            });
-          
-          if (insertError) {
-            console.error('Insert error:', insertError);
-            showLoginError('❌ Fehler beim Erstellen Ihres Benutzerkontos.');
-            return;
-          }
-        } else if (!permissions.can_access) {
-          // إذا كان can_access = false
-          showLoginError('❌ Sie haben keine Berechtigung für den Zugriff auf diese Prüfung.');
-          return;
-        }
-        
-        // التحقق من انتهاء الاشتراك
-        const now = new Date();
-        
-        if (permissions && permissions.subscription_type === 'trial_24h' && permissions.trial_expiry) {
-          const trialExpiry = new Date(permissions.trial_expiry);
-          if (trialExpiry < now) {
-            showLoginError('❌ Ihre Testphase ist abgelaufen. Bitte aktivieren Sie ein Abonnement.');
-            return;
-          }
-        }
-        
-        if (permissions && permissions.subscription_expiry) {
-          const subscriptionExpiry = new Date(permissions.subscription_expiry);
-          if (subscriptionExpiry < now) {
-            showLoginError('❌ Ihr Abonnement ist abgelaufen. Bitte erneuern Sie Ihr Abonnement.');
-            return;
-          }
-        }
-        
-        // إذا وصلنا إلى هنا، المستخدم مصرح له
-        console.log('✅ Zugriff gewährt für:', session.user.email);
-        
-        // إظهار محتوى الصفحة
-        startPage.style.display = 'flex';
-        
-      } catch (error) {
-        console.error('❌ Kritischer Fehler:', error);
-        showLoginError('❌ Ein kritischer Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
-      }
-    })();
-  </script>
-
   <script>
     // ===== PAGE NAVIGATION =====
     function showPage(pageId) {
-      // Hide all pages
       document.getElementById('start-page').style.display = 'none';
       document.getElementById('lesen-page').style.display = 'none';
       document.getElementById('hoeren-page').style.display = 'none';
       document.getElementById('schreiben-page').style.display = 'none';
       document.getElementById('ergebnisse-page').style.display = 'none';
       
-      // Change body class based on page
       document.getElementById('body').className = '';
       if (pageId === 'ergebnisse-page') {
         document.getElementById('body').className = 'results-body';
@@ -1795,10 +1523,8 @@
         document.getElementById('body').className = 'exam-body';
       }
       
-      // Show selected page
       document.getElementById(pageId).style.display = 'block';
       
-      // Initialize the page if needed
       if (pageId === 'lesen-page' && typeof initLesenPage === 'function') {
         initLesenPage();
       } else if (pageId === 'hoeren-page' && typeof initHoerenPage === 'function') {
@@ -1809,11 +1535,6 @@
         initErgebnissePage();
       }
     }
-
-    // ربط زر التوجيه للـ Login
-    document.getElementById('redirect-to-login').addEventListener('click', function() {
-      window.location.href = '../index.html';
-    });
 
     // ===== START PAGE FUNCTIONALITY =====
     let initialCounter = 30;
@@ -1832,6 +1553,7 @@
       if (countdownRunning || examStarted) return;
       countdownRunning = true;
       try { startBtn.disabled = true; startBtn.setAttribute('aria-disabled','true'); } catch(e){}
+      
       counter = initialCounter;
       timerEl.textContent = counter;
       timeDisplayEl.textContent = counter;
@@ -1895,9 +1617,9 @@
       timerEl.style.color = "#e53e3e";
     });
 
-    // ===== EXAM DATA FROM L9AHWA.html =====
-    const EXAM_DATA = {
-      lesen: {
+    // ===== LESEN PAGE FUNCTIONALITY =====
+    function initLesenPage() {
+      const exam = {
         id: "exam-b2-pdf",
         durationSec: 90 * 60,
         sections: [
@@ -2123,7 +1845,7 @@ jetzt ist es schon bald ein halbes Jahr ________, dass ich dir das letzte Mal ge
 
 Stell dir vor, ausgerechnet jetzt, nur zwei Wochen vor der Prüfung, ist unsere Lehrerin, Frau Reuter, ________. Sie liegt sogar im Krankenhaus und kommt erst wieder zurück, ________ unsere Prüfung schon längst vorbei ist. Ihre Vertretung, Frau Eichhorn, ist ________ sehr nett, aber sie hat gerade erst mit dem Unterrichten angefangen und noch keine Erfahrung. Das macht uns alle ein bisschen unsicher. Aber in zwei Wochen ist hoffentlich alles geschafft. Und dann ________ ich alle Bücher und Hefte in die Ecke legen und erst einmal ein paar Tage gar nichts tun. ________ freue ich mich schon riesig. Wenn du Zeit und Lust hast, kannst du mich doch besuchen kommen und wir können zusammen etwas unternehmen. Wir wollten doch schon lange Bad Homburg besuchen und im Taunus wandern. Was hältst du ________?
 
-Was macht deine Au-pair-Familie? Musst du immer noch so viel Hausarbeit machen? Hören "deine" Kinder auf dich oder tanzen sie ________ dir noch immer auf der Nase herum, wie du in deinem letzten Brief geschrieben hast? It ist bestimmt nicht so leicht, einen zweijährigen Jungen und ein vierjähriges Mädchen den ganzen Tag ________. Aber ich kenne dich: Du hast gute Ideen und bestimmt hast du schon einen Weg gefunden, ________ du mit den Kindern zurechtkommst.
+Was macht deine Au-pair-Familie? Musst du immer noch so viel Hausarbeit machen? Hören "deine" Kinder auf dich oder tanzen sie ________ noch immer auf der Nase herum, wie du in deinem letzten Brief geschrieben hast? It ist bestimmt nicht so leicht, einen zweijährigen Jungen und ein vierjähriges Mädchen den ganzen Tag ________. Aber ich kenne dich: Du hast gute Ideen und bestimmt hast du schon einen Weg gefunden, ________ du mit den Kindern zurechtkommst.
 
 So, jetzt muss ich mich wieder an meine Prüfungsvorbereitung machen, sonst wird mir die Zeit zu knapp. Ich grüße dich ganz herzlich und wünsche dir alles Gute.
 
@@ -2193,18 +1915,861 @@ Deine Louise`
 
 Welches Fortbewegungsmittel, denken Sie, wird in Deutschland am häufigsten benutzt? Natürlich das Automobil. Volkswagen, Porsche, Mercedes Benz, BMW, Audi: In ________ einem anderen Land gibt es so viele Automobilfabriken wie in Deutschland, spielt die Automobilindustrie eine so große Rolle. Nahezu jeder Haushalt verfügt über mindestens ein Auto, das Auto spielt im Leben der Deutschen eine große Rolle, sowohl als Fortbewegungsmittel zum Arbeitsplatz oder in den Urlaub als auch als Statussymbol: Zeig mir dein Auto und ich weiß, wer du bist.
 
-Doch hat das Autofahren auch Schattenseiten. Mangelnde Bewegungsmöglichkeiten, gesundheitliche Probleme und Stress bringen zumindest in den Großstädten immer mehr Autofahrer dazu, sich vom Automobil freizumachen und ________ ein anderes Verkehrsmittel umzusteigen, das in dem Ruf steht, gesünder zu sein als das Auto: das Fahrrad. Nicht nur in der Freizeit, sondern auch auf dem Weg zum Arbeitsplatz wird das Rad benutzt. "Ich habe keine Lust, Morgen für Morgen im Stau zu stehen und Zeit zu verlieren", sagt Bettina Meier (25): "Da ist es viel entspannender, auf den zumeist gut ausgebauten Fahrradwegen an den im Stau wartenden Fahrzeugen ________ und ausgeruht am Arbeitsplatz anzukommen."
+Doch hat das Autofahren auch Schattenseiten. Mangelnde Bewegungsmöglichkeiten, gesundheitliche Probleme und Stress bringen zumindest in den Großstädten immer more Autofahrer dazu, sich vom Automobil freizumachen und ________ ein anderes Verkehrsmittel umzusteigen, das in dem Ruf steht, gesünder zu sein als das Auto: das Fahrrad. Nicht nur in der Freizeit, sondern auch auf dem Weg zum Arbeitsplatz wird das Rad benutzt. "Ich habe keine Lust, Morgen für Morgen im Stau zu stehen und Zeit zu verlieren", sagt Bettina Meier (25): "Da ist it viel entspannender, auf den zumeist gut ausgebauten Fahrradwegen an den im Stau wartenden Fahrzeugen ________ und ausgeruht am Arbeitsplatz anzukommen."
 
 Dass Fahrradfahren um einiges gesünder ist, als hinter dem Lenkrad zu sitzen, bestätigen auch die Mediziner. Wer Fahrrad fährt ________ zu sitzen, bringt seinen Blutkreislauf in Schwung, stärkt die Abwehrkräfte des Körpers und trainiert seinen Körper. Auch die Bewegung an der frischen Luft tut Menschen gut, die sich sonst die meiste Zeit ________ geschlossener Räume in Büros, Schulen oder Fabriken aufhalten ________.
 
-Auch die Geschäftswelt hat die Fahrradfahrer als Kunden entdeckt. Ein breites Angebot ________ Zubehör für Fahrräder von schicken Radfelgen über sportliche Mehrganggetriebe, mit denen Berge kein Problem mehr darstellen, bis zur Designer-Trinkflasche machen aus dem einfachen Fahrrad ein exlusives Fahrzeug. Und natürlich darf bei keinem Fahrradfahrer eine aufwändige Sicherheitsausstattung mehr fehlen: Schutzhelme, Ellenbogen- und Knieschützer, die das Fahrrad im Falle eines Unfalls fast so sicher wie einen Panzer machen ________.
+Auch die Geschäftswelt hat die Fahrradfahrer als Kunden entdeckt. Ein breites Angebot ________ Zubehör für Fahrräder von schicken Radfelgen über sportliche Mehrganggetriebe, mit denen Berge kein Problem mehr darstellen, bis zur Designer-Trinkflasche machen aus dem einfachen Fahrrad ein exlusives Fahrzeug. Und natürlich darf bei keinem Fahrradfahrer eine aufwändige Sicherheitsausstattung more fehlen: Schutzhelme, Ellenbogen- und Knieschützer, die das Fahrrad im Falle eines Unfalls fast so sicher wie einen Panzer machen ________.
 
 Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ________ sind die Autoschlangen wieder länger. ________ einen praktischen Wetterschutz für Radfahrer haben die Geschäfte noch nicht im Angebot.`
           }
         ]
-      },
+      };
+
+      let state = { 
+        sectionIndex: 0, 
+        questionIndex: 0, 
+        answers: {}, 
+        marked: {}, 
+        remaining: exam.durationSec,
+        showResults: false,
+        timerStarted: false,
+        timerInterval: null
+      };
+      const topTiles = document.getElementById('topTiles-lesen');
+      const passageTitleEl = document.getElementById('passageTitle-lesen');
+      const passageContentEl = document.getElementById('passageContent-lesen');
+      const sectionNameEl = document.getElementById('sectionName-lesen');
+      const questionTitleEl = document.getElementById('questionTitle-lesen');
+      const questionBodyEl = document.getElementById('questionBody-lesen');
+      const headingsBankContainer = document.getElementById('headingsBankContainer-lesen');
+      const timerEl = document.getElementById('timer-lesen');
+      const statusText = document.getElementById('statusText-lesen');
+      const resultBtn = document.getElementById('resultBtn-lesen');
+      const resetBtn = document.getElementById('resetBtn-lesen');
+      const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
+
+      function startTimer(){
+        if(state.timerInterval) {
+          clearInterval(state.timerInterval);
+        }
+        
+        state.timerStarted = true;
+        state.timerInterval = setInterval(()=>{
+          if(state.remaining <= 0){
+            clearInterval(state.timerInterval);
+            timerEl.textContent = 'Zeit abgelaufen';
+            return;
+          }
+          state.remaining--;
+          updateTimerDisplay();
+        }, 1000);
+      }
+
+      function resetTimer(){
+        if(state.timerInterval) {
+          clearInterval(state.timerInterval);
+        }
+        state.remaining = exam.durationSec;
+        state.timerStarted = false;
+        updateTimerDisplay();
+        startTimer();
+      }
+
+      function updateTimerDisplay(){
+        const min = Math.floor(state.remaining / 60);
+        const sec = state.remaining % 60;
+        timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+      }
+
+      function resetCurrentSection() {
+        const currentSection = exam.sections[state.sectionIndex];
+        
+        if (confirm(`Möchten Sie wirklich den Teil "${currentSection.title}" zurücksetzen? Alle Antworten in diesem Teil werden gelöscht.`)) {
+          if (currentSection.id === 's1') {
+            currentSection.texts.forEach(text => {
+              delete state.answers[text.id];
+            });
+          } else if (currentSection.id === 's2') {
+            currentSection.questions.forEach(question => {
+              delete state.answers[question.id];
+            });
+          } else if (currentSection.id === 's3') {
+            currentSection.situations.forEach(situation => {
+              delete state.answers[situation.id];
+            });
+          } else if (currentSection.id === 's4') {
+            currentSection.fillBlanks.forEach(blank => {
+              delete state.answers[blank.id];
+            });
+          } else if (currentSection.id === 's5') {
+            currentSection.fillBlanks2.forEach(blank => {
+              delete state.answers[blank.id];
+            });
+          }
+          
+          renderAll();
+        }
+      }
+
+      function renderTopTiles(){ 
+        topTiles.innerHTML=''; 
+        exam.sections.forEach((sec,idx)=>{ 
+          const div=document.createElement('div'); 
+          div.className='tile'+(idx===state.sectionIndex?' active':'')+(isSectionDone(sec)?' done':''); 
+          div.innerHTML=`<div>${sec.title}</div><div class="points">${sec.points} P</div>`; 
+          div.onclick=()=>{state.sectionIndex=idx; state.questionIndex=0; state.showResults=false; renderAll();}; 
+          topTiles.appendChild(div); 
+        }); 
+      }
+
+      function isSectionDone(section){
+        if(section.id==='s1') return section.texts.every(t=>state.answers[t.id]);
+        if(section.id==='s2') return section.questions.every(q=>state.answers[q.id]);
+        if(section.id==='s3') return section.situations.every(h=>state.answers[h.id] || state.answers[h.id] === 'X');
+        if(section.id==='s4') return section.fillBlanks.every(b=>state.answers[b.id]);
+        if(section.id==='s5') return section.fillBlanks2.every(b=>state.answers[b.id]);
+        return false;
+      }
+
+      function renderAll(){
+        renderTopTiles();
+        const section = exam.sections[state.sectionIndex];
+        sectionNameEl.textContent = section.title;
+        passageTitleEl.textContent = section.passageTitle;
+        
+        resetSectionBtn.style.display = 'block';
+        
+        if(state.showResults){
+          renderResults();
+          return;
+        }
+        
+        if(section.id === 's1'){
+          renderPart1();
+        } else if(section.id === 's2'){
+          renderPart2();
+        } else if(section.id === 's3'){
+          renderPart3();
+        } else if(section.id === 's4'){
+          renderSprachbausteine1();
+        } else if(section.id === 's5'){
+          renderSprachbausteine2();
+        }
+      }
+
+      function renderPart1(){
+        const section = exam.sections[state.sectionIndex];
+        
+        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. Sie können jede Überschrift nur einmal verwenden.</div>`;
+        
+        section.texts.forEach((text, idx) => {
+          const letter = String.fromCharCode(97 + idx);
+          const selectedHeading = state.answers[text.id];
+          
+          textsHTML += `
+            <div class="text-container">
+              <div class="text-title">Text ${letter.toUpperCase()}</div>
+              <div class="text-content">${text.content}</div>
+              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}">
+                ${selectedHeading ? getHeadingTextById(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
+              </div>
+            </div>
+          `;
+        });
+        
+        passageContentEl.innerHTML = textsHTML;
+        
+        let headingsHTML = `<div class="headings-bank">`;
+        section.headings.forEach(heading => {
+          const isUsed = section.texts.some(text => state.answers[text.id] === heading.id);
+          
+          headingsHTML += `
+            <div class="heading-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-heading-id="${heading.id}">
+              ${heading.id}) ${heading.text}
+            </div>
+          `;
+        });
+        
+        headingsHTML += `</div>`;
+        
+        headingsBankContainer.innerHTML = headingsHTML;
+        
+        setupDragAndDrop();
+        
+        questionBodyEl.innerHTML = '';
+        questionTitleEl.textContent = '';
+      }
+
+      function getHeadingTextById(id){
+        const section = exam.sections[state.sectionIndex];
+        const heading = section.headings.find(h => h.id === id);
+        return heading ? `${heading.id}) ${heading.text}` : '';
+      }
+
+      function setupDragAndDrop(){
+        const headingItems = document.querySelectorAll('.heading-item:not(.used)');
+        const titleSlots = document.querySelectorAll('.title-slot');
+        
+        headingItems.forEach(item => {
+          item.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.dataset.headingId);
+          });
+        });
+        
+        titleSlots.forEach(slot => {
+          slot.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            slot.style.background = '#e8f4ff';
+          });
+          
+          slot.addEventListener('dragleave', (e) => {
+            slot.style.background = slot.classList.contains('has-title') ? '#e8fbe9' : '#f8fbff';
+          });
+          
+          slot.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const headingId = e.dataTransfer.getData('text/plain');
+            const textId = slot.dataset.textId;
+            
+            Object.keys(state.answers).forEach(key => {
+              if(state.answers[key] === headingId) {
+                delete state.answers[key];
+              }
+            });
+            
+            state.answers[textId] = headingId;
+            renderAll();
+          });
+        });
+      }
+
+      function renderPart2(){
+        const section = exam.sections[state.sectionIndex];
+        
+        passageContentEl.innerHTML = `<div class="passage">${section.passage}</div>`;
+        
+        let questionsHTML = `<div class="all-questions">`;
+        
+        section.questions.forEach((question, idx) => {
+          const questionNumber = idx + 1;
+          const userAnswer = state.answers[question.id];
+          
+          questionsHTML += `
+            <div class="question-block">
+              <div class="question-text">${questionNumber}. ${question.text}</div>
+              <div class="options">
+                ${question.options.map(opt => `
+                  <div class="option ${userAnswer === opt.id ? 'selected' : ''}" 
+                       onclick="window.lesenApp.selectOption('${question.id}', '${opt.id}')">
+                    <div class="radio"></div>
+                    <div>${opt.text}</div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        });
+        
+        questionsHTML += `</div>`;
+        
+        questionBodyEl.innerHTML = questionsHTML;
+        questionTitleEl.textContent = '';
+        headingsBankContainer.innerHTML = '';
+      }
+
+      function renderPart3(){
+        const section = exam.sections[state.sectionIndex];
+        
+        let textsHTML = `
+          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. Sie können jede Situation nur einmal verwenden. Manchmal passt keine Situation.</div>
+          <div class="texts-list">
+            <h3>Texte (A-L)</h3>
+        `;
+        
+        section.texts.forEach(text => {
+          const userAnswer = Object.keys(state.answers).find(key => state.answers[key] === text.id);
+          const selectedSituation = userAnswer ? section.situations.find(h => h.id === userAnswer) : null;
+          
+          textsHTML += `
+            <div class="text-item" data-text-id="${text.id}">
+              <div class="text-letter">${text.id})</div>
+              <div class="text-content">${text.text}</div>
+              <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" data-text-id="${text.id}">
+                ${selectedSituation ? selectedSituation.text : (userAnswer === 'X' ? 'X - Keine passende Situation' : 'Ziehen Sie hier eine Situation hin')}
+              </div>
+            </div>
+          `;
+        });
+        
+        textsHTML += `</div>`;
+        
+        passageContentEl.innerHTML = textsHTML;
+        
+        let situationsHTML = `
+          <div class="situations-list">
+            <h3>Situationen (11-20)</h3>
+        `;
+        
+        section.situations.forEach((situation, idx) => {
+          const situationNumber = parseInt(situation.id);
+          const isUsed = state.answers[situation.id];
+          const isX = state.answers[situation.id] === 'X';
+          
+          situationsHTML += `
+            <div class="situation-item ${isUsed ? 'used' : ''}" draggable="${!isUsed}" data-situation-id="${situation.id}">
+              <div class="situation-number">${situationNumber}.</div>
+              <div class="situation-text">${situation.text}</div>
+              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}')">X - Kein passender Text</button>` : ''}
+            </div>
+          `;
+        });
+        
+        situationsHTML += `</div>`;
+        
+        questionBodyEl.innerHTML = situationsHTML;
+        questionTitleEl.textContent = '';
+        headingsBankContainer.innerHTML = '';
+        
+        setupPart3DragAndDrop();
+      }
+
+      function markNoMatch(situationId) {
+        Object.keys(state.answers).forEach(key => {
+          if(state.answers[key] === situationId) {
+            delete state.answers[key];
+          }
+        });
+        
+        state.answers[situationId] = 'X';
+        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
+        
+        renderAll();
+      }
+
+      function setupPart3DragAndDrop(){
+        const situationItems = document.querySelectorAll('.situation-item:not(.used)');
+        const textSlots = document.querySelectorAll('.text-item .title-slot');
+        
+        situationItems.forEach(item => {
+          item.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.dataset.situationId);
+          });
+        });
+        
+        textSlots.forEach(slot => {
+          slot.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            slot.style.background = '#e8f4ff';
+          });
+          
+          slot.addEventListener('dragleave', (e) => {
+            const hasTitle = slot.classList.contains('has-title');
+            const hasX = slot.classList.contains('has-x');
+            slot.style.background = hasTitle ? '#e8fbe9' : (hasX ? '#f8d7da' : '#f8fbff');
+          });
+          
+          slot.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const situationId = e.dataTransfer.getData('text/plain');
+            const textId = slot.dataset.textId;
+            
+            Object.keys(state.answers).forEach(key => {
+              if(state.answers[key] === situationId) {
+                delete state.answers[key];
+              }
+            });
+            
+            state.answers[situationId] = textId;
+            renderAll();
+          });
+        });
+      }
+
+      function renderSprachbausteine1(){
+        const section = exam.sections[state.sectionIndex];
+        
+        let textWithBlanks = section.fillText;
+        
+        const blankPlaceholders = [];
+        section.fillBlanks.forEach(blank => {
+          blankPlaceholders.push(`BLANK_${blank.id}`);
+        });
+        
+        let tempText = textWithBlanks;
+        blankPlaceholders.forEach((placeholder, index) => {
+          tempText = tempText.replace('________', placeholder);
+        });
+        
+        section.fillBlanks.forEach(blank => {
+          const userAnswer = state.answers[blank.id];
+          const displayText = userAnswer ? userAnswer : '________';
+          tempText = tempText.replace(`BLANK_${blank.id}`, `<span class="blank-word ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}">${displayText}</span>`);
+        });
+        
+        passageContentEl.innerHTML = `
+          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können die Lücken in beliebiger Reihenfolge ausfüllen.</div>
+          <div class="fill-blank-container">${tempText}</div>
+        `;
+        
+        document.querySelectorAll('.blank-word').forEach(blank => {
+  blank.addEventListener('click', (e) => {
+    // للخيارات العادية
+    if (!blank.textContent.includes('...')) {
+      showOptionsPopup(e.target);
+    }
+  });
+});
+
+// معالجة خاصة للخيارات التي تحتوي على "..."
+document.querySelectorAll('.option-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    const optionText = this.textContent.trim();
+    
+    // إذا كان الخيار يحتوي على "..."
+    if (optionText.includes('...')) {
+      const blankId = this.closest('.option-row').querySelector('.option-number').textContent;
+      const words = optionText.split('...');
       
-      hoeren: {
+      if (words.length === 2) {
+        state.answers[blankId] = optionText;
+        
+        // تحديث الفجوات في النص
+        document.querySelectorAll('.blank-word[data-blank-id="' + blankId + '"]').forEach(blank => {
+          blank.textContent = optionText;
+          blank.classList.add('has-answer');
+        });
+        
+        // تحديث زر الخيار
+        this.closest('.option-buttons').querySelectorAll('.option-btn').forEach(b => {
+          b.classList.remove('selected');
+        });
+        this.classList.add('selected');
+        
+        // تحديث التايلات
+        renderTopTiles();
+      }
+    }
+  });
+});
+        
+        let optionsHTML = `<div class="horizontal-options" style="gap: 8px;">`;
+        
+        section.fillBlanks.forEach(blank => {
+          const userAnswer = state.answers[blank.id];
+          
+          optionsHTML += `
+            <div class="option-row" style="padding: 8px; margin-bottom: 5px;">
+              <div class="option-number">${blank.id}</div>
+              <div class="option-buttons">
+                ${blank.options.map(opt => `
+                  <div class="option-btn ${userAnswer === opt ? 'selected' : ''}" 
+                       onclick="window.lesenApp.selectSprachbausteine1('${blank.id}', '${opt}')" 
+                       style="padding: 6px 12px; font-size: 12px;">
+                    ${opt}
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        });
+        
+        optionsHTML += `</div>`;
+        
+        questionBodyEl.innerHTML = optionsHTML;
+        questionTitleEl.textContent = '';
+        headingsBankContainer.innerHTML = '';
+      }
+
+      function showOptionsPopup(blankElement){
+        const existingPopup = document.querySelector('.options-popup');
+        if(existingPopup) {
+          existingPopup.remove();
+        }
+        
+        const blankId = blankElement.getAttribute('data-blank-id');
+        const section = exam.sections.find(s => s.id === 's4');
+        const blank = section.fillBlanks.find(b => b.id === blankId);
+        
+        if(!blank) return;
+        
+        const popup = document.createElement('div');
+        popup.className = 'options-popup';
+        
+        blank.options.forEach(opt => {
+          const optionItem = document.createElement('div');
+          optionItem.className = 'option-item';
+          optionItem.textContent = opt;
+          optionItem.onclick = () => {
+            selectSprachbausteine1(blankId, opt);
+            popup.remove();
+          };
+          popup.appendChild(optionItem);
+        });
+        
+        blankElement.appendChild(popup);
+      }
+
+      function selectSprachbausteine1(blankId, answer){
+  // إذا كان الجواب يحتوي على "..."
+  if (answer.includes('...')) {
+    const words = answer.split('...');
+    if (words.length === 2) {
+      state.answers[blankId] = answer;
+      
+      // تحديث الفجوات في النص
+      document.querySelectorAll('.blank-word[data-blank-id="' + blankId + '"]').forEach(blank => {
+        blank.textContent = answer;
+        blank.classList.add('has-answer');
+      });
+      
+      // تحديث أزرار الخيارات
+      document.querySelectorAll('.option-row').forEach(row => {
+        const rowBlankId = row.querySelector('.option-number').textContent.trim();
+        if (rowBlankId === blankId) {
+          row.querySelectorAll('.option-btn').forEach(btn => {
+            btn.classList.remove('selected');
+            if (btn.textContent.trim() === answer) {
+              btn.classList.add('selected');
+            }
+          });
+        }
+      });
+      
+      // تحديث التايلات
+      renderTopTiles();
+      return;
+    }
+  }
+  
+  // للخيارات العادية
+  state.answers[blankId] = answer;
+  renderAll();
+}
+
+      function renderSprachbausteine2(){
+        const section = exam.sections[state.sectionIndex];
+        let textWithPlaceholders = section.fillText2;
+        const placeholders = [];
+        section.fillBlanks2.forEach(blank => {
+          const ph = `BLANK_${blank.id}`;
+          placeholders.push({id: blank.id, ph});
+          textWithPlaceholders = textWithPlaceholders.replace('________', ph);
+        });
+
+        placeholders.forEach(item => {
+          const userAnswer = state.answers[item.id];
+          const displayText = userAnswer ? userAnswer : '________';
+          const span = `<span class="blank-slot ${userAnswer ? 'has-answer' : ''}" data-blank-id="${item.id}">${displayText}</span>`;
+          textWithPlaceholders = textWithPlaceholders.replace(item.ph, span);
+        });
+
+        passageContentEl.innerHTML = `
+          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort aus. Sie können jedes Wort nur einmal verwenden.</div>
+          <div class="fill-blank-container">${textWithPlaceholders}</div>
+        `;
+
+        document.querySelectorAll('.blank-slot').forEach(slot => {
+          slot.addEventListener('click', (e) => {
+            showSprachbausteine2Options(slot);
+          });
+        });
+
+        let wordBankHTML = `<div class="word-bank-vertical" style="gap: 8px;">`;
+        const usedWords = Object.values(state.answers);
+        const bank = section.wordBank && section.wordBank.length ? section.wordBank : (section.fillBlanks2[0] ? section.fillBlanks2[0].options : []);
+        bank.forEach(word => {
+          const isUsed = usedWords.includes(word);
+          wordBankHTML += `
+            <div class="bank-word-vertical ${isUsed ? 'used' : ''}" 
+                 draggable="${!isUsed}" 
+                 data-word="${word}"
+                 ${!isUsed ? `onclick="window.lesenApp.selectSprachbausteine2FromBank('${word}')"` : ''}>
+              ${word}
+            </div>
+          `;
+        });
+        wordBankHTML += `</div>`;
+        questionBodyEl.innerHTML = wordBankHTML;
+        questionTitleEl.textContent = '';
+        headingsBankContainer.innerHTML = '';
+
+        setupSprachbausteine2DragAndDrop();
+      }
+
+      let lastClickedSprachSlot = null;
+
+      function setupSprachbausteine2DragAndDrop(){
+        const bankWords = Array.from(document.querySelectorAll('.bank-word-vertical'));
+        bankWords.forEach(el => {
+          const word = el.dataset.word;
+          if(!el.classList.contains('used')){
+            el.setAttribute('draggable','true');
+          } else {
+            el.setAttribute('draggable','false');
+          }
+          el.removeEventListener('dragstart', el._dstart);
+          el._dstart = (e) => {
+            e.dataTransfer.setData('text/plain', word);
+            e.dataTransfer.setData('source', 'bank');
+          };
+          el.addEventListener('dragstart', el._dstart);
+
+          el.removeEventListener('click', el._onclick);
+          el._onclick = () => {
+            if(el.classList.contains('used')) return;
+            selectSprachbausteine2FromBank(word);
+          };
+          el.addEventListener('click', el._onclick);
+        });
+
+        const slots = Array.from(document.querySelectorAll('.blank-slot'));
+        slots.forEach(slot => {
+          slot.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            slot.classList.add('drag-over');
+          });
+          slot.addEventListener('dragleave', (e) => {
+            slot.classList.remove('drag-over');
+          });
+          slot.addEventListener('drop', (e) => {
+            e.preventDefault();
+            slot.classList.remove('drag-over');
+            const word = e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/html');
+            if(!word) return;
+            const blankId = slot.dataset.blankId;
+            if(!blankId) return;
+            Object.keys(state.answers).forEach(k => {
+              if(state.answers[k] === word){
+                delete state.answers[k];
+              }
+            });
+            const prev = state.answers[blankId];
+            if(prev){
+              const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
+              if(prevEl){
+                prevEl.classList.remove('used');
+                prevEl.setAttribute('draggable','true');
+                prevEl.addEventListener('click', prevEl._onclick);
+              }
+            }
+            const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
+            if(bankEl){
+              bankEl.classList.add('used');
+              bankEl.setAttribute('draggable','false');
+              bankEl.removeEventListener('click', bankEl._onclick);
+            }
+            state.answers[blankId] = word;
+            renderAll();
+          });
+        });
+      }
+
+      function showSprachbausteine2Options(slot){
+        document.querySelectorAll('.blank-slot').forEach(s => s.classList.remove('selected-sprach'));
+        slot.classList.add('selected-sprach');
+        lastClickedSprachSlot = slot;
+      }
+
+      function selectSprachbausteine2FromBank(word){
+        let slot = lastClickedSprachSlot;
+        if(!slot){
+          slot = Array.from(document.querySelectorAll('.blank-slot')).find(s => {
+            const id = s.dataset.blankId;
+            return !state.answers[id];
+          });
+        }
+        if(!slot) {
+          return;
+        }
+        const blankId = slot.dataset.blankId;
+        Object.keys(state.answers).forEach(k => {
+          if(state.answers[k] === word){
+            delete state.answers[k];
+          }
+        });
+        const prev = state.answers[blankId];
+        if(prev){
+          const prevEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === prev);
+          if(prevEl){
+            prevEl.classList.remove('used');
+            prevEl.setAttribute('draggable','true');
+            if(prevEl._onclick) prevEl.addEventListener('click', prevEl._onclick);
+          }
+        }
+        const bankEl = Array.from(document.querySelectorAll('.bank-word-vertical')).find(b=>b.dataset.word === word);
+        if(bankEl){
+          bankEl.classList.add('used');
+          bankEl.setAttribute('draggable','false');
+          if(bankEl._onclick) try{ bankEl.removeEventListener('click', bankEl._onclick); }catch(e){}
+        }
+        state.answers[blankId] = word;
+        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
+        
+        lastClickedSprachSlot = null;
+        renderAll();
+      }
+
+      function selectOption(questionId, optionId){
+        state.answers[questionId] = optionId;
+        try{ localStorage.setItem('lesenAnswers', JSON.stringify(state.answers)); }catch(e){}
+        
+        renderAll();
+      }
+
+      function renderResults(){
+        let resultsHTML = `<h2>Ergebnisse</h2>`;
+        let totalCorrect = 0;
+        let totalQuestions = 0;
+        
+        exam.sections.forEach(section => {
+          resultsHTML += `<div class="result-item"><h3>${section.title}</h3>`;
+          
+          if(section.id === 's1'){
+            section.texts.forEach(text => {
+              totalQuestions++;
+              const userAnswer = state.answers[text.id];
+              const isCorrect = userAnswer === text.correctAnswer;
+              if(isCorrect) totalCorrect++;
+              
+              resultsHTML += `
+                <div>Text ${text.id}: ${userAnswer || '-'} 
+                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                </div>
+              `;
+            });
+          } else if(section.id === 's2'){
+            section.questions.forEach(question => {
+              totalQuestions++;
+              const userAnswer = state.answers[question.id];
+              const isCorrect = userAnswer === question.correctAnswer;
+              if(isCorrect) totalCorrect++;
+              
+              resultsHTML += `
+                <div>${question.text}: ${userAnswer || '-'} 
+                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                </div>
+              `;
+            });
+          } else if(section.id === 's3'){
+            section.situations.forEach(situation => {
+              totalQuestions++;
+              const userAnswer = state.answers[situation.id];
+              const correctText = section.texts.find(t => t.correctAnswer === situation.id);
+              const isCorrect = userAnswer === (correctText ? correctText.id : null);
+              if(isCorrect) totalCorrect++;
+              
+              resultsHTML += `
+                <div>Situation ${situation.id}: ${userAnswer || '-'} 
+                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                </div>
+              `;
+            });
+          } else if(section.id === 's4'){
+            section.fillBlanks.forEach(blank => {
+              totalQuestions++;
+              const userAnswer = state.answers[blank.id];
+              const isCorrect = userAnswer === blank.correctAnswer;
+              if(isCorrect) totalCorrect++;
+              
+              resultsHTML += `
+                <div>Lücke ${blank.id}: ${userAnswer || '-'} 
+                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                </div>
+              `;
+            });
+          } else if(section.id === 's5'){
+            section.fillBlanks2.forEach(blank => {
+              totalQuestions++;
+              const userAnswer = state.answers[blank.id];
+              const isCorrect = userAnswer === blank.correctAnswer;
+              if(isCorrect) totalCorrect++;
+              
+              resultsHTML += `
+                <div>Lücke ${blank.id}: ${userAnswer || '-'} 
+                ${userAnswer ? `<span class="${isCorrect ? 'result-correct' : 'result-incorrect'}">${isCorrect ? '✓' : '✗'}</span>` : ''}
+                </div>
+              `;
+            });
+          }
+          
+          resultsHTML += `</div>`;
+        });
+        
+        const percentage = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+        resultsHTML += `<div class="result-item"><h3>Gesamtergebnis: ${totalCorrect}/${totalQuestions} (${percentage}%)</h3></div>`;
+        
+        passageContentEl.innerHTML = resultsHTML;
+        questionBodyEl.innerHTML = '';
+        sectionNameEl.textContent = 'Ergebnisse';
+        questionTitleEl.textContent = '';
+      }
+
+      document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
+        if(state.sectionIndex > 0){
+          state.sectionIndex--;
+          state.questionIndex = 0;
+          renderAll();
+        }
+      });
+
+      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
+        if(state.sectionIndex < exam.sections.length - 1){
+          state.sectionIndex++;
+          state.questionIndex = 0;
+          renderAll();
+        }
+      });
+
+      resultBtn.addEventListener('click', ()=>{
+        state.showResults = !state.showResults;
+        renderAll();
+      });
+
+      resetBtn.addEventListener('click', ()=>{
+        if(confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')){
+          state.answers = {};
+          state.marked = {};
+          state.showResults = false;
+          resetTimer();
+          renderAll();
+        }
+      });
+
+      resetSectionBtn.addEventListener('click', resetCurrentSection);
+
+      document.getElementById('saveBtn-lesen').addEventListener('click', ()=>{
+        statusText.textContent = 'Gespeichert';
+        setTimeout(()=>{statusText.textContent = 'Nicht gespeichert'}, 2000);
+      });
+
+      document.getElementById('submitBtn-lesen').addEventListener('click', ()=>{
+        if(confirm('Möchten Sie die Prüfung wirklich abgeben?')){
+          state.showResults = true;
+          renderAll();
+        }
+      });
+
+      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
+        showPage('hoeren-page');
+      });
+
+      updateTimerDisplay();
+      renderAll();
+      startTimer();
+      
+      window._lesenState = state;
+      window.lesenApp = {
+        selectOption,
+        markNoMatch,
+        selectSprachbausteine1,
+        selectSprachbausteine2FromBank
+      };
+    }
+
+    // ===== HÖREN PAGE FUNCTIONALITY =====
+    function initHoerenPage() {
+      const exam = {
         id: "exam-hörverstehen",
         durationSec: 17 * 60,
         sections: [
@@ -2240,7 +2805,7 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             id: "hörverstehen2", 
             title: "Hörverstehen, Teil 2", 
             points: 25,
-            correctAnswers: { "46": "richtig", "47": "falsch", "48": "richtig", "49": "richtig", "50": "falsch", "51": "falsch", "52": "falsch", "53": "richtig", "54": "richtig", "55": "richtig" },
+            correctAnswers: { "46": "richtig", "47": "falsch", "48": "richtig", "49": "richtig", "50": "richtig", "51": "falsch", "52": "falsch", "53": "richtig", "54": "falsch", "55": "falsch" },
             questions: [
               {
                 id: "46",
@@ -2313,17 +2878,287 @@ Nur wenn es regnet und das passiert in Deutschland leider nicht so selten -, ___
             ]
           }
         ]
-      },
+      };
+
+      let state = { 
+        sectionIndex: 0, 
+        answers: {}, 
+        remaining: exam.durationSec,
+        showResults: false,
+        timerStarted: false,
+        timerInterval: null
+      };
       
-      schreiben: {
-        id: "exam-schreiben-001",
+      const topTiles = document.getElementById('topTiles-hoeren');
+      const contentContainer = document.getElementById('contentContainer-hoeren');
+      const timerEl = document.getElementById('timer-hoeren');
+      const statusText = document.getElementById('statusText-hoeren');
+
+      function startTimer() {
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+        }
+        
+        state.timerStarted = true;
+        state.timerInterval = setInterval(() => {
+          if (state.remaining <= 0) {
+            clearInterval(state.timerInterval);
+            timerEl.textContent = 'Zeit abgelaufen';
+            return;
+          }
+          state.remaining--;
+          updateTimerDisplay();
+        }, 1000);
+      }
+
+      function resetTimer() {
+        if (state.timerInterval) {
+          clearInterval(state.timerInterval);
+        }
+        state.remaining = exam.durationSec;
+        state.timerStarted = false;
+        updateTimerDisplay();
+        startTimer();
+      }
+
+      function updateTimerDisplay() {
+        const min = Math.floor(state.remaining / 60);
+        const sec = state.remaining % 60;
+        timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+      }
+
+      function renderTopTiles() { 
+        topTiles.innerHTML = ''; 
+        exam.sections.forEach((sec, idx) => { 
+          const div = document.createElement('div'); 
+          div.className = 'tile' + (idx === state.sectionIndex ? ' active' : '') + (isSectionDone(sec) ? ' done' : ''); 
+          div.innerHTML = `<div>${sec.title}</div><div class="points">${sec.points} P</div>`; 
+          div.onclick = () => { state.sectionIndex = idx; state.showResults = false; renderAll(); }; 
+          topTiles.appendChild(div); 
+        }); 
+      }
+
+      function isSectionDone(section) {
+        const answers = state.answers[section.id];
+        if (!answers) return false;
+        const answeredQuestions = Object.keys(answers).length;
+        const totalQuestions = section.questions.length;
+        return answeredQuestions === totalQuestions;
+      }
+
+      function renderAll() {
+        renderTopTiles();
+        
+        if (state.showResults) {
+          renderResults();
+          return;
+        }
+        
+        renderListeningSection();
+      }
+
+      function renderListeningSection() {
+        const section = exam.sections[state.sectionIndex];
+        const currentAnswers = state.answers[section.id] || {};
+        
+        let contentHTML = `
+          <div class="panel-title">${section.title}</div>
+          <div class="instructions">
+            Sie hören die Nachrichten. Entscheiden Sie beim Hören, ob die Aussagen richtig oder falsch sind. 
+            Sie hören die Nachrichten nur einmal. Sie haben jetzt 30 Sekunden, um die Aussagen zu lesen.
+          </div>
+          
+          <div class="listening-task">
+            <table class="true-false-table">
+              <thead>
+                <tr>
+                  <th style="width: 10%">Nr.</th>
+                  <th style="width: 60%">Aussage</th>
+                  <th style="width: 30%">Ihre Antwort</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+        
+        section.questions.forEach((question, index) => {
+          const currentAnswer = currentAnswers[question.id] || '';
+          contentHTML += `
+            <tr>
+              <td><strong>${question.id}</strong></td>
+              <td class="question-text">${question.text}</td>
+              <td>
+                <div class="answer-options">
+                  <label class="answer-option">
+                    <input 
+                      type="radio" 
+                      name="q${section.id}_${question.id}" 
+                      value="richtig" 
+                      ${currentAnswer === 'richtig' ? 'checked' : ''}
+                      onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"
+                    >
+                    Richtig
+                  </label>
+                  <label class="answer-option">
+                    <input 
+                      type="radio" 
+                      name="q${section.id}_${question.id}" 
+                      value="falsch" 
+                      ${currentAnswer === 'falsch' ? 'checked' : ''}
+                      onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"
+                    >
+                    Falsch
+                  </label>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+        
+        contentHTML += `
+              </tbody>
+            </table>
+          </div>
+        `;
+        
+        contentContainer.innerHTML = contentHTML;
+      }
+
+      function updateListeningAnswer(sectionId, questionId, answer) {
+        if (!state.answers[sectionId]) {
+          state.answers[sectionId] = {};
+        }
+        state.answers[sectionId][questionId] = answer;
+        try{ localStorage.setItem('hoerenAnswers', JSON.stringify(state.answers)); }catch(e){}
+        
+        renderTopTiles();
+      }
+
+      function renderResults() {
+        let resultsHTML = `<div class="panel-title">Ergebnisse - Hörverstehen</div>`;
+        
+        exam.sections.forEach(section => {
+          const userAnswers = state.answers[section.id] || {};
+          let correctCount = 0;
+          
+          resultsHTML += `
+            <div class="listening-task">
+              <h3>${section.title} (${section.points} Punkte)</h3>
+              <table class="true-false-table">
+                <thead>
+                  <tr>
+                    <th style="width: 10%">Nr.</th>
+                    <th style="width: 50%">Aussage</th>
+                    <th style="width: 15%">Ihre Antwort</th>
+                    <th style="width: 15%">Richtige Antwort</th>
+                    <th style="width: 10%">Punkte</th>
+                  </tr>
+                </thead>
+                <tbody>
+          `;
+          
+          section.questions.forEach((question) => {
+            const userAnswer = userAnswers[question.id] || '-';
+            const correctAnswer = section.correctAnswers[question.id];
+            const gotCorrect = userAnswer === correctAnswer;
+            const points = gotCorrect ? "1" : "0";
+            
+            if (gotCorrect) correctCount++;
+            
+            const rowClass = gotCorrect ? 'correct-answer' : 'incorrect-answer';
+            
+            resultsHTML += `
+              <tr class="${rowClass}">
+                <td><strong>${question.id}</strong></td>
+                <td class="question-text">${question.text}</td>
+                <td>${userAnswer}</td>
+                <td>${correctAnswer}</td>
+                <td><strong>${points}</strong></td>
+              </tr>
+            `;
+          });
+          
+          const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
+          
+          resultsHTML += `
+                </tbody>
+              </table>
+              <div style="margin-top: 15px; padding: 15px; background: #e3f2fd; border-radius: 6px;">
+                <strong>Erreichte Punkte: ${correctCount}/${section.questions.length} richtig = ${totalPoints}/${section.points} Punkten</strong>
+              </div>
+            </div>
+          `;
+        });
+        
+        contentContainer.innerHTML = resultsHTML;
+      }
+
+      document.getElementById('prevBtn-hoeren').addEventListener('click', () => {
+        if (state.sectionIndex > 0) {
+          state.sectionIndex--;
+          state.showResults = false;
+          renderAll();
+        }
+      });
+
+      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
+        if (state.sectionIndex < exam.sections.length - 1) {
+          state.sectionIndex++;
+          state.showResults = false;
+          renderAll();
+        }
+      });
+
+      document.getElementById('resultBtn-hoeren').addEventListener('click', () => {
+        state.showResults = !state.showResults;
+        renderAll();
+      });
+
+      document.getElementById('resetBtn-hoeren').addEventListener('click', () => {
+        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöscht.')) {
+          state.answers = {};
+          state.showResults = false;
+          resetTimer();
+          renderAll();
+        }
+      });
+
+      document.getElementById('saveBtn-hoeren').addEventListener('click', () => {
+        statusText.textContent = 'Gespeichert';
+        setTimeout(() => { statusText.textContent = 'Nicht gespeichert' }, 2000);
+      });
+
+      document.getElementById('submitBtn-hoeren').addEventListener('click', () => {
+        if (confirm('Möchten Sie die Prüfung wirklich abgeben?')) {
+          state.showResults = true;
+          renderAll();
+        }
+      });
+
+      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
+        showPage('schreiben-page');
+      });
+
+      updateTimerDisplay();
+      renderAll();
+      startTimer();
+      
+        window._hoerenState = state;
+        window.hoerenApp = {
+        updateListeningAnswer
+      };
+    }
+
+    // ===== SCHREIBEN PAGE FUNCTIONALITY =====
+    function initSchreibenPage() {
+      const exam = {
+        id: "exam-002",
         durationSec: 30 * 60,
         sections: [
           { 
-            id:"s1", 
-            title:"Schreiben, Teil 1", 
-            points:45,
-            passageTitle:"Aufgabe: Schreiben Sie eine E-Mail",
+            id: "s1", 
+            title: "Schreiben, Teil 1", 
+            points: 45,
+            passageTitle: "Aufgabe: Schreiben Sie eine E-Mail",
             passage: "",
             writingTask: {
               prompt: `Mehr bewegen – aber wie?
@@ -2358,1003 +3193,7 @@ info@radeldichmunter.de`,
             }
           }
         ]
-      }
-    };
-
-    // ===== CORRECT ANSWERS FROM L9AHWA.html =====
-    const CORRECT_ANSWERS = {
-      lesen: {
-        "text1": "j",
-        "text2": "b", 
-        "text3": "h",
-        "text4": "a",
-        "text5": "f",
-        
-        "s2q1": "s2q1o1",
-        "s2q2": "s2q2o1",
-        "s2q3": "s2q3o3",
-        "s2q4": "s2q4o1",
-        "s2q5": "s2q5o3",
-        
-        "11": "X",
-        "12": "D",
-        "13": "L",
-        "14": "C",
-        "15": "E",
-        "16": "X",
-        "17": "G",
-        "18": "K",
-        "19": "A",
-        "20": "I",
-        
-        "21": "her",
-        "22": "erkrankt",
-        "23": "wenn",
-        "24": "zwar",
-        "25": "werde",
-        "26": "Darauf",
-        "27": "davon",
-        "28": "dir",
-        "29": "zu beschäftigen",
-        "30": "wie",
-        
-        "31": "KAUM",
-        "32": "AUF",
-        "33": "VORBEI",
-        "34": "STATT",
-        "35": "INNERHALB",
-        "36": "MÜSSEN",
-        "37": "AN",
-        "38": "SOLLEN",
-        "39": "DANN",
-        "40": "DENN"
-      },
-      
-      hoeren: {
-        "41": "falsch",
-        "42": "richtig",
-        "43": "richtig",
-        "44": "falsch",
-        "45": "richtig",
-        
-        "46": "richtig",
-        "47": "falsch",
-        "48": "richtig",
-        "49": "richtig",
-        "50": "falsch",
-        "51": "falsch",
-        "52": "falsch",
-        "53": "richtig",
-        "54": "richtig",
-        "55": "richtig",
-        
-        "56": "richtig",
-        "57": "falsch",
-        "58": "falsch",
-        "59": "falsch",
-        "60": "richtig"
-      }
-    };
-
-    // ===== LESEN PAGE FUNCTIONALITY =====
-    function initLesenPage() {
-      const exam = EXAM_DATA.lesen;
-      
-      window.selectedHeadingId = null;
-      window.selectedSituationId = null;
-      window.selectedWordId = null;
-      window.selectedWord = null;
-      
-      let state = { 
-        sectionIndex: 0, 
-        questionIndex: 0, 
-        answers: {}, 
-        marked: {}, 
-        remaining: exam.durationSec,
-        showResults: false,
-        timerStarted: false,
-        timerInterval: null,
-        examEnded: false,
-        currentPage: 'lesen'
       };
-      const topTiles = document.getElementById('topTiles-lesen');
-      const passageTitleEl = document.getElementById('passageTitle-lesen');
-      const passageContentEl = document.getElementById('passageContent-lesen');
-      const sectionNameEl = document.getElementById('sectionName-lesen');
-      const questionTitleEl = document.getElementById('questionTitle-lesen');
-      const questionBodyEl = document.getElementById('questionBody-lesen');
-      const headingsBankContainer = document.getElementById('headingsBankContainer-lesen');
-      const timerEl = document.getElementById('timer-lesen');
-      const statusText = document.getElementById('statusText-lesen');
-      const resultBtn = document.getElementById('resultBtn-lesen');
-      const resetBtn = document.getElementById('resetBtn-lesen');
-      const resetSectionBtn = document.getElementById('resetSectionBtn-lesen');
-
-      function handleTimeExpired() {
-        if (state.examEnded) return;
-        state.examEnded = true;
-        
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-          state.timerInterval = null;
-        }
-        
-        state.showResults = true;
-        renderAll();
-        
-        setTimeout(() => {
-          if (state.sectionIndex < exam.sections.length - 1) {
-            state.sectionIndex++;
-            state.showResults = false;
-            state.examEnded = false;
-            renderAll();
-          } else {
-            showPage('hoeren-page');
-          }
-        }, 2000);
-      }
-
-      function startTimer(){
-        if(state.timerInterval) {
-          clearInterval(state.timerInterval);
-        }
-        
-        state.timerStarted = true;
-        state.timerInterval = setInterval(()=>{
-          if(state.remaining <= 0){
-            clearInterval(state.timerInterval);
-            timerEl.textContent = 'Zeit abgelaufen';
-            handleTimeExpired();
-            return;
-          }
-          state.remaining--;
-          updateTimerDisplay();
-        }, 1000);
-      }
-
-      function resetTimer(){
-        if(state.timerInterval) {
-          clearInterval(state.timerInterval);
-        }
-        state.remaining = exam.durationSec;
-        state.timerStarted = false;
-        state.examEnded = false;
-        updateTimerDisplay();
-        startTimer();
-      }
-
-      function updateTimerDisplay(){
-        const min = Math.floor(state.remaining / 60);
-        const sec = state.remaining % 60;
-        timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
-      }
-
-      function resetCurrentSection() {
-        const currentSection = exam.sections[state.sectionIndex];
-        
-        if (confirm(`Möchten Sie wirklich den Teil "${currentSection.title}" zurücksetzen?`)) {
-          if (currentSection.id === 's1') {
-            currentSection.texts.forEach(text => {
-              delete state.answers[text.id];
-            });
-          } else if (currentSection.id === 's2') {
-            currentSection.questions.forEach(question => {
-              delete state.answers[question.id];
-            });
-          } else if (currentSection.id === 's3') {
-            currentSection.situations.forEach(situation => {
-              delete state.answers[situation.id];
-            });
-          } else if (currentSection.id === 's4') {
-            currentSection.fillBlanks.forEach(blank => {
-              delete state.answers[blank.id];
-            });
-          } else if (currentSection.id === 's5') {
-            currentSection.fillBlanks2.forEach(blank => {
-              delete state.answers[blank.id];
-            });
-          }
-          
-          renderAll();
-        }
-      }
-
-      function renderTopTiles(){ 
-        topTiles.innerHTML=''; 
-        exam.sections.forEach((sec,idx)=>{ 
-          const div=document.createElement('div'); 
-          div.className='tile'+(idx===state.sectionIndex?' active':'')+(isSectionDone(sec)?' done':''); 
-          div.innerHTML=`<div>${sec.title}</div><div class="points">${sec.points} P</div>`; 
-          div.onclick=()=>{state.sectionIndex=idx; state.questionIndex=0; state.showResults=false; renderAll();}; 
-          topTiles.appendChild(div); 
-        }); 
-      }
-
-      function isSectionDone(section){
-        if(section.id==='s1') return section.texts.every(t=>state.answers[t.id]);
-        if(section.id==='s2') return section.questions.every(q=>state.answers[q.id]);
-        if(section.id==='s3') return section.situations.every(h=>state.answers[h.id] || state.answers[h.id] === 'X');
-        if(section.id==='s4') return section.fillBlanks.every(b=>state.answers[b.id]);
-        if(section.id==='s5') return section.fillBlanks2.every(b=>state.answers[b.id]);
-        return false;
-      }
-
-      function renderAll(){
-        if (state.examEnded) return;
-        
-        renderTopTiles();
-        const section = exam.sections[state.sectionIndex];
-        sectionNameEl.textContent = section.title;
-        passageTitleEl.textContent = section.passageTitle;
-        
-        resetSectionBtn.style.display = 'block';
-        
-        if(state.showResults){
-          renderResults();
-          return;
-        }
-        
-        if(section.id === 's1'){
-          renderPart1();
-        } else if(section.id === 's2'){
-          renderPart2();
-        } else if(section.id === 's3'){
-          renderPart3();
-        } else if(section.id === 's4'){
-          renderSprachbausteine1();
-        } else if(section.id === 's5'){
-          renderSprachbausteine2();
-        }
-      }
-
-      function renderPart1(){
-        const section = exam.sections[state.sectionIndex];
-        
-        let textsHTML = `<div class="instructions">Ziehen Sie die passenden Überschriften auf die Texte. (Klicken: Titel auswählen → auf Text klicken)</div>`;
-        
-        section.texts.forEach((text, idx) => {
-          const letter = String.fromCharCode(97 + idx);
-          const selectedHeading = state.answers[text.id];
-          
-          textsHTML += `
-            <div class="text-container">
-              <div class="text-title">Text ${letter.toUpperCase()}</div>
-              <div class="text-content">${text.content}</div>
-              <div class="title-slot ${selectedHeading ? 'has-title' : ''}" data-text-id="${text.id}" onclick="window.lesenApp.handleSlotClick('${text.id}')">
-                ${selectedHeading ? getHeadingTextById(selectedHeading) : 'Ziehen Sie hier eine Überschrift hin'}
-              </div>
-            </div>
-          `;
-        });
-        
-        passageContentEl.innerHTML = textsHTML;
-        
-        let headingsHTML = `<div class="headings-bank">`;
-        section.headings.forEach(heading => {
-          const isUsed = section.texts.some(text => state.answers[text.id] === heading.id);
-          
-          headingsHTML += `
-            <div class="heading-item ${isUsed ? 'used' : ''} ${window.selectedHeadingId === heading.id ? 'selected' : ''}" 
-                 draggable="${!isUsed}" 
-                 data-heading-id="${heading.id}"
-                 onclick="window.lesenApp.handleHeadingClick('${heading.id}')">
-              ${heading.id}) ${heading.text}
-            </div>
-          `;
-        });
-        
-        headingsHTML += `</div>`;
-        
-        headingsBankContainer.innerHTML = headingsHTML;
-        
-        setupDragAndDrop();
-        
-        questionBodyEl.innerHTML = '';
-        questionTitleEl.textContent = '';
-      }
-
-      function handleHeadingClick(headingId) {
-        const section = exam.sections[state.sectionIndex];
-        const isUsed = section.texts.some(text => state.answers[text.id] === headingId);
-        if (isUsed) return;
-        
-        if (window.selectedHeadingId === headingId) {
-          window.selectedHeadingId = null;
-        } else {
-          window.selectedHeadingId = headingId;
-        }
-        renderPart1();
-      }
-
-      function handleSlotClick(textId) {
-        if (window.selectedHeadingId) {
-          Object.keys(state.answers).forEach(key => {
-            if (state.answers[key] === window.selectedHeadingId) {
-              delete state.answers[key];
-            }
-          });
-          
-          state.answers[textId] = window.selectedHeadingId;
-          window.selectedHeadingId = null;
-          renderAll();
-        } 
-        else if (state.answers[textId]) {
-          delete state.answers[textId];
-          renderAll();
-        }
-      }
-
-      function getHeadingTextById(id){
-        const section = exam.sections[state.sectionIndex];
-        const heading = section.headings.find(h => h.id === id);
-        return heading ? `${heading.id}) ${heading.text}` : '';
-      }
-
-      function setupDragAndDrop(){
-        const headingItems = document.querySelectorAll('.heading-item:not(.used)');
-        const titleSlots = document.querySelectorAll('.title-slot');
-        
-        headingItems.forEach(item => {
-          item.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', e.target.dataset.headingId);
-          });
-        });
-        
-        titleSlots.forEach(slot => {
-          slot.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            slot.style.background = '#e8f4ff';
-          });
-          
-          slot.addEventListener('dragleave', (e) => {
-            slot.style.background = slot.classList.contains('has-title') ? '#e8fbe9' : '#f8fbff';
-          });
-          
-          slot.addEventListener('drop', (e) => {
-            e.preventDefault();
-            const headingId = e.dataTransfer.getData('text/plain');
-            const textId = slot.dataset.textId;
-            
-            Object.keys(state.answers).forEach(key => {
-              if(state.answers[key] === headingId) {
-                delete state.answers[key];
-              }
-            });
-            
-            state.answers[textId] = headingId;
-            window.selectedHeadingId = null;
-            renderAll();
-          });
-        });
-      }
-
-      function renderPart2(){
-        const section = exam.sections[state.sectionIndex];
-        
-        passageContentEl.innerHTML = `<div class="passage">${section.passage}</div>`;
-        
-        let questionsHTML = `<div class="all-questions">`;
-        
-        section.questions.forEach((question, idx) => {
-          const questionNumber = idx + 1;
-          const userAnswer = state.answers[question.id];
-          
-          questionsHTML += `
-            <div class="question-block">
-              <div class="question-text">${questionNumber}. ${question.text}</div>
-              <div class="options">
-                ${question.options.map(opt => `
-                  <div class="option ${userAnswer === opt.id ? 'selected' : ''}" 
-                       onclick="window.lesenApp.selectOption('${question.id}', '${opt.id}')">
-                    <div class="radio"></div>
-                    <div>${opt.text}</div>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          `;
-        });
-        
-        questionsHTML += `</div>`;
-        
-        questionBodyEl.innerHTML = questionsHTML;
-        questionTitleEl.textContent = '';
-        headingsBankContainer.innerHTML = '';
-      }
-
-      function renderPart3(){
-        const section = exam.sections[state.sectionIndex];
-        
-        let textsHTML = `
-          <div class="instructions">Ziehen Sie die passenden Situationen auf die Texte. (Klicken: Situation auswählen → auf Text klicken)</div>
-          <div class="texts-list">
-            <h3>Texte (A-L)</h3>
-        `;
-        
-        section.texts.forEach(text => {
-          const userAnswer = Object.keys(state.answers).find(key => state.answers[key] === text.id);
-          const selectedSituation = userAnswer ? section.situations.find(h => h.id === userAnswer) : null;
-          
-          textsHTML += `
-            <div class="text-item" data-text-id="${text.id}">
-              <div class="text-letter">${text.id})</div>
-              <div class="text-content">${text.text}</div>
-              <div class="title-slot ${userAnswer ? 'has-title' : ''} ${userAnswer === 'X' ? 'has-x' : ''}" data-text-id="${text.id}">
-                <span onclick="window.lesenApp.handleSituationSlotClick('${text.id}')">
-                  ${selectedSituation ? selectedSituation.text : (userAnswer === 'X' ? 'X - Keine passende Situation' : 'Ziehen Sie hier eine Situation hin')}
-                </span>
-                ${userAnswer === 'X' ? `<button class="restore-btn" onclick="window.lesenApp.restoreX('${text.id}')">↩️ Zurück</button>` : ''}
-              </div>
-            </div>
-          `;
-        });
-        
-        textsHTML += `</div>`;
-        
-        passageContentEl.innerHTML = textsHTML;
-        
-        let situationsHTML = `
-          <div class="situations-list">
-            <h3>Situationen (11-20)</h3>
-        `;
-        
-        section.situations.forEach((situation, idx) => {
-          const situationNumber = parseInt(situation.id);
-          const isUsed = state.answers[situation.id];
-          const isX = state.answers[situation.id] === 'X';
-          
-          situationsHTML += `
-            <div class="situation-item ${isUsed ? 'used' : ''} ${window.selectedSituationId === situation.id ? 'selected' : ''}" 
-                 draggable="${!isUsed}" 
-                 data-situation-id="${situation.id}"
-                 onclick="${!isUsed ? `window.lesenApp.handleSituationClick('${situation.id}')` : ''}">
-              <div class="situation-number">${situationNumber}.</div>
-              <div class="situation-text">${situation.text}</div>
-              ${!isUsed ? `<button class="exam-btn no-match ${isX ? 'selected' : ''}" onclick="window.lesenApp.markNoMatch('${situation.id}'); event.stopPropagation();">X - Kein passender Text</button>` : ''}
-            </div>
-          `;
-        });
-        
-        situationsHTML += `</div>`;
-        
-        questionBodyEl.innerHTML = situationsHTML;
-        questionTitleEl.textContent = '';
-        headingsBankContainer.innerHTML = '';
-        
-        setupPart3DragAndDrop();
-      }
-
-      function restoreX(textId) {
-        const situationId = Object.keys(state.answers).find(key => state.answers[key] === 'X' && key.includes('text'));
-        if (situationId) {
-          delete state.answers[situationId];
-        }
-        renderAll();
-      }
-
-      function handleSituationClick(situationId) {
-        if (window.selectedSituationId === situationId) {
-          window.selectedSituationId = null;
-        } else {
-          window.selectedSituationId = situationId;
-        }
-        renderPart3();
-      }
-
-      function handleSituationSlotClick(textId) {
-        if (window.selectedSituationId) {
-          Object.keys(state.answers).forEach(key => {
-            if (state.answers[key] === window.selectedSituationId) {
-              delete state.answers[key];
-            }
-          });
-          
-          state.answers[window.selectedSituationId] = textId;
-          window.selectedSituationId = null;
-          renderAll();
-        } 
-        else {
-          const situationId = Object.keys(state.answers).find(key => state.answers[key] === textId);
-          if (situationId) {
-            delete state.answers[situationId];
-            renderAll();
-          }
-        }
-      }
-
-      function markNoMatch(situationId) {
-        Object.keys(state.answers).forEach(key => {
-          if(state.answers[key] === situationId) {
-            delete state.answers[key];
-          }
-        });
-        
-        state.answers[situationId] = 'X';
-        window.selectedSituationId = null;
-        renderAll();
-      }
-
-      function setupPart3DragAndDrop(){
-        const situationItems = document.querySelectorAll('.situation-item:not(.used)');
-        const textSlots = document.querySelectorAll('.text-item .title-slot');
-        
-        situationItems.forEach(item => {
-          item.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', e.target.dataset.situationId);
-          });
-        });
-        
-        textSlots.forEach(slot => {
-          slot.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            slot.style.background = '#e8f4ff';
-          });
-          
-          slot.addEventListener('dragleave', (e) => {
-            const hasTitle = slot.classList.contains('has-title');
-            const hasX = slot.classList.contains('has-x');
-            slot.style.background = hasTitle ? '#e8fbe9' : (hasX ? '#f8d7da' : '#f8fbff');
-          });
-          
-          slot.addEventListener('drop', (e) => {
-            e.preventDefault();
-            const situationId = e.dataTransfer.getData('text/plain');
-            const textId = slot.dataset.textId;
-            
-            Object.keys(state.answers).forEach(key => {
-              if(state.answers[key] === situationId) {
-                delete state.answers[key];
-              }
-            });
-            
-            state.answers[situationId] = textId;
-            window.selectedSituationId = null;
-            renderAll();
-          });
-        });
-      }
-
-      function renderSprachbausteine1(){
-        const section = exam.sections[state.sectionIndex];
-        
-        let textWithBlanks = section.fillText;
-        
-        const blankPlaceholders = [];
-        section.fillBlanks.forEach(blank => {
-          blankPlaceholders.push(`BLANK_${blank.id}`);
-        });
-        
-        let tempText = textWithBlanks;
-        blankPlaceholders.forEach((placeholder, index) => {
-          tempText = tempText.replace('________', placeholder);
-        });
-        
-        section.fillBlanks.forEach(blank => {
-          const userAnswer = state.answers[blank.id];
-          const displayText = userAnswer ? userAnswer : '________';
-          tempText = tempText.replace(`BLANK_${blank.id}`, `<span class="blank-word ${userAnswer ? 'has-answer' : ''}" data-blank-id="${blank.id}" onclick="window.lesenApp.handleBlankClick('${blank.id}')">${displayText}</span>`);
-        });
-        
-        passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf jede Lücke und wählen Sie das passende Wort.</div>
-          <div class="fill-blank-container">${tempText}</div>
-        `;
-        
-        let optionsHTML = `<div class="horizontal-options" style="gap: 8px;">`;
-        
-        section.fillBlanks.forEach(blank => {
-          const userAnswer = state.answers[blank.id];
-          
-          optionsHTML += `
-            <div class="option-row">
-              <div class="option-number">${blank.id}</div>
-              <div class="option-buttons">
-                ${blank.options.map(opt => `
-                  <div class="option-btn ${userAnswer === opt ? 'selected' : ''}" 
-                       onclick="window.lesenApp.selectSprachbausteine1('${blank.id}', '${opt}')">
-                    ${opt}
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-          `;
-        });
-        
-        optionsHTML += `</div>`;
-        
-        questionBodyEl.innerHTML = optionsHTML;
-        questionTitleEl.textContent = '';
-        headingsBankContainer.innerHTML = '';
-      }
-
-      function handleBlankClick(blankId) {
-        const section = exam.sections[state.sectionIndex];
-        const blank = section.fillBlanks.find(b => b.id === blankId);
-        if (!blank) return;
-        
-        const popup = document.createElement('div');
-        popup.className = 'options-popup';
-        
-        blank.options.forEach(opt => {
-          const optionItem = document.createElement('div');
-          optionItem.className = 'option-item';
-          optionItem.textContent = opt;
-          optionItem.onclick = () => {
-            selectSprachbausteine1(blankId, opt);
-            document.querySelectorAll('.options-popup').forEach(p => p.remove());
-          };
-          popup.appendChild(optionItem);
-        });
-        
-        document.querySelectorAll('.options-popup').forEach(p => p.remove());
-        
-        const element = document.querySelector(`[data-blank-id="${blankId}"]`);
-        if (element) {
-          element.appendChild(popup);
-        }
-      }
-
-      function selectSprachbausteine1(blankId, answer){
-        state.answers[blankId] = answer;
-        renderAll();
-      }
-
-      function renderSprachbausteine2(){
-        const section = exam.sections[state.sectionIndex];
-        
-        let textWithPlaceholders = section.fillText2;
-        const placeholders = [];
-        section.fillBlanks2.forEach(blank => {
-          const ph = `BLANK_${blank.id}`;
-          placeholders.push({id: blank.id, ph});
-          textWithPlaceholders = textWithPlaceholders.replace('________', ph);
-        });
-
-        placeholders.forEach(item => {
-          const userAnswer = state.answers[item.id];
-          const displayText = userAnswer ? userAnswer : '________';
-          const span = `<span class="blank-slot ${userAnswer ? 'has-answer' : ''} ${window.selectedWordId === item.id ? 'selected' : ''}" data-blank-id="${item.id}" onclick="window.lesenApp.handleWordSlotClick('${item.id}')">${displayText}</span>`;
-          textWithPlaceholders = textWithPlaceholders.replace(item.ph, span);
-        });
-
-        passageContentEl.innerHTML = `
-          <div class="instructions">Klicken Sie auf eine Lücke und dann auf ein Wort aus der Liste.</div>
-          <div class="fill-blank-container">${textWithPlaceholders}</div>
-        `;
-
-        let wordBankHTML = `<div class="word-bank-vertical">`;
-        const usedWords = Object.values(state.answers);
-        const bank = section.fillBlanks2[0] ? section.fillBlanks2[0].options : [];
-        
-        bank.forEach(word => {
-          const isUsed = usedWords.includes(word);
-          const isSelected = window.selectedWord === word;
-          
-          wordBankHTML += `
-            <div class="bank-word-vertical ${isUsed ? 'used' : ''} ${isSelected ? 'selected' : ''}" 
-                 draggable="${!isUsed}" 
-                 data-word="${word}"
-                 onclick="${!isUsed ? `window.lesenApp.handleWordClick('${word}')` : ''}">
-              ${word}
-            </div>
-          `;
-        });
-        wordBankHTML += `</div>`;
-        
-        questionBodyEl.innerHTML = wordBankHTML;
-        questionTitleEl.textContent = '';
-        headingsBankContainer.innerHTML = '';
-
-        setupSprachbausteine2DragAndDrop();
-      }
-
-      function handleWordClick(word) {
-        if (window.selectedWord === word) {
-          window.selectedWord = null;
-          window.selectedWordId = null;
-        } else {
-          window.selectedWord = word;
-          window.selectedWordId = null;
-        }
-        renderSprachbausteine2();
-      }
-
-      function handleWordSlotClick(blankId) {
-        if (window.selectedWord) {
-          const word = window.selectedWord;
-          
-          Object.keys(state.answers).forEach(key => {
-            if (state.answers[key] === word) {
-              delete state.answers[key];
-            }
-          });
-          
-          state.answers[blankId] = word;
-          window.selectedWord = null;
-          renderSprachbausteine2();
-        } 
-        else if (state.answers[blankId]) {
-          delete state.answers[blankId];
-          renderSprachbausteine2();
-        }
-      }
-
-      function setupSprachbausteine2DragAndDrop(){
-        const wordItems = document.querySelectorAll('.bank-word-vertical:not(.used)');
-        const blankSlots = document.querySelectorAll('.blank-slot');
-        
-        wordItems.forEach(item => {
-          item.addEventListener('dragstart', (e) => {
-            e.dataTransfer.setData('text/plain', e.target.dataset.word);
-          });
-        });
-        
-        blankSlots.forEach(slot => {
-          slot.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            slot.style.background = '#e8f4ff';
-          });
-          
-          slot.addEventListener('dragleave', (e) => {
-            slot.style.background = slot.classList.contains('has-answer') ? '#e8fbe9' : '#f8fbff';
-          });
-          
-          slot.addEventListener('drop', (e) => {
-            e.preventDefault();
-            const word = e.dataTransfer.getData('text/plain');
-            const blankId = slot.dataset.blankId;
-            
-            selectSprachbausteine2(blankId, word);
-          });
-        });
-      }
-
-      function selectSprachbausteine2(blankId, word){
-        Object.keys(state.answers).forEach(key => {
-          if (state.answers[key] === word) {
-            delete state.answers[key];
-          }
-        });
-        
-        state.answers[blankId] = word;
-        window.selectedWord = null;
-        renderSprachbausteine2();
-      }
-
-      function selectOption(questionId, optionId){
-        state.answers[questionId] = optionId;
-        renderAll();
-      }
-
-      function renderResults() {
-        const section = exam.sections[state.sectionIndex];
-        let resultsHTML = `
-          <div class="result-item">
-            <h3>${section.title} - Ergebnisse</h3>
-        `;
-        
-        let totalCorrect = 0;
-        let totalQuestions = 0;
-        
-        if (section.id === 's1') {
-          section.texts.forEach((text, index) => {
-            totalQuestions++;
-            const userAnswer = state.answers[text.id];
-            const isCorrect = userAnswer === text.correctAnswer;
-            if (isCorrect) totalCorrect++;
-            
-            resultsHTML += `
-              <div class="result-detail">
-                <div class="result-row">
-                  <div class="result-label">Ihre Antwort:</div>
-                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer ? getHeadingTextById(userAnswer) : 'Nicht beantwortet'}</div>
-                </div>
-                <div class="result-row">
-                  <div class="result-label">Richtige Antwort:</div>
-                  <div class="result-value correct">${getHeadingTextById(text.correctAnswer)}</div>
-                </div>
-                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
-                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
-                </div>
-              </div>
-            `;
-          });
-        } else if (section.id === 's2') {
-          section.questions.forEach((question, index) => {
-            totalQuestions++;
-            const userAnswer = state.answers[question.id];
-            const isCorrect = userAnswer === question.correctAnswer;
-            if (isCorrect) totalCorrect++;
-            
-            let userAnswerText = 'Nicht beantwortet';
-            if (userAnswer) {
-              const option = question.options.find(o => o.id === userAnswer);
-              userAnswerText = option ? option.text : userAnswer;
-            }
-            
-            let correctAnswerText = '';
-            const correctOption = question.options.find(o => o.id === question.correctAnswer);
-            correctAnswerText = correctOption ? correctOption.text : question.correctAnswer;
-            
-            resultsHTML += `
-              <div class="result-detail">
-                <div class="result-row">
-                  <div class="result-label">Ihre Antwort:</div>
-                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswerText}</div>
-                </div>
-                <div class="result-row">
-                  <div class="result-label">Richtige Antwort:</div>
-                  <div class="result-value correct">${correctAnswerText}</div>
-                </div>
-                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
-                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
-                </div>
-              </div>
-            `;
-          });
-        } else if (section.id === 's3') {
-          section.situations.forEach((situation, index) => {
-            totalQuestions++;
-            const userAnswer = state.answers[situation.id];
-            const correctText = section.texts.find(t => t.correctAnswer === situation.id);
-            const isCorrect = userAnswer === (correctText ? correctText.id : null);
-            if (isCorrect) totalCorrect++;
-            
-            resultsHTML += `
-              <div class="result-detail">
-                <div class="result-row">
-                  <div class="result-label">Ihre Antwort:</div>
-                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
-                </div>
-                <div class="result-row">
-                  <div class="result-label">Richtige Antwort:</div>
-                  <div class="result-value correct">${correctText ? correctText.id : 'X'}</div>
-                </div>
-                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
-                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
-                </div>
-              </div>
-            `;
-          });
-        } else if (section.id === 's4') {
-          section.fillBlanks.forEach(blank => {
-            totalQuestions++;
-            const userAnswer = state.answers[blank.id];
-            const isCorrect = userAnswer === blank.correctAnswer;
-            if (isCorrect) totalCorrect++;
-            
-            resultsHTML += `
-              <div class="result-detail">
-                <div class="result-row">
-                  <div class="result-label">Ihre Antwort:</div>
-                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
-                </div>
-                <div class="result-row">
-                  <div class="result-label">Richtige Antwort:</div>
-                  <div class="result-value correct">${blank.correctAnswer}</div>
-                </div>
-                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
-                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
-                </div>
-              </div>
-            `;
-          });
-        } else if (section.id === 's5') {
-          section.fillBlanks2.forEach(blank => {
-            totalQuestions++;
-            const userAnswer = state.answers[blank.id];
-            const isCorrect = userAnswer === blank.correctAnswer;
-            if (isCorrect) totalCorrect++;
-            
-            resultsHTML += `
-              <div class="result-detail">
-                <div class="result-row">
-                  <div class="result-label">Ihre Antwort:</div>
-                  <div class="result-value ${isCorrect ? 'correct' : 'incorrect'}">${userAnswer || '-'}</div>
-                </div>
-                <div class="result-row">
-                  <div class="result-label">Richtige Antwort:</div>
-                  <div class="result-value correct">${blank.correctAnswer}</div>
-                </div>
-                <div class="result-status ${isCorrect ? 'correct' : 'incorrect'}">
-                  ${isCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
-                </div>
-              </div>
-            `;
-          });
-        }
-        
-        const percentage = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
-        
-        resultsHTML += `
-          <div class="result-summary">
-            <div class="percentage">${percentage}%</div>
-            <div>${totalCorrect} von ${totalQuestions} richtig</div>
-            <div>Punkte: ${Math.round((totalCorrect / totalQuestions) * section.points)} / ${section.points}</div>
-          </div>
-        </div>`;
-        
-        passageContentEl.innerHTML = resultsHTML;
-        questionBodyEl.innerHTML = '';
-        sectionNameEl.textContent = 'Ergebnisse';
-        questionTitleEl.textContent = '';
-      }
-
-      document.getElementById('prevBtn-lesen').addEventListener('click', ()=>{
-        if(state.sectionIndex > 0){
-          state.sectionIndex--;
-          state.questionIndex = 0;
-          renderAll();
-        }
-      });
-
-      document.getElementById('nextBtn2-lesen').addEventListener('click', ()=>{
-        if(state.sectionIndex < exam.sections.length - 1){
-          state.sectionIndex++;
-          state.questionIndex = 0;
-          renderAll();
-        } else {
-          showPage('hoeren-page');
-        }
-      });
-
-      document.getElementById('nextBtn-lesen').addEventListener('click', ()=>{
-        showPage('hoeren-page');
-      });
-
-      resultBtn.addEventListener('click', ()=>{
-        state.showResults = !state.showResults;
-        renderAll();
-      });
-
-      resetBtn.addEventListener('click', ()=>{
-        if(confirm('Möchten Sie wirklich von neu beginnen?')){
-          state.answers = {};
-          state.marked = {};
-          state.showResults = false;
-          resetTimer();
-          renderAll();
-        }
-      });
-
-      resetSectionBtn.addEventListener('click', resetCurrentSection);
-
-      document.getElementById('saveBtn-lesen').addEventListener('click', ()=>{
-        statusText.textContent = 'Gespeichert';
-        setTimeout(()=>{statusText.textContent = 'Nicht gespeichert'}, 2000);
-      });
-
-      document.getElementById('submitBtn-lesen').addEventListener('click', ()=>{
-        if(confirm('Möchten Sie die Prüfung wirklich abgeben?')){
-          state.showResults = true;
-          renderAll();
-        }
-      });
-
-      updateTimerDisplay();
-      renderAll();
-      startTimer();
-      
-      window._lesenState = state;
-      window.lesenApp = {
-        selectOption,
-        markNoMatch,
-        selectSprachbausteine1,
-        selectSprachbausteine2,
-        handleHeadingClick,
-        handleSlotClick,
-        handleSituationClick,
-        handleSituationSlotClick,
-        restoreX,
-        handleBlankClick,
-        handleWordClick,
-        handleWordSlotClick
-      };
-    }
-
-    // ===== HÖREN PAGE FUNCTIONALITY =====
-    function initHoerenPage() {
-      const exam = EXAM_DATA.hoeren;
 
       let state = { 
         sectionIndex: 0, 
@@ -3362,285 +3201,7 @@ info@radeldichmunter.de`,
         remaining: exam.durationSec,
         showResults: false,
         timerStarted: false,
-        timerInterval: null,
-        examEnded: false,
-        currentPage: 'hoeren'
-      };
-      
-      const topTiles = document.getElementById('topTiles-hoeren');
-      const contentContainer = document.getElementById('contentContainer-hoeren');
-      const timerEl = document.getElementById('timer-hoeren');
-      const statusText = document.getElementById('statusText-hoeren');
-
-      function handleTimeExpired() {
-        if (state.examEnded) return;
-        state.examEnded = true;
-        
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-          state.timerInterval = null;
-        }
-        
-        state.showResults = true;
-        renderAll();
-        
-        setTimeout(() => {
-          if (state.sectionIndex < exam.sections.length - 1) {
-            state.sectionIndex++;
-            state.showResults = false;
-            state.examEnded = false;
-            renderAll();
-          } else {
-            showPage('schreiben-page');
-          }
-        }, 2000);
-      }
-
-      function startTimer() {
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-        }
-        
-        state.timerStarted = true;
-        state.timerInterval = setInterval(() => {
-          if (state.remaining <= 0) {
-            clearInterval(state.timerInterval);
-            timerEl.textContent = 'Zeit abgelaufen';
-            handleTimeExpired();
-            return;
-          }
-          state.remaining--;
-          updateTimerDisplay();
-        }, 1000);
-      }
-
-      function resetTimer() {
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-        }
-        state.remaining = exam.durationSec;
-        state.timerStarted = false;
-        state.examEnded = false;
-        updateTimerDisplay();
-        startTimer();
-      }
-
-      function updateTimerDisplay() {
-        const min = Math.floor(state.remaining / 60);
-        const sec = state.remaining % 60;
-        timerEl.textContent = `Verbleibende Zeit: ${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
-      }
-
-      function renderTopTiles() { 
-        topTiles.innerHTML = ''; 
-        exam.sections.forEach((sec, idx) => { 
-          const div = document.createElement('div'); 
-          div.className = 'tile' + (idx === state.sectionIndex ? ' active' : '') + (isSectionDone(sec) ? ' done' : ''); 
-          div.innerHTML = `<div>${sec.title}</div><div class="points">${sec.points} P</div>`; 
-          div.onclick = () => { state.sectionIndex = idx; state.showResults = false; renderAll(); }; 
-          topTiles.appendChild(div); 
-        }); 
-      }
-
-      function isSectionDone(section) {
-        const answers = state.answers[section.id];
-        if (!answers) return false;
-        
-        const answeredQuestions = Object.keys(answers).length;
-        const totalQuestions = section.questions.length;
-        
-        return answeredQuestions === totalQuestions;
-      }
-
-      function renderAll() {
-        if (state.examEnded) return;
-        
-        renderTopTiles();
-        
-        if (state.showResults) {
-          renderResults();
-          return;
-        }
-        
-        renderListeningSection();
-      }
-
-      function renderListeningSection() {
-        const section = exam.sections[state.sectionIndex];
-        const currentAnswers = state.answers[section.id] || {};
-        
-        let contentHTML = `
-          <div class="panel-title">${section.title}</div>
-          <div class="instructions">
-            Sie hören die Nachrichten. Entscheiden Sie beim Hören, ob die Aussagen richtig oder falsch sind.
-          </div>
-          
-          <div class="listening-task">
-            <table class="true-false-table">
-              <thead>
-                <tr>
-                  <th>Nr.</th>
-                  <th>Aussage</th>
-                  <th>Ihre Antwort</th>
-                </tr>
-              </thead>
-              <tbody>
-        `;
-        
-        section.questions.forEach((question, index) => {
-          const currentAnswer = currentAnswers[question.id] || '';
-          contentHTML += `
-            <tr>
-              <td><strong>${question.id}</strong></td>
-              <td class="question-text">${question.text}</td>
-              <td>
-                <div class="answer-options">
-                  <label class="answer-option">
-                    <input type="radio" name="q${section.id}_${question.id}" value="richtig" ${currentAnswer === 'richtig' ? 'checked' : ''} onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"> Richtig
-                  </label>
-                  <label class="answer-option">
-                    <input type="radio" name="q${section.id}_${question.id}" value="falsch" ${currentAnswer === 'falsch' ? 'checked' : ''} onchange="window.hoerenApp.updateListeningAnswer('${section.id}', '${question.id}', this.value)"> Falsch
-                  </label>
-                </div>
-              </td>
-            </tr>
-          `;
-        });
-        
-        contentHTML += `
-              </tbody>
-            </table>
-          </div>
-        `;
-        
-        contentContainer.innerHTML = contentHTML;
-      }
-
-      function updateListeningAnswer(sectionId, questionId, answer) {
-        if (!state.answers[sectionId]) {
-          state.answers[sectionId] = {};
-        }
-        state.answers[sectionId][questionId] = answer;
-        
-        renderTopTiles();
-      }
-
-      function renderResults() {
-        const section = exam.sections[state.sectionIndex];
-        const userAnswers = state.answers[section.id] || {};
-        let correctCount = 0;
-        
-        let resultsHTML = `
-          <div class="panel-title">Ergebnisse - ${section.title}</div>
-        `;
-        
-        section.questions.forEach((question) => {
-          const userAnswer = userAnswers[question.id] || '-';
-          const correctAnswer = section.correctAnswers[question.id];
-          const gotCorrect = userAnswer === correctAnswer;
-          
-          if (gotCorrect) correctCount++;
-          
-          resultsHTML += `
-            <div class="result-detail">
-              <div class="result-row">
-                <div class="result-label">Ihre Antwort:</div>
-                <div class="result-value ${gotCorrect ? 'correct' : 'incorrect'}">${userAnswer}</div>
-              </div>
-              <div class="result-row">
-                <div class="result-label">Richtige Antwort:</div>
-                <div class="result-value correct">${correctAnswer}</div>
-              </div>
-              <div class="result-status ${gotCorrect ? 'correct' : 'incorrect'}">
-                ${gotCorrect ? '✔️ Antwort richtig' : '❌ Antwort falsch'}
-              </div>
-            </div>
-          `;
-        });
-        
-        const totalPoints = Math.round((correctCount / section.questions.length) * section.points);
-        
-        resultsHTML += `
-          <div class="result-summary">
-            <div>${correctCount}/${section.questions.length} richtig</div>
-            <div>Punkte: ${totalPoints}/${section.points}</div>
-          </div>
-        `;
-        
-        contentContainer.innerHTML = resultsHTML;
-      }
-
-      document.getElementById('prevBtn-hoeren').addEventListener('click', () => {
-        if (state.sectionIndex > 0) {
-          state.sectionIndex--;
-          state.showResults = false;
-          renderAll();
-        }
-      });
-
-      document.getElementById('nextBtn2-hoeren').addEventListener('click', () => {
-        if (state.sectionIndex < exam.sections.length - 1) {
-          state.sectionIndex++;
-          state.showResults = false;
-          renderAll();
-        } else {
-          showPage('schreiben-page');
-        }
-      });
-
-      document.getElementById('nextBtn-hoeren').addEventListener('click', () => {
-        showPage('schreiben-page');
-      });
-
-      document.getElementById('resultBtn-hoeren').addEventListener('click', () => {
-        state.showResults = !state.showResults;
-        renderAll();
-      });
-
-      document.getElementById('resetBtn-hoeren').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
-          state.answers = {};
-          state.showResults = false;
-          resetTimer();
-          renderAll();
-        }
-      });
-
-      document.getElementById('saveBtn-hoeren').addEventListener('click', () => {
-        statusText.textContent = 'Gespeichert';
-        setTimeout(() => { statusText.textContent = 'Nicht gespeichert' }, 2000);
-      });
-
-      document.getElementById('submitBtn-hoeren').addEventListener('click', () => {
-        if (confirm('Möchten Sie die Prüfung wirklich abgeben?')) {
-          state.showResults = true;
-          renderAll();
-        }
-      });
-
-      updateTimerDisplay();
-      renderAll();
-      startTimer();
-      
-      window._hoerenState = state;
-      window.hoerenApp = {
-        updateListeningAnswer
-      };
-    }
-
-    // ===== SCHREIBEN PAGE FUNCTIONALITY =====
-    function initSchreibenPage() {
-      const exam = EXAM_DATA.schreiben;
-
-      let state = { 
-        sectionIndex: 0, 
-        answers: {}, 
-        remaining: exam.durationSec,
-        showResults: false,
-        timerStarted: false,
-        timerInterval: null,
-        examEnded: false,
-        currentPage: 'schreiben'
+        timerInterval: null
       };
       
       const topTiles = document.getElementById('topTiles-schreiben');
@@ -3650,23 +3211,6 @@ info@radeldichmunter.de`,
       const timerEl = document.getElementById('timer-schreiben');
       const statusText = document.getElementById('statusText-schreiben');
 
-      function handleTimeExpired() {
-        if (state.examEnded) return;
-        state.examEnded = true;
-        
-        if (state.timerInterval) {
-          clearInterval(state.timerInterval);
-          state.timerInterval = null;
-        }
-        
-        state.showResults = true;
-        renderAll();
-        
-        setTimeout(() => {
-          showPage('ergebnisse-page');
-        }, 2000);
-      }
-
       function startTimer() {
         if (state.timerInterval) {
           clearInterval(state.timerInterval);
@@ -3677,7 +3221,6 @@ info@radeldichmunter.de`,
           if (state.remaining <= 0) {
             clearInterval(state.timerInterval);
             timerEl.textContent = 'Zeit abgelaufen';
-            handleTimeExpired();
             return;
           }
           state.remaining--;
@@ -3691,7 +3234,6 @@ info@radeldichmunter.de`,
         }
         state.remaining = exam.durationSec;
         state.timerStarted = false;
-        state.examEnded = false;
         updateTimerDisplay();
         startTimer();
       }
@@ -3718,8 +3260,6 @@ info@radeldichmunter.de`,
       }
 
       function renderAll() {
-        if (state.examEnded) return;
-        
         renderTopTiles();
         const section = exam.sections[state.sectionIndex];
         passageTitleEl.textContent = section.passageTitle;
@@ -3738,11 +3278,16 @@ info@radeldichmunter.de`,
         passageContentEl.innerHTML = `
           <div class="writing-task">
             <div class="writing-prompt">${section.writingTask.prompt}</div>
+            <div class="instructions" style="border:1px solid #e1e8f6; padding:10px; margin:10px 0; border-radius:6px; background:#ffffff;">Sie haben an einer Fahrradtour mit Trainer teilgenommen. Leider waren Sie nicht zufrieden. 
+Schreiben Sie eine Beschwerde an den Verein „Radel dich munter e.V.".</div>
             <div class="writing-requirements">
               <h4>Schreiben Sie in Ihrer E-Mail:</h4>
               <ul>
                 ${section.writingTask.requirements.map(req => `<li>${req}</li>`).join('')}
               </ul>
+            </div>
+            <div class="instructions">
+              Schreiben Sie eine E-Mail (ca. 150-200 Wörter). Achten Sie auf den Textaufbau (Anrede, Einleitung, Hauptteil, Schluss) und eine angemessene Formulierung.
             </div>
           </div>
         `;
@@ -3752,8 +3297,14 @@ info@radeldichmunter.de`,
         
         writingContainer.innerHTML = `
           <div class="writing-area">
-            <textarea class="writing-textarea" placeholder="Schreiben Sie hier Ihre E-Mail..." oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)">${currentAnswer}</textarea>
-            <div class="word-counter">Wörter: <span class="count">${wordCount}</span></div>
+            <textarea 
+              class="writing-textarea" 
+              placeholder="Schreiben Sie hier Ihre E-Mail..."
+              oninput="window.schreibenApp.updateWritingAnswer('${section.id}', this.value)"
+            >${currentAnswer}</textarea>
+            <div class="word-counter">
+              Wörter: <span class="count">${wordCount}</span>
+            </div>
           </div>
         `;
       }
@@ -3764,27 +3315,32 @@ info@radeldichmunter.de`,
 
       function updateWritingAnswer(sectionId, text) {
         state.answers[sectionId] = text;
+        try{ localStorage.setItem('schreibenAnswers', JSON.stringify({content: state.answers[sectionId], wordCount: (state.answers[sectionId]||'').trim().split(/\s+/).filter(Boolean).length})); }catch(e){}
+        
         const wordCount = countWords(text);
         document.querySelector('.word-counter .count').textContent = wordCount;
       }
 
       function renderResults() {
-        const section = exam.sections[state.sectionIndex];
-        const userAnswer = state.answers[section.id];
-        const wordCount = countWords(userAnswer);
+        let resultsHTML = `<h2>Ergebnisse</h2>`;
         
-        passageContentEl.innerHTML = `
-          <div class="result-item">
-            <h3>${section.title} - Ergebnisse</h3>
+        exam.sections.forEach(section => {
+          resultsHTML += `<div class="writing-task"><h3>${section.title}</h3>`;
+          
+          const userAnswer = state.answers[section.id];
+          const wordCount = countWords(userAnswer);
+          
+          resultsHTML += `
             <div class="writing-requirements">
               <h4>Ihre Antwort (${wordCount} Wörter):</h4>
-              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${userAnswer || 'Keine Antwort'}</div>
+              <div style="white-space: pre-wrap; background: white; padding: 15px; border-radius: 6px; border: 1px solid #e1e8f6; margin-top: 10px;">${userAnswer || '-'}</div>
             </div>
-            <div class="result-summary">
-              <div>Bitte manuell bewerten (max. ${section.points} Punkte)</div>
-            </div>
-          </div>
-        `;
+          `;
+          
+          resultsHTML += `</div>`;
+        });
+        
+        passageContentEl.innerHTML = resultsHTML;
         writingContainer.innerHTML = '';
       }
 
@@ -3796,18 +3352,12 @@ info@radeldichmunter.de`,
         }
       });
 
-      document.getElementById('nextBtn2-schreiben').addEventListener('click', () => {
+      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
         if (state.sectionIndex < exam.sections.length - 1) {
           state.sectionIndex++;
           state.showResults = false;
           renderAll();
-        } else {
-          showPage('ergebnisse-page');
         }
-      });
-
-      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
-        showPage('ergebnisse-page');
       });
 
       document.getElementById('resultBtn-schreiben').addEventListener('click', () => {
@@ -3816,7 +3366,7 @@ info@radeldichmunter.de`,
       });
 
       document.getElementById('resetBtn-schreiben').addEventListener('click', () => {
-        if (confirm('Möchten Sie wirklich von neu beginnen?')) {
+        if (confirm('Möchten Sie wirklich von neu beginnen? Alle Antworten werden gelöschت.')) {
           state.answers = {};
           state.showResults = false;
           resetTimer();
@@ -3826,7 +3376,7 @@ info@radeldichmunter.de`,
 
       document.getElementById('saveBtn-schreiben').addEventListener('click', () => {
         statusText.textContent = 'Gespeichert';
-        setTimeout(() => { statusText.textContent = 'Nicht gespeichert' }, 2000);
+        setTimeout(() => { statusText.textContent = 'Nicht gespeicherت' }, 2000);
       });
 
       document.getElementById('submitBtn-schreiben').addEventListener('click', () => {
@@ -3836,18 +3386,105 @@ info@radeldichmunter.de`,
         }
       });
 
+      document.getElementById('nextBtn-schreiben').addEventListener('click', () => {
+        showPage('ergebnisse-page');
+      });
+
       updateTimerDisplay();
       renderAll();
       startTimer();
       
-      window._schreibenState = state;
-      window.schreibenApp = {
+        window._schreibenState = state;
+        window.schreibenApp = {
         updateWritingAnswer
       };
     }
 
-    // ===== ERGEBNISSE PAGE FUNCTIONALITY (wie im L9AHWA.html) =====
+    // ===== ERGEBNISSE PAGE FUNCTIONALITY =====
     function initErgebnissePage() {
+      // الإجابات الصحيحة المركزية
+      const CORRECT_ANSWERS = {
+        lesen: {
+          // الجزء الأول: Überschriften zuordnen
+          "text1": "j",
+          "text2": "b", 
+          "text3": "h",
+          "text4": "a",
+          "text5": "f",
+          
+          // الجزء الثاني: Fragen zum Text
+          "s2q1": "s2q1o1",
+          "s2q2": "s2q2o1",
+          "s2q3": "s2q3o3",
+          "s2q4": "s2q4o1",
+          "s2q5": "s2q5o3",
+          
+          // الجزء الثالث: Texte zuordnen
+          "11": "X",
+          "12": "D",
+          "13": "L",
+          "14": "C",
+          "15": "E",
+          "16": "X",
+          "17": "G",
+          "18": "K",
+          "19": "A",
+          "20": "I",
+          
+          // Sprachbausteine Teil 1
+          "21": "her",
+          "22": "erkrankt",
+          "23": "wenn",
+          "24": "zwar",
+          "25": "werde",
+          "26": "Darauf",
+          "27": "davon",
+          "28": "dir",
+          "29": "zu beschäftigen",
+          "30": "wie",
+          
+          // Sprachbausteine Teil 2
+          "31": "KAUM",
+          "32": "AUF",
+          "33": "VORBEI",
+          "34": "STATT",
+          "35": "INNERHALB",
+          "36": "MÜSSEN",
+          "37": "AN",
+          "38": "SOLLEN",
+          "39": "DANN",
+          "40": "DENN"
+        },
+        
+        hoeren: {
+          // Hören Teil 1
+          "41": "falsch",
+          "42": "richtig",
+          "43": "richtig",
+          "44": "falsch",
+          "45": "richtig",
+          
+          // Hören Teil 2
+          "46": "richtig",
+          "47": "falsch",
+          "48": "richtig",
+          "49": "richtig",
+          "50": "falsch",
+          "51": "falsch",
+          "52": "falsch",
+          "53": "richtig",
+          "54": "richtig",
+          "55": "richtig",
+          
+          // Hören Teil 3
+          "56": "richtig",
+          "57": "falsch",
+          "58": "falsch",
+          "59": "falsch",
+          "60": "richtig"
+        }
+      };
+
       const CONFIG = {
         totals: { 
           lesen: 105, 
@@ -3858,9 +3495,12 @@ info@radeldichmunter.de`,
         counts: { 
           lesen: 40, 
           hoeren: 20 
-        }
+        },
+        hoerenCorrect: CORRECT_ANSWERS.hoeren,
+        lesenCorrect: CORRECT_ANSWERS.lesen
       };
 
+      // الدوال المساعدة
       function getHeadingText(headingId) {
         if (!headingId || headingId === '-') return '-';
         const headings = {
@@ -3978,7 +3618,7 @@ info@radeldichmunter.de`,
         let html = `<div class="result-item">
                     <h3>📖 Leseverstehen - Detaillierte Auswertung</h3>`;
         
-        // Teil 1: Überschriften zuordnen
+        // 1. Überschriften zuordnen
         html += `<h4>Teil 1: Überschriften zuordnen</h4>
                  <table class="true-false-table">
                    <thead>
@@ -4011,7 +3651,7 @@ info@radeldichmunter.de`,
         
         html += `</tbody></table>`;
         
-        // Teil 2: Fragen zum Text
+        // 2. Fragen zum Text
         html += `<h4 style="margin-top: 20px;">Teil 2: Fragen zum Text</h4>
                  <table class="true-false-table">
                    <thead>
@@ -4044,7 +3684,7 @@ info@radeldichmunter.de`,
         
         html += `</tbody></table>`;
         
-        // Teil 3: Texte zuordnen
+        // 3. Texte zuordnen
         html += `<h4 style="margin-top: 20px;">Teil 3: Texte zuordnen</h4>
                  <table class="true-false-table">
                    <thead>
@@ -4076,7 +3716,7 @@ info@radeldichmunter.de`,
         
         html += `</tbody></table>`;
         
-        // Teil 4: Sprachbausteine Teil 1
+        // 4. Sprachbausteine Teil 1
         html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 1</h4>
                  <table class="true-false-table">
                    <thead>
@@ -4107,7 +3747,7 @@ info@radeldichmunter.de`,
         
         html += `</tbody></table>`;
         
-        // Teil 5: Sprachbausteine Teil 2
+        // 5. Sprachbausteine Teil 2
         html += `<h4 style="margin-top: 20px;">Sprachbausteine Teil 2</h4>
                  <table class="true-false-table">
                    <thead>
@@ -4380,74 +4020,28 @@ info@radeldichmunter.de`,
         };
       }
 
+      document.getElementById('calcBtn-ergebnisse').onclick = () => renderResults();
       document.getElementById('backBtn-ergebnisse').onclick = (e) => {
         e.preventDefault();
-        examStarted = false;
-        counter = initialCounter;
-        timerEl.textContent = counter;
-        timeDisplayEl.textContent = counter;
-        progressEl.style.transform = "scaleX(0)";
-        timerEl.style.color = "";
         showPage('start-page');
-      };
-      
-      document.getElementById('retryBtn-ergebnisse').onclick = (e) => {
-        e.preventDefault();
-        if (window._lesenState) {
-          window._lesenState.answers = {};
-          window._lesenState.marked = {};
-          window._lesenState.showResults = false;
-          window._lesenState.remaining = EXAM_DATA.lesen.durationSec;
-          if (window._lesenState.timerInterval) clearInterval(window._lesenState.timerInterval);
-        }
-        if (window._hoerenState) {
-          window._hoerenState.answers = {};
-          window._hoerenState.showResults = false;
-          window._hoerenState.remaining = EXAM_DATA.hoeren.durationSec;
-          if (window._hoerenState.timerInterval) clearInterval(window._hoerenState.timerInterval);
-        }
-        if (window._schreibenState) {
-          window._schreibenState.answers = {};
-          window._schreibenState.showResults = false;
-          window._schreibenState.remaining = EXAM_DATA.schreiben.durationSec;
-          if (window._schreibenState.timerInterval) clearInterval(window._schreibenState.timerInterval);
-        }
-        
-        examStarted = false;
-        showPage('start-page');
-        setTimeout(() => {
-          startExam();
-        }, 100);
-      };
-      
-      document.getElementById('continueBtn-ergebnisse').onclick = (e) => {
-        e.preventDefault();
-        if (window._lesenState) {
-          window._lesenState.sectionIndex = 0;
-          window._lesenState.showResults = false;
-          showPage('lesen-page');
-        } else {
-          showPage('start-page');
-        }
       };
       
       renderResults();
     }
 
-    function setupTouchDragAndDrop() {
+    // تحسين نظام السحب والإفلات للشاشات التي تعمل باللمس
+    document.addEventListener('DOMContentLoaded', function() {
       if ('ontouchstart' in window) {
-        document.querySelectorAll('[draggable="true"]').forEach(item => {
-          item.addEventListener('touchstart', (e) => {});
-          item.addEventListener('touchend', (e) => {});
-        });
-        document.querySelectorAll('.title-slot, .blank-slot').forEach(slot => {
-          slot.addEventListener('touchmove', (e) => {});
-          slot.addEventListener('touchend', (e) => {});
+        // إضافة معالجات اللمس للعناصر القابلة للسحب
+        document.addEventListener('touchstart', function(e) {
+          const target = e.target.closest('[draggable="true"]');
+          if (target) {
+            e.preventDefault();
+            // يمكن إضافة منطق السحب باللمس هنا
+          }
         });
       }
-    }
-
-    document.addEventListener('DOMContentLoaded', setupTouchDragAndDrop);
+    });
   </script>
 </body>
 </html>
