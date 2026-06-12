@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Deutsch B2 Prüfung - Lesen Teil 1</title>
+  <title>Deutsch B2 Prüfung - Lesen Teil 3 (Completion Mode)</title>
   
   <style>
     /* ===== GLOBAL STYLES – Professionell, ohne Emojis ===== */
@@ -66,7 +66,7 @@
       transition: all 0.4s ease;
     }
     
-    /* Indikatoren (Fragen-Dots) – jetzt mit grüner Füllung bei Antwort */
+    /* Indikatoren (Fragen-Dots) – neu hinzugefügt */
     .question-indicators {
       display: flex;
       gap: 10px;
@@ -93,15 +93,7 @@
       transition: all 0.3s ease;
     }
     
-    /* NEU: Indikator wird grün, wenn der Text beantwortet ist */
-    .indicator-dot.answered {
-      background: #2ecc71 !important;
-      border-color: #27ae60 !important;
-      color: white !important;
-      box-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
-    }
-    
-    /* Im Completion Mode werden alle Dots grün (das ist optional, wir lassen es für den Effekt) */
+    /* Im Completion Mode werden alle Dots grün */
     body.completion-mode .indicator-dot {
       background: #d4eed4 !important;
       border-color: #2e7d5e !important;
@@ -415,36 +407,35 @@
       border-style: solid;
     }
     
-    /* Überschriften rechts (Headings) – VERGRÖSSERT und mit nur einem Buchstaben */
-    .headings-list {
+    /* Situationen rechts */
+    .situations-list {
       display: flex;
       flex-direction: column;
       gap: 14px;
     }
     
-    .heading-item {
-      padding: 18px 16px;  /* Mehr Innenabstand für bessere Sichtbarkeit */
+    .situation-item {
+      padding: 16px;
       border: 2px solid #d4e2f0;
       border-radius: 16px;
       background: #ffffff;
-      cursor: pointer;  /* Zeigt an, dass es klickbar ist */
+      cursor: grab;
       transition: all 0.15s;
       box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-      font-size: 16px;   /* Deutlich größer */
-      font-weight: 600;  /* Fetter für bessere Lesbarkeit */
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 10px;
     }
     
-    .heading-item:hover {
+    .situation-item[draggable="true"]:active {
+      cursor: grabbing;
+      opacity: 0.7;
+    }
+    
+    .situation-item:hover {
       border-color: var(--accent-soft);
       background: #f0f8ff;
       transform: translateX(4px);
     }
     
-    .heading-item.used {
+    .situation-item.used {
       opacity: 0.5;
       cursor: not-allowed;
       background: #f0f3f6;
@@ -452,26 +443,49 @@
       pointer-events: none;  
     }
     
-    .heading-item.selected-heading {
-      border-color: var(--primary-dark);
-      background: #e1f0fa;
-      box-shadow: 0 0 0 3px rgba(11, 43, 74, 0.2);
-    }
-    
-    .heading-letter {
+    .situation-number {
       font-weight: 700;
       color: var(--primary-dark);
-      font-size: 18px;   /* Größer */
-      min-width: 30px;
-      text-align: center;
+      margin-bottom: 8px;
+      font-size: 15px;
     }
     
-    .heading-text {
-      font-size: 15px;    /* Größer */
+    .situation-text {
+      font-size: 13.5px;
       color: #1e3a4e;
       line-height: 1.6;
-      font-weight: 500;
-      flex: 1;
+      margin-bottom: 12px;
+    }
+    
+    /* X Button */
+    .no-match-container {
+      display: flex;
+      justify-content: flex-end;
+    }
+    
+    .exam-btn.no-match {
+      background: #5f7a93;       
+      font-size: 12px;
+      padding: 8px 18px;
+      min-width: auto;
+      border-radius: 30px;
+      font-weight: 600;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    
+    .exam-btn.no-match:hover {
+      background: #4a637b;
+    }
+    
+    .exam-btn.no-match.selected {
+      background: var(--danger);
+    }
+    
+    .exam-btn.no-match.selected:hover {
+      background: #9f3737;
     }
     
     /* ===== DETAILERGEBNISSE (linke Seite) ===== */
@@ -549,7 +563,7 @@
       flex-wrap: wrap;
     }
     
-    .text-tag {
+    .situation-tag {
       background: var(--primary-dark);
       color: white;
       font-weight: 700;
@@ -559,6 +573,13 @@
       min-width: 50px;
       text-align: center;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .situation-text-short {
+      font-weight: 500;
+      max-width: 300px;
+      font-size: 14px;
+      color: #1e3a4e;
     }
     
     .result-answer-badge {
@@ -723,7 +744,7 @@
         <div class="logo">B2</div>
         <div class="meta">
           <div class="main-title">Deutsch B2 Prüfung</div>
-          <div class="sub-title">Lesen Teil 1 — Überschriften zuordnen</div>
+          <div class="sub-title">Lesen Teil 3 — Drag & Drop</div>
         </div>
       </div>
       <div class="timer-container">
@@ -739,7 +760,7 @@
     <div class="container">
       <main class="left-panel" id="leftPanel-lesen">
         <div class="passage" id="passage-lesen">
-          <h2 id="passageTitle-lesen">Texte (Text 1 – Text 5) – Überschrift ablegen</h2>
+          <h2 id="passageTitle-lesen">Texte (A-L) – Ziel ablegen</h2>
           <div id="passageContent-lesen"></div>
           <!-- Frage-Indikatoren (Dots) werden hier dynamisch eingefügt -->
           <div id="indicatorContainer" class="question-indicators"></div>
@@ -748,8 +769,8 @@
       <aside class="right-panel" id="rightPanel-lesen">
         <div class="question-head">
           <div>
-            <div class="section-name">Leseverstehen, Teil 1</div>
-            <div class="question-subtitle">Überschriften (a-j) – ziehen oder klicken</div>
+            <div class="section-name">Leseverstehen, Teil 3</div>
+            <div class="question-subtitle">Situationen (11-20) – ziehen Sie auf die Texte</div>
           </div>
         </div>
         <div class="question-body" id="questionBody-lesen" style="overflow-y: auto; flex:1;"></div>
@@ -759,58 +780,63 @@
 
   <script>
     (function() {
-      // ===== DATEN AUS DEM ORIGINAL (ALBI2A.html) FÜR TEIL 1 =====
+      // ===============================
+      // SECTION POUR LES CORRECTIONS (LÖSUNGEN)
+      // Modifiez cette carte pour changer les réponses. (11 → C, etc.)
+      // ===============================
+      const correctAnswersMap = {
+        "11": "",
+        "12": "",
+        "13": "",
+        "14": "",
+        "15": "",
+        "16": "",
+        "17": "",
+        "18": "",
+        "19": "",
+        "20": ""
+      };
+
       const exam = {
-        id: "exam-teil1",
+        id: "exam-teil3",
         sections: [
           { 
-            id: "s1", 
-            title: "Leseverstehen, Teil 1", 
+            id: "s3", 
+            title: "Leseverstehen, Teil 3", 
             points: 25,
             texts: [
-              {
-                id: "text1",
-                content: "Vielen Menschen verursachen sie ein mulmiges Gefühl: Die meisten Schnurlos - Telefone strahlen auch dann, wenn man gar nicht telefoniert. Vor allem DECT-Geräte (Digital Enhanced less Telecommunications- digital verbesserte schnurlose Kommunikation ) sind deshalb in die Kritik geraten. Allmählich nehmen Hersteller die Bedenken ernst und bieten Geräte an, die das Bundesamt für Strahlenschutz (BfS) als „bedingt strahlungsarm einstuft. Stehen diese Telefone auf der Ladestation, wird die Sendeleistung von Handgerät und Basis abgeschaltet oder radikal vermindert. Voraussetzung: Nur ein Mobilteil ist angemeldet. Einige Modelle reduzieren die Strahlung auch, wenn man nahe der Basisstation telefonƒƒiert: Nur 25 Prozent Sendeleistung braucht das Siemens Gigaset E360 im Umkreis von fünf Metern, das AEG Fame 400 kommt mit rund 30 Prozent aus.",
-                correctAnswer: "c" // 1-C
-              },
-              {
-                id: "text2", 
-                content: "Wenn Kinder ein Handy haben, dann ist das schön und gut. Doch was, wenn der Filius nicht dran geht? Wenn er möglicherweise etwas Besseres zu tun hat, als zurückzurufen? Und noch schlimmer, wenn sich Heranwachsende im prüden Amerika schmutzige Bilder auf dem Handydisplay anschauen? Das schreit nach Kontrolle. Und genau die will Motorolas CEO Edward Zander den Eltern über ihre Kinder geben: Sie sollen jederzeit wissen, wo sie (oder deren Mobiltelefon) sind und was sie damit tun. Verbunden werden soll die Einführung von einem solchen Handy mit einer Reihe Merkmale, die junge Menschen ansprechen, wie zum Beispiel mit dem für nächsten Monat anvisierten Start des iTunes - Handys. „Handys sind heute das, was in meiner Jugend der Fernseher war, so Zander. „Aber es gibt einen Weg, es sicher zu machen. Eltern müssten sich in die entstehende Jugendkultur rund um Handys stärker einbringen, und sie sollten sich stärker für das interessieren, was sie hören, sehen und lesen, so Zander weiter. Handys mit entsprechender Zensur - Software seien bereits in Vorbereitung.",
-                correctAnswer: "a" // 2-a
-              },
-              {
-                id: "text3",
-                content: "Wer unter Palmen liegt, greift gern zum Handy. Doch trotz neuer Preisobergrenzen bleibt das ein teurer Spaß! Die Verbraucherzentrale Schleswig - Holstein erklärt, wie Sie richtig wählen. Bis 30. Juli müssen alle europäischen Mobilfunkanbieter den neuen „Eurotarif ” anbieten. Er gilt in allen EU - Staaten und schreibt Preislimits von maximal 49 Cent / Min. für eigene Anrufe bzw. maximal 24 Cent für ankommende Gespräche vor. Aber aufgepasst: Falle 1: kein Rabatt im Juli / August! Falle 2: Mehrwertsteuer! Zu den Kosten für abgehende bzw. angenommene Anrufe kommen noch 19 % Mehrwertsteuer dazu. Falle 3: Alte Sondertarife! Bis 20 Prozent der Handy - Nutzer haben Sondervertäge für Auslandsgespräche. Gefahr: Sie können den neuen Eurotarif nicht nutzen. Unbedingt informieren! Die besten Spar - Tricks: Prepaid - Karte Besonders für Viel - Telefonierter interessant. Zurzeit zahlen die meisten Kunden mit Vertrag mindestens 99 Cent pro angefangene Minute, mit Prepaid - Karte nur etwa 58.31 Cent. SMS schreiben Im Vergleich zu Telefonaten sind Kurzmitteilungen (SMS) auch im Urlaub meistens günstiger. ",
-                correctAnswer: "h" // 3-h
-              },
-              {
-                id: "text4",
-                content: "Manche Momente muss man einfach festhalten - mit einem Foto. Doch dessen Qualität hängt von vielen Faktoren ab: der Kamera, den Verhältnissen vor Ort und der Erfahrung des Fotografen. Für ein paar schöne Erinnerungsfotos sich aber eine teure Profi - Ausrüstung zuzulegen, lohnt selten. Vom Pauken schwieriger technischer Details ganz zu schweigen. Das ist heute auch längst nicht mehr nötig. Schon mit normalen Digitalkameras lassen sich wunderbare Bilder schießen - mit ein paar Tricks Abwechslungsreiche Motivwahl. Die meisten Urlauber fotografieren gerne Sehenswürdigkeiten mit ihren Liebsten. Schaut man sich die Bilder später an, sind sie oft eine Variation des ewig Gleichen: der Sohn auf dem Kamel, vor der Kathedrale, im Pool. Der Sohn ist niedlich, keine Frage. Es kann jedoch nicht schaden, die Motive zu variieren: verschiedene Personen und Orte, zu unterschiedlichen Tageszeiten - mal den menschenleeren Strand, mal das Marktgetümmel. Nähe und Distanz. Mehr Abwechslung erreichen Sie auch, wenn Sie mit der Nähe zum Objekt spielen: hier eine Totale mit dem Weitwinkel, dort eine Nahaufnahme. Perspektive und Technik. Schnelle Schnappschüsse gelingen nicht immer. Nehmen Sie sich Zeit für Porträt- und Land Schafts aufnahmen. Nutzen Sie dabei auch den extra einstellbaren Modus bei Digitalkameras. Er stellt Objektiv und Belichtung perfekt auf die gewählte Variante ein. Licht und Schatten. Für stimmungsvolle Bilder eignen sich am besten Vormittags- und Spät nachmittags tun den, weil das Licht dann besonders weich ist. ",
-                correctAnswer: "b" // 4-B
-              },
-              {
-                id: "text5",
-                content: "Es gibt in Deutschland wohl kaum eine bessere Chance für die Einführung von Handy - TV als die Fußball - WM 2006. Doch ein rechtzeitiger Start ist ungewiss. Die Problemfelder sind vielschichtig. Drei Standards kämpfen darum, das erste deutsche Mobilfernsehen zu sein: UMTS, DMB und DVB - H. Und das möglichst pünktlich zum 9. Juni 2006, dem Start der Fußball - WM. Dieser Drei Kampf wird von Experten jedoch kritisch betrachtet. In Südostasien floriert dieser Markt doch schon seit vielen Monaten. In Korea beispielsweise gehört der mobile Fernsehgenuss zum All tag. Bis zu zwei Stunden täglich schauen Besitzer der kleinen TV - Handys dort unterwegs auf die Mini - Mattscheibe. Warum sollte dies mittelfristig nicht auch in Deutschland realisierbar sein? In einem sind sich Experten jedoch sicher. Handy - TV wird die Fernsehbranche verändern. Kenner sprechen von drei neuen Prime Times (Hauptfernsehzeiten), die durch die mobile Glotze entstehen: Der Weg zur Arbeit, die Mittagspause und der Heimweg. Dafür ist jedoch eine andere Art von Inhalten notwendig, vor allem kurz müssen sie sein, denn kaum jemand wird sich einen kompletten Spielfilm auf dem kleinen Bildschirm ansehen wollen.",
-                correctAnswer: "j" // 5-J
-              }
+              // Neue Texte (Programme/Veranstaltungen) - wie von Ihnen bereitgestellt
+              {id: "A", text: ""},
+              {id: "B", text: ""},
+              {id: "C", text: ""},
+              {id: "D", text: ""},
+              {id: "E", text: ""},
+              {id: "F", text: ""},
+              {id: "G", text: ""},
+              {id: "H", text: ""},
+              {id: "I", text: ""},
+              {id: "J", text: ""},
+              {id: "K", text: ""},
+              {id: "L", text: ""}
             ],
-            headings: [
-              {id: "a", text: "Neue KinderHandys auf den Markt gebracht"},
-              {id: "b", text: "Profi - Tipps für bessere Urlaubsbilder"},
-              {id: "c", text: "Modern schnurlose gerate vermindern die Strahlenbelastung"},
-              {id: "d", text: "Mehr Mut zum fotografieren"},
-              {id: "e", text: "Handy im Ausland: aufpassen und tricksen!"},
-              {id: "f", text: "Kinder - Überwachung für Eltern per Handy wird geplant"},
-              {id: "g", text: "Tipps zum Telefonieren mit weniger Strahlung"},
-              {id: "h", text: "Der neue Euro Tarif"},
-              {id: "i", text: "Handy - TV zur Fußball - WM 2006"},
-              {id: "j", text: "Mobiler fernsehgenuss wird zum Alltag"}
+            situations: [
+              // Neue Situationen
+              {id: "11", text: ""},
+              {id: "12", text: ""},
+              {id: "13", text: ""},
+              {id: "14", text: ""},
+              {id: "15", text: ""},
+              {id: "16", text: ""},
+              {id: "17", text: ""},
+              {id: "18", text: ""},
+              {id: "19", text: ""},
+              {id: "20", text: ""}
             ]
           }
         ]
       };
 
-      let state = { sectionIndex: 0, answers: {}, showResults: false, selectedHeadingId: null }; // NEU: selectedHeadingId für Klick-Auswahl
+      let state = { sectionIndex: 0, answers: {}, showResults: false };
       let seconds = 0, timerInterval;
       const timerEl = document.getElementById('timer');
       const passageContentEl = document.getElementById('passageContent-lesen');
@@ -826,9 +852,9 @@
 
       // --- Prüfen ob alle Fragen beantwortet sind (für Completion Mode) ---
       function isAllQuestionsAnswered() {
-        const totalTexts = exam.sections[0].texts.length;
+        const totalSituations = exam.sections[0].situations.length;
         const answeredCount = Object.keys(state.answers).length;
-        return answeredCount === totalTexts;
+        return answeredCount === totalSituations;
       }
 
       function updateCompletionMode() {
@@ -839,22 +865,20 @@
         }
       }
 
-      // Indikatoren (Dots) rendern – mit grüner Klasse wenn beantwortet
+      // Indikatoren (Dots) rendern
       function renderIndicators() {
-        const texts = exam.sections[0].texts;
+        const situations = exam.sections[0].situations;
         let dotsHtml = '';
-        texts.forEach((text, idx) => {
-          // Prüfen ob dieser Text beantwortet wurde (irgendeine Überschrift zeigt auf diesen Text)
-          const isAnswered = Object.values(state.answers).includes(text.id);
-          const answeredClass = isAnswered ? 'answered' : '';
-          dotsHtml += `<div class="indicator-dot ${answeredClass}" title="Text ${idx+1}">${idx+1}</div>`;
+        situations.forEach(sit => {
+          const isAnswered = state.answers[sit.id] !== undefined;
+          dotsHtml += `<div class="indicator-dot" title="Situation ${sit.id}">${sit.id}</div>`;
         });
         indicatorContainer.innerHTML = dotsHtml;
       }
 
-      // --- DRAG & DROP + KLICK (zum Entfernen) + NEU: Klick-Auswahl ---
+      // --- DRAG & DROP + KLICK + X-TOGGLE ---
       function handleDragStart(e, type, id) {
-        if (type === 'heading' && state.answers[id]) { e.preventDefault(); return; } 
+        if (type === 'situation' && state.answers[id] && state.answers[id] !== 'X') { e.preventDefault(); return; } 
         e.dataTransfer.setData('text/plain', JSON.stringify({ type, id }));
       }
 
@@ -864,127 +888,108 @@
         if (!raw) return;
         const { type, id } = JSON.parse(raw);
         
-        if (type === 'heading') {
+        if (type === 'situation') {
           if (state.answers[id] && state.answers[id] !== 'X') return; 
-          const existingForText = Object.entries(state.answers).find(([head, val]) => val === textId);
+          const existingForText = Object.entries(state.answers).find(([sit, val]) => val === textId);
           if (existingForText) return;
           
           if (state.answers[id] === 'X') delete state.answers[id];
           state.answers[id] = textId;
         } 
         else if (type === 'slot') {
-          const headingId = id.replace('slot-','');
-          if (state.answers[headingId] && state.answers[headingId] !== 'X') {
-            delete state.answers[headingId];
+          const situationId = id.replace('slot-','');
+          if (state.answers[situationId] && state.answers[situationId] !== 'X') {
+            delete state.answers[situationId];
           }
         }
-        state.selectedHeadingId = null; // Auswahl zurücksetzen nach Drop
         updateCompletionMode();
         renderAll();
       }
 
       function allowDrop(e) { e.preventDefault(); }
 
-      function handleSlotClick(headingId) {
-        if (headingId && state.answers[headingId] && state.answers[headingId] !== 'X') {
-          delete state.answers[headingId];
+      function handleSlotClick(situationId) {
+        if (situationId && state.answers[situationId] && state.answers[situationId] !== 'X') {
+          delete state.answers[situationId];
           updateCompletionMode();
           renderAll();
         }
       }
 
-      // NEUE FUNKTION: Klick auf eine Überschrift – speichert die ausgewählte ID
-      function handleHeadingClick(headingId) {
-        if (state.answers[headingId]) return; // Bereits verwendet
-        state.selectedHeadingId = headingId;
-        renderAll(); // Re-rendern um Hervorhebung zu zeigen
-      }
-
-      // NEUE FUNKTION: Klick auf eine Drop-Zone – setzt die vorher ausgewählte Überschrift
-      function handleSlotSelectClick(textId) {
-        if (!state.selectedHeadingId) return; // Keine Überschrift ausgewählt
-        
-        const headingId = state.selectedHeadingId;
-        if (state.answers[headingId]) {
-          state.selectedHeadingId = null;
-          renderAll();
-          return; // Überschrift bereits verwendet
+      function toggleNoMatch(situationId) {
+        if (state.answers[situationId] === 'X') {
+          delete state.answers[situationId];
+        } else {
+          if (state.answers[situationId]) {
+            delete state.answers[situationId];
+          }
+          state.answers[situationId] = 'X';
         }
-        
-        // Prüfen ob dieser Text bereits eine andere Überschrift hat
-        const existingForText = Object.entries(state.answers).find(([head, val]) => val === textId);
-        if (existingForText) {
-          // Text ist bereits belegt, wir ersetzen die alte Zuordnung
-          const oldHeading = existingForText[0];
-          delete state.answers[oldHeading];
-        }
-        
-        // Neue Zuordnung
-        state.answers[headingId] = textId;
-        state.selectedHeadingId = null; // Auswahl zurücksetzen
-        
         updateCompletionMode();
         renderAll();
       }
 
       // ===== RENDER =====
-      function renderPart1() {
+      function renderPart3() {
         const section = exam.sections[0];
         let textsHTML = `<div class="texts-list">`;
-        section.texts.forEach((text, idx) => {
-          const userHeadingId = Object.keys(state.answers).find(key => state.answers[key] === text.id);
-          const headingObj = userHeadingId ? section.headings.find(h => h.id === userHeadingId) : null;
-          // Anzeige: den vollständigen Text der Überschrift, nicht nur den Buchstaben
-          const slotContent = userHeadingId && headingObj ? `${headingObj.id}) ${headingObj.text}` : (state.selectedHeadingId ? 'Klicken zum Einfügen' : 'Hier ablegen');
-          const hasClass = userHeadingId ? 'has-title' : '';
-          const draggable = userHeadingId ? 'true' : 'false';
-          const slotClickAttr = userHeadingId ? `onclick="window.lesenApp.handleSlotClick('${userHeadingId}')"` : `onclick="window.lesenApp.handleSlotSelectClick('${text.id}')"`;
+        section.texts.forEach(text => {
+          const userSit = Object.keys(state.answers).find(key => state.answers[key] === text.id);
+          const sitObj = userSit ? section.situations.find(s => s.id === userSit) : null;
+          const slotContent = userSit ? `Situation ${sitObj.id}: ${sitObj.text.substring(0,65)}...` : (state.answers[text.id] === 'X' ? '' : 'Hier ablegen');
+          const hasClass = userSit ? 'has-title' : (state.answers[text.id] === 'X' ? 'has-x' : '');
+          const draggable = userSit ? 'true' : 'false';
+          const slotClickAttr = userSit ? `onclick="window.lesenApp.handleSlotClick('${userSit}')"` : '';
           
           textsHTML += `
             <div class="text-item" data-text-id="${text.id}">
-              <div class="text-letter">Text ${idx+1}</div>
-              <div class="text-content">${text.content}</div>
+              <div class="text-letter">Text ${text.id}</div>
+              <div class="text-content">${text.text}</div>
               <div class="title-slot ${hasClass}" 
                    data-text-id="${text.id}"
                    draggable="${draggable}"
-                   ondragstart="event.dataTransfer.setData('text/plain', JSON.stringify({type:'slot', id:'slot-${userHeadingId}'}))"
+                   ondragstart="event.dataTransfer.setData('text/plain', JSON.stringify({type:'slot', id:'slot-${userSit}'}))"
                    ondrop="window.lesenApp.dropOnText(event, '${text.id}')"
                    ondragover="event.preventDefault()"
                    ${slotClickAttr}
-                   title="${userHeadingId ? 'Klicken zum Entfernen' : (state.selectedHeadingId ? 'Klicken zum Einfügen' : 'Hier ablegen oder zuerst Überschrift anklicken')}">
-                ${slotContent}
+                   title="${userSit ? 'Klicken zum Entfernen' : ''}">
+                ${userSit ? slotContent : (state.answers[text.id] === 'X' ? 'X (kein Text)' : 'Hier ablegen')}
               </div>
             </div>`;
         });
         textsHTML += `</div>`;
         passageContentEl.innerHTML = textsHTML;
 
-        let headingsHTML = `<div class="headings-list">`;
-        section.headings.forEach(heading => {
-          const used = state.answers[heading.id] && state.answers[heading.id] !== 'X';
-          // Hervorheben, wenn diese Überschrift gerade ausgewählt ist
-          const selectedClass = (state.selectedHeadingId === heading.id) ? 'selected-heading' : '';
-          headingsHTML += `
-            <div class="heading-item ${used ? 'used' : ''} ${selectedClass}" 
-                 data-heading-id="${heading.id}"
+        let sitHTML = `<div class="situations-list">`;
+        section.situations.forEach(sit => {
+          const used = state.answers[sit.id] && state.answers[sit.id] !== 'X';
+          const isX = state.answers[sit.id] === 'X';
+          sitHTML += `
+            <div class="situation-item ${used ? 'used' : ''}" 
+                 data-situation-id="${sit.id}"
                  draggable="${!used}"
-                 ondragstart="window.lesenApp.dragStart(event, 'heading', '${heading.id}')"
-                 onclick="window.lesenApp.handleHeadingClick('${heading.id}')">
-              <div class="heading-letter">${heading.id})</div>
-              <div class="heading-text">${heading.text}</div>
+                 ondragstart="window.lesenApp.dragStart(event, 'situation', '${sit.id}')">
+              <div class="situation-number">Situation ${sit.id}</div>
+              <div class="situation-text">${sit.text}</div>
+              <div class="no-match-container">
+                <button class="exam-btn no-match ${isX ? 'selected' : ''}" 
+                        onclick="event.stopPropagation(); window.lesenApp.toggleNoMatch('${sit.id}')">
+                  ${isX ? 'X gewählt' : 'X (kein Text)'}
+                </button>
+              </div>
             </div>`;
         });
-        headingsHTML += `</div>`;
-        questionBodyEl.innerHTML = headingsHTML;
+        sitHTML += `</div>`;
+        questionBodyEl.innerHTML = sitHTML;
         
         renderIndicators(); // Dots immer aktuell halten
       }
 
-      // Ergebnisse Detail (linke Seite)
+      // Ergebnisse Detail (linke Seite) - Utilisation de la carte de correction
       function renderResultsLeft() {
         const section = exam.sections[0];
         let totalCorrect = 0;
-        let total = section.texts.length;
+        let total = section.situations.length;
         
         let html = `
           <div class="results-container">
@@ -995,20 +1000,21 @@
             <div class="result-grid">
         `;
         
-        section.texts.forEach((text, idx) => {
-          const userHeadingId = Object.keys(state.answers).find(key => state.answers[key] === text.id);
-          const user = userHeadingId ? userHeadingId : '—';
-          const correct = text.correctAnswer;
-          const isCorrect = (user === correct);
+        section.situations.forEach(sit => {
+          const user = state.answers[sit.id];
+          // Correction lue depuis la carte
+          const correctId = correctAnswersMap[sit.id] || 'X';
+          const isCorrect = (user === correctId);
           if (isCorrect) totalCorrect++;
           
-          const userDisplay = user;
-          const correctDisplay = correct;
+          const userDisplay = user || '—';
+          const correctDisplay = correctId;
           
           html += `
             <div class="result-card ${isCorrect ? 'correct' : 'incorrect'}">
               <div class="result-card-info">
-                <span class="text-tag">Text ${idx+1}</span>
+                <span class="situation-tag">${sit.id}</span>
+                <span class="situation-text-short">${sit.text.substring(0,70)}…</span>
               </div>
               <div class="result-answer-badge">
                 <span class="user-answer">${userDisplay}</span>
@@ -1065,7 +1071,7 @@
         if (state.showResults) {
           renderResults();
         } else {
-          renderPart1();
+          renderPart3();
         }
         updateCompletionMode();
       }
@@ -1074,7 +1080,6 @@
         if (confirm('Neu beginnen?')) { 
           state.answers = {}; 
           state.showResults = false; 
-          state.selectedHeadingId = null;
           resetTimer(); 
           updateCompletionMode();
           renderAll(); 
@@ -1091,9 +1096,8 @@
       window.lesenApp = {
         dragStart: handleDragStart,
         dropOnText: handleDropOnText,
+        toggleNoMatch,
         handleSlotClick,
-        handleHeadingClick,
-        handleSlotSelectClick,
       };
 
       startTimer();
