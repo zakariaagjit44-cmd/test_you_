@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Deutsch B2 Prüfung - Lesen Teil 1 (Gesundheit & Kinder)</title>
+  
+  <style>
+    /* ===== GLOBAL STYLES – Professionell, ohne Emojis ===== */
+    :root {
+      --primary-dark: #0b2b4a;        
+      --primary-medium: #1f4b7a; 
+      --accent-soft: #3b8fc2;         
+      --light-bg: #f0f7fe;
+      --text-dark: #1e2b37;
+      --white: #ffffff;
+      --shadow-sm: 0 6px 14px rgba(0, 20, 40, 0.12);
+      --transition: all 0.3s ease; 
+      --success: #2e7d5e;             
+      --danger: #b13e3e;               
+      --neutral: #5f6b7a;
+      --neutral-light: #e9eff5;
+      --bg-results: #f8fafd;
+      --border-light: #d4e2f0;
+      
+      --header-bg: #0b2b4a;
+      --timer-bg: rgba(255, 255, 255, 0.1);
+      --slot-border: #8fb4d1;
+      --slot-bg: #f5fafe;
+      --indicator-bg: #d4e2f0;
+      --indicator-border: #8fb4d1;
+      --indicator-text: #1e3a4e;
+      --glow-effect: none;
+    }
+    
+    body.completion-mode {
+      --header-bg: #1f6a4c;
+      --timer-bg: rgba(255, 255, 255, 0.25);
+      --slot-border: #2e7d5e;
+      --slot-bg: #e2f3e4;
+      --indicator-bg: #d4eed4;
+      --indicator-border: #2e7d5e;
+      --indicator-text: #1e5e3a;
+      --glow-effect: 0 0 15px rgba(46, 125, 94, 0.3);
+    }
+    
+    body.completion-mode .topbar {
+      background: var(--header-bg) !important;
+      box-shadow: var(--glow-effect), 0 4px 12px rgba(0,0,0,0.2) !important;
+      transition: all 0.4s ease;
+    }
+    
+    body.completion-mode .timer-container {
+      background: var(--timer-bg) !important;
+      transition: all 0.4s ease;
+    }
+    
+    body.completion-mode .title-slot:not(.has-title):not(.has-x) {
+      border-color: var(--slot-border) !important;
+      background: var(--slot-bg) !important;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03), 0 0 8px rgba(46, 125, 94, 0.2) !important;
+      transition: all 0.4s ease;
+    }
+    
+    .question-indicators {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 15px;
+      background: #ffffff;
+      border-radius: 50px;
+      justify-content: center;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+    }
+    
+    .indicator-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--indicator-bg);
+      border: 2px solid var(--indicator-border);
+      color: var(--indicator-text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .indicator-dot.answered {
+      background: #2ecc71 !important;
+      border-color: #27ae60 !important;
+      color: white !important;
+      box-shadow: 0 0 10px rgba(46, 204, 113, 0.3);
+    }
+    
+    body.completion-mode .indicator-dot {
+      background: #d4eed4 !important;
+      border-color: #2e7d5e !important;
+      color: #1d5e3a !important;
+      box-shadow: 0 0 10px rgba(46, 125, 94, 0.2);
+    }
+    
+    body.completion-mode .question-head {
+      background: #dff0df;
+      border-left-color: #2e7d5e;
+    }
+    
+    .topbar, .timer-container, .title-slot, .indicator-dot, .question-head {
+      transition: all 0.4s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0b2b4a 0%, #1f4b7a 100%);
+      color: var(--white);
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+    
+    .exam-body {
+      background: #f0f7fe;
+      color: var(--text-dark);
+      line-height: 1.45;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    header.topbar {
+      background: var(--header-bg);
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      min-height: 80px;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .brand .logo {
+      width: 80px;
+      height: 40px;
+      background: #b13e3e;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .meta .main-title {
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.3px;
+    }
+
+    .meta .sub-title {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .timer-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--timer-bg);
+      padding: 6px 18px;
+      border-radius: 40px;
+      backdrop-filter: blur(2px);
+    }
+    
+    .timer-icon {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+    
+    .timer-display {
+      font-weight: 600;
+      font-size: 24px;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px 14px;
+      border-radius: 30px;
+      letter-spacing: 2px;
+    }
+
+    .buttons-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    
+    .exam-btn {
+      padding: 12px 22px;
+      border-radius: 40px;
+      border: none;
+      background: #3b8fc2;        
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 140px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 20, 30, 0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .exam-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 14px rgba(0, 20, 30, 0.3);
+    }
+    
+    .exam-btn.result {
+      background: #1f6a9c;        
+    }
+    
+    .exam-btn.result:hover {
+      background: #15507a;
+    }
+    
+    .exam-btn.reset {
+      background: #4f6f8f;        
+    }
+    
+    .exam-btn.reset:hover {
+      background: #3e5a77;
+    }
+    
+    .container {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 18px;
+      padding: 18px 24px;
+      max-width: 1600px;
+      margin: 0 auto;
+      flex: 1;
+      min-height: 0;
+      height: calc(100vh - 80px);
+    }
+    
+    .left-panel, .right-panel {
+      background: white;
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      overflow-y: auto;
+      height: 100%;
+    }
+    
+    .left-panel::-webkit-scrollbar, .right-panel::-webkit-scrollbar {
+      width: 8px;
+    }
+    .left-panel::-webkit-scrollbar-track, .right-panel::-webkit-scrollbar-track { background: #e2ecf5; border-radius: 10px; }
+    .left-panel::-webkit-scrollbar-thumb, .right-panel::-webkit-scrollbar-thumb { background: var(--accent-soft); border-radius: 10px; }
+    
+    .left-panel .passage {
+      font-size: 14.5px;
+      color: var(--text-dark);
+      line-height: 1.7;
+    }
+    
+    .left-panel h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: var(--primary-dark);
+      border-bottom: 3px solid var(--accent-soft);
+      padding-bottom: 8px;
+      font-weight: 600;
+    }
+    
+    .question-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #e4f0fa;
+      padding: 12px 18px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+      border-left: 5px solid var(--primary-dark);
+      flex-shrink: 0;
+    }
+    
+    .section-name {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 18px;
+    }
+    
+    .question-subtitle {
+      font-size: 13px;
+      color: #3f5568;
+    }
+    
+    .texts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    
+    .text-item {
+      padding: 16px;
+      border: 1px solid #cbdbe9;
+      border-radius: 16px;
+      background: #ffffff;
+      transition: var(--transition);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    
+    .text-item:hover {
+      border-color: var(--accent-soft);
+      box-shadow: 0 6px 12px rgba(59, 143, 194, 0.12);
+    }
+    
+    .text-letter {
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    
+    .text-content {
+      font-size: 13.5px;
+      color: #1e3a4e;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    
+    .title-slot {
+      min-height: 52px;
+      padding: 10px 14px;
+      border: 2.5px dashed var(--slot-border);
+      border-radius: 14px;
+      background: var(--slot-bg);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      word-break: break-word;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+      color: #1e3a4e;
+    }
+    
+    .title-slot[draggable="true"] {
+      cursor: grab;
+    }
+    
+    .title-slot[draggable="true"]:active {
+      cursor: grabbing;
+      opacity: 0.8;
+    }
+    
+    .title-slot:hover {
+      background: #e6f2fc;
+      border-color: var(--accent-soft);
+    }
+    
+    .title-slot.has-title {
+      background: #e2f3e4;
+      border-color: var(--success);
+      border-style: solid;
+      font-weight: 500;
+    }
+    
+    .title-slot.has-x {
+      background: #fae1e1;
+      border-color: var(--danger);
+      color: #8b3a3a;
+      font-weight: 500;
+      border-style: solid;
+    }
+    
+    .headings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    
+    .heading-item {
+      padding: 18px 16px;
+      border: 2px solid #d4e2f0;
+      border-radius: 16px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.15s;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .heading-item:hover {
+      border-color: var(--accent-soft);
+      background: #f0f8ff;
+      transform: translateX(4px);
+    }
+    
+    .heading-item.used {
+      opacity: 0.5;
+      cursor: not-allowed;
+      background: #f0f3f6;
+      border-color: #a0b8cc;
+      pointer-events: none;  
+    }
+    
+    .heading-item.selected-heading {
+      border-color: var(--primary-dark);
+      background: #e1f0fa;
+      box-shadow: 0 0 0 3px rgba(11, 43, 74, 0.2);
+    }
+    
+    .heading-letter {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 18px;
+      min-width: 30px;
+      text-align: center;
+    }
+    
+    .heading-text {
+      font-size: 15px;
+      color: #1e3a4e;
+      line-height: 1.6;
+      font-weight: 500;
+      flex: 1;
+    }
+    
+    .results-container {
+      padding: 4px 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      background: var(--primary-dark);
+      color: white;
+      padding: 18px 24px;
+      border-radius: 18px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    
+    .results-header h2 {
+      font-size: 22px;
+      font-weight: 600;
+      border: none;
+      margin: 0;
+      color: white;
+      letter-spacing: 0.3px;
+    }
+    
+    .results-summary-badge {
+      background: rgba(255,255,255,0.18);
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 16px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .result-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      margin-bottom: 20px;
+    }
+    
+    .result-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 14px 18px;
+      border-left: 6px solid;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.03);
+      border: 1px solid var(--border-light);
+    }
+    
+    .result-card.correct {
+      border-left-color: var(--success);
+    }
+    
+    .result-card.incorrect {
+      border-left-color: var(--danger);
+    }
+    
+    .result-card-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    
+    .text-tag {
+      background: var(--primary-dark);
+      color: white;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 40px;
+      font-size: 14px;
+      min-width: 50px;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .result-answer-badge {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: #f0f6fd;
+      padding: 6px 20px;
+      border-radius: 40px;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.03);
+    }
+    
+    .user-answer {
+      font-weight: 700;
+      color: var(--primary-dark);
+      font-size: 15px;
+      min-width: 40px;
+      text-align: center;
+    }
+    
+    .correct-answer {
+      color: #5f6b7a;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .verdict-badge {
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      min-width: 58px;
+      text-align: center;
+    }
+    
+    .verdict-badge.correct {
+      background: var(--success);
+      color: white;
+    }
+    
+    .verdict-badge.incorrect {
+      background: var(--danger);
+      color: white;
+    }
+    
+    .summary-container {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .summary-card {
+      background: linear-gradient(145deg, #f8fafd, #ffffff);
+      border-radius: 36px;
+      padding: 32px 28px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 20px 35px rgba(0, 20, 40, 0.2);
+      border: 1px solid rgba(255,255,255,0.6);
+      text-align: center;
+    }
+    
+    .summary-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary-dark);
+      letter-spacing: 0.5px;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 12px;
+      display: inline-block;
+    }
+    
+    .summary-score {
+      font-size: 64px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      line-height: 1;
+      margin-bottom: 15px;
+    }
+    
+    .summary-score small {
+      font-size: 28px;
+      font-weight: 500;
+      color: var(--neutral);
+    }
+    
+    .summary-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 25px 0 20px;
+      background: #eef3f9;
+      border-radius: 60px;
+      padding: 16px 10px;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: var(--neutral);
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    
+    .stat-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+    
+    .stat-value.correct {
+      color: var(--success);
+    }
+    
+    .stat-value.incorrect {
+      color: var(--danger);
+    }
+    
+    .summary-percent {
+      background: var(--primary-dark);
+      color: white;
+      padding: 16px 12px;
+      border-radius: 60px;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-top: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    
+    .summary-verdict {
+      margin-top: 22px;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--neutral);
+      background: #e4f0fa;
+      display: inline-block;
+      padding: 8px 28px;
+      border-radius: 50px;
+    }
+    
+    @media (max-width: 980px) {
+      .container { grid-template-columns: 1fr; height: auto; }
+      .exam-body { height: auto; overflow: auto; }
+      .question-indicators { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body id="body" class="exam-body">
+  <div id="lesen-page" style="height: 100%; display: flex; flex-direction: column;">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">B2</div>
+        <div class="meta">
+          <div class="main-title">Deutsch B2 Prüfung</div>
+          <div class="sub-title">Lesen Teil 1 — Überschriften zuordnen</div>
+        </div>
+      </div>
+      <div class="timer-container">
+        <span class="timer-icon">⏱</span>
+        <span class="timer-display" id="timer">00:00:00</span>
+      </div>
+      <div class="buttons-group">
+        <button id="resultBtn-lesen" class="exam-btn result">Ergebnis anzeigen</button>
+        <button id="resetBtn-lesen" class="exam-btn reset">Neu beginnen</button>
+      </div>
+    </header>
+
+    <div class="container">
+      <main class="left-panel" id="leftPanel-lesen">
+        <div class="passage" id="passage-lesen">
+          <h2 id="passageTitle-lesen">Texte (Text 1 – Text 5) – Überschrift ablegen</h2>
+          <div id="passageContent-lesen"></div>
+          <div id="indicatorContainer" class="question-indicators"></div>
+        </div>
+      </main>
+      <aside class="right-panel" id="rightPanel-lesen">
+        <div class="question-head">
+          <div>
+            <div class="section-name">Leseverstehen, Teil 1</div>
+            <div class="question-subtitle">Überschriften (a-j) – ziehen oder klicken</div>
+          </div>
+        </div>
+        <div class="question-body" id="questionBody-lesen" style="overflow-y: auto; flex:1;"></div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ===== DATEN FÜR TEIL 1 (GESUNDHEIT & KINDER) =====
+      const exam = {
+        id: "exam-teil1",
+        sections: [
+          { 
+            id: "s1", 
+            title: "Leseverstehen, Teil 1", 
+            points: 25,
+            texts: [
+              {
+                id: "text1",
+                content: "Fernsehen ist der Sprachentwicklung bei Kleinkindern nicht förderlich. Sie sind bunt und lustig, die Teletubbys, die am Bildschirm auch deutsche Kinder beglücken. Doch gute Sprachlehrer für Babys sind sie nicht - so das Ergebnis einer US-amerikanischen Studie. 'Manche Eltern mögen davon träumen, dass ihre Kinder die ersten Worte beim Fernsehen lernen', sagt eine Linguistin, 'aber das funktioniert nicht.' Die Kommunikationsexpertin hat 48 Kleinkinder im Alter von 5 bis 24 Monaten getestet. Zuerst bekamen sie Gegenstände zu Gesicht, für die sie noch keine Worte hatten - etwa einen Schraubenzieher. Für das gezeigte Objekt erfanden die Forscher dann ein Fantasiewort wie 'Deet'. 'Damit wollten wir sicherstellen, dass die Kinder den Begriff wirklich noch nie gehört hatten', erklärt die Expertin. Dann wurde es fünfmal wiederholt - entweder in einem Teletubby-ähnlichen Video oder direkt von einer anwesenden Person. Nach kurzer Pause legten die Forscher ihren Probanden einige Gegenstände vor und forderten sie auf: 'Zeig mir Deet.' Babys, die das Wort direkt gelernt hatten, reagierten spätestens bei der dritten Wiederholung. Die jungen TV-Seher aber waren meist ratlos.",
+                correctAnswer: "a"
+              },
+              {
+                id: "text2", 
+                content: "Pharmakologen am Universitätsklinikum Tübingen haben kürzlich bei einer Auswertung von 1,6 Millionen Rezeptverordnungen für Kinder und Jugendliche festgestellt, dass in gut 13 Prozent der Fälle das jeweils verschriebene Medikament gar nicht eigens für Kinder zugelassen war oder in einer für sie nicht getesteten Dosierung verwendet wurde. In Kinderkliniken sind etwa 50 Prozent, auf Intensivstationen für Neugeborene sogar bis zu 90 Prozent der verabreichten Medikamente nicht speziell für Kinder konzipiert. Noch bedenklicher: Je kleiner und je kränker ein Kind ist, desto mehr dieser 'Off-Label'-Verordnungen hat es zu erwarten. Besonders bei den in Kliniken behandelten, ernsthafteren Krankheiten aber können die Ärzte oft gar nicht anders, als für Kinder nicht getestete Medikamente zu verabreichen. Da Kinder vergleichsweise selten schwer erkranken, sind die aufwendigen Testverfahren zur Herstellung altersspezifischer Medikamente für die Hersteller häufig wirtschaftlich uninteressant. Glücklicherweise ändert sich dieser Zustand durch eine EU-Verordnung, die seit Januar 2007 gilt: Demnach müssen alle in der Entwicklung befindlichen Medikamente, die für Kinder und Jugendliche in Betracht kommen, auch an ihnen geprüft werden. Für bereits zugelassene Präparate gibt es finanzielle Anreize, sie nachträglich an jungen Altersgruppen zu erproben. Geprüfte Medikamente erhalten dann den Packungsaufdruck: 'Für Kinder geprüft.'",
+                correctAnswer: "b"
+              },
+              {
+                id: "text3",
+                content: "Alternative Heilverfahren können vor allem bei leichten Erkrankungen hilfreich sein. Dabei gilt es, Nützliches von Scharlatanerie zu unterscheiden. Viele sprechen noch von 'alternativer' Heilkunde. Doch inzwischen ist für die etwa 400 Heilverfahren jenseits der Schulmedizin der Ausdruck 'Komplementärmedizin' üblich geworden. Denn die Akupunkteure, Aromatherapeuten, anthroposophischen Mediziner, Pflanzenheilkundler, Homöopathen und viele andere begreifen ihre besonderen Methoden meist als Ergänzung der herkömmlichen Medizin und nicht als deren Ersatz. In dieser Funktion ist die Komplementärmedizin heute weithin akzeptiert. Auch in der Kinderheilkunde sind die Verfahren beliebt. Ob sie wirksam sind, lässt sich mithilfe klinischer Studien überprüfen. Die aber sind aufwendig und teuer, weshalb es oft an wissenschaftlichen Wirksamkeitsnachweisen mangelt. Sicher nachgewiesen ist vor allem die Wirksamkeit von Pflanzenpräparaten. Mehr Forschung auf dem Gebiet der Komplementärmedizin könnte verhindern, dass mancher vielleicht nützliche Behandlungsansatz den Schulmedizinern völlig aus dem Blick gerät. Und einige Ärzte sollten vielleicht darüber nachdenken, was ein Kenner jener Szene vor einiger Zeit auf einem Kongress des Berufsverbandes der Kinder- und Jugendärzte gesagt hat. Das Erfolgsgeheimnis der Anbieter nicht-konventioneller Methoden beruhe vor allem darauf, dass sie den Eltern das Gefühl vermittelten, 'endlich einmal ernst genommen zu werden'.",
+                correctAnswer: "d"
+              },
+              {
+                id: "text4",
+                content: "Die eine liebt Flora und Fauna, die andere hat ein Händchen für Kommunikation und Marketing: Zusammen betreiben die Schwestern Henrike Rodemeier und Gesine Wischmann Deutschlands einzige Ginseng-Farm im niedersächsischen Bockhorn. Als studierte Agraringenieurin ist die 38-jährige Rodemeier für den Anbau zuständig. Die vier Jahre ältere Schwester vertreibt über ihre Firma Florafarm die aus den Wurzeln gewonnenen Arzneimittel. Zudem entwickelte die gelernte Pharmareferentin eine eigene Ginseng-Kosmetiklinie. Den Anfang hatte ihr Vater Heinrich Wischmann bereits vor 24 Jahren gemacht: Er gab die unrentable traditionelle Landwirtschaft auf und konzentrierte sich auf den Anbau von Ginsengwurzeln, die unter anderem das Immunsystem stärken und den Blutdruck regulieren. Trotz Ruhestand ist auch er noch auf der Farm aktiv. Doch die Zukunft gehört den Töchtern - die planen bereits eine Dependance.",
+                correctAnswer: "e"
+              },
+              {
+                id: "text5",
+                content: "Kinder essen zu viel Fast Food, aber zu wenig Obst und Gemüse, so eine Expertin vom Deutschen Institut für Ernährungsmedizin und Diätetik (D.I.E.T.) in Bad Aachen. Nach Angabe der Deutschen Gesellschaft für Ernährung sind 10 bis 20 Prozent aller Schulkinder und Jugendlichen übergewichtig, Tendenz steigend. Übergewicht kann schon im frühen Alter zu Folgeerkrankungen wie Hypertonie, Fettstoffwechselstörungen, Diabetes oder Gallensteinleiden führen. Zu den Ursachen gehören eine oftmals zu hohe tägliche Energie- und Fettzufuhr und mangelnde Bewegung. Gerade bei einer genetischen Vorbelastung führt das zu einer Zunahme der Fettmasse des Körpers. Das D.I.E.T. rät daher allen Eltern, ihren Kindern von klein auf eine gesunde Kost zu bieten. Durch einen regelmäßigen Mahlzeitenrhythmus im Tagesablauf kann außerdem unkontrolliertes Zwischendurchessen vermieden werden. Ein kompletter Verzicht auf Süßes ist aus psychologischen Gründen nicht empfehlenswert, ein vernünftiger Umgang mit Süßigkeiten muss erlernt werden. Durch vermehrte körperliche Aktivität wird der Energieverbrauch erhöht. Eltern sollten versuchen, bei ihren Kindern sportliche Interessen zu wecken und Hobbys zu fördern.",
+                correctAnswer: "i"
+              }
+            ],
+            headings: [
+              {id: "a", text: "SCHLECHTE NOTEN FÜRS BABY-TV"},
+              {id: "b", text: "Neue Richtlinie für Zertifizierung von Medikamenten für Kinder"},
+              {id: "c", text: "Gefahren zu hohen Fernsehkonsums bei Kindern"},
+              {id: "d", text: "ALTERNATIVE HEILVERFAHREN: WIE GUT SIND SIE WIRKLICH?"},
+              {id: "e", text: "Naturkosmetik aus Geschwisterhand"},
+              {id: "f", text: "Kinder bekommen immer mehr Medikamente"},
+              {id: "g", text: "Studie: Schulkinder treiben zu wenig Sport"},
+              {id: "h", text: "SCHLECHTE NOTEN FÜRS BABY-TV"},
+              {id: "i", text: "Kinder und Jugendliche: Risikofaktor Übergewicht"},
+              {id: "j", text: "Neueste Forschungsergebnisse zur Wirkung von Ginseng"}
+            ]
+          }
+        ]
+      };
+
+      let state = { sectionIndex: 0, answers: {}, showResults: false, selectedHeadingId: null };
+      let seconds = 0, timerInterval;
+      const timerEl = document.getElementById('timer');
+      const passageContentEl = document.getElementById('passageContent-lesen');
+      const questionBodyEl = document.getElementById('questionBody-lesen');
+      const resultBtn = document.getElementById('resultBtn-lesen');
+      const resetBtn = document.getElementById('resetBtn-lesen');
+      const bodyEl = document.getElementById('body');
+      const indicatorContainer = document.getElementById('indicatorContainer');
+
+      function startTimer() { timerInterval = setInterval(() => { seconds++; updateTimerDisplay(); }, 1000); }
+      function resetTimer() { seconds = 0; updateTimerDisplay(); }
+      function updateTimerDisplay() { const h = Math.floor(seconds/3600), m = Math.floor((seconds%3600)/60), s = seconds%60; timerEl.textContent = `${h.toString().padStart(2,'0')}:${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; }
+
+      function isAllQuestionsAnswered() {
+        const totalTexts = exam.sections[0].texts.length;
+        const answeredCount = Object.keys(state.answers).length;
+        return answeredCount === totalTexts;
+      }
+
+      function updateCompletionMode() {
+        if (!state.showResults && isAllQuestionsAnswered()) {
+          bodyEl.classList.add('completion-mode');
+        } else {
+          bodyEl.classList.remove('completion-mode');
+        }
+      }
+
+      function renderIndicators() {
+        const texts = exam.sections[0].texts;
+        let dotsHtml = '';
+        texts.forEach((text, idx) => {
+          const isAnswered = Object.values(state.answers).includes(text.id);
+          const answeredClass = isAnswered ? 'answered' : '';
+          dotsHtml += `<div class="indicator-dot ${answeredClass}" title="Text ${idx+1}">${idx+1}</div>`;
+        });
+        indicatorContainer.innerHTML = dotsHtml;
+      }
+
+      function handleDragStart(e, type, id) {
+        if (type === 'heading' && state.answers[id]) { e.preventDefault(); return; } 
+        e.dataTransfer.setData('text/plain', JSON.stringify({ type, id }));
+      }
+
+      function handleDropOnText(e, textId) {
+        e.preventDefault();
+        const raw = e.dataTransfer.getData('text/plain');
+        if (!raw) return;
+        const { type, id } = JSON.parse(raw);
+        
+        if (type === 'heading') {
+          if (state.answers[id] && state.answers[id] !== 'X') return; 
+          const existingForText = Object.entries(state.answers).find(([head, val]) => val === textId);
+          if (existingForText) return;
+          
+          if (state.answers[id] === 'X') delete state.answers[id];
+          state.answers[id] = textId;
+        } 
+        else if (type === 'slot') {
+          const headingId = id.replace('slot-','');
+          if (state.answers[headingId] && state.answers[headingId] !== 'X') {
+            delete state.answers[headingId];
+          }
+        }
+        state.selectedHeadingId = null;
+        updateCompletionMode();
+        renderAll();
+      }
+
+      function allowDrop(e) { e.preventDefault(); }
+
+      function handleSlotClick(headingId) {
+        if (headingId && state.answers[headingId] && state.answers[headingId] !== 'X') {
+          delete state.answers[headingId];
+          updateCompletionMode();
+          renderAll();
+        }
+      }
+
+      function handleHeadingClick(headingId) {
+        if (state.answers[headingId]) return;
+        state.selectedHeadingId = headingId;
+        renderAll();
+      }
+
+      function handleSlotSelectClick(textId) {
+        if (!state.selectedHeadingId) return;
+        
+        const headingId = state.selectedHeadingId;
+        if (state.answers[headingId]) {
+          state.selectedHeadingId = null;
+          renderAll();
+          return;
+        }
+        
+        const existingForText = Object.entries(state.answers).find(([head, val]) => val === textId);
+        if (existingForText) {
+          const oldHeading = existingForText[0];
+          delete state.answers[oldHeading];
+        }
+        
+        state.answers[headingId] = textId;
+        state.selectedHeadingId = null;
+        
+        updateCompletionMode();
+        renderAll();
+      }
+
+      function renderPart1() {
+        const section = exam.sections[0];
+        let textsHTML = `<div class="texts-list">`;
+        section.texts.forEach((text, idx) => {
+          const userHeadingId = Object.keys(state.answers).find(key => state.answers[key] === text.id);
+          const headingObj = userHeadingId ? section.headings.find(h => h.id === userHeadingId) : null;
+          const slotContent = userHeadingId && headingObj ? `${headingObj.id}) ${headingObj.text}` : (state.selectedHeadingId ? 'Klicken zum Einfügen' : 'Hier ablegen');
+          const hasClass = userHeadingId ? 'has-title' : '';
+          const draggable = userHeadingId ? 'true' : 'false';
+          const slotClickAttr = userHeadingId ? `onclick="window.lesenApp.handleSlotClick('${userHeadingId}')"` : `onclick="window.lesenApp.handleSlotSelectClick('${text.id}')"`;
+          
+          textsHTML += `
+            <div class="text-item" data-text-id="${text.id}">
+              <div class="text-letter">Text ${idx+1}</div>
+              <div class="text-content">${text.content}</div>
+              <div class="title-slot ${hasClass}" 
+                   data-text-id="${text.id}"
+                   draggable="${draggable}"
+                   ondragstart="event.dataTransfer.setData('text/plain', JSON.stringify({type:'slot', id:'slot-${userHeadingId}'}))"
+                   ondrop="window.lesenApp.dropOnText(event, '${text.id}')"
+                   ondragover="event.preventDefault()"
+                   ${slotClickAttr}
+                   title="${userHeadingId ? 'Klicken zum Entfernen' : (state.selectedHeadingId ? 'Klicken zum Einfügen' : 'Hier ablegen oder zuerst Überschrift anklicken')}">
+                ${slotContent}
+              </div>
+            </div>`;
+        });
+        textsHTML += `</div>`;
+        passageContentEl.innerHTML = textsHTML;
+
+        let headingsHTML = `<div class="headings-list">`;
+        section.headings.forEach(heading => {
+          const used = state.answers[heading.id] && state.answers[heading.id] !== 'X';
+          const selectedClass = (state.selectedHeadingId === heading.id) ? 'selected-heading' : '';
+          headingsHTML += `
+            <div class="heading-item ${used ? 'used' : ''} ${selectedClass}" 
+                 data-heading-id="${heading.id}"
+                 draggable="${!used}"
+                 ondragstart="window.lesenApp.dragStart(event, 'heading', '${heading.id}')"
+                 onclick="window.lesenApp.handleHeadingClick('${heading.id}')">
+              <div class="heading-letter">${heading.id})</div>
+              <div class="heading-text">${heading.text}</div>
+            </div>`;
+        });
+        headingsHTML += `</div>`;
+        questionBodyEl.innerHTML = headingsHTML;
+        
+        renderIndicators();
+      }
+
+      function renderResultsLeft() {
+        const section = exam.sections[0];
+        let totalCorrect = 0;
+        let total = section.texts.length;
+        
+        let html = `
+          <div class="results-container">
+            <div class="results-header">
+              <h2>Prüfungsauswertung</h2>
+              <div class="results-summary-badge">${Object.keys(state.answers).length}/${total} beantwortet</div>
+            </div>
+            <div class="result-grid">
+        `;
+        
+        section.texts.forEach((text, idx) => {
+          const userHeadingId = Object.keys(state.answers).find(key => state.answers[key] === text.id);
+          const user = userHeadingId ? userHeadingId : '—';
+          const correct = text.correctAnswer;
+          const isCorrect = (user === correct);
+          if (isCorrect) totalCorrect++;
+          
+          html += `
+            <div class="result-card ${isCorrect ? 'correct' : 'incorrect'}">
+              <div class="result-card-info">
+                <span class="text-tag">Text ${idx+1}</span>
+              </div>
+              <div class="result-answer-badge">
+                <span class="user-answer">${user}</span>
+                <span class="correct-answer">soll: ${correct}</span>
+                <span class="verdict-badge ${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? 'richtig' : 'falsch'}</span>
+              </div>
+            </div>
+          `;
+        });
+        
+        html += `</div></div>`;
+        passageContentEl.innerHTML = html;
+        indicatorContainer.innerHTML = '';
+        return { totalCorrect, total };
+      }
+
+      function renderResultsRight(totalCorrect, total) {
+        const wrong = total - totalCorrect;
+        const percent = Math.round((totalCorrect/total)*100);
+        const stars = '★'.repeat(Math.max(1, Math.floor(percent/20)));
+        const passed = percent >= 60;
+        
+        const rightHTML = `
+          <div class="summary-container">
+            <div class="summary-card">
+              <div class="summary-title">Gesamtergebnis</div>
+              <div class="summary-score">${totalCorrect}<small>/${total}</small></div>
+              <div class="summary-stats">
+                <div class="stat-item">
+                  <div class="stat-label">Richtig</div>
+                  <div class="stat-value correct">${totalCorrect}</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-label">Falsch</div>
+                  <div class="stat-value incorrect">${wrong}</div>
+                </div>
+              </div>
+              <div class="summary-percent">${percent}%</div>
+              <div class="summary-verdict">${passed ? 'Bestanden' : 'Nicht bestanden'}</div>
+              <div style="margin-top:15px; font-size:22px; color:#ffd966;">${stars}</div>
+            </div>
+          </div>
+        `;
+        questionBodyEl.innerHTML = rightHTML;
+      }
+
+      function renderResults() {
+        const { totalCorrect, total } = renderResultsLeft();
+        renderResultsRight(totalCorrect, total);
+      }
+
+      function renderAll() { 
+        if (state.showResults) {
+          renderResults();
+        } else {
+          renderPart1();
+        }
+        updateCompletionMode();
+      }
+
+      function resetExam() { 
+        if (confirm('Neu beginnen?')) { 
+          state.answers = {}; 
+          state.showResults = false; 
+          state.selectedHeadingId = null;
+          resetTimer(); 
+          updateCompletionMode();
+          renderAll(); 
+        } 
+      }
+
+      resultBtn.addEventListener('click', () => { 
+        state.showResults = !state.showResults; 
+        renderAll(); 
+      });
+      
+      resetBtn.addEventListener('click', resetExam);
+
+      window.lesenApp = {
+        dragStart: handleDragStart,
+        dropOnText: handleDropOnText,
+        handleSlotClick,
+        handleHeadingClick,
+        handleSlotSelectClick,
+      };
+
+      startTimer();
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
