@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Deutsch B2 Prüfung - Hören Teil 1</title>
+  
+  <style>
+    /* ===== GLOBAL STYLES ===== */
+    :root {
+      --primary-dark: #0b2b4a;        
+      --primary-medium: #1f4b7a; 
+      --accent-soft: #3b8fc2;         
+      --light-bg: #f0f7fe;
+      --text-dark: #1e2b37;
+      --white: #ffffff;
+      --shadow-sm: 0 6px 14px rgba(0, 20, 40, 0.12);
+      --transition: all 0.3s ease; 
+      --success: #2e7d5e;             
+      --danger: #b13e3e;               
+      --neutral: #5f6b7a;
+      --neutral-light: #e9eff5;
+      --bg-results: #f8fafd;
+      --border-light: #d4e2f0;
+      
+      --header-bg: #0b2b4a;
+      --timer-bg: rgba(255, 255, 255, 0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0b2b4a 0%, #1f4b7a 100%);
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+    
+    .exam-body {
+      background: #f0f7fe;
+      color: var(--text-dark);
+      line-height: 1.45;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    
+    header.topbar {
+      background: var(--header-bg);
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      min-height: 80px;
+      flex-wrap: wrap;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .brand .logo {
+      width: 80px;
+      height: 40px;
+      background: #b13e3e;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: white;
+      font-size: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .meta .main-title {
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 0.3px;
+    }
+
+    .meta .sub-title {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .timer-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 6px 18px;
+      border-radius: 40px;
+      backdrop-filter: blur(2px);
+    }
+    
+    .timer-icon {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+    
+    .timer-display {
+      font-weight: 600;
+      font-size: 24px;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 4px 14px;
+      border-radius: 30px;
+      letter-spacing: 2px;
+    }
+
+    .buttons-group {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    
+    .exam-btn {
+      padding: 12px 22px;
+      border-radius: 40px;
+      border: none;
+      background: #3b8fc2;        
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 140px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 20, 30, 0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .exam-btn:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 14px rgba(0, 20, 30, 0.3);
+    }
+    
+    .exam-btn.result {
+      background: #1f6a9c;        
+    }
+    
+    .exam-btn.result:hover {
+      background: #15507a;
+    }
+    
+    .exam-btn.reset {
+      background: #4f6f8f;        
+    }
+    
+    .exam-btn.reset:hover {
+      background: #3e5a77;
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px;
+      flex: 1;
+      min-height: 0;
+      height: calc(100vh - 80px);
+      overflow-y: auto;
+    }
+    
+    .content-panel {
+      background: white;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+    }
+    
+    .content-panel h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      color: var(--primary-dark);
+      border-bottom: 3px solid var(--accent-soft);
+      padding-bottom: 12px;
+      font-weight: 600;
+    }
+    
+    /* Audio Player */
+    .audio-player-container {
+      background: #eef3fc;
+      border-radius: 20px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid #d4e2f0;
+    }
+    
+    .audio-label {
+      font-weight: 700;
+      color: var(--primary-dark);
+      background: white;
+      padding: 6px 14px;
+      border-radius: 40px;
+      font-size: 13px;
+    }
+    
+    audio {
+      flex: 1;
+      min-width: 200px;
+      height: 42px;
+      border-radius: 30px;
+    }
+    
+    .instructions {
+      background: #f8fafd;
+      padding: 14px 18px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      border-left: 4px solid var(--accent-soft);
+      font-size: 13px;
+      color: #2c4b6e;
+    }
+    
+    /* Fragen-Tabelle */
+    .questions-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+    
+    .questions-table th {
+      background: #e2ecf5;
+      color: var(--primary-dark);
+      padding: 14px;
+      text-align: left;
+      font-weight: 700;
+      border-bottom: 2px solid var(--accent-soft);
+    }
+    
+    .questions-table td {
+      padding: 14px;
+      border-bottom: 1px solid #e1e8f6;
+      vertical-align: middle;
+    }
+    
+    .answer-options {
+      display: flex;
+      gap: 20px;
+    }
+    
+    .answer-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 30px;
+      transition: background 0.2s;
+      font-weight: 500;
+    }
+    
+    .answer-option:hover {
+      background: #e3f2fd;
+    }
+    
+    .answer-option input {
+      margin: 0;
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+    
+    /* Indikatoren */
+    .question-indicators {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+      padding: 15px;
+      background: #ffffff;
+      border-radius: 50px;
+      justify-content: center;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.05);
+      border: 1px solid #e1e8f6;
+    }
+    
+    .indicator-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #d4e2f0;
+      border: 2px solid #8fb4d1;
+      color: #1e3a4e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      transition: all 0.3s ease;
+    }
+    
+    .indicator-dot.answered {
+      background: #2ecc71;
+      border-color: #27ae60;
+      color: white;
+    }
+    
+    /* ===== RESULTS MODUS ===== */
+    .results-view {
+      display: none;
+    }
+    
+    .results-view.active {
+      display: block;
+    }
+    
+    .exam-view {
+      display: block;
+    }
+    
+    .exam-view.hidden {
+      display: none;
+    }
+    
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      background: var(--primary-dark);
+      color: white;
+      padding: 18px 24px;
+      border-radius: 18px;
+    }
+    
+    .results-header h2 {
+      font-size: 18px;
+      margin: 0;
+      border: none;
+      color: white;
+    }
+    
+    .results-summary-badge {
+      background: rgba(255,255,255,0.18);
+      padding: 8px 20px;
+      border-radius: 40px;
+      font-weight: 600;
+    }
+    
+    .result-card {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 14px 18px;
+      border-left: 6px solid;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      border: 1px solid #d4e2f0;
+    }
+    
+    .result-card.correct {
+      border-left-color: #2e7d5e;
+    }
+    
+    .result-card.incorrect {
+      border-left-color: #b13e3e;
+    }
+    
+    .verdict-badge {
+      padding: 4px 12px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      min-width: 70px;
+      text-align: center;
+    }
+    
+    .verdict-badge.correct {
+      background: #2e7d5e;
+      color: white;
+    }
+    
+    .verdict-badge.incorrect {
+      background: #b13e3e;
+      color: white;
+    }
+    
+    .summary-card {
+      background: linear-gradient(145deg, #f8fafd, #ffffff);
+      border-radius: 36px;
+      padding: 32px 28px;
+      text-align: center;
+      margin-top: 20px;
+      border: 1px solid #d4e2f0;
+    }
+    
+    .summary-score {
+      font-size: 64px;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    
+    @media (max-width: 768px) {
+      .answer-options {
+        flex-direction: column;
+        gap: 8px;
+      }
+      .questions-table th, .questions-table td {
+        padding: 10px;
+      }
+      .main-container {
+        padding: 16px;
+      }
+      .content-panel {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body class="exam-body">
+  <div style="height: 100%; display: flex; flex-direction: column;">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">B2</div>
+        <div class="meta">
+          <div class="main-title">Deutsch B2 Prüfung</div>
+          <div class="sub-title">Hören Teil 2 — Richtig / Falsch</div>
+        </div>
+      </div>
+      <div class="timer-container">
+        <span class="timer-icon">⏱</span>
+        <span class="timer-display" id="timer">00:00:00</span>
+      </div>
+      <div class="buttons-group">
+        <button id="showResultsBtn" class="exam-btn result">Ergebnis anzeigen</button>
+        <button id="resetBtn" class="exam-btn reset">Neu beginnen</button>
+      </div>
+    </header>
+
+    <div class="main-container">
+      <div class="content-panel">
+        <h2>Hörverstehen, Teil 2</h2>
+        
+        <div class="audio-player-container">
+          <span class="audio-label">🎧 Hörtext</span>
+          <audio id="audioPlayer" controls preload="metadata">
+            <!-- AUDIO FILE AREA: Audio-Datei eingefügt -->
+            <source src="Die Deutschen machen.mp3" type="audio/mpeg">
+            Ihr Browser unterstützt kein Audio.
+          </audio>
+        </div>
+        
+        <!-- EXAM VIEW -->
+        <div id="examView" class="exam-view">
+          <div class="instructions">
+            Sie hören einen Nachrichtenbeitrag. Entscheiden Sie bei jeder Aussage, ob sie richtig oder falsch ist.<br>
+            Sie hören den Text nur einmal. Sie haben vor dem Hören 30 Sekunden Zeit, die Aussagen zu lesen.<br><br>
+            <strong>Wichtig:</strong> Ihre Antworten werden gespeichert. Die Korrektur sehen Sie erst nach Klick auf "Ergebnis anzeigen".
+          </div>
+          
+          <table class="questions-table">
+            <thead>
+              <tr><th style="width: 10%">Nr.</th><th style="width: 70%">Aussage</th><th style="width: 20%">Ihre Antwort</th></tr>
+            </thead>
+            <tbody id="questionsTableBody"></tbody>
+          </table>
+          
+          <div id="indicatorsContainer" class="question-indicators"></div>
+        </div>
+        
+        <!-- RESULTS VIEW -->
+        <div id="resultsView" class="results-view"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ===== PRÜFUNGSDATEN FÜR TEIL 1 =====
+      // SENTENCES AREA: Die folgenden 10 Sätze wurden aus dem Datenfile übernommen.
+      // ANSWERS AREA: Die korrekten Antworten (R für richtig, F für falsch) wurden zugeordnet.
+      const QUESTIONS = [
+        { id: "46", text: "Die Deutschen machen zurzeit gerne bis zu drei Wochen oder mehr Urlaub.", correct: "falsch" },
+        { id: "47", text: "Viele Wellness-Hotels befinden sich in Großstädten.", correct: "falsch" },
+        { id: "48", text: "Wellness-Angebote gibt es vor allem in Hotels der gehobenen Kategorie.", correct: "richtig" },
+        { id: "49", text: "Die von den Hotels angebotenen ,,Pakete\" enthalten in der Regel Vollpension.", correct: "falsch" },
+        { id: "50", text: "In den Hotels kann man auch schwimmen Sauna gehen.", correct: "richtig" },
+        { id: "51", text: "Die Gäste nehmen die Sportangebote kaum wahr.", correct: "falsch" },
+        { id: "52", text: "Oft bieten die Hotels auch kulturelle Rahmenprogramme wie Stadtführungen und Opembesuche an.", correct: "falsch" },
+        { id: "53", text: "Frauen kommen fast immer in Begleitung ihrer Ehemänner.", correct: "falsch" },
+        { id: "54", text: "Die Hotels haben besondere Angebote für Männer.", correct: "richtig" },
+        { id: "55", text: "Mitglieder von Krankenkassen können die Hotels kostenlos besuchen.", correct: "falsch" }
+      ];
+      
+      const DURATION_SEC = 17 * 60;
+      
+      // ===== STATE =====
+      let userAnswers = {};
+      let isResultsMode = false;
+      let remainingSeconds = DURATION_SEC;
+      let timerInterval = null;
+      
+      // ===== DOM ELEMENTE =====
+      const timerEl = document.getElementById('timer');
+      const showResultsBtn = document.getElementById('showResultsBtn');
+      const resetBtn = document.getElementById('resetBtn');
+      const examView = document.getElementById('examView');
+      const resultsView = document.getElementById('resultsView');
+      const questionsTableBody = document.getElementById('questionsTableBody');
+      const indicatorsContainer = document.getElementById('indicatorsContainer');
+      const audioPlayer = document.getElementById('audioPlayer');
+      
+      // ===== TIMER =====
+      function updateTimerDisplay() {
+        const minutes = Math.floor(remainingSeconds / 60);
+        const seconds = remainingSeconds % 60;
+        timerEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:00`;
+      }
+      
+      function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerInterval = setInterval(() => {
+          if (remainingSeconds <= 0) {
+            clearInterval(timerInterval);
+            timerEl.textContent = "00:00:00";
+            return;
+          }
+          remainingSeconds--;
+          updateTimerDisplay();
+        }, 1000);
+      }
+      
+      function resetTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        remainingSeconds = DURATION_SEC;
+        updateTimerDisplay();
+        startTimer();
+      }
+      
+      // ===== ANTWORT SPEICHERN =====
+      function saveAnswer(questionId, value) {
+        userAnswers[questionId] = value;
+        if (!isResultsMode) {
+          renderExamTable();
+          renderIndicators();
+        }
+      }
+      
+      // ===== RENDER EXAM TABELLE =====
+      function renderExamTable() {
+        let html = '';
+        QUESTIONS.forEach(q => {
+          const currentAnswer = userAnswers[q.id] || '';
+          html += `
+            <tr>
+              <td><strong>${q.id}</strong></td>
+              <td>${q.text}</td>
+              <td>
+                <div class="answer-options">
+                  <label class="answer-option">
+                    <input type="radio" name="q_${q.id}" value="richtig" ${currentAnswer === 'richtig' ? 'checked' : ''}
+                           onchange="window.teil1.saveAnswer('${q.id}', 'richtig')">
+                    Richtig
+                  </label>
+                  <label class="answer-option">
+                    <input type="radio" name="q_${q.id}" value="falsch" ${currentAnswer === 'falsch' ? 'checked' : ''}
+                           onchange="window.teil1.saveAnswer('${q.id}', 'falsch')">
+                    Falsch
+                  </label>
+                </div>
+               </td>
+             </tr>
+          `;
+        });
+        questionsTableBody.innerHTML = html;
+      }
+      
+      // ===== RENDER INDIKATOREN =====
+      function renderIndicators() {
+        let indicatorsHtml = '';
+        QUESTIONS.forEach((q, idx) => {
+          const isAnswered = userAnswers[q.id] !== undefined;
+          indicatorsHtml += `<div class="indicator-dot ${isAnswered ? 'answered' : ''}">${idx + 1}</div>`;
+        });
+        indicatorsContainer.innerHTML = indicatorsHtml;
+      }
+      
+      // ===== RENDER RESULTS =====
+      function renderResults() {
+        let correctCount = 0;
+        
+        const results = QUESTIONS.map(q => {
+          const userAnswer = userAnswers[q.id];
+          const isCorrect = (userAnswer === q.correct);
+          if (isCorrect) correctCount++;
+          return {
+            id: q.id,
+            text: q.text,
+            userAnswer: userAnswer,
+            correctAnswer: q.correct,
+            isCorrect: isCorrect
+          };
+        });
+        
+        const percentage = Math.round((correctCount / QUESTIONS.length) * 100);
+        
+        let resultsHtml = `
+          <div class="results-header">
+            <h2>Prüfungsauswertung – Hören Teil 2</h2>
+            <div class="results-summary-badge">${Object.keys(userAnswers).length}/${QUESTIONS.length} beantwortet</div>
+          </div>
+        `;
+        
+        results.forEach(r => {
+          const userText = r.userAnswer === 'richtig' ? 'Richtig' : (r.userAnswer === 'falsch' ? 'Falsch' : 'Nicht beantwortet');
+          const correctText = r.correctAnswer === 'richtig' ? 'Richtig' : 'Falsch';
+          
+          resultsHtml += `
+            <div class="result-card ${r.isCorrect ? 'correct' : 'incorrect'}">
+              <div style="flex:1;">
+                <strong>${r.id}</strong> – ${r.text}
+                <div style="margin-top: 5px; font-size:13px; color:#555;">
+                  Ihre Antwort: ${userText}<br>
+                  Richtig wäre: ${correctText}
+                </div>
+              </div>
+              <span class="verdict-badge ${r.isCorrect ? 'correct' : 'incorrect'}">${r.isCorrect ? 'Richtig' : 'Falsch'}</span>
+            </div>
+          `;
+        });
+        
+        resultsHtml += `
+          <div class="summary-card">
+            <div class="summary-score">${correctCount}<small>/${QUESTIONS.length}</small></div>
+            <div style="font-size: 18px; margin-top: 8px; font-weight: 500;">${percentage}% erreicht</div>
+            <div style="margin-top: 12px; font-weight: 700; padding: 8px 16px; background: #eef2f6; border-radius: 40px; display: inline-block;">
+              ${percentage >= 60 ? 'Bestanden' : 'Nicht bestanden'}
+            </div>
+          </div>
+        `;
+        
+        resultsView.innerHTML = resultsHtml;
+      }
+      
+      // ===== MODUS WECHSELN =====
+      function showResultsMode() {
+        isResultsMode = true;
+        examView.classList.add('hidden');
+        resultsView.classList.add('active');
+        renderResults();
+      }
+      
+      function showExamMode() {
+        isResultsMode = false;
+        resultsView.classList.remove('active');
+        examView.classList.remove('hidden');
+        renderExamTable();
+        renderIndicators();
+      }
+      
+      // ===== RESET =====
+      function resetExam() {
+        if (confirm('Möchten Sie den gesamten Test zurücksetzen? Alle Antworten werden gelöscht.')) {
+          userAnswers = {};
+          
+          if (isResultsMode) {
+            showExamMode();
+          } else {
+            renderExamTable();
+            renderIndicators();
+          }
+          
+          resetTimer();
+          
+          if (audioPlayer) {
+            audioPlayer.currentTime = 0;
+            audioPlayer.pause();
+          }
+        }
+      }
+      
+      // ===== EVENT LISTENER =====
+      showResultsBtn.addEventListener('click', () => {
+        if (!isResultsMode) {
+          showResultsMode();
+        }
+      });
+      
+      resetBtn.addEventListener('click', resetExam);
+      
+      // ===== GLOBALE API =====
+      window.teil1 = {
+        saveAnswer: saveAnswer
+      };
+      
+      // ===== INIT =====
+      resetTimer();
+      renderExamTable();
+      renderIndicators();
+      
+      if (audioPlayer) {
+        audioPlayer.addEventListener('error', () => {
+          console.warn("Audiodatei 'Die Deutschen machen.mp3' wird benötigt. Bitte legen Sie die Datei neben der HTML-Datei ab.");
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
