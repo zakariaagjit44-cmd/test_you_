@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B2 Deutsch Training - نظام المصادقة</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        /* ========== RESET & BASE ========== */
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -17,38 +19,40 @@
 
         :root {
             --primary: #6C63FF;
+            --primary-light: #8B83FF;
             --secondary: #FF6B9D;
             --accent: #00D4FF;
-            --bg-start: #0A0E1A;
-            --bg-end: #1A1F35;
-            --bg-accent: #2D1B4E;
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.12);
+            --gold: #FFD700;
+            --bg-dark: #0A0E1A;
+            --bg-mid: #141929;
+            --bg-light: #1A1F35;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.10);
             --text-primary: #F0F0FF;
-            --text-secondary: #B8B8D0;
-            --shadow-glow: 0 8px 32px rgba(108, 99, 255, 0.35);
-            --radius-sm: 16px;
-            --radius-md: 28px;
-            --radius-lg: 40px;
-            --transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            --text-secondary: #B0B0D0;
+            --text-muted: #7A7A9A;
+            --shadow-glow: 0 8px 40px rgba(108, 99, 255, 0.30);
+            --radius-sm: 14px;
+            --radius-md: 24px;
+            --radius-lg: 36px;
+            --transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(145deg, var(--bg-start), var(--bg-end), var(--bg-accent));
+            background: var(--bg-dark);
             color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* ========== STARFIELD BACKGROUND ========== */
+        /* ============================================================
+           STARFIELD BACKGROUND
+           ============================================================ */
         #starfield {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             z-index: 0;
             pointer-events: none;
             overflow: hidden;
@@ -57,77 +61,86 @@
             position: absolute;
             background: white;
             border-radius: 50%;
-            opacity: 0.6;
-            animation: twinkle var(--duration) ease-in-out infinite alternate;
+            animation: twinkle var(--d, 4s) ease-in-out infinite alternate;
         }
         @keyframes twinkle {
-            0% { opacity: 0.2; transform: scale(0.8); }
+            0% { opacity: 0.15; transform: scale(0.6); }
             100% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* ========== FLOATING PARTICLES ========== */
-        .floating-particle {
+        /* ============================================================
+           FLOATING ORBS
+           ============================================================ */
+        .orb {
             position: fixed;
             border-radius: 50%;
+            filter: blur(80px);
             pointer-events: none;
             z-index: 0;
-            filter: blur(1px);
-            animation: floatParticle var(--float-duration, 15s) ease-in-out infinite alternate;
+            animation: orbFloat 20s ease-in-out infinite alternate;
         }
-        @keyframes floatParticle {
-            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-            100% { transform: translate(var(--tx, 80px), var(--ty, -80px)) scale(1.4) rotate(20deg); }
+        .orb-1 { width: 400px; height: 400px; background: rgba(108,99,255,0.12); top: -10%; right: -5%; }
+        .orb-2 { width: 350px; height: 350px; background: rgba(255,107,157,0.10); bottom: -5%; left: -5%; animation-delay: -8s; }
+        .orb-3 { width: 250px; height: 250px; background: rgba(0,212,255,0.08); top: 50%; left: 50%; transform: translate(-50%,-50%); animation-delay: -14s; }
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(60px, -40px) scale(1.2); }
         }
 
-        /* ========== SIDEBAR ========== */
+        /* ============================================================
+           SIDEBAR - GLASSMORPHISM PREMIUM
+           ============================================================ */
         .sidebar {
             position: fixed;
             top: 0;
             right: 0;
-            width: 280px;
+            width: 290px;
             height: 100vh;
-            background: rgba(10, 14, 26, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: rgba(10, 14, 26, 0.88);
+            backdrop-filter: blur(24px) saturate(1.4);
+            -webkit-backdrop-filter: blur(24px) saturate(1.4);
             border-left: 1px solid var(--glass-border);
             z-index: 1000;
             padding: 2rem 1.5rem;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 1.8rem;
             transform: translateX(100%);
-            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            box-shadow: -8px 0 50px rgba(0,0,0,0.5);
         }
-        .sidebar.open {
-            transform: translateX(0);
-        }
+        .sidebar.open { transform: translateX(0); }
+
         .sidebar-brand {
             display: flex;
             align-items: center;
             gap: 0.8rem;
-            font-size: 1.6rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
         }
         .sidebar-brand i {
             font-size: 2rem;
             color: var(--accent);
-            -webkit-text-fill-color: initial;
+            filter: drop-shadow(0 0 20px rgba(0,212,255,0.3));
         }
+        .sidebar-brand span {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         .sidebar-nav {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.3rem;
             flex: 1;
         }
         .sidebar-nav a {
             display: flex;
             align-items: center;
             gap: 1rem;
-            padding: 0.9rem 1.2rem;
+            padding: 0.8rem 1.2rem;
             border-radius: var(--radius-sm);
             color: var(--text-secondary);
             text-decoration: none;
@@ -138,18 +151,36 @@
             border: none;
             width: 100%;
             text-align: right;
-            font-size: 1rem;
+            font-size: 0.98rem;
+            position: relative;
+        }
+        .sidebar-nav a::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%) scaleX(0);
+            width: 3px;
+            height: 60%;
+            background: linear-gradient(to bottom, var(--primary), var(--accent));
+            border-radius: 0 4px 4px 0;
+            transition: transform 0.3s ease;
+        }
+        .sidebar-nav a:hover::before,
+        .sidebar-nav a.active::before {
+            transform: translateY(-50%) scaleX(1);
         }
         .sidebar-nav a:hover, .sidebar-nav a.active {
             background: var(--glass-bg);
             color: var(--text-primary);
-            transform: translateX(-6px);
-            box-shadow: 0 4px 16px rgba(108, 99, 255, 0.2);
+            transform: translateX(-4px);
         }
         .sidebar-nav a i {
             width: 24px;
             color: var(--accent);
+            font-size: 1.1rem;
         }
+
         .sidebar-user {
             display: flex;
             align-items: center;
@@ -158,22 +189,21 @@
             background: var(--glass-bg);
             border-radius: var(--radius-sm);
             border: 1px solid var(--glass-border);
+            backdrop-filter: blur(8px);
         }
         .sidebar-user-avatar {
-            width: 44px;
-            height: 44px;
+            width: 46px;
+            height: 46px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             flex-shrink: 0;
-        }
-        .sidebar-user-info {
-            flex: 1;
-            overflow: hidden;
+            background-size: cover;
+            background-position: center;
         }
         .sidebar-user-info .name {
             font-weight: 600;
@@ -186,16 +216,17 @@
             font-size: 0.8rem;
             color: var(--text-secondary);
         }
+
         .sidebar-toggle {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 1001;
-            width: 48px;
-            height: 48px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background: var(--glass-bg);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border);
             color: var(--text-primary);
             font-size: 1.4rem;
@@ -209,43 +240,41 @@
         .sidebar-toggle:hover {
             transform: scale(1.08);
             background: var(--primary);
+            border-color: var(--primary);
         }
         .sidebar-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: rgba(0,0,0,0.6);
             z-index: 999;
             display: none;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(6px);
         }
-        .sidebar-overlay.show {
-            display: block;
-        }
+        .sidebar-overlay.show { display: block; }
 
-        /* ========== MAIN WRAPPER ========== */
+        /* ============================================================
+           MAIN WRAPPER
+           ============================================================ */
         .main-wrapper {
             position: relative;
             z-index: 1;
-            padding: 80px 20px 40px 20px;
+            padding: 90px 24px 40px 24px;
             max-width: 1400px;
             margin: 0 auto;
             transition: margin-right 0.4s ease;
         }
-        .main-wrapper.shifted {
-            margin-right: 280px;
-        }
+        .main-wrapper.shifted { margin-right: 290px; }
 
-        /* ========== PROGRESS BAR TOP ========== */
+        /* ============================================================
+           TOP PROGRESS BAR
+           ============================================================ */
         .top-progress {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 4px;
-            background: rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.06);
             z-index: 9999;
             overflow: hidden;
         }
@@ -253,16 +282,18 @@
             height: 100%;
             width: 0%;
             background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
-            transition: width 0.3s ease;
+            transition: width 0.6s ease;
             border-radius: 0 4px 4px 0;
-            box-shadow: 0 0 20px rgba(108, 99, 255, 0.5);
+            box-shadow: 0 0 30px rgba(108,99,255,0.4);
         }
 
-        /* ========== GLASS CARD ========== */
+        /* ============================================================
+           GLASS CARD
+           ============================================================ */
         .glass-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px) saturate(1.2);
+            -webkit-backdrop-filter: blur(20px) saturate(1.2);
             border: 1px solid var(--glass-border);
             border-radius: var(--radius-md);
             box-shadow: var(--shadow-glow);
@@ -274,63 +305,67 @@
         .glass-card::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 30% 40%, rgba(108,99,255,0.08), transparent 70%);
+            inset: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(108,99,255,0.06), transparent 70%);
             pointer-events: none;
         }
 
-        /* ========== TYPOGRAPHY ========== */
-        h1, h2, h3 {
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
+        /* ============================================================
+           TYPOGRAPHY
+           ============================================================ */
         .gradient-text {
             background: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+        .gold-text {
+            color: var(--gold);
+            text-shadow: 0 0 30px rgba(255,215,0,0.2);
+        }
 
-        /* ========== TYPING EFFECT ========== */
+        /* ============================================================
+           TYPING EFFECT
+           ============================================================ */
         .typing-wrapper {
             display: inline-block;
             border-left: 3px solid var(--accent);
-            padding-left: 6px;
+            padding-left: 8px;
             animation: blink 0.9s step-end infinite;
         }
         @keyframes blink {
             50% { border-color: transparent; }
         }
 
-        /* ========== CLOUD BUTTONS ========== */
+        /* ============================================================
+           CLOUD BUTTONS - 3D GLASS
+           ============================================================ */
         .cloud-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.8rem;
-            padding: 1rem 2.2rem;
+            gap: 0.7rem;
+            padding: 0.9rem 2rem;
             border: none;
             border-radius: 60px;
-            background: linear-gradient(145deg, rgba(108,99,255,0.25), rgba(0,212,255,0.15));
+            background: linear-gradient(145deg, rgba(108,99,255,0.20), rgba(0,212,255,0.08));
             backdrop-filter: blur(12px);
             color: var(--text-primary);
             font-weight: 600;
-            font-size: 1.05rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: var(--transition);
-            box-shadow: 0 8px 30px rgba(108, 99, 255, 0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+            box-shadow: 0 6px 24px rgba(108,99,255,0.15), inset 0 1px 0 rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.06);
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.08);
             text-decoration: none;
+            letter-spacing: 0.3px;
         }
-        .cloud-btn::before {
+        .cloud-btn::after {
             content: '';
             position: absolute;
-            inset: 0;
+            inset: -2px;
             border-radius: 60px;
             padding: 2px;
             background: linear-gradient(135deg, var(--primary), var(--accent), var(--secondary));
@@ -341,17 +376,14 @@
             opacity: 0;
             transition: opacity 0.4s;
         }
-        .cloud-btn:hover::before {
-            opacity: 1;
-        }
+        .cloud-btn:hover::after { opacity: 1; }
         .cloud-btn:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 12px 40px rgba(108, 99, 255, 0.4);
-            background: linear-gradient(145deg, rgba(108,99,255,0.35), rgba(0,212,255,0.2));
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(108,99,255,0.30);
+            background: linear-gradient(145deg, rgba(108,99,255,0.30), rgba(0,212,255,0.15));
         }
-        .cloud-btn:active {
-            transform: scale(0.96);
-        }
+        .cloud-btn:active { transform: scale(0.96); }
+
         .cloud-btn-primary {
             background: linear-gradient(135deg, var(--primary), #5A4FCF);
             color: white;
@@ -370,127 +402,123 @@
         }
         .cloud-btn-accent {
             background: linear-gradient(135deg, var(--accent), #00B8D4);
-            color: white;
+            color: #0A0E1A;
             border: none;
+            font-weight: 700;
         }
         .cloud-btn-accent:hover {
             background: linear-gradient(135deg, #33DDFF, var(--accent));
         }
+        .cloud-btn-gold {
+            background: linear-gradient(135deg, #FFD700, #FFA000);
+            color: #0A0E1A;
+            border: none;
+            font-weight: 700;
+        }
+        .cloud-btn-gold:hover {
+            background: linear-gradient(135deg, #FFE44D, #FFB300);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(255,215,0,0.3);
+        }
 
-        /* ========== 3D CARDS ========== */
+        /* ============================================================
+           3D CARDS - PREMIUM
+           ============================================================ */
         .card-3d {
-            perspective: 1000px;
+            perspective: 1200px;
             transform-style: preserve-3d;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
             cursor: pointer;
             border-radius: var(--radius-md);
             background: var(--glass-bg);
-            backdrop-filter: blur(16px);
+            backdrop-filter: blur(16px) saturate(1.2);
             border: 1px solid var(--glass-border);
-            padding: 2rem 1.8rem;
+            padding: 2rem 1.5rem;
             box-shadow: var(--shadow-glow);
             position: relative;
             overflow: hidden;
-            min-height: 200px;
+            min-height: 180px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            gap: 0.8rem;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            gap: 0.6rem;
+        }
+        .card-3d::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(108,99,255,0.08), transparent 70%);
+            pointer-events: none;
         }
         .card-3d:hover {
-            transform: rotateY(4deg) rotateX(4deg) scale(1.02);
-            box-shadow: 0 20px 60px rgba(108, 99, 255, 0.3);
+            transform: rotateY(3deg) rotateX(3deg) scale(1.03);
+            box-shadow: 0 20px 60px rgba(108,99,255,0.25);
+            border-color: rgba(108,99,255,0.2);
         }
         .card-3d .icon {
-            font-size: 3.2rem;
+            font-size: 3rem;
             color: var(--accent);
-            filter: drop-shadow(0 8px 24px rgba(0,212,255,0.3));
+            filter: drop-shadow(0 8px 24px rgba(0,212,255,0.2));
             transition: var(--transition);
         }
         .card-3d:hover .icon {
             transform: scale(1.15) rotate(4deg);
         }
         .card-3d h3 {
-            font-size: 1.4rem;
-            color: var(--text-primary);
+            font-size: 1.3rem;
+            font-weight: 700;
         }
         .card-3d p {
             color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.6;
+            font-size: 0.92rem;
+            line-height: 1.5;
         }
 
-        /* ========== GRIDS ========== */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.8rem;
-        }
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-        }
+        /* ============================================================
+           GRIDS
+           ============================================================ */
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.8rem; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.6rem; }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.4rem; }
 
-        /* ========== PAGE CONTAINERS ========== */
+        /* ============================================================
+           PAGE TRANSITIONS
+           ============================================================ */
         .page {
             display: none;
-            animation: pageFadeIn 0.6s ease forwards;
+            animation: pageIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
-        .page.active {
-            display: block;
-        }
-        @keyframes pageFadeIn {
-            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+        .page.active { display: block; }
+        @keyframes pageIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.96); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .section-title {
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-        }
-        .section-subtitle {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-        }
+        .section-title { font-size: 2.2rem; font-weight: 900; letter-spacing: -0.5px; margin-bottom: 0.3rem; }
+        .section-subtitle { color: var(--text-secondary); font-size: 1.05rem; margin-bottom: 1.8rem; }
 
-        /* ========== LOGIN / SIGNUP ========== */
+        /* ============================================================
+           AUTH PAGES - MODERN SPLASH
+           ============================================================ */
         .auth-container {
             min-height: 80vh;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .auth-box {
-            max-width: 480px;
-            width: 100%;
-        }
-        .auth-box .glass-card {
-            padding: 3rem 2.5rem;
-        }
-        .auth-box h1 {
-            font-size: 2.2rem;
-            margin-bottom: 0.3rem;
-        }
-        .auth-box p {
-            color: var(--text-secondary);
-            margin-bottom: 1.8rem;
-        }
+        .auth-box { max-width: 480px; width: 100%; }
+        .auth-box .glass-card { padding: 3rem 2.5rem; }
+        .auth-box h1 { font-size: 2.4rem; margin-bottom: 0.3rem; }
+        .auth-box .sub { color: var(--text-secondary); margin-bottom: 2rem; }
+
         .form-input {
             width: 100%;
             padding: 1rem 1.4rem;
             border-radius: 60px;
             border: 1px solid var(--glass-border);
-            background: rgba(255,255,255,0.06);
+            background: rgba(255,255,255,0.05);
             color: var(--text-primary);
             font-size: 1rem;
             transition: var(--transition);
@@ -499,16 +527,12 @@
         .form-input:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(108,99,255,0.2);
-            background: rgba(255,255,255,0.1);
+            box-shadow: 0 0 0 4px rgba(108,99,255,0.15);
+            background: rgba(255,255,255,0.08);
         }
-        .form-input::placeholder {
-            color: var(--text-secondary);
-            opacity: 0.7;
-        }
-        .password-input-container {
-            position: relative;
-        }
+        .form-input::placeholder { color: var(--text-muted); }
+
+        .password-input-container { position: relative; }
         .password-toggle {
             position: absolute;
             left: 16px;
@@ -516,17 +540,21 @@
             transform: translateY(-50%);
             background: none;
             border: none;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             cursor: pointer;
             font-size: 1rem;
             padding: 0.4rem;
+            transition: var(--transition);
         }
+        .password-toggle:hover { color: var(--text-primary); }
+
         .auth-divider {
             display: flex;
             align-items: center;
             gap: 1rem;
             margin: 1.5rem 0;
-            color: var(--text-secondary);
+            color: var(--text-muted);
+            font-size: 0.85rem;
         }
         .auth-divider::before, .auth-divider::after {
             content: '';
@@ -535,36 +563,47 @@
             background: var(--glass-border);
         }
 
-        /* ========== DASHBOARD STATS ========== */
+        /* ============================================================
+           DASHBOARD STATS - ANIMATED
+           ============================================================ */
         .stat-card {
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
             border-radius: var(--radius-sm);
-            padding: 1.5rem;
+            padding: 1.4rem 1rem;
             text-align: center;
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
         }
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(108,99,255,0.15);
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
         }
+        .stat-card:hover::after { transform: scaleX(1); }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(108,99,255,0.12); }
         .stat-number {
-            font-size: 2.6rem;
-            font-weight: 700;
+            font-size: 2.4rem;
+            font-weight: 900;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 0.2rem;
-        }
+        .stat-label { color: var(--text-secondary); font-size: 0.85rem; margin-top: 0.2rem; }
 
-        /* ========== COUNTDOWN ========== */
+        /* ============================================================
+           COUNTDOWN - GLOW
+           ============================================================ */
         .countdown-glow {
-            background: linear-gradient(135deg, rgba(108,99,255,0.15), rgba(0,212,255,0.1));
+            background: linear-gradient(135deg, rgba(108,99,255,0.10), rgba(0,212,255,0.06));
             border-radius: var(--radius-md);
             padding: 2rem;
             text-align: center;
@@ -573,85 +612,88 @@
         }
         .countdown-timer {
             font-family: 'Courier New', monospace;
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             font-weight: 700;
             color: var(--accent);
-            text-shadow: 0 0 30px rgba(0,212,255,0.3);
+            text-shadow: 0 0 40px rgba(0,212,255,0.2);
+            letter-spacing: 2px;
         }
 
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 992px) {
-            .main-wrapper.shifted {
-                margin-right: 0;
-            }
-            .sidebar {
-                width: 280px;
-                right: -280px;
-            }
-            .sidebar.open {
-                transform: translateX(-280px);
-            }
+        /* ============================================================
+           MOTIVATIONAL BANNER
+           ============================================================ */
+        .motivation-banner {
+            background: linear-gradient(135deg, rgba(108,99,255,0.12), rgba(255,107,157,0.08));
+            border-radius: var(--radius-md);
+            padding: 1.5rem 2rem;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
-        @media (max-width: 768px) {
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: 1fr;
-            }
-            .auth-box .glass-card {
-                padding: 2rem 1.5rem;
-            }
-            .section-title {
-                font-size: 1.8rem;
-            }
-            .sidebar {
-                width: 100%;
-                right: -100%;
-            }
-            .sidebar.open {
-                transform: translateX(-100%);
-            }
+        .motivation-banner .quote {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--text-secondary);
         }
+        .motivation-banner .quote i {
+            color: var(--gold);
+            margin: 0 0.3rem;
+        }
+        .motivation-banner .streak {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+        .motivation-banner .streak i { font-size: 1.4rem; }
 
-        /* ========== UTILITY ========== */
-        .text-center { text-align: center; }
-        .mt-2 { margin-top: 2rem; }
-        .mb-2 { margin-bottom: 2rem; }
-        .gap-1 { gap: 1rem; }
-        .flex-center { display: flex; align-items: center; justify-content: center; }
-        .flex-col { display: flex; flex-direction: column; }
-        .flex-wrap { display: flex; flex-wrap: wrap; gap: 0.8rem; }
-        .w-full { width: 100%; }
+        /* ============================================================
+           PROFILE PAGE
+           ============================================================ */
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--glass-border);
+            font-size: 0.95rem;
+        }
+        .info-item:last-child { border-bottom: none; }
+        .info-item span:first-child { color: var(--text-secondary); }
+        .info-item span:last-child { font-weight: 500; }
 
-        /* ========== MODAL ========== */
+        /* ============================================================
+           MODALS
+           ============================================================ */
         .modal {
             display: none;
             position: fixed;
             inset: 0;
             z-index: 2000;
             background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(12px);
             align-items: center;
             justify-content: center;
         }
-        .modal.show {
-            display: flex;
-        }
+        .modal.show { display: flex; }
         .modal-content {
-            background: var(--bg-end);
+            background: var(--bg-mid);
             border: 1px solid var(--glass-border);
             border-radius: var(--radius-md);
             padding: 2.5rem;
             max-width: 480px;
             width: 90%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
             backdrop-filter: blur(20px);
             animation: modalIn 0.3s ease;
         }
         @keyframes modalIn {
             from { opacity: 0; transform: scale(0.92) translateY(20px); }
             to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        .modal-content h2 {
-            margin-bottom: 1rem;
         }
         .modal-content .phone-number {
             font-size: 1.6rem;
@@ -662,7 +704,9 @@
             margin: 0.5rem 0;
         }
 
-        /* ========== TOAST ========== */
+        /* ============================================================
+           TOAST
+           ============================================================ */
         .toast-container {
             position: fixed;
             bottom: 30px;
@@ -673,13 +717,13 @@
             gap: 10px;
         }
         .toast {
-            padding: 1rem 1.6rem;
+            padding: 0.9rem 1.6rem;
             border-radius: 60px;
             color: white;
             font-weight: 500;
             box-shadow: 0 8px 30px rgba(0,0,0,0.4);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.08);
             display: flex;
             align-items: center;
             gap: 0.8rem;
@@ -695,28 +739,55 @@
             to { opacity: 1; transform: translateX(0); }
         }
 
-        /* ========== SCROLLBAR ========== */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-start); }
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 992px) {
+            .main-wrapper.shifted { margin-right: 0; }
+            .sidebar { width: 280px; right: -280px; }
+            .sidebar.open { transform: translateX(-280px); }
+        }
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .auth-box .glass-card { padding: 2rem 1.5rem; }
+            .section-title { font-size: 1.8rem; }
+            .sidebar { width: 100%; right: -100%; }
+            .sidebar.open { transform: translateX(-100%); }
+            .motivation-banner { flex-direction: column; text-align: center; }
+        }
+
+        .w-full { width: 100%; }
+        .text-center { text-align: center; }
+        .mt-2 { margin-top: 2rem; }
+        .mb-2 { margin-bottom: 2rem; }
+        .flex-center { display: flex; align-items: center; justify-content: center; }
+        .flex-col { display: flex; flex-direction: column; }
+        .flex-wrap { display: flex; flex-wrap: wrap; gap: 0.8rem; }
+        .gap-1 { gap: 1rem; }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
     </style>
 </head>
 <body>
 
-<!-- ========== STARFIELD ========== -->
+<!-- ====== STARFIELD ====== -->
 <div id="starfield"></div>
 
-<!-- ========== FLOATING PARTICLES ========== -->
-<div id="particles"></div>
+<!-- ====== ORBS ====== -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
 
-<!-- ========== TOP PROGRESS ========== -->
+<!-- ====== TOP PROGRESS ====== -->
 <div class="top-progress"><div class="top-progress-bar" id="topProgressBar"></div></div>
 
-<!-- ========== SIDEBAR OVERLAY ========== -->
+<!-- ====== SIDEBAR OVERLAY ====== -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<!-- ========== SIDEBAR ========== -->
+<!-- ====== SIDEBAR ====== -->
 <div class="sidebar" id="sidebar">
     <div class="sidebar-brand">
         <i class="fas fa-graduation-cap"></i>
@@ -736,30 +807,34 @@
             <div class="role" id="sidebarRole">طالب B2</div>
         </div>
     </div>
-    <button class="cloud-btn cloud-btn-accent w-full" id="sidebarThemeToggle" style="font-size:0.9rem;padding:0.7rem 1.2rem;">
+    <button class="cloud-btn cloud-btn-accent w-full" id="sidebarThemeToggle" style="font-size:0.85rem;padding:0.7rem 1.2rem;">
         <i class="fas fa-moon"></i> <span id="themeToggleText">الوضع الليلي</span>
     </button>
 </div>
 
-<!-- ========== SIDEBAR TOGGLE ========== -->
+<!-- ====== SIDEBAR TOGGLE ====== -->
 <button class="sidebar-toggle" id="sidebarToggle">
     <i class="fas fa-bars"></i>
 </button>
 
-<!-- ========== MAIN WRAPPER ========== -->
+<!-- ====== MAIN WRAPPER ====== -->
 <div class="main-wrapper" id="mainWrapper">
 
-    <!-- ====== TOAST CONTAINER ====== -->
+    <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- ============================================================ -->
-    <!-- ====== LOGIN PAGE ====== -->
+    <!-- ========================================================== -->
+    <!-- LOGIN PAGE -->
+    <!-- ========================================================== -->
     <div id="loginPage" class="page active">
         <div class="auth-container">
             <div class="auth-box">
                 <div class="glass-card">
-                    <h1 class="gradient-text">B2 Deutsch Training</h1>
-                    <p id="loginSubtitle">سجّل دخولك للبدء في التدريب</p>
+                    <div style="text-align:center;margin-bottom:1rem;">
+                        <i class="fas fa-graduation-cap" style="font-size:3.5rem;color:var(--accent);filter:drop-shadow(0 0 30px rgba(0,212,255,0.2));"></i>
+                    </div>
+                    <h1 class="gradient-text text-center" style="font-size:2.2rem;">B2 Deutsch Training</h1>
+                    <p class="text-center sub" id="loginSubtitle">سجّل دخولك لبدء رحلة التعلم 🚀</p>
                     <div class="flex-col gap-1">
                         <input type="email" class="form-input" id="emailInput" placeholder="البريد الإلكتروني">
                         <div class="password-input-container">
@@ -771,7 +846,7 @@
                         </button>
                     </div>
                     <div class="text-center mt-2">
-                        <a id="forgotPasswordLink" style="color:var(--accent);cursor:pointer;text-decoration:none;font-size:0.9rem;">
+                        <a id="forgotPasswordLink" style="color:var(--accent);cursor:pointer;text-decoration:none;font-size:0.9rem;transition:var(--transition);">
                             <i class="fas fa-key"></i> نسيت كلمة المرور؟
                         </a>
                     </div>
@@ -780,22 +855,32 @@
                         <i class="fas fa-user-plus"></i> إنشاء حساب جديد
                     </button>
                     <div class="mt-2">
-                        <button class="cloud-btn w-full" id="subscriptionActivation" style="background:linear-gradient(135deg,#FFD700,#FFA000);color:#1A1F35;">
+                        <button class="cloud-btn cloud-btn-gold w-full" id="subscriptionActivation">
                             <i class="fas fa-crown"></i> تفعيل الاشتراك المميز
                         </button>
+                    </div>
+                    <!-- Motivation snippet -->
+                    <div style="margin-top:1.5rem;padding:1rem;background:var(--glass-bg);border-radius:var(--radius-sm);text-align:center;border:1px solid var(--glass-border);">
+                        <span style="color:var(--text-secondary);font-size:0.85rem;">
+                            <i class="fas fa-quote-right" style="color:var(--gold);"></i> 
+                            "Die Grenzen meiner Sprache bedeuten die Grenzen meiner Welt."
+                            <i class="fas fa-quote-left" style="color:var(--gold);"></i>
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ====== SIGNUP PAGE ====== -->
+    <!-- ========================================================== -->
+    <!-- SIGNUP PAGE -->
+    <!-- ========================================================== -->
     <div id="signupPage" class="page">
         <div class="auth-container">
             <div class="auth-box">
                 <div class="glass-card">
-                    <h1 class="gradient-text">إنشاء حساب جديد</h1>
-                    <p id="signupSubtitle">املأ المعلومات التالية</p>
+                    <h1 class="gradient-text text-center">🚀 إنشاء حساب</h1>
+                    <p class="text-center sub" id="signupSubtitle">ابدأ رحلتك نحو B2 Deutsch</p>
                     <div class="flex-col gap-1">
                         <input type="text" class="form-input" id="signupName" placeholder="الاسم الكامل">
                         <input type="email" class="form-input" id="signupEmail" placeholder="البريد الإلكتروني">
@@ -812,7 +897,7 @@
                             <i class="fas fa-user-plus"></i> إنشاء الحساب
                         </button>
                     </div>
-                    <div class="auth-divider"><span>أو</span></div>
+                    <div class="auth-divider"><span>لديك حساب؟</span></div>
                     <button class="cloud-btn cloud-btn-primary w-full" id="backToLoginFromSignup">
                         <i class="fas fa-arrow-right"></i> العودة لتسجيل الدخول
                     </button>
@@ -821,15 +906,17 @@
         </div>
     </div>
 
-    <!-- ====== WAITING PAGE ====== -->
+    <!-- ========================================================== -->
+    <!-- WAITING PAGE -->
+    <!-- ========================================================== -->
     <div id="waitingPage" class="page">
         <div class="auth-container">
             <div class="auth-box">
                 <div class="glass-card text-center">
                     <div style="font-size:4rem;margin-bottom:1rem;">⏳</div>
-                    <h1 class="gradient-text">بانتظار مراجعة طلبك</h1>
-                    <p id="waitingText" style="color:var(--text-secondary);">تم استقبال طلب التسجيل. نعمل على مراجعته.</p>
-                    <p style="color:var(--text-secondary);font-size:0.9rem;">سيتم إبلاغك بالنتيجة قريباً.</p>
+                    <h1 class="gradient-text">بانتظار المراجعة</h1>
+                    <p style="color:var(--text-secondary);">تم استقبال طلبك، نعمل على مراجعته.</p>
+                    <p style="color:var(--text-muted);font-size:0.9rem;">سيتم إبلاغك قريباً عبر البريد الإلكتروني.</p>
                     <button class="cloud-btn w-full" id="whatsappButton" style="background:linear-gradient(135deg,#25D366,#128C7E);color:white;border:none;">
                         <i class="fab fa-whatsapp"></i> التواصل عبر واتساب
                     </button>
@@ -841,185 +928,210 @@
         </div>
     </div>
 
-    <!-- ====== MENU PAGE ====== -->
+    <!-- ========================================================== -->
+    <!-- MENU PAGE (DASHBOARD) -->
+    <!-- ========================================================== -->
     <div id="menuPage" class="page">
-        <div class="text-center mb-2">
-            <h1 class="gradient-text section-title typing-wrapper" id="menuTitle">B2 Deutsch Training Portal</h1>
-            <p class="section-subtitle" id="menuSubtitle">اختر مجال تعلمك وابدأ التحضير للاختبار</p>
+        <!-- Motivation Banner -->
+        <div class="motivation-banner mb-2">
+            <div class="quote">
+                <i class="fas fa-quote-right"></i>
+                <span id="dailyQuote">"Jeder Tag ist eine neue Chance, Deutsch zu lernen."</span>
+                <i class="fas fa-quote-left"></i>
+            </div>
+            <div class="streak">
+                <i class="fas fa-fire"></i>
+                <span>أيام التعلم: <strong id="streakDays">7</strong></span>
+            </div>
         </div>
+
+        <div class="text-center mb-2">
+            <h1 class="gradient-text section-title typing-wrapper" id="menuTitle">مرحباً بك في B2 Deutsch</h1>
+            <p class="section-subtitle" id="menuSubtitle">اختر مسارك وابدأ التحضير للامتحان</p>
+        </div>
+
+        <!-- Main Cards -->
         <div class="grid-2">
             <div class="card-3d" id="kursCard">
                 <div class="icon"><i class="fas fa-book-open"></i></div>
                 <h3 id="kursTitle">KURS</h3>
-                <p id="kursDescription">الدروس التفاعلية والتدريبات المصنفة حسب المستوى</p>
+                <p id="kursDescription">دروس تفاعلية وتدريبات مصنفة</p>
             </div>
             <div class="card-3d" id="examsCard">
                 <div class="icon"><i class="fas fa-file-alt"></i></div>
                 <h3 id="examsTitle">Prüfungen</h3>
-                <p id="examsDescription">اختبر معرفتك مع تحضيراتنا الشاملة للامتحانات</p>
+                <p id="examsDescription">امتحانات شاملة ومحاكاة واقعية</p>
             </div>
         </div>
-        <!-- Dashboard Stats -->
-        <div class="grid-4 mt-2" id="dashboardStats">
-            <div class="stat-card"><div class="stat-number" id="statPoints">150</div><div class="stat-label">النقاط</div></div>
-            <div class="stat-card"><div class="stat-number" id="statCompleted">8/20</div><div class="stat-label">الامتحانات المكتملة</div></div>
-            <div class="stat-card"><div class="stat-number" id="statProgress">65%</div><div class="stat-label">مستوى التقدم</div></div>
-            <div class="stat-card"><div class="stat-number" id="statLevel">B2</div><div class="stat-label">المستوى</div></div>
+
+        <!-- Stats -->
+        <div class="grid-4 mt-2">
+            <div class="stat-card"><div class="stat-number" id="statPoints">0</div><div class="stat-label">⭐ النقاط</div></div>
+            <div class="stat-card"><div class="stat-number" id="statCompleted">0/20</div><div class="stat-label">📝 امتحانات مكتملة</div></div>
+            <div class="stat-card"><div class="stat-number" id="statProgress">0%</div><div class="stat-label">📈 التقدم</div></div>
+            <div class="stat-card"><div class="stat-number" id="statLevel">B2</div><div class="stat-label">🎯 المستوى</div></div>
         </div>
+
+        <!-- Countdown -->
         <div class="countdown-glow mt-2">
-            <h3 style="color:var(--text-secondary);font-weight:400;font-size:1rem;">الوقت المتبقي حتى الامتحان</h3>
+            <h3 style="color:var(--text-secondary);font-weight:400;font-size:1rem;">⏰ الوقت المتبقي حتى الامتحان</h3>
             <div class="countdown-timer" id="examCountdown">30 يوم 00:00:00</div>
+        </div>
+
+        <!-- Quick Tip -->
+        <div style="margin-top:1.5rem;padding:1rem 1.5rem;background:var(--glass-bg);border-radius:var(--radius-sm);border:1px solid var(--glass-border);text-align:center;">
+            <span style="color:var(--text-secondary);font-size:0.9rem;">
+                💡 <span id="quickTip">"خصص 30 دقيقة يومياً للاستماع إلى الألمانية."</span>
+            </span>
         </div>
     </div>
 
-    <!-- ====== KURS PAGE ====== -->
+    <!-- ========================================================== -->
+    <!-- KURS PAGE -->
+    <!-- ========================================================== -->
     <div id="kursPage" class="page">
         <div class="text-center mb-2">
-            <h1 class="gradient-text section-title">KURS - الدروس</h1>
+            <h1 class="gradient-text section-title">📘 KURS - الدروس</h1>
             <p class="section-subtitle" id="kursPageSubtitle">اختر نوع التدريب الذي ترغب في البدء به</p>
         </div>
         <div class="grid-3">
-            <div class="card-3d" id="lesenCard"><div class="icon"><i class="fas fa-book"></i></div><h3 id="lesenTitle">Lesen</h3><p id="lesenDescription">تدريبات القراءة والفهم النصي</p></div>
-            <div class="card-3d" id="hoerenCard"><div class="icon"><i class="fas fa-headphones"></i></div><h3 id="hoerenTitle">Hören</h3><p id="hoerenDescription">تدريبات الاستماع والفهم السمعي</p></div>
-            <div class="card-3d" id="schreibenCard"><div class="icon"><i class="fas fa-pen-fancy"></i></div><h3 id="schreibenTitle">Schreiben</h3><p id="schreibenDescription">تدريبات الكتابة والتعبير الكتابي</p></div>
-            <div class="card-3d" id="mundlichCard"><div class="icon"><i class="fas fa-comment-dots"></i></div><h3 id="mundlichTitle">Mündlich</h3><p id="mundlichDescription">تدريبات التحدث والتعبير الشفهي</p></div>
-            <div class="card-3d" id="pdfsCard"><div class="icon"><i class="fas fa-file-pdf"></i></div><h3 id="pdfsTitle">PDFs</h3><p id="pdfsDescription">المواد الدراسية بصيغة PDF للتحميل</p></div>
+            <div class="card-3d" id="lesenCard"><div class="icon"><i class="fas fa-book"></i></div><h3 id="lesenTitle">Lesen</h3><p id="lesenDescription">القراءة والفهم النصي</p></div>
+            <div class="card-3d" id="hoerenCard"><div class="icon"><i class="fas fa-headphones"></i></div><h3 id="hoerenTitle">Hören</h3><p id="hoerenDescription">الاستماع والفهم السمعي</p></div>
+            <div class="card-3d" id="schreibenCard"><div class="icon"><i class="fas fa-pen-fancy"></i></div><h3 id="schreibenTitle">Schreiben</h3><p id="schreibenDescription">الكتابة والتعبير الكتابي</p></div>
+            <div class="card-3d" id="mundlichCard"><div class="icon"><i class="fas fa-comment-dots"></i></div><h3 id="mundlichTitle">Mündlich</h3><p id="mundlichDescription">التحدث والتعبير الشفهي</p></div>
+            <div class="card-3d" id="pdfsCard"><div class="icon"><i class="fas fa-file-pdf"></i></div><h3 id="pdfsTitle">PDFs</h3><p id="pdfsDescription">المواد الدراسية للتحميل</p></div>
         </div>
         <div class="text-center mt-2">
-            <button class="cloud-btn" id="backFromKurs"><i class="fas fa-arrow-right"></i> العودة للقائمة الرئيسية</button>
+            <button class="cloud-btn" id="backFromKurs"><i class="fas fa-arrow-right"></i> العودة للرئيسية</button>
         </div>
     </div>
 
-    <!-- ====== LESEN PAGE ====== -->
+    <!-- ========================================================== -->
+    <!-- LESEN PAGE -->
+    <!-- ========================================================== -->
     <div id="lesenPage" class="page">
-        <div class="text-center mb-2">
-            <h1 class="gradient-text section-title">Lesen - القراءة</h1>
-            <p class="section-subtitle">اختر تمرين القراءة</p>
-        </div>
+        <div class="text-center mb-2"><h1 class="gradient-text section-title">📖 Lesen - القراءة</h1><p class="section-subtitle">اختر تمرين القراءة</p></div>
         <div class="grid-3" id="lesenGrid"></div>
-        <div class="text-center mt-2">
-            <button class="cloud-btn" id="backFromLesen"><i class="fas fa-arrow-right"></i> العودة إلى KURS</button>
-        </div>
+        <div class="text-center mt-2"><button class="cloud-btn" id="backFromLesen"><i class="fas fa-arrow-right"></i> العودة إلى KURS</button></div>
     </div>
 
-    <!-- ====== HÖREN PAGE ====== -->
+    <!-- ========================================================== -->
+    <!-- HÖREN PAGE -->
+    <!-- ========================================================== -->
     <div id="hoerenPage" class="page">
-        <div class="text-center mb-2">
-            <h1 class="gradient-text section-title">Hören - الاستماع</h1>
-            <p class="section-subtitle">اختر تمرين الاستماع</p>
-        </div>
+        <div class="text-center mb-2"><h1 class="gradient-text section-title">🎧 Hören - الاستماع</h1><p class="section-subtitle">اختر تمرين الاستماع</p></div>
         <div class="grid-3" id="hoerenGrid"></div>
-        <div class="text-center mt-2">
-            <button class="cloud-btn" id="backFromHoeren"><i class="fas fa-arrow-right"></i> العودة إلى KURS</button>
-        </div>
+        <div class="text-center mt-2"><button class="cloud-btn" id="backFromHoeren"><i class="fas fa-arrow-right"></i> العودة إلى KURS</button></div>
     </div>
 
-    <!-- ====== SCHREIBEN PAGE ====== -->
+    <!-- ========================================================== -->
+    <!-- SCHREIBEN PAGE -->
+    <!-- ========================================================== -->
     <div id="schreibenPage" class="page">
-        <div class="text-center mb-2">
-            <h1 class="gradient-text section-title">Schreiben - الكتابة</h1>
-            <p class="section-subtitle">اختر تمرين الكتابة</p>
-        </div>
+        <div class="text-center mb-2"><h1 class="gradient-text section-title">✍️ Schreiben - الكتابة</h1><p class="section-subtitle">اختر تمرين الكتابة</p></div>
         <div class="grid-3" id="schreibenGrid"></div>
-        <div class="text-center mt-2">
-            <button class="cloud-btn" id="backFromSchreiben"><i class="fas fa-arrow-right"></i> العودة إلى KURS</button>
-        </div>
+        <div class="text-center mt-2"><button class="cloud-btn" id="backFromSchreiben"><i class="fas fa-arrow-right"></i> العودة إلى KURS</button></div>
     </div>
 
-    <!-- ====== MÜNDLICH PAGE ====== -->
+    <!-- ========================================================== -->
+    <!-- MÜNDLICH PAGE -->
+    <!-- ========================================================== -->
     <div id="mundlichPage" class="page">
-        <div class="text-center mb-2">
-            <h1 class="gradient-text section-title">Mündlich - التحدث</h1>
-            <p class="section-subtitle">اختر تمرين التحدث</p>
-        </div>
+        <div class="text-center mb-2"><h1 class="gradient-text section-title">🗣️ Mündlich - التحدث</h1><p class="section-subtitle">اختر تمرين التحدث</p></div>
         <div class="grid-3">
-            <div class="card-3d" id="teil1Card"><div class="icon">1️⃣</div><h3 id="teil1Title">Teil 1</h3><p id="teil1Description">تدريبات التحدث الجزء الأول</p></div>
-            <div class="card-3d" id="teil2Card"><div class="icon">2️⃣</div><h3 id="teil2Title">Teil 2</h3><p id="teil2Description">تدريبات التحدث الجزء الثاني</p></div>
-            <div class="card-3d" id="teil3Card"><div class="icon">3️⃣</div><h3 id="teil3Title">Teil 3</h3><p id="teil3Description">تدريبات التحدث الجزء الثالث</p></div>
+            <div class="card-3d" id="teil1Card"><div class="icon">1️⃣</div><h3 id="teil1Title">Teil 1</h3><p id="teil1Description">التحدث الجزء الأول</p></div>
+            <div class="card-3d" id="teil2Card"><div class="icon">2️⃣</div><h3 id="teil2Title">Teil 2</h3><p id="teil2Description">التحدث الجزء الثاني</p></div>
+            <div class="card-3d" id="teil3Card"><div class="icon">3️⃣</div><h3 id="teil3Title">Teil 3</h3><p id="teil3Description">التحدث الجزء الثالث</p></div>
         </div>
-        <div class="text-center mt-2">
-            <button class="cloud-btn" id="backFromMundlich"><i class="fas fa-arrow-right"></i> العودة إلى KURS</button>
-        </div>
+        <div class="text-center mt-2"><button class="cloud-btn" id="backFromMundlich"><i class="fas fa-arrow-right"></i> العودة إلى KURS</button></div>
     </div>
 
-    <!-- ====== PDFS PAGE ====== -->
+    <!-- ========================================================== -->
+    <!-- PDFS PAGE -->
+    <!-- ========================================================== -->
     <div id="pdfsPage" class="page">
-        <div class="text-center mb-2">
-            <h1 class="gradient-text section-title">PDFs - المواد الدراسية</h1>
-            <p class="section-subtitle">اختر المادة للتحميل</p>
-        </div>
+        <div class="text-center mb-2"><h1 class="gradient-text section-title">📄 PDFs - المواد</h1><p class="section-subtitle">اختر المادة للتحميل</p></div>
         <div class="grid-3" id="pdfsGrid"></div>
-        <div class="text-center mt-2">
-            <button class="cloud-btn" id="backFromPdfs"><i class="fas fa-arrow-right"></i> العودة إلى KURS</button>
-        </div>
+        <div class="text-center mt-2"><button class="cloud-btn" id="backFromPdfs"><i class="fas fa-arrow-right"></i> العودة إلى KURS</button></div>
     </div>
 
-    <!-- ====== EXAMS PAGE ====== -->
+    <!-- ========================================================== -->
+    <!-- EXAMS PAGE -->
+    <!-- ========================================================== -->
     <div id="examsPage" class="page">
-        <div class="text-center mb-2">
-            <h1 class="gradient-text section-title">Prüfungen - الامتحانات</h1>
-            <p class="section-subtitle">اختر نوع الامتحانات</p>
-        </div>
+        <div class="text-center mb-2"><h1 class="gradient-text section-title">📚 Prüfungen - الامتحانات</h1><p class="section-subtitle">اختر نوع الامتحانات</p></div>
         <div class="grid-2">
-            <div class="card-3d" id="komplettePrüfungenCard"><div class="icon"><i class="fas fa-file-signature"></i></div><h3>Komplette Prüfungen</h3><p>الامتحانات الكاملة كما هي</p></div>
-            <div class="card-3d" id="prüfungsteileCard"><div class="icon"><i class="fas fa-puzzle-piece"></i></div><h3>Prüfungsteile</h3><p>أجزاء الامتحانات مقسمة حسب الأجزاء</p></div>
+            <div class="card-3d" id="komplettePrüfungenCard"><div class="icon"><i class="fas fa-file-signature"></i></div><h3>Komplette Prüfungen</h3><p>الامتحانات الكاملة</p></div>
+            <div class="card-3d" id="prüfungsteileCard"><div class="icon"><i class="fas fa-puzzle-piece"></i></div><h3>Prüfungsteile</h3><p>أجزاء الامتحانات</p></div>
         </div>
-        <div class="text-center mt-2">
-            <button class="cloud-btn" id="backFromExams"><i class="fas fa-arrow-right"></i> العودة للقائمة الرئيسية</button>
-        </div>
+        <div class="text-center mt-2"><button class="cloud-btn" id="backFromExams"><i class="fas fa-arrow-right"></i> العودة للرئيسية</button></div>
     </div>
 
-    <!-- ====== KOMPLETTE PRÜFUNGEN ====== -->
+    <!-- ========================================================== -->
+    <!-- KOMPLETTE PRÜFUNGEN -->
+    <!-- ========================================================== -->
     <div id="komplettePrüfungenPage" class="page">
-        <div class="text-center mb-2"><h1 class="gradient-text section-title">Komplette Prüfungen</h1><p class="section-subtitle">الامتحانات الكاملة</p></div>
+        <div class="text-center mb-2"><h1 class="gradient-text section-title">📋 Komplette Prüfungen</h1><p class="section-subtitle">الامتحانات الكاملة</p></div>
         <div class="grid-3" id="komplettePrüfungenGrid"></div>
         <div class="text-center mt-2"><button class="cloud-btn" id="backFromKomplette"><i class="fas fa-arrow-right"></i> العودة للامتحانات</button></div>
     </div>
 
-    <!-- ====== PRÜFUNGSTEILE ====== -->
+    <!-- ========================================================== -->
+    <!-- PRÜFUNGSTEILE -->
+    <!-- ========================================================== -->
     <div id="prüfungsteilePage" class="page">
-        <div class="text-center mb-2"><h1 class="gradient-text section-title">Prüfungsteile</h1><p class="section-subtitle">اختر الجزء للتدرب</p></div>
+        <div class="text-center mb-2"><h1 class="gradient-text section-title">🧩 Prüfungsteile</h1><p class="section-subtitle">اختر الجزء للتدرب</p></div>
         <div class="grid-3">
-            <div class="card-3d" id="lesenTeil1Card"><div class="icon">📖1️⃣</div><h3>Lesen Teil 1</h3><p>تمارين القراءة - الجزء الأول</p></div>
-            <div class="card-3d" id="lesenTeil2Card"><div class="icon">📖2️⃣</div><h3>Lesen Teil 2</h3><p>تمارين القراءة - الجزء الثاني</p></div>
-            <div class="card-3d" id="lesenTeil3Card"><div class="icon">📖3️⃣</div><h3>Lesen Teil 3</h3><p>تمارين القراءة - الجزء الثالث</p></div>
-            <div class="card-3d" id="sprachbausteineTeil1Card"><div class="icon">🧩1️⃣</div><h3>Sprachbausteine Teil 1</h3><p>تمارين تركيب الجمل - الأول</p></div>
-            <div class="card-3d" id="sprachbausteineTeil2Card"><div class="icon">🧩2️⃣</div><h3>Sprachbausteine Teil 2</h3><p>تمارين تركيب الجمل - الثاني</p></div>
-            <div class="card-3d" id="hoerenTeilCard"><div class="icon">🎧</div><h3>HOEREN</h3><p>تمارين الاستماع - الأجزاء الثلاثة</p></div>
+            <div class="card-3d" id="lesenTeil1Card"><div class="icon">📖1️⃣</div><h3>Lesen Teil 1</h3><p>القراءة - الأول</p></div>
+            <div class="card-3d" id="lesenTeil2Card"><div class="icon">📖2️⃣</div><h3>Lesen Teil 2</h3><p>القراءة - الثاني</p></div>
+            <div class="card-3d" id="lesenTeil3Card"><div class="icon">📖3️⃣</div><h3>Lesen Teil 3</h3><p>القراءة - الثالث</p></div>
+            <div class="card-3d" id="sprachbausteineTeil1Card"><div class="icon">🧩1️⃣</div><h3>Sprachbausteine T1</h3><p>تركيب الجمل - الأول</p></div>
+            <div class="card-3d" id="sprachbausteineTeil2Card"><div class="icon">🧩2️⃣</div><h3>Sprachbausteine T2</h3><p>تركيب الجمل - الثاني</p></div>
+            <div class="card-3d" id="hoerenTeilCard"><div class="icon">🎧</div><h3>HOEREN</h3><p>الاستماع - الأجزاء الثلاثة</p></div>
         </div>
         <div class="text-center mt-2"><button class="cloud-btn" id="backFromPrüfungsteile"><i class="fas fa-arrow-right"></i> العودة للامتحانات</button></div>
     </div>
 
-    <!-- ====== LESEN TEIL 1..3 ====== -->
+    <!-- ========================================================== -->
+    <!-- LESEN TEIL 1-3 -->
+    <!-- ========================================================== -->
     <div id="lesenTeil1Page" class="page"><div class="text-center mb-2"><h1 class="gradient-text section-title">Lesen Teil 1</h1></div><div class="grid-3" id="lesenTeil1Grid"></div><div class="text-center mt-2"><button class="cloud-btn" id="backFromLesenTeil1"><i class="fas fa-arrow-right"></i> العودة للامتحانات</button></div></div>
     <div id="lesenTeil2Page" class="page"><div class="text-center mb-2"><h1 class="gradient-text section-title">Lesen Teil 2</h1></div><div class="grid-3" id="lesenTeil2Grid"></div><div class="text-center mt-2"><button class="cloud-btn" id="backFromLesenTeil2"><i class="fas fa-arrow-right"></i> العودة للامتحانات</button></div></div>
     <div id="lesenTeil3Page" class="page"><div class="text-center mb-2"><h1 class="gradient-text section-title">Lesen Teil 3</h1></div><div class="grid-3" id="lesenTeil3Grid"></div><div class="text-center mt-2"><button class="cloud-btn" id="backFromLesenTeil3"><i class="fas fa-arrow-right"></i> العودة للامتحانات</button></div></div>
 
-    <!-- ====== SPRACHBAUSTEINE TEIL 1..2 ====== -->
+    <!-- ========================================================== -->
+    <!-- SPRACHBAUSTEINE TEIL 1-2 -->
+    <!-- ========================================================== -->
     <div id="sprachbausteineTeil1Page" class="page"><div class="text-center mb-2"><h1 class="gradient-text section-title">Sprachbausteine Teil 1</h1></div><div class="grid-3" id="sprachbausteineTeil1Grid"></div><div class="text-center mt-2"><button class="cloud-btn" id="backFromSprachbausteineTeil1"><i class="fas fa-arrow-right"></i> العودة للامتحانات</button></div></div>
     <div id="sprachbausteineTeil2Page" class="page"><div class="text-center mb-2"><h1 class="gradient-text section-title">Sprachbausteine Teil 2</h1></div><div class="grid-3" id="sprachbausteineTeil2Grid"></div><div class="text-center mt-2"><button class="cloud-btn" id="backFromSprachbausteineTeil2"><i class="fas fa-arrow-right"></i> العودة للامتحانات</button></div></div>
 
-    <!-- ====== HOEREN SUBMENU ====== -->
+    <!-- ========================================================== -->
+    <!-- HOEREN SUBMENU -->
+    <!-- ========================================================== -->
     <div id="hoerenSubmenuPage" class="page">
-        <div class="text-center mb-2"><h1 class="gradient-text section-title">HOEREN</h1><p class="section-subtitle">اختر الجزء</p></div>
+        <div class="text-center mb-2"><h1 class="gradient-text section-title">🎧 HOEREN</h1><p class="section-subtitle">اختر الجزء</p></div>
         <div class="grid-3">
-            <div class="card-3d" id="hoerenTeil1SubCard"><div class="icon">🎧1️⃣</div><h3>Teil 1</h3><p>تمارين الاستماع - الأول</p></div>
-            <div class="card-3d" id="hoerenTeil2SubCard"><div class="icon">🎧2️⃣</div><h3>Teil 2</h3><p>تمارين الاستماع - الثاني</p></div>
-            <div class="card-3d" id="hoerenTeil3SubCard"><div class="icon">🎧3️⃣</div><h3>Teil 3</h3><p>تمارين الاستماع - الثالث</p></div>
+            <div class="card-3d" id="hoerenTeil1SubCard"><div class="icon">🎧1️⃣</div><h3>Teil 1</h3><p>الاستماع - الأول</p></div>
+            <div class="card-3d" id="hoerenTeil2SubCard"><div class="icon">🎧2️⃣</div><h3>Teil 2</h3><p>الاستماع - الثاني</p></div>
+            <div class="card-3d" id="hoerenTeil3SubCard"><div class="icon">🎧3️⃣</div><h3>Teil 3</h3><p>الاستماع - الثالث</p></div>
         </div>
         <div class="text-center mt-2"><button class="cloud-btn" id="backFromHoerenSubmenu"><i class="fas fa-arrow-right"></i> العودة للامتحانات</button></div>
     </div>
 
-    <!-- ====== HOEREN TEIL 1..3 ====== -->
+    <!-- ========================================================== -->
+    <!-- HOEREN TEIL 1-3 -->
+    <!-- ========================================================== -->
     <div id="hoerenTeil1Page" class="page"><div class="text-center mb-2"><h1 class="gradient-text section-title">HOEREN Teil 1</h1></div><div class="grid-3" id="hoerenTeil1Grid"></div><div class="text-center mt-2"><button class="cloud-btn" id="backFromHoerenTeil1"><i class="fas fa-arrow-right"></i> العودة إلى HOEREN</button></div></div>
     <div id="hoerenTeil2Page" class="page"><div class="text-center mb-2"><h1 class="gradient-text section-title">HOEREN Teil 2</h1></div><div class="grid-3" id="hoerenTeil2Grid"></div><div class="text-center mt-2"><button class="cloud-btn" id="backFromHoerenTeil2"><i class="fas fa-arrow-right"></i> العودة إلى HOEREN</button></div></div>
     <div id="hoerenTeil3Page" class="page"><div class="text-center mb-2"><h1 class="gradient-text section-title">HOEREN Teil 3</h1></div><div class="grid-3" id="hoerenTeil3Grid"></div><div class="text-center mt-2"><button class="cloud-btn" id="backFromHoerenTeil3"><i class="fas fa-arrow-right"></i> العودة إلى HOEREN</button></div></div>
 
-    <!-- ====== PROFILE PAGE ====== -->
+    <!-- ========================================================== -->
+    <!-- PROFILE PAGE -->
+    <!-- ========================================================== -->
     <div id="profilePage" class="page">
         <div class="text-center mb-2">
-            <h1 class="gradient-text section-title">ملفي الشخصي</h1>
-            <p class="section-subtitle">إدارة بياناتك الشخصية وتتبع تقدمك</p>
+            <h1 class="gradient-text section-title">👤 ملفي الشخصي</h1>
+            <p class="section-subtitle">إدارة بياناتك وتتبع تقدمك</p>
         </div>
         <div class="glass-card">
             <div class="flex-center gap-1" style="flex-wrap:wrap;">
@@ -1031,25 +1143,27 @@
             </div>
             <div class="mt-2 flex-center">
                 <label class="cloud-btn" style="font-size:0.85rem;padding:0.5rem 1.2rem;cursor:pointer;">
-                    <i class="fas fa-camera"></i> اختيار صورة
+                    <i class="fas fa-camera"></i> تغيير الصورة
                     <input type="file" id="imageUpload" accept="image/*" style="display:none;">
                 </label>
             </div>
             <div class="grid-2 mt-2">
-                <div class="stat-card"><h3 style="color:var(--text-secondary);font-size:1rem;margin-bottom:0.8rem;">المعلومات الشخصية</h3>
-                    <div class="info-item" style="display:flex;justify-content:space-between;padding:0.3rem 0;border-bottom:1px solid var(--glass-border);"><span>الاسم:</span><span id="profileName" dir="rtl">مستخدم</span></div>
-                    <div class="info-item" style="display:flex;justify-content:space-between;padding:0.3rem 0;border-bottom:1px solid var(--glass-border);"><span>البريد:</span><span id="profileEmail" dir="ltr">user@example.com</span></div>
-                    <div class="info-item" style="display:flex;justify-content:space-between;padding:0.3rem 0;border-bottom:1px solid var(--glass-border);"><span>الهاتف:</span><span id="profilePhone" dir="ltr">+212 649-661976</span></div>
-                    <div class="info-item" style="display:flex;justify-content:space-between;padding:0.3rem 0;"><span>المكان:</span><span id="profileLocation" dir="rtl">المغرب</span></div>
+                <div class="stat-card">
+                    <h3 style="color:var(--text-secondary);font-size:1rem;margin-bottom:0.8rem;">📋 المعلومات الشخصية</h3>
+                    <div class="info-item"><span>الاسم</span><span id="profileName" dir="rtl">مستخدم</span></div>
+                    <div class="info-item"><span>البريد</span><span id="profileEmail" dir="ltr">user@example.com</span></div>
+                    <div class="info-item"><span>الهاتف</span><span id="profilePhone" dir="ltr">+212 649-661976</span></div>
+                    <div class="info-item"><span>المكان</span><span id="profileLocation" dir="rtl">المغرب</span></div>
                 </div>
-                <div class="stat-card"><h3 style="color:var(--text-secondary);font-size:1rem;margin-bottom:0.8rem;">معلومات الامتحان</h3>
-                    <div class="info-item" style="display:flex;justify-content:space-between;padding:0.3rem 0;border-bottom:1px solid var(--glass-border);"><span>تاريخ الامتحان:</span><span id="profileExamDate" dir="rtl">غير محدد</span></div>
-                    <div class="info-item" style="display:flex;justify-content:space-between;padding:0.3rem 0;border-bottom:1px solid var(--glass-border);"><span>مكان الامتحان:</span><span id="profileExamLocation" dir="rtl">غير محدد</span></div>
-                    <div class="info-item" style="display:flex;justify-content:space-between;padding:0.3rem 0;"><span>المستوى:</span><span id="profileLevel" dir="ltr">B2</span></div>
+                <div class="stat-card">
+                    <h3 style="color:var(--text-secondary);font-size:1rem;margin-bottom:0.8rem;">🎯 معلومات الامتحان</h3>
+                    <div class="info-item"><span>تاريخ الامتحان</span><span id="profileExamDate" dir="rtl">غير محدد</span></div>
+                    <div class="info-item"><span>مكان الامتحان</span><span id="profileExamLocation" dir="rtl">غير محدد</span></div>
+                    <div class="info-item"><span>المستوى</span><span id="profileLevel" dir="ltr">B2</span></div>
                 </div>
             </div>
             <div class="flex-wrap mt-2" style="justify-content:center;">
-                <button class="cloud-btn" id="editProfileBtn"><i class="fas fa-edit"></i> تعديل الملف</button>
+                <button class="cloud-btn" id="editProfileBtn"><i class="fas fa-edit"></i> تعديل</button>
                 <button class="cloud-btn" id="changePasswordBtn"><i class="fas fa-key"></i> تغيير كلمة المرور</button>
                 <button class="cloud-btn" id="logoutBtn" style="background:linear-gradient(135deg,#FF1744,#D50000);color:white;border:none;"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
             </div>
@@ -1058,11 +1172,14 @@
 
 </div><!-- end main-wrapper -->
 
-<!-- ========== MODALS ========== -->
+<!-- ========================================================== -->
+<!-- MODALS -->
+<!-- ========================================================== -->
+
 <!-- Phone Modal -->
 <div class="modal" id="phoneModal">
     <div class="modal-content text-center">
-        <h2 class="gradient-text">تفعيل الاشتراك المميز</h2>
+        <h2 class="gradient-text">👑 تفعيل الاشتراك المميز</h2>
         <p style="color:var(--text-secondary);">للتفعيل وإكمال الدفع، تواصل عبر واتساب:</p>
         <div class="phone-number">+212 649-661976</div>
         <button class="cloud-btn w-full" id="whatsappActivationBtn" style="background:linear-gradient(135deg,#25D366,#128C7E);color:white;border:none;">
@@ -1075,11 +1192,11 @@
 <!-- Forgot Modal -->
 <div class="modal" id="forgotModal">
     <div class="modal-content text-center">
-        <h2 class="gradient-text">نسيت كلمة المرور</h2>
+        <h2 class="gradient-text">🔑 نسيت كلمة المرور</h2>
         <p style="color:var(--text-secondary);">أدخل بريدك الإلكتروني وسيتم إرسال طلب للمسؤول</p>
         <input type="email" class="form-input" id="forgotEmail" placeholder="البريد الإلكتروني">
         <button class="cloud-btn w-full mt-2" id="forgotWhatsappBtn" style="background:linear-gradient(135deg,#25D366,#128C7E);color:white;border:none;">
-            <i class="fab fa-whatsapp"></i> إرسال الطلب عبر واتساب
+            <i class="fab fa-whatsapp"></i> إرسال الطلب
         </button>
         <button class="cloud-btn w-full mt-2" id="closeForgotModal" style="border-color:var(--glass-border);">إلغاء</button>
     </div>
@@ -1088,7 +1205,7 @@
 <!-- Support Modal -->
 <div class="modal" id="supportModal">
     <div class="modal-content text-center">
-        <h2 class="gradient-text">اتصال الدعم</h2>
+        <h2 class="gradient-text">💬 الدعم الفني</h2>
         <p style="color:var(--text-secondary);">للأسئلة أو المشاكل أو للشراء:</p>
         <div style="margin:1.5rem 0;">
             <div style="display:flex;align-items:center;justify-content:center;gap:0.8rem;padding:0.5rem;"><i class="fas fa-phone" style="color:var(--accent);"></i><span class="phone-number" style="font-size:1.2rem;">+212 649-661976</span></div>
@@ -1101,7 +1218,7 @@
 <!-- Edit Profile Modal -->
 <div class="modal" id="editModal">
     <div class="modal-content">
-        <h2 class="gradient-text text-center">تعديل الملف الشخصي</h2>
+        <h2 class="gradient-text text-center">✏️ تعديل الملف الشخصي</h2>
         <div class="flex-col gap-1 mt-2">
             <input type="text" class="form-input" id="editName" placeholder="الاسم">
             <input type="email" class="form-input" id="editEmail" placeholder="البريد الإلكتروني">
@@ -1110,11 +1227,16 @@
             <input type="date" class="form-input" id="editExamDate" style="color-scheme:dark;">
             <select class="form-input" id="editExamLocation" style="appearance:auto;">
                 <option value="">اختر مدينة الامتحان</option>
-                <option value="فاس">فاس — Fès</option><option value="القنيطرة">القنيطرة — Kénitra</option>
-                <option value="الرباط">الرباط — Rabat</option><option value="مراكش">مراكش — Marrakech</option>
-                <option value="الدار البيضاء">الدار البيضاء — Casablanca</option><option value="طنجة">طنجة — Tanger</option>
-                <option value="بني ملال">بني ملال — Béni Mellal</option><option value="الناظور">الناظور — Nador</option>
-                <option value="أكادير">أكادير — Agadir</option><option value="غير محدد">غير محدد</option>
+                <option value="فاس">فاس — Fès</option>
+                <option value="القنيطرة">القنيطرة — Kénitra</option>
+                <option value="الرباط">الرباط — Rabat</option>
+                <option value="مراكش">مراكش — Marrakech</option>
+                <option value="الدار البيضاء">الدار البيضاء — Casablanca</option>
+                <option value="طنجة">طنجة — Tanger</option>
+                <option value="بني ملال">بني ملال — Béni Mellal</option>
+                <option value="الناظور">الناظور — Nador</option>
+                <option value="أكادير">أكادير — Agadir</option>
+                <option value="غير محدد">غير محدد</option>
             </select>
         </div>
         <div class="flex-wrap mt-2" style="justify-content:center;">
@@ -1125,6 +1247,9 @@
     </div>
 </div>
 
+<!-- ========================================================== -->
+<!-- JAVASCRIPT -->
+<!-- ========================================================== -->
 <script type="module">
     // ============================================================
     // SUPABASE CONFIG
@@ -1141,269 +1266,251 @@
     const deviceId = getDeviceId();
 
     // ============================================================
-    // DATA (same as original)
+    // DATA (same as original - all files/links preserved)
     // ============================================================
     const komplettePrüfungenExams = [
-        "ALBI2A.html", "ALPEN.html", "BATATA.html", "BILDER.html", "BINZIL.html",
-        "GRUND SCHULE.html", "HACHARAT.html", "KELLNER.html", "L9AHWA.html", "LHALWA.html",
-        "LI9A7.html", "LICHT.html", "LIMON.html", "MOBARMIJIN.html", "NA7L.html",
-        "NAMSA.html", "SCHLAFZUG.html", "SPORT IST GESUND.html", "TANZKURZ.html", "TRANPOLIN.html",
-        "INSEL.html", "L2AL3AB.html", "KINDER HENDY.html", "DROGEN.html", "GELD.html", "ROSSIA.html", "SCHLAFZUG 1.html", "ALPEN 1.html"
+        "ALBI2A.html","ALPEN.html","BATATA.html","BILDER.html","BINZIL.html",
+        "GRUND SCHULE.html","HACHARAT.html","KELLNER.html","L9AHWA.html","LHALWA.html",
+        "LI9A7.html","LICHT.html","LIMON.html","MOBARMIJIN.html","NA7L.html",
+        "NAMSA.html","SCHLAFZUG.html","SPORT IST GESUND.html","TANZKURZ.html","TRANPOLIN.html",
+        "INSEL.html","L2AL3AB.html","KINDER HENDY.html","DROGEN.html","GELD.html","ROSSIA.html","SCHLAFZUG 1.html","ALPEN 1.html"
     ];
     const lesenExams = [
-        "AL3AB.html", "ALBI2A.html", "ALPEN.html", "BATATA.html", "BENZIL.html",
-        "BILDER.html", "GELD.html", "GRUNDSCHULE.html", "HACHARAT.html", "HATIF L2ATFAL.html",
-        "INSEL.html", "INTIKHABAT.html", "KELLNER.html", "L7ALWA.html", "L9AHWA.html",
-        "LI9A7.html", "LICHT.html", "LIMON.html", "MOBARMIJIN.html", "MOKHADIRAT.html",
-        "NA7L.html", "NAMSA.html", "SCHLAFZUG.html", "SPORT IST GESUND.html", "TANZKURS.html",
-        "TRAMPOLIN.html", "L2AL3AB.html", "KINDER HENDY.html", "DROGEN.html", "ROSSIA.html", "SCHLAFZUG 1.html", "ALPEN 1.html"
+        "AL3AB.html","ALBI2A.html","ALPEN.html","BATATA.html","BENZIL.html",
+        "BILDER.html","GELD.html","GRUNDSCHULE.html","HACHARAT.html","HATIF L2ATFAL.html",
+        "INSEL.html","INTIKHABAT.html","KELLNER.html","L7ALWA.html","L9AHWA.html",
+        "LI9A7.html","LICHT.html","LIMON.html","MOBARMIJIN.html","MOKHADIRAT.html",
+        "NA7L.html","NAMSA.html","SCHLAFZUG.html","SPORT IST GESUND.html","TANZKURS.html",
+        "TRAMPOLIN.html","L2AL3AB.html","KINDER HENDY.html","DROGEN.html","ROSSIA.html","SCHLAFZUG 1.html","ALPEN 1.html"
     ];
-    const hoerenExams = ["HOREN.html", "HOREN1.html"];
+    const hoerenExams = ["HOREN.html","HOREN1.html"];
     const schreibenExams = ["SCHREIBEN.html"];
     const pdfs = [
-        "ALBI2A.pdf", "AL3AB.pdf", "ALPEN.pdf", "BATATA.pdf", "BENZIL.pdf",
-        "BILDER.pdf", "GELD.pdf", "GRUNDSCHULE.pdf", "HACHARAT.pdf", "HATIF L2ATFAL.pdf",
-        "INSEL.pdf", "INTIKHABAT.pdf", "KELLNER.pdf", "L7ALWA.pdf", "L9AHWA.pdf",
-        "LI9A7.pdf", "LICHT.pdf", "LIMON.pdf", "MOBARMIJIN.pdf", "MOKHADIRAT.pdf",
-        "NA7L.pdf", "NAMSA.pdf", "SCHLAFZUG.pdf", "SPORT IST GESUND.pdf", "TANZKURZ.pdf",
-        "TRAMPOLINE.pdf", "horen.pdf", "horen1.pdf", "Schreiben.pdf", "L2AL3AB.pdf",
-        "KINDER HENDY.pdf", "DROGEN.pdf", "GELD.pdf", "teil1.pdf", "teil2.pdf", "teil3.pdf"
+        "ALBI2A.pdf","AL3AB.pdf","ALPEN.pdf","BATATA.pdf","BENZIL.pdf",
+        "BILDER.pdf","GELD.pdf","GRUNDSCHULE.pdf","HACHARAT.pdf","HATIF L2ATFAL.pdf",
+        "INSEL.pdf","INTIKHABAT.pdf","KELLNER.pdf","L7ALWA.pdf","L9AHWA.pdf",
+        "LI9A7.pdf","LICHT.pdf","LIMON.pdf","MOBARMIJIN.pdf","MOKHADIRAT.pdf",
+        "NA7L.pdf","NAMSA.pdf","SCHLAFZUG.pdf","SPORT IST GESUND.pdf","TANZKURZ.pdf",
+        "TRAMPOLINE.pdf","horen.pdf","horen1.pdf","Schreiben.pdf","L2AL3AB.pdf",
+        "KINDER HENDY.pdf","DROGEN.pdf","GELD.pdf","teil1.pdf","teil2.pdf","teil3.pdf"
     ];
-
     const lesenTeil1Items = [
-        { name: "UMWELT", translation: "البيئة", file: "ALBI2A.html" },
-        { name: "IMPFUNG", translation: "التطعيم", file: "GLI9A7.html" },
-        { name: "KINDER HANDY", translation: "هاتف الأطفال", file: "KINDER HINDY.html" },
-        { name: "DROGEN", translation: "المخدرات", file: "DROGEN.html" },
-        { name: "TANZKURS", translation: "دورة رقص", file: "TANZKURS.html" },
-        { name: "LIMONADE", translation: "ليمونادة", file: "LIMON.html" },
-        { name: "GRUND SCHULE", translation: "المدرسة الابتدائية", file: "GRUND SCHULE.html" },
-        { name: "INSEKTEN", translation: "الحشرات", file: "HACHARAT.html" },
-        { name: "ÖSTERREICH", translation: "النمسا", file: "NAMSA.html" },
-        { name: "KELLNER", translation: "النادل", file: "KELLNER.html" },
-        { name: "SPORT IST GESUND", translation: "الرياضة مفيدة للصحة", file: "SPORT IST GESUND.html" },
-        { name: "INSEL", translation: "جزيرة", file: "INSEL.html" },
-        { name: "ALPEN", translation: "جبال الألب", file: "ALPEN.html" },
-        { name: "KARTOFFEL", translation: "البطاطا", file: "BATATA.html" },
-        { name: "BILDER", translation: "الصور", file: "BILDER.html" },
-        { name: "SPIELE", translation: "ألعاب", file: "SPIELE.html" },
-        { name: "PROGRAMMIEREN", translation: "البرمجة", file: "MOBARMIJIN.html" },
-        { name: "TRAMPOLIN", translation: "ترامبولين", file: "TRNPOLIN.html" },
-        { name: "BENZIN", translation: "البنزين", file: "BENZIN.html" },
-        { name: "KAFFEE", translation: "القهوة", file: "KAFFE.html" },
-        { name: "BONBONS", translation: "الحلوى", file: "LHALWA.html" },
-        { name: "GELD", translation: "المال", file: "GELD.html" },
-        { name: "AUF DEM WEG", translation: "في الطريق", file: "AUF DEM WEG.html" },
-        { name: "SCHLAF ZUG", translation: "قطار النوم", file: "SCHLAF ZUG.html" },
-        { name: "KEINE ZEIT", translation: "لا وقت", file: "KEINE ZEIT.html" },
-        { name: "ALPEN 2", translation: "جبال الألب 2", file: "ALPEN 2.html" },
-        { name: "SCHLAF ZUG 2", translation: "قطار النوم 2", file: "SCHLAFZUG 2.html" },
-        { name: "LICHT NEU", translation: "ضوء جديد", file: "LICHT NEU.html" },
-        { name: "FARBEN", translation: "الألوان", file: "FARBEN.html" },
-        { name: "FISCHE", translation: "الأسماك", file: "FISCHE.html" },
-        { name: "KINDER UND SCHULE", translation: "الأطفال والمدارس", file: "KINDER UND SCHULE.html" },
-        { name: "BÄDER", translation: "الحمامات", file: "BAEDER.html" },
-        { name: "BABY TV", translation: "تلفزيون الرضاعة", file: "BABY TV.html" },
-        { name: "Frauen im Arbeitsmarkt", translation: "النساء في سوق العمل", file: "Frauen im Arbeitsmarkt.html" },
-        { name: "löwen", translation: "الأسد", file: "lowen.html" },
-        { name: "ROSSIA", translation: "روسيا", file: "ROSSIA.html" }
+        {name:"UMWELT",translation:"البيئة",file:"ALBI2A.html"},
+        {name:"IMPFUNG",translation:"التطعيم",file:"GLI9A7.html"},
+        {name:"KINDER HANDY",translation:"هاتف الأطفال",file:"KINDER HINDY.html"},
+        {name:"DROGEN",translation:"المخدرات",file:"DROGEN.html"},
+        {name:"TANZKURS",translation:"دورة رقص",file:"TANZKURS.html"},
+        {name:"LIMONADE",translation:"ليمونادة",file:"LIMON.html"},
+        {name:"GRUND SCHULE",translation:"المدرسة الابتدائية",file:"GRUND SCHULE.html"},
+        {name:"INSEKTEN",translation:"الحشرات",file:"HACHARAT.html"},
+        {name:"ÖSTERREICH",translation:"النمسا",file:"NAMSA.html"},
+        {name:"KELLNER",translation:"النادل",file:"KELLNER.html"},
+        {name:"SPORT IST GESUND",translation:"الرياضة مفيدة للصحة",file:"SPORT IST GESUND.html"},
+        {name:"INSEL",translation:"جزيرة",file:"INSEL.html"},
+        {name:"ALPEN",translation:"جبال الألب",file:"ALPEN.html"},
+        {name:"KARTOFFEL",translation:"البطاطا",file:"BATATA.html"},
+        {name:"BILDER",translation:"الصور",file:"BILDER.html"},
+        {name:"SPIELE",translation:"ألعاب",file:"SPIELE.html"},
+        {name:"PROGRAMMIEREN",translation:"البرمجة",file:"MOBARMIJIN.html"},
+        {name:"TRAMPOLIN",translation:"ترامبولين",file:"TRNPOLIN.html"},
+        {name:"BENZIN",translation:"البنزين",file:"BENZIN.html"},
+        {name:"KAFFEE",translation:"القهوة",file:"KAFFE.html"},
+        {name:"BONBONS",translation:"الحلوى",file:"LHALWA.html"},
+        {name:"GELD",translation:"المال",file:"GELD.html"},
+        {name:"AUF DEM WEG",translation:"في الطريق",file:"AUF DEM WEG.html"},
+        {name:"SCHLAF ZUG",translation:"قطار النوم",file:"SCHLAF ZUG.html"},
+        {name:"KEINE ZEIT",translation:"لا وقت",file:"KEINE ZEIT.html"},
+        {name:"ALPEN 2",translation:"جبال الألب 2",file:"ALPEN 2.html"},
+        {name:"SCHLAF ZUG 2",translation:"قطار النوم 2",file:"SCHLAFZUG 2.html"},
+        {name:"LICHT NEU",translation:"ضوء جديد",file:"LICHT NEU.html"},
+        {name:"FARBEN",translation:"الألوان",file:"FARBEN.html"},
+        {name:"FISCHE",translation:"الأسماك",file:"FISCHE.html"},
+        {name:"KINDER UND SCHULE",translation:"الأطفال والمدارس",file:"KINDER UND SCHULE.html"},
+        {name:"BÄDER",translation:"الحمامات",file:"BAEDER.html"},
+        {name:"BABY TV",translation:"تلفزيون الرضاعة",file:"BABY TV.html"},
+        {name:"Frauen im Arbeitsmarkt",translation:"النساء في سوق العمل",file:"Frauen im Arbeitsmarkt.html"},
+        {name:"löwen",translation:"الأسد",file:"lowen.html"},
+        {name:"ROSSIA",translation:"روسيا",file:"ROSSIA.html"}
     ];
     const lesenTeil2Items = [
-        { name: "Weniger Euro", translation: "يورو أقل", file: "Weniger Euro.html" },
-        { name: "Kellner", translation: "نادل", file: "Kellner.html" },
-        { name: "Die ganze Welt", translation: "العالم كله", file: "Die ganze Welt.html" },
-        { name: "Nachtzug", translation: "قطار ليلي", file: "Nachtzug.html" },
-        { name: "Brigitte Vollmer", translation: "بريغيت فولمر", file: "Brigitte Vollmer.html" },
-        { name: "Reitergruppe", translation: "مجموعة فرسان", file: "Reitergruppe.html" },
-        { name: "Dienstmädchen", translation: "خادمة", file: "Dienstmadchen.html" },
-        { name: "Gesundes essen", translation: "طعام صحي", file: "Gesundes essen.html" },
-        { name: "Mehrsprachige", translation: "متعدد اللغات", file: "Mehrsprachige.html" },
-        { name: "Karneval", translation: "كرنفال", file: "Karneval.html" },
-        { name: "Babys", translation: "أطفال رضع", file: "Babys.html" },
-        { name: "Familie", translation: "عائلة", file: "Familie.html" },
-        { name: "Grossraumburos", translation: "مكاتب مفتوحة", file: "Grossraumburos.html" },
-        { name: "Kaffe", translation: "قهوة", file: "Kaffe.html" },
-        { name: "Ernährung", translation: "تغذية", file: "Ernahrung.html" },
-        { name: "Krista", translation: "كريستا", file: "Krista.html" },
-        { name: "Kreditkarten", translation: "بطاقات ائتمان", file: "Kreditkarten.html" },
-        { name: "Verpackungen", translation: "تغليف", file: "Verpackungen.html" },
-        { name: "Gehirn", translation: "دماغ", file: "Gehirn.html" },
-        { name: "Millionäre", translation: "مليونيرات", file: "Millionare.html" },
-        { name: "Kaufentscheidungen", translation: "قرارات الشراء", file: "Kaufentscheidungen.html" },
-        { name: "Traumfrau", translation: "امرأة الأحلام", file: "Traumfrau.html" },
-        { name: "Parkuhren", translation: "عدادات المواقف", file: "Parkuhren.html" },
-        { name: "Österreich", translation: "النمسا", file: "Osterreich.html" },
-        { name: "Schaufensterpuppe", translation: "دمية عرض", file: "Schaufensterpuppe.html" },
-        { name: "Volkskrankheit Ruckenschmerz", translation: "مرض الشعب ألم الظهر", file: "Volkskrankheit Ruckenschmerz.html" }
+        {name:"Weniger Euro",translation:"يورو أقل",file:"Weniger Euro.html"},
+        {name:"Kellner",translation:"نادل",file:"Kellner.html"},
+        {name:"Die ganze Welt",translation:"العالم كله",file:"Die ganze Welt.html"},
+        {name:"Nachtzug",translation:"قطار ليلي",file:"Nachtzug.html"},
+        {name:"Brigitte Vollmer",translation:"بريغيت فولمر",file:"Brigitte Vollmer.html"},
+        {name:"Reitergruppe",translation:"مجموعة فرسان",file:"Reitergruppe.html"},
+        {name:"Dienstmädchen",translation:"خادمة",file:"Dienstmadchen.html"},
+        {name:"Gesundes essen",translation:"طعام صحي",file:"Gesundes essen.html"},
+        {name:"Mehrsprachige",translation:"متعدد اللغات",file:"Mehrsprachige.html"},
+        {name:"Karneval",translation:"كرنفال",file:"Karneval.html"},
+        {name:"Babys",translation:"أطفال رضع",file:"Babys.html"},
+        {name:"Familie",translation:"عائلة",file:"Familie.html"},
+        {name:"Grossraumburos",translation:"مكاتب مفتوحة",file:"Grossraumburos.html"},
+        {name:"Kaffe",translation:"قهوة",file:"Kaffe.html"},
+        {name:"Ernährung",translation:"تغذية",file:"Ernahrung.html"},
+        {name:"Krista",translation:"كريستا",file:"Krista.html"},
+        {name:"Kreditkarten",translation:"بطاقات ائتمان",file:"Kreditkarten.html"},
+        {name:"Verpackungen",translation:"تغليف",file:"Verpackungen.html"},
+        {name:"Gehirn",translation:"دماغ",file:"Gehirn.html"},
+        {name:"Millionäre",translation:"مليونيرات",file:"Millionare.html"},
+        {name:"Kaufentscheidungen",translation:"قرارات الشراء",file:"Kaufentscheidungen.html"},
+        {name:"Traumfrau",translation:"امرأة الأحلام",file:"Traumfrau.html"},
+        {name:"Parkuhren",translation:"عدادات المواقف",file:"Parkuhren.html"},
+        {name:"Österreich",translation:"النمسا",file:"Osterreich.html"},
+        {name:"Schaufensterpuppe",translation:"دمية عرض",file:"Schaufensterpuppe.html"},
+        {name:"Volkskrankheit Ruckenschmerz",translation:"مرض الشعب ألم الظهر",file:"Volkskrankheit Ruckenschmerz.html"}
     ];
     const lesenTeil3Items = [
-        { name: "ANWALT", translation: "محامٍ", file: "anwalt.html" },
-        { name: "APOTHEKER", translation: "صيدلي", file: "apotheker.html" },
-        { name: "AU-PAIR-MÄDCHEN", translation: "مربية أطفال", file: "au-pair-madchen.html" },
-        { name: "AUSFLUG", translation: "رحلة", file: "Ausflug.html" },
-        { name: "BONBONS", translation: "حلوى", file: "Bonbons.html" },
-        { name: "DER HUND", translation: "الكلب", file: "der hund.html" },
-        { name: "FERNSEHPROGRAMM", translation: "برنامج تلفزيوني", file: "Fernsehprogramm.html" },
-        { name: "GÄRTEN", translation: "حدائق", file: "garten.html" },
-        { name: "GRUNDSCHULE", translation: "مدرسة ابتدائية", file: "grundschule.html" },
-        { name: "HAUSHALT", translation: "أعمال منزلية", file: "haushalt.html" },
-        { name: "KEINE ZEIT", translation: "لا وقت", file: "keine zeit.html" },
-        { name: "KELLNER", translation: "نادل", file: "kellner.html" },
-        { name: "MUSIK", translation: "موسيقى", file: "musik.html" },
-        { name: "MUSIKINSTRUMENT", translation: "آلة موسيقية", file: "musikinstrument.html" },
-        { name: "SCHIFFREISE", translation: "رحلة بحرية", file: "schiffreise.html" },
-        { name: "SCHLAFZUG", translation: "قطار النوم", file: "schlafzug.html" },
-        { name: "SCHRÄNKE", translation: "خزائن", file: "Schranke.html" },
-        { name: "SCHWÄGERIN GESUND", translation: "أخت الزوج بصحة جيدة", file: "Schwagerin Gesund.html" },
-        { name: "SCHWÄGERIN", translation: "أخت الزوج", file: "schwagerin.html" },
-        { name: "SPORT IST GESUND", translation: "الرياضة مفيدة للصحة", file: "sport ist gesund.html" },
-        { name: "SPORT", translation: "رياضة", file: "sport.html" },
-        { name: "TIERDOKUMENTATIONEN", translation: "وثائقيات عن الحيوانات", file: "Tierdokumentationen.html" },
-        { name: "URLAUB", translation: "عطلة", file: "urlaub.html" },
-        { name: "WEIN UND INSEKTEN", translation: "النبيذ والحشرات", file: "wein und insekten.html" },
-        { name: "schränke", translation: "خزائن", file: "Schranke.html" },
-        { name: "schnelle wasserfahrzeuge", translation: "مركبات مائية سريعة", file: "schnelle wasserfahrzeuge.html" },
-        { name: "möbel", translation: "أثاث", file: "mobel.html" },
+        {name:"ANWALT",translation:"محامٍ",file:"anwalt.html"},
+        {name:"APOTHEKER",translation:"صيدلي",file:"apotheker.html"},
+        {name:"AU-PAIR-MÄDCHEN",translation:"مربية أطفال",file:"au-pair-madchen.html"},
+        {name:"AUSFLUG",translation:"رحلة",file:"Ausflug.html"},
+        {name:"BONBONS",translation:"حلوى",file:"Bonbons.html"},
+        {name:"DER HUND",translation:"الكلب",file:"der hund.html"},
+        {name:"FERNSEHPROGRAMM",translation:"برنامج تلفزيوني",file:"Fernsehprogramm.html"},
+        {name:"GÄRTEN",translation:"حدائق",file:"garten.html"},
+        {name:"GRUNDSCHULE",translation:"مدرسة ابتدائية",file:"grundschule.html"},
+        {name:"HAUSHALT",translation:"أعمال منزلية",file:"haushalt.html"},
+        {name:"KEINE ZEIT",translation:"لا وقت",file:"keine zeit.html"},
+        {name:"KELLNER",translation:"نادل",file:"kellner.html"},
+        {name:"MUSIK",translation:"موسيقى",file:"musik.html"},
+        {name:"MUSIKINSTRUMENT",translation:"آلة موسيقية",file:"musikinstrument.html"},
+        {name:"SCHIFFREISE",translation:"رحلة بحرية",file:"schiffreise.html"},
+        {name:"SCHLAFZUG",translation:"قطار النوم",file:"schlafzug.html"},
+        {name:"SCHRÄNKE",translation:"خزائن",file:"Schranke.html"},
+        {name:"SCHWÄGERIN GESUND",translation:"أخت الزوج بصحة جيدة",file:"Schwagerin Gesund.html"},
+        {name:"SCHWÄGERIN",translation:"أخت الزوج",file:"schwagerin.html"},
+        {name:"SPORT IST GESUND",translation:"الرياضة مفيدة للصحة",file:"sport ist gesund.html"},
+        {name:"SPORT",translation:"رياضة",file:"sport.html"},
+        {name:"TIERDOKUMENTATIONEN",translation:"وثائقيات عن الحيوانات",file:"Tierdokumentationen.html"},
+        {name:"URLAUB",translation:"عطلة",file:"urlaub.html"},
+        {name:"WEIN UND INSEKTEN",translation:"النبيذ والحشرات",file:"wein und insekten.html"},
+        {name:"schränke",translation:"خزائن",file:"Schranke.html"},
+        {name:"schnelle wasserfahrzeuge",translation:"مركبات مائية سريعة",file:"schnelle wasserfahrzeuge.html"},
+        {name:"möbel",translation:"أثاث",file:"mobel.html"},
     ];
     const sprachbausteineTeil1Items = [
-        { name: "Frau Szabo", translation: "السيدة سابو", file: "Frau Szabo.html" },
-        { name: "Andrea", translation: "أندريا", file: "Andrea.html" },
-        { name: "Autorinnen und Autoren", translation: "الكاتبات والكتاب", file: "Autorinnen und Autoren.html" },
-        { name: "Corinna", translation: "كورينا", file: "Corinna.html" },
-        { name: "Dr. Moosberger", translation: "الدكتور موسبرغر", file: "Dr. Moosberger.html" },
-        { name: "Ferdinand, Phillip, Christophe", translation: "فرديناند، فيليب، كريستوف", file: "Ferdinand, Phillip, Christophe.html" },
-        { name: "Frau Goronsksa", translation: "السيدة غورونسكا", file: "Frau Goronsksa.html" },
-        { name: "Geissler oder Dippold", translation: "غايسلر أو ديبولد", file: "Geissler oder Dippold.html" },
-        { name: "Herr Dr. Dobromil", translation: "الدكتور دوبرو ميل", file: "Herr Dr. Dobromil.html" },
-        { name: "herr Martini", translation: "السيد مارتيني", file: "herr Martini.html" },
-        { name: "Ida", translation: "إيدا", file: "Ida.html" },
-        { name: "Igor", translation: "إيغور", file: "Igor.html" },
-        { name: "Jens", translation: "ينس", file: "Jens.html" },
-        { name: "Judith oder Lina", translation: "يوديت أو لينا", file: "Judith oder Lina.html" },
-        { name: "Justus oder Juhannas", translation: "يوستوس أو يوهاناس", file: "Justus oder Juhannas.html" },
-        { name: "Liebe Agnieszka", translation: "عزيزتي أغنيشكا", file: "Liebe Agnieszka.html" },
-        { name: "Liebe Clara", translation: "عزيزتي كلارا", file: "Liebe Clara.html" },
-        { name: "Liebe Julian", translation: "عزيزي يوليان", file: "Liebe Julian.html" },
-        { name: "Liebe Jutta", translation: "عزيزتي يوتا", file: "Liebe Jutta.html" },
-        { name: "Liebe Karin", translation: "عزيزتي كارين", file: "Liebe Karin.html" },
-        { name: "Liebe Lara", translation: "عزيزتي لارا", file: "Liebe Lara.html" },
-        { name: "Liebe Leon", translation: "عزيزي ليون", file: "Liebe Leon.html" },
-        { name: "Liebe Maria, Lieber Timur", translation: "عزيزتي ماريا، عزيزي تيمور", file: "Liebe Maria, Lieber Timur.html" },
-        { name: "Liebe Meike", translation: "عزيزتي مايكة", file: "Liebe Meike.html" },
-        { name: "Liebe Paola", translation: "عزيزتي باولا", file: "Liebe Paola.html" },
-        { name: "Liebe Vanessa", translation: "عزيزتي فانيسا", file: "Liebe Vanessa.html" },
-        { name: "Lieber David", translation: "عزيزي ديفيد", file: "Lieber David.html" },
-        { name: "Lieber Thomas", translation: "عزيزي توماس", file: "Lieber Thomas.html" },
-        { name: "Lina & Florian", translation: "لينا وفلوريان", file: "Lina & Florian.html" },
-        { name: "Maria", translation: "ماريا", file: "Maria.html" }
+        {name:"Frau Szabo",translation:"السيدة سابو",file:"Frau Szabo.html"},
+        {name:"Andrea",translation:"أندريا",file:"Andrea.html"},
+        {name:"Autorinnen und Autoren",translation:"الكاتبات والكتاب",file:"Autorinnen und Autoren.html"},
+        {name:"Corinna",translation:"كورينا",file:"Corinna.html"},
+        {name:"Dr. Moosberger",translation:"الدكتور موسبرغر",file:"Dr. Moosberger.html"},
+        {name:"Ferdinand, Phillip, Christophe",translation:"فرديناند، فيليب، كريستوف",file:"Ferdinand, Phillip, Christophe.html"},
+        {name:"Frau Goronsksa",translation:"السيدة غورونسكا",file:"Frau Goronsksa.html"},
+        {name:"Geissler oder Dippold",translation:"غايسلر أو ديبولد",file:"Geissler oder Dippold.html"},
+        {name:"Herr Dr. Dobromil",translation:"الدكتور دوبرو ميل",file:"Herr Dr. Dobromil.html"},
+        {name:"herr Martini",translation:"السيد مارتيني",file:"herr Martini.html"},
+        {name:"Ida",translation:"إيدا",file:"Ida.html"},
+        {name:"Igor",translation:"إيغور",file:"Igor.html"},
+        {name:"Jens",translation:"ينس",file:"Jens.html"},
+        {name:"Judith oder Lina",translation:"يوديت أو لينا",file:"Judith oder Lina.html"},
+        {name:"Justus oder Juhannas",translation:"يوستوس أو يوهاناس",file:"Justus oder Juhannas.html"},
+        {name:"Liebe Agnieszka",translation:"عزيزتي أغنيشكا",file:"Liebe Agnieszka.html"},
+        {name:"Liebe Clara",translation:"عزيزتي كلارا",file:"Liebe Clara.html"},
+        {name:"Liebe Julian",translation:"عزيزي يوليان",file:"Liebe Julian.html"},
+        {name:"Liebe Jutta",translation:"عزيزتي يوتا",file:"Liebe Jutta.html"},
+        {name:"Liebe Karin",translation:"عزيزتي كارين",file:"Liebe Karin.html"},
+        {name:"Liebe Lara",translation:"عزيزتي لارا",file:"Liebe Lara.html"},
+        {name:"Liebe Leon",translation:"عزيزي ليون",file:"Liebe Leon.html"},
+        {name:"Liebe Maria, Lieber Timur",translation:"عزيزتي ماريا، عزيزي تيمور",file:"Liebe Maria, Lieber Timur.html"},
+        {name:"Liebe Meike",translation:"عزيزتي مايكة",file:"Liebe Meike.html"},
+        {name:"Liebe Paola",translation:"عزيزتي باولا",file:"Liebe Paola.html"},
+        {name:"Liebe Vanessa",translation:"عزيزتي فانيسا",file:"Liebe Vanessa.html"},
+        {name:"Lieber David",translation:"عزيزي ديفيد",file:"Lieber David.html"},
+        {name:"Lieber Thomas",translation:"عزيزي توماس",file:"Lieber Thomas.html"},
+        {name:"Lina & Florian",translation:"لينا وفلوريان",file:"Lina & Florian.html"},
+        {name:"Maria",translation:"ماريا",file:"Maria.html"}
     ];
     const sprachbausteineTeil2Items = [
-        { name: "Ausbildung", translation: "التكوين المهني", file: "Ausbildung.html" },
-        { name: "BIO", translation: "أحياء", file: "BIO.html" },
-        { name: "Braunbaren", translation: "الدببة البنية", file: "Braunbaren.html" },
-        { name: "Das Fahrrad", translation: "الدراجة", file: "Das Fahrrad.html" },
-        { name: "Der Hund", translation: "الكلب", file: "Der Hund.html" },
-        { name: "Deutschland", translation: "ألمانيا", file: "Deutschland.html" },
-        { name: "Erfolg", translation: "النجاح", file: "Erfolg.html" },
-        { name: "Fische", translation: "الأسماك", file: "Fische.html" },
-        { name: "Freund des Menschen", translation: "صديق الإنسان", file: "Freund des Menschen.html" },
-        { name: "Handschrift", translation: "خط اليد", file: "Handschrift.html" },
-        { name: "Haustieren", translation: "الحيوانات الأليفة", file: "Haustieren.html" },
-        { name: "Höflichkeit", translation: "اللباقة", file: "Hoflichkeit.html" },
-        { name: "Im Restaurant", translation: "في المطعم", file: "Im Restaurant.html" },
-        { name: "Joggen", translation: "الركض", file: "Joggen.html" },
-        { name: "Jugend diskutiert", translation: "الشباب يناقش", file: "Jugend diskutiert.html" },
-        { name: "Liebesgrüße aus der Kühltruhe", translation: "تحيات حب من المجمّد", file: "Liebesgruße aus der Kuhltruhe.html" },
-        { name: "Man kocht", translation: "الطبخ", file: "Man kocht.html" },
-        { name: "Manipulierte Bilder", translation: "صور معدلة", file: "Manipulierte Bilder.html" },
-        { name: "Massgeschneidert", translation: "مفصل حسب الطلب", file: "Massgeschneidert.html" },
-        { name: "Obst und Gemüse", translation: "فواكه وخضروات", file: "Obst und Gemuse.html" },
-        { name: "Online-Sprachkurse", translation: "دورات لغة أونلاين", file: "Online-Sprachkurse.html" },
-        { name: "Schonschrift", translation: "خط جميل", file: "Schonschrift.html" },
-        { name: "Schönschrift", translation: "الخط المنمق", file: "Schonschrift.html" },
-        { name: "Schulweg", translation: "طريق المدرسة", file: "Schulweg.html" },
-        { name: "Schwarzarbeit", translation: "العمل غير القانوني", file: "Schwarzarbeit.html" },
-        { name: "Skipiste", translation: "منحدر التزلج", file: "Skipiste.html" },
-        { name: "Theater für Kinder und Jugendliche", translation: "مسرح للأطفال والشباب", file: "Theater fur Kinder und Jugendliche.html" },
-        { name: "TV-Bilder", translation: "صور تلفزيونية", file: "TV-Bilder.html" }
+        {name:"Ausbildung",translation:"التكوين المهني",file:"Ausbildung.html"},
+        {name:"BIO",translation:"أحياء",file:"BIO.html"},
+        {name:"Braunbaren",translation:"الدببة البنية",file:"Braunbaren.html"},
+        {name:"Das Fahrrad",translation:"الدراجة",file:"Das Fahrrad.html"},
+        {name:"Der Hund",translation:"الكلب",file:"Der Hund.html"},
+        {name:"Deutschland",translation:"ألمانيا",file:"Deutschland.html"},
+        {name:"Erfolg",translation:"النجاح",file:"Erfolg.html"},
+        {name:"Fische",translation:"الأسماك",file:"Fische.html"},
+        {name:"Freund des Menschen",translation:"صديق الإنسان",file:"Freund des Menschen.html"},
+        {name:"Handschrift",translation:"خط اليد",file:"Handschrift.html"},
+        {name:"Haustieren",translation:"الحيوانات الأليفة",file:"Haustieren.html"},
+        {name:"Höflichkeit",translation:"اللباقة",file:"Hoflichkeit.html"},
+        {name:"Im Restaurant",translation:"في المطعم",file:"Im Restaurant.html"},
+        {name:"Joggen",translation:"الركض",file:"Joggen.html"},
+        {name:"Jugend diskutiert",translation:"الشباب يناقش",file:"Jugend diskutiert.html"},
+        {name:"Liebesgrüße aus der Kühltruhe",translation:"تحيات حب من المجمّد",file:"Liebesgruße aus der Kuhltruhe.html"},
+        {name:"Man kocht",translation:"الطبخ",file:"Man kocht.html"},
+        {name:"Manipulierte Bilder",translation:"صور معدلة",file:"Manipulierte Bilder.html"},
+        {name:"Massgeschneidert",translation:"مفصل حسب الطلب",file:"Massgeschneidert.html"},
+        {name:"Obst und Gemüse",translation:"فواكه وخضروات",file:"Obst und Gemuse.html"},
+        {name:"Online-Sprachkurse",translation:"دورات لغة أونلاين",file:"Online-Sprachkurse.html"},
+        {name:"Schonschrift",translation:"خط جميل",file:"Schonschrift.html"},
+        {name:"Schönschrift",translation:"الخط المنمق",file:"Schonschrift.html"},
+        {name:"Schulweg",translation:"طريق المدرسة",file:"Schulweg.html"},
+        {name:"Schwarzarbeit",translation:"العمل غير القانوني",file:"Schwarzarbeit.html"},
+        {name:"Skipiste",translation:"منحدر التزلج",file:"Skipiste.html"},
+        {name:"Theater für Kinder und Jugendliche",translation:"مسرح للأطفال والشباب",file:"Theater fur Kinder und Jugendliche.html"},
+        {name:"TV-Bilder",translation:"صور تلفزيونية",file:"TV-Bilder.html"}
     ];
     const hoerenTeil1Items = [
-        "Lufthansa", "Erdbeben", "Bierkonsum", "Schiff", "Vögel", "In der Europaischen",
-        "Wetter", "Nicht sicher", "Die Stadt Friedrichsberg", "Frau Jürgens", "Die Wahlbeteiligung",
-        "In den Alpen", "In den Alpen - المعدل", "Insel Bali", "Die Fluggesellschaft", "Der Bau",
-        "50-Euro", "Das Schladminger", "Europawahlen CSU", "Bei den Europawahlen", "Die Piloten der Lufthansa",
-        "Unwetterschäden", "Es ist unklar", "Vier Tage pro Woche", "Die 50 Euro", "Die Bundesländer",
-        "Ein Treffen bei der Integrationsbeauftragten", "BILD AM SONNTAG", "Studentenparty in Frankreich",
-        "Deutsches Filmmuseum", "Die Zahl der Arbeitslosen", "Die Konjunkturentwicklung negativ",
-        "Internationale Konferenz", "Um Tickets zu gewinnen", "Die tschechische Stadt Pilsen",
-        "Laut Statistischem Bundesamt", "In Frankfurt haben Manager", "Für die Polizei in Berlin",
-        "Die Sprecherin ist verheiratet", "Bei der Sportveranstaltung", "Das Bundesfamilienministerium",
-        "Meeresküsten", "Bauern warnen", "Nach Ansicht mancher", "Bio-Siegels"
+        "Lufthansa","Erdbeben","Bierkonsum","Schiff","Vögel","In der Europaischen",
+        "Wetter","Nicht sicher","Die Stadt Friedrichsberg","Frau Jürgens","Die Wahlbeteiligung",
+        "In den Alpen","In den Alpen - المعدل","Insel Bali","Die Fluggesellschaft","Der Bau",
+        "50-Euro","Das Schladminger","Europawahlen CSU","Bei den Europawahlen","Die Piloten der Lufthansa",
+        "Unwetterschäden","Es ist unklar","Vier Tage pro Woche","Die 50 Euro","Die Bundesländer",
+        "Ein Treffen bei der Integrationsbeauftragten","BILD AM SONNTAG","Studentenparty in Frankreich",
+        "Deutsches Filmmuseum","Die Zahl der Arbeitslosen","Die Konjunkturentwicklung negativ",
+        "Internationale Konferenz","Um Tickets zu gewinnen","Die tschechische Stadt Pilsen",
+        "Laut Statistischem Bundesamt","In Frankfurt haben Manager","Für die Polizei in Berlin",
+        "Die Sprecherin ist verheiratet","Bei der Sportveranstaltung","Das Bundesfamilienministerium",
+        "Meeresküsten","Bauern warnen","Nach Ansicht mancher","Bio-Siegels"
     ];
     const hoerenTeil2Items = [
-        "Herr Gasser", "Suza Hotop", "Steiner", "Mallorca", "Mallorca-Urlaub", "In dem Restaurant",
-        "Julia", "Carina", "Carina معدل", "Frau Schenk", "Frau Schenk معدل", "Herr Karimov",
-        "Nadine Wagner", "Markus", "Markus معدل", "Roland spielen", "Roland aufsteigen", "Roland höhere Liga",
-        "Die Deutschen machen", "Herr Scherer", "Beim Wettkampf", "Vanessa", "Zu Beginn",
-        "Die TU Dresden", "Lisa Eisenberg", "Mirjam Pressler", "Mirjam Pressler تعديل", "Franz Schumacher",
-        "Frau Pesina", "Wohnmobile", "Strassenkinder", "Familie Eltern", "Revolution Day", "Bicycle",
-        "Die Radiosendung", "psychische", "Herr Kemper", "Frau Makeba", "Thomas", "Stadtbibliothek",
-        "Frau Hahn", "Wohnmobilen", "Eisschwimmen", "Frau Kiddar", "Frau Kiddar تعديل", "Die Ausbildung", "Herr Werner"
+        "Herr Gasser","Suza Hotop","Steiner","Mallorca","Mallorca-Urlaub","In dem Restaurant",
+        "Julia","Carina","Carina معدل","Frau Schenk","Frau Schenk معدل","Herr Karimov",
+        "Nadine Wagner","Markus","Markus معدل","Roland spielen","Roland aufsteigen","Roland höhere Liga",
+        "Die Deutschen machen","Herr Scherer","Beim Wettkampf","Vanessa","Zu Beginn",
+        "Die TU Dresden","Lisa Eisenberg","Mirjam Pressler","Mirjam Pressler تعديل","Franz Schumacher",
+        "Frau Pesina","Wohnmobile","Strassenkinder","Familie Eltern","Revolution Day","Bicycle",
+        "Die Radiosendung","psychische","Herr Kemper","Frau Makeba","Thomas","Stadtbibliothek",
+        "Frau Hahn","Wohnmobilen","Eisschwimmen","Frau Kiddar","Frau Kiddar تعديل","Die Ausbildung","Herr Werner"
     ];
     const hoerenTeil3Items = [
-        "Telefon", "Fahrschule", "Im Suden Deutschlands - regnen", "Im Suden Deutschlands - Schnee",
-        "Internet", "Ehrenamts", "Demonstration", "Am Wochenanfang", "Im August", "Fundburo", "Ausgang",
-        "Blutspenden", "Reitturnier", "Delikatessen", "Fur ein Konzert morgen", "In Raum C23",
-        "Buchhandlung", "Trainingsausfahrten", "Musikfestivals", "Das Geschaft für osterreichische",
-        "Fahrkarte", "Wanderung", "Die Gruppe Die Prinzen", "spatestens in Hannover",
-        "Fur das Konzert mit Romano", "Bayern Radio", "Gartenausstellung KoGa", "den Opel-Zoo",
-        "Der Christkindlesmarkt in Nurnberg", "Alle Fluge der Fluglinie AirMer", "Auto gewinnen",
-        "Die Fahrradtouren von Berlin", "Die Literaturmesse für Kleinverleger", "Fussballspiel im Ostpark",
-        "Das Treffen", "im Frankfurter Zoo", "Ein Teil der kostenlosen Veranstaltungen",
-        "Auf der Viktoriabrücke", "Die Buchprasentation", "Beim Klassik-Radio"
+        "Telefon","Fahrschule","Im Suden Deutschlands - regnen","Im Suden Deutschlands - Schnee",
+        "Internet","Ehrenamts","Demonstration","Am Wochenanfang","Im August","Fundburo","Ausgang",
+        "Blutspenden","Reitturnier","Delikatessen","Fur ein Konzert morgen","In Raum C23",
+        "Buchhandlung","Trainingsausfahrten","Musikfestivals","Das Geschaft für osterreichische",
+        "Fahrkarte","Wanderung","Die Gruppe Die Prinzen","spatestens in Hannover",
+        "Fur das Konzert mit Romano","Bayern Radio","Gartenausstellung KoGa","den Opel-Zoo",
+        "Der Christkindlesmarkt in Nurnberg","Alle Fluge der Fluglinie AirMer","Auto gewinnen",
+        "Die Fahrradtouren von Berlin","Die Literaturmesse für Kleinverleger","Fussballspiel im Ostpark",
+        "Das Treffen","im Frankfurter Zoo","Ein Teil der kostenlosen Veranstaltungen",
+        "Auf der Viktoriabrücke","Die Buchprasentation","Beim Klassik-Radio"
     ];
 
     const examTranslations = {
-        "ALPEN": { de: "ALPEN", ar: "جبال الألب" },
-        "BATATA": { de: "KARTOFFEL", ar: "البطاطا" },
-        "BILDER": { de: "BILDER", ar: "الصور" },
-        "BINZIL": { de: "BENZIN", ar: "البنزين" },
-        "GRUND SCHULE": { de: "GRUNDSCHULE", ar: "المدرسة الابتدائية" },
-        "HACHARAT": { de: "INSEKTEN", ar: "الحشرات" },
-        "KELLNER": { de: "KELLNER", ar: "النادل" },
-        "L9AHWA": { de: "KAFFEE", ar: "القهوة" },
-        "LHALWA": { de: "SÜSSIGKEITEN", ar: "الحلوى" },
-        "LI9A7": { de: "IMPFSTOFF", ar: "اللقاح" },
-        "LICHT": { de: "LICHT", ar: "الضوء" },
-        "LIMON": { de: "LIMONADE", ar: "عصير الليمون" },
-        "MOBARMIJIN": { de: "PROGRAMMIERER", ar: "المبرمجين" },
-        "NA7L": { de: "BIENEN", ar: "النحل" },
-        "NAMSA": { de: "ÖSTERREICH", ar: "النمسا" },
-        "SCHLAFZUG": { de: "SCHLAFZUG", ar: "قطار النوم" },
-        "SPORT IST GESUND": { de: "SPORT IST GESUND", ar: "الرياضة صحية" },
-        "TANZKURZ": { de: "TANZKURS", ar: "دورة الرقص" },
-        "TRANPOLIN": { de: "TRAMPOLIN", ar: "الترامبولين" },
-        "INSEL": { de: "INSEL", ar: "الجزيرة" },
-        "L2AL3AB": { de: "SPIELE", ar: "الألعاب" },
-        "KINDER HENDY": { de: "KINDERHANDY", ar: "هاتف الأطفال" },
-        "DROGEN": { de: "DROGEN", ar: "المخدرات" },
-        "GELD": { de: "GELD", ar: "المال" },
-        "ROSSIA": { de: "Wahlen und russische Frauen", ar: "الانتخابات و المراة الروسية" },
-        "AL3AB": { de: "SPIELE", ar: "الألعاب" },
-        "BENZIL": { de: "BENZIN", ar: "البنزين" },
-        "HATIF L2ATFAL": { de: "KINDERTELEFON", ar: "هاتف الأطفال" },
-        "INTIKHABAT": { de: "WAHLEN", ar: "الانتخابات" },
-        "L7ALWA": { de: "SÜSSIGKEITEN", ar: "الحلوى" },
-        "MOKHADIRAT": { de: "DROGEN", ar: "المخدرات" },
-        "TRAMPOLIN": { de: "TRAMPOLIN", ar: "الترامبولين" },
-        "HOREN": { de: "HÖREN", ar: "الاستماع" },
-        "HOREN1": { de: "HÖREN 1", ar: "الاستماع 1" },
-        "SCHREIBEN": { de: "SCHREIBEN", ar: "الكتابة" }
+        "ALPEN":{de:"ALPEN",ar:"جبال الألب"},"BATATA":{de:"KARTOFFEL",ar:"البطاطا"},
+        "BILDER":{de:"BILDER",ar:"الصور"},"BINZIL":{de:"BENZIN",ar:"البنزين"},
+        "GRUND SCHULE":{de:"GRUNDSCHULE",ar:"المدرسة الابتدائية"},"HACHARAT":{de:"INSEKTEN",ar:"الحشرات"},
+        "KELLNER":{de:"KELLNER",ar:"النادل"},"L9AHWA":{de:"KAFFEE",ar:"القهوة"},
+        "LHALWA":{de:"SÜSSIGKEITEN",ar:"الحلوى"},"LI9A7":{de:"IMPFSTOFF",ar:"اللقاح"},
+        "LICHT":{de:"LICHT",ar:"الضوء"},"LIMON":{de:"LIMONADE",ar:"عصير الليمون"},
+        "MOBARMIJIN":{de:"PROGRAMMIERER",ar:"المبرمجين"},"NA7L":{de:"BIENEN",ar:"النحل"},
+        "NAMSA":{de:"ÖSTERREICH",ar:"النمسا"},"SCHLAFZUG":{de:"SCHLAFZUG",ar:"قطار النوم"},
+        "SPORT IST GESUND":{de:"SPORT IST GESUND",ar:"الرياضة صحية"},"TANZKURZ":{de:"TANZKURS",ar:"دورة الرقص"},
+        "TRANPOLIN":{de:"TRAMPOLIN",ar:"الترامبولين"},"INSEL":{de:"INSEL",ar:"الجزيرة"},
+        "L2AL3AB":{de:"SPIELE",ar:"الألعاب"},"KINDER HENDY":{de:"KINDERHANDY",ar:"هاتف الأطفال"},
+        "DROGEN":{de:"DROGEN",ar:"المخدرات"},"GELD":{de:"GELD",ar:"المال"},
+        "ROSSIA":{de:"Wahlen und russische Frauen",ar:"الانتخابات و المراة الروسية"},"AL3AB":{de:"SPIELE",ar:"الألعاب"},
+        "BENZIL":{de:"BENZIN",ar:"البنزين"},"HATIF L2ATFAL":{de:"KINDERTELEFON",ar:"هاتف الأطفال"},
+        "INTIKHABAT":{de:"WAHLEN",ar:"الانتخابات"},"L7ALWA":{de:"SÜSSIGKEITEN",ar:"الحلوى"},
+        "MOKHADIRAT":{de:"DROGEN",ar:"المخدرات"},"TRAMPOLIN":{de:"TRAMPOLIN",ar:"الترامبولين"},
+        "HOREN":{de:"HÖREN",ar:"الاستماع"},"HOREN1":{de:"HÖREN 1",ar:"الاستماع 1"},
+        "SCHREIBEN":{de:"SCHREIBEN",ar:"الكتابة"}
     };
 
-    function getExamName(filename) { return filename.replace('.html','').replace('.pdf',''); }
-    function getGermanTranslation(filename) { const n=getExamName(filename); return examTranslations[n]?.de||n; }
-    function getArabicDescription(filename) { const n=getExamName(filename); return examTranslations[n]?.ar||n; }
+    function getExamName(f){return f.replace('.html','').replace('.pdf','');}
+    function getGermanTranslation(f){const n=getExamName(f);return examTranslations[n]?.de||n;}
+    function getArabicDescription(f){const n=getExamName(f);return examTranslations[n]?.ar||n;}
 
     // ============================================================
     // DOM REFS
@@ -1434,9 +1541,6 @@
         waiting: document.getElementById('waitingPage')
     };
 
-    // ============================================================
-    // STATE
-    // ============================================================
     let currentUser = null;
     let examDate = new Date();
     examDate.setMonth(examDate.getMonth()+1);
@@ -1448,28 +1552,28 @@
     // HELPERS
     // ============================================================
     function showPage(name) {
-        Object.values(pages).forEach(p => p?.classList.remove('active'));
+        Object.values(pages).forEach(p=>p?.classList.remove('active'));
         if (pages[name]) pages[name].classList.add('active');
-        // update sidebar active
-        document.querySelectorAll('.sidebar-nav a').forEach(a => {
+        document.querySelectorAll('.sidebar-nav a').forEach(a=>{
             a.classList.toggle('active', a.dataset.page === name);
         });
-        // populate grids if needed
-        if (name === 'lesen') populateLesenGrid();
-        else if (name === 'hoeren') populateHoerenGrid();
-        else if (name === 'schreiben') populateSchreibenGrid();
-        else if (name === 'pdfs') populatePdfsGrid();
-        else if (name === 'komplettePrüfungen') populateKomplettePrüfungenGrid();
-        else if (name === 'lesenTeil1') populateLesenTeil1Grid();
-        else if (name === 'lesenTeil2') populateLesenTeil2Grid();
-        else if (name === 'lesenTeil3') populateLesenTeil3Grid();
-        else if (name === 'sprachbausteineTeil1') populateSprachbausteineTeil1Grid();
-        else if (name === 'sprachbausteineTeil2') populateSprachbausteineTeil2Grid();
-        else if (name === 'hoerenTeil1') populateHoerenTeil1Grid();
-        else if (name === 'hoerenTeil2') populateHoerenTeil2Grid();
-        else if (name === 'hoerenTeil3') populateHoerenTeil3Grid();
-        else if (name === 'profile') updateProfileDisplay();
+        if (name==='lesen') populateLesenGrid();
+        else if (name==='hoeren') populateHoerenGrid();
+        else if (name==='schreiben') populateSchreibenGrid();
+        else if (name==='pdfs') populatePdfsGrid();
+        else if (name==='komplettePrüfungen') populateKomplettePrüfungenGrid();
+        else if (name==='lesenTeil1') populateLesenTeil1Grid();
+        else if (name==='lesenTeil2') populateLesenTeil2Grid();
+        else if (name==='lesenTeil3') populateLesenTeil3Grid();
+        else if (name==='sprachbausteineTeil1') populateSprachbausteineTeil1Grid();
+        else if (name==='sprachbausteineTeil2') populateSprachbausteineTeil2Grid();
+        else if (name==='hoerenTeil1') populateHoerenTeil1Grid();
+        else if (name==='hoerenTeil2') populateHoerenTeil2Grid();
+        else if (name==='hoerenTeil3') populateHoerenTeil3Grid();
+        else if (name==='profile') updateProfileDisplay();
         updateProgressBar();
+        // animated stats on menu
+        if (name==='menu') animateStats();
     }
 
     function showToast(msg, type='info') {
@@ -1484,13 +1588,12 @@
 
     function updateProgressBar() {
         const bar = document.getElementById('topProgressBar');
-        const total = 100;
-        let progress = 0;
+        let p = 0;
         if (currentUser) {
             const completed = parseInt(document.getElementById('statCompleted')?.textContent?.split('/')[0] || 0);
-            progress = Math.min(85, 15 + (completed / 20) * 70);
+            p = Math.min(85, 15 + (completed/20)*70);
         }
-        bar.style.width = progress + '%';
+        bar.style.width = p+'%';
     }
 
     function updateProfileDisplay() {
@@ -1500,14 +1603,19 @@
         document.getElementById('profileName').textContent = name;
         document.getElementById('profileEmail').textContent = currentUser.email || 'غير متوفر';
         document.getElementById('sidebarName').textContent = name;
-        const avatar = document.getElementById('profileAvatar');
-        const sAvatar = document.getElementById('sidebarAvatar');
-        const initial = name.charAt(0).toUpperCase();
-        avatar.textContent = initial;
-        sAvatar.textContent = initial;
+        const av = document.getElementById('profileAvatar');
+        const sav = document.getElementById('sidebarAvatar');
+        const init = name.charAt(0).toUpperCase();
+        av.textContent = init;
+        sav.textContent = init;
         document.getElementById('userLevel').textContent = 'طالب مستوى B2';
         document.getElementById('sidebarRole').textContent = 'طالب B2';
         updateExamCountdown();
+        // update stats on menu
+        document.getElementById('statPoints').textContent = '150';
+        document.getElementById('statCompleted').textContent = '8/20';
+        document.getElementById('statProgress').textContent = '65%';
+        document.getElementById('statLevel').textContent = 'B2';
     }
 
     function updateExamCountdown() {
@@ -1536,6 +1644,16 @@
         return true;
     }
 
+    // Animated stats counter
+    function animateStats() {
+        // simple animation: just pulse effect
+        document.querySelectorAll('.stat-number').forEach(el => {
+            el.style.transition = 'transform 0.3s ease';
+            el.style.transform = 'scale(1.1)';
+            setTimeout(()=>{ el.style.transform = 'scale(1)'; }, 300);
+        });
+    }
+
     // ============================================================
     // POPULATE GRIDS
     // ============================================================
@@ -1546,7 +1664,6 @@
         items.forEach((item, i) => {
             const card = document.createElement('div');
             card.className = 'card-3d';
-            card.style.animationDelay = (i*0.04)+'s';
             if (isObject) {
                 card.innerHTML = `<h3>${item.name}</h3><p style="color:var(--text-secondary);font-size:0.9rem;">${item.translation}</p>`;
                 card.addEventListener('click', ()=>openHTMLFile(item.file, basePath));
@@ -1571,7 +1688,6 @@
         pdfs.forEach((pdf, i) => {
             const card = document.createElement('div');
             card.className = 'card-3d';
-            card.style.animationDelay = (i*0.04)+'s';
             const name = getGermanTranslation(pdf);
             const desc = getArabicDescription(pdf);
             card.innerHTML = `<h3>${name}</h3><p style="color:var(--text-secondary);font-size:0.9rem;">${desc}</p>`;
@@ -1607,7 +1723,7 @@
             const { data: deviceCheck } = await supabase.rpc('verify_device_limit', { user_uuid: currentUser.id, device: deviceId });
             if (deviceCheck?.status === 'blocked') { showToast(deviceCheck.message, 'error'); await supabase.auth.signOut(); currentUser=null; return; }
             const hasAccess = await checkUserAccess();
-            if (hasAccess) { showToast('تم تسجيل الدخول بنجاح!', 'success'); showPage('menu'); updateUI(true); }
+            if (hasAccess) { showToast('مرحباً بك! 🎉', 'success'); showPage('menu'); updateUI(true); }
             else showPage('waiting');
         } catch(e) { showToast('خطأ في تسجيل الدخول', 'error'); }
     }
@@ -1658,15 +1774,9 @@
     }
 
     function updateUI(loggedIn) {
-        const btn = document.getElementById('profileBtn');
-        const badge = document.getElementById('premiumBadge');
-        if (loggedIn) {
-            btn.style.display = 'flex';
-            badge.style.display = 'flex';
-            updateProfileDisplay();
-        } else {
-            btn.style.display = 'none';
-            badge.style.display = 'none';
+        if (loggedIn) { updateProfileDisplay(); } else {
+            document.getElementById('profileAvatar').textContent = 'م';
+            document.getElementById('sidebarAvatar').textContent = 'م';
         }
     }
 
@@ -1684,47 +1794,26 @@
     }
 
     // ============================================================
-    // STARFIELD & PARTICLES
+    // STARFIELD
     // ============================================================
     function createStars() {
-        const container = document.getElementById('starfield');
-        const count = 180;
-        for (let i=0; i<count; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
+        const c = document.getElementById('starfield');
+        for (let i=0; i<180; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
             const size = Math.random()*2.5 + 0.5;
-            star.style.width = size+'px';
-            star.style.height = size+'px';
-            star.style.left = Math.random()*100+'%';
-            star.style.top = Math.random()*100+'%';
-            star.style.setProperty('--duration', (3+Math.random()*4)+'s');
-            star.style.animationDelay = (Math.random()*5)+'s';
-            container.appendChild(star);
-        }
-    }
-
-    function createParticles() {
-        const container = document.getElementById('particles');
-        const colors = ['#6C63FF','#FF6B9D','#00D4FF'];
-        for (let i=0; i<25; i++) {
-            const p = document.createElement('div');
-            p.className = 'floating-particle';
-            const size = 4+Math.random()*12;
-            p.style.width = size+'px';
-            p.style.height = size+'px';
-            p.style.background = colors[Math.floor(Math.random()*colors.length)];
-            p.style.left = Math.random()*100+'%';
-            p.style.top = Math.random()*100+'%';
-            p.style.setProperty('--float-duration', (12+Math.random()*18)+'s');
-            p.style.setProperty('--tx', (40+Math.random()*120)+'px');
-            p.style.setProperty('--ty', (40+Math.random()*120)+'px');
-            p.style.opacity = 0.15 + Math.random()*0.25;
-            container.appendChild(p);
+            s.style.width = size+'px';
+            s.style.height = size+'px';
+            s.style.left = Math.random()*100+'%';
+            s.style.top = Math.random()*100+'%';
+            s.style.setProperty('--d', (3+Math.random()*5)+'s');
+            s.style.animationDelay = (Math.random()*5)+'s';
+            c.appendChild(s);
         }
     }
 
     // ============================================================
-    // SIDEBAR TOGGLE
+    // SIDEBAR
     // ============================================================
     function toggleSidebar(open) {
         const sidebar = document.getElementById('sidebar');
@@ -1812,25 +1901,25 @@
     // ============================================================
     // THEME
     // ============================================================
-    let darkMode = localStorage.getItem('darkMode') === 'true';
+    let darkMode = localStorage.getItem('darkMode') !== 'false';
     function toggleTheme() {
         darkMode = !darkMode;
         localStorage.setItem('darkMode', darkMode);
-        document.body.style.setProperty('--bg-start', darkMode ? '#0A0E1A' : '#F0F0FF');
-        document.body.style.setProperty('--bg-end', darkMode ? '#1A1F35' : '#D5D9F0');
-        document.body.style.setProperty('--bg-accent', darkMode ? '#2D1B4E' : '#C5B8E0');
+        document.body.style.setProperty('--bg-dark', darkMode ? '#0A0E1A' : '#F0F0FF');
+        document.body.style.setProperty('--bg-mid', darkMode ? '#141929' : '#E0E4F5');
+        document.body.style.setProperty('--bg-light', darkMode ? '#1A1F35' : '#D0D4E8');
         document.body.style.setProperty('--text-primary', darkMode ? '#F0F0FF' : '#1A1F35');
-        document.body.style.setProperty('--text-secondary', darkMode ? '#B8B8D0' : '#4A4A6A');
+        document.body.style.setProperty('--text-secondary', darkMode ? '#B0B0D0' : '#4A4A6A');
+        document.body.style.setProperty('--text-muted', darkMode ? '#7A7A9A' : '#6A6A8A');
         document.querySelector('#themeToggleText').textContent = darkMode ? 'الوضع النهاري' : 'الوضع الليلي';
         document.querySelector('#sidebarThemeToggle i').className = darkMode ? 'fas fa-sun' : 'fas fa-moon';
     }
 
     // ============================================================
-    // EVENT LISTENERS
+    // INIT
     // ============================================================
     function init() {
         createStars();
-        createParticles();
         loadSavedAvatar();
 
         // Sidebar
@@ -1841,7 +1930,7 @@
                 e.preventDefault();
                 const page = a.dataset.page;
                 if (page) {
-                    if (page === 'menu' || page === 'kurs' || page === 'exams' || page === 'profile') {
+                    if (['menu','kurs','exams','profile'].includes(page)) {
                         if (!checkAuth()) return;
                         showPage(page);
                     } else showPage(page);
@@ -1853,7 +1942,7 @@
 
         // Theme
         document.getElementById('sidebarThemeToggle').addEventListener('click', toggleTheme);
-        toggleTheme(); // init
+        toggleTheme();
 
         // Auth
         document.getElementById('loginButton').addEventListener('click', handleLogin);
@@ -1907,7 +1996,7 @@
         document.getElementById('cancelEdit').addEventListener('click', ()=>closeModal('editModal'));
         document.getElementById('imageUpload').addEventListener('change', handleImageUpload);
 
-        // Navigation back buttons
+        // Navigation
         document.getElementById('backFromKurs').addEventListener('click', ()=>showPage('menu'));
         document.getElementById('backFromLesen').addEventListener('click', ()=>showPage('kurs'));
         document.getElementById('backFromHoeren').addEventListener('click', ()=>showPage('kurs'));
@@ -1928,7 +2017,7 @@
         document.getElementById('backFromHoerenTeil3').addEventListener('click', ()=>showPage('hoerenSubmenu'));
         document.getElementById('backFromProfile').addEventListener('click', ()=>showPage('menu'));
 
-        // Main menu cards
+        // Main cards
         document.getElementById('kursCard').addEventListener('click', ()=>{ if(checkAuth()) showPage('kurs'); });
         document.getElementById('examsCard').addEventListener('click', ()=>{ if(checkAuth()) showPage('exams'); });
         document.getElementById('lesenCard').addEventListener('click', ()=>{ if(checkAuth()) showPage('lesen'); });
@@ -1937,12 +2026,10 @@
         document.getElementById('mundlichCard').addEventListener('click', ()=>{ if(checkAuth()) showPage('mundlich'); });
         document.getElementById('pdfsCard').addEventListener('click', ()=>{ if(checkAuth()) showPage('pdfs'); });
 
-        // Mündlich teile
         document.getElementById('teil1Card').addEventListener('click', ()=>{ if(checkAuth()) window.location.href='KURS/MUNDLICH/teil1.pdf'; });
         document.getElementById('teil2Card').addEventListener('click', ()=>{ if(checkAuth()) window.location.href='KURS/MUNDLICH/teil2.pdf'; });
         document.getElementById('teil3Card').addEventListener('click', ()=>{ if(checkAuth()) window.location.href='KURS/MUNDLICH/teil3.pdf'; });
 
-        // Exams sub
         document.getElementById('komplettePrüfungenCard').addEventListener('click', ()=>{ if(checkAuth()) showPage('komplettePrüfungen'); });
         document.getElementById('prüfungsteileCard').addEventListener('click', ()=>{ if(checkAuth()) showPage('prüfungsteile'); });
         document.getElementById('lesenTeil1Card').addEventListener('click', ()=>{ if(checkAuth()) showPage('lesenTeil1'); });
@@ -1955,7 +2042,6 @@
         document.getElementById('hoerenTeil2SubCard').addEventListener('click', ()=>{ if(checkAuth()) showPage('hoerenTeil2'); });
         document.getElementById('hoerenTeil3SubCard').addEventListener('click', ()=>{ if(checkAuth()) showPage('hoerenTeil3'); });
 
-        // Profile button (top right)
         document.getElementById('profileBtn').addEventListener('click', ()=>{ if(checkAuth()) showPage('profile'); });
 
         // Enter key
@@ -1963,10 +2049,27 @@
         document.getElementById('passwordInput').addEventListener('keypress', e=>{ if(e.key==='Enter') handleLogin(); });
         document.getElementById('signupConfirmPassword').addEventListener('keypress', e=>{ if(e.key==='Enter') handleSignUp(); });
 
-        // Countdown interval
         setInterval(updateExamCountdown, 1000);
 
-        // Check login
+        // Daily quote rotation
+        const quotes = [
+            '"Jeder Tag ist eine neue Chance, Deutsch zu lernen."',
+            '"Übung macht den Meister."',
+            '"Sprache ist der Schlüssel zur Welt."',
+            '"Mit Leidenschaft lernt es sich leichter."',
+            '"B2 ist dein Ziel – du schaffst es!"'
+        ];
+        let qi = 0;
+        setInterval(() => {
+            const el = document.getElementById('dailyQuote');
+            if (el) { qi = (qi+1)%quotes.length; el.textContent = quotes[qi]; }
+        }, 8000);
+
+        // Streak days
+        const streak = localStorage.getItem('streakDays');
+        if (streak) document.getElementById('streakDays').textContent = streak;
+        else { localStorage.setItem('streakDays', '7'); document.getElementById('streakDays').textContent = '7'; }
+
         checkLoginStatus();
     }
 
